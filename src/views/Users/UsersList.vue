@@ -5,17 +5,16 @@
         Users List
         <v-spacer />
         <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
+          id="searchString"
+          v-model="searchString"
           label="Search"
           single-line
-          hide-details
+          clearable
         />
       </v-card-title>
       <v-data-table
         :headers="headers"
         :items="usersList"
-        :search="search"
         :loading="loading"
         loading-text="Loading... Please wait"
       >
@@ -39,7 +38,7 @@ export default {
   name: "UsersList",
   data() {
     return {
-      search: '',
+      searchString: '',
       headers: [
         {
           text: 'username',
@@ -56,10 +55,16 @@ export default {
   computed: {
     ...mapState('users', ['usersList']),
   },
-  async mounted() {
-    this.loading = true;
-    await this.getUsersList()
-    this.loading = false;
+  watch: {
+    async searchString(val){
+      if (!val || val.length < 3) {
+        return;
+      }
+      val = val.trim();
+      this.loading = true;
+      await this.getUsersList(val);
+      this.loading = false;
+    },
   },
   beforeDestroy() {
     this.cleanStore();

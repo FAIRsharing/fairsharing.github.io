@@ -310,9 +310,15 @@ export const actions = {
         getPublicUserQuery.queryParam.id = parseInt(userId);
         return await graphClient.executeQuery(getPublicUserQuery);
     },
-    async getUsersList(state) {
+    async getUsersList(state, query) {
         try {
             graphClient.setHeader(state.state.user().credentials.token);
+            if (query) {
+                 getAllUsersQuery.queryParam.q = query;
+            }
+            else {
+                delete getAllUsersQuery.queryParam.q;
+            }
             let usersListData = await graphClient.executeQuery(getAllUsersQuery);
             this.commit('users/setUsersList', usersListData['allUsers']);
         }

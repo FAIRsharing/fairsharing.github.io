@@ -10,6 +10,7 @@ const CLIENT = new GraphClient(),
 const state = {
   advancedSearchText: "",
   advancedSearch: {},
+  editAdvancedSearch: {},
   advancedSearchQuery: {
     operator: "",
     fields: [],
@@ -17,6 +18,7 @@ const state = {
   advancedSearchResponse: [],
   loadingStatus: false,
   errorStatus: false,
+  editDialogStatus: false,
 };
 
 const actions = {
@@ -111,6 +113,9 @@ const mutations = {
   setAdvancedSearch(state, advancedSearch) {
     state.advancedSearch = advancedSearch;
   },
+  setEditAdvancedSearch(state, editAdvancedSearch) {
+    state.editAdvancedSearch = editAdvancedSearch;
+  },
   setAdvancedSearchResponse(state, advancedSearchResponse) {
     state.advancedSearchResponse = advancedSearchResponse;
   },
@@ -134,6 +139,9 @@ const mutations = {
       fields: advancedSearchQuery["fields"],
     };
   },
+  setEditDialogStatus(state, editDialogStatus) {
+    state.editDialogStatus = editDialogStatus;
+  },
 };
 
 const getters = {
@@ -142,6 +150,9 @@ const getters = {
   },
   getAdvancedSearch(state) {
     return state.advancedSearch;
+  },
+  getEditAdvancedSearch(state) {
+    return state.editAdvancedSearch;
   },
   getAdvancedSearchResponse(state) {
     return state.advancedSearchResponse;
@@ -154,6 +165,9 @@ const getters = {
   },
   getAdvancedSearchQuery(state) {
     return state.advancedSearchQuery;
+  },
+  getEditDialogStatus(state) {
+    return state.editDialogStatus;
   },
 };
 const advancedSearch = {

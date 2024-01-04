@@ -104,20 +104,7 @@
                 :record="item"
                 class="ml-10"
               />
-
-              <!-- TODO: this is a hacky placeholder -->
               <p class="pb-5" />
-
-              <!-- TODO: change below here -->
-              <!--
-                <v-divider />
-
-                <span>
-                  Some information about number of standards etc. can go here.
-                </span>
-
-                -->
-              <!-- TODO: change above here -->
             </v-card>
           </v-col>
         </v-row>
@@ -233,6 +220,15 @@ export default {
 
         //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
         advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
+        advancedSearch.commit(
+          "advancedSearch/setEditAdvancedSearch",
+          searchQuery
+        );
+
+        // advancedSearch.commit("advancedSearch", {
+        //   setAdvancedSearch: searchQuery,
+        //   setEditAdvancedSearch: searchQuery,
+        // });
 
         //Calling the fetch method to get the result
         if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);

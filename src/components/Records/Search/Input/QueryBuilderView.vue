@@ -7,6 +7,7 @@
 
 <script>
 import QueryBuilder from "query-builder-vue";
+import { mapGetters } from "vuex";
 
 import Registry from "@/components/Records/Search/Input/QueryBuilderComponents/Registry.vue";
 import RegistryType from "@/components/Records/Search/Input/QueryBuilderComponents/RegistryType.vue";
@@ -30,6 +31,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("advancedSearch", [
+      "getEditDialogStatus",
+      "getEditAdvancedSearch",
+    ]),
     config() {
       return {
         operators: [
@@ -73,18 +78,38 @@ export default {
   watch: {
     query(newValue) {
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
-    },
-    /**
-     * Reset the dialog box when closed
-     * @param newValue - Boolean
-     */
-    isDialog(newValue) {
-      if (newValue) {
-        this.query = {
-          operatorIdentifier: "_and",
-          children: [],
-        };
+      if (newValue["children"] && newValue["children"].length) {
+        advancedSearch.commit("advancedSearch/setEditAdvancedSearch", newValue);
       }
+    },
+
+    /**
+     * Reset the dialog box when closed and opened again
+     * @param open - Boolean
+     */
+    isDialog: {
+      handler(open) {
+        if (open && !this.getEditDialogStatus) {
+          this.query = {
+            operatorIdentifier: "_and",
+            children: [],
+          };
+        }
+      },
+      immediate: true,
+    },
+
+    /**
+     * Populate the dialog box with advanced search selection
+     * @param open - Boolean
+     */
+    getEditDialogStatus: {
+      handler(open) {
+        if (open) {
+          this.query = this.getEditAdvancedSearch;
+        }
+      },
+      immediate: true,
     },
   },
 };

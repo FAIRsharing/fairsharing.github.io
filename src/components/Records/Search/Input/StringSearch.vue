@@ -45,7 +45,8 @@
       <!--  Advance search button  -->
       <AdvancedSearch
         v-if="!showHomeSearch"
-        :advanced-search-term="advancedSearchTerm"
+        :advanced-search-term="searchTerm"
+        @clearSearchField="clearSearchField"
       />
       <!--  home page search box  -->
       <v-btn
@@ -100,7 +101,6 @@ export default {
     showHomeSearch: { default: false, type: Boolean },
     addSearchTerms: { default: false, type: Boolean },
     searchPath: { default: "/search", type: String },
-    isAdvanceSearchTerm: { default: false, type: Boolean },
   },
   data() {
     return {
@@ -123,7 +123,6 @@ export default {
           return isRequired();
         },
       },
-      advancedSearchTerm: null,
     };
   },
   computed: {
@@ -143,15 +142,7 @@ export default {
       return boxHeight;
     },
   },
-  watch: {
-    searchTerm(newValue) {
-      this.advancedSearchTerm = newValue;
-      this.$emit("advancedSearchTerm", this.advancedSearchTerm);
-    },
-    isAdvanceSearchTerm(newValue) {
-      if (newValue) this.$refs.form.validate();
-    },
-  },
+
   methods: {
     searchString() {
       const _module = this;
@@ -210,6 +201,9 @@ export default {
           _module.$refs.form.resetValidation();
         }
       }
+    },
+    clearSearchField(item) {
+      if (item) this.searchTerm = null;
     },
   },
 };

@@ -64,9 +64,6 @@ describe("StringSearch.vue", () => {
       mocks: { $router, $route },
     });
 
-    wrapper.vm.$options.watch.searchTerm.call(wrapper.vm, null);
-    wrapper.vm.$options.watch.isAdvanceSearchTerm.call(wrapper.vm, null);
-
     wrapper.vm.$refs.form = {
       validate: jest.fn().mockImplementation(() => true),
       resetValidation: jest.fn().mockImplementation(() => true),
@@ -96,7 +93,6 @@ describe("StringSearch.vue", () => {
     wrapper.vm.searchTerm = null;
 
     wrapper.vm.searchStringHomePage();
-    expect(wrapper.emitted("advancedSearchTerm")[0][0]).toBe(null);
     expect($router.push).toHaveBeenCalledTimes(2);
 
     wrapper.vm.searchTerm = "testStringHome";

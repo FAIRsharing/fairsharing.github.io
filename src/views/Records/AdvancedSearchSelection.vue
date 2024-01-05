@@ -10,7 +10,7 @@
       class="mx-2"
       color="accent"
       elevation="2"
-      @click="editSearch()"
+      @click="editAdvancedSearch()"
     >
       <v-icon
         small
@@ -131,7 +131,7 @@ export default {
       if (value === "_and") return "And";
       else if (value === "_or") return "Or";
     },
-    editSearch() {
+    editAdvancedSearch() {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
     },
   },

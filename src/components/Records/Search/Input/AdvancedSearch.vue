@@ -45,7 +45,19 @@
       >
         <v-card>
           <v-card-title>
-            <span class="text-h5">{{ advancedSearchTerm }}</span>
+            <span
+              v-if="!getEditDialogStatus"
+              class="text-h5"
+            >{{
+              advancedSearchTerm
+            }}</span>
+            <v-text-field
+              v-else
+              class="text-h5"
+              clearable
+              :value="getAdvancedSearchText"
+              @change="updateSearchText($event)"
+            />
           </v-card-title>
           <v-card-text>
             <QueryBuilderView :is-dialog="dialog" />
@@ -80,6 +92,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -98,12 +111,14 @@ export default {
   data: () => {
     return {
       dialog: false,
+      updatedAdvancedSearchText: "",
     };
   },
   computed: {
     ...mapGetters("advancedSearch", [
       "getAdvancedSearch",
       "getAdvancedSearchText",
+      "getEditDialogStatus",
     ]),
     /**
      * Enables the proceed button when all the selected fields are non-empty
@@ -131,6 +146,11 @@ export default {
       return isDisabled;
     },
   },
+  watch: {
+    getEditDialogStatus(newValue) {
+      this.dialog = newValue;
+    },
+  },
   methods: {
     ...mapActions("advancedSearch", [
       "fetchAdvancedSearchResults",
@@ -143,6 +163,7 @@ export default {
 
     closeDialog() {
       this.dialog = false;
+      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
     },
 
     isAdvancedSearchTerm(queryString) {
@@ -163,8 +184,15 @@ export default {
     },
 
     goToAdvancedSearch() {
-      this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      if (this.updatedAdvancedSearchText)
+        this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
+      else this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+
       this.dialog = false;
+      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
+      //Clear search text field flag
+      this.$emit("clearSearchField", true);
+
       let queryString = "";
       /*
        * Add advancedSearch selection to query params in
@@ -218,6 +246,10 @@ export default {
           });
         }
       }
+    },
+
+    updateSearchText(item) {
+      this.updatedAdvancedSearchText = item;
     },
   },
 };

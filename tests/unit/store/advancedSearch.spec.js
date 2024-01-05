@@ -10,6 +10,7 @@ describe("AdvancedSearch store methods", () => {
   const returnedVal = AdvancedSearchData;
   let state = {
     advancedSearch: {},
+    editAdvancedSearch: {},
     advancedSearchQuery: {
       operator: "",
       fields: [],
@@ -17,6 +18,7 @@ describe("AdvancedSearch store methods", () => {
     advancedSearchResponse: [],
     errorStatus: false,
     loadingStatus: false,
+    editDialogStatus: false,
   };
   let stub;
 
@@ -82,6 +84,25 @@ describe("AdvancedSearch store methods", () => {
     expect(state.advancedSearch).toBe(searchedObj);
   });
 
+  it("can check setEditAdvancedSearch mutations", () => {
+    const editSearchedObj = {
+      operatorIdentifier: "_and",
+      children: [
+        {
+          operatorIdentifier: "_and",
+          children: [
+            {
+              identifier: "registry",
+              value: ["database", "standard"],
+            },
+          ],
+        },
+      ],
+    };
+    mutations.setEditAdvancedSearch(state, editSearchedObj);
+    expect(state.editAdvancedSearch).toBe(editSearchedObj);
+  });
+
   it("can check setAdvancedSearchResponse mutations", () => {
     const searchResponse = [
       {
@@ -135,6 +156,12 @@ describe("AdvancedSearch store methods", () => {
     );
   });
 
+  it("can check setEditDialogStatus mutations", () => {
+    const editDialogStatus = true;
+    mutations.setEditDialogStatus(state, editDialogStatus);
+    expect(state.editDialogStatus).toBe(true);
+  });
+
   it("can check getAdvancedSearchText getters", () => {
     const getSearchResult = {
       advancedSearchText: "test",
@@ -162,6 +189,27 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getAdvancedSearch(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["advancedSearch"]);
+  });
+
+  it("can check getEditAdvancedSearch getters", () => {
+    const getSearchResult = {
+      editAdvancedSearch: {
+        operatorIdentifier: "_and",
+        children: [
+          {
+            operatorIdentifier: "_and",
+            children: [
+              {
+                identifier: "registry",
+                value: ["database", "standard"],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const builtData = getters.getEditAdvancedSearch(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["editAdvancedSearch"]);
   });
 
   it("can check getAdvancedSearchResponse getters", () => {
@@ -208,5 +256,13 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getAdvancedSearchQuery(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["advancedSearchQuery"]);
+  });
+
+  it("can check getEditDialogStatus getters", () => {
+    const getSearchResult = {
+      editDialogStatus: true,
+    };
+    const builtData = getters.getEditDialogStatus(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["editDialogStatus"]);
   });
 });

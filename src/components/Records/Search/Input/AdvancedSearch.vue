@@ -52,7 +52,7 @@
               advancedSearchTerm
             }}</span>
             <v-text-field
-              v-else
+              v-if="getEditDialogStatus && getAdvancedSearchText"
               class="text-h5"
               clearable
               :value="getAdvancedSearchText"

@@ -169,7 +169,7 @@
         "linkedin" : "deborah-thorpe-0245a392",
         "mastodon" : "hcommons.social/@debsethorpe",
         "logo": "deborah_thorpe.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Enrique Wulff",
@@ -350,7 +350,7 @@
         "linkedin" : "stephenserjeant",
         "mastodon" : "mas.to/@stephenserjeant",
         "logo": "stephen_serjeant.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Kay Burrows",
@@ -585,7 +585,7 @@
         "early_adopter" : false,
         "show_more" : false,
         "twitter": "",
-        "linkedin" : "",
+        "linkedin" : "christian-bonatto-minella-780b7710",
         "mastodon" : "",
         "logo": "christian_bonatto.jpg",
         "year_active": ["2024"]
@@ -603,8 +603,8 @@
         "orcid": "0000-0002-3528-7721",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
-        "linkedin" : "",
+        "twitter": "priya__arasu",
+        "linkedin" : "priyadarshini-thirunavukkarasu-53107a25",
         "mastodon" : "",
         "logo": "priyadarshini_large.jpg",
         "year_active": ["2024"]

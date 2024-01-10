@@ -1,8 +1,5 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  />
+  <query-builder v-model="query" :config="config" />
 </template>
 
 <script>
@@ -77,7 +74,7 @@ export default {
     },
     /**
      * Removes duplicate entries and return unique values
-     * @returns {{children: *[], operatorIdentifier}}
+     * @returns {Object}
      */
     uniqueGetEditAdvancedSearch() {
       let searchValues = {

@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import AdvancedSearchStore from "@/store/advancedSearch.js";
 
-import AdvancedSearchData from "../../../../Fairsharing/fairsharing.github.io/tests/fixtures/getAdvancedSearch.json";
+import AdvancedSearchData from "../../../tests/fixtures/getAdvancedSearch.json";
 
 describe("AdvancedSearch store methods", () => {
   const { actions, mutations, getters } = AdvancedSearchStore;
@@ -191,27 +191,6 @@ describe("AdvancedSearch store methods", () => {
     expect(builtData).toStrictEqual(getSearchResult["advancedSearch"]);
   });
 
-  it("can check getEditAdvancedSearch getters", () => {
-    const getSearchResult = {
-      editAdvancedSearch: {
-        operatorIdentifier: "_and",
-        children: [
-          {
-            operatorIdentifier: "_and",
-            children: [
-              {
-                identifier: "registry",
-                value: ["database", "standard"],
-              },
-            ],
-          },
-        ],
-      },
-    };
-    const builtData = getters.getEditAdvancedSearch(getSearchResult);
-    expect(builtData).toStrictEqual(getSearchResult["editAdvancedSearch"]);
-  });
-
   it("can check getAdvancedSearchResponse getters", () => {
     const getSearchResult = {
       advancedSearchResponse: {
@@ -240,6 +219,27 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getErrorStatus(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["errorStatus"]);
+  });
+
+  it("can check getEditAdvancedSearch getters", () => {
+    const getSearchResult = {
+      editAdvancedSearch: {
+        operatorIdentifier: "_and",
+        children: [
+          {
+            operatorIdentifier: "_and",
+            children: [
+              {
+                identifier: "registry",
+                value: ["database", "standard"],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const builtData = getters.getEditAdvancedSearch(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["editAdvancedSearch"]);
   });
 
   it("can check getAdvancedSearchQuery getters", () => {

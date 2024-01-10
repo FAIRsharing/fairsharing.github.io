@@ -151,6 +151,7 @@ export default {
       this.dialog = newValue;
     },
   },
+
   methods: {
     ...mapActions("advancedSearch", [
       "fetchAdvancedSearchResults",
@@ -187,7 +188,6 @@ export default {
       if (this.updatedAdvancedSearchText)
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
       else this.fetchAdvancedSearchResults(this.advancedSearchTerm);
-
       this.dialog = false;
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
       //Clear search text field flag

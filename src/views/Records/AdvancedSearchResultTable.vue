@@ -234,6 +234,12 @@ export default {
         //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
         advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
 
+        //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
+        advancedSearch.commit(
+          "advancedSearch/setEditAdvancedSearch",
+          searchQuery
+        );
+
         //Calling the fetch method to get the result
         if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
         else this.fetchAdvancedSearchResults(routeQuery["q"]);

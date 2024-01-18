@@ -65,6 +65,7 @@ export default {
             identifier: "subjects",
             name: "Subject",
             component: Subject,
+            // initialValue: () => [],
             initialValue: "",
           },
         ],

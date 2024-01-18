@@ -47,8 +47,10 @@ const actions = {
             } else if (params["value"]) {
               fieldValue = [params["value"]];
             }
-            if (fieldValue && fieldValue.length)
+            if (fieldValue && fieldValue.length) {
+              fieldValue = fieldValue.map((e) => e.toLowerCase());
               fieldsObj[fieldKey] = fieldValue;
+            }
           });
           state.advancedSearchQuery["fields"].push(fieldsObj);
         }

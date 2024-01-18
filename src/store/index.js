@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
+
 import advancedSearch from "./advancedSearch";
 import editor from "./editor";
 import introspection from "./introspector.js";
@@ -27,5 +29,6 @@ export default new Vuex.Store({
     messages,
     ontologyBrowser: ontologyBrowser,
     advancedSearch,
+    subjectSearch,
   },
 });

@@ -47,6 +47,7 @@ export default {
     }
     .v-input__slot {
       margin-bottom: 0;
+      box-shadow: none !important;
     }
     .v-select__selections {
       min-height: 36px;

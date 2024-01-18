@@ -2,8 +2,14 @@
   "queryName": "searchSubjects",
   "queryParam": null,
   "fields": [
+    "id",
+    "label",
     {
-      "$ref": "keywords"
+      "name": "children",
+      "fields": [
+        "id",
+        "label"
+      ]
     }
   ]
 }

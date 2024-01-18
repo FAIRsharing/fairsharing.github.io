@@ -11,7 +11,12 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
@@ -22,7 +27,12 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -35,7 +45,10 @@
       >
         <v-card>
           <v-card-title>
-            <span v-if="!getEditDialogStatus" class="text-h5">{{
+            <span
+              v-if="!getEditDialogStatus"
+              class="text-h5"
+            >{{
               advancedSearchTerm
             }}</span>
             <v-text-field

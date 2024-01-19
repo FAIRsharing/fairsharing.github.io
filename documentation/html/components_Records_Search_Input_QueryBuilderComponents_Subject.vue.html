@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Pagination</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/QueryBuilderComponents/Subject.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,407 +81,136 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Pagination</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/QueryBuilderComponents/Subject.vue</h1>
+    
 <section>
-
-<header>
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the advanced search filters for the searchFairsharingRecords query.</p></div></div></p>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>totalPages</code></td>
-        <td>Number</td>
-        <td><code>0</code></td>
-        <td>No</td>
-        <td>the total number of pages to display</td>
-    </tr></tbody>
-</table>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>currentQuery</code></td>
-        <td>Number</td>
-        <td><code>null</code></td>
-        <td>the current page number</td>
-    </tr></tbody>
-</table>
-<div class="container-overview"><div><p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="disableThrottle"><span class="type-signature"></span>disableThrottle(disable)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the environment ready for testing or development</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>disable</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>should disable or not the throttle for the next call</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-102">line 102</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="paginate"><span class="type-signature"></span>paginate(pageNumber)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the current query page parameter value to the given input for vueJs router</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pageNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the page to go to</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-73">line 73</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;!--  &lt;input v-model="searchSubject" type="text" />-->
+  &lt;v-autocomplete
+    v-model="searchSubject"
+    :items="getSearchSubjects"
+    :search-input.sync="search"
+    cache-items
+    hide-no-data
+    hide-details
+    flat
+    chips
+    multiple
+    closable-chips
+    solo
+    min-height="36px"
+  >
+    &lt;template #selection="data">
+      &lt;v-chip
+        v-bind="data.attrs"
+        :input-value="data.selected"
+        close
+        @click="data.select"
+        @click:close="remove(data.item)"
+      >
+        {{ data.item }}
+      &lt;/v-chip>
+    &lt;/template>
+  &lt;/v-autocomplete>
+&lt;/template>
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
+
+import subjectSearch from "@/store";
+
+export default {
+  name: "Subject",
+  props: {
+    value: {
+      // type: Array,
+      // default: () => [],
+      type: null, //To support type any
+      default: "",
+    },
+  },
+  data: () => {
+    return {
+      search: null,
+    };
+  },
+
+  computed: {
+    ...mapGetters("subjectSearch", ["getSearchSubjects"]),
+    ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+    searchSubject: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
+    },
+  },
+  watch: {
+    search(val) {
+      if (!val || val.length &lt; 3) return;
+      val = val.trim();
+      this.getResults(val);
+    },
+    /**
+     * Item list for the autocomplete should not be empty
+     * It is assigned with selected values when edit field is opened
+     */
+    getEditDialogStatus: {
+      handler(open) {
+        if (open) {
+          if (this.searchSubject &amp;&amp; this.searchSubject.length) {
+            subjectSearch.commit(
+              "subjectSearch/setSearchSubjects",
+              this.searchSubject
+            );
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
+  methods: {
+    ...mapActions("subjectSearch", ["fetchSearchSubjects"]),
+    getResults(queryParams) {
+      this.fetchSearchSubjects(queryParams);
+    },
+    remove(item) {
+      const index = this.searchSubject.indexOf(item);
+      if (index >= 0) this.searchSubject.splice(index, 1);
+    },
+  },
+};
+&lt;/script>
+&lt;style lang="scss" scoped>
+.v-text-field::v-deep {
+  width: 90%;
+  .v-input__control {
+    min-height: 36px;
+    .v-text-field__details {
+      display: none;
+    }
+    .v-input__slot {
+      margin-bottom: 0;
+      box-shadow: none !important;
+    }
+    .v-select__selections {
+      min-height: 36px;
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -491,10 +220,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

@@ -104,12 +104,7 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      &lt;v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      &lt;/v-icon>
+      &lt;v-icon small class="mr-1"> fab fa-searchengin &lt;/v-icon>
       &lt;span class="button-text-size">Advanced Search&lt;/span>
     &lt;/v-btn>
     &lt;!--  On Header Block  -->
@@ -120,12 +115,7 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      &lt;v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      &lt;/v-icon>
+      &lt;v-icon small class="mr-1"> fab fa-searchengin &lt;/v-icon>
       &lt;span class="button-text-size">Advanced Search&lt;/span>
     &lt;/v-btn>
     &lt;!--Dialog Box -->
@@ -138,16 +128,15 @@
       >
         &lt;v-card>
           &lt;v-card-title>
-            &lt;span
-              v-if="!getEditDialogStatus"
-              class="text-h5"
-            >{{
+            &lt;span v-if="!getEditDialogStatus" class="text-h5">{{
               advancedSearchTerm
             }}&lt;/span>
             &lt;v-text-field
-              v-if="getEditDialogStatus &amp;&amp; getAdvancedSearchText"
+              v-else
               class="text-h5"
               clearable
+              solo
+              label="Search through all content"
               :value="getAdvancedSearchText"
               @change="updateSearchText($event)"
             />

@@ -7,7 +7,28 @@
     <div v-if="error && !loading">
       <NotFound />
     </div>
-    <v-row v-else>
+    <div v-else>
+      <!-- new stuff below here -->
+      <v-card
+        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column"
+        outlined
+        :color="$vuetify.theme.themes.light.bg_organisation_record_card"
+        tile
+        elevation="3"
+      >
+        <SectionTitle title="Organisation" />
+
+        <p>Some content about <b>{{ organisation.name }}</b> will go here!</p>
+      </v-card>
+
+      <SearchOrganisationRecords
+        id="searchOrganisationRecords"
+        class="mb-10 ma-4"
+        :organisation="organisation"
+      />
+      <!-- needs prop-->
+
+      <!-- new stuff above here -->
       <v-col cols="12">
         <v-toolbar
           flat
@@ -450,7 +471,7 @@
           </v-overlay>
         </v-fade-transition>
       </v-col>
-    </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -459,6 +480,8 @@ import {mapState} from "vuex";
 
 import Icon from "@/components/Icon";
 import Loaders from "@/components/Navigation/Loaders";
+import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
+import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
 import StatusPills from "@/components/Users/Profiles/Private/StatusPills";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
@@ -470,7 +493,7 @@ let graphClient = new GraphClient();
 
 export default {
   name: "Organisation",
-  components: { NotFound, Icon, Loaders, StatusPills, Record },
+  components: {SearchOrganisationRecords, SectionTitle, NotFound, Icon, Loaders, StatusPills, Record},
   mixins: [cleanString, formatList],
   data: () => {
     return {
@@ -481,7 +504,7 @@ export default {
       footer: {'items-per-page-options': [10]},
       showOverlay: false,
       targetID: null,
-      testEnvironment:false,
+      testEnvironment: false,
       headers: [
         {text: 'Name', value: 'name', align: 'center'},
         {text: 'Status', value: 'status', align: 'center'},
@@ -518,7 +541,7 @@ export default {
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
-        if(this.testEnvironment) throw new Error("an error occurred while fetching data")
+        if (this.testEnvironment) throw new Error("an error occurred while fetching data")
         this.loading = true;
         getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
         let org = await graphClient.executeQuery(getOrganisationQuery);
@@ -527,12 +550,11 @@ export default {
           this.error = false;
         }
         this.loading = false;
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
     },
-    goToEdit(id){
+    goToEdit(id) {
       this.$router.push({path: `/${id}/edit`})
     },
     previewRecord(id) {
@@ -547,7 +569,7 @@ export default {
       this.targetID = null;
     },
     filterRecords() {
-      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase()) }
+      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase())}
       this.$router.push({
         name: 'search',
         query: params

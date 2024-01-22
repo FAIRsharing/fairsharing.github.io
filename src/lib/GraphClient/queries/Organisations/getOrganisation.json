@@ -57,7 +57,38 @@
             "abbreviation",
             "type",
             "registry",
-            "status"
+            "status",
+            "description",
+            {
+              "name": "subjects",
+              "fields": [
+                "id",
+                "label",
+                "iri"
+              ]
+            },
+            {
+              "name": "domains",
+              "fields": [
+                "id",
+                "label",
+                "iri"
+              ]
+            },
+            {
+              "name": "userDefinedTags",
+              "fields": [
+                "id",
+                "label"
+              ]
+            },
+            {
+              "name": "taxonomies",
+              "fields": [
+                "id",
+                "label"
+              ]
+            }
           ]
         },
         {

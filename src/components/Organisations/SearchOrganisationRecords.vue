@@ -211,7 +211,7 @@ export default {
     downloadResults() {
       var MIME_TYPE = "text/csv";
       let data = ["name,abbreviation,URL\n"];
-      this.organisationLinks.forEach((link) => {
+      this.organisation.organisationLinks.forEach((link) => {
         data.push(`${link.fairsharingRecord.name},${link.fairsharingRecord.abbreviation || 'n/a'},https://fairsharing.org/${link.fairsharingRecord.id}\n`);
       })
       var blob = new Blob(data, {type: MIME_TYPE});

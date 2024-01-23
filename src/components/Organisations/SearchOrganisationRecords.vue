@@ -38,7 +38,7 @@
               solo-inverted
               hide-details
               prepend-inner-icon="fa-filter"
-              label="Filter these results"
+              label="Filter records"
             />
             <template v-if="$vuetify.breakpoint.mdAndUp">
               <v-spacer />
@@ -107,7 +107,17 @@
                   class="mt-2 ml-3 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
                 >
                   <!-- TODO: replace with nice pill or badge for lead -->
-                  Relation: <b>{{ item.relation }}</b> <span v-if="item.isLead">LEAD!</span>
+                  Relation: <b>{{ capitaliseText(cleanString(item.relation)) }}</b>
+                  <v-chip
+                    v-if="item.isLead"
+                    class="ml-2"
+                    color="pink"
+                    text-color="white"
+                    label
+                    x-small
+                  >
+                    LEAD ORGANISATION
+                  </v-chip>
                 </p>
                 <TagChips
                   :record="item"
@@ -153,11 +163,12 @@
 import TagChips from "@/components/Organisations/TagChips.vue";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import recordsCardUtils from "@/utils/recordsCardUtils";
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "SearchOrganisationRecords",
   components: { RecordStatus, TagChips },
-  mixins: [recordsCardUtils],
+  mixins: [recordsCardUtils, stringUtils],
   props: {
     organisation: {
       type: Object,

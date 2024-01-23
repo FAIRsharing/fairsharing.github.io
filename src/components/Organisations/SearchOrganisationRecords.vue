@@ -160,8 +160,8 @@
 
 <script>
 
-import TagChips from "@/components/Organisations/TagChips.vue";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
+import TagChips from "@/components/Records/Shared/TagChips.vue";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import stringUtils from "@/utils/stringUtils";
 
@@ -211,8 +211,8 @@ export default {
     downloadResults() {
       var MIME_TYPE = "text/csv";
       let data = ["name,abbreviation,URL\n"];
-      this.getFairSharingRecords.forEach((record) => {
-        data.push(`${record.name},${record.abbreviation || 'n/a'},https://fairsharing.org/${record.id}\n`);
+      this.organisationLinks.forEach((link) => {
+        data.push(`${link.fairsharingRecord.name},${link.fairsharingRecord.abbreviation || 'n/a'},https://fairsharing.org/${link.fairsharingRecord.id}\n`);
       })
       var blob = new Blob(data, {type: MIME_TYPE});
       window.location.href = window.URL.createObjectURL(blob);

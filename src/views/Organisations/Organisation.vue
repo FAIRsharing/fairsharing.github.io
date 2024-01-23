@@ -25,7 +25,7 @@
           :src="logoUrl"
           contain
           aspect-ratio="1"
-          max-height="100px"
+          height="100px"
         />
         <h2
           class="mt-3"

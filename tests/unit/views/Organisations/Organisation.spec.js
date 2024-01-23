@@ -57,7 +57,8 @@ describe("Organisation", () => {
                 "grant": null
             }
         ],
-        users: []
+        users: [],
+        countries: []
     }
 
     beforeAll(() => {
@@ -119,7 +120,8 @@ describe("Organisation", () => {
             types: [],
             users: [],
             parentOrganisations: [],
-            childOrganisations: []
+            childOrganisations: [],
+            countries: []
         });
     });
 

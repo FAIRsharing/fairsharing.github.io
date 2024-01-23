@@ -61,6 +61,7 @@
             v-for="parent in organisation.parentOrganisations"
             :key="'parent_' + parent.id"
             :href="orgUrl() + parent.id"
+            color="light-blue"
             variant="elevated"
             class="mr-1"
           >
@@ -75,6 +76,7 @@
             v-for="child in organisation.childOrganisations"
             :key="'child_' + child.id"
             :href="orgUrl() + child.id"
+            color="light-blue"
             variant="elevated"
             class="mr-1"
           >
@@ -87,10 +89,22 @@
             v-for="user in organisation.users"
             :key="'user_' + user.id"
             :href="getUserLink() + user.id"
+            color="light-blue"
             variant="elevated"
             class="mr-1"
           >
             {{ formatUser(user) }}
+          </v-chip>
+        </p>
+        <p v-if="organisation.countries.length > 0">
+          <b>Countries: </b>
+          <v-chip
+            v-for="country in organisation.countries"
+            :key="'country_' + country.id"
+            variant="elevated"
+            class="mr-1"
+          >
+            {{ country.name }}
           </v-chip>
         </p>
         <p v-if="organisation.rorLink">
@@ -160,7 +174,8 @@ export default {
         types: [],
         users: [],
         parentOrganisations: [],
-        childOrganisations: []
+        childOrganisations: [],
+        countries: []
       },
       loading: false,
       perPage: 10,

@@ -9,9 +9,11 @@
 import QueryBuilder from "query-builder-vue";
 import { mapGetters } from "vuex";
 
-import Registry from "@/components/Records/Search/Input/QueryBuilderComponents/Registry.vue";
-import RegistryType from "@/components/Records/Search/Input/QueryBuilderComponents/RegistryType.vue";
-import Subject from "@/components/Records/Search/Input/QueryBuilderComponents/Subject.vue";
+import {
+  RecordType,
+  Registry,
+  Subject,
+} from "@/components/Records/Search/Input/QueryBuilderComponents";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 export default {
@@ -57,16 +59,15 @@ export default {
           },
           {
             identifier: "type",
-            name: "RegistryType",
-            component: RegistryType,
-            initialValue: "",
+            name: "Record Type",
+            component: RecordType,
+            initialValue: () => [],
           },
           {
             identifier: "subjects",
             name: "Subject",
             component: Subject,
-            // initialValue: () => [],
-            initialValue: "",
+            initialValue: () => [],
           },
         ],
         colors: [

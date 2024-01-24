@@ -9,7 +9,7 @@ import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
 const $router = {
   push: jest.fn(),
 };
-let $route = { path: "/search", query: {} };
+let $route = { path: "/advancedsearch", query: {} };
 const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();

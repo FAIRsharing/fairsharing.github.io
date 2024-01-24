@@ -2,9 +2,9 @@
   <v-select
     v-model="model"
     chips
-    :items="registryTypes"
+    :items="recordTypes"
     multiple
-    label="Registry"
+    label="Record Type"
     solo
     clearable
     closable-chips
@@ -19,7 +19,7 @@
         @click="data.select"
         @click:close="remove(data.item)"
       >
-        {{ data.item }}
+        {{ cleanString(data.item) }}
       </v-chip>
     </template>
     <template #item="{ item, on, attrs }">
@@ -39,21 +39,22 @@
         <v-list-item-content>
           <v-list-item-title
             class="text-left text-capitalize"
-            v-text="item"
+            v-text="cleanString(item)"
           />
         </v-list-item-content>
       </v-list-item>
     </template>
   </v-select>
 </template>
-
 <script>
 import { mapActions, mapGetters } from "vuex";
 
 import { removeItem } from "@/utils/advancedSearchUtils";
+import stringUtils from "@/utils/stringUtils";
 
 export default {
-  name: "Registry",
+  name: "RecordType",
+  mixins: [stringUtils],
   props: {
     value: {
       type: Array,
@@ -62,11 +63,8 @@ export default {
   },
   computed: {
     ...mapGetters("recordTypes", ["getRecordTypes"]),
-    registryTypes() {
-      const registry = this.getRecordTypes.map(({ fairsharingRegistry }) =>
-        fairsharingRegistry["name"].toLowerCase()
-      );
-      return [...new Set(registry)];
+    recordTypes() {
+      return this.getRecordTypes.map(({ name }) => name);
     },
     model: {
       get() {
@@ -80,6 +78,7 @@ export default {
   mounted() {
     this.fetchAllRecordTypes();
   },
+
   methods: {
     ...mapActions("recordTypes", ["fetchAllRecordTypes"]),
     remove(item) {

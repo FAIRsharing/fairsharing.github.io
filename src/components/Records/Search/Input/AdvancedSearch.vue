@@ -40,8 +40,8 @@
       <v-dialog
         :value="dialog"
         max-width="800px"
+        persistent
         @keydown.esc="closeDialog()"
-        @click:outside="closeDialog()"
       >
         <v-card>
           <v-card-title>
@@ -55,8 +55,8 @@
               v-else
               class="text-h5"
               clearable
-              solo
-              label="Search through all content"
+              outlined
+              label="Add Search text"
               :value="getAdvancedSearchText"
               @change="updateSearchText($event)"
             />

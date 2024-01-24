@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
 
 import advancedSearch from "./advancedSearch";
@@ -30,5 +31,6 @@ export default new Vuex.Store({
     ontologyBrowser: ontologyBrowser,
     advancedSearch,
     subjectSearch,
+    recordTypes,
   },
 });

@@ -1,0 +1,126 @@
+{
+  "recordTypes": {
+    "records": [
+      {
+        "id": 1,
+        "name": "repository",
+        "fairsharingRegistry": {
+          "id": 2,
+          "name": "Database"
+        }
+      },
+      {
+        "id": 2,
+        "name": "knowledgebase",
+        "fairsharingRegistry": {
+          "id": 2,
+          "name": "Database"
+        }
+      },
+      {
+        "id": 4,
+        "name": "model_and_format",
+        "fairsharingRegistry": {
+          "id": 1,
+          "name": "Standard"
+        }
+      },
+      {
+        "id": 5,
+        "name": "metric",
+        "fairsharingRegistry": {
+          "id": 1,
+          "name": "Standard"
+        }
+      },
+      {
+        "id": 6,
+        "name": "terminology_artefact",
+        "fairsharingRegistry": {
+          "id": 1,
+          "name": "Standard"
+        }
+      },
+      {
+        "id": 7,
+        "name": "reporting_guideline",
+        "fairsharingRegistry": {
+          "id": 1,
+          "name": "Standard"
+        }
+      },
+      {
+        "id": 8,
+        "name": "identifier_schema",
+        "fairsharingRegistry": {
+          "id": 1,
+          "name": "Standard"
+        }
+      },
+      {
+        "id": 9,
+        "name": "journal",
+        "fairsharingRegistry": {
+          "id": 3,
+          "name": "Policy"
+        }
+      },
+      {
+        "id": 11,
+        "name": "society",
+        "fairsharingRegistry": {
+          "id": 3,
+          "name": "Policy"
+        }
+      },
+      {
+        "id": 13,
+        "name": "project",
+        "fairsharingRegistry": {
+          "id": 3,
+          "name": "Policy"
+        }
+      },
+      {
+        "id": 14,
+        "name": "institution",
+        "fairsharingRegistry": {
+          "id": 3,
+          "name": "Policy"
+        }
+      },
+      {
+        "id": 15,
+        "name": "collection",
+        "fairsharingRegistry": {
+          "id": 4,
+          "name": "Collection"
+        }
+      },
+      {
+        "id": 10,
+        "name": "journal_publisher",
+        "fairsharingRegistry": {
+          "id": 3,
+          "name": "Policy"
+        }
+      },
+      {
+        "id": 3,
+        "name": "knowledgebase_and_repository",
+        "fairsharingRegistry": {
+          "id": 2,
+          "name": "Database"
+        }
+      },
+      {
+        "id": 12,
+        "name": "funder",
+        "fairsharingRegistry": {
+          "id": 3,
+          "name": "Policy"
+        }
+      }
+    ]
+  }
+}

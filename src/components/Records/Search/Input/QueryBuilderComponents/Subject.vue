@@ -1,7 +1,7 @@
 <template>
   <!--  <input v-model="searchSubject" type="text" />-->
   <v-autocomplete
-    v-model="searchSubject"
+    v-model="model"
     :items="getSearchSubjects"
     :search-input.sync="search"
     cache-items
@@ -13,6 +13,7 @@
     closable-chips
     solo
     min-height="36px"
+    class="text-capitalize"
   >
     <template #selection="data">
       <v-chip
@@ -31,15 +32,14 @@
 import { mapActions, mapGetters } from "vuex";
 
 import subjectSearch from "@/store";
+import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "Subject",
   props: {
     value: {
-      // type: Array,
-      // default: () => [],
-      type: null, //To support type any
-      default: "",
+      type: Array,
+      default: () => [],
     },
   },
   data: () => {
@@ -51,7 +51,7 @@ export default {
   computed: {
     ...mapGetters("subjectSearch", ["getSearchSubjects"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
-    searchSubject: {
+    model: {
       get() {
         return this.value;
       },
@@ -73,44 +73,27 @@ export default {
     getEditDialogStatus: {
       handler(open) {
         if (open) {
-          if (this.searchSubject && this.searchSubject.length) {
-            subjectSearch.commit(
-              "subjectSearch/setSearchSubjects",
-              this.searchSubject
-            );
+          if (this.model && this.model.length) {
+            subjectSearch.commit("subjectSearch/setSearchSubjects", this.model);
           }
         }
       },
       immediate: true,
     },
   },
+
   methods: {
     ...mapActions("subjectSearch", ["fetchSearchSubjects"]),
+
     getResults(queryParams) {
       this.fetchSearchSubjects(queryParams);
     },
     remove(item) {
-      const index = this.searchSubject.indexOf(item);
-      if (index >= 0) this.searchSubject.splice(index, 1);
+      return removeItem(item, this.model);
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-.v-text-field::v-deep {
-  width: 90%;
-  .v-input__control {
-    min-height: 36px;
-    .v-text-field__details {
-      display: none;
-    }
-    .v-input__slot {
-      margin-bottom: 0;
-      box-shadow: none !important;
-    }
-    .v-select__selections {
-      min-height: 36px;
-    }
-  }
-}
+@import "@/styles/advancedSearchComponents.scss";
 </style>

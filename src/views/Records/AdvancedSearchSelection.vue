@@ -78,9 +78,11 @@
 import { mapGetters, mapState } from "vuex";
 
 import advancedSearch from "@/store";
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "AdvancedSearchSelection",
+  mixins: [stringUtils],
   data() {
     return {
       operatorArr: [],
@@ -123,7 +125,8 @@ export default {
      */
     printSelectionChips(key, value) {
       if (key !== "operator") {
-        return `${key} : ${value}`;
+        let cleanValue = value.map((item) => this.cleanString(item));
+        return `${key} : ${cleanValue}`;
       }
     },
 

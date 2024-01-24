@@ -22,4 +22,15 @@ const uniqueValues = (item) => {
   return merged;
 };
 
-export { uniqueValues };
+/**
+ * Removes an item from the array
+ * @param item
+ * @param arrayList
+ * @returns {Array} - updated array without the item
+ */
+const removeItem = (item, arrayList) => {
+  const index = arrayList.indexOf(item);
+  if (index >= 0) arrayList.splice(index, 1);
+};
+
+export { removeItem, uniqueValues };

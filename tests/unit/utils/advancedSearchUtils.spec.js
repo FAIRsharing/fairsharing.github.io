@@ -1,9 +1,9 @@
 let lodash = require("lodash");
 
-import { uniqueValues } from "@/utils/advancedSearchUtils.js";
+import { removeItem, uniqueValues } from "@/utils/advancedSearchUtils.js";
 
 describe("advancedSearchUtils.js", function () {
-  it("resulted array should be unique without duplicate values", function () {
+  it("method uniqueValues should result unique array without duplicate values", function () {
     const item = [
       {
         identifier: "registry",
@@ -36,5 +36,18 @@ describe("advancedSearchUtils.js", function () {
     lodash.uniqWith = jest.fn(() => item);
 
     expect(uniqueValuesFn).toStrictEqual(result);
+  });
+
+  it("method removeItem should remove the selected item from the array", function () {
+    let inputArr = ["A", "B", "C", "D"];
+    let resultArr = ["A", "B", "C"];
+
+    //When item is present in the array -- if condition
+    removeItem("D", inputArr);
+    expect(inputArr).toStrictEqual(resultArr);
+
+    //When item is not present in the array -- else condition
+    removeItem("E", inputArr);
+    expect(inputArr).toStrictEqual(inputArr);
   });
 });

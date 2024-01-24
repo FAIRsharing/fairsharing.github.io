@@ -32,84 +32,121 @@
         >
           {{ organisation.name }}
         </h2>
-        <p
+        <!-- alternative names -->
+        <div
           v-if="getAltNames(organisation)"
+          class="d-flex flex-row mt-4 align-center"
         >
-          <b>Also known as:</b>  {{ getAltNames(organisation) }}
-        </p>
-        <p
-          class="mt-3"
-        >
-          <b>Homepage:</b> <a :href="organisation.homepage">{{ organisation.homepage }}</a>
-        </p>
-        <p>
-          <b>Types: </b>
-          <v-chip
-            v-for="type in organisation.types"
-            :key="type + '_type'"
-            variant="elevated"
-            class="mr-1"
-          >
-            {{ type }}
-          </v-chip>
-        </p>
-        <p
+          <b class="width-15-percent-flex">Also known as</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            {{ getAltNames(organisation) }}
+          </p>
+        </div>
+        <!-- homepage -->
+        <div class="d-flex flex-row mt-4 align-center">
+          <b class="width-15-percent-flex">Homepage</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            <a :href="organisation.homepage">{{ organisation.homepage }}</a>
+          </p>
+        </div>
+        <!-- types -->
+        <div class="d-flex flex-row mt-4 align-center">
+          <b class="width-15-percent-flex">Types</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            <v-chip
+              v-for="type in organisation.types"
+              :key="type + '_type'"
+              variant="elevated"
+              class="mr-1"
+            >
+              {{ type }}
+            </v-chip>
+          </p>
+        </div>
+        <!--- parent organisations -->
+        <div
           v-if="organisation.parentOrganisations.length > 0"
+          class="d-flex flex-row mt-4 align-center"
         >
-          <b>Member of: </b>
-          <v-chip
-            v-for="parent in organisation.parentOrganisations"
-            :key="'parent_' + parent.id"
-            :href="orgUrl() + parent.id"
-            color="light-blue"
-            variant="elevated"
-            class="mr-1"
-          >
-            {{ parent.name }}
-          </v-chip>
-        </p>
-        <p
+          <b class="width-15-percent-flex">Member of</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            <v-chip
+              v-for="parent in organisation.parentOrganisations"
+              :key="'parent_' + parent.id"
+              :href="orgUrl() + parent.id"
+              color="light-blue"
+              variant="elevated"
+              class="mr-1"
+            >
+              {{ parent.name }}
+            </v-chip>
+          </p>
+        </div>
+        <!--- child organisations -->
+        <div
           v-if="organisation.childOrganisations.length > 0"
+          class="d-flex flex-row mt-4 align-center"
         >
-          <b>Has members: </b>
-          <v-chip
-            v-for="child in organisation.childOrganisations"
-            :key="'child_' + child.id"
-            :href="orgUrl() + child.id"
-            color="light-blue"
-            variant="elevated"
-            class="mr-1"
-          >
-            {{ child.name }}
-          </v-chip>
-        </p>
-        <p v-if="organisation.users.length > 0">
-          <b>Users: </b>
-          <v-chip
-            v-for="user in organisation.users"
-            :key="'user_' + user.id"
-            :href="getUserLink() + user.id"
-            color="light-blue"
-            variant="elevated"
-            class="mr-1"
-          >
-            {{ formatUser(user) }}
-          </v-chip>
-        </p>
-        <p v-if="organisation.countries.length > 0">
-          <b>Countries: </b>
-          <v-chip
-            v-for="country in organisation.countries"
-            :key="'country_' + country.id"
-            variant="elevated"
-            class="mr-1"
-          >
-            {{ country.name }}
-          </v-chip>
-        </p>
-        <p v-if="organisation.rorLink">
+          <b class="width-15-percent-flex">Has members</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            <v-chip
+              v-for="child in organisation.childOrganisations"
+              :key="'child_' + child.id"
+              :href="orgUrl() + child.id"
+              color="light-blue"
+              variant="elevated"
+              class="mr-1"
+            >
+              {{ child.name }}
+            </v-chip>
+          </p>
+        </div>
+        <!--- users -->
+        <div
+          v-if="organisation.users.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          <b class="width-15-percent-flex">Users</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            <v-chip
+              v-for="user in organisation.users"
+              :key="'user_' + user.id"
+              :href="getUserLink() + user.id"
+              color="light-blue"
+              variant="elevated"
+              class="mr-1"
+            >
+              {{ formatUser(user) }}
+            </v-chip>
+          </p>
+        </div>
+        <!--- countries -->
+        <div
+          v-if="organisation.countries.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          <b class="width-15-percent-flex">Countries</b>
+          <p class="ma-0 full-width ml-md-12 ml-13">
+            <v-chip
+              v-for="country in organisation.countries"
+              :key="'country_' + country.id"
+              variant="elevated"
+              class="mr-1"
+            >
+              {{ country.name }}
+            </v-chip>
+          </p>
+        </div>
+
+        
+        <!-- ror link -->
+        <p
+          v-if="organisation.rorLink"
+          class="d-flex flex-row mt-4 align-center"
+        >
           <img
             src="/assets/icons/ror-icon-rbg-24.png"
+            class="mr-1"
           >
           <a
             :href="organisation.rorLink"

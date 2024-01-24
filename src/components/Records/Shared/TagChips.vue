@@ -10,7 +10,7 @@
         :color="getChipColor(chip)"
       >
         <KeywordTooltip
-          v-if="chip.type === 'subjects' || chip.type === 'domains' "
+          v-if="chip.type === 'subjects' || chip.type === 'domains'"
           :keyword="chip"
         />
         <div

@@ -145,7 +145,7 @@
           class="d-flex flex-row mt-4 align-center"
         >
           <img
-            src="/assets/icons/ror-icon-rbg-24.png"
+            src="/assets/icons/ror-icon-rbg-32.png"
             class="mr-1"
           >
           <a

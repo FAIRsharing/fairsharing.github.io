@@ -106,8 +106,12 @@
                 <p
                   class="mt-2 ml-3 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
                 >
-                  <!-- TODO: replace with nice pill or badge for lead -->
-                  Relation: <b>{{ capitaliseText(cleanString(item.relation)) }}</b>
+                  <v-chip
+                    outlined
+                    color="blue"
+                  >
+                    Relation: &nbsp;<b>{{ capitaliseText(cleanString(item.relation)) }}</b>
+                  </v-chip>
                   <v-chip
                     v-if="item.isLead"
                     class="ml-2"

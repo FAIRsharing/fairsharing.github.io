@@ -317,7 +317,6 @@ export const actions = {
                  getAllUsersQuery.queryParam.q = query;
             }
             else {
-                //delete getAllUsersQuery.queryParam.q;
                 getAllUsersQuery.queryParam.q = "*";
             }
             let usersListData = await graphClient.executeQuery(getAllUsersQuery);

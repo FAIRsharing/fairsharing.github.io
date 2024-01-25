@@ -3,6 +3,8 @@ import { RouterLinkStub } from '@vue/test-utils';
 import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
+import Vuetify from "vuetify";
+import light from "@/plugins/theme";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import Organisation from "@/views/Organisations/Organisation";
@@ -10,6 +12,11 @@ import Organisation from "@/views/Organisations/Organisation";
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
+let vuetify = new Vuetify({
+    theme: {
+        themes: {light}
+    }
+});
 
 let $route = {
     path: "/organisations/1",
@@ -49,7 +56,9 @@ describe("Organisation", () => {
                 },
                 "grant": null
             }
-        ]
+        ],
+        users: [],
+        countries: []
     }
 
     beforeAll(() => {
@@ -66,6 +75,7 @@ describe("Organisation", () => {
         wrapper = await shallowMount(Organisation, {
             localVue,
             router,
+            vuetify,
             mocks: {$route, $router},
             stubs: {RouterLink: RouterLinkStub}
         });
@@ -79,6 +89,7 @@ describe("Organisation", () => {
         graphStub.restore();
         wrapper = await shallowMount(Organisation, {
             localVue,
+            vuetify,
             router,
             mocks: {$route, $router},
             stubs: {RouterLink: RouterLinkStub}
@@ -99,37 +110,19 @@ describe("Organisation", () => {
         });
         wrapper = await shallowMount(Organisation, {
             localVue,
+            vuetify,
             router,
             mocks: {$route, $router},
             stubs: {RouterLink: RouterLinkStub}
         });
-        expect(wrapper.vm.organisation).toStrictEqual({});
-    });
-
-    it("can show and hide the overlay", () => {
-        wrapper.vm.previewRecord(12);
-        expect(wrapper.vm.targetID).toBe(12);
-        expect(wrapper.vm.showOverlay ).toBe(true);
-        wrapper.vm.hideOverlay(12);
-        expect(wrapper.vm.targetID).toBe(null);
-        expect(wrapper.vm.showOverlay ).toBe(false);
-        wrapper.vm.goToEdit(12);
-        expect($router.push).toHaveBeenCalledWith({path: "/12/edit"})
-    });
-
-    it("can open the record page", async () => {
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            router,
-            mocks: {$route, $router},
-            stubs: {RouterLink: RouterLinkStub}
+        expect(wrapper.vm.organisation).toStrictEqual({
+            alternativeNames: [],
+            types: [],
+            users: [],
+            parentOrganisations: [],
+            childOrganisations: [],
+            countries: []
         });
-        const mockedOpen = jest.fn();
-        const originalOpen = window.open;
-        window.open = mockedOpen;
-        wrapper.vm.goToRecord(12);
-        expect(mockedOpen).toBeCalled();
-        window.open = originalOpen;
     });
 
     it("can generate the correct URL for the logo", async () => {
@@ -138,11 +131,15 @@ describe("Organisation", () => {
             organisation: {
                 urlForLogo: "/logo12345678",
                 alternativeNames: [],
-                types: []
+                types: [],
+                users: [],
+                parentOrganisations: [],
+                childOrganisations: []
             }
         });
         wrapper = await shallowMount(Organisation, {
             localVue,
+            vuetify,
             router,
             mocks: {$route, $router},
             stubs: {RouterLink: RouterLinkStub}
@@ -155,6 +152,7 @@ describe("Organisation", () => {
         graphStub.restore();
         wrapper = await shallowMount(Organisation, {
             localVue,
+            vuetify,
             router,
             mocks: {$route, $router},
             stubs: {RouterLink: RouterLinkStub}

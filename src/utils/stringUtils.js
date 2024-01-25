@@ -38,6 +38,8 @@ export const cleanString = {
     }
 };
 
+// Removed from Organisation.vue, but I've not deleted it in case it is needed again.
+/*
 export const formatList = {
     filters: {
         formatList: function(list) {
@@ -46,6 +48,7 @@ export const formatList = {
         }
     }
 }
+ */
 
 export default stringUtils;
 

@@ -55,7 +55,7 @@
       </div>
       <!-- Alert -->
       <v-alert
-        v-if="getRecordsLength<1 && !loading"
+        v-if="getRecordsLength <1 && !loading"
         colored-border
         type="info"
       >

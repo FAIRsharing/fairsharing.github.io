@@ -49,7 +49,6 @@
       {
         "name": "Collection",
         "color": "#A37146",
-
         "active": true
       },
       {
@@ -87,7 +86,7 @@
     {
       "name": "Deprecated",
       "color": "#27aae1",
-      "active": true
+      "active": false
     }
   ],
   "distance":[

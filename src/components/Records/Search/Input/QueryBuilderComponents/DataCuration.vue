@@ -2,18 +2,16 @@
   <SelectComponent
     v-model="model"
     :item-value="itemValue"
-    :item-list="registryTypes"
+    :item-list="itemList"
     @input="selectedValue"
   />
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-
 import SelectComponent from "./SelectComponent.vue";
 
 export default {
-  name: "Registry",
+  name: "DataCuration",
   components: { SelectComponent },
   props: {
     value: {
@@ -23,18 +21,19 @@ export default {
   },
   data: () => {
     return {
+      itemList: [
+        "manual",
+        "automated",
+        "uncertain",
+        "manual/automated",
+        "none",
+        "not found",
+      ],
       itemSelected: [],
       itemValue: [],
     };
   },
   computed: {
-    ...mapGetters("recordTypes", ["getRecordTypes"]),
-    registryTypes() {
-      const registry = this.getRecordTypes.map(({ fairsharingRegistry }) =>
-        fairsharingRegistry["name"].toLowerCase()
-      );
-      return [...new Set(registry)];
-    },
     model: {
       get() {
         return this.itemSelected;
@@ -50,12 +49,11 @@ export default {
     },
   },
   mounted() {
-    this.fetchAllRecordTypes();
-    //Pre-fill selected values on edit advanced search is clicked and open
+    //Pre-fill selected values on edit advanced search fields
     this.itemValue = this.value;
   },
+
   methods: {
-    ...mapActions("recordTypes", ["fetchAllRecordTypes"]),
     selectedValue(item) {
       this.itemSelected = item;
     },

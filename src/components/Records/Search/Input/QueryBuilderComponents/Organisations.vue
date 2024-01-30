@@ -2,7 +2,7 @@
   <AutoCompleteComponent
     v-model="model"
     :item-value="itemValue"
-    :item-list="getSearchSubjects"
+    :item-list="getSearchOrganisations"
     @input="selectedValue"
     @fetchData="getResults"
   />
@@ -10,12 +10,12 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import subjectSearch from "@/store";
+import organisationSearch from "@/store";
 
 import AutoCompleteComponent from "./AutoCompleteComponent.vue";
 
 export default {
-  name: "Subject",
+  name: "Organisations",
   components: { AutoCompleteComponent },
   props: {
     value: {
@@ -31,8 +31,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters("subjectSearch", ["getSearchSubjects"]),
+    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+
     model: {
       get() {
         return this.itemSelected;
@@ -54,29 +55,31 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            subjectSearch.commit("subjectSearch/setSearchSubjects", this.value);
+            organisationSearch.commit(
+              "organisationSearch/setSearchOrganisations",
+              this.value
+            );
           }
         }
       },
       immediate: true,
     },
   },
+
   mounted() {
     //Pre-fill selected values on edit advanced search is clicked and open
     this.itemValue = this.value;
   },
 
   methods: {
-    ...mapActions("subjectSearch", ["fetchSearchSubjects"]),
+    ...mapActions("organisationSearch", ["fetchSearchOrganisations"]),
+
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchSubjects(queryParams);
+      if (queryParams) this.fetchSearchOrganisations(queryParams);
     },
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents.scss";
-</style>

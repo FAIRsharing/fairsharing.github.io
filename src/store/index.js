@@ -1,8 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
+import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
+import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
 import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
+import taxonomiesSearch from "@/store/AdvancedSearchComponents/taxonomiesSearch";
+import userDefinedTagsSearch from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 
 import advancedSearch from "./advancedSearch";
 import editor from "./editor";
@@ -32,5 +37,10 @@ export default new Vuex.Store({
     advancedSearch,
     subjectSearch,
     recordTypes,
+    organisationSearch,
+    userDefinedTagsSearch,
+    domainsSearch,
+    taxonomiesSearch,
+    licencesSearch,
   },
 });

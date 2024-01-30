@@ -10,9 +10,18 @@ import QueryBuilder from "query-builder-vue";
 import { mapGetters } from "vuex";
 
 import {
+  DataAccessCondition,
+  DataCuration,
+  DataDepositionCondition,
+  Domain,
+  Licences,
+  Organisations,
+  RecordStatus,
   RecordType,
   Registry,
   Subject,
+  Taxonomies,
+  UserDefinedTag,
 } from "@/components/Records/Search/Input/QueryBuilderComponents";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
@@ -67,6 +76,60 @@ export default {
             identifier: "subjects",
             name: "Subject",
             component: Subject,
+            initialValue: () => [],
+          },
+          {
+            identifier: "domains",
+            name: "Domain",
+            component: Domain,
+            initialValue: () => [],
+          },
+          {
+            identifier: "userDefinedTags",
+            name: "User Defined Tag",
+            component: UserDefinedTag,
+            initialValue: () => [],
+          },
+          {
+            identifier: "status",
+            name: "Record Status",
+            component: RecordStatus,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataCuration",
+            name: "DataCuration",
+            component: DataCuration,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataDepositionCondition",
+            name: "DataDepositionCondition",
+            component: DataDepositionCondition,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataAccessCondition",
+            name: "DataAccessCondition",
+            component: DataAccessCondition,
+            initialValue: () => [],
+          },
+          {
+            identifier: "taxonomies",
+            name: "Taxonomies",
+            component: Taxonomies,
+            initialValue: () => [],
+          },
+          {
+            identifier: "licences",
+            name: "Licences",
+            component: Licences,
+            initialValue: () => [],
+          },
+          {
+            identifier: "organisations",
+            name: "Organisations",
+            component: Organisations,
             initialValue: () => [],
           },
         ],

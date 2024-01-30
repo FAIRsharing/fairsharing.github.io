@@ -31,6 +31,9 @@ const actions = {
 
     commit("setLoadingStatus", false);
   },
+  resetSubjects({ commit }) {
+    commit("resetSubjectSearch");
+  },
 };
 
 const mutations = {
@@ -39,6 +42,9 @@ const mutations = {
   },
   setLoadingStatus(state, loadingStatus) {
     state.loadingStatus = loadingStatus;
+  },
+  resetSubjectSearch(state) {
+    state.searchSubjects = [];
   },
 };
 

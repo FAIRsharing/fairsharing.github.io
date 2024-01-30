@@ -2,7 +2,7 @@
   <AutoCompleteComponent
     v-model="model"
     :item-value="itemValue"
-    :item-list="getSearchSubjects"
+    :item-list="getSearchDomains"
     @input="selectedValue"
     @fetchData="getResults"
   />
@@ -10,12 +10,12 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import subjectSearch from "@/store";
+import domainsSearch from "@/store";
 
 import AutoCompleteComponent from "./AutoCompleteComponent.vue";
 
 export default {
-  name: "Subject",
+  name: "Domains",
   components: { AutoCompleteComponent },
   props: {
     value: {
@@ -31,8 +31,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters("subjectSearch", ["getSearchSubjects"]),
+    ...mapGetters("domainsSearch", ["getSearchDomains"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+
     model: {
       get() {
         return this.itemSelected;
@@ -54,7 +55,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            subjectSearch.commit("subjectSearch/setSearchSubjects", this.value);
+            domainsSearch.commit("domainsSearch/setSearchDomains", this.value);
           }
         }
       },
@@ -65,18 +66,15 @@ export default {
     //Pre-fill selected values on edit advanced search is clicked and open
     this.itemValue = this.value;
   },
-
   methods: {
-    ...mapActions("subjectSearch", ["fetchSearchSubjects"]),
+    ...mapActions("domainsSearch", ["fetchSearchDomains"]),
+
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchSubjects(queryParams);
+      if (queryParams) this.fetchSearchDomains(queryParams);
     },
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents.scss";
-</style>

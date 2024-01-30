@@ -84,10 +84,16 @@ export default {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
+    this.resetUserDefinedTags();
+    this.resetSubjects();
+    this.resetRecords();
   },
   methods: {
     ...mapActions("uiController", ["setStickToTop"]),
     ...mapActions("advancedSearch", ["resetAdvancedSearchResponse"]),
+    ...mapActions("userDefinedTagsSearch", ["resetUserDefinedTags"]),
+    ...mapActions("subjectSearch", ["resetSubjects"]),
+    ...mapActions("recordTypes", ["resetRecords"]),
   },
 };
 </script>

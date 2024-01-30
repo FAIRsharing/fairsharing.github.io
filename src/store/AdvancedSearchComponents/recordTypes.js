@@ -15,6 +15,9 @@ const actions = {
     commit("setAllRecordTypes", response["recordTypes"].records);
     commit("setLoadingData", false);
   },
+  resetRecords({ commit }) {
+    commit("resetAllRecordTypes");
+  },
 };
 
 const mutations = {
@@ -23,6 +26,9 @@ const mutations = {
   },
   setLoadingData(state, loadingData) {
     state.loadingData = loadingData;
+  },
+  resetAllRecordTypes(state) {
+    state.allRecordTypes = [];
   },
 };
 

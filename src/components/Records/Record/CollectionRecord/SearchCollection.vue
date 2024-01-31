@@ -1,7 +1,5 @@
 <template>
-  <v-row
-    dense
-  >
+  <v-row dense>
     <v-col
       v-if="$vuetify.breakpoint.lgAndUp"
       class="pl-0 pa-4 pt-0"
@@ -16,15 +14,7 @@
         :search-path="'/' + currentRecord['fairsharingRecord'].id"
       />
     </v-col>
-    <v-col
-      id="topElement"
-      class="pa-0"
-      cols="12"
-      sm="12"
-      md="12"
-      lg="8"
-      xl="8"
-    >
+    <v-col id="topElement" class="pa-0" cols="12" sm="12" md="12" lg="8" xl="8">
       <!--Filtered Chips-->
       <div
         v-if="getChips.length"
@@ -35,27 +25,19 @@
       <!--List Controller-->
       <ListController
         class="mt-2"
-        :options="{hasPagination:true,hasSorting:false,hasListType:true}"
+        :options="{ hasPagination: true, hasSorting: false, hasListType: true }"
         @ChangeListType="changeListType"
       />
       <!--show filter button for tablet and below-->
-      <div
-        v-if="$vuetify.breakpoint.mdAndDown"
-        class="mb-2"
-      >
-        <v-btn
-          class="info"
-          @click="showFiltersSM = true"
-        >
+      <div v-if="$vuetify.breakpoint.mdAndDown" class="mb-2">
+        <v-btn class="info" @click="showFiltersSM = true">
           <span class="mr-2">Show filters</span>
-          <v-icon small>
-            fa-filter
-          </v-icon>
+          <v-icon small> fa-filter </v-icon>
         </v-btn>
       </div>
       <!-- Alert -->
       <v-alert
-        v-if="getRecordsLength<1 && !loading"
+        v-if="getRecordsLength < 1 && !loading"
         colored-border
         type="info"
       >
@@ -63,67 +45,54 @@
       </v-alert>
 
       <!-- StackCard view -->
-      <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
+      <div
+        :class="[
+          'opacity-0-transition',
+          { 'opacity-1-transition': !isColumnList },
+        ]"
+      >
         <article v-if="!isColumnList">
-          <v-skeleton-loader
-            type="image"
-            class="mt-2"
-            :loading="loading"
-          >
+          <v-skeleton-loader type="image" class="mt-2" :loading="loading">
             <RecordsCardStack
               v-for="item in records"
-              :key="'record_'+item.id"
+              :key="'record_' + item.id"
               :record="item"
             />
             <!--Pagination-->
-            <Pagination
-              class="mb-4"
-              :total-pages="totalPages"
-            />
+            <Pagination class="mb-4" :total-pages="totalPages" />
           </v-skeleton-loader>
         </article>
       </div>
       <!-- ColumnCard view -->
-      <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
+      <div
+        :class="[
+          'opacity-0-transition',
+          { 'opacity-1-transition': isColumnList },
+        ]"
+      >
         <article v-if="isColumnList">
-          <v-skeleton-loader
-            :loading="loading"
-            type="image"
-            class="mt-2"
-          >
+          <v-skeleton-loader :loading="loading" type="image" class="mt-2">
             <!-- ColumnCard view -->
             <v-row>
               <records-card-column
                 v-for="item in records"
-                :key="'record_'+item.id"
+                :key="'record_' + item.id"
                 :record="item"
               />
             </v-row>
             <!--Pagination-->
-            <Pagination
-              class="mb-4"
-              :total-pages="totalPages"
-            />
+            <Pagination class="mb-4" :total-pages="totalPages" />
           </v-skeleton-loader>
         </article>
       </div>
     </v-col>
     <v-fade-transition>
-      <v-dialog
-        v-model="showFiltersSM"
-        fullscreen
-        hide-overlay
-        scrollable
-      >
+      <v-dialog v-model="showFiltersSM" fullscreen hide-overlay scrollable>
         <v-card>
           <v-card-title class="primary white--text pb-5">
             Add a filter
             <v-spacer />
-            <v-btn
-              fab
-              x-small
-              @click="showFiltersSM = false"
-            >
+            <v-btn fab x-small @click="showFiltersSM = false">
               <v-icon>fa-times</v-icon>
             </v-btn>
           </v-card-title>
@@ -135,7 +104,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import ListController from "@/components/Records/Search/Header/ListController";
@@ -152,25 +121,33 @@ export default {
     FilterChips,
     Pagination,
     ListController,
-    SearchInput, RecordsCardColumn, RecordsCardStack
+    SearchInput,
+    RecordsCardColumn,
+    RecordsCardStack,
   },
   mixins: [stringUtils, filterChipsUtils],
   data() {
     return {
       allowClicking: false,
-      collectionIDs:[],
-      receivedData:{},
+      collectionIDs: [],
+      receivedData: {},
       isColumnList: false,
       showFiltersSM: false,
-      testEnvironment:false
-    }
+      testEnvironment: false,
+    };
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
-    ...mapState("records",["records","totalPages","currentPage","loading","facets"]),
-    ...mapState('users', ["user"]),
-    ...mapGetters("records",["getRecordsLength"]),
-    ...mapGetters('introspection', ['buildQueryParameters']),
+    ...mapState("records", [
+      "records",
+      "totalPages",
+      "currentPage",
+      "loading",
+      "facets",
+    ]),
+    ...mapState("users", ["user"]),
+    ...mapGetters("records", ["getRecordsLength"]),
+    ...mapGetters("introspection", ["buildQueryParameters"]),
     currentPath: function () {
       const _module = this;
       let queryParams = {};
@@ -180,108 +157,114 @@ export default {
           queryParams[prop] = decodeURI(queryVal);
         }
       });
-      const title = 'Collection';
+      const title = "Collection";
       return [title, queryParams];
-    }
+    },
   },
   watch: {
     currentPath: async function () {
       try {
         // testEnvironment variable is only for test case.
-        if(this.testEnvironment) throw new Error("an error occurred while fetching data")
+        if (this.testEnvironment)
+          throw new Error("an error occurred while fetching data");
         this.scrollTo();
         let returnedQuery = this.buildQueryParameters(this.currentPath);
         this.showFiltersSM = false;
         await this.fetchCollectionRecords({
           params: returnedQuery,
-          token: this.user().credentials.token
+          token: this.user().credentials.token,
         });
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
-    }
+    },
   },
   async mounted() {
     await this.prepareCollectionData();
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({
-      headerVisibilityState: false
+      headerVisibilityState: false,
     });
   },
   beforeDestroy() {
     this.cleanRecordsStore();
   },
   methods: {
-    ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
-    ...mapMutations("records", ['cleanRecordsStore']),
-    ...mapActions("uiController", ['setGeneralUIAttributesAction']),
+    ...mapActions("records", [
+      "initializeCollectionRecords",
+      "fetchCollectionRecords",
+    ]),
+    ...mapMutations("records", ["cleanRecordsStore"]),
+    ...mapActions("uiController", ["setGeneralUIAttributesAction"]),
 
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
-        easing: 'ease-out',
-      })
+        easing: "ease-out",
+      });
     },
 
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
-    async prepareCollectionData () {
+    async prepareCollectionData() {
       let returnedQuery;
       try {
-        if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
-          const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
-              .filter(item => item.recordAssocLabel === 'collects')
-          collections.forEach(item => {
+        if (
+          Object.keys(this.currentRecord["fairsharingRecord"]).includes(
+            "recordAssociations"
+          )
+        ) {
+          const collections = this.prepareAssociations(
+            this.currentRecord["fairsharingRecord"]["recordAssociations"],
+            []
+          ).filter((item) => item.recordAssocLabel === "collects");
+          collections.forEach((item) => {
             this.collectionIDs.push(item.id);
           });
           this.errors = false;
           returnedQuery = this.buildQueryParameters(this.currentPath);
           await this.initializeCollectionRecords(this.collectionIDs);
+        } else {
+          return false;
         }
-        else {
-          return false
-        }
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
       try {
         await this.fetchCollectionRecords({
           params: returnedQuery,
-          token: this.user().credentials.token
+          token: this.user().credentials.token,
         });
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
     },
     prepareAssociations(associations, reverseAssociations) {
       let _module = this;
-      let recordAssociations = []
+      let recordAssociations = [];
       let joinedArrays = associations.concat(reverseAssociations);
-      const properties = ['fairsharingRecord', 'linkedRecord'];
+      const properties = ["fairsharingRecord", "linkedRecord"];
 
-      joinedArrays.forEach(item => {
+      joinedArrays.forEach((item) => {
         let object = {};
-        properties.forEach(prop => {
+        properties.forEach((prop) => {
           if (Object.prototype.hasOwnProperty.call(item, prop)) {
-            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.recordAssocLabel = _module.cleanString(
+              item.recordAssocLabel
+            );
             object.id = item[prop].id;
             object.registry = item[prop].registry;
             object.name = item[prop].name;
-            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.subject = _module.currentRecord["fairsharingRecord"].name;
             object.type = item[prop].type;
           }
         });
         recordAssociations.push(object);
       });
       return recordAssociations;
-    }
-  }
-}
-
-
+    },
+  },
+};
 </script>
 
 <style scoped>

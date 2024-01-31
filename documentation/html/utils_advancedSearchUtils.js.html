@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: NewRecord</title>
+	<title>FAIRsharing.org Source: utils/advancedSearchUtils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,56 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: NewRecord</h1>
+		<h1 class="page-title">Source: utils/advancedSearchUtils.js</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import { uniqWith } from "lodash";
 
-<header>
-    
-</header>
+/**
+ * Removes duplicate values in a set and returns unique values
+ * @returns {Array} Array with non-duplicate values
+ */
+const uniqueValues = (item) => {
+  let merged = uniqWith(item, (pre, cur) => {
+    if (pre.identifier === cur.identifier) {
+      cur["value"] = cur["value"] + "," + pre["value"];
+      //Combine string values from different text-fields in same set and convert in into array
+      /*istanbul ignore else */
+      if (typeof cur["value"] === "string") {
+        cur["value"] = cur["value"].split(",");
+      }
+      //Remove duplicates and create unique array
+      cur["value"] = [...new Set(cur["value"])];
+      return true;
+    }
+    return false;
+  });
+  return merged;
+};
 
+/**
+ * Removes an item from the array
+ * @param item
+ * @param arrayList
+ * @returns {Array} - updated array without the item
+ */
+const removeItem = (item, arrayList) => {
+  const index = arrayList.indexOf(item);
+  if (index >= 0) arrayList.splice(index, 1);
+};
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database</p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_CreateRecord_NewRecord.vue.html">views/CreateRecord/NewRecord.vue</a>,
-				 <a href="views_CreateRecord_NewRecord.vue.html#sunlight-1-line-16">line 16</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+export { removeItem, uniqueValues };
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +140,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

@@ -2,11 +2,11 @@ import { createLocalVue,shallowMount } from "@vue/test-utils"
 import { RouterLinkStub } from '@vue/test-utils';
 import sinon from "sinon"
 import VueRouter from "vue-router"
-import Vuex from "vuex"
 import Vuetify from "vuetify";
-import light from "@/plugins/theme";
+import Vuex from "vuex"
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import light from "@/plugins/theme";
 import Organisation from "@/views/Organisations/Organisation";
 
 const localVue = createLocalVue();

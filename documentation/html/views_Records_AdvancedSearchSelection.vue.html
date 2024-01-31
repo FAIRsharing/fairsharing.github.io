@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: NewRecord</title>
+	<title>FAIRsharing.org Source: views/Records/AdvancedSearchSelection.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,220 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: NewRecord</h1>
+		<h1 class="page-title">Source: views/Records/AdvancedSearchSelection.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-card
+    elevation="3"
+    :class="[
+      'mx-2 py-2 full-width d-flex flex-column',
+      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
+    ]"
+  >
+    &lt;v-btn
+      class="mx-2"
+      color="accent"
+      elevation="2"
+      @click="editAdvancedSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fa-solid fa-pen
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Edit Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;div
+      v-if="getAdvancedSearchText"
+      class="searchText chips-holder ma-2"
+    >
+      &lt;v-chip
+        class="ma-2 mt-2 text-capitalize"
+        color="accent3"
+        text-color="white"
+        label
+      >
+        Search Text : {{ getAdvancedSearchText }}
+      &lt;/v-chip>
+    &lt;/div>
 
-<header>
-    
-</header>
+    &lt;div
+      v-for="(item, index) in getAdvancedSearchQuery['fields']"
+      :key="index"
+      class="ma-2 selectionWrapper d-flex flex-column"
+    >
+      &lt;div class="chips-holder mb-2">
+        &lt;div
+          v-for="([key, value], idx) in Object.entries(item)"
+          :key="idx"
+          class="individualChips d-flex flex-column align-center"
+        >
+          &lt;v-chip
+            class="ma-2 mt-2 text-capitalize"
+            color="primary"
+            text-color="white"
+            label
+          >
+            {{ printSelectionChips(key, value) }}
+          &lt;/v-chip>
+          &lt;v-chip
+            class="operatorChip"
+            color="accent"
+            text-color="accent"
+            outlined
+            small
+          >
+            {{ printSelectedOperator(item) }}
+          &lt;/v-chip>
+        &lt;/div>
+      &lt;/div>
+      &lt;v-chip
+        color="accent2"
+        class="parentOperatorChip text-uppercase font-weight-medium"
+        text-color="white"
+      >
+        {{ printOperator(getAdvancedSearchQuery["operator"]) }}
+      &lt;/v-chip>
+    &lt;/div>
+  &lt;/v-card>
+&lt;/template>
+&lt;script>
+import { mapGetters, mapState } from "vuex";
 
+import advancedSearch from "@/store";
+import stringUtils from "@/utils/stringUtils";
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database</p></div>
-        
+export default {
+  name: "AdvancedSearchSelection",
+  mixins: [stringUtils],
+  data() {
+    return {
+      operatorArr: [],
+    };
+  },
+  computed: {
+    ...mapState("uiController", ["UIGeneralStatus"]),
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearchQuery",
+      "getAdvancedSearch",
+      "getAdvancedSearchText",
+    ]),
+    responsiveClassObject() {
+      return {
+        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
+        "filters-holder-after-scroll":
+          !this.UIGeneralStatus.headerVisibilityState,
+      };
+    },
+  },
 
-        
-<dl class="details">
-    
+  methods: {
+    /**
+     * Print the within selection operator (_and/_or)
+     * @param {Object} item - Selection object
+     * @returns {String} operator - Operator _and/_or formatted as and/or
+     */
+    printSelectedOperator(item) {
+      let operatorValue;
+      for (let i = 0; i &lt; Object.entries(item).length; i++) {
+        operatorValue = Object.entries(item)[0][1];
+      }
+      return this.printOperator(operatorValue);
+    },
 
-	
+    /**
+     * Print the selections but not operator
+     * @param {array} key,value - Selection key value pair
+     * @returns {String} key,value - Selection
+     */
+    printSelectionChips(key, value) {
+      if (key !== "operator") {
+        let cleanValue = value.map((item) => this.cleanString(item));
+        return `${key} : ${cleanValue}`;
+      }
+    },
 
-	
+    printOperator(value) {
+      if (value === "_and") return "And";
+      else if (value === "_or") return "Or";
+    },
+    editAdvancedSearch() {
+      advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
+    },
+  },
+};
+&lt;/script>
 
-	
+&lt;style scoped lang="scss">
+.fullHeight {
+  height: 90vh;
+  overflow: scroll;
+}
+.filters-holder-default {
+  overflow-x: hidden;
+  height: calc(100vh - 355px);
+  position: sticky;
+  top: 0;
+  transition: height ease-in 500ms;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.filters-holder-after-scroll {
+  overflow-x: hidden;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  transition: height ease-in 500ms;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  margin-bottom: 94px;
+}
+.chips-holder {
+  background: #f5f5f5;
+  border: 2px dotted #dbdbdb;
+  border-radius: 10px !important;
+}
+.selectionWrapper {
+  .parentOperatorChip {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    //font-weight: 500;
+  }
+  &amp;:last-child {
+    .parentOperatorChip {
+      display: none;
+    }
+  }
+  .chips-holder {
+    .individualChips {
+      &amp;:first-child {
+        display: none !important;
+      }
 
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_CreateRecord_NewRecord.vue.html">views/CreateRecord/NewRecord.vue</a>,
-				 <a href="views_CreateRecord_NewRecord.vue.html#sunlight-1-line-16">line 16</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+      &amp;:last-child {
+        .operatorChip {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +304,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

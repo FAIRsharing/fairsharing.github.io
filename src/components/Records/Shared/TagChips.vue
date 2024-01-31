@@ -1,14 +1,11 @@
 <template>
-  <section
-    :class="[
-      'mb-1 overflow-hidden',
-      { 'chips-container-fixed-height': !isColumn },
-    ]"
-  >
-    <v-chip-group column>
+  <section :class="['mb-1 overflow-hidden',{'chips-container-fixed-height':!isColumn}]">
+    <v-chip-group
+      column
+    >
       <v-chip
-        v-for="(chip, index) in chips"
-        :key="chip.label + '_' + index"
+        v-for="(chip,index) in chips"
+        :key="chip.label+'_'+index"
         text-color="white"
         :color="getChipColor(chip)"
       >
@@ -24,7 +21,7 @@
         </div>
       </v-chip>
       <v-chip
-        v-if="remainTagCount !== 0 && remainTagCount !== 1"
+        v-if="remainTagCount!==0 && remainTagCount!==1"
         disabled
         outlined
         label
@@ -32,7 +29,7 @@
         {{ `+${remainTagCount} more tags` }}
       </v-chip>
       <v-chip
-        v-else-if="remainTagCount === 1"
+        v-else-if="remainTagCount===1"
         disabled
         outlined
         label
@@ -58,21 +55,21 @@ export default {
   props: {
     record: {
       default: null,
-      type: Object,
-    },
+      type: Object
+    }
   },
   data() {
     return {
       chips: [],
       remainTagCount: 0,
       isColumn: false,
-      getMaxItemShown: 5,
-    };
+      getMaxItemShown: 5
+    }
   },
   mounted() {
     this.setChips(this.record);
-  },
-};
+  }
+}
 </script>
 
 <style scoped>

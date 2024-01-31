@@ -16,7 +16,10 @@
           v-if="chip.type === 'subjects' || chip.type === 'domains'"
           :keyword="chip"
         />
-        <div v-else class="ellipse-width-80 text-center">
+        <div
+          v-else
+          class="ellipse-width-80 text-center"
+        >
           {{ chip.label }}
         </div>
       </v-chip>
@@ -28,7 +31,12 @@
       >
         {{ `+${remainTagCount} more tags` }}
       </v-chip>
-      <v-chip v-else-if="remainTagCount === 1" disabled outlined label>
+      <v-chip
+        v-else-if="remainTagCount === 1"
+        disabled
+        outlined
+        label
+      >
         {{ `one more tag` }}
       </v-chip>
     </v-chip-group>

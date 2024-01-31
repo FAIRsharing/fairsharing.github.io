@@ -1,9 +1,18 @@
 <template>
   <div>
-    <v-container v-if="error" fluid class="pa-0">
-      <p class="pa-10">Sorry, something went wrong!</p>
+    <v-container
+      v-if="error"
+      fluid
+      class="pa-0"
+    >
+      <p class="pa-10">
+        Sorry, something went wrong!
+      </p>
     </v-container>
-    <v-container v-else fluid>
+    <v-container
+      v-else
+      fluid
+    >
       <v-data-iterator
         :items="reformatLinks(organisation.organisationLinks)"
         :items-per-page.sync="itemsPerPage"
@@ -15,7 +24,11 @@
       >
         <!-- headers start -->
         <template #header>
-          <v-toolbar dark color="blue lighten-1" class="mb-5">
+          <v-toolbar
+            dark
+            color="blue lighten-1"
+            class="mb-5"
+          >
             <v-text-field
               v-model="search"
               clearable
@@ -37,11 +50,24 @@
                 label="Sort by"
               />
               <v-spacer />
-              <v-btn-toggle v-model="sortDesc" mandatory>
-                <v-btn large depressed color="blue" :value="false">
+              <v-btn-toggle
+                v-model="sortDesc"
+                mandatory
+              >
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="false"
+                >
                   <v-icon>fa-arrow-up</v-icon>
                 </v-btn>
-                <v-btn large depressed color="blue" :value="true">
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="true"
+                >
                   <v-icon>fa-arrow-down</v-icon>
                 </v-btn>
               </v-btn-toggle>
@@ -52,11 +78,19 @@
         <!-- data section begins -->
         <template #default="props">
           <v-row>
-            <v-col v-for="item in props.items" :key="item.id" cols="12">
+            <v-col
+              v-for="item in props.items"
+              :key="item.id"
+              cols="12"
+            >
               <v-card>
                 <v-card-title class="subheading font-weight-bold">
                   <RecordStatus :record="item" />
-                  <a :href="'/' + item.id" target="_blank" class="ml-10">
+                  <a
+                    :href="'/' + item.id"
+                    target="_blank"
+                    class="ml-10"
+                  >
                     {{ item.name }} {{ getAbbr(item) }}
                   </a>
                 </v-card-title>
@@ -68,7 +102,10 @@
                 <p
                   class="mt-2 ml-3 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
                 >
-                  <v-chip outlined color="blue">
+                  <v-chip
+                    outlined
+                    color="blue"
+                  >
                     Relation: &nbsp;<b>{{
                       capitaliseText(cleanString(item.relation))
                     }}</b>
@@ -84,7 +121,10 @@
                     LEAD ORGANISATION
                   </v-chip>
                 </p>
-                <TagChips :record="item" class="ml-3" />
+                <TagChips
+                  :record="item"
+                  class="ml-3"
+                />
 
                 <!-- TODO: this is a hacky placeholder -->
                 <p class="pb-5" />
@@ -106,7 +146,12 @@
         <!-- data section ends -->
         <!-- footer ends -->
       </v-data-iterator>
-      <v-btn class="mb-2" color="primary" small @click="downloadResults()">
+      <v-btn
+        class="mb-2"
+        color="primary"
+        small
+        @click="downloadResults()"
+      >
         Download Record List
       </v-btn>
     </v-container>

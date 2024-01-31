@@ -141,10 +141,7 @@
           v-if="organisation.rorLink"
           class="d-flex flex-row mt-4 align-center"
         >
-          <img
-            src="/assets/icons/ror-icon-rbg-32.png"
-            class="mr-1"
-          >
+          <img src="/assets/icons/ror-icon-rbg-32.png" class="mr-1" />
           <a :href="organisation.rorLink">
             {{ organisation.rorLink }}
           </a>
@@ -157,21 +154,11 @@
         :organisation="organisation"
       />
 
-      <v-col
-        v-if="!loading"
-        cols="12"
-      >
-        <v-container
-          fluid
-          class="py-0"
-        />
+      <v-col v-if="!loading" cols="12">
+        <v-container fluid class="py-0" />
 
         <v-fade-transition>
-          <v-overlay
-            v-if="loading"
-            :absolute="false"
-            opacity="0.8"
-          >
+          <v-overlay v-if="loading" :absolute="false" opacity="0.8">
             <loaders />
           </v-overlay>
         </v-fade-transition>

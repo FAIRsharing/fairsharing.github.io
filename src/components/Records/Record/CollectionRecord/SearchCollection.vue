@@ -14,15 +14,7 @@
         :search-path="'/' + currentRecord['fairsharingRecord'].id"
       />
     </v-col>
-    <v-col
-      id="topElement"
-      class="pa-0"
-      cols="12"
-      sm="12"
-      md="12"
-      lg="8"
-      xl="8"
-    >
+    <v-col id="topElement" class="pa-0" cols="12" sm="12" md="12" lg="8" xl="8">
       <!--Filtered Chips-->
       <div
         v-if="getChips.length"
@@ -37,18 +29,10 @@
         @ChangeListType="changeListType"
       />
       <!--show filter button for tablet and below-->
-      <div
-        v-if="$vuetify.breakpoint.mdAndDown"
-        class="mb-2"
-      >
-        <v-btn
-          class="info"
-          @click="showFiltersSM = true"
-        >
+      <div v-if="$vuetify.breakpoint.mdAndDown" class="mb-2">
+        <v-btn class="info" @click="showFiltersSM = true">
           <span class="mr-2">Show filters</span>
-          <v-icon small>
-            fa-filter
-          </v-icon>
+          <v-icon small> fa-filter </v-icon>
         </v-btn>
       </div>
       <!-- Alert -->
@@ -68,21 +52,14 @@
         ]"
       >
         <article v-if="!isColumnList">
-          <v-skeleton-loader
-            type="image"
-            class="mt-2"
-            :loading="loading"
-          >
+          <v-skeleton-loader type="image" class="mt-2" :loading="loading">
             <RecordsCardStack
               v-for="item in records"
               :key="'record_' + item.id"
               :record="item"
             />
             <!--Pagination-->
-            <Pagination
-              class="mb-4"
-              :total-pages="totalPages"
-            />
+            <Pagination class="mb-4" :total-pages="totalPages" />
           </v-skeleton-loader>
         </article>
       </div>
@@ -94,11 +71,7 @@
         ]"
       >
         <article v-if="isColumnList">
-          <v-skeleton-loader
-            :loading="loading"
-            type="image"
-            class="mt-2"
-          >
+          <v-skeleton-loader :loading="loading" type="image" class="mt-2">
             <!-- ColumnCard view -->
             <v-row>
               <records-card-column
@@ -108,30 +81,18 @@
               />
             </v-row>
             <!--Pagination-->
-            <Pagination
-              class="mb-4"
-              :total-pages="totalPages"
-            />
+            <Pagination class="mb-4" :total-pages="totalPages" />
           </v-skeleton-loader>
         </article>
       </div>
     </v-col>
     <v-fade-transition>
-      <v-dialog
-        v-model="showFiltersSM"
-        fullscreen
-        hide-overlay
-        scrollable
-      >
+      <v-dialog v-model="showFiltersSM" fullscreen hide-overlay scrollable>
         <v-card>
           <v-card-title class="primary white--text pb-5">
             Add a filter
             <v-spacer />
-            <v-btn
-              fab
-              x-small
-              @click="showFiltersSM = false"
-            >
+            <v-btn fab x-small @click="showFiltersSM = false">
               <v-icon>fa-times</v-icon>
             </v-btn>
           </v-card-title>

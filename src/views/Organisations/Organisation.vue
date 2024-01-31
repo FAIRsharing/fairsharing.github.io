@@ -27,7 +27,9 @@
           aspect-ratio="1"
           height="100px"
         />
-        <h2 class="mt-3">
+        <h2
+          class="mt-3"
+        >
           {{ organisation.name }}
         </h2>
         <!-- alternative names -->
@@ -136,17 +138,24 @@
           </p>
         </div>
 
+        
         <!-- ror link -->
         <p
           v-if="organisation.rorLink"
           class="d-flex flex-row mt-4 align-center"
         >
-          <img src="/assets/icons/ror-icon-rbg-32.png" class="mr-1" />
-          <a :href="organisation.rorLink">
+          <img
+            src="/assets/icons/ror-icon-rbg-32.png"
+            class="mr-1"
+          >
+          <a
+            :href="organisation.rorLink"
+          >
             {{ organisation.rorLink }}
           </a>
         </p>
       </v-card>
+
 
       <SearchOrganisationRecords
         id="searchOrganisationRecords"
@@ -154,11 +163,21 @@
         :organisation="organisation"
       />
 
-      <v-col v-if="!loading" cols="12">
-        <v-container fluid class="py-0" />
+      <v-col
+        v-if="!loading"
+        cols="12"
+      >
+        <v-container
+          fluid
+          class="py-0"
+        />
 
         <v-fade-transition>
-          <v-overlay v-if="loading" :absolute="false" opacity="0.8">
+          <v-overlay
+            v-if="loading"
+            :absolute="false"
+            opacity="0.8"
+          >
             <loaders />
           </v-overlay>
         </v-fade-transition>
@@ -168,21 +187,21 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json";
-import { cleanString } from "@/utils/stringUtils";
-import NotFound from "@/views/Errors/404";
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import { cleanString } from "@/utils/stringUtils"
+import NotFound from "@/views/Errors/404"
 
 let graphClient = new GraphClient();
 
 export default {
   name: "Organisation",
-  components: { SearchOrganisationRecords, SectionTitle, NotFound, Loaders },
+  components: {SearchOrganisationRecords, SectionTitle, NotFound, Loaders},
   mixins: [cleanString],
   data: () => {
     return {
@@ -193,45 +212,45 @@ export default {
         users: [],
         parentOrganisations: [],
         childOrganisations: [],
-        countries: [],
+        countries: []
       },
       loading: false,
       perPage: 10,
-      footer: { "items-per-page-options": [10] },
+      footer: {'items-per-page-options': [10]},
       showOverlay: false,
       targetID: null,
       testEnvironment: false,
       headers: [
-        { text: "Name", value: "name", align: "center" },
-        { text: "Status", value: "status", align: "center" },
-        { text: "Relation", value: "relation", align: "center" },
-        { text: "Grant", value: "grant", align: "center" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        {text: 'Name', value: 'name', align: 'center'},
+        {text: 'Status', value: 'status', align: 'center'},
+        {text: 'Relation', value: 'relation', align: 'center'},
+        {text: 'Grant', value: 'grant', align: 'center'},
+        {text: 'Actions', value: 'actions', align: 'center', sortable: false}
       ],
       userHeaders: [
-        { text: "Username", value: "username", align: "center" },
-        { text: "Email address", value: "email", align: "center" },
-        { text: "ORCID ID", value: "orcid", align: "center" },
-        { text: "Twitter", value: "twitter", align: "center" },
-      ],
-    };
+        {text: 'Username', value: 'username', align: 'center'},
+        {text: 'Email address', value: 'email', align: 'center'},
+        {text: 'ORCID ID', value: 'orcid', align: 'center'},
+        {text: 'Twitter', value: 'twitter', align: 'center'},
+      ]
+    }
   },
   computed: {
-    ...mapState("users", ["user"]),
+    ...mapState('users', ['user']),
     currentRoute() {
-      return this.$route.params["id"];
+      return this.$route.params['id'];
     },
     logoUrl() {
       if (this.organisation.urlForLogo) {
         return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
       }
       return null;
-    },
+    }
   },
   watch: {
     async currentRoute() {
       await this.getOrganisation();
-    },
+    }
   },
   async created() {
     await this.getOrganisation();
@@ -240,8 +259,7 @@ export default {
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
-        if (this.testEnvironment)
-          throw new Error("an error occurred while fetching data");
+        if (this.testEnvironment) throw new Error("an error occurred while fetching data")
         this.loading = true;
         getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
         let org = await graphClient.executeQuery(getOrganisationQuery);
@@ -255,49 +273,48 @@ export default {
       }
     },
     goToEdit(id) {
-      this.$router.push({ path: `/${id}/edit` });
+      this.$router.push({path: `/${id}/edit`})
     },
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
     },
     goToRecord(id) {
-      window.open("/" + id, "_blank");
+      window.open("/" + id, '_blank');
     },
     hideOverlay() {
       this.showOverlay = false;
       this.targetID = null;
     },
     filterRecords() {
-      const params = {
-        organisations: encodeURIComponent(this.organisation.name.toLowerCase()),
-      };
+      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase())}
       this.$router.push({
-        name: "search",
-        query: params,
+        name: 'search',
+        query: params
       });
     },
     getAltNames(org) {
       if (org.alternativeNames.length > 0) {
-        return org.alternativeNames.join(", ");
+        return org.alternativeNames.join(', ');
       }
       return null;
     },
     formatUser(user) {
       if (user.orcid) {
-        return `${user.username} (${user.orcid})`;
-      } else {
+        return `${user.username} (${user.orcid})`
+      }
+      else {
         return user.username;
       }
     },
     getUserLink() {
-      return process.env.VUE_APP_HOSTNAME + "users/";
+      return process.env.VUE_APP_HOSTNAME + 'users/'
     },
     orgUrl() {
-      return process.env.VUE_APP_HOSTNAME + "organisations/";
-    },
-  },
-};
+      return process.env.VUE_APP_HOSTNAME + 'organisations/'
+    }
+  }
+}
 </script>
 
 <style scoped>

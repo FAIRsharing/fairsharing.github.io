@@ -29,6 +29,12 @@ describe("SubjectSearch store methods", () => {
     expect(commit).toHaveBeenCalledWith("setLoadingData", true);
   });
 
+  it("can check resetRecords actions", () => {
+    const commit = jest.fn();
+    actions.resetRecords({ commit });
+    expect(commit).toHaveBeenCalledTimes(1);
+  });
+
   it("can check setAllRecordTypes mutations", () => {
     mutations.setAllRecordTypes(state, returnedVal);
     expect(state.allRecordTypes).toBe(returnedVal);
@@ -37,6 +43,11 @@ describe("SubjectSearch store methods", () => {
     const loadingData = true;
     mutations.setLoadingData(state, loadingData);
     expect(state.loadingData).toBe(true);
+  });
+
+  it("can check resetAllRecordTypes mutations", () => {
+    mutations.resetAllRecordTypes(state);
+    expect(state.allRecordTypes).toStrictEqual([]);
   });
 
   it("can check getRecordTypes getters", () => {

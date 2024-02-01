@@ -87,6 +87,10 @@ export default {
     this.resetUserDefinedTags();
     this.resetSubjects();
     this.resetRecords();
+    this.resetOrganisations();
+    this.resetSearchDomains();
+    this.resetSearchTaxonomies();
+    this.resetSearchLicences();
   },
   methods: {
     ...mapActions("uiController", ["setStickToTop"]),
@@ -94,6 +98,10 @@ export default {
     ...mapActions("userDefinedTagsSearch", ["resetUserDefinedTags"]),
     ...mapActions("subjectSearch", ["resetSubjects"]),
     ...mapActions("recordTypes", ["resetRecords"]),
+    ...mapActions("organisationSearch", ["resetOrganisations"]),
+    ...mapActions("domainsSearch", ["resetSearchDomains"]),
+    ...mapActions("taxonomiesSearch", ["resetSearchTaxonomies"]),
+    ...mapActions("licencesSearch", ["resetSearchLicences"]),
   },
 };
 </script>

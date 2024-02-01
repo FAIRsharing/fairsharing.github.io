@@ -58,6 +58,12 @@ describe("SubjectSearch store methods", () => {
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
+  it("can check resetSubjects actions", () => {
+    const commit = jest.fn();
+    actions.resetSubjects({ commit });
+    expect(commit).toHaveBeenCalledTimes(1);
+  });
+
   it("can check setSearchSubjects mutations", () => {
     const subjectList = ["test", "test1", "test2"];
     mutations.setSearchSubjects(state, subjectList);
@@ -68,6 +74,11 @@ describe("SubjectSearch store methods", () => {
     const loadingStatus = true;
     mutations.setLoadingStatus(state, loadingStatus);
     expect(state.loadingStatus).toBe(true);
+  });
+
+  it("can check resetSubjectSearch mutations", () => {
+    mutations.resetSubjectSearch(state);
+    expect(state.searchSubjects).toStrictEqual([]);
   });
 
   it("can check getSearchSubjects getters", () => {

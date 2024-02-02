@@ -74,7 +74,7 @@
       "active": true
     },
     {
-      "name": "In development",
+      "name": "In Development",
       "color": "#27aae1",
       "active": true
     },
@@ -86,7 +86,7 @@
     {
       "name": "Deprecated",
       "color": "#27aae1",
-      "active": false
+      "active": true
     }
   ],
   "distance":[

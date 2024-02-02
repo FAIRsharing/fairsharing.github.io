@@ -57,7 +57,7 @@
               v-for="type in organisation.types"
               :key="type + '_type'"
               variant="elevated"
-              class="mr-1"
+              class="ma-1"
             >
               {{ type }}
             </v-chip>
@@ -76,7 +76,7 @@
               :href="orgUrl() + parent.id"
               color="light-blue"
               variant="elevated"
-              class="mr-1"
+              class="ma-1"
             >
               {{ parent.name }}
             </v-chip>
@@ -95,7 +95,7 @@
               :href="orgUrl() + child.id"
               color="light-blue"
               variant="elevated"
-              class="mr-1"
+              class="ma-1"
             >
               {{ child.name }}
             </v-chip>
@@ -114,7 +114,7 @@
               :href="getUserLink() + user.id"
               color="light-blue"
               variant="elevated"
-              class="mr-1"
+              class="ma-1"
             >
               {{ formatUser(user) }}
             </v-chip>
@@ -131,7 +131,7 @@
               v-for="country in organisation.countries"
               :key="'country_' + country.id"
               variant="elevated"
-              class="mr-1"
+              class="ma-1"
             >
               {{ country.name }}
             </v-chip>

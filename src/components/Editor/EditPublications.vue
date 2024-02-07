@@ -481,7 +481,6 @@
             };
             let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
             let data = await pubClient.getDOI(doi);
-            console.log("DATA: " + JSON.stringify(data));
             if (data.error){
               let data = await restClient.getZenodoSearch(doi, this.user().credentials.token);
               if (data.message||(Array.isArray(data)&&data.length==0)){
@@ -494,8 +493,12 @@
                 }else{
                   dataPublication = data;
                 }
-                if(dataPublication.metadata.upload_type==="publication"){
-                  this.newPublication ={
+                if(dataPublication.metadata.upload_type === "publication" ||
+                    (dataPublication.metadata.resource_type &&
+                     dataPublication.metadata.resource_type.type &&
+                     dataPublication.metadata.resource_type.type === 'publication')
+                ){
+                    this.newPublication = {
                     journal: null,
                     doi: null,
                     title: null,
@@ -503,10 +506,11 @@
                     year: null,
                     authors: null
                   }
-                  if(dataPublication.metadata.journal_title){
+                  if(dataPublication.metadata.journal_title) {
                     this.newPublication.journal = dataPublication.metadata.journal_title;
-                  }else{
-                    if(dataPublication.metadata.meeting){
+                  }
+                  else {
+                    if(dataPublication.metadata.meeting) {
                       this.newPublication.journal = dataPublication.metadata.meeting.title;
                     }
                   }
@@ -521,7 +525,8 @@
                   this.newPublication.authors = authors.join('');
                   this.newPublication.isCitation = false;
                   this.openEditor = true;
-                }else{
+                }
+                else {
                   this.errors.doi = true;
                 }
               }

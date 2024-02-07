@@ -123,6 +123,17 @@
           :items-per-page="9"
         />
         <div class="noPublications">
+          <v-tooltip
+            class="d-inline-block mr-2"
+            top
+          >
+            <template #activator="{ on }">
+              <v-icon v-on="on">
+                fa-question-circle
+              </v-icon>
+            </template>
+            Please ensure that you enter a doi above in a prefix/suffix format, e.g. 10.25504/FAIRsharing.2abjs5, before clicking the DOI import button.
+          </v-tooltip>
           <v-btn
             class="green white--text my-3"
             :loading="loadingPub"
@@ -470,6 +481,7 @@
             };
             let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
             let data = await pubClient.getDOI(doi);
+            console.log("DATA: " + JSON.stringify(data));
             if (data.error){
               let data = await restClient.getZenodoSearch(doi, this.user().credentials.token);
               if (data.message||(Array.isArray(data)&&data.length==0)){
@@ -520,8 +532,10 @@
               this.newPublication.doi = data['DOI'];
               this.newPublication.title = data.title;
               this.newPublication.url = data['URL'];
-              let dateParts = data['created']['date-parts'][0].toString();
-              this.newPublication.year = Number(dateParts.split(',')[0]);
+              if (data['created']) {
+                let dateParts = data['created']['date-parts'][0].toString();
+                this.newPublication.year = Number(dateParts.split(',')[0]);
+              }
               let authors = [];
               data.author.forEach(function(a) {
                 authors.push(a.family + ", " + a.given + "; ");

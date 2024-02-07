@@ -123,6 +123,17 @@
           :items-per-page="9"
         />
         <div class="noPublications">
+          <v-tooltip
+            class="d-inline-block mr-2"
+            top
+          >
+            <template #activator="{ on }">
+              <v-icon v-on="on">
+                fa-question-circle
+              </v-icon>
+            </template>
+            Please ensure that you enter a doi above in a prefix/suffix format, e.g. 10.25504/FAIRsharing.2abjs5, before clicking the DOI import button.
+          </v-tooltip>
           <v-btn
             class="green white--text my-3"
             :loading="loadingPub"
@@ -482,8 +493,12 @@
                 }else{
                   dataPublication = data;
                 }
-                if(dataPublication.metadata.upload_type==="publication"){
-                  this.newPublication ={
+                if(dataPublication.metadata.upload_type === "publication" ||
+                    (dataPublication.metadata.resource_type &&
+                     dataPublication.metadata.resource_type.type &&
+                     dataPublication.metadata.resource_type.type === 'publication')
+                ){
+                    this.newPublication = {
                     journal: null,
                     doi: null,
                     title: null,
@@ -491,10 +506,11 @@
                     year: null,
                     authors: null
                   }
-                  if(dataPublication.metadata.journal_title){
+                  if(dataPublication.metadata.journal_title) {
                     this.newPublication.journal = dataPublication.metadata.journal_title;
-                  }else{
-                    if(dataPublication.metadata.meeting){
+                  }
+                  else {
+                    if(dataPublication.metadata.meeting) {
                       this.newPublication.journal = dataPublication.metadata.meeting.title;
                     }
                   }
@@ -509,7 +525,8 @@
                   this.newPublication.authors = authors.join('');
                   this.newPublication.isCitation = false;
                   this.openEditor = true;
-                }else{
+                }
+                else {
                   this.errors.doi = true;
                 }
               }
@@ -520,8 +537,10 @@
               this.newPublication.doi = data['DOI'];
               this.newPublication.title = data.title;
               this.newPublication.url = data['URL'];
-              let dateParts = data['created']['date-parts'][0].toString();
-              this.newPublication.year = Number(dateParts.split(',')[0]);
+              if (data['created']) {
+                let dateParts = data['created']['date-parts'][0].toString();
+                this.newPublication.year = Number(dateParts.split(',')[0]);
+              }
               let authors = [];
               data.author.forEach(function(a) {
                 authors.push(a.family + ", " + a.given + "; ");

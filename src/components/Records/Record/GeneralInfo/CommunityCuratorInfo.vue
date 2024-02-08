@@ -1,18 +1,20 @@
 <template>
-  <div 
+  <div
     v-if="getField('communityCurators').length > 0"
     class="d-flex flex-row flex-wrap align-center mt-4 min-height-40"
   >
-    <b class="mr-2">The following community curators have contributed to this record: </b>
+    <b class="mr-2"
+      >The following community champions have contributed to this record:
+    </b>
     <div
-      v-for="(curator,index) in getField('communityCurators')"
+      v-for="(curator, index) in getField('communityCurators')"
       :key="curator.id"
       class="d-flex flex-wrap"
     >
       <div class="d-flex">
         <router-link
           v-if="curator"
-          :class="[{'mr-1':curator.orcid},'underline-effect']"
+          :class="[{ 'mr-1': curator.orcid }, 'underline-effect']"
           :to="`/users/${curator.id}`"
         >
           {{ curator.username }}
@@ -23,32 +25,27 @@
           :href="`https://orcid.org/${curator.orcid}`"
           target="_blank"
         >
-          <Icon
-            :height="27"
-            item="Orcid"
-            wrapper-class=""
-          />
+          <Icon :height="27" item="Orcid" wrapper-class="" />
         </a>
       </div>
-      <span
-        class="mr-1"
-        style="margin-left: -6px;"
-      >{{ index !== getField('communityCurators').length - 1 ? ',' : '' }}</span>
+      <span class="mr-1" style="margin-left: -6px">{{
+        index !== getField("communityCurators").length - 1 ? "," : ""
+      }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 
 export default {
   name: "CommunityCuratorInfo",
-  components: {Icon},
+  components: { Icon },
   computed: {
     ...mapState("record", ["currentRecord"]),
-    ...mapGetters("record", ["getField"])
-  }
-}
+    ...mapGetters("record", ["getField"]),
+  },
+};
 </script>

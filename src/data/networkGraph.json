@@ -86,7 +86,7 @@
     {
       "name": "Deprecated",
       "color": "#27aae1",
-      "active": true
+      "active": false
     }
   ],
   "distance":[

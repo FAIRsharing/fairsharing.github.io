@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 import listControllerData from "@/data/ListControllerData.json";
 import recordsLabels from "@/data/recordsTypes.json";
@@ -54,6 +54,7 @@ export default {
   computed: {
     ...mapState("records", ["records", "hits"]),
     ...mapState('users', ["user"]),
+    ...mapGetters("records",["getCollectionIdsParams"]),
     currentPath: function () {
       let title = this.$route.path.replace('/', '');
       const _module = this;
@@ -80,6 +81,10 @@ export default {
       this.buttonDisabled = true;
       let params = this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
       params['searchUrl'] = this.getHostname().slice(0, -1) + this.$route.fullPath;
+      // TODO: ids must be added to the params. It's in recordSearch.js/fetchCollectionRecords
+      if (this.getCollectionIdsParams.length > 0) {
+        params['ids'] = this.getCollectionIdsParams;
+      }
       const notAllowed = ['orderBy', 'page', 'perPage']
       notAllowed.forEach(function(na) {
         if (na in params) {

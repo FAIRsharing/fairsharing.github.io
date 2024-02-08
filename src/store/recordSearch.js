@@ -6,7 +6,8 @@ let client = new Client();
 
 export const mutations = {
     setCollectionIdsParam(state, collectionIDs) {
-        state.params['ids'] = collectionIDs
+        state.collectionIDs = collectionIDs;
+        state.params['ids'] = collectionIDs;
     },
     setRecords(state, data) {
         state.records = data['records'];
@@ -149,6 +150,9 @@ export const getters = {
     },
     getRecordsLength: (state) => {
         return state.records.length;
+    },
+    getCollectionIdsParams: (state) => {
+        return state.collectionIDs;
     }
 };
 

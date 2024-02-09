@@ -434,9 +434,13 @@
           {
             "id": 4066,
             "name": "University of Sheffield"
+          },
+          {
+            "id": 4234,
+            "name": "UK Reproducibility Network"            
           }
         ],
-        "scope": "Brain Stimulation and Open Research",
+        "scope": "Training, Policies and UKRN link",
         "orcid": "0000-0002-0133-4155",
         "early_adopter" : false,
         "show_more" : false,

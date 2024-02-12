@@ -313,6 +313,7 @@ export const actions = {
     async getUsersList(state, query) {
         try {
             graphClient.setHeader(state.state.user().credentials.token);
+            /* istanbul ignore else */
             if (query) {
                  getAllUsersQuery.queryParam.q = query;
             }

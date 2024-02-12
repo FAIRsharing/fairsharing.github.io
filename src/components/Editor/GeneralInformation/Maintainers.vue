@@ -61,7 +61,8 @@
             Select Maintainers
             <v-spacer />
             <v-text-field
-              v-model="search"
+              id="searchString"
+              v-model="searchString"
               append-icon="mdi-magnify"
               label="Search"
               single-line
@@ -154,7 +155,7 @@ export default {
   name: "Maintainers",
   data(){
     return {
-      search: '',
+      searchString: '',
       headers: [
         {
           text: 'Username',
@@ -194,10 +195,16 @@ export default {
       return this.getSection('generalInformation').initialData.maintainers
     }
   },
-  async mounted() {
-    this.loading = true;
-    await this.getUsersList();
-    this.loading = false;
+  watch: {
+    async searchString(val){
+      if (!val || val.length < 3) {
+        return;
+      }
+      val = val.trim();
+      this.loading = true;
+      await this.getUsersList(val);
+      this.loading = false;
+    },
   },
   methods: {
     ...mapActions('users', ['getUsersList']),

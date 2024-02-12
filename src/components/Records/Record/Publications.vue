@@ -60,7 +60,7 @@
               text
               outlined
               small
-              class="mr-4"
+              class="mr-1"
             >
               <a
                 :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
@@ -76,7 +76,7 @@
               text
               outlined
               small
-              class="mr-4"
+              class="mr-1"
             >
               <a
                 :href="'https://doi.org/' + publication.doi"

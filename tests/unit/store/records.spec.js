@@ -147,4 +147,9 @@ describe('Mutation & Actions & Getters', () => {
         await expect(sinon.stub(Client.prototype, "executeQuery")).rejects;
     })
 
+    it("can get and set collection ids", () => {
+        mutations.setCollectionIdsParam(state, [1,2,3]);
+        expect(getters.getCollectionIdsParams(state)).toStrictEqual([1,2,3]);
+    })
+
 });

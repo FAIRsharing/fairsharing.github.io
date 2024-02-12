@@ -241,6 +241,10 @@ export default {
       this.isLoading = true;
       this.errors = null;
       const _module = this;
+      // To make sure that any lingering values from having viewed a collection are cleared out.
+      // See SummaryDownload.vue for the code which looks for collection IDs when downloading a
+      // summary of search results.
+      this.$store.commit('records/setCollectionIdsParam', []);
       try {
         this.showFiltersSM = false;
         let token = this.user().credentials.token;

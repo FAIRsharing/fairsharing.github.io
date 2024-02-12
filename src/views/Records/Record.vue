@@ -107,9 +107,8 @@
 
         <!-- Bottom Block -->
         <Publications
-          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           id="publications"
-          class="mb-8 ma-4"
+          :class="['ma-4 mb-8', {'mb-10 mt-0':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :back-color="getRecordCardBackground"
         />
         <!-- Additional Information -->

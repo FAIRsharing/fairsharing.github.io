@@ -490,6 +490,7 @@
         </li>
       </ul>
       <!--  Advisory Board   -->
+      <a id="board" />
       <div
         v-for="(governanceItem,key,index) in governance"
         :key="Object.keys(governanceItem)[index]+'_'+'index'"
@@ -572,6 +573,7 @@
           </div>
         </div>
       </div>
+      <a id="rda" />
       <!--   RDA FAIRsharing WG    -->
       <h4 class="text-h5 mb-2">
         {{ rda.title }}

@@ -42,17 +42,21 @@
       <div class="chips-holder mb-2">
         <div
           v-for="([key, value], idx) in Object.entries(item)"
+          id="individualChips"
           :key="idx"
           class="individualChips d-flex flex-column align-center"
         >
-          <v-chip
-            class="ma-2 mt-2 text-capitalize"
-            color="primary"
-            text-color="white"
-            label
+          <div
+            class="my-2 mx-1 text-capitalize primary px-3 py-1 white--text rounded d-flex"
+            style="font-size: 14px"
           >
-            {{ printSelectionChips(key, value) }}
-          </v-chip>
+            <span>{{ key }} </span>
+            <span><strong>&nbsp;:&nbsp;</strong></span>
+            <!-- eslint-disable vue/no-v-html -->
+            <span v-html="printSelectionValues(key, value)" />
+            <!-- eslint-enable vue/no-v-html -->
+          </div>
+
           <v-chip
             class="operatorChip"
             color="accent"
@@ -121,12 +125,19 @@ export default {
     /**
      * Print the selections but not operator
      * @param {array} key,value - Selection key value pair
-     * @returns {String} key,value - Selection
+     * @returns {String} value - Selection
      */
-    printSelectionChips(key, value) {
+    printSelectionValues(key, value) {
+      let refinedValues = "";
       if (key !== "operator") {
-        let cleanValue = value.map((item) => this.cleanString(item));
-        return `${key} : ${cleanValue}`;
+        refinedValues = value
+          .map((item) => this.cleanString(item))
+          .join(" AND ");
+
+        if (refinedValues !== " ") {
+          refinedValues = this.boldString(refinedValues, "AND");
+          return refinedValues;
+        }
       }
     },
 
@@ -136,6 +147,19 @@ export default {
     },
     editAdvancedSearch() {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
+    },
+
+    /**
+     * @param {String} str - String
+     * @param {String} find - Find text to make it bold
+     * @returns {String} - String with bold text
+     */
+    boldString(str, find) {
+      const re = new RegExp(find, "g");
+      return str.replace(
+        re,
+        "<span class='font-weight-medium'>" + find + "</span>"
+      );
     },
   },
 };
@@ -185,6 +209,13 @@ export default {
   }
   .chips-holder {
     .individualChips {
+      width: 98%;
+      margin: 0 auto;
+      .chipText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+      }
       &:first-child {
         display: none !important;
       }

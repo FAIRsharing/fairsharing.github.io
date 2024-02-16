@@ -86,7 +86,7 @@
               <v-card-title class="subheading font-weight-bold">
                 <RecordStatus :record="item" />
                 <a
-                  :href="fairSharingURL + getRecordLink(item)"
+                  :href="'/' + item.id"
                   target="_blank"
                   class="ml-10"
                 >

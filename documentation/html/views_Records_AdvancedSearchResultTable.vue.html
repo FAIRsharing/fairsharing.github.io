@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/FilterAutocomplete.vue</title>
+	<title>FAIRsharing.org Source: views/Records/AdvancedSearchResultTable.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,190 +86,261 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/FilterAutocomplete.vue</h1>
+		<h1 class="page-title">Source: views/Records/AdvancedSearchResultTable.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-expansion-panel
-    v-if="filter.filterName"
-    :id="filter.filterName + 'AutocompleteList' "
+  &lt;div
+    v-if="getErrorStatus"
+    fluid
+    class="pa-0"
   >
-    &lt;v-expansion-panel-header> {{ filter.filterLabel }}&lt;/v-expansion-panel-header>
-    &lt;v-expansion-panel-content class="pl-5 pr-5">
-      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
-        &lt;v-autocomplete
-          v-model="selectedValues"
-          :attach="true"
-          :items="getValues"
-          solo
-          dense
-          clearable
-          multiple
-          prepend-inner-icon="fa-search"
-          :placeholder="`Search`"
-          item-text="key"
-          item-value="key"
-          @focus="scrollTo(filter.filterName)"
-          @click:clear="reset(filter)"
+    &lt;ErrorPage />
+  &lt;/div>
+  &lt;div
+    v-else
+    fluid
+    class="pa-5"
+  >
+    &lt;v-data-iterator
+      :items="getAdvancedSearchResponse"
+      :items-per-page.sync="itemsPerPage"
+      :page.sync="page"
+      :search="search"
+      :sort-by="sortBy.toLowerCase()"
+      :sort-desc="sortDesc"
+      :hide-default-footer="noFooter"
+      :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+    >
+      &lt;!-- headers start -->
+      &lt;template #header>
+        &lt;v-toolbar
+          dark
+          color="blue lighten-1"
+          class="mb-5"
         >
-          &lt;template #selection="data">
-            &lt;v-chip class="blue white--text  mb-1 ">
-              &lt;span class="chipsValueName">
-                {{ cleanString(data.item.key) }}
-              &lt;/span>
-            &lt;/v-chip>
+          &lt;v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-filter"
+            label="Filter these results"
+          />
+          &lt;template v-if="$vuetify.breakpoint.mdAndUp">
+            &lt;v-spacer />
+            &lt;v-select
+              v-model="sortBy"
+              flat
+              solo-inverted
+              hide-details
+              :items="keys"
+              prepend-inner-icon="mdi-sort"
+              label="Sort by"
+            />
+            &lt;v-spacer />
+            &lt;v-btn-toggle
+              v-model="sortDesc"
+              mandatory
+            >
+              &lt;v-btn
+                large
+                depressed
+                color="blue"
+                :value="false"
+              >
+                &lt;v-icon>mdi-arrow-up&lt;/v-icon>
+              &lt;/v-btn>
+              &lt;v-btn
+                large
+                depressed
+                color="blue"
+                :value="true"
+              >
+                &lt;v-icon>mdi-arrow-down&lt;/v-icon>
+              &lt;/v-btn>
+            &lt;/v-btn-toggle>
           &lt;/template>
-          &lt;template #item="data">
-            &lt;div class="d-flex full-width">
-              &lt;span class="filterValueName"> {{ cleanString(data.item.key) }}&lt;/span>
-              &lt;span class="filterValueCount"> {{ data.item['doc_count'] }}&lt;/span>
-            &lt;/div>
-          &lt;/template>
-        &lt;/v-autocomplete>
-        &lt;v-btn
-          color="primary"
-          class="ml-lg-2 custom-btn"
-          @click="applyFilters(filter)"
+        &lt;/v-toolbar>
+      &lt;/template>
+      &lt;!-- headers stop -->
+      &lt;!-- data section begins -->
+      &lt;template #default="props">
+        &lt;v-row>
+          &lt;v-col
+            v-for="item in props.items"
+            :key="item.name"
+            cols="12"
+          >
+            &lt;v-card>
+              &lt;v-card-title class="subheading font-weight-bold">
+                &lt;RecordStatus :record="item" />
+                &lt;a
+                  :href="'/' + item.id"
+                  target="_blank"
+                  class="ml-10"
+                >
+                  {{ item.name }}
+                &lt;/a>
+              &lt;/v-card-title>
+
+              &lt;p
+                class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
+              >
+                {{ item.description }}
+              &lt;/p>
+
+              &lt;TagChips
+                :record="item"
+                class="ml-10"
+              />
+
+              &lt;!-- TODO: this is a hacky placeholder -->
+              &lt;p class="pb-5" />
+
+              &lt;!-- TODO: change below here -->
+              &lt;!--
+                &lt;v-divider />
+
+                &lt;span>
+                  Some information about number of standards etc. can go here.
+                &lt;/span>
+
+                -->
+              &lt;!-- TODO: change above here -->
+            &lt;/v-card>
+          &lt;/v-col>
+        &lt;/v-row>
+      &lt;/template>
+      &lt;!-- data section ends -->
+      &lt;!-- footer ends -->
+      &lt;template #no-data>
+        &lt;v-alert
+          colored-border
+          type="info"
         >
-          Apply
-        &lt;/v-btn>
-      &lt;/div>
-    &lt;/v-expansion-panel-content>
-  &lt;/v-expansion-panel>
+          No records match your search!
+        &lt;/v-alert>
+      &lt;/template>
+    &lt;/v-data-iterator>
+  &lt;/div>
 &lt;/template>
-
 &lt;script>
-import {mapGetters, mapState} from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
-import clearString from '@/utils/stringUtils'
-
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import TagChips from "@/components/Records/Shared/TagChips.vue";
+import advancedSearch from "@/store";
+import recordsCardUtils from "@/utils/recordsCardUtils";
+import ErrorPage from "@/views/Errors/404.vue";
 export default {
-  name: "FilterAutocomplete",
-  mixins: [clearString],
-  props: {
-    filter: {default: null, type: Object},
-    lastItem:{default:false, type:Boolean}
-  },
-  data: () => {
+  name: "AdvancedSearchResultTable",
+  components: { RecordStatus, TagChips, ErrorPage },
+  mixins: [recordsCardUtils],
+  data() {
     return {
-      selectedValues: []
-    }
+      itemsPerPageArray: [10, 20, 50, 100, 200],
+      search: "",
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 5,
+      sortBy: "name",
+      keys: ["Name", "Registry", "Type", "Status", "Description"],
+      fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL,
+    };
   },
   computed: {
-    ...mapGetters('records', ['getFilter']),
-    ...mapState('uiController', ['stickToTop']),
-    getValues: function () {
-      let _module = this;
-      let output = _module.getFilter(this.filter.filterName);
-      if (output.values &amp;&amp; typeof output.values === 'object') {
-        return output.values;
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearchResponse",
+      "getLoadingStatus",
+      "getErrorStatus",
+      "getAdvancedSearchQuery",
+    ]),
+    noFooter() {
+      if (
+        Array.isArray(this.getAdvancedSearchResponse) &amp;&amp;
+        !this.getAdvancedSearchResponse.length
+      ) {
+        return true;
       }
-      return []
-    }
+      return false;
+    },
+  },
+  mounted() {
+    this.fetchQueryParams();
   },
   methods: {
+    ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
     /**
-     * Apply the filters by building the new query parameters using the form data.
+     * Fetch query from URL and display advancedSearch Result
      */
-    applyFilters: function () {
-      let _module = this;
-      let filterName = _module.filter.filterName;
-      let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
+    fetchQueryParams() {
+      if (
+        Array.isArray(this.getAdvancedSearchResponse) &amp;&amp;
+        !this.getAdvancedSearchResponse.length &amp;&amp;
+        Array.isArray(this.getAdvancedSearchQuery["fields"]) &amp;&amp;
+        !this.getAdvancedSearchQuery["fields"].length
+      ) {
+        const routeQuery = this.$route.query;
+        //Query format is same as setAdvancedSearch mutation
+        let searchQuery = {
+          operatorIdentifier: "",
+          children: [],
+        };
 
-      if (Object.keys(currentParams).indexOf(filterName) === -1) {
-        if (_module.selectedValues !== null &amp;&amp; _module.selectedValues.length > 0) {
-          if (_module.selectedValues.length === 1) {
-            currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
-          }
-          else {
-            let newParam = [];
-            _module.selectedValues.forEach(function (val) {
-              newParam.push(encodeURIComponent(val));
-            });
-            currentParams[filterName] = newParam.join(",");
-          }
-          currentParams['page'] = 1;
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentParams
-          });
-        }
-      }
-      else {
-        if (_module.selectedValues === null || _module.selectedValues.length === 0) {
-          delete currentParams[_module.filter.filterName];
-          currentParams['page'] = 1;
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentParams
-          });
-        }
-        else {
-          let newParams = [];
-          let existingValues = currentParams[_module.filter.filterName].split(",");
-          _module.selectedValues.forEach(function (selectedValue) {
-            const filterVal = encodeURIComponent(selectedValue);
-            if (existingValues.indexOf(filterVal) === -1) {
-              newParams.push(filterVal);
+        searchQuery["operatorIdentifier"] = routeQuery["operator"];
+
+        //Destructuring the fields string into valid setAdvancedSearch format to execute the query
+        const searchFieldsArr = routeQuery["fields"]
+          .split("(")
+          .join("")
+          .split(")")
+          .filter((item) => item); //Filter is used to remove empty string
+
+        searchFieldsArr.forEach((item) => {
+          const itemArr = item.split("&amp;");
+          let searchObj = {
+            operatorIdentifier: "",
+            children: [],
+          };
+          itemArr.forEach((subItem) => {
+            const paramValues = subItem.split("=");
+            if (paramValues[0] === "operator") {
+              searchObj["operatorIdentifier"] = paramValues[1];
+            } else {
+              let advancedSearchParams = {
+                identifier: "",
+                value: [],
+              };
+              advancedSearchParams["identifier"] = paramValues[0];
+              advancedSearchParams["value"] = paramValues[1].split(",");
+              searchObj["children"].push(advancedSearchParams);
             }
           });
-          currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
-          if (newParams.length > 0) {
-            currentParams['page'] = 1;
-            _module.$router.push({
-              name: _module.$route.name,
-              query: currentParams
-            });
-          }
-        }
+
+          searchQuery["children"].push(searchObj);
+        });
+
+        //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
+        advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
+
+        //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
+        advancedSearch.commit(
+          "advancedSearch/setEditAdvancedSearch",
+          searchQuery
+        );
+
+        //Calling the fetch method to get the result
+        if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
+        else this.fetchAdvancedSearchResults(routeQuery["q"]);
       }
-      _module.selectedValues = [];
     },
-    /**
-     * Reset the form/filters/parameters to default (go so /search?page=1)
-     */
-    reset: function (selectedItem) {
-      selectedItem.filterSelected = {};
-    },
-    /* istanbul ignore next */
-    scrollTo(name) {
-      let _module = this;
-      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
-        container: '#scrollable-holder',
-        easing: 'ease-in',
-      })
-    }
-  }
-}
+  },
+};
 &lt;/script>
-
-&lt;style scoped>
-.filterValueName {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.chipsValueName {
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.filterValueCount {
-  background: #2196F3;
-  color: white;
-  padding: 0 7px;
-}
-
-.custom-btn {
-  height: 38px;
-}
-&lt;/style>
 </pre>
     </article>
 </section>

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/FilterButton.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,153 +86,284 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/FilterButton.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-tooltip
-    bottom
-    :disabled="itemModified.tooltip===undefined || $vuetify.breakpoint.smAndDown"
-  >
-    &lt;template #activator="{ on }">
-      &lt;v-btn
-        color="primary"
-        class="mr-1 mr-lg-2"
-        :outlined="!itemModified.active"
-        :class="[isFirstItem &amp;&amp; !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems &amp;&amp; !isFirstItem}]"
-        @click="selectFilter(itemModified)"
-        v-on="on"
+  &lt;div class="d-flex mx-2">
+    &lt;!--  On Search Block  -->
+    &lt;v-btn
+      v-if="showHomeSearch"
+      color="primary"
+      class="mb-13"
+      :class="[
+        'mt-1',
+        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+      ]"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
       >
-        &lt;span v-if="itemModified.title!=='ALL'">{{ itemModified.title }}&lt;/span>
-        &lt;v-icon
-          v-else
-          small
-          color="primary"
-        >
-          {{ $vuetify.icons.values.loading }}
-        &lt;/v-icon>
-      &lt;/v-btn>
-    &lt;/template>
-    &lt;span>{{ itemModified.tooltip }}&lt;/span>
-  &lt;/v-tooltip>
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--  On Header Block  -->
+    &lt;v-btn
+      v-else
+      color="primary"
+      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
+      class="mr-10"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--Dialog Box -->
+    &lt;v-row justify="center">
+      &lt;v-dialog
+        :value="dialog"
+        max-width="800px"
+        persistent
+        @keydown.esc="closeDialog()"
+      >
+        &lt;v-card>
+          &lt;v-card-title>
+            &lt;span
+              v-if="!getEditDialogStatus"
+              class="text-h5"
+            >{{
+              advancedSearchTerm
+            }}&lt;/span>
+            &lt;v-text-field
+              v-else
+              class="text-h5"
+              clearable
+              outlined
+              label="Add Search text"
+              :value="getAdvancedSearchText"
+              @change="updateSearchText($event)"
+            />
+          &lt;/v-card-title>
+          &lt;v-card-text>
+            &lt;QueryBuilderView :is-dialog="dialog" />
+          &lt;/v-card-text>
+          &lt;v-card-actions>
+            &lt;v-btn
+              color="accent3"
+              variant="text"
+              class="white--text"
+              @click="closeDialog()"
+            >
+              Close
+            &lt;/v-btn>
+            &lt;v-spacer />
+            &lt;v-btn
+              color="green"
+              variant="text"
+              class="white--text"
+              :disabled="isContinue"
+              @click="goToAdvancedSearch()"
+            >
+              Proceed
+            &lt;/v-btn>
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-row>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-    import { isEqual } from "lodash";
-    import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
-    import currentParameter from "@/utils/currentParameterMixin.js"
+import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import advancedSearch from "@/store";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
-    export default {
-        name: "FilterButton",
-        mixins: [currentParameter],
-        props: {
-            item: {default: null, type: Object},
-            isFirstItem: {default: false, type: Boolean},
-            mdScreens: {default: null, type: Boolean},
-            itemParentIndex: {default: 0, type: Number},
-            multipleItems: {default: false, type: Boolean},
-            doubleItems: {default: false, type: Boolean},
-        },
-        data: () => {
-          return {
-            itemModified: {default: null, type: Object}
+export default {
+  name: "AdvancedSearch",
+  components: { QueryBuilderView },
+  props: {
+    showHomeSearch: {
+      default: false,
+      type: Boolean,
+    },
+    advancedSearchTerm: {
+      default: "",
+      type: String,
+    },
+  },
+  data: () => {
+    return {
+      dialog: false,
+      updatedAdvancedSearchText: "",
+    };
+  },
+  computed: {
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearch",
+      "getAdvancedSearchText",
+      "getEditDialogStatus",
+    ]),
+    /**
+     * Enables the proceed button when all the selected fields are non-empty
+     * @returns {boolean}
+     */
+    isContinue() {
+      let isDisabled = true;
+      let isTrue, allTrue;
+      let isTrueArr = [];
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach(({ children }) => {
+          if (children &amp;&amp; children.length) {
+            isTrue = children.every(({ value: { length } }) => length);
+            isTrueArr.push(isTrue);
           }
-        },
-        watch: {
-          currentParameter: {
-            handler(newVal) {
-              const _module = this;
-              const fieldName = _module.itemModified.filterName;
-              const fieldValue = newVal[fieldName];
-              const currentValue = _module.itemModified.value;
-              const title = _module.itemModified.title;
-              _module.checkCurrentParameters(title, fieldValue, currentValue);
-            },
-            deep: true
-          }
-        },
-        mounted(){
-          this.$nextTick(function () {
-            const _module = this;
-            _module.itemModified = JSON.parse(JSON.stringify(this.item));
-            const fieldValue = _module.currentParameter[this.itemModified.filterName];
-            const currentValue = _module.itemModified.value;
-            const title = _module.itemModified.title;
-            _module.checkCurrentParameters(title, fieldValue, currentValue);
+        });
+      }
+      //Check if all values in the array is true
+      if (isTrueArr &amp;&amp; isTrueArr.length)
+        allTrue = isTrueArr.every((item) => item);
+      if (allTrue) isDisabled = !allTrue;
+      return isDisabled;
+    },
+  },
+  watch: {
+    getEditDialogStatus(newValue) {
+      this.dialog = newValue;
+    },
+  },
+
+  methods: {
+    ...mapActions("advancedSearch", [
+      "fetchAdvancedSearchResults",
+      "resetAdvancedSearchResponse",
+    ]),
+
+    openAdvanceSearch() {
+      this.dialog = true;
+    },
+
+    closeDialog() {
+      this.dialog = false;
+      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
+    },
+
+    isAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        q: this.getAdvancedSearchText,
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
+
+    noAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
+
+    goToAdvancedSearch() {
+      if (this.updatedAdvancedSearchText)
+        this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
+      else this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      this.dialog = false;
+      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
+      //Clear search text field flag
+      this.$emit("clearSearchField", true);
+
+      let queryString = "";
+      /*
+       * Add advancedSearch selection to query params in
+       * the URL by creating array of objects into string
+       */
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach((item) => {
+          queryString += "(operator=";
+          queryString += item["operatorIdentifier"];
+          const mergedValues = uniqueValues(item["children"]);
+          mergedValues.forEach((params) => {
+            queryString += "&amp;";
+            queryString += params["identifier"];
+            queryString += "=";
+            if (Array.isArray(params["value"])) {
+              queryString += params["value"].toString();
+            } else if (params["value"]) {
+              queryString += params["value"];
+            }
           });
-        },
-        methods: {
-            checkCurrentParameters: function(title, fieldValue, currentValue) {
-              if (fieldValue === null) {
-                this.itemModified.active = title === 'all' || title === 'match all terms';
-              }
-              else {
-                if (currentValue === undefined) {
-                  this.itemModified.active = false;
-                }
-                else {
-                  this.itemModified.active = currentValue.toString() === fieldValue;
-                }
-              }
-            },
-            /**
-             * Apply the filters by building the new query parameters using the form data.
-             */
-            applyFilters: function (selectedItem) {
-              const _module = this;
-              let currentQuery = {};
-              let oldQuery = {};
-              Object.keys(_module.$route.query).forEach(function (param) {
-                currentQuery[param] = _module.$route.query[param];
-                oldQuery[param] = _module.$route.query[param]
-              });
+          queryString += ")";
+        });
+      }
 
-              Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
-                                                                                  : delete currentQuery[selectedItem.filterName];
-              if (!isEqual(currentQuery, oldQuery)) {
-                currentQuery['page'] = 1;
-                this.$router.push({
-                  name: _module.$route.name,
-                  query: currentQuery
-                });
-              }
-            },
-            selectFilter: function (selectedItem) {
-                let _module = this;
-                _module.resetFilterButtons(_module.itemParentIndex);
-                _module.activateButton({
-                    'activeItem': selectedItem,
-                    'itemParentIndex': _module.itemParentIndex
-                });
-                this.applyFilters(selectedItem);
-            },
-            ...mapActions("searchFilters", ["resetFilterButtons", "activateButton"])
+      //When not on advancedSearch page
+      if (this.$route.path !== "/advancedsearch") {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.noAdvancedSearchTerm(queryString),
+          });
         }
-    }
+      }
+      //When on advancedSearch page
+      else {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            query: this.noAdvancedSearchTerm(queryString),
+          });
+        }
+      }
+    },
+
+    updateSearchText(item) {
+      this.updatedAdvancedSearchText = item;
+    },
+  },
+};
 &lt;/script>
 
 &lt;style scoped>
-    .button-style-md-screens {
-        font-size: 9px !important;
-    }
+.home-search-bt {
+  height: 40px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
 
-    .first-child {
-        font-size: 11px;
-        width: 16.5%;
-    }
-
-    .flex-1 {
-        font-size: 11px;
-        flex: 1;
-    }
-
-    .buttons-md-style {
-        min-width: 32px !important;
-    }
-
+.home-search-bt-xl {
+  height: 50px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
 &lt;/style>
 </pre>
     </article>

@@ -533,6 +533,7 @@
         Governance
       &lt;/h3>
       &lt;!--   Meet the team   -->
+      &lt;a id="team" />
       &lt;h4 class="text-h5 mb-2">
         {{ meettheteam.title }}
       &lt;/h4>
@@ -583,6 +584,7 @@
         &lt;/li>
       &lt;/ul>
       &lt;!--  Advisory Board   -->
+      &lt;a id="board" />
       &lt;div
         v-for="(governanceItem,key,index) in governance"
         :key="Object.keys(governanceItem)[index]+'_'+'index'"
@@ -665,6 +667,7 @@
           &lt;/div>
         &lt;/div>
       &lt;/div>
+      &lt;a id="rda" />
       &lt;!--   RDA FAIRsharing WG    -->
       &lt;h4 class="text-h5 mb-2">
         {{ rda.title }}

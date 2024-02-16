@@ -16,9 +16,7 @@
             class="info mr-10"
             v-on="on"
           >
-            <a
-              @click="commenceDownload()"
-            >
+            <a @click="commenceDownload()">
               <span class="white--text">Download</span>
             </a>
           </v-btn>
@@ -31,11 +29,11 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import listControllerData from "@/data/ListControllerData.json";
 import recordsLabels from "@/data/recordsTypes.json";
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import downloadSearchResults from "@/lib/GraphClient/queries/downloadSearchResults.json";
 import getHostname from "@/utils/generalUtils";
 
@@ -47,15 +45,16 @@ export default {
   data() {
     return {
       listControllerData: listControllerData,
-      recordTypes: recordsLabels['recordTypes'],
-      buttonDisabled: false
-    }
+      recordTypes: recordsLabels["recordTypes"],
+      buttonDisabled: false,
+    };
   },
   computed: {
     ...mapState("records", ["records", "hits"]),
-    ...mapState('users', ["user"]),
+    ...mapState("users", ["user"]),
+    ...mapGetters("records", ["getCollectionIdsParams"]),
     currentPath: function () {
-      let title = this.$route.path.replace('/', '');
+      let title = this.$route.path.replace("/", "");
       const _module = this;
       let queryParams = {};
       // TODO: This is duplicated in Records.vue and perhaps could be refactored.
@@ -67,9 +66,9 @@ export default {
       });
       /* istanbul ignore if */
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-      }
-      else title = title.charAt(0).toUpperCase() + title.slice(1);
+        title =
+          this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
+      } else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -78,41 +77,49 @@ export default {
     /* istanbul ignore next */
     async commenceDownload() {
       this.buttonDisabled = true;
-      let params = this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-      params['searchUrl'] = this.getHostname().slice(0, -1) + this.$route.fullPath;
-      const notAllowed = ['orderBy', 'page', 'perPage']
-      notAllowed.forEach(function(na) {
+      let params = this.$store.getters["introspection/buildQueryParameters"](
+        this.currentPath
+      );
+      params["searchUrl"] =
+        this.getHostname().slice(0, -1) + this.$route.fullPath;
+      // TODO: ids must be added to the params. It's in recordSearch.js/fetchCollectionRecords
+      if (this.getCollectionIdsParams && this.getCollectionIdsParams.length) {
+        params["ids"] = this.getCollectionIdsParams;
+      }
+      const notAllowed = ["orderBy", "page", "perPage"];
+      notAllowed.forEach(function (na) {
         if (na in params) {
           delete params[na];
         }
       });
-      if ('q' in params) {
+      if ("q" in params) {
         // TODO: Is it worth preserving foreign characters as discussed here?
         // https://stackoverflow.com/questions/22192458/how-to-remove-non-alphanumeric-characters-and-space-but-keep-foreign-language-i
-        const cleaned = params['q'].replace(/[^0-9a-z\s]/gi, '');
-        const newParams = { ...params, q: cleaned }
+        const cleaned = params["q"].replace(/[^0-9a-z\s]/gi, "");
+        const newParams = { ...params, q: cleaned };
         downloadSearchResults.queryParam = newParams;
-      }
-      else {
+      } else {
         downloadSearchResults.queryParam = params;
       }
-      let ts = Math.round((new Date()).getTime() / 1000);
-      let filename = "fairsharing_download_" + ts + ".csv"
+      let ts = Math.round(new Date().getTime() / 1000);
+      let filename = "fairsharing_download_" + ts + ".csv";
 
       client.initalizeHeader();
       client.setHeader(this.user().credentials.token);
       let data = await client.executeQuery(downloadSearchResults);
       //console.log(JSON.stringify(data));
 
-      const blob = new Blob([data.downloadSearchResults.fileData.join('\n')], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.setAttribute('href', url);
-      a.setAttribute('download', filename);
+      const blob = new Blob([data.downloadSearchResults.fileData.join("\n")], {
+        type: "text/csv",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.setAttribute("href", url);
+      a.setAttribute("download", filename);
       a.click();
       a.remove();
       this.buttonDisabled = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>

@@ -529,7 +529,7 @@
       },
       {
         "name": "Dominique Batista",
-        "role": "Front End Manager",
+        "role": "Senior Research Software Engineer",
         "profileImg": "assets/Community/profiles/dominique.jpg",
         "social": [
           {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
@@ -556,6 +556,25 @@
           {"link": "https://orcid.org/0000-0002-9109-9266", "icon": "Orcid"},
           {"link": "https://github.com/prakhyatox", "icon": "github"},
           {"link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts"}
+        ]
+      },
+      {
+        "name": "Kay Burrows",
+        "role": "Curator",
+        "profileImg": "assets/Community/profiles/kay_burrows.jpg",
+        "social": [
+          {
+            "link": "https://orcid.org/0000-0002-5485-6256",
+            "icon": "Orcid"
+          },
+          {
+            "link": "https://www.linkedin.com/in/kayeburrows/",
+            "icon": "linkedin"
+          },
+          {
+            "link": "https://twitter.com/PotassiumBee",
+            "icon": "twitter"
+          }
         ]
       }
     ]

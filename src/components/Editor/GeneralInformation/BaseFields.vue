@@ -4,6 +4,15 @@
     v-model="formValid"
     lazy-validation
   >
+    <v-fade-transition v-if="logoLoading">
+      <v-overlay
+        :absolute="false"
+        opacity="0.8"
+      >
+        <Loaders />
+      </v-overlay>
+    </v-fade-transition>
+
     <v-row>
       <v-col
         xl="4"
@@ -14,18 +23,34 @@
         cols="12"
       >
         <!-- Upload (Logo) -->
-        <upload-files
-          style="min-height: 226px"
-          :credential-info="{id:getField('id'),token:user().credentials.token}"
-          :initial-images="$route.name==='New_content'?[]:getField('urlForLogo')"
-          :upload-service-name="''"
-          :base-api-endpoint="getAPIEndPoint()"
-          :allowed-file-size-mb="3"
-          mime-type="image/jpeg,image/gif,image/png"
-          file-key-name="logo"
-          title="logo"
-          @passDataToParent="changeLogoData"
+        <!-- current logo to go here -->
+        <span>
+          A record logo is optional (png or jpeg, max. 3MB).
+        </span>
+        <v-file-input
+          v-model="recordLogo"
+          :rules="[rules.isImage(), imageSizeCorrect]"
+          clearable
+          accept="images/png,image/jpeg"
+          label="Logo"
+          :loading="logoLoading"
+          prepend-icon="fa-image"
         />
+        <v-row>
+          <img
+            v-if="currentLogo"
+            :src="getAPIEndPoint() + currentRecord.fairsharingRecord.urlForLogo"
+            height="100px"
+          >
+          <v-btn
+            v-if="currentLogo"
+            class="red white--text ma-1"
+            small
+            @click="deleteLogo"
+          >
+            Delete logo
+          </v-btn>
+        </v-row>
       </v-col>
 
       <v-col
@@ -452,21 +477,24 @@
     import { mapGetters,mapState } from "vuex"
 
     import Icon from "@/components/Icon"
+    import Loaders from "@/components/Navigation/Loaders.vue";
     import StatusPills from "@/components/Records/Shared/StatusPills";
-    import UploadFiles from "@/components/UploadFiles/UploadFiles";
+    import RESTClient from "@/lib/Client/RESTClient";
     import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
-    import { isLongEnough,isRequired, isUrl } from "@/utils/rules.js"
+    import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js"
 
     import DatabaseWarning from "./DatabaseWarning";
 
+    let restClient = new RESTClient();
+
     export default {
       name: "BaseFields",
-      components: {UploadFiles, DatabaseWarning, CountryFlag, StatusPills, Icon},
+      components: {DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders},
       mixins: [getAPIEndPoint],
       props:{
-        createMode:{type: Boolean, default: false},
-        submitRecord:{type: Boolean, default: false},
-        loading:{type: Boolean, default: false}
+        createMode: {type: Boolean, default: false},
+        submitRecord: {type: Boolean, default: false},
+        loading: {type: Boolean, default: false}
       },
       data(){
           return {
@@ -474,10 +502,15 @@
                   isRequired: function(){return isRequired()},
                   isUrl: function(){return isUrl()},
                   isLongEnough: function(val){return isLongEnough(val)},
+                  isImage: function(val){return isImage(val)}
               },
               submitAnywayDisabled: false,
               formValid: false,
-              initialType: ''
+              initialType: '',
+              allowedFileSize: 1048576,
+              recordLogo: null,
+              logoLoading: false,
+              currentLogo: null
           }
       },
       computed: {
@@ -491,28 +524,62 @@
               "possibleDuplicates"
           ]),
           ...mapState('users', ['user']),
+          ...mapState("record", ["currentRecord"]),
           fields(){
             return this.getSection("generalInformation").data;
+          },
+          imageSizeCorrect() {
+            if (!this.recordLogo) {
+              this.$emit('imageTooBig', false);
+              return true;
+            }
+            if (this.recordLogo.size < this.allowedFileSize) {
+              this.$emit('imageTooBig', false);
+              return true;
+            }
+            this.$emit('imageTooBig', true);
+            return false;
           }
+      },
+      watch: {
+        recordLogo: {
+          async handler(logo) {
+            let _module = this;
+            if (logo === null || logo === undefined) {
+              // This is to prevent a logo being deleted if a user fiddles about with the form and then
+              // submits with no image uploaded.
+              if (_module.currentRecord.fairsharingRecord.urlForLogo) {
+                _module.fields.delete('logo');
+              }
+              else {
+                _module.fields.logo = {}
+              }
+              return;
+            }
+            _module.logoLoading = true;
+            let convertedFile = await toBase64(logo);
+            _module.fields.logo = {
+              filename: logo.name,
+              content_type: logo.type,
+              data: convertedFile
+            };
+            _module.logoLoading = false;
+          }
+        }
       },
       mounted() {
-        this.$refs.form.validate()
+        this.$refs.form.validate();
+        this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
       },
       methods: {
-        async changeLogoData(images) {
-          // this function can be used to always get the all data from upload Images / tailored for FAIRsharing app
-          if (images && images.length) {
-            this.fields.logo = images;
-            const logo = this.fields.logo[0]
-            this.fields.logo = {
-              filename: logo.filename,
-              data: await toBase64(logo.data),
-              content_type: logo.content_type,
-            }
+        async deleteLogo() {
+          this.logoLoading = true;
+          let response;
+          response = await restClient.clearLogo(this.currentRecord.fairsharingRecord.id, this.user().credentials.token);
+          if (!response.error) {
+            this.currentLogo = null;
           }
-          else {
-            this.fields.logo = {}
-          }
+          this.logoLoading = false;
         },
         removeCountry(country){
             this.fields.countries = this.fields.countries.filter(obj =>

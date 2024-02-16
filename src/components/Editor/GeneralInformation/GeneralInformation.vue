@@ -16,7 +16,9 @@
 
       <v-card-text>
         <v-container fluid>
-          <base-fields />
+          <base-fields
+            @imageTooBig="imageTooBig = $event"
+          />
           <v-row>
             <!-- edit maintainers -->
             <v-col
@@ -48,14 +50,14 @@
       <v-card-actions>
         <v-btn
           class="primary"
-          :disabled="!formValid"
+          :disabled="!formValid || imageTooBig"
           :loading="loading"
           @click="checkTypeChange(false)"
         >
           Save and continue
         </v-btn>
         <v-btn
-          :disabled="!formValid"
+          :disabled="!formValid || imageTooBig"
           :loading="loading"
           class="primary"
           @click="checkTypeChange(true)"
@@ -141,7 +143,8 @@
                 formValid: false,
                 loading: false,
                 showTypeChanged: false,
-                redirect: false
+                redirect: false,
+                imageTooBig: false
             }
         },
         computed: {

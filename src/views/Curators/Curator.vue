@@ -21,6 +21,19 @@
           </v-list>
         </v-card>
         <!-- Approval -->
+        <v-card
+          class="mt-2 mb-2"
+        >
+          <v-card-text>
+            The record least recently updated is:
+            <a
+              :href="getHostname + allDataCuration.leastRecentlyUpdated.id"
+            >
+              {{ allDataCuration.leastRecentlyUpdated.name }}
+            </a>
+            ({{ allDataCuration.leastRecentlyUpdated.updated_at }})
+          </v-card-text>
+        </v-card>
         <RecordsAwaitingApproval
           :loading="loading"
           :headers="headers.approvalRequired"
@@ -507,6 +520,7 @@
     import GraphClient from "@/lib/GraphClient/GraphClient.js"
     import getCurationRecords from "@/lib/GraphClient/queries/curators/getSummary.json"
     import store from "@/store";
+    import getHostname from "@/utils/generalUtils";
     import Unauthorized from "@/views/Errors/403.vue"
 
 
@@ -547,6 +561,7 @@
         MaintenanceRequest,
         Icon
       },
+      mixins: [getHostname],
       data: () => {
         return {
           dialogs: {

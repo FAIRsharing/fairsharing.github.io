@@ -6,7 +6,10 @@
   >
     <v-row v-if="user().role==='super_curator' || user().role==='developer' ">
       <v-col cols12>
-        <v-card v-if="!messages()['getUser'].error">
+        <v-card
+          v-if="!messages()['getUser'].error"
+          class="mb-2"
+        >
           <v-list>
             <v-list-item class="blue">
               <v-list-item-content class="pa-0">
@@ -22,7 +25,7 @@
         </v-card>
         <!-- Approval -->
         <v-card
-          class="mt-2 mb-2"
+          class="mb-2"
         >
           <v-card-text>
             The record least recently updated is:
@@ -51,7 +54,9 @@
           :approval-required="approvalRequired"
         />
         <!-- Hidden Records -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text v-if="hiddenRecords">
             <v-card-title
               id="text-curator-search-2"
@@ -118,7 +123,9 @@
           </v-card-text>
         </v-card>
         <!-- Recently created by curators -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
             <v-card-title
               id="text-curator-search-3"
@@ -182,7 +189,9 @@
           </v-card-text>
         </v-card>
         <!-- Records without DOIs -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text>
             <v-card-title
               id="text-curator-search-1"
@@ -210,7 +219,9 @@
           </v-card-text>
         </v-card>
         <!-- Records needing review -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text>
             <v-card-title
               id="download-review-needed"
@@ -240,6 +251,7 @@
         <!-- System messages -->
         <v-card
           v-if="user().role === 'super_curator' || user().role === 'developer'"
+          class="mb-2"
         >
           <v-card-text v-if="systemMessages">
             <v-card-title
@@ -321,7 +333,9 @@
           </v-card-text>
         </v-card>
         <!-- Curator Summary Information -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text>
             <v-card-title
               id="download-curator-summary"
@@ -350,7 +364,9 @@
         </v-card>
 
         <!-- Button to obtain records created by month -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text>
             <v-card-title
               id="download-curator-summary"
@@ -378,7 +394,9 @@
           </v-card-text>
         </v-card>
         <!-- Button to obtain record edits by month -->
-        <v-card>
+        <v-card
+          class="mb-2"
+        >
           <v-card-text>
             <v-card-title
               id="download-curator-summary"

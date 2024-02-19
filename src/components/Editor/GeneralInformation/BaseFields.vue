@@ -37,11 +37,12 @@
           prepend-icon="fa-image"
         />
         <v-row>
-          <img
+          <v-img
             v-if="currentLogo"
             :src="getAPIEndPoint() + currentRecord.fairsharingRecord.urlForLogo"
-            height="100px"
-          >
+            max-height="300"
+            max-width="500"
+          />
           <v-btn
             v-if="currentLogo"
             class="red white--text ma-1"

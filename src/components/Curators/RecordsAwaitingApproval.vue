@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    class="mb-2"
+  >
     <v-card-text v-if="approvalRequiredProcessed">
       <v-card-title
         id="text-curator-search-0"

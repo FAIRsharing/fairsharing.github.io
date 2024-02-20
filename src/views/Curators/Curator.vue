@@ -6,37 +6,32 @@
   >
     <v-row v-if="user().role==='super_curator' || user().role==='developer' ">
       <v-col cols12>
-        <v-card
+        <v-banner
           v-if="!messages()['getUser'].error"
-          class="mb-2"
+          color="info"
+          lines="one"
+          text="white"
+          :stacked="false"
+          class="white--text mb-2 text-h5"
         >
-          <v-list>
-            <v-list-item class="blue">
-              <v-list-item-content class="pa-0">
-                <v-list-item-title
-                  v-if="user().credentials"
-                  class="headline text-left white--text"
-                >
-                  Welcome, curator {{ user().credentials.username }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
-        <!-- Approval -->
+          Welcome, curator {{ user().credentials.username }}
+        </v-banner>
+        <!-- least recently updated -->
         <v-card
+          v-if="allDataCuration"
           class="mb-2"
         >
           <v-card-text>
             The record least recently updated is:
             <a
-              :href="getHostname + allDataCuration.leastRecentlyUpdated.id"
+              :href="getHostname() + allDataCuration.leastRecentlyUpdated.id"
             >
               {{ allDataCuration.leastRecentlyUpdated.name }}
             </a>
             ({{ allDataCuration.leastRecentlyUpdated.updated_at }})
           </v-card-text>
         </v-card>
+        <!-- Approval -->
         <RecordsAwaitingApproval
           :loading="loading"
           :headers="headers.approvalRequired"

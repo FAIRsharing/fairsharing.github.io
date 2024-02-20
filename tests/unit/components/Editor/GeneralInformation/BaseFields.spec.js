@@ -7,6 +7,8 @@ import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import editorStore from "@/store/editor.js"
 import recordStore from "@/store/recordData.js"
 import userStore from "@/store/users.js"
+import RestClient from "@/lib/Client/RESTClient.js"
+import sinon from "sinon";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -115,24 +117,6 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
     });
 
-    // TODO: More information needed about what this test is supposed to be doing.
-    it("can call changeLogoData", async () => {
-        let blob = new Blob(["alongstringofdata"], {type: 'text/plain'});
-        let data = {
-            filename: 'testfile.jpg',
-            data: blob,
-            content_type: "image/png"
-        }
-        await wrapper.vm.changeLogoData([data]);
-        expect(wrapper.vm.fields.logo).toStrictEqual({
-            filename: 'testfile.jpg',
-            // data: "alongstringofdata",
-            data: "YWxvbmdzdHJpbmdvZmRhdGE=",
-            content_type: "image/png"
-        });
-        await wrapper.vm.changeLogoData([]);
-        expect(wrapper.vm.fields.logo).toStrictEqual({});
-    });
 
     it("sets the disableSubmit variable correctly", () => {
         editorStore.state.possibleDuplicates = [{record: "a record"}];
@@ -145,6 +129,17 @@ describe('Editor -> BaseFields.vue', () => {
         wrapper.vm.formValid = true;
         wrapper.vm.submitRecord = false;
         expect(wrapper.vm.disableSubmit()).toBe(false);
+    });
+
+    it("can delete the logo", async () => {
+      let logoStub = sinon.stub(RestClient.prototype, "clearLogo");
+      logoStub.returns({error: "error"});
+      wrapper.vm.currentLogo = "placeholder";
+      await wrapper.vm.deleteLogo();
+      expect(wrapper.vm.currentLogo).toEqual("placeholder");
+      logoStub.returns({});
+      await wrapper.vm.deleteLogo();
+      expect(wrapper.vm.currentLogo).toBeNull();
     });
 
 });

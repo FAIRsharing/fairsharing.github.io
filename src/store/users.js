@@ -228,7 +228,6 @@ export const actions = {
             let user = localStorage.getItem('user');
             if (user){
                 let userData = JSON.parse(user);
-                console.log(userData.credentials.tokenValidity)
                 if (validateToken(Date.parse(userData.credentials.tokenValidity))){
                     this.commit("users/autoLogin");
                 }

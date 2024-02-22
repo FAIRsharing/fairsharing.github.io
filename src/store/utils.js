@@ -37,9 +37,8 @@ export const initUserDataState = function(){
 };
 
 export const validateToken = function(tokenExpiry){
-    const milliseconds = tokenExpiry * 1000;
     const now = new Date();
-    const exp = new Date(milliseconds);
+    const exp = new Date(tokenExpiry);
     return now < exp;
 };
 

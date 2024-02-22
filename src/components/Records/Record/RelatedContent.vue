@@ -138,7 +138,7 @@ import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 import recordTabUtils from "@/utils/recordTabUtils";
-import stringUtils from "@/utils/stringUtils"
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "RelatedContent",
@@ -173,6 +173,10 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
+      // A policy may recommend collections; other records may be collected.
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
+        _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
+      }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
           Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {

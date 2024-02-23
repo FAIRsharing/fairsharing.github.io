@@ -12,7 +12,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="450"
+          height="500"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -52,7 +52,7 @@
               <v-divider />
             </router-link>
           </v-card-text>
-          <v-card-actions class="text-center d-block">
+          <v-card-actions class="text-center d-block viewAll">
             <router-link to="/search?fairsharingRegistry=Standard">
               <v-btn
                 color="primary"
@@ -73,7 +73,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="450"
+          height="500"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -111,7 +111,7 @@
               <v-divider />
             </router-link>
           </v-card-text>
-          <v-card-actions class="text-center d-block">
+          <v-card-actions class="text-center d-block viewAll">
             <router-link to="/search?fairsharingRegistry=Database">
               <v-btn
                 color="primary"
@@ -170,12 +170,11 @@
               <v-divider />
             </router-link>
           </v-card-text>
-          <v-card-actions class="text-center d-block">
+          <v-card-actions class="text-center d-block viewAll">
             <router-link to="/search?fairsharingRegistry=Policy">
               <v-btn
                 color="primary"
                 text
-                class="pb-10"
               >
                 View All
               </v-btn>
@@ -244,5 +243,11 @@ export default {
 }
 .v-divider {
   margin: 8px;
+}
+.viewAll {
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0
 }
 </style>

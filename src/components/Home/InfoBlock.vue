@@ -132,7 +132,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="450"
+          height="500"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -152,8 +152,8 @@
             </v-card-title>
           </div>
           <v-card-text
-            v-if="blockInfo.policy.items.length<5"
-            class="text--primary text-justify height-190"
+            v-if="blockInfo.policy.items.length<7"
+            class="text--primary text-justify height-195"
           >
             <router-link
               v-for="(item,index) in blockInfo.policy.items"
@@ -175,6 +175,7 @@
               <v-btn
                 color="primary"
                 text
+                class="pb-10"
               >
                 View All
               </v-btn>

@@ -228,7 +228,17 @@ export const actions = {
             let user = localStorage.getItem('user');
             if (user){
                 let userData = JSON.parse(user);
-                if (validateToken(Date.parse(userData.credentials.tokenValidity))){
+                let expiry;
+                // Sometimes this field is a date string.
+                if (isNaN(userData.credentials.tokenValidity)) {
+                    expiry = Date.parse(userData.credentials.tokenValidity);
+                }
+                // ...and sometimes a number of seconds.
+                else {
+                    // Needs to be converted to milliseconds
+                    expiry = userData.credentials.tokenValidity * 1000;
+                }
+                if (validateToken(expiry)){
                     this.commit("users/autoLogin");
                 }
                 else {

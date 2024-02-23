@@ -34,7 +34,7 @@ describe('Actions/Mutations', () => {
                 username: "Terazus",
                 token: "123",
                 id: 1,
-                tokenValidity: 2538467499
+                tokenValidity: '2042-02-23T13:33:54.175+00:00'
             }
         }));
         let state = {};

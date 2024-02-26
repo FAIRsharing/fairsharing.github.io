@@ -126,6 +126,15 @@
             "key": "knowledgebase_and_repository"
           },
           "count": 0
+        },
+        {
+          "title": "Institutional Repositories",
+          "searchQuery": "/search?userDefinedTags=institutional%2520repository",
+          "option": {
+            "filterName": "user_defined_tags",
+            "key": "institutional repository"
+          },
+          "count": 0
         }
       ]
     },
@@ -171,6 +180,24 @@
           "option": {
             "filterName": "record_type",
             "key": "project"
+          },
+          "count": 0
+        },
+        {
+          "title": "Institution",
+          "searchQuery": "/search?recordType=institution",
+          "option": {
+            "filterName": "record_type",
+            "key": "institution"
+          },
+          "count": 0
+        },
+        {
+          "title": "Journal publisher",
+          "searchQuery": "/search?recordType=journal_publisher",
+          "option": {
+            "filterName": "record_type",
+            "key": "journal_publisher"
           },
           "count": 0
         }

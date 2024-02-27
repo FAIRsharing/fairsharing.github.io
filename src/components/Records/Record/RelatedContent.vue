@@ -138,7 +138,7 @@ import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 import recordTabUtils from "@/utils/recordTabUtils";
-import stringUtils from "@/utils/stringUtils"
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "RelatedContent",
@@ -171,8 +171,14 @@ export default {
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
+    // This code is a bit of a mess due to multiple rewrites related to vague/changing requirements. It would be better
+    // off being re-written or replaced with the original plan (a single table for all relations, with filters).
     prepareTabsData() {
       const _module = this;
+      // A policy may recommend collections; other records may be collected.
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
+        _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
+      }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
           Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
@@ -182,6 +188,12 @@ export default {
           ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
+          // 0. This hack is related to this comment:
+          // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
+          if (tabName === 'related_collections') {
+            _module.tabsData.tabs['related_collections'].data =  _module.tabsData.tabs['related_collections'].data
+                .filter((item) => item.recordAssociationLabel === 'recommends');
+          }
           // 1. Create a hash with keys for each linked record ID of all the relations, containing an
           // array of all relations.
           let duplicates = {};

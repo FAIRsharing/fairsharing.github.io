@@ -29,13 +29,19 @@ searchFiltersStore.state.filtersStatistic = {
             {key: 'funder', doc_count: 15}, {key: 'journal', doc_count: 15}, {key: 'society', doc_count: 15},
             {key: 'repository', doc_count: 10}, {key: 'knowledgebase', doc_count: 11},
             {key: 'knowledgebase_and_repository', doc_count: 12},
-            {key: 'project', doc_count: 6}
+            {key: 'project', doc_count: 6}, {key: 'institution', doc_count: 5},
+            {key: 'journal_publisher', doc_count: 4},
         ]
     },
     subjects: {
         buckets: [
             {key: 'natural science', doc_count: 5}, {key: 'engineering science', doc_count: 10},
             {key: 'humanities', doc_count: 15}, {key: 'social science', doc_count: 15},
+        ]
+    },
+    user_defined_tags: {
+        buckets: [
+            {key: 'institutional repository', doc_count: 70 }
         ]
     }
 }

@@ -50,7 +50,7 @@
             class="my-2 mx-1 text-capitalize primary px-3 py-1 white--text rounded d-flex"
             style="font-size: 14px"
           >
-            <span>{{ key }} </span>
+            <span>{{ printSelectionKeys(key) }} </span>
             <span><strong>&nbsp;:&nbsp;</strong></span>
             <!-- eslint-disable vue/no-v-html -->
             <span v-html="printSelectionValues(key, value)" />
@@ -81,6 +81,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 
+import extraFilterChips from "@/data/extraFilterChips.json";
 import advancedSearch from "@/store";
 import stringUtils from "@/utils/stringUtils";
 
@@ -123,8 +124,8 @@ export default {
     },
 
     /**
-     * Print the selections but not operator
-     * @param {array} key,value - Selection key value pair
+     * Print the values with OR operator if multiple selection is done
+     * @param {Object} key,value - Selection key value pair
      * @returns {String} value - Selection
      */
     printSelectionValues(key, value) {
@@ -132,13 +133,28 @@ export default {
       if (key !== "operator") {
         refinedValues = value
           .map((item) => this.cleanString(item))
-          .join(" AND ");
+          .join(" OR ");
 
         if (refinedValues !== " ") {
-          refinedValues = this.boldString(refinedValues, "AND");
+          refinedValues = this.boldString(refinedValues, "OR");
           return refinedValues;
         }
       }
+    },
+    /**
+     * Print the keys and update the text transform if the key within the
+     * extraFilterChips
+     * @param {string } key - Selected key
+     * @returns {string} key - Updated key
+     */
+    printSelectionKeys(key) {
+      let refinedKeys = key;
+      extraFilterChips.forEach((item) => {
+        let itemKey = Object.keys(item)[0];
+        let itemValue = Object.values(item)[0];
+        if (itemKey === key) refinedKeys = itemValue;
+      });
+      return refinedKeys;
     },
 
     printOperator(value) {

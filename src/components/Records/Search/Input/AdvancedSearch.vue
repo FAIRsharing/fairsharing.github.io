@@ -39,11 +39,28 @@
     <v-row justify="center">
       <v-dialog
         :value="dialog"
-        max-width="800px"
+        fullscreen
         persistent
         @keydown.esc="closeDialog()"
       >
         <v-card>
+          <div
+            class="pt-6 pr-6"
+            style="text-align: right"
+          >
+            <v-btn
+              icon
+              dark
+              @click="closeDialog()"
+            >
+              <v-icon
+                color="black"
+                size="40px"
+              >
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </div>
           <v-card-title>
             <span
               v-if="!getEditDialogStatus"

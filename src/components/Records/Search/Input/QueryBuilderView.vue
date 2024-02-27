@@ -98,19 +98,19 @@ export default {
           },
           {
             identifier: "dataCuration",
-            name: "DataCuration",
+            name: "Data Curation",
             component: DataCuration,
             initialValue: () => [],
           },
           {
             identifier: "dataDepositionCondition",
-            name: "DataDepositionCondition",
+            name: "Data Deposition Condition",
             component: DataDepositionCondition,
             initialValue: () => [],
           },
           {
             identifier: "dataAccessCondition",
-            name: "DataAccessCondition",
+            name: "Data Access Condition",
             component: DataAccessCondition,
             initialValue: () => [],
           },
@@ -351,6 +351,19 @@ export default {
           margin-bottom: 10px;
         }
       }
+    }
+  }
+  & > .query-builder-group__control {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    z-index: 1;
+    .query-builder-group__group-selection {
+      margin: 0 0 15px 0;
+      border-radius: 4px 4px 0 0;
     }
   }
 }

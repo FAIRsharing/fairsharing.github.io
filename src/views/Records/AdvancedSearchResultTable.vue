@@ -96,6 +96,11 @@
                   :href="'/' + item.id"
                   target="_blank"
                   class="ml-10"
+                  :class="
+                    item['status'] === 'deprecated'
+                      ? 'text-decoration-line-through'
+                      : null
+                  "
                 >
                   {{ item.name }}
                 </a>

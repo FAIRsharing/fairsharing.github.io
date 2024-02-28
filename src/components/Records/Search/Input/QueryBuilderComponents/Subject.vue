@@ -1,11 +1,14 @@
 <template>
-  <AutoCompleteComponent
-    v-model="model"
-    :item-value="itemValue"
-    :item-list="getSearchSubjects"
-    @input="selectedValue"
-    @fetchData="getResults"
-  />
+  <div class="d-flex width-90">
+    <TooltipComponent :tool-tip-text="toolTipText" />
+    <AutoCompleteComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="getSearchSubjects"
+      @input="selectedValue"
+      @fetchData="getResults"
+    />
+  </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -13,10 +16,11 @@ import { mapActions, mapGetters } from "vuex";
 import subjectSearch from "@/store";
 
 import AutoCompleteComponent from "./AutoCompleteComponent.vue";
+import TooltipComponent from "./TooltipComponent.vue";
 
 export default {
   name: "Subject",
-  components: { AutoCompleteComponent },
+  components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
       type: Array,
@@ -27,6 +31,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
+      toolTipText: "Subject",
     };
   },
 

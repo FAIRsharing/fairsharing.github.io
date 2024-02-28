@@ -1,18 +1,22 @@
 <template>
-  <SelectComponent
-    v-model="model"
-    :item-value="itemValue"
-    :item-list="itemList"
-    @input="selectedValue"
-  />
+  <div class="d-flex width-90">
+    <TooltipComponent :tool-tip-text="toolTipText" />
+    <SelectComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="itemList"
+      @input="selectedValue"
+    />
+  </div>
 </template>
 
 <script>
 import SelectComponent from "./SelectComponent.vue";
+import TooltipComponent from "./TooltipComponent.vue";
 
 export default {
   name: "DataCuration",
-  components: { SelectComponent },
+  components: { TooltipComponent, SelectComponent },
   props: {
     value: {
       type: Array,
@@ -31,6 +35,7 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
+      toolTipText: "DataCuration",
     };
   },
   computed: {

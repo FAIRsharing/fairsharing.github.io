@@ -1,20 +1,24 @@
 <template>
-  <SelectComponent
-    v-model="model"
-    :item-value="itemValue"
-    :item-list="registryTypes"
-    @input="selectedValue"
-  />
+  <div class="d-flex width-90">
+    <TooltipComponent :tool-tip-text="toolTipText" />
+    <SelectComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="registryTypes"
+      @input="selectedValue"
+    />
+  </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 
 import SelectComponent from "./SelectComponent.vue";
+import TooltipComponent from "./TooltipComponent.vue";
 
 export default {
   name: "Registry",
-  components: { SelectComponent },
+  components: { SelectComponent, TooltipComponent },
   props: {
     value: {
       type: Array,
@@ -25,6 +29,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
+      toolTipText: "Registry",
     };
   },
   computed: {

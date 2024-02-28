@@ -77,7 +77,6 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
 
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";

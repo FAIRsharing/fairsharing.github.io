@@ -19,10 +19,17 @@
       :sort-by="sortBy.toLowerCase()"
       :sort-desc="sortDesc"
       :hide-default-footer="noFooter"
+      :loading="getLoadingStatus"
       :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
     >
       <!-- headers start -->
-      <template #header>
+      <template #header="{ pagination, options, updateOptions }">
+        <v-data-footer
+          :pagination="pagination"
+          :options="options"
+          items-per-page-text="$vuetify.dataTable.itemsPerPageText"
+          @update:options="updateOptions"
+        />
         <v-toolbar
           dark
           color="blue lighten-1"
@@ -123,14 +130,9 @@
         </v-row>
       </template>
       <!-- data section ends -->
-      <!-- footer ends -->
-      <template #no-data>
-        <v-alert
-          colored-border
-          type="info"
-        >
-          No records match your search!
-        </v-alert>
+
+      <template #loading>
+        Loading...
       </template>
     </v-data-iterator>
   </div>

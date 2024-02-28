@@ -112,10 +112,17 @@
       :sort-by="sortBy.toLowerCase()"
       :sort-desc="sortDesc"
       :hide-default-footer="noFooter"
+      :loading="getLoadingStatus"
       :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
     >
       &lt;!-- headers start -->
-      &lt;template #header>
+      &lt;template #header="{ pagination, options, updateOptions }">
+        &lt;v-data-footer
+          :pagination="pagination"
+          :options="options"
+          items-per-page-text="$vuetify.dataTable.itemsPerPageText"
+          @update:options="updateOptions"
+        />
         &lt;v-toolbar
           dark
           color="blue lighten-1"
@@ -216,14 +223,9 @@
         &lt;/v-row>
       &lt;/template>
       &lt;!-- data section ends -->
-      &lt;!-- footer ends -->
-      &lt;template #no-data>
-        &lt;v-alert
-          colored-border
-          type="info"
-        >
-          No records match your search!
-        &lt;/v-alert>
+
+      &lt;template #loading>
+        Loading...
       &lt;/template>
     &lt;/v-data-iterator>
   &lt;/div>

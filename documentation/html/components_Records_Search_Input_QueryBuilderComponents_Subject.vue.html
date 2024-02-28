@@ -92,13 +92,16 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;AutoCompleteComponent
-    v-model="model"
-    :item-value="itemValue"
-    :item-list="getSearchSubjects"
-    @input="selectedValue"
-    @fetchData="getResults"
-  />
+  &lt;div class="d-flex width-90">
+    &lt;TooltipComponent :tool-tip-text="toolTipText" />
+    &lt;AutoCompleteComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="getSearchSubjects"
+      @input="selectedValue"
+      @fetchData="getResults"
+    />
+  &lt;/div>
 &lt;/template>
 &lt;script>
 import { mapActions, mapGetters } from "vuex";
@@ -106,10 +109,11 @@ import { mapActions, mapGetters } from "vuex";
 import subjectSearch from "@/store";
 
 import AutoCompleteComponent from "./AutoCompleteComponent.vue";
+import TooltipComponent from "./TooltipComponent.vue";
 
 export default {
   name: "Subject",
-  components: { AutoCompleteComponent },
+  components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
       type: Array,
@@ -120,6 +124,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
+      toolTipText: "Subject",
     };
   },
 

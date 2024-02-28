@@ -19,6 +19,7 @@ const state = {
   loadingStatus: false,
   errorStatus: false,
   editDialogStatus: false,
+  advancedSearchDialogStatus: false,
 };
 
 const actions = {
@@ -145,6 +146,9 @@ const mutations = {
   setEditDialogStatus(state, editDialogStatus) {
     state.editDialogStatus = editDialogStatus;
   },
+  setAdvancedSearchDialogStatus(state, advancedSearchDialogStatus) {
+    state.advancedSearchDialogStatus = advancedSearchDialogStatus;
+  },
 };
 
 const getters = {
@@ -172,6 +176,9 @@ const getters = {
   },
   getEditDialogStatus(state) {
     return state.editDialogStatus;
+  },
+  getAdvancedSearchDialogStatus(state) {
+    return state.advancedSearchDialogStatus;
   },
 };
 const advancedSearch = {

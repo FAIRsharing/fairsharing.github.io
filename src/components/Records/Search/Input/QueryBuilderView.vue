@@ -326,7 +326,7 @@ export default {
     }
     .query-builder-child__component {
       padding: 15px;
-      border-radius: 4px;
+      border-radius: 0 4px 4px 0;
       box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
         0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
       @media #{map-get($display-breakpoints, 'sm-and-down')} {

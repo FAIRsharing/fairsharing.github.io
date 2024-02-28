@@ -17,7 +17,7 @@
       >
         fab fa-searchengin
       </v-icon>
-      <span class="button-text-size">Advanced Search</span>
+      <span>Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
     <v-btn
@@ -138,6 +138,7 @@ export default {
       "getAdvancedSearch",
       "getAdvancedSearchText",
       "getEditDialogStatus",
+      "getAdvancedSearchDialogStatus",
     ]),
     /**
      * Enables the proceed button when all the selected fields are non-empty
@@ -169,6 +170,9 @@ export default {
     getEditDialogStatus(newValue) {
       this.dialog = newValue;
     },
+    getAdvancedSearchDialogStatus(newValue) {
+      this.dialog = newValue;
+    },
   },
 
   methods: {
@@ -184,6 +188,11 @@ export default {
     closeDialog() {
       this.dialog = false;
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
+
+      advancedSearch.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        false
+      );
     },
 
     isAdvancedSearchTerm(queryString) {
@@ -287,5 +296,8 @@ export default {
   right: 0;
   top: 0;
   border-radius: unset;
+}
+.button-text-size {
+  font-size: 13px;
 }
 </style>

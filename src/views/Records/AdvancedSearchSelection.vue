@@ -6,20 +6,36 @@
       $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
     ]"
   >
-    <v-btn
-      class="mx-2"
-      color="accent"
-      elevation="2"
-      @click="editAdvancedSearch()"
-    >
-      <v-icon
-        small
-        class="mr-1"
+    <div class="d-flex flex-wrap full-width">
+      <v-btn
+        class="mx-2 button-width"
+        color="accent"
+        elevation="2"
+        @click="editAdvancedSearch()"
       >
-        fa-solid fa-pen
-      </v-icon>
-      <span class="button-text-size">Edit Advanced Search</span>
-    </v-btn>
+        <v-icon
+          small
+          class="mr-1"
+        >
+          fa-solid fa-pen
+        </v-icon>
+        <span class="button-text-size">Edit Advanced Search</span>
+      </v-btn>
+      <v-btn
+        class="mx-2 button-width white--text"
+        color="secondary"
+        elevation="2"
+        @click="openAdvancedSearch()"
+      >
+        <v-icon
+          small
+          class="mr-1"
+        >
+          fab fa-searchengin
+        </v-icon>
+        <span class="button-text-size">Advanced Search</span>
+      </v-btn>
+    </div>
     <div
       v-if="getAdvancedSearchText"
       class="searchText chips-holder ma-2"
@@ -164,6 +180,12 @@ export default {
     editAdvancedSearch() {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
     },
+    openAdvancedSearch() {
+      advancedSearch.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        true
+      );
+    },
 
     /**
      * @param {String} str - String
@@ -242,6 +264,12 @@ export default {
         }
       }
     }
+  }
+}
+.button-width {
+  width: 46%;
+  .button-text-size {
+    font-size: 13px;
   }
 }
 </style>

@@ -6,6 +6,7 @@ let client = new Client();
 
 export const mutations = {
   setCollectionIdsParam(state, collectionIDs) {
+    state.collectionIDs = collectionIDs;
     state.params["ids"] = collectionIDs;
   },
   setRecords(state, data) {
@@ -154,6 +155,9 @@ export const getters = {
   getRecordsLength: (state) => {
     return state.records.length;
   },
+  getCollectionIdsParams: (state) => {
+    return state.collectionIDs;
+  },
 };
 
 /**
@@ -180,7 +184,7 @@ let recordsStore = {
 export default recordsStore;
 
 /**
- * Given an object containing the raw facets coming from the Client and a mapping object , build the ready to use facets
+ * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
  * for usage by the Vue components.
  * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
  * @returns {Array} output - the array of ready to use facets containing a name, a label and values

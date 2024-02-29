@@ -11,6 +11,14 @@
     fluid
     class="pa-5"
   >
+    <v-btn
+      class="mb-2"
+      color="primary"
+      small
+      @click="downloadResults()"
+    >
+      Download Results
+    </v-btn>
     <v-data-iterator
       :items="getAdvancedSearchResponse"
       :items-per-page.sync="itemsPerPage"
@@ -251,6 +259,22 @@ export default {
         if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
         else this.fetchAdvancedSearchResults(routeQuery["q"]);
       }
+    },
+    /**
+     * Download Results on click of download result button
+     */
+    downloadResults() {
+      const MIME_TYPE = "text/csv";
+      let data = ["name,abbreviation,URL\n"];
+      this.getAdvancedSearchResponse.forEach((record) => {
+        data.push(
+          `${record.name},${record.abbreviation || "n/a"},${
+            process.env.VUE_APP_FAIRSHARING_URL
+          }${record.id}\n`
+        );
+      });
+      let blob = new Blob(data, { type: MIME_TYPE });
+      window.location.href = window.URL.createObjectURL(blob);
     },
   },
 };

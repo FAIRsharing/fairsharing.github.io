@@ -1,22 +1,9 @@
 <template>
-  <div
-    v-if="getErrorStatus"
-    fluid
-    class="pa-0"
-  >
+  <div v-if="getErrorStatus" fluid class="pa-0">
     <ErrorPage />
   </div>
-  <div
-    v-else
-    fluid
-    class="pa-5"
-  >
-    <v-btn
-      class="mb-2"
-      color="primary"
-      small
-      @click="downloadResults()"
-    >
+  <div v-else fluid class="pa-5">
+    <v-btn class="mb-2" color="primary" small @click="downloadResults()">
       Download Results
     </v-btn>
     <v-data-iterator
@@ -38,11 +25,7 @@
           items-per-page-text="$vuetify.dataTable.itemsPerPageText"
           @update:options="updateOptions"
         />
-        <v-toolbar
-          dark
-          color="blue lighten-1"
-          class="mb-5"
-        >
+        <v-toolbar dark color="blue lighten-1" class="mb-5">
           <v-text-field
             v-model="search"
             clearable
@@ -64,24 +47,11 @@
               label="Sort by"
             />
             <v-spacer />
-            <v-btn-toggle
-              v-model="sortDesc"
-              mandatory
-            >
-              <v-btn
-                large
-                depressed
-                color="blue"
-                :value="false"
-              >
+            <v-btn-toggle v-model="sortDesc" mandatory>
+              <v-btn large depressed color="blue" :value="false">
                 <v-icon>mdi-arrow-up</v-icon>
               </v-btn>
-              <v-btn
-                large
-                depressed
-                color="blue"
-                :value="true"
-              >
+              <v-btn large depressed color="blue" :value="true">
                 <v-icon>mdi-arrow-down</v-icon>
               </v-btn>
             </v-btn-toggle>
@@ -92,11 +62,7 @@
       <!-- data section begins -->
       <template #default="props">
         <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-          >
+          <v-col v-for="item in props.items" :key="item.name" cols="12">
             <v-card>
               <v-card-title class="subheading font-weight-bold">
                 <RecordStatus :record="item" />
@@ -120,10 +86,7 @@
                 {{ item.description }}
               </p>
 
-              <TagChips
-                :record="item"
-                class="ml-10"
-              />
+              <TagChips :record="item" class="ml-10" />
 
               <!-- TODO: this is a hacky placeholder -->
               <p class="pb-5" />
@@ -144,9 +107,7 @@
       </template>
       <!-- data section ends -->
 
-      <template #loading>
-        Loading...
-      </template>
+      <template #loading> Loading... </template>
     </v-data-iterator>
   </div>
 </template>
@@ -268,9 +229,9 @@ export default {
       let data = ["name,abbreviation,URL\n"];
       this.getAdvancedSearchResponse.forEach((record) => {
         data.push(
-          `${record.name},${record.abbreviation || "n/a"},${
-            process.env.VUE_APP_FAIRSHARING_URL
-          }${record.id}\n`
+          `${record.name},${
+            record.abbreviation || "n/a"
+          },https://fairsharing.org/${record.id}\n`
         );
       });
       let blob = new Blob(data, { type: MIME_TYPE });

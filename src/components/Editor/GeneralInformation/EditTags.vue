@@ -12,6 +12,7 @@
               v-for="(section, sectionName, sectionIndex) in sections"
               :key="'edit_keywords_' + sectionIndex"
               class="mb-3"
+              @click="showMenu()"
             >
               <td
                 class="white--text py-2 px-4 titleCell"
@@ -41,6 +42,7 @@
                     v-for="(tag, tagIndex) in section.items"
                     :key="'section_' + sectionIndex + '_tag_' + tagIndex"
                     :class="[!isNew(tag, sectionName) ? section.color + '--text white' : section.color + ' white--text whiteBorder']"
+                    @click.stop
                   >
                     <KeywordTooltip
                       :keyword="tag"
@@ -54,6 +56,7 @@
                           :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' white--text']"
                           v-on="on"
                           @click="removeTag(section.items, tagIndex)"
+                          @click.stop
                         >
                           fa-times-circle
                         </v-icon>
@@ -70,7 +73,7 @@
       <v-row class="pr-5">
         <v-spacer />
         <v-chip
-          class="white--text green pr-5 ml-3 shadowChip"
+          class="white--text green pr-5 ml-3 mb-3 shadowChip"
           :disabled="loading"
           @click="showMenu()"
         >
@@ -304,7 +307,7 @@
             },
             buttonLabel(){
               if (this.menu.show) return "Hide table";
-              return "Add new term(s)";
+              return "Add/edit tags";
             },
             buttonIcon(){
               if (this.menu.show) return "fa-minus-circle";

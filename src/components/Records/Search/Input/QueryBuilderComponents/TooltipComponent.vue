@@ -7,7 +7,8 @@
       <v-icon
         v-bind="attrs"
         small
-        class="white--text mr-1"
+        :class="textColour"
+        class="mr-1"
         v-on="on"
       >
         fa-question-circle
@@ -25,6 +26,10 @@ export default {
       type: String,
       default: null,
     },
+    textColour: {
+      type: String,
+      default: 'white--text'
+    }
   },
 };
 </script>

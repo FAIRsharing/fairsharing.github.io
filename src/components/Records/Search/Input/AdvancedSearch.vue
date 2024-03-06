@@ -62,21 +62,34 @@
             </v-btn>
           </div>
           <v-card-title>
-            <span
+            <div
               v-if="!getEditDialogStatus"
-              class="text-h5"
-            >{{
-              advancedSearchTerm
-            }}</span>
-            <v-text-field
+            >
+              <span
+                class="text-h5"
+              >
+                {{ advancedSearchTerm }}
+              </span>
+            </div>
+            <div
               v-else
-              class="text-h5"
-              clearable
-              outlined
-              label="Add Search text"
-              :value="getAdvancedSearchText"
-              @change="updateSearchText($event)"
-            />
+            >
+              <!-- TODO: This layout is no doubt unsatisfactory (specifically field length and tooltip alignment -->
+              <v-row>
+                <TooltipComponent
+                  tool-tip-text="Text entered here will be searched against various record fields, e.g. name and description."
+                  text-colour="black--text"
+                />
+                <v-text-field
+                  class="text-h5"
+                  clearable
+                  outlined
+                  label="Add Search text"
+                  :value="getAdvancedSearchText"
+                  @change="updateSearchText($event)"
+                />
+              </v-row>
+            </div>
           </v-card-title>
           <v-card-text>
             <QueryBuilderView :is-dialog="dialog" />
@@ -112,13 +125,14 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
+import TooltipComponent from "@/components/Records/Search/Input/QueryBuilderComponents/TooltipComponent.vue";
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "AdvancedSearch",
-  components: { QueryBuilderView },
+  components: { QueryBuilderView, TooltipComponent },
   props: {
     showHomeSearch: {
       default: false,

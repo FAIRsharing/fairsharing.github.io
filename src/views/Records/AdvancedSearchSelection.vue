@@ -31,9 +31,9 @@
           small
           class="mr-1"
         >
-          fab fa-searchengin
+          fa-solid fa-reply
         </v-icon>
-        <span class="button-text-size">Advanced Search</span>
+        <span class="button-text-size">Restart Advanced Search</span>
       </v-btn>
     </div>
     <div
@@ -269,7 +269,7 @@ export default {
 .button-width {
   width: 46%;
   .button-text-size {
-    font-size: 13px;
+    font-size: 10px;
   }
 }
 </style>

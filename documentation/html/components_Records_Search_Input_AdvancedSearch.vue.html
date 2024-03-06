@@ -155,21 +155,34 @@
             &lt;/v-btn>
           &lt;/div>
           &lt;v-card-title>
-            &lt;span
+            &lt;div
               v-if="!getEditDialogStatus"
-              class="text-h5"
-            >{{
-              advancedSearchTerm
-            }}&lt;/span>
-            &lt;v-text-field
+            >
+              &lt;span
+                class="text-h5"
+              >
+                {{ advancedSearchTerm }}
+              &lt;/span>
+            &lt;/div>
+            &lt;div
               v-else
-              class="text-h5"
-              clearable
-              outlined
-              label="Add Search text"
-              :value="getAdvancedSearchText"
-              @change="updateSearchText($event)"
-            />
+            >
+              &lt;!-- TODO: This layout is no doubt unsatisfactory (specifically field length and tooltip alignment -->
+              &lt;v-row>
+                &lt;TooltipComponent
+                  tool-tip-text="Text entered here will be searched against various record fields, e.g. name and description."
+                  text-colour="black--text"
+                />
+                &lt;v-text-field
+                  class="text-h5"
+                  clearable
+                  outlined
+                  label="Add Search text"
+                  :value="getAdvancedSearchText"
+                  @change="updateSearchText($event)"
+                />
+              &lt;/v-row>
+            &lt;/div>
           &lt;/v-card-title>
           &lt;v-card-text>
             &lt;QueryBuilderView :is-dialog="dialog" />
@@ -205,13 +218,14 @@
 &lt;script>
 import { mapActions, mapGetters } from "vuex";
 
+import TooltipComponent from "@/components/Records/Search/Input/QueryBuilderComponents/TooltipComponent.vue";
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "AdvancedSearch",
-  components: { QueryBuilderView },
+  components: { QueryBuilderView, TooltipComponent },
   props: {
     showHomeSearch: {
       default: false,

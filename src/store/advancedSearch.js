@@ -127,6 +127,7 @@ const mutations = {
   },
   resetAdvancedSearch(state) {
     state.advancedSearch = {};
+    state.editAdvancedSearch = {};
     state.advancedSearchQuery = {
       operator: "",
       fields: [],

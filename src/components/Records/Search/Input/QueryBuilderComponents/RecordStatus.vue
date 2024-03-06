@@ -28,7 +28,7 @@ export default {
       itemList: ["ready", "deprecated", "uncertain", "in_development"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "RecordStatus",
+      toolTipText: "The status of this resource. Multiple selections will be joined with OR.",
     };
   },
   computed: {

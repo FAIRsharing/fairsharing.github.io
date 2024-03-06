@@ -28,7 +28,7 @@ export default {
       itemList: ["open", "partially open", "controlled", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "DataAccessCondition",
+      toolTipText: "Data access mechanisms and terms to define access at repository and/or dataset level; what is the process through which access can be requested (and granted)? For example, if the data is freely available or subject to a request and approval process. Multiple selections will be joined with OR.",
     };
   },
   computed: {

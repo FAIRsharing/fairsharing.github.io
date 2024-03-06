@@ -31,7 +31,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Licences",
+      toolTipText: "Licences applicable to this resource or its data. Multiple selections will be joined with OR.",
     };
   },
 

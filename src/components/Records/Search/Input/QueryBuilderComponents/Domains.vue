@@ -31,7 +31,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Domains",
+      toolTipText: "Tags from the FAIRsharing Domain ontology. Multiple selections will be joined with OR.",
     };
   },
 

@@ -31,7 +31,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Taxonomies",
+      toolTipText: "Taxonomy terms (a.k.a 'species') relating to a resource. Multiple selections will be joined with OR.",
     };
   },
 

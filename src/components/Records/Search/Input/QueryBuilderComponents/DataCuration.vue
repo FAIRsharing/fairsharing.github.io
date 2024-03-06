@@ -35,7 +35,7 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "DataCuration",
+      toolTipText: "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, automated, or manual curation). Multiple selections will be joined with OR.",
     };
   },
   computed: {

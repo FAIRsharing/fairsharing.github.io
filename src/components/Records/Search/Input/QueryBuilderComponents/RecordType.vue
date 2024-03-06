@@ -28,7 +28,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "RecordType",
+      toolTipText: "The type of record within a FAIRsharing registry, e.g. knowledgebase is a type of Database. Multiple selections will be joined with OR.",
     };
   },
   computed: {

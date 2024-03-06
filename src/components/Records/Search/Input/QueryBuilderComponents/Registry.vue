@@ -29,7 +29,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Registry",
+      toolTipText: "The FAIRsharing Registry to which this resource belongs, e.g. Standard, Database or Policy. Multiple selections will be joined with OR.",
     };
   },
   computed: {

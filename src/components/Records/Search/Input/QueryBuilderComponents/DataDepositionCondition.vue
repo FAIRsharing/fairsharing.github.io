@@ -28,7 +28,7 @@ export default {
       itemList: ["open", "controlled", "not found", "not applicable"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "DataDepositionCondition",
+      toolTipText: "Deposition of data: are there any restrictions (e.g. by location, country, organization, etc.) or can anyone from anywhere deposit data? Multiple selections will be joined with OR.",
     };
   },
   computed: {

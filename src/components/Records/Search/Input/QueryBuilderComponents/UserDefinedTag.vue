@@ -31,7 +31,7 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "UserDefinedTag",
+      toolTipText: "Tags created by FAIRsharing's user community. Multiple selections will be joined with OR.",
     };
   },
 

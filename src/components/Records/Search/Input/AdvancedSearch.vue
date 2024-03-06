@@ -81,11 +81,12 @@
           <v-card-text>
             <QueryBuilderView :is-dialog="dialog" />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="px-6">
             <v-btn
               color="accent3"
               variant="text"
               class="white--text"
+              width="250"
               @click="closeDialog()"
             >
               Close
@@ -96,6 +97,7 @@
               variant="text"
               class="white--text"
               :disabled="isContinue"
+              width="250"
               @click="goToAdvancedSearch()"
             >
               Proceed
@@ -217,6 +219,7 @@ export default {
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
       else this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       this.dialog = false;
+
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
       //Clear search text field flag
       this.$emit("clearSearchField", true);

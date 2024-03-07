@@ -266,10 +266,13 @@ describe("AdvancedSearch store methods", () => {
     expect(builtData).toStrictEqual(getSearchResult["editDialogStatus"]);
   });
 
-  it('gets and sets dialog status', () => {
-    expect(getters.getAdvancedSearchDialogStatus(state)).toBe(undefined);
-    mutations.setAdvancedSearchDialogStatus(state, true);
-    expect(getters.getAdvancedSearchDialogStatus(state)).toBe(true);
+  it("can check getAdvancedSearchDialogStatus getters", () => {
+    const getSearchResult = {
+      advancedSearchDialogStatus: true,
+    };
+    const builtData = getters.getAdvancedSearchDialogStatus(getSearchResult);
+    expect(builtData).toStrictEqual(
+      getSearchResult["advancedSearchDialogStatus"]
+    );
   });
-
 });

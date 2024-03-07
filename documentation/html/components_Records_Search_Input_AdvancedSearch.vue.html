@@ -155,33 +155,29 @@
             &lt;/v-btn>
           &lt;/div>
           &lt;v-card-title>
-            &lt;div
-              v-if="!getEditDialogStatus"
-            >
-              &lt;span
-                class="text-h5"
-              >
+            &lt;div v-if="!getEditDialogStatus">
+              &lt;span class="text-h5">
                 {{ advancedSearchTerm }}
               &lt;/span>
             &lt;/div>
             &lt;div
               v-else
+              class="d-flex full-width"
             >
-              &lt;!-- TODO: This layout is no doubt unsatisfactory (specifically field length and tooltip alignment -->
-              &lt;v-row>
-                &lt;TooltipComponent
-                  tool-tip-text="Text entered here will be searched against various record fields, e.g. name and description."
-                  text-colour="black--text"
-                />
-                &lt;v-text-field
-                  class="text-h5"
-                  clearable
-                  outlined
-                  label="Add Search text"
-                  :value="getAdvancedSearchText"
-                  @change="updateSearchText($event)"
-                />
-              &lt;/v-row>
+              &lt;TooltipComponent
+                :tool-tip-text="toolTipText"
+                text-colour="black--text"
+              />
+              &lt;v-text-field
+                class="text-h5"
+                clearable
+                full-width
+                outlined
+                hide-details
+                label="Add Search text"
+                :value="getAdvancedSearchText"
+                @change="updateSearchText($event)"
+              />
             &lt;/div>
           &lt;/v-card-title>
           &lt;v-card-text>
@@ -240,6 +236,8 @@ export default {
     return {
       dialog: false,
       updatedAdvancedSearchText: "",
+      toolTipText:
+        "Text entered here will be searched against various record fields, e.g. name and description.",
     };
   },
   computed: {

@@ -62,33 +62,29 @@
             </v-btn>
           </div>
           <v-card-title>
-            <div
-              v-if="!getEditDialogStatus"
-            >
-              <span
-                class="text-h5"
-              >
+            <div v-if="!getEditDialogStatus">
+              <span class="text-h5">
                 {{ advancedSearchTerm }}
               </span>
             </div>
             <div
               v-else
+              class="d-flex full-width"
             >
-              <!-- TODO: This layout is no doubt unsatisfactory (specifically field length and tooltip alignment -->
-              <v-row>
-                <TooltipComponent
-                  tool-tip-text="Text entered here will be searched against various record fields, e.g. name and description."
-                  text-colour="black--text"
-                />
-                <v-text-field
-                  class="text-h5"
-                  clearable
-                  outlined
-                  label="Add Search text"
-                  :value="getAdvancedSearchText"
-                  @change="updateSearchText($event)"
-                />
-              </v-row>
+              <TooltipComponent
+                :tool-tip-text="toolTipText"
+                text-colour="black--text"
+              />
+              <v-text-field
+                class="text-h5"
+                clearable
+                full-width
+                outlined
+                hide-details
+                label="Add Search text"
+                :value="getAdvancedSearchText"
+                @change="updateSearchText($event)"
+              />
             </div>
           </v-card-title>
           <v-card-text>
@@ -147,6 +143,8 @@ export default {
     return {
       dialog: false,
       updatedAdvancedSearchText: "",
+      toolTipText:
+        "Text entered here will be searched against various record fields, e.g. name and description.",
     };
   },
   computed: {

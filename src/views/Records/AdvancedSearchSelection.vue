@@ -269,7 +269,7 @@ export default {
 .button-width {
   width: 46%;
   .button-text-size {
-    font-size: 10px;
+    font-size: 11.5px;
   }
 }
 </style>

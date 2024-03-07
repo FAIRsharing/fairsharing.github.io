@@ -17,15 +17,13 @@
         elevation="3"
       >
         <SectionTitle title="Organisation" />
-
-        <!-- TODO: Replace with a component including a logo, when we have an edit form -->
-        <!-- TODO: This can be refactored to a new component at that time -->
+        <!-- TODO: This image refuses to go anywhere but centrally on the page -->
         <v-img
           v-if="logoUrl"
           :src="logoUrl"
           contain
           aspect-ratio="1"
-          height="100px"
+          height="120px"
         />
         <h2
           class="mt-3"
@@ -154,6 +152,18 @@
             {{ organisation.rorLink }}
           </a>
         </p>
+
+        <!-- edit -->
+        <p
+          v-if="user().is_curator"
+        >
+          <v-btn
+            class="warning"
+            @click="showEditDialog = true"
+          >
+            Edit Organisation
+          </v-btn>
+        </p>
       </v-card>
 
 
@@ -183,6 +193,50 @@
         </v-fade-transition>
       </v-col>
     </div>
+    <!-- Edit existing organisation -->
+    <v-expand-transition>
+      <v-overlay
+        v-if="showEditDialog"
+        :dark="false"
+        :absolute="false"
+        opacity="0.8"
+      >
+        <v-form
+          id="editOrganisation"
+          ref="editOrganisation"
+          v-model="editedOrganisation"
+        >
+          <v-card>
+            <v-card-text>
+              <v-container fluid>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <!-- Enter name of organisation -->
+                    <v-text-field
+                      v-model="editedOrganisation.name"
+                      label="Organisation Name"
+                      outlined
+                      :rules="[rules.isRequired()]"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="error"
+                @click="showEditDialog = false"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-overlay>
+    </v-expand-transition>
   </v-container>
 </template>
 
@@ -194,6 +248,7 @@ import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisa
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import { isImage, isRequired, isUrl } from "@/utils/rules.js"
 import { cleanString } from "@/utils/stringUtils"
 import NotFound from "@/views/Errors/404"
 
@@ -214,6 +269,17 @@ export default {
         childOrganisations: [],
         countries: []
       },
+      editedOrganisation: {
+        name: '',
+        url: '',
+        alternativeNames: [],
+        types: [],
+        users: [],
+        parentOrganisations: [],
+        childOrganisations: [],
+        countries: [],
+        logo: ''
+      },
       loading: false,
       perPage: 10,
       footer: {'items-per-page-options': [10]},
@@ -232,7 +298,13 @@ export default {
         {text: 'Email address', value: 'email', align: 'center'},
         {text: 'ORCID ID', value: 'orcid', align: 'center'},
         {text: 'Twitter', value: 'twitter', align: 'center'},
-      ]
+      ],
+      showEditDialog: false,
+      rules: {
+        isRequired: function(){return isRequired() },
+        isURL: function(){ return isUrl() },
+        isImage: function(){ return isImage() }
+      },
     }
   },
   computed: {

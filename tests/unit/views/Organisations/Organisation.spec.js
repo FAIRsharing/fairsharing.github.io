@@ -7,10 +7,26 @@ import Vuex from "vuex"
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import light from "@/plugins/theme";
+import users from "@/store/users.js";
 import Organisation from "@/views/Organisations/Organisation";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+users.state.user = function(){ return {
+    isLoggedIn: true,
+    id: 123,
+    credentials: {token: 123, username: 123},
+    watchedRecords: [1]
+}};
+
+let $store = new Vuex.Store({
+    modules: {
+        users: users,
+    }
+})
+
+$store.state.users.user = function (){return {isLoggedIn: false}};
 
 let vuetify = new Vuetify({
     theme: {
@@ -76,7 +92,7 @@ describe("Organisation", () => {
             localVue,
             router,
             vuetify,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         const title = "Organisation";
@@ -91,7 +107,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         await wrapper.vm.getOrganisation();
@@ -112,7 +128,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.organisation).toStrictEqual({
@@ -141,7 +157,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.logoUrl).toEqual(process.env.VUE_APP_API_ENDPOINT + '/logo12345678');
@@ -154,7 +170,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.currentRoute).toEqual(1);

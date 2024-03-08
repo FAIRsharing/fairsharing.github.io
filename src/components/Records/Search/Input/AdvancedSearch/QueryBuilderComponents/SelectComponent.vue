@@ -83,5 +83,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents.scss";
+@import "@/styles/advancedSearchComponents";
 </style>

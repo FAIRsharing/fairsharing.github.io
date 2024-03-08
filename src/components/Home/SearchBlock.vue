@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import AdvanceSearch from "@/components/Records/Search/Input/AdvancedSearch.vue";
+import AdvanceSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "SearchBlock",

@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch.vue";
+import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
 import { isRequired } from "@/utils/rules";
 export default {
   name: "StringSearch",

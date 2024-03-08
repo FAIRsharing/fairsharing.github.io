@@ -2,9 +2,9 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Domains from "@/components/Records/Search/Input/QueryBuilderComponents/Domains";
+import UserDefinedTag from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UserDefinedTag.vue";
 import advancedSearch from "@/store/advancedSearch";
-import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
+import userDefinedTagsSearch from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 
 const $router = {
   push: jest.fn(),
@@ -14,11 +14,11 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("Domains.vue", () => {
+describe("UserDefinedTag.vue", () => {
   let wrapper, store, actions;
   beforeEach(() => {
-    domainsSearch.getters = {
-      getSearchDomains: () => {
+    userDefinedTagsSearch.getters = {
+      getSearchUserDefinedTags: () => {
         return ["Test", "Abc"];
       },
     };
@@ -28,17 +28,17 @@ describe("Domains.vue", () => {
       },
     };
     actions = {
-      fetchSearchDomains: jest.fn(),
+      fetchSearchTaxonomies: jest.fn(),
     };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
         actions,
         advancedSearch: advancedSearch,
-        domainsSearch: domainsSearch,
+        userDefinedTagsSearch: userDefinedTagsSearch,
       },
     });
-    wrapper = shallowMount(Domains, {
+    wrapper = shallowMount(UserDefinedTag, {
       localVue,
       vuetify,
       store,
@@ -47,6 +47,6 @@ describe("Domains.vue", () => {
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("Domains");
+    expect(wrapper.vm.$options.name).toBe("UserDefinedTag");
   });
 });

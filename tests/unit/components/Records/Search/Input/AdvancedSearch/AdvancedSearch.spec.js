@@ -2,25 +2,22 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView";
+import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
 import advancedSearch from "@/store/advancedSearch";
 
 const $router = {
   push: jest.fn(),
 };
 let $route = { path: "/search", query: {} };
-
 const localVue = createLocalVue();
 localVue.use(Vuex);
-
 let vuetify = new Vuetify();
 
-describe("QueryBuilderView.vue", () => {
-  let wrapper, store;
-
+describe("AdvancedSearch.vue", () => {
+  let wrapper, store, actions;
   beforeEach(() => {
     advancedSearch.getters = {
-      getEditAdvancedSearch: () => {
+      getAdvancedSearch: () => {
         return [
           {
             operatorIdentifier: "_and",
@@ -38,20 +35,22 @@ describe("QueryBuilderView.vue", () => {
           },
         ];
       },
+    };
 
-      getEditDialogStatus: () => {
-        return false;
-      },
+    actions = {
+      fetchAdvancedSearchResults: jest.fn(),
+      resetAdvancedSearchQuery: jest.fn(),
     };
 
     store = new Vuex.Store({
       modules: {
         namespaced: true,
+        actions,
         advancedSearch: advancedSearch,
       },
     });
 
-    wrapper = shallowMount(QueryBuilderView, {
+    wrapper = shallowMount(AdvancedSearch, {
       localVue,
       vuetify,
       store,
@@ -60,6 +59,6 @@ describe("QueryBuilderView.vue", () => {
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("QueryBuilderView");
+    expect(wrapper.vm.$options.name).toBe("AdvancedSearch");
   });
 });

@@ -2,22 +2,22 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import DataCuration from "@/components/Records/Search/Input/QueryBuilderComponents/DataCuration";
+import DataAccessCondition from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DataAccessCondition.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("DataCuration.vue", () => {
+describe("DataAccessCondition.vue", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallowMount(DataCuration, {
+    wrapper = shallowMount(DataAccessCondition, {
       localVue,
       vuetify,
     });
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("DataCuration");
+    expect(wrapper.vm.$options.name).toBe("DataAccessCondition");
   });
 });

@@ -2,9 +2,9 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Subject from "@/components/Records/Search/Input/QueryBuilderComponents/Subject";
+import Licences from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Licences.vue";
 import advancedSearch from "@/store/advancedSearch";
-import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
+import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
 
 const $router = {
   push: jest.fn(),
@@ -14,11 +14,11 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("Subject.vue", () => {
+describe("Licences.vue", () => {
   let wrapper, store, actions;
   beforeEach(() => {
-    subjectSearch.getters = {
-      getSearchSubjects: () => {
+    licencesSearch.getters = {
+      getSearchLicences: () => {
         return ["Test", "Abc"];
       },
     };
@@ -28,17 +28,17 @@ describe("Subject.vue", () => {
       },
     };
     actions = {
-      fetchSearchSubjects: jest.fn(),
+      fetchSearchLicences: jest.fn(),
     };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
         actions,
         advancedSearch: advancedSearch,
-        subjectSearch: subjectSearch,
+        licencesSearch: licencesSearch,
       },
     });
-    wrapper = shallowMount(Subject, {
+    wrapper = shallowMount(Licences, {
       localVue,
       vuetify,
       store,
@@ -47,6 +47,6 @@ describe("Subject.vue", () => {
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("Subject");
+    expect(wrapper.vm.$options.name).toBe("Licences");
   });
 });

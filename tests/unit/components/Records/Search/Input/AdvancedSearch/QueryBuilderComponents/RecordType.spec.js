@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import RecordType from "@/components/Records/Search/Input/QueryBuilderComponents/RecordType.vue";
+import RecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/RecordType.vue";
 import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 
 const $router = {

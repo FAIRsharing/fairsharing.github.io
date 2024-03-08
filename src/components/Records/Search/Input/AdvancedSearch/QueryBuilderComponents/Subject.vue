@@ -31,7 +31,8 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Tags from the FAIRsharing subject ontology. Multiple selections will be joined with OR",
+      toolTipText:
+        "Tags from the FAIRsharing subject ontology. Multiple selections will be joined with OR",
     };
   },
 
@@ -83,5 +84,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents.scss";
+@import "@/styles/advancedSearchComponents";
 </style>

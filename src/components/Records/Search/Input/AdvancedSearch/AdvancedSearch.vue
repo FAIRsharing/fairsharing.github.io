@@ -121,8 +121,8 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import TooltipComponent from "@/components/Records/Search/Input/QueryBuilderComponents/TooltipComponent.vue";
-import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/TooltipComponent.vue";
+import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 

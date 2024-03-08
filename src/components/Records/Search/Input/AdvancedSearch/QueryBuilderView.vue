@@ -1,13 +1,13 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  />
+  <query-builder v-model="query" :config="config" />
 </template>
 
 <script>
 import QueryBuilder from "query-builder-vue";
 import { mapGetters } from "vuex";
+
+import advancedSearch from "@/store";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
   DataAccessCondition,
@@ -22,9 +22,7 @@ import {
   Subject,
   Taxonomies,
   UserDefinedTag,
-} from "@/components/Records/Search/Input/QueryBuilderComponents";
-import advancedSearch from "@/store";
-import { uniqueValues } from "@/utils/advancedSearchUtils";
+} from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder },

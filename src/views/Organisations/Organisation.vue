@@ -204,7 +204,7 @@
         <v-form
           id="editOrganisation"
           ref="editOrganisation"
-          v-model="editedOrganisation"
+          v-model="editFormValid"
         >
           <v-card>
             <v-card-text>
@@ -214,15 +214,49 @@
                     cols="12"
                     class="pb-0"
                   >
-                    <!-- Enter name of organisation -->
                     <v-text-field
                       v-model="editedOrganisation.name"
-                      label="Organisation Name"
+                      label="Name"
                       outlined
                       :rules="[rules.isRequired()]"
                     />
                   </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="editedOrganisation.homepage"
+                      label="Homepage"
+                      outlined
+                      :rules="[rules.isRequired(), rules.isURL()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-file-input
+                      v-model="editedOrganisation.logo"
+                      :rules="[rules.isImage(), imageSizeCorrect]"
+                      clearable
+                      :loading="logoLoading"
+                      accept="images/png,image/jpeg"
+                      label="Logo"
+                      prepend-icon="fa-image"
+                    />
+                  </v-col>
                 </v-row>
+                <!--
+        alternativeNames: [],
+        types: [],
+        parentOrganisations: [],
+        childOrganisations: [],
+        countries: [],
+        rorId: null,
+        logo: null,
+      },
+                -->
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -231,6 +265,13 @@
                 @click="showEditDialog = false"
               >
                 Cancel
+              </v-btn>
+              <v-btn
+                class="success"
+                :disabled="!editFormValid || imageTooBig"
+                @click="editOrganisation()"
+              >
+                Save
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -253,6 +294,10 @@ import { cleanString } from "@/utils/stringUtils"
 import NotFound from "@/views/Errors/404"
 
 let graphClient = new GraphClient();
+import RestClient from "@/lib/Client/RESTClient.js"
+import {toBase64} from "@/utils/generalUtils";
+
+const restClient = new RestClient();
 
 export default {
   name: "Organisation",
@@ -261,6 +306,7 @@ export default {
   data: () => {
     return {
       error: true,
+      allowedFileSize: 1048576,
       organisation: {
         alternativeNames: [],
         types: [],
@@ -271,16 +317,19 @@ export default {
       },
       editedOrganisation: {
         name: '',
-        url: '',
+        homepage: '',
         alternativeNames: [],
         types: [],
         users: [],
         parentOrganisations: [],
         childOrganisations: [],
         countries: [],
-        logo: ''
+        rorLink: [],
+        logo: null
       },
       loading: false,
+      logoLoading: false,
+      imageTooBig: true,
       perPage: 10,
       footer: {'items-per-page-options': [10]},
       showOverlay: false,
@@ -300,6 +349,7 @@ export default {
         {text: 'Twitter', value: 'twitter', align: 'center'},
       ],
       showEditDialog: false,
+      editFormValid: false,
       rules: {
         isRequired: function(){return isRequired() },
         isURL: function(){ return isUrl() },
@@ -322,7 +372,7 @@ export default {
   watch: {
     async currentRoute() {
       await this.getOrganisation();
-    }
+    },
   },
   async created() {
     await this.getOrganisation();
@@ -337,12 +387,50 @@ export default {
         let org = await graphClient.executeQuery(getOrganisationQuery);
         if (org.organisation != null) {
           this.organisation = JSON.parse(JSON.stringify(org.organisation));
+          this.editedOrganisation.name = this.organisation.name;
+          this.editedOrganisation.homepage = this.organisation.homepage;
           this.error = false;
         }
         this.loading = false;
       } catch (e) {
         this.errors = e.message;
       }
+    },
+    async editOrganisation() {
+      // TODO complete organisation input
+      this.logoLoading = true;
+      let organisationInput = {
+        name: this.editedOrganisation.name,
+        homepage: this.editedOrganisation.homepage
+      }
+      if (this.editedOrganisation.logo) {
+        let convertedFile = await toBase64(this.editedOrganisation.logo);
+        organisationInput.logo = {
+          filename: this.editedOrganisation.logo.name,
+          content_type: this.editedOrganisation.logo.type,
+          data: convertedFile
+        }
+      }
+      let data = await restClient.editOrganisation(organisationInput, this.organisation.id, this.user().credentials.token);
+      if (!data.error) {
+        // Reload to get the new data.
+        await this.getOrganisation();
+        this.showEditDialog = false;
+      }
+      this.logoLoading = false;
+    },
+    imageSizeCorrect() {
+      if (!this.editedOrganisation.logo) {
+        this.imageTooBig = false;
+        return true;
+      }
+      if (this.editedOrganisation.logo.size < this.allowedFileSize) {
+        this.imageTooBig = false;
+        return true;
+      }
+      this.$emit('imageTooBig', true);
+      this.imageTooBig = true;
+      return false;
     },
     goToEdit(id) {
       this.$router.push({path: `/${id}/edit`})

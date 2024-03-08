@@ -6,6 +6,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex"
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import RESTClient from "@/lib/Client/RESTClient.js";
 import light from "@/plugins/theme";
 import users from "@/store/users.js";
 import Organisation from "@/views/Organisations/Organisation";
@@ -26,7 +27,12 @@ let $store = new Vuex.Store({
     }
 })
 
-$store.state.users.user = function (){return {isLoggedIn: false}};
+$store.state.users.user = function (){
+    return {
+        isLoggedIn: false,
+        credentials: {token: "123"}
+    }
+};
 
 let vuetify = new Vuetify({
     theme: {
@@ -40,6 +46,7 @@ let $route = {
 };
 const router = new VueRouter();
 const $router = { push: jest.fn() };
+let restStub;
 
 describe("Organisation", () => {
 
@@ -80,6 +87,10 @@ describe("Organisation", () => {
     beforeAll(() => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
             organisation: organisation
+        });
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({
+            data: {id: 1}
         });
     });
 
@@ -176,6 +187,20 @@ describe("Organisation", () => {
         expect(wrapper.vm.currentRoute).toEqual(1);
         $route.params.id = 10;
         expect(wrapper.vm.currentRoute).toEqual(10);
+    });
+
+    // TODO: This will call the relevant code but the server's response is mocked.
+    // TODO: So, I can't prove that the server has modified the information.
+    it("can modify the organisation", async () => {
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            vuetify,
+            router,
+            mocks: {$route, $router, $store},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        wrapper.vm.editedOrganisation.name = 'changed name';
+        await wrapper.vm.editOrganisation();
     });
 
 });

@@ -606,6 +606,25 @@ class RESTClient {
     }
 
     /**
+     * Create a given organisation
+     * @param {Object} organisation
+     * @param {Number} id
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async editOrganisation(organisation, id, userToken){
+        let _client = this;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/organisations/" + id,
+            headers: this.auth_headers(userToken),
+            data: { organisation: organisation }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Create a given grant
      * @param {Object} grant
      * @param {String} userToken - the user jwt

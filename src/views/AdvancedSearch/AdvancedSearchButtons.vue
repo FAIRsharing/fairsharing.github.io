@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-wrap full-width py-2 px-5 justify-center"
+    class="d-flex full-width py-2 px-5 justify-center"
     :class="{ 'flex-column': $vuetify.breakpoint.smAndDown }"
   >
     <v-btn
@@ -17,7 +17,11 @@
       >
         fa-solid fa-pen
       </v-icon>
-      <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">Edit Advanced Search</span>
+      <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">{{
+        $vuetify.breakpoint.mdAndDown
+          ? "Show/Edit Advanced Search"
+          : "Edit Advanced Search"
+      }}</span>
     </v-btn>
     <v-btn
       class="white--text"

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/AdvancedSearch/AdvancedSearchResultTable.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/AdvancedSearch/AdvancedSearchResultTable.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div
+    v-if="getErrorStatus"
+    fluid
+    class="pa-0"
+  >
+    &lt;ErrorPage />
+  &lt;/div>
+  &lt;div
+    v-else
+    fluid
+    class="pa-5"
+  >
+    &lt;v-btn
+      class="mb-2"
+      color="primary"
+      small
+      @click="downloadResults()"
+    >
+      Download Results
+    &lt;/v-btn>
+    &lt;v-data-iterator
+      :items="getAdvancedSearchResponse"
+      :items-per-page.sync="itemsPerPage"
+      :page.sync="page"
+      :search="search"
+      :sort-by="sortBy.toLowerCase()"
+      :sort-desc="sortDesc"
+      :hide-default-footer="noFooter"
+      :loading="getLoadingStatus"
+      :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+    >
+      &lt;!-- headers start -->
+      &lt;template #header="{ pagination, options, updateOptions }">
+        &lt;v-data-footer
+          :pagination="pagination"
+          :options="options"
+          items-per-page-text="$vuetify.dataTable.itemsPerPageText"
+          @update:options="updateOptions"
+        />
+        &lt;v-toolbar
+          dark
+          color="blue lighten-1"
+          class="mb-5"
+        >
+          &lt;v-text-field
+            v-model="search"
+            clearable
+            flat
+            solo-inverted
+            hide-details
+            prepend-inner-icon="mdi-filter"
+            label="Filter these results"
+          />
+          &lt;template v-if="$vuetify.breakpoint.mdAndUp">
+            &lt;v-spacer />
+            &lt;v-select
+              v-model="sortBy"
+              flat
+              solo-inverted
+              hide-details
+              :items="keys"
+              prepend-inner-icon="mdi-sort"
+              label="Sort by"
+            />
+            &lt;v-spacer />
+            &lt;v-btn-toggle
+              v-model="sortDesc"
+              mandatory
+            >
+              &lt;v-btn
+                large
+                depressed
+                color="blue"
+                :value="false"
+              >
+                &lt;v-icon>mdi-arrow-up&lt;/v-icon>
+              &lt;/v-btn>
+              &lt;v-btn
+                large
+                depressed
+                color="blue"
+                :value="true"
+              >
+                &lt;v-icon>mdi-arrow-down&lt;/v-icon>
+              &lt;/v-btn>
+            &lt;/v-btn-toggle>
+          &lt;/template>
+        &lt;/v-toolbar>
+      &lt;/template>
+      &lt;!-- headers stop -->
+      &lt;!-- data section begins -->
+      &lt;template #default="props">
+        &lt;v-row>
+          &lt;v-col
+            v-for="item in props.items"
+            :key="item.name"
+            cols="12"
+          >
+            &lt;v-card>
+              &lt;v-card-title class="subheading font-weight-bold">
+                &lt;RecordStatus :record="item" />
+                &lt;a
+                  :href="'/' + item.id"
+                  target="_blank"
+                  class="ml-10"
+                  :class="
+                    item['status'] === 'deprecated'
+                      ? 'text-decoration-line-through'
+                      : null
+                  "
+                >
+                  {{ item.name }}
+                &lt;/a>
+              &lt;/v-card-title>
+
+              &lt;p
+                class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
+              >
+                {{ item.description }}
+              &lt;/p>
+
+              &lt;TagChips
+                :record="item"
+                class="ml-10"
+              />
+
+              &lt;!-- TODO: this is a hacky placeholder -->
+              &lt;p class="pb-5" />
+
+              &lt;!-- TODO: change below here -->
+              &lt;!--
+                &lt;v-divider />
+
+                &lt;span>
+                  Some information about number of standards etc. can go here.
+                &lt;/span>
+
+                -->
+              &lt;!-- TODO: change above here -->
+            &lt;/v-card>
+          &lt;/v-col>
+        &lt;/v-row>
+      &lt;/template>
+      &lt;!-- data section ends -->
+
+      &lt;template #loading>
+        Loading...
+      &lt;/template>
+    &lt;/v-data-iterator>
+  &lt;/div>
+&lt;/template>
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
+
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
+import TagChips from "@/components/Records/Shared/TagChips.vue";
+import advancedSearch from "@/store";
+import recordsCardUtils from "@/utils/recordsCardUtils";
+import ErrorPage from "@/views/Errors/404.vue";
+export default {
+  name: "AdvancedSearchResultTable",
+  components: { RecordStatus, TagChips, ErrorPage },
+  mixins: [recordsCardUtils],
+  data() {
+    return {
+      itemsPerPageArray: [10, 20, 50, 100, 200],
+      search: "",
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 5,
+      sortBy: "name",
+      keys: ["Name", "Registry", "Type", "Status", "Description"],
+      fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL,
+    };
+  },
+  computed: {
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearchResponse",
+      "getLoadingStatus",
+      "getErrorStatus",
+      "getAdvancedSearchQuery",
+    ]),
+    noFooter() {
+      if (
+        Array.isArray(this.getAdvancedSearchResponse) &amp;&amp;
+        !this.getAdvancedSearchResponse.length
+      ) {
+        return true;
+      }
+      return false;
+    },
+  },
+  mounted() {
+    this.fetchQueryParams();
+  },
+  methods: {
+    ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
+    /**
+     * Fetch query from URL and display advancedSearch Result
+     */
+    fetchQueryParams() {
+      if (
+        Array.isArray(this.getAdvancedSearchResponse) &amp;&amp;
+        !this.getAdvancedSearchResponse.length &amp;&amp;
+        Array.isArray(this.getAdvancedSearchQuery["fields"]) &amp;&amp;
+        !this.getAdvancedSearchQuery["fields"].length
+      ) {
+        const routeQuery = this.$route.query;
+        //Query format is same as setAdvancedSearch mutation
+        let searchQuery = {
+          operatorIdentifier: "",
+          children: [],
+        };
+
+        searchQuery["operatorIdentifier"] = routeQuery["operator"];
+
+        //Destructuring the fields string into valid setAdvancedSearch format to execute the query
+        const searchFieldsArr = routeQuery["fields"]
+          .split("(")
+          .join("")
+          .split(")")
+          .filter((item) => item); //Filter is used to remove empty string
+
+        searchFieldsArr.forEach((item) => {
+          const itemArr = item.split("&amp;");
+          let searchObj = {
+            operatorIdentifier: "",
+            children: [],
+          };
+          itemArr.forEach((subItem) => {
+            const paramValues = subItem.split("=");
+            if (paramValues[0] === "operator") {
+              searchObj["operatorIdentifier"] = paramValues[1];
+            } else {
+              let advancedSearchParams = {
+                identifier: "",
+                value: [],
+              };
+              advancedSearchParams["identifier"] = paramValues[0];
+              advancedSearchParams["value"] = paramValues[1].split(",");
+              searchObj["children"].push(advancedSearchParams);
+            }
+          });
+
+          searchQuery["children"].push(searchObj);
+        });
+
+        //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
+        advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
+
+        //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
+        advancedSearch.commit(
+          "advancedSearch/setEditAdvancedSearch",
+          searchQuery
+        );
+
+        //Calling the fetch method to get the result
+        if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
+        else this.fetchAdvancedSearchResults(routeQuery["q"]);
+      }
+    },
+    /**
+     * Download Results on click of download result button
+     */
+    downloadResults() {
+      const MIME_TYPE = "text/csv";
+      let data = ["name,abbreviation,URL\n"];
+      this.getAdvancedSearchResponse.forEach((record) => {
+        data.push(
+          `${record.name},${
+            record.abbreviation || "n/a"
+          },https://fairsharing.org/${record.id}\n`
+        );
+      });
+      let blob = new Blob(data, { type: MIME_TYPE });
+      window.location.href = window.URL.createObjectURL(blob);
+    },
+  },
+};
+&lt;/script>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
+	
+		on Fri Mar 8th 2024
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

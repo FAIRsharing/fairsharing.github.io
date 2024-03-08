@@ -2,40 +2,11 @@
   <v-card
     elevation="3"
     :class="[
-      'mx-2 py-2 full-width d-flex flex-column',
+      'mx-2 full-width d-flex flex-column',
       $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
     ]"
   >
-    <div class="d-flex flex-wrap full-width">
-      <v-btn
-        class="mx-2 button-width"
-        color="accent"
-        elevation="2"
-        @click="editAdvancedSearch()"
-      >
-        <v-icon
-          small
-          class="mr-1"
-        >
-          fa-solid fa-pen
-        </v-icon>
-        <span class="button-text-size">Edit Advanced Search</span>
-      </v-btn>
-      <v-btn
-        class="mx-2 button-width white--text"
-        color="secondary"
-        elevation="2"
-        @click="openAdvancedSearch()"
-      >
-        <v-icon
-          small
-          class="mr-1"
-        >
-          fa-solid fa-reply
-        </v-icon>
-        <span class="button-text-size">Restart Advanced Search</span>
-      </v-btn>
-    </div>
+    <AdvancedSearchButtons />
     <div
       v-if="getAdvancedSearchText"
       class="searchText chips-holder ma-2"
@@ -98,11 +69,12 @@
 import { mapGetters, mapState } from "vuex";
 
 import extraFilterChips from "@/data/extraFilterChips.json";
-import advancedSearch from "@/store";
 import stringUtils from "@/utils/stringUtils";
+import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
 
 export default {
   name: "AdvancedSearchSelection",
+  components: { AdvancedSearchButtons },
   mixins: [stringUtils],
   data() {
     return {
@@ -176,15 +148,6 @@ export default {
     printOperator(value) {
       if (value === "_and") return "And";
       else if (value === "_or") return "Or";
-    },
-    editAdvancedSearch() {
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
-    },
-    openAdvancedSearch() {
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true
-      );
     },
 
     /**
@@ -264,12 +227,6 @@ export default {
         }
       }
     }
-  }
-}
-.button-width {
-  width: 46%;
-  .button-text-size {
-    font-size: 11.5px;
   }
 }
 </style>

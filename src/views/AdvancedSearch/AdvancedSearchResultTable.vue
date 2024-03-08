@@ -153,7 +153,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import TagChips from "@/components/Records/Shared/TagChips.vue";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";

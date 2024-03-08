@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import advancedSearch from "@/store/advancedSearch";
-import AdvancedSearchResultTable from "@/views/Records/AdvancedSearchResultTable.vue";
+import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
 
 let $route = {
   name: "search",

@@ -132,5 +132,5 @@ export const PreservationPolicy = () =>
   );
 export const AdvancedSearchRecords = () =>
   import(
-    /* webpackChunkName: "organisationsList-chunk" */ "@/views/Records/AdvancedSearchRecordsView.vue"
+    /* webpackChunkName: "organisationsList-chunk" */ "@/views/AdvancedSearch/AdvancedSearchRecordsView.vue"
   );

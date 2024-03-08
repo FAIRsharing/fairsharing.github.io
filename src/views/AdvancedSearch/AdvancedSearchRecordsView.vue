@@ -19,6 +19,11 @@
       fluid
       class="pa-0"
     >
+      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+        <v-col>
+          <AdvancedSearchButtons />
+        </v-col>
+      </v-row>
       <v-row no-gutters>
         <!-- Advanced search selection left column-->
         <v-col
@@ -43,10 +48,11 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import JumpToTop from "@/components/Navigation/jumpToTop.vue";
-import Loaders from "@/components/Navigation/Loaders";
+import Loaders from "@/components/Navigation/Loaders.vue";
 import onScrollUtil from "@/utils/onScrollUtil";
-import AdvancedSearchResultTable from "@/views/Records/AdvancedSearchResultTable.vue";
-import AdvancedSearchSelection from "@/views/Records/AdvancedSearchSelection.vue";
+import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
+import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
+import AdvancedSearchSelection from "@/views/AdvancedSearch/AdvancedSearchSelection.vue";
 
 export default {
   name: "AdvancedSearchRecordsView",
@@ -55,6 +61,7 @@ export default {
     Loaders,
     AdvancedSearchResultTable,
     AdvancedSearchSelection,
+    AdvancedSearchButtons,
   },
   mixins: [onScrollUtil],
   data() {

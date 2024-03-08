@@ -63,9 +63,9 @@ export default {
 </script>
 <style scoped lang="scss">
 .button-width {
-  width: 46%;
+  width: 50%;
   .button-text-size {
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 </style>

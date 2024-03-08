@@ -96,10 +96,6 @@ export default {
       default: "",
       type: String,
     },
-    isDialog: {
-      default: false,
-      type: Boolean,
-    },
   },
   data: () => {
     return {
@@ -149,9 +145,6 @@ export default {
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;
     },
-  },
-  mounted() {
-    this.dialog = this.isDialog;
   },
   methods: {
     ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),

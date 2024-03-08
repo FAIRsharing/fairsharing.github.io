@@ -36,12 +36,13 @@
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
-    <AdvancedSearchDialogBox :is-dialog="dialog" />
+    <AdvancedSearchDialogBox />
   </div>
 </template>
 
 <script>
 import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
+import advancedSearch from "@/store";
 
 export default {
   name: "AdvancedSearch",
@@ -59,7 +60,10 @@ export default {
   },
   methods: {
     openAdvanceSearch() {
-      this.dialog = true;
+      advancedSearch.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        true
+      );
     },
   },
 };

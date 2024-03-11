@@ -158,7 +158,9 @@ let editorStore = {
             state.commit("setOrganisations", organisations['searchOrganisations'])
         },
         async getOrganisationsTypes(state){
+            console.log('getting types');
             let organisationsTypes = await graphClient.executeQuery(getOrganisationsTypesQuery);
+            console.log("Got: " + JSON.stringify(organisationsTypes));
             state.commit("setOrganisationsTypes", organisationsTypes['searchOrganisationTypes'])
         },
         async getGrants(state){

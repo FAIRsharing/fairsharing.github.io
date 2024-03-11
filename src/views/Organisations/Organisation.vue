@@ -159,7 +159,7 @@
         >
           <v-btn
             class="warning"
-            @click="showEditDialog = true"
+            @click="startEditing"
           >
             Edit Organisation
           </v-btn>
@@ -236,6 +236,33 @@
                     cols="12"
                     class="pb-0"
                   >
+                    <v-autocomplete
+                      v-model="editedOrganisation.types"
+                      :items="organisationsTypes"
+                      multiple
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Select an organisation type(s)"
+                      :rules="[rules.isRequired()]"
+                    >
+                      <!-- autocomplete selected -->
+                      <template #selection="data">
+                        <v-chip
+                          class="blue white--text removeStyle"
+                          close
+                          @click:close="removeType(data.item)"
+                        >
+                          {{ data.item.name }}
+                        </v-chip>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
                     <v-file-input
                       v-model="editedOrganisation.logo"
                       :rules="[rules.isImage(), imageSizeCorrect]"
@@ -282,7 +309,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
@@ -320,7 +347,6 @@ export default {
         homepage: '',
         alternativeNames: [],
         types: [],
-        users: [],
         parentOrganisations: [],
         childOrganisations: [],
         countries: [],
@@ -359,6 +385,7 @@ export default {
   },
   computed: {
     ...mapState('users', ['user']),
+    ...mapState("editor", ["organisationsTypes"]),
     currentRoute() {
       return this.$route.params['id'];
     },
@@ -378,6 +405,7 @@ export default {
     await this.getOrganisation();
   },
   methods: {
+    ...mapActions("editor", ["getOrganisationsTypes"]),
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
@@ -398,10 +426,16 @@ export default {
     },
     async editOrganisation() {
       // TODO complete organisation input
+      // A Ruby-style map would be better here. Please feel free to refactor if you know how! ;-)
+      let type_ids = []
+      this.editedOrganisation.types.forEach((type) => {
+        type_ids.push(type.id)
+      })
       this.logoLoading = true;
       let organisationInput = {
         name: this.editedOrganisation.name,
-        homepage: this.editedOrganisation.homepage
+        homepage: this.editedOrganisation.homepage,
+        organisation_type_ids: type_ids
       }
       if (this.editedOrganisation.logo) {
         let convertedFile = await toBase64(this.editedOrganisation.logo);
@@ -472,6 +506,18 @@ export default {
     },
     orgUrl() {
       return process.env.VUE_APP_HOSTNAME + 'organisations/'
+    },
+    removeType(type) {
+      this.editedOrganisation.types = this.editedOrganisation.types.filter(obj =>
+          obj.label !== type.name && obj.id !== type.id
+      );
+    },
+    async startEditing() {
+      this.showEditDialog = true;
+      await this.getOrganisationsTypes();
+      this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
+          this.organisation.types.indexOf(obj.name) > -1
+      );
     }
   }
 }

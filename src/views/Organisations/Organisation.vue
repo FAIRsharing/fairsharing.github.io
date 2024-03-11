@@ -274,6 +274,64 @@
                     cols="12"
                     class="pb-0"
                   >
+                    <v-autocomplete
+                      v-model="editedOrganisation.countries"
+                      label="Countries"
+                      :items="countries"
+                      item-text="name"
+                      item-value="name"
+                      multiple
+                      outlined
+                      return-object
+                      :rules="[editedOrganisation.countries &&
+                        !(editedOrganisation.countries === 0)]"
+                    >
+                      <template #prepend>
+                        <v-tooltip
+                          bottom
+                          max-width="300px"
+                          class="text-justify"
+                        >
+                          <template #activator="{ on }">
+                            <v-icon v-on="on">
+                              fa-question-circle
+                            </v-icon>
+                          </template>
+                          {{ tooltips['countries'] }}
+                        </v-tooltip>
+                      </template>
+
+                      <!-- autocomplete selected -->
+                      <template #selection="data">
+                        <v-chip
+                          class="blue white--text removeStyle"
+                          close
+                          @click:close="removeCountry( data.item )"
+                        >
+                          {{ data.item.name }}
+                        </v-chip>
+                      </template>
+
+                      <!-- autocomplete data -->
+                      <template #item="data">
+                        <country-flag
+                          v-if="data.item.code !== null"
+                          :country="data.item.code"
+                          size="normal"
+                        />
+                        <img
+                          v-else
+                          src="@/assets/placeholders/country.png"
+                          class="ml-4 mr-3"
+                        >
+                        <div> {{ data.item.name }} </div>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
                     <v-file-input
                       v-model="editedOrganisation.logo"
                       :rules="[rules.isImage(), imageSizeCorrect]"
@@ -386,7 +444,7 @@ export default {
   },
   computed: {
     ...mapState('users', ['user']),
-    ...mapState("editor", ["organisationsTypes"]),
+    ...mapState("editor", ["organisationsTypes", "countries", "tooltips"]),
     currentRoute() {
       return this.$route.params['id'];
     },
@@ -406,7 +464,7 @@ export default {
     await this.getOrganisation();
   },
   methods: {
-    ...mapActions("editor", ["getOrganisationsTypes"]),
+    ...mapActions("editor", ["getOrganisationsTypes", "getCountries"]),
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
@@ -419,6 +477,7 @@ export default {
           this.editedOrganisation.name = this.organisation.name;
           this.editedOrganisation.homepage = this.organisation.homepage;
           this.editedOrganisation.rorLink = this.organisation.rorLink;
+          this.editedOrganisation.countries = this.organisation.countries;
           this.error = false;
         }
         this.loading = false;
@@ -433,11 +492,16 @@ export default {
       this.editedOrganisation.types.forEach((type) => {
         type_ids.push(type.id)
       })
+      let country_ids = []
+      this.editedOrganisation.countries.forEach((country) => {
+        country_ids.push(country.id)
+      })
       this.logoLoading = true;
       let organisationInput = {
         name: this.editedOrganisation.name,
         homepage: this.editedOrganisation.homepage,
         organisation_type_ids: type_ids,
+        country_ids: country_ids,
         ror_link: this.editedOrganisation.rorLink
       }
       if (this.editedOrganisation.logo) {
@@ -515,12 +579,18 @@ export default {
           obj.label !== type.name && obj.id !== type.id
       );
     },
+    removeCountry(country) {
+      this.editedOrganisation.countries = this.editedOrganisation.countries.filter(obj =>
+          obj.label !== country.name && obj.id !== country.id
+      );
+    },
     async startEditing() {
       this.showEditDialog = true;
       await this.getOrganisationsTypes();
       this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
           this.organisation.types.indexOf(obj.name) > -1
       );
+      await this.getCountries();
     }
   }
 }

@@ -236,6 +236,17 @@
                     cols="12"
                     class="pb-0"
                   >
+                    <v-text-field
+                      v-model="editedOrganisation.rorLink"
+                      label="ROR Link"
+                      outlined
+                      :rules="[rules.isURL()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
                     <v-autocomplete
                       v-model="editedOrganisation.types"
                       :items="organisationsTypes"
@@ -274,16 +285,6 @@
                     />
                   </v-col>
                 </v-row>
-                <!--
-        alternativeNames: [],
-        types: [],
-        parentOrganisations: [],
-        childOrganisations: [],
-        countries: [],
-        rorId: null,
-        logo: null,
-      },
-                -->
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -345,13 +346,13 @@ export default {
       editedOrganisation: {
         name: '',
         homepage: '',
-        alternativeNames: [],
         types: [],
+        logo: null,
+        alternativeNames: [],
         parentOrganisations: [],
         childOrganisations: [],
         countries: [],
-        rorLink: [],
-        logo: null
+        rorLink: []
       },
       loading: false,
       logoLoading: false,
@@ -417,6 +418,7 @@ export default {
           this.organisation = JSON.parse(JSON.stringify(org.organisation));
           this.editedOrganisation.name = this.organisation.name;
           this.editedOrganisation.homepage = this.organisation.homepage;
+          this.editedOrganisation.rorLink = this.organisation.rorLink;
           this.error = false;
         }
         this.loading = false;
@@ -435,7 +437,8 @@ export default {
       let organisationInput = {
         name: this.editedOrganisation.name,
         homepage: this.editedOrganisation.homepage,
-        organisation_type_ids: type_ids
+        organisation_type_ids: type_ids,
+        ror_link: this.editedOrganisation.rorLink
       }
       if (this.editedOrganisation.logo) {
         let convertedFile = await toBase64(this.editedOrganisation.logo);

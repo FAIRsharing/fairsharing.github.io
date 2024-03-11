@@ -283,7 +283,7 @@ let editorStore = {
                 if (allowed.includes(relation.target)) output.push(relation.target);
             });
             return [...new Set(output)];
-        },
+        }
     }
 };
 

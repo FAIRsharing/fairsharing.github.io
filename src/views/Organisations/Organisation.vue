@@ -4,6 +4,9 @@
     fluid
     class="standard grey lighten-3 pb-10"
   >
+    <Loaders
+      v-if="loading"
+    />
     <div v-if="error && !loading">
       <NotFound />
     </div>
@@ -257,6 +260,7 @@
                       :rules="[]"
                     />
                   </v-col>
+                  <!-- TODO insert parent and child organisations here -->
                   <v-col
                     cols="12"
                     class="pb-0"
@@ -608,12 +612,14 @@ export default {
       );
     },
     async startEditing() {
+      this.loading = true;
       this.showEditDialog = true;
       await this.getOrganisationsTypes();
       this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
           this.organisation.types.indexOf(obj.name) > -1
       );
       await this.getCountries();
+      this.loading = false;
     }
   }
 }

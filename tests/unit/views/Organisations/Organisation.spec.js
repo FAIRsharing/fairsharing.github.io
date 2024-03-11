@@ -1,12 +1,12 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils"
+import { createLocalVue, shallowMount } from "@vue/test-utils"
 import { RouterLinkStub } from '@vue/test-utils';
 import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuetify from "vuetify";
 import Vuex from "vuex"
 
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import RESTClient from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import light from "@/plugins/theme";
 import users from "@/store/users.js";
 import Organisation from "@/views/Organisations/Organisation";
@@ -23,7 +23,7 @@ users.state.user = function(){ return {
 
 let $store = new Vuex.Store({
     modules: {
-        users: users,
+        users: users
     }
 })
 

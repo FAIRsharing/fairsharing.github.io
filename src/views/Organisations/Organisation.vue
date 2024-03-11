@@ -247,6 +247,20 @@
                     cols="12"
                     class="pb-0"
                   >
+                    <v-text-field
+                      v-model="editedOrganisation.alternativeNames"
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Alternative names"
+                      :rules="[]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
                     <v-autocomplete
                       v-model="editedOrganisation.types"
                       :items="organisationsTypes"
@@ -406,11 +420,11 @@ export default {
         homepage: '',
         types: [],
         logo: null,
+        countries: [],
+        rorLink: [],
         alternativeNames: [],
         parentOrganisations: [],
         childOrganisations: [],
-        countries: [],
-        rorLink: []
       },
       loading: false,
       logoLoading: false,
@@ -478,6 +492,7 @@ export default {
           this.editedOrganisation.homepage = this.organisation.homepage;
           this.editedOrganisation.rorLink = this.organisation.rorLink;
           this.editedOrganisation.countries = this.organisation.countries;
+          this.editedOrganisation.alternativeNames = this.organisation.alternativeNames;
           this.error = false;
         }
         this.loading = false;
@@ -496,13 +511,21 @@ export default {
       this.editedOrganisation.countries.forEach((country) => {
         country_ids.push(country.id)
       })
+      let alt_names;
+      try {
+        alt_names = this.editedOrganisation.alternativeNames.split(',');
+      }
+      catch {
+        alt_names = [];
+      }
       this.logoLoading = true;
       let organisationInput = {
         name: this.editedOrganisation.name,
         homepage: this.editedOrganisation.homepage,
         organisation_type_ids: type_ids,
         country_ids: country_ids,
-        ror_link: this.editedOrganisation.rorLink
+        ror_link: this.editedOrganisation.rorLink,
+        alternative_names: alt_names
       }
       if (this.editedOrganisation.logo) {
         let convertedFile = await toBase64(this.editedOrganisation.logo);

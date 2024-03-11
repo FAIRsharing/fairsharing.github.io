@@ -360,6 +360,18 @@
                       prepend-icon="fa-image"
                     />
                   </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-img
+                      v-if="logoUrl"
+                      :src="logoUrl"
+                      contain
+                      aspect-ratio="1"
+                      height="120px"
+                    />
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>

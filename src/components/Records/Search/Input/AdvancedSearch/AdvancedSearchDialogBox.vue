@@ -152,7 +152,6 @@ export default {
     closeDialog() {
       this.dialog = false;
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
-
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
         false
@@ -180,9 +179,7 @@ export default {
       if (this.updatedAdvancedSearchText)
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
       else this.fetchAdvancedSearchResults(this.advancedSearchTerm);
-      this.dialog = false;
-
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
+      this.closeDialog();
       //Clear search text field flag
       this.$emit("clearSearchField", true);
 

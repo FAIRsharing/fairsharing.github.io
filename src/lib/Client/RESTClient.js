@@ -606,7 +606,7 @@ class RESTClient {
     }
 
     /**
-     * Create a given organisation
+     * Edit a given organisation
      * @param {Object} organisation
      * @param {Number} id
      * @param {String} userToken - the user jwt

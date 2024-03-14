@@ -42,6 +42,8 @@
         </v-col>
       </v-row>
     </v-container>
+    <!--Dialog Box -->
+    <AdvancedSearchDialogBox />
   </v-main>
 </template>
 <script>
@@ -49,6 +51,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 import JumpToTop from "@/components/Navigation/jumpToTop.vue";
 import Loaders from "@/components/Navigation/Loaders.vue";
+import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
 import onScrollUtil from "@/utils/onScrollUtil";
 import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
@@ -57,6 +60,7 @@ import AdvancedSearchSelection from "@/views/AdvancedSearch/AdvancedSearchSelect
 export default {
   name: "AdvancedSearchRecordsView",
   components: {
+    AdvancedSearchDialogBox,
     JumpToTop,
     Loaders,
     AdvancedSearchResultTable,

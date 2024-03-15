@@ -36,7 +36,7 @@ const removeItem = (item, arrayList) => {
 
 /**
  * Mixin to filter the records types based on the registry
- * @type {{computed: {getRecordTypes: Computed}, methods: {filteredRecordTypes(*): *[]}}}
+ * {{computed: {getRecordTypes: Computed}, methods: {filteredRecordTypes(*): *[]}}}
  * @param {String} registryname
  * @return {Array} - recordTypes filtered by registryname
  */

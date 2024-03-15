@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
 
 let $route = {

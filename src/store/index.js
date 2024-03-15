@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
 import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
 import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
@@ -9,7 +10,6 @@ import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
 import taxonomiesSearch from "@/store/AdvancedSearchComponents/taxonomiesSearch";
 import userDefinedTagsSearch from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 
-import advancedSearch from "./advancedSearch";
 import editor from "./editor";
 import introspection from "./introspector.js";
 import messages from "./messages";

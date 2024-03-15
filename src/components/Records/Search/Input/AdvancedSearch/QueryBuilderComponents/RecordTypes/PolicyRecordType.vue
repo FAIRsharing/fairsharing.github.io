@@ -4,20 +4,23 @@
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="recordTypes"
+      :item-list="filteredRecordTypes('Policy')"
       @input="selectedValue"
     />
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
-import SelectComponent from "./SelectComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import { recordTypes } from "@/utils/advancedSearchUtils";
+
+import SelectComponent from "../SelectComponent.vue";
+import TooltipComponent from "../TooltipComponent.vue";
 
 export default {
-  name: "RecordType",
+  name: "PolicyRecordType",
   components: { TooltipComponent, SelectComponent },
+  mixins: [recordTypes],
   props: {
     value: {
       type: Array,
@@ -28,14 +31,11 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The type of record within a FAIRsharing registry, e.g. knowledgebase is a type of Database. Multiple selections will be joined with OR.",
+      toolTipText:
+        "The type of record within a FAIRsharing Policy registry. Multiple selections will be joined with OR.",
     };
   },
   computed: {
-    ...mapGetters("recordTypes", ["getRecordTypes"]),
-    recordTypes() {
-      return this.getRecordTypes.map(({ name }) => name);
-    },
     model: {
       get() {
         return this.itemSelected;

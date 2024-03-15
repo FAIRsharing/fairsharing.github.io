@@ -1,4 +1,9 @@
-export const RecordType = () => import("./RecordType.vue");
+export const DatabaseRecordType = () =>
+  import("./RecordTypes/DatabaseRecordType.vue");
+export const StandardRecordType = () =>
+  import("./RecordTypes/StandardRecordType.vue");
+export const PolicyRecordType = () =>
+  import("./RecordTypes/PolicyRecordType.vue");
 export const Registry = () => import("./Registry.vue");
 export const Subject = () => import("./Subject.vue");
 export const UserDefinedTag = () => import("./UserDefinedTag.vue");

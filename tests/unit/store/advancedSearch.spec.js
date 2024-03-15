@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import AdvancedSearchStore from "@/store/advancedSearch.js";
+import AdvancedSearchStore from "@/store/AdvancedSearchComponents/advancedSearch.js";
 
 import AdvancedSearchData from "../../../tests/fixtures/getAdvancedSearch.json";
 

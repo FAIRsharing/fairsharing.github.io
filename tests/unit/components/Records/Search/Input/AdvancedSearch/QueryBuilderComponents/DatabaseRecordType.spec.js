@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import RecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/RecordType.vue";
+import DatabaseRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/RecordTypes/DatabaseRecordType.vue";
 import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 
 const $router = {
@@ -13,7 +13,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("RecordType.vue", () => {
+describe("DatabaseRecordType.vue", () => {
   let wrapper, store, actions;
   beforeEach(() => {
     recordTypes.getters = {
@@ -40,7 +40,7 @@ describe("RecordType.vue", () => {
         recordTypes: recordTypes,
       },
     });
-    wrapper = shallowMount(RecordType, {
+    wrapper = shallowMount(DatabaseRecordType, {
       localVue,
       vuetify,
       store,
@@ -49,6 +49,6 @@ describe("RecordType.vue", () => {
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("RecordType");
+    expect(wrapper.vm.$options.name).toBe("DatabaseRecordType");
   });
 });

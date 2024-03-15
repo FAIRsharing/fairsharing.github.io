@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import UserDefinedTag from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UserDefinedTag.vue";
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import userDefinedTagsSearch from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 
 const $router = {

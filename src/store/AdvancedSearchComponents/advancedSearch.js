@@ -43,10 +43,22 @@ const actions = {
 
           mergedValues.forEach((params) => {
             let fieldKey = params["identifier"];
-            if (Array.isArray(params["value"])) {
-              fieldValue = params["value"];
-            } else if (params["value"]) {
-              fieldValue = [params["value"]];
+            //Changing databasetype/standardtype/policytype keyname to 'type'
+            //to pass as a required key for advancedSearch query
+            if (
+              fieldKey === "databasetype" ||
+              fieldKey === "standardtype" ||
+              fieldKey === "policytype"
+            ) {
+              fieldKey = "type";
+              fieldValue.push(params["value"]);
+              fieldValue = fieldValue.flatMap((value) => value);
+            } else {
+              if (Array.isArray(params["value"])) {
+                fieldValue = params["value"];
+              } else if (params["value"]) {
+                fieldValue = [params["value"]];
+              }
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());

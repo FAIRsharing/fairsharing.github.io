@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Domains from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Domains.vue";
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
 
 const $router = {

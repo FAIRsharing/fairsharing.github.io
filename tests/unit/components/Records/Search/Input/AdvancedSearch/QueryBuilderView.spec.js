@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 
 const $router = {
   push: jest.fn(),

@@ -14,14 +14,16 @@ import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
   DataAccessCondition,
+  DatabaseRecordType,
   DataCuration,
   DataDepositionCondition,
   Domain,
   Licences,
   Organisations,
+  PolicyRecordType,
   RecordStatus,
-  RecordType,
   Registry,
+  StandardRecordType,
   Subject,
   Taxonomies,
   UserDefinedTag,
@@ -68,9 +70,21 @@ export default {
             initialValue: () => [],
           },
           {
-            identifier: "type",
-            name: "Record Type",
-            component: RecordType,
+            identifier: "databasetype",
+            name: "Database Record Type",
+            component: DatabaseRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "standardtype",
+            name: "Standard Record Type",
+            component: StandardRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "policytype",
+            name: "Policy Record Type",
+            component: PolicyRecordType,
             initialValue: () => [],
           },
           {

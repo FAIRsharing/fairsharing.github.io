@@ -102,7 +102,7 @@ export default {
       dialog: false,
       updatedAdvancedSearchText: "",
       toolTipText:
-        "Text entered here will be searched against various record fields, e.g. name and description.",
+        "Text will be searched against record fields such as name, abbreviation, description, tags, etc. Then, the results of that search will be filtered by the filters you have specified below.",
     };
   },
   computed: {

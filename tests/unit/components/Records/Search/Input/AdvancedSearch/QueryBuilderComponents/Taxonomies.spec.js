@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Taxonomies from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Taxonomies.vue";
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import taxonomiesSearch from "@/store/AdvancedSearchComponents/taxonomiesSearch";
 
 const $router = {

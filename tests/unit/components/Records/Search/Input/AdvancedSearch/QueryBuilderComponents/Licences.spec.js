@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Licences from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Licences.vue";
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
 
 const $router = {

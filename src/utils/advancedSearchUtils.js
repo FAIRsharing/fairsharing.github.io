@@ -1,4 +1,5 @@
 import { uniqWith } from "lodash";
+import { mapGetters } from "vuex";
 
 /**
  * Removes duplicate values in a set and returns unique values
@@ -33,4 +34,27 @@ const removeItem = (item, arrayList) => {
   if (index >= 0) arrayList.splice(index, 1);
 };
 
-export { removeItem, uniqueValues };
+/**
+ * Mixin to filter the records types based on the registry
+ * @type {{computed: {getRecordTypes: Computed}, methods: {filteredRecordTypes(*): *[]}}}
+ * @param {String} registryname
+ * @return {Array} - recordTypes filtered by registryname
+ */
+const recordTypes = {
+  computed: {
+    ...mapGetters("recordTypes", ["getRecordTypes"]),
+  },
+  methods: {
+    filteredRecordTypes(registry) {
+      let filteredRecordTypes = [];
+      this.getRecordTypes.filter(({ name, fairsharingRegistry }) => {
+        if (fairsharingRegistry["name"] === registry) {
+          filteredRecordTypes.push(name);
+        }
+      });
+      return filteredRecordTypes;
+    },
+  },
+};
+
+export { recordTypes, removeItem, uniqueValues };

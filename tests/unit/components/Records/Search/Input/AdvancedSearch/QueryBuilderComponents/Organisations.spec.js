@@ -3,7 +3,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Organisations from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Organisations.vue";
-import advancedSearch from "@/store/advancedSearch";
+import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
 
 const $router = {

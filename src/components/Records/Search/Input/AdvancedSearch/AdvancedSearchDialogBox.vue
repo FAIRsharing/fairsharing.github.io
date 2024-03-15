@@ -7,21 +7,9 @@
       @keydown.esc="closeDialog()"
     >
       <v-card>
-        <div
-          class="pt-6 pr-6"
-          style="text-align: right"
-        >
-          <v-btn
-            icon
-            dark
-            @click="closeDialog()"
-          >
-            <v-icon
-              color="black"
-              size="40px"
-            >
-              mdi-close
-            </v-icon>
+        <div class="pt-6 pr-6" style="text-align: right">
+          <v-btn icon dark @click="closeDialog()">
+            <v-icon color="black" size="40px"> mdi-close </v-icon>
           </v-btn>
         </div>
         <v-card-title>
@@ -30,10 +18,7 @@
               {{ advancedSearchTerm }}
             </span>
           </div>
-          <div
-            v-else
-            class="d-flex full-width"
-          >
+          <div v-else class="d-flex full-width">
             <TooltipComponent
               :tool-tip-text="toolTipText"
               text-colour="black--text"
@@ -53,12 +38,20 @@
         <v-card-text>
           <QueryBuilderView :is-dialog="dialog" />
         </v-card-text>
-        <v-card-actions class="px-6">
+        <v-card-actions
+          class="px-6"
+          :class="{
+            'flex-column align-center': $vuetify.breakpoint.smAndDown,
+          }"
+        >
           <v-btn
             color="accent3"
             variant="text"
             class="white--text"
-            width="250"
+            :class="{
+              'mb-3': $vuetify.breakpoint.smAndDown,
+            }"
+            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
             @click="closeDialog()"
           >
             Close
@@ -69,7 +62,7 @@
             variant="text"
             class="white--text"
             :disabled="isContinue"
-            width="250"
+            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
             @click="goToAdvancedSearch()"
           >
             Proceed

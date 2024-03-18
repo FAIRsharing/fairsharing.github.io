@@ -1,16 +1,38 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils"
+import { createLocalVue, shallowMount } from "@vue/test-utils"
 import { RouterLinkStub } from '@vue/test-utils';
 import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuetify from "vuetify";
 import Vuex from "vuex"
 
+import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import light from "@/plugins/theme";
+import users from "@/store/users.js";
 import Organisation from "@/views/Organisations/Organisation";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+users.state.user = function(){ return {
+    isLoggedIn: true,
+    id: 123,
+    credentials: {token: 123, username: 123},
+    watchedRecords: [1]
+}};
+
+let $store = new Vuex.Store({
+    modules: {
+        users: users
+    }
+})
+
+$store.state.users.user = function (){
+    return {
+        isLoggedIn: false,
+        credentials: {token: "123"}
+    }
+};
 
 let vuetify = new Vuetify({
     theme: {
@@ -24,6 +46,7 @@ let $route = {
 };
 const router = new VueRouter();
 const $router = { push: jest.fn() };
+let restStub;
 
 describe("Organisation", () => {
 
@@ -65,6 +88,10 @@ describe("Organisation", () => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
             organisation: organisation
         });
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({
+            data: {id: 1}
+        });
     });
 
     afterAll(() => {
@@ -76,7 +103,7 @@ describe("Organisation", () => {
             localVue,
             router,
             vuetify,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         const title = "Organisation";
@@ -91,7 +118,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         await wrapper.vm.getOrganisation();
@@ -112,7 +139,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.organisation).toStrictEqual({
@@ -141,7 +168,7 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.logoUrl).toEqual(process.env.VUE_APP_API_ENDPOINT + '/logo12345678');
@@ -154,12 +181,26 @@ describe("Organisation", () => {
             localVue,
             vuetify,
             router,
-            mocks: {$route, $router},
+            mocks: {$route, $router, $store},
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.currentRoute).toEqual(1);
         $route.params.id = 10;
         expect(wrapper.vm.currentRoute).toEqual(10);
+    });
+
+    // TODO: This will call the relevant code but the server's response is mocked.
+    // TODO: So, I can't prove that the server has modified the information.
+    it("can modify the organisation", async () => {
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            vuetify,
+            router,
+            mocks: {$route, $router, $store},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        wrapper.vm.editedOrganisation.name = 'changed name';
+        await wrapper.vm.editOrganisation();
     });
 
 });

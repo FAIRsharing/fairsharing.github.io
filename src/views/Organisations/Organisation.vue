@@ -4,6 +4,9 @@
     fluid
     class="standard grey lighten-3 pb-10"
   >
+    <Loaders
+      v-if="loading"
+    />
     <div v-if="error && !loading">
       <NotFound />
     </div>
@@ -17,15 +20,13 @@
         elevation="3"
       >
         <SectionTitle title="Organisation" />
-
-        <!-- TODO: Replace with a component including a logo, when we have an edit form -->
-        <!-- TODO: This can be refactored to a new component at that time -->
+        <!-- TODO: This image refuses to go anywhere but centrally on the page -->
         <v-img
           v-if="logoUrl"
           :src="logoUrl"
           contain
           aspect-ratio="1"
-          height="100px"
+          height="120px"
         />
         <h2
           class="mt-3"
@@ -154,6 +155,18 @@
             {{ organisation.rorLink }}
           </a>
         </p>
+
+        <!-- edit -->
+        <p
+          v-if="user().is_curator"
+        >
+          <v-btn
+            class="warning"
+            @click="startEditing"
+          >
+            Edit Organisation
+          </v-btn>
+        </p>
       </v-card>
 
 
@@ -183,21 +196,223 @@
         </v-fade-transition>
       </v-col>
     </div>
+    <!-- Edit existing organisation -->
+    <v-expand-transition>
+      <v-dialog
+        v-model="showEditDialog"
+        height="100%"
+      >
+        <v-form
+          id="editOrganisation"
+          ref="editOrganisation"
+          v-model="editFormValid"
+        >
+          <v-card>
+            <v-card-text>
+              <v-container fluid>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="editedOrganisation.name"
+                      label="Name"
+                      outlined
+                      :rules="[rules.isRequired()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="editedOrganisation.homepage"
+                      label="Homepage"
+                      outlined
+                      :rules="[rules.isRequired(), rules.isURL()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="editedOrganisation.rorLink"
+                      label="ROR Link"
+                      outlined
+                      :rules="[rules.isURL()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="editedOrganisation.alternativeNames"
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Alternative names"
+                      :rules="[]"
+                    />
+                  </v-col>
+                  <!-- TODO insert parent and child organisations here -->
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-autocomplete
+                      v-model="editedOrganisation.types"
+                      :items="organisationsTypes"
+                      multiple
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Select an organisation type(s)"
+                      :rules="[rules.isRequired()]"
+                    >
+                      <!-- autocomplete selected -->
+                      <template #selection="data">
+                        <v-chip
+                          class="blue white--text removeStyle"
+                          close
+                          @click:close="removeType(data.item)"
+                        >
+                          {{ data.item.name }}
+                        </v-chip>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-autocomplete
+                      v-model="editedOrganisation.countries"
+                      label="Countries"
+                      :items="countries"
+                      item-text="name"
+                      item-value="name"
+                      multiple
+                      outlined
+                      return-object
+                      :rules="[editedOrganisation.countries &&
+                        !(editedOrganisation.countries === 0)]"
+                    >
+                      <template #prepend>
+                        <v-tooltip
+                          bottom
+                          max-width="300px"
+                          class="text-justify"
+                        >
+                          <template #activator="{ on }">
+                            <v-icon v-on="on">
+                              fa-question-circle
+                            </v-icon>
+                          </template>
+                          {{ tooltips['countries'] }}
+                        </v-tooltip>
+                      </template>
+
+                      <!-- autocomplete selected -->
+                      <template #selection="data">
+                        <v-chip
+                          class="blue white--text removeStyle"
+                          close
+                          @click:close="removeCountry( data.item )"
+                        >
+                          {{ data.item.name }}
+                        </v-chip>
+                      </template>
+
+                      <!-- autocomplete data -->
+                      <template #item="data">
+                        <country-flag
+                          v-if="data.item.code !== null"
+                          :country="data.item.code"
+                          size="normal"
+                        />
+                        <img
+                          v-else
+                          src="@/assets/placeholders/country.png"
+                          class="ml-4 mr-3"
+                        >
+                        <div> {{ data.item.name }} </div>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-file-input
+                      v-model="editedOrganisation.logo"
+                      :rules="[rules.isImage(), imageSizeCorrect]"
+                      clearable
+                      :loading="logoLoading"
+                      accept="images/png,image/jpeg"
+                      label="Logo"
+                      prepend-icon="fa-image"
+                    />
+                    <span>JPEG or PNG, max. file size 3MB.</span>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-img
+                      v-if="logoUrl"
+                      :src="logoUrl"
+                      contain
+                      aspect-ratio="1"
+                      height="120px"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="error"
+                @click="showEditDialog = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                class="success"
+                :disabled="!editFormValid || imageTooBig"
+                @click="editOrganisation()"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+    </v-expand-transition>
   </v-container>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import { isImage, isRequired, isUrl } from "@/utils/rules.js"
 import { cleanString } from "@/utils/stringUtils"
 import NotFound from "@/views/Errors/404"
 
 let graphClient = new GraphClient();
+import RestClient from "@/lib/Client/RESTClient.js"
+import {toBase64} from "@/utils/generalUtils";
+
+const restClient = new RestClient();
 
 export default {
   name: "Organisation",
@@ -206,6 +421,7 @@ export default {
   data: () => {
     return {
       error: true,
+      allowedFileSize: 3145728,
       organisation: {
         alternativeNames: [],
         types: [],
@@ -214,7 +430,20 @@ export default {
         childOrganisations: [],
         countries: []
       },
+      editedOrganisation: {
+        name: '',
+        homepage: '',
+        types: [],
+        logo: null,
+        countries: [],
+        rorLink: [],
+        alternativeNames: [],
+        parentOrganisations: [],
+        childOrganisations: [],
+      },
       loading: false,
+      logoLoading: false,
+      imageTooBig: true,
       perPage: 10,
       footer: {'items-per-page-options': [10]},
       showOverlay: false,
@@ -232,11 +461,19 @@ export default {
         {text: 'Email address', value: 'email', align: 'center'},
         {text: 'ORCID ID', value: 'orcid', align: 'center'},
         {text: 'Twitter', value: 'twitter', align: 'center'},
-      ]
+      ],
+      showEditDialog: false,
+      editFormValid: false,
+      rules: {
+        isRequired: function(){return isRequired() },
+        isURL: function(){ return isUrl() },
+        isImage: function(){ return isImage() }
+      },
     }
   },
   computed: {
     ...mapState('users', ['user']),
+    ...mapState("editor", ["organisationsTypes", "countries", "tooltips"]),
     currentRoute() {
       return this.$route.params['id'];
     },
@@ -250,12 +487,13 @@ export default {
   watch: {
     async currentRoute() {
       await this.getOrganisation();
-    }
+    },
   },
   async created() {
     await this.getOrganisation();
   },
   methods: {
+    ...mapActions("editor", ["getOrganisationsTypes", "getCountries"]),
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
@@ -265,12 +503,73 @@ export default {
         let org = await graphClient.executeQuery(getOrganisationQuery);
         if (org.organisation != null) {
           this.organisation = JSON.parse(JSON.stringify(org.organisation));
+          this.editedOrganisation.name = this.organisation.name;
+          this.editedOrganisation.homepage = this.organisation.homepage;
+          this.editedOrganisation.rorLink = this.organisation.rorLink;
+          this.editedOrganisation.countries = this.organisation.countries;
+          this.editedOrganisation.alternativeNames = this.organisation.alternativeNames;
           this.error = false;
         }
         this.loading = false;
       } catch (e) {
         this.errors = e.message;
       }
+    },
+    async editOrganisation() {
+      // TODO complete organisation input
+      // A Ruby-style map would be better here. Please feel free to refactor if you know how! ;-)
+      let type_ids = []
+      this.editedOrganisation.types.forEach((type) => {
+        type_ids.push(type.id)
+      })
+      let country_ids = []
+      this.editedOrganisation.countries.forEach((country) => {
+        country_ids.push(country.id)
+      })
+      let alt_names;
+      try {
+        alt_names = this.editedOrganisation.alternativeNames.split(',');
+      }
+      catch {
+        alt_names = [];
+      }
+      this.logoLoading = true;
+      let organisationInput = {
+        name: this.editedOrganisation.name,
+        homepage: this.editedOrganisation.homepage,
+        organisation_type_ids: type_ids,
+        country_ids: country_ids,
+        ror_link: this.editedOrganisation.rorLink,
+        alternative_names: alt_names
+      }
+      if (this.editedOrganisation.logo) {
+        let convertedFile = await toBase64(this.editedOrganisation.logo);
+        organisationInput.logo = {
+          filename: this.editedOrganisation.logo.name,
+          content_type: this.editedOrganisation.logo.type,
+          data: convertedFile
+        }
+      }
+      let data = await restClient.editOrganisation(organisationInput, this.organisation.id, this.user().credentials.token);
+      if (!data.error) {
+        // Reload to get the new data.
+        await this.getOrganisation();
+        this.showEditDialog = false;
+      }
+      this.logoLoading = false;
+    },
+    imageSizeCorrect() {
+      if (!this.editedOrganisation.logo) {
+        this.imageTooBig = false;
+        return true;
+      }
+      if (this.editedOrganisation.logo.size < this.allowedFileSize) {
+        this.imageTooBig = false;
+        return true;
+      }
+      this.$emit('imageTooBig', true);
+      this.imageTooBig = true;
+      return false;
     },
     goToEdit(id) {
       this.$router.push({path: `/${id}/edit`})
@@ -312,6 +611,26 @@ export default {
     },
     orgUrl() {
       return process.env.VUE_APP_HOSTNAME + 'organisations/'
+    },
+    removeType(type) {
+      this.editedOrganisation.types = this.editedOrganisation.types.filter(obj =>
+          obj.label !== type.name && obj.id !== type.id
+      );
+    },
+    removeCountry(country) {
+      this.editedOrganisation.countries = this.editedOrganisation.countries.filter(obj =>
+          obj.label !== country.name && obj.id !== country.id
+      );
+    },
+    async startEditing() {
+      this.loading = true;
+      this.showEditDialog = true;
+      await this.getOrganisationsTypes();
+      this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
+          this.organisation.types.indexOf(obj.name) > -1
+      );
+      await this.getCountries();
+      this.loading = false;
     }
   }
 }

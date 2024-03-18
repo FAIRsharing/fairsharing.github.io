@@ -205,6 +205,7 @@
                             label="Organisation Logo"
                             prepend-icon="fa-image"
                           />
+                          <span>JPEG or PNG, max. file size 3MB.</span>
                         </v-col>
                         <!-- countries -->
                         <v-col
@@ -478,7 +479,7 @@
       data(){
         return {
           formValid: false,
-          allowedFileSize: 1048576,
+          allowedFileSize: 3145728,
           imageTooBig: false,
           logoLoading: false,
           menus: {

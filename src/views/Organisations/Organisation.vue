@@ -359,6 +359,7 @@
                       label="Logo"
                       prepend-icon="fa-image"
                     />
+                    <span>JPEG or PNG, max. file size 3MB.</span>
                   </v-col>
                   <v-col
                     cols="12"
@@ -422,7 +423,7 @@ export default {
   data: () => {
     return {
       error: true,
-      allowedFileSize: 1048576,
+      allowedFileSize: 3145728,
       organisation: {
         alternativeNames: [],
         types: [],

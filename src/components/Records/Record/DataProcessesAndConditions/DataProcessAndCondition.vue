@@ -38,7 +38,7 @@
               <b class="width-200">Name</b>
               <div class="d-flex full-width ml-md-12 ml-13">
                 <a
-                  class="underline-effect word-break"
+                  class="underline-effect"
                   :href="subItem.url"
                   target="_blank"
                 >

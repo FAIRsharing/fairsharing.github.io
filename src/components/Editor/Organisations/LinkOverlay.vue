@@ -122,6 +122,7 @@
                     Select an organisation
                   </v-alert>
                 </v-card-text>
+                <!-- new organisation -->
                 <v-card-text>
                   <v-form
                     id="createNewOrganisation"
@@ -196,16 +197,15 @@
                         </v-col>
                         <v-col cols="12">
                           <v-file-input
-                            v-if="false"
                             v-model="menus.newOrganisation.data.logo"
-                            accept="image/png, image/jpeg"
-                            label="File input"
-                            placeholder="Select a logo"
-                            outlined
-                            :show-size="1000"
+                            :rules="[rules.isImage(), imageSizeCorrect]"
                             clearable
-                            chips
+                            :loading="logoLoading"
+                            accept="images/png,image/jpeg"
+                            label="Organisation Logo"
+                            prepend-icon="fa-image"
                           />
+                          <span>JPEG or PNG, max. file size 3MB.</span>
                         </v-col>
                         <!-- countries -->
                         <v-col
@@ -468,7 +468,8 @@
 
     import PublicationClient from "@/lib/Client/ExternalClients.js"
     import RestClient from "@/lib/Client/RESTClient.js"
-    import { isRequired, isUrl } from "@/utils/rules.js"
+    import {toBase64} from "@/utils/generalUtils";
+    import { isImage, isRequired, isUrl } from "@/utils/rules.js"
     const restClient = new RestClient();
     const pubClient = new PublicationClient();
 
@@ -478,6 +479,9 @@
       data(){
         return {
           formValid: false,
+          allowedFileSize: 3145728,
+          imageTooBig: false,
+          logoLoading: false,
           menus: {
             show: false,
             newOrganisation: {
@@ -486,6 +490,7 @@
                 country_ids: [],
                 parent_ror_links: [],
                 child_ror_links: [],
+                logo: null
               },
               loading: false,
               formValid: false,
@@ -502,7 +507,8 @@
           },
           rules: {
             isRequired: function(){return isRequired() },
-            isURL: function(){ return isUrl() }
+            isURL: function(){ return isUrl() },
+            isImage: function(){ return isImage() }
           },
           organisationsList:[],
           organisationsNameList: [],
@@ -528,17 +534,29 @@
         }
       },
       watch: {
-        'menus.newOrganisation.data.logo': function(){
-          if (this.menus.newOrganisation.data.logo) {
-            let reader = new FileReader();
-            reader.addEventListener('load', async (event) => {
-              this.menus.newOrganisation.logoData = {
-                filename: this.menus.newOrganisation.data.logo.name,
-                data: event.target['result'],
-                content_type: this.menus.newOrganisation.data.logo.type
-              };
-            });
-            reader.readAsDataURL(this.menus.newOrganisation.data.logo);
+        'menus.newOrganisation.data.logo': {
+          async handler(logo) {
+            let _module = this;
+            // this.menus.newOrganisation.logoData
+            if (logo === null || logo === undefined) {
+              // This is to prevent a logo being deleted if a user fiddles about with the form and then
+              // submits with no image uploaded.
+              if (_module.organisation.urlForLogo) {
+                _module.menus.newOrganisation.delete('logoData');
+              }
+              else {
+                _module.menus.newOrganisation.logoData = {}
+              }
+              return;
+            }
+            _module.logoLoading = true;
+            let convertedFile = await toBase64(logo);
+            _module.menus.newOrganisation.logoData = {
+              filename: logo.name,
+              content_type: logo.type,
+              data: convertedFile
+            };
+            _module.logoLoading = false;
           }
         },
         'editOrganisationLink.showOverlay': function() {
@@ -738,6 +756,20 @@
           this.menus.newOrganisation.data.child_ror_links = []
           this.$refs.createNewOrganisation.reset()
         },
+        imageSizeCorrect() {
+          if (!this.menus.newOrganisation.logo) {
+            this.imageTooBig = false;
+            return true;
+          }
+          if (this.menus.newOrganisation.logo.size < this.allowedFileSize) {
+            this.$emit('imageTooBig', false);
+            this.imageTooBig = false;
+            return true;
+          }
+          this.$emit('imageTooBig', true);
+          this.imageTooBig = true;
+          return false;
+        }
       }
     }
 </script>

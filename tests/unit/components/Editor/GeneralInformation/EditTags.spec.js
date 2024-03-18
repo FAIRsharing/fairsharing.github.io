@@ -72,7 +72,7 @@ describe('Editor -> EditTags.vue', () => {
         expect(wrapper.vm.$options.name).toMatch("EditTags");
         expect(wrapper.vm.recordTags.length).toBe(4);
         expect(wrapper.vm.buttonIcon).toBe("fa-plus-circle");
-        expect(wrapper.vm.buttonLabel).toBe("Add new term(s)");
+        expect(wrapper.vm.buttonLabel).toBe("Add/edit tags");
         wrapper.vm.menu.show = true;
         expect(wrapper.vm.buttonIcon).toBe("fa-minus-circle");
         expect(wrapper.vm.buttonLabel).toBe("Hide table")

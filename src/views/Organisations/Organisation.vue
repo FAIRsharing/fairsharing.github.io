@@ -198,11 +198,9 @@
     </div>
     <!-- Edit existing organisation -->
     <v-expand-transition>
-      <v-overlay
-        v-if="showEditDialog"
-        :dark="false"
-        :absolute="false"
-        opacity="0.8"
+      <v-dialog
+        v-model="showEditDialog"
+        height="100%"
       >
         <v-form
           id="editOrganisation"
@@ -393,7 +391,7 @@
             </v-card-actions>
           </v-card>
         </v-form>
-      </v-overlay>
+      </v-dialog>
     </v-expand-transition>
   </v-container>
 </template>

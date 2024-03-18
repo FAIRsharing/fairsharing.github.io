@@ -100,21 +100,9 @@
       @keydown.esc="closeDialog()"
     >
       &lt;v-card>
-        &lt;div
-          class="pt-6 pr-6"
-          style="text-align: right"
-        >
-          &lt;v-btn
-            icon
-            dark
-            @click="closeDialog()"
-          >
-            &lt;v-icon
-              color="black"
-              size="40px"
-            >
-              mdi-close
-            &lt;/v-icon>
+        &lt;div class="pt-6 pr-6" style="text-align: right">
+          &lt;v-btn icon dark @click="closeDialog()">
+            &lt;v-icon color="black" size="40px"> mdi-close &lt;/v-icon>
           &lt;/v-btn>
         &lt;/div>
         &lt;v-card-title>
@@ -123,10 +111,7 @@
               {{ advancedSearchTerm }}
             &lt;/span>
           &lt;/div>
-          &lt;div
-            v-else
-            class="d-flex full-width"
-          >
+          &lt;div v-else class="d-flex full-width">
             &lt;TooltipComponent
               :tool-tip-text="toolTipText"
               text-colour="black--text"
@@ -146,12 +131,20 @@
         &lt;v-card-text>
           &lt;QueryBuilderView :is-dialog="dialog" />
         &lt;/v-card-text>
-        &lt;v-card-actions class="px-6">
+        &lt;v-card-actions
+          class="px-6"
+          :class="{
+            'flex-column align-center': $vuetify.breakpoint.smAndDown,
+          }"
+        >
           &lt;v-btn
             color="accent3"
             variant="text"
             class="white--text"
-            width="250"
+            :class="{
+              'mb-3': $vuetify.breakpoint.smAndDown,
+            }"
+            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
             @click="closeDialog()"
           >
             Close
@@ -162,7 +155,7 @@
             variant="text"
             class="white--text"
             :disabled="isContinue"
-            width="250"
+            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
             @click="goToAdvancedSearch()"
           >
             Proceed

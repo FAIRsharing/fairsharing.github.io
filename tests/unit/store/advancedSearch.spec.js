@@ -19,6 +19,7 @@ describe("AdvancedSearch store methods", () => {
     errorStatus: false,
     loadingStatus: false,
     editDialogStatus: false,
+    advancedSearchDialogStatus: false,
   };
   let stub;
 
@@ -160,6 +161,11 @@ describe("AdvancedSearch store methods", () => {
     const editDialogStatus = true;
     mutations.setEditDialogStatus(state, editDialogStatus);
     expect(state.editDialogStatus).toBe(true);
+  });
+  it("can check setAdvancedSearchDialogStatus mutations", () => {
+    const advancedSearchDialogStatus = true;
+    mutations.setAdvancedSearchDialogStatus(state, advancedSearchDialogStatus);
+    expect(state.advancedSearchDialogStatus).toBe(true);
   });
 
   it("can check getAdvancedSearchText getters", () => {

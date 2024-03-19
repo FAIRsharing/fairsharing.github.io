@@ -7,18 +7,31 @@
       @keydown.esc="closeDialog()"
     >
       <v-card>
-        <div class="pt-6 pr-6" style="text-align: right">
-          <v-btn icon dark @click="closeDialog()">
-            <v-icon color="black" size="40px"> mdi-close </v-icon>
+        <div
+          class="pt-6 pr-6"
+          style="text-align: right"
+        >
+          <v-btn
+            icon
+            dark
+            @click="closeDialog()"
+          >
+            <v-icon
+              color="black"
+              size="40px"
+            >
+              mdi-close
+            </v-icon>
           </v-btn>
         </div>
         <v-card-title>
-          <div v-if="!getEditDialogStatus">
-            <span class="text-h5">
-              {{ advancedSearchTerm }}
-            </span>
-          </div>
-          <div v-else class="d-flex full-width">
+          <!--It will print the advancedSearch text on the dialog box when the search text is entered in the search field on the home page and advancedSearch is click-->
+          <!--          <div v-if="!getEditDialogStatus">-->
+          <!--            <span class="text-h5">-->
+          <!--              {{ advancedSearchTerm }}-->
+          <!--            </span>-->
+          <!--          </div>-->
+          <div class="d-flex full-width">
             <TooltipComponent
               :tool-tip-text="toolTipText"
               text-colour="black--text"

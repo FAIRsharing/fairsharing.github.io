@@ -1,6 +1,11 @@
 let lodash = require("lodash");
 
-import { removeItem, uniqueValues } from "@/utils/advancedSearchUtils.js";
+// import recordTypesStore from "@/store/AdvancedSearchComponents/recordTypes";
+import {
+  // recordTypes,
+  removeItem,
+  uniqueValues,
+} from "@/utils/advancedSearchUtils.js";
 
 describe("advancedSearchUtils.js", function () {
   it("method uniqueValues should result unique array without duplicate values", function () {

@@ -4,6 +4,7 @@
       :value="dialog"
       fullscreen
       persistent
+      :retain-focus="false"
       @keydown.esc="closeDialog()"
     >
       <v-card>
@@ -31,12 +32,26 @@
           <!--              {{ advancedSearchTerm }}-->
           <!--            </span>-->
           <!--          </div>-->
+
           <div class="d-flex full-width">
             <TooltipComponent
               :tool-tip-text="toolTipText"
               text-colour="black--text"
             />
             <v-text-field
+              v-if="!getEditDialogStatus"
+              ref="inputRef"
+              class="text-h5"
+              clearable
+              full-width
+              outlined
+              hide-details
+              label="Add Search text"
+              value=" "
+              @change="updateSearchText($event)"
+            />
+            <v-text-field
+              v-else
               class="text-h5"
               clearable
               full-width
@@ -109,6 +124,7 @@ export default {
       updatedAdvancedSearchText: "",
       toolTipText:
         "Text will be searched against record fields such as name, abbreviation, description, tags, etc. Then, the results of that search will be filtered by the filters you have specified below.",
+      queryString: "",
     };
   },
   computed: {
@@ -150,6 +166,10 @@ export default {
     },
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;
+      //Reset searchText field
+      if (newValue && this.$refs.inputRef !== undefined) {
+        this.$refs.inputRef.reset();
+      }
     },
   },
   methods: {
@@ -180,42 +200,57 @@ export default {
       };
       return queryValues;
     },
-
+    /**
+     * Method called on the click of the proceed button
+     * in dialog box
+     */
     goToAdvancedSearch() {
-      if (this.updatedAdvancedSearchText)
+      if (this.updatedAdvancedSearchText) {
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
-      else this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      } else {
+        this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      }
       this.closeDialog();
       //Clear search text field flag
       this.$emit("clearSearchField", true);
 
-      let queryString = "";
-      /*
-       * Add advancedSearch selection to query params in
-       * the URL by creating array of objects into string
-       */
+      this.advancedSearchQueryString();
+      this.advancedSearchNavigation(this.queryString);
+    },
+
+    /**
+     * Add advancedSearch selection to query params in
+     * the URL by creating array of objects into string
+     */
+    advancedSearchQueryString() {
       if (
         this.getAdvancedSearch["children"] &&
         this.getAdvancedSearch["children"].length
       ) {
         this.getAdvancedSearch["children"].forEach((item) => {
-          queryString += "(operator=";
-          queryString += item["operatorIdentifier"];
+          this.queryString += "(operator=";
+          this.queryString += item["operatorIdentifier"];
           const mergedValues = uniqueValues(item["children"]);
           mergedValues.forEach((params) => {
-            queryString += "&";
-            queryString += params["identifier"];
-            queryString += "=";
+            this.queryString += "&";
+            this.queryString += params["identifier"];
+            this.queryString += "=";
             if (Array.isArray(params["value"])) {
-              queryString += params["value"].toString();
+              this.queryString += params["value"].toString();
             } else if (params["value"]) {
-              queryString += params["value"];
+              this.queryString += params["value"];
             }
           });
-          queryString += ")";
+          this.queryString += ")";
         });
       }
+    },
 
+    /**
+     * Navigation method called on the click of the procced button
+     * and on the advancedSearch page
+     */
+    advancedSearchNavigation(queryString) {
       //When not on advancedSearch page
       if (this.$route.path !== "/advancedsearch") {
         if (this.getAdvancedSearchText) {
@@ -244,6 +279,10 @@ export default {
       }
     },
 
+    /**
+     * Method to update the searchTerm
+     * @param {Sting} -- item
+     */
     updateSearchText(item) {
       this.updatedAdvancedSearchText = item;
     },

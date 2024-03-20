@@ -57,7 +57,6 @@ export default {
         "advancedSearch/setAdvancedSearchDialogStatus",
         true
       );
-      advancedSearch.commit("advancedSearch/setAdvancedSearchText", "");
     },
   },
 };

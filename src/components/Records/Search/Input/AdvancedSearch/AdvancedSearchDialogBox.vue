@@ -9,21 +9,41 @@
     >
       <v-card>
         <div
-          class="pt-6 pr-6"
-          style="text-align: right"
+          class="d-flex pt-6 px-6 justify-space-between"
+          :class="{
+            'flex-column-reverse align-end': $vuetify.breakpoint.smAndDown,
+          }"
         >
-          <v-btn
-            icon
-            dark
-            @click="closeDialog()"
-          >
-            <v-icon
-              color="black"
-              size="40px"
+          <div style="text-align: center; margin: 0 auto">
+            <h2 class="primary--text">
+              Advanced filtering and searching for FAIRsharing records
+            </h2>
+            <p style="text-align: center">
+              Find out more about our Advanced Search in our
+              <a
+                href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+                target="_blank"
+                class="text-decoration-underline"
+              >gitbook documentation<v-icon x-small>
+                {{ "fa fa-link" }}
+              </v-icon>
+              </a>
+            </p>
+          </div>
+          <div>
+            <v-btn
+              icon
+              dark
+              @click="closeDialog()"
             >
-              mdi-close
-            </v-icon>
-          </v-btn>
+              <v-icon
+                color="black"
+                size="40px"
+              >
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </div>
         </div>
         <v-card-title>
           <!--It will print the advancedSearch text on the dialog box when the search text is entered in the search field on the home page and advancedSearch is click-->

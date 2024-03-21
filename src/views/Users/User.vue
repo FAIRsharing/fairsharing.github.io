@@ -154,11 +154,7 @@
                     </v-list-item>
                   </v-list>
                   <div v-if="publications.length === 0 && !loading">
-                    You do not have a valid ORCID ID. Get one <a
-                      href="https://orcid.org/register"
-                      rel="external"
-                      target="_blank"
-                    >here.</a>
+                    No publications found.
                   </div>
                 </v-card-text>
                 <v-card-actions>

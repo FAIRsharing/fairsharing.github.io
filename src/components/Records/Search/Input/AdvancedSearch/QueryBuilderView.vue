@@ -1,8 +1,5 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  />
+  <query-builder v-model="query" :config="config" />
 </template>
 
 <script>
@@ -194,7 +191,12 @@ export default {
         if (open && !this.getEditDialogStatus) {
           this.query = {
             operatorIdentifier: "_and",
-            children: [],
+            children: [
+              {
+                operatorIdentifier: "_and",
+                children: [],
+              },
+            ],
           };
         }
       },

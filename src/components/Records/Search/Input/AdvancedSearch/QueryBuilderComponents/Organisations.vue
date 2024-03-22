@@ -31,7 +31,8 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Organisations related to this record. Multiple selections will be joined with OR.",
+      toolTipText:
+        "Organisations related to this record. Multiple selections will be joined with OR. Start typing to see Organisations.",
     };
   },
 

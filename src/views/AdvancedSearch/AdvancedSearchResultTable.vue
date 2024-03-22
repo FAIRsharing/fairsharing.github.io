@@ -227,19 +227,25 @@ export default {
     downloadResults() {
       const MIME_TYPE = "text/csv";
       let data = [
-        "name,abbreviation,FAIRsharingURL,FAIRsharing DOI,Homepage,\n",
+        "Name,Abbreviation,FAIRsharingURL,FAIRsharing DOI,Homepage,Number of Publications \n",
       ];
       this.getAdvancedSearchResponse.forEach((record) => {
         data.push(
           `${record.name},${
             record.abbreviation || "n/a"
-          },https://fairsharing.org/${record.id},${record.doi || "n/a"},${
-            record.homepage || "n/a"
-          }\n`
+          },https://fairsharing.org/${record.id},${record.doi || "n/a"},
+          ${record.homepage || "n/a"},${this.recordPublicationsLength(
+            record
+          )}\n`
         );
       });
       let blob = new Blob(data, { type: MIME_TYPE });
       window.location.href = window.URL.createObjectURL(blob);
+    },
+    recordPublicationsLength(record) {
+      return record["publications"] && record["publications"].length
+        ? record["publications"].length
+        : 0;
     },
   },
 };

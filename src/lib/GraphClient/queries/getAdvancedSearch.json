@@ -9,6 +9,8 @@
     "registry",
     "status",
     "abbreviation",
+    "doi",
+    "homepage",
     {
       "name": "subjects",
       "fields": [
@@ -35,6 +37,14 @@
       "fields": [
         "id",
         "label"
+      ]
+    },
+    {
+      "name": "publications",
+      "fields": [
+        "title",
+        "url",
+        "doi"
       ]
     }
   ]

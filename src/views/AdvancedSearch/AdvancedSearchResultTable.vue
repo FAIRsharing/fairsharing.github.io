@@ -265,12 +265,16 @@ export default {
      */
     downloadResults() {
       const MIME_TYPE = "text/csv";
-      let data = ["name,abbreviation,URL\n"];
+      let data = [
+        "name,abbreviation,FAIRsharingURL,FAIRsharing DOI,Homepage,\n",
+      ];
       this.getAdvancedSearchResponse.forEach((record) => {
         data.push(
-          `${record.name},${
-            record.abbreviation || "n/a"
-          },https://fairsharing.org/${record.id}\n`
+          `${record.name},
+          ${record.abbreviation || "n/a"},
+          https://fairsharing.org/${record.id}
+          ${record.doi || "n/a"}
+          ${record.homepage || "n/a"}\n`
         );
       });
       let blob = new Blob(data, { type: MIME_TYPE });

@@ -1,8 +1,5 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  />
+  <query-builder v-model="query" :config="config" />
 </template>
 
 <script>
@@ -349,6 +346,7 @@ export default {
         flex-direction: column;
         align-items: unset;
         position: relative;
+        width: 100%;
       }
       .query-builder-rule__name {
         font-size: 14px;
@@ -365,6 +363,13 @@ export default {
         @media #{map-get($display-breakpoints, 'sm-and-down')} {
           max-width: 100%;
           margin-bottom: 10px;
+        }
+      }
+      .query-builder-group__group-control {
+        select {
+          @media #{map-get($display-breakpoints, 'md-and-up')} {
+            max-width: 320px;
+          }
         }
       }
     }

@@ -11,10 +11,45 @@
         <div
           class="d-flex pt-6 px-6 justify-space-between"
           :class="{
-            'flex-column-reverse align-end': $vuetify.breakpoint.smAndDown,
+            'flex-column align-end': $vuetify.breakpoint.smAndDown,
           }"
         >
-          <div style="text-align: center; margin: 0 auto">
+          <!--Close Button -->
+          <div
+            class="order-md-3"
+            style="padding-left: 14.4%"
+          >
+            <v-btn
+              icon
+              dark
+              @click="closeDialog()"
+            >
+              <v-icon
+                color="black"
+                size="40px"
+              >
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </div>
+          <!--FAIRsharing Logo -->
+          <router-link
+            to="/"
+            class="mt-n5 order-md-1"
+            :class="{
+              'mt-n15 mx-auto': $vuetify.breakpoint.smAndDown,
+            }"
+          >
+            <img
+              src="/assets/fairsharing-logo.svg"
+              alt="FAIRsharing logo"
+            >
+          </router-link>
+          <!--Advanced Search Header Text -->
+          <div
+            class="order-sm-2"
+            style="text-align: center; margin: 0 auto 0 auto"
+          >
             <h2 class="primary--text">
               Advanced filtering and searching for FAIRsharing records
             </h2>
@@ -29,20 +64,6 @@
               </v-icon>
               </a>
             </p>
-          </div>
-          <div>
-            <v-btn
-              icon
-              dark
-              @click="closeDialog()"
-            >
-              <v-icon
-                color="black"
-                size="40px"
-              >
-                mdi-close
-              </v-icon>
-            </v-btn>
           </div>
         </div>
         <v-card-title>
@@ -67,7 +88,6 @@
               outlined
               hide-details
               label="Add Search text"
-              value=" "
               @change="updateSearchText($event)"
             />
             <v-text-field

@@ -19,6 +19,23 @@
     >
       Download Results
     </v-btn>
+
+    <p class="body-2 mb-0">
+      <v-icon
+        x-small
+        class="infoIcon"
+      >
+        {{ "fa fa-info" }}
+      </v-icon>Find out more about our Advanced Search in our
+      <a
+        href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+        target="_blank"
+        class="text-decoration-underline"
+      >gitbook documentation<v-icon x-small>
+        {{ "fa fa-link" }}
+      </v-icon>
+      </a>
+    </p>
     <v-data-iterator
       :items="getAdvancedSearchResponse"
       :items-per-page.sync="itemsPerPage"
@@ -124,20 +141,7 @@
                 :record="item"
                 class="ml-10"
               />
-
-              <!-- TODO: this is a hacky placeholder -->
               <p class="pb-5" />
-
-              <!-- TODO: change below here -->
-              <!--
-                <v-divider />
-
-                <span>
-                  Some information about number of standards etc. can go here.
-                </span>
-
-                -->
-              <!-- TODO: change above here -->
             </v-card>
           </v-col>
         </v-row>
@@ -182,13 +186,10 @@ export default {
       "getAdvancedSearchQuery",
     ]),
     noFooter() {
-      if (
+      return (
         Array.isArray(this.getAdvancedSearchResponse) &&
         !this.getAdvancedSearchResponse.length
-      ) {
-        return true;
-      }
-      return false;
+      );
     },
   },
   mounted() {
@@ -280,6 +281,11 @@ export default {
       let blob = new Blob(data, { type: MIME_TYPE });
       window.location.href = window.URL.createObjectURL(blob);
     },
+    /**
+     * Calculate number of the publications for the record
+     * @param record
+     * @return {number}
+     */
     recordPublicationsLength(record) {
       return record["publications"] && record["publications"].length
         ? record["publications"].length
@@ -288,3 +294,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.infoIcon {
+  border: 1px solid;
+  border-radius: 50%;
+  padding: 3px 6px;
+  margin: -2px 2px 0 0;
+}
+</style>

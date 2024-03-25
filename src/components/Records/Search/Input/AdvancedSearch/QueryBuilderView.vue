@@ -1,5 +1,8 @@
 <template>
-  <query-builder v-model="query" :config="config" />
+  <query-builder
+    v-model="query"
+    :config="config"
+  />
 </template>
 
 <script>

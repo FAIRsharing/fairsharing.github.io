@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="d-flex flex-row mt-8"
-  >
+  <div class="d-flex flex-row mt-8">
     <v-row>
       <!--How to cite this record-->
       <v-col
@@ -24,43 +22,39 @@
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
-            <span
-              v-if="getField('name')"
-            >
-              FAIRsharing.org:
-            </span>
-            <span
-              v-if="getField('abbreviation')"
-            >
-              {{ getField('abbreviation')+';' }}
-            </span>{{ getField('name') }},
+            <span v-if="getField('name')"> FAIRsharing.org: </span>
+            <span v-if="getField('abbreviation')">
+              {{ getField("abbreviation") + ";" }} </span>{{ getField("name") }},
 
             <span v-if="getField('id') && !getField('doi')">
               <b>
                 FAIRsharing ID:
-                <router-link :to="`${getField('id')}`">{{ getHostname() + getField('id') }}</router-link>
-              </b>,
+                <router-link :to="`${getField('id')}`">{{
+                  getHostname() + getField("id")
+                }}</router-link> </b>,
             </span>
-
 
             <span v-if="getField('doi')">
               <b>
                 DOI:
-                <a :href="'https://doi.org/'+getField('doi')">{{ getField('doi') }}</a>,
+                <a :href="'https://doi.org/' + getField('doi')">{{
+                  getField("doi")
+                }}</a>,
               </b>
             </span>
 
             <b v-if="getField('lastEdited')">
-              Last Edited: {{ moment( getField('lastEdited')) }},
+              Last Edited: {{ moment(getField("lastEdited")) }},
             </b>
-            <b v-if="getField('lastEditor')!==null"><span class="mr-2">Last Editor:</span></b><span
-              v-if="getField('lastEditor')!==null && getField('lastEditor').username"
+            <b v-if="getField('lastEditor') !== null"><span class="mr-2">Last Editor:</span></b><span
+              v-if="
+                getField('lastEditor') !== null &&
+                  getField('lastEditor').username
+              "
               class="mr-2"
-            >{{ getField('lastEditor').username }},</span>
+            >{{ getField("lastEditor").username }},</span>
             <b>Last Accessed:</b>
-            <span
-              class="mr-2"
-            >
+            <span class="mr-2">
               {{ moment(new Date()) }}
             </span>
           </v-card-text>
@@ -74,7 +68,10 @@
         class="mt-md-0 mt-sm-8"
       >
         <v-card
-          v-if="getField('metadata')['citations'] && getField('metadata')['citations'].length>0"
+          v-if="
+            getField('metadata')['citations'] &&
+              getField('metadata')['citations'].length > 0
+          "
           class="pa-4 d-flex flex-column"
           outlined
           color="white"
@@ -101,11 +98,13 @@
                   v-if="publication.id === citation.publication_id"
                   class="d-flex flex-wrap"
                 >
-                  <p
-                    class="ma-0 mr-2"
-                  >
+                  <p class="ma-0 mr-2">
                     <b>{{ publication.title }}</b>:
-                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,600):truncate(publication.authors,150) }}
+                    {{
+                      $vuetify.breakpoint.lgAndUp
+                        ? truncate(publication.authors, 600)
+                        : truncate(publication.authors, 150)
+                    }}
                     ({{ publication.year }})
                     <a
                       v-if="citation.doi"
@@ -122,7 +121,9 @@
                       {{ citation.pubmed_id }}
                     </a>
                     <a
-                      v-if="!citation.pubmed_id && !citation.doi && citation.url"
+                      v-if="
+                        !citation.pubmed_id && !citation.doi && citation.url
+                      "
                       :href="citation.url"
                       target="_blank"
                     >
@@ -141,38 +142,39 @@
 
 <script>
 import moment from "moment";
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
-import Icon from "@/components/Icon"
+import Icon from "@/components/Icon";
 import getHostname from "@/utils/generalUtils";
-import {truncate} from "@/utils/stringUtils"
+import { truncate } from "@/utils/stringUtils";
 
 export default {
   name: "Citations",
   components: { Icon },
-  mixins: [ truncate, getHostname ],
+  mixins: [truncate, getHostname],
   data: () => {
     return {
-      currentDate: new Date()
-    }
+      currentDate: new Date(),
+    };
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
     ...mapGetters("record", ["getField"]),
   },
-  methods:{
-    moment (date) {
-      return moment(date).format('dddd, MMMM Do YYYY, H:mm');
-    }
-  }
-}
+  methods: {
+    moment(date) {
+      return moment(date).format("dddd, MMMM Do YYYY, H:mm");
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
 a {
   text-decoration: none;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     text-decoration: underline;
     outline: 0;
   }
@@ -180,6 +182,6 @@ a {
 
 .card-text-customize {
   min-height: 120px;
-  overflow: hidden
+  overflow: hidden;
 }
 </style>

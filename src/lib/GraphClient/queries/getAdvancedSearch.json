@@ -1,0 +1,51 @@
+{
+  "queryName": "advancedSearch",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "type",
+    "name",
+    "description",
+    "registry",
+    "status",
+    "abbreviation",
+    "doi",
+    "homepage",
+    {
+      "name": "subjects",
+      "fields": [
+        "label",
+        "id",
+        "definitions",
+        "iri",
+        "synonyms"
+      ]
+    },
+    {
+      "name": "domains",
+      "fields": [
+        "label",
+        "id",
+        "definitions",
+        "iri",
+        "synonyms",
+        "inFairsharing"
+      ]
+    },
+    {
+      "name": "taxonomies",
+      "fields": [
+        "id",
+        "label"
+      ]
+    },
+    {
+      "name": "publications",
+      "fields": [
+        "title",
+        "url",
+        "doi"
+      ]
+    }
+  ]
+}

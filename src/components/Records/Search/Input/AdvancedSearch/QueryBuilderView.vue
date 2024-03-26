@@ -1,8 +1,5 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  />
+  <query-builder v-model="query" :config="config" />
 </template>
 
 <script>
@@ -179,7 +176,6 @@ export default {
   },
   watch: {
     query(newValue) {
-      console.log("newValue::", newValue);
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       if (newValue["children"] && newValue["children"].length) {
         newValue["children"].forEach((item) => {

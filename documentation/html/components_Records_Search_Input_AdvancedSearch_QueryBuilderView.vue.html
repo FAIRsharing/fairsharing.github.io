@@ -92,7 +92,10 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;query-builder v-model="query" :config="config" />
+  &lt;query-builder
+    v-model="query"
+    :config="config"
+  />
 &lt;/template>
 
 &lt;script>
@@ -270,6 +273,7 @@ export default {
   watch: {
     query(newValue) {
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
+      //Updating edit advanced search only if newValue has some data
       if (newValue["children"] &amp;&amp; newValue["children"].length) {
         newValue["children"].forEach((item) => {
           if (item["children"] &amp;&amp; item["children"].length) {

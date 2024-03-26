@@ -37,12 +37,13 @@ const actions = {
         if (item["children"] && item["children"].length) {
           let fieldsObj = {};
           let fieldValue = [];
+          let fieldTypeValue = [];
           fieldsObj["operator"] = item["operatorIdentifier"];
-
           const mergedValues = uniqueValues(item["children"]);
 
           mergedValues.forEach((params) => {
             let fieldKey = params["identifier"];
+
             //Changing databasetype/standardtype/policytype keyname to 'type'
             //to pass as a required key for advancedSearch query
             if (
@@ -51,8 +52,9 @@ const actions = {
               fieldKey === "policytype"
             ) {
               fieldKey = "type";
-              fieldValue.push(params["value"]);
-              fieldValue = fieldValue.flatMap((value) => value);
+              fieldTypeValue.push(params["value"]);
+              fieldTypeValue = fieldTypeValue.flatMap((value) => value);
+              fieldValue = fieldTypeValue;
             } else {
               if (Array.isArray(params["value"])) {
                 fieldValue = params["value"];

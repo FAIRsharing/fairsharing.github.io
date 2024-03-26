@@ -15,21 +15,9 @@
           }"
         >
           <!--Close Button -->
-          <div
-            class="order-md-3"
-            style="padding-left: 14.4%"
-          >
-            <v-btn
-              icon
-              dark
-              @click="closeDialog()"
-            >
-              <v-icon
-                color="black"
-                size="40px"
-              >
-                mdi-close
-              </v-icon>
+          <div class="order-md-3" style="padding-left: 14.4%">
+            <v-btn icon dark @click="closeDialog()">
+              <v-icon color="black" size="40px"> mdi-close </v-icon>
             </v-btn>
           </div>
           <!--FAIRsharing Logo -->
@@ -44,7 +32,7 @@
               src="/assets/fairsharing-logo.svg"
               alt="FAIRsharing logo"
               @click="closeDialog()"
-            >
+            />
           </router-link>
           <!--Advanced Search Header Text -->
           <div
@@ -60,9 +48,9 @@
                 href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                 target="_blank"
                 class="text-decoration-underline"
-              >gitbook documentation<v-icon x-small>
-                {{ "fa fa-link" }}
-              </v-icon>
+                >gitbook documentation<v-icon x-small>
+                  {{ "fa fa-link" }}
+                </v-icon>
               </a>
             </p>
           </div>
@@ -323,7 +311,7 @@ export default {
 
     /**
      * Method to update the searchTerm
-     * @param {Sting} -- item
+     * @param {String} -- item
      */
     updateSearchText(item) {
       this.updatedAdvancedSearchText = item;

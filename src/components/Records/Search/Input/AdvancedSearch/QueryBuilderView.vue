@@ -179,9 +179,17 @@ export default {
   },
   watch: {
     query(newValue) {
+      console.log("newValue::", newValue);
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       if (newValue["children"] && newValue["children"].length) {
-        advancedSearch.commit("advancedSearch/setEditAdvancedSearch", newValue);
+        newValue["children"].forEach((item) => {
+          if (item["children"] && item["children"].length) {
+            advancedSearch.commit(
+              "advancedSearch/setEditAdvancedSearch",
+              newValue
+            );
+          }
+        });
       }
     },
 
@@ -191,6 +199,7 @@ export default {
      */
     isDialog: {
       handler(open) {
+        //On click of Reset/Open Advanced search button
         if (open && !this.getEditDialogStatus) {
           this.query = {
             operatorIdentifier: "_and",

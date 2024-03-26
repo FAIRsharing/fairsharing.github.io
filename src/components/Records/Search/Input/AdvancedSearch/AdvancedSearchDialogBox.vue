@@ -43,6 +43,7 @@
             <img
               src="/assets/fairsharing-logo.svg"
               alt="FAIRsharing logo"
+              @click="closeDialog()"
             >
           </router-link>
           <!--Advanced Search Header Text -->

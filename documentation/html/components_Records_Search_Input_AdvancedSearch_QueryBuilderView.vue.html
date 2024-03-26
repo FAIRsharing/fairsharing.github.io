@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;query-builder v-model="query" :config="config" />
+&lt;/template>
+
+&lt;script>
+import QueryBuilder from "query-builder-vue";
+import { mapGetters } from "vuex";
+
+import advancedSearch from "@/store";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
+
+import {
+  DataAccessCondition,
+  DatabaseRecordType,
+  DataCuration,
+  DataDepositionCondition,
+  Domain,
+  Licences,
+  Organisations,
+  PolicyRecordType,
+  RecordStatus,
+  Registry,
+  StandardRecordType,
+  Subject,
+  Taxonomies,
+  UserDefinedTag,
+} from "./QueryBuilderComponents";
+export default {
+  name: "QueryBuilderView",
+  components: { QueryBuilder },
+  props: {
+    isDialog: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data: () => {
+    return {
+      query: {
+        operatorIdentifier: "_and",
+        children: [],
+      },
+    };
+  },
+  computed: {
+    ...mapGetters("advancedSearch", [
+      "getEditDialogStatus",
+      "getEditAdvancedSearch",
+    ]),
+    config() {
+      return {
+        operators: [
+          {
+            name: "AND",
+            identifier: "_and",
+          },
+          {
+            name: "OR",
+            identifier: "_or",
+          },
+        ],
+        rules: [
+          {
+            identifier: "registry",
+            name: "Registry",
+            component: Registry,
+            initialValue: () => [],
+          },
+          {
+            identifier: "databasetype",
+            name: "Database Record Type",
+            component: DatabaseRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "standardtype",
+            name: "Standard Record Type",
+            component: StandardRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "policytype",
+            name: "Policy Record Type",
+            component: PolicyRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "subjects",
+            name: "Subject",
+            component: Subject,
+            initialValue: () => [],
+          },
+          {
+            identifier: "domains",
+            name: "Domain",
+            component: Domain,
+            initialValue: () => [],
+          },
+          {
+            identifier: "userDefinedTags",
+            name: "User Defined Tag",
+            component: UserDefinedTag,
+            initialValue: () => [],
+          },
+          {
+            identifier: "status",
+            name: "Record Status",
+            component: RecordStatus,
+            initialValue: () => [],
+          },
+          {
+            identifier: "taxonomies",
+            name: "Taxonomies",
+            component: Taxonomies,
+            initialValue: () => [],
+          },
+          {
+            identifier: "licences",
+            name: "Licences",
+            component: Licences,
+            initialValue: () => [],
+          },
+          {
+            identifier: "organisations",
+            name: "Organisations",
+            component: Organisations,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataCuration",
+            name: "Data Curation - Databases only",
+            component: DataCuration,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataDepositionCondition",
+            name: "Data Deposition Condition - Databases only",
+            component: DataDepositionCondition,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataAccessCondition",
+            name: "Data Access Condition - Databases only",
+            component: DataAccessCondition,
+            initialValue: () => [],
+          },
+        ],
+        colors: ["#599C0F", "#CB9221", "#A04545"],
+      };
+    },
+    /**
+     * Removes duplicate entries and return unique values
+     * @returns {Object}
+     */
+    uniqueGetEditAdvancedSearch() {
+      let searchValues = {
+        operatorIdentifier: this.getEditAdvancedSearch["operatorIdentifier"],
+        children: [],
+      };
+      if (
+        this.getEditAdvancedSearch["children"] &amp;&amp;
+        this.getEditAdvancedSearch["children"].length
+      ) {
+        this.getEditAdvancedSearch["children"].forEach((item) => {
+          if (item["children"] &amp;&amp; item["children"].length) {
+            let fieldsObj = {
+              operatorIdentifier: item["operatorIdentifier"],
+              children: uniqueValues(item["children"]),
+            };
+            searchValues["children"].push(fieldsObj);
+          }
+        });
+      }
+      return searchValues;
+    },
+  },
+  watch: {
+    query(newValue) {
+      advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
+      if (newValue["children"] &amp;&amp; newValue["children"].length) {
+        newValue["children"].forEach((item) => {
+          if (item["children"] &amp;&amp; item["children"].length) {
+            advancedSearch.commit(
+              "advancedSearch/setEditAdvancedSearch",
+              newValue
+            );
+          }
+        });
+      }
+    },
+
+    /**
+     * Reset the dialog box when closed and opened again
+     * @param open - Boolean
+     */
+    isDialog: {
+      handler(open) {
+        //On click of Reset/Open Advanced search button
+        if (open &amp;&amp; !this.getEditDialogStatus) {
+          this.query = {
+            operatorIdentifier: "_and",
+            children: [
+              {
+                operatorIdentifier: "_and",
+                children: [],
+              },
+            ],
+          };
+        }
+      },
+      immediate: true,
+    },
+
+    /**
+     * Populate the dialog box with advanced search selection
+     * @param open - Boolean
+     */
+    getEditDialogStatus: {
+      handler(open) {
+        if (open) {
+          this.query = this.uniqueGetEditAdvancedSearch;
+        }
+      },
+      immediate: true,
+    },
+  },
+};
+&lt;/script>
+&lt;style lang="scss" scoped>
+@import "~vuetify/src/styles/settings/_variables.scss";
+.query-builder-group::v-deep {
+  color: black;
+
+  select {
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+    background-color: white;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1.5em;
+    padding: 0 12px;
+    /* reset */
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-height: 36px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .query-builder-child__delete-child {
+    opacity: 1;
+    color: white;
+    background-color: #6b1e1e;
+    font-size: 25px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: 8px !important;
+    vertical-align: middle;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      position: absolute;
+      right: 0;
+      top: -5px;
+    }
+  }
+  .query-builder-group__rule-adding-button,
+  .query-builder-group__group-adding-button {
+    padding: 0 8px;
+    height: 36px;
+    min-width: 64px;
+    color: white;
+    background-color: #e67e22;
+    border-color: #e67e22;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  button:disabled,
+  button[disabled] {
+    border-color: #ccc;
+    background-color: #ccc;
+    color: #666666;
+  }
+
+  .query-builder-group__spacer,
+  .query-builder-group__rule-adding-button,
+  .query-builder-group__group-control select,
+  .query-builder-group__group-children
+    .query-builder-group__group-adding-button {
+    display: none;
+  }
+
+  .query-builder-group__group-children {
+    .query-builder-group__rule-adding-button,
+    .query-builder-group__group-control select {
+      display: block;
+    }
+  }
+
+  .query-builder-group__group-selection {
+    background-color: #ababab;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    .query-builder-group__group-operator {
+      color: white;
+      font-weight: 500;
+    }
+    select {
+      max-width: 80px;
+      width: 100%;
+    }
+  }
+  input[type="text"] {
+    background-color: white;
+    padding: 0 12px;
+    min-height: 36px;
+    width: 90%;
+    border-radius: 4px;
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      max-width: 100%;
+    }
+  }
+
+  .query-builder-child {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0;
+    .query-builder-rule {
+      background-color: #27aae1;
+      border-color: #27aae1;
+      display: flex;
+      align-items: center;
+    }
+    .query-builder-child__component {
+      padding: 15px;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      @media #{map-get($display-breakpoints, 'sm-and-down')} {
+        flex-direction: column;
+        align-items: unset;
+        position: relative;
+        width: 100%;
+      }
+      .query-builder-rule__name {
+        font-size: 14px;
+        color: white;
+        font-weight: 500;
+        @media #{map-get($display-breakpoints, 'sm-and-down')} {
+          margin-bottom: 10px;
+        }
+      }
+      select {
+        max-width: 150px;
+        width: 100%;
+        color: black;
+        @media #{map-get($display-breakpoints, 'sm-and-down')} {
+          max-width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+      .query-builder-group__group-control {
+        select {
+          @media #{map-get($display-breakpoints, 'md-and-up')} {
+            max-width: 320px;
+          }
+        }
+      }
+    }
+  }
+  &amp; > .query-builder-group__control {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    z-index: 1;
+    .query-builder-group__group-selection {
+      margin: 0 0 15px 0;
+      border-radius: 4px 4px 0 0;
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
+	
+		on Tue Mar 26th 2024
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

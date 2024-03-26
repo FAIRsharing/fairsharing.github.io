@@ -1,14 +1,14 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
+import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuetify from "vuetify"
 import Vuex from "vuex"
 
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
+import RestClient from "@/lib/Client/RESTClient.js"
 import editorStore from "@/store/editor.js"
 import recordStore from "@/store/recordData.js"
 import userStore from "@/store/users.js"
-import RestClient from "@/lib/Client/RESTClient.js"
-import sinon from "sinon";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

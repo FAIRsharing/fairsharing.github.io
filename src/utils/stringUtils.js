@@ -1,41 +1,46 @@
 const stringUtils = {
-    methods: {
-        cleanString(string) {
-            if (typeof string === "string") {
-                if (string.includes('_')) {
-                    return string.replace(/_/g, " ");
-                }
-            }
-            return string;
-        },
-        prettifyList(string) {
-            return string.replace(/,/g, ", ");
-        },
-        truncate(str, n) {
-            return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
+  methods: {
+    cleanString(string) {
+      if (typeof string === "string") {
+        if (string.includes("_")) {
+          return string.replace(/_/g, " ");
         }
+      }
+      return string;
     },
-    filters: {
-        capitalize(str) {
-            if (!str) return "";
-            return str.charAt(0).toUpperCase() + str.slice(1)
-        },
-        pretty(val) {
-            return JSON.stringify(val)
-                .replace(/,/g, '<br/>')          // commas -> newlines
-                .replace(/\{|\}|\[|\]/g, '')  // remove brackets
-                .replace(/"/g, '')            // remove quotes
-                .replace(/:/g, ": ")          // add a space after a colon
-        }
-    }
+    prettifyList(string) {
+      return string.replace(/,/g, ", ");
+    },
+    truncate(str, n) {
+      return str.length > n ? str.substr(0, n - 1) + "..." : str;
+    },
+  },
+  filters: {
+    capitalize(str) {
+      if (!str) return "";
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+    pretty(val) {
+      return JSON.stringify(val)
+        .replace(/,/g, "<br/>") // commas -> newlines
+        .replace(/\{|\}|\[|\]/g, "") // remove brackets
+        .replace(/"/g, "") // remove quotes
+        .replace(/:/g, ": "); // add a space after a colon
+    },
+  },
 };
 
 export const cleanString = {
-    filters: {
-        cleanString: function(str){
-            return str.replace(/_/g, " ").replace(/([A-Z])/g, '$1').replace(/^./, function(str){ return str.toUpperCase(); });
-        }
-    }
+  filters: {
+    cleanString: function (str) {
+      return str
+        .replace(/_/g, " ")
+        .replace(/([A-Z])/g, "$1")
+        .replace(/^./, function (str) {
+          return str.toUpperCase();
+        });
+    },
+  },
 };
 
 // Removed from Organisation.vue, but I've not deleted it in case it is needed again.
@@ -53,9 +58,9 @@ export const formatList = {
 export default stringUtils;
 
 export const truncate = {
-    methods: {
-        truncate(str, n) {
-            return stringUtils.methods.truncate(str, n);
-        }
-    }
+  methods: {
+    truncate(str, n) {
+      return stringUtils.methods.truncate(str, n);
+    },
+  },
 };

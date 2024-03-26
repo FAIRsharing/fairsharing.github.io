@@ -269,6 +269,7 @@ export default {
         this.getAdvancedSearch["children"].length
       ) {
         this.getAdvancedSearch["children"].forEach((item) => {
+          this.queryString = "";
           this.queryString += "(operator=";
           this.queryString += item["operatorIdentifier"];
           const mergedValues = uniqueValues(item["children"]);
@@ -288,7 +289,7 @@ export default {
     },
 
     /**
-     * Navigation method called on the click of the procced button
+     * Navigation method called on the click of the proceed button
      * and on the advancedSearch page
      */
     advancedSearchNavigation(queryString) {

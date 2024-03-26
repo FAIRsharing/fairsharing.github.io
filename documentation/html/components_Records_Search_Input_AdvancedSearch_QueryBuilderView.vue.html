@@ -92,10 +92,7 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;query-builder
-    v-model="query"
-    :config="config"
-  />
+  &lt;query-builder v-model="query" :config="config" />
 &lt;/template>
 
 &lt;script>
@@ -272,7 +269,6 @@ export default {
   },
   watch: {
     query(newValue) {
-      console.log("newValue::", newValue);
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       if (newValue["children"] &amp;&amp; newValue["children"].length) {
         newValue["children"].forEach((item) => {

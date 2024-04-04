@@ -2,7 +2,30 @@
   <query-builder
     v-model="query"
     :config="config"
-  />
+  >
+    <template #groupOperator="props">
+      <div class="query-builder-group__group-selection">
+        <span class="query-builder-group__group-operator">SLOT</span>
+        <select
+          :value="props.currentOperator"
+          @input="props.updateCurrentOperator($event.target.value)"
+        >
+          <option
+            disabled
+            value=""
+          >
+            Select an operator
+          </option>
+          <option
+            v-for="operator in props.operators"
+            :key="operator.identifier"
+            :value="operator.identifier"
+            v-text="operator.name"
+          />
+        </select>
+      </div>
+    </template>
+  </query-builder>
 </template>
 
 <script>

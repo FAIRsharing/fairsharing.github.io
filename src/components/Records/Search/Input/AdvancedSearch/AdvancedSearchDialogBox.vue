@@ -109,33 +109,32 @@
           <QueryBuilderView :is-dialog="dialog" />
         </v-card-text>
         <v-card-actions
-          class="px-6"
+          class="px-6 justify-space-between"
           :class="{
             'flex-column align-center': $vuetify.breakpoint.smAndDown,
           }"
         >
           <v-btn
-            color="accent3"
+            color="green"
             variant="text"
-            class="white--text"
+            class="white--text order-md-2"
             :class="{
               'mb-3': $vuetify.breakpoint.smAndDown,
             }"
-            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
-            @click="closeDialog()"
-          >
-            Close
-          </v-btn>
-          <v-spacer />
-          <v-btn
-            color="green"
-            variant="text"
-            class="white--text"
             :disabled="isContinue"
             :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
             @click="goToAdvancedSearch()"
           >
             Proceed
+          </v-btn>
+          <v-btn
+            color="accent3"
+            variant="text"
+            class="white--text order-md-1 ml-0"
+            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
+            @click="closeDialog()"
+          >
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>

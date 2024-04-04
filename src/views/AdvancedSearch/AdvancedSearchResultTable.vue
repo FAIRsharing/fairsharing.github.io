@@ -9,7 +9,7 @@
   <div
     v-else
     fluid
-    class="pa-5"
+    class="pa-5 mb-15"
   >
     <v-btn
       class="mb-2"
@@ -45,14 +45,17 @@
       :sort-desc="sortDesc"
       :hide-default-footer="noFooter"
       :loading="getLoadingStatus"
-      :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+      :footer-props="{
+        'items-per-page-text': 'Records per page:',
+        'items-per-page-options': [5, 10, 25, 50, 100],
+      }"
     >
       <!-- headers start -->
       <template #header="{ pagination, options, updateOptions }">
         <v-data-footer
           :pagination="pagination"
           :options="options"
-          items-per-page-text="$vuetify.dataTable.itemsPerPageText"
+          items-per-page-text="Records per page:"
           @update:options="updateOptions"
         />
         <v-toolbar

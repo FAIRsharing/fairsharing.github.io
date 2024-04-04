@@ -1,8 +1,6 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  >
+  <query-builder v-model="query" :config="config">
+    <!-- To use the custom text instead of default text 'Operator' -->
     <template #groupOperator="props">
       <div class="query-builder-group__group-selection">
         <span class="query-builder-group__group-operator">SLOT</span>
@@ -10,12 +8,7 @@
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          <option
-            disabled
-            value=""
-          >
-            Select an operator
-          </option>
+          <option disabled value="">Select an operator</option>
           <option
             v-for="operator in props.operators"
             :key="operator.identifier"

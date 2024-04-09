@@ -1,14 +1,24 @@
 <template>
-  <query-builder v-model="query" :config="config">
+  <query-builder
+    v-model="query"
+    :config="config"
+  >
     <!-- To use the custom text instead of default text 'Operator' -->
+
     <template #groupOperator="props">
       <div class="query-builder-group__group-selection">
+        <TooltipComponent :tool-tip-text="toolTipText" />
         <span class="query-builder-group__group-operator">SLOT</span>
         <select
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          <option disabled value="">Select an operator</option>
+          <option
+            disabled
+            value=""
+          >
+            Select an operator
+          </option>
           <option
             v-for="operator in props.operators"
             :key="operator.identifier"
@@ -25,6 +35,7 @@
 import QueryBuilder from "query-builder-vue";
 import { mapGetters } from "vuex";
 
+import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/TooltipComponent.vue";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
@@ -46,7 +57,7 @@ import {
 } from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
-  components: { QueryBuilder },
+  components: { TooltipComponent, QueryBuilder },
   props: {
     isDialog: {
       type: Boolean,
@@ -59,6 +70,7 @@ export default {
         operatorIdentifier: "_and",
         children: [],
       },
+      toolTipText: "TEST",
     };
   },
   computed: {

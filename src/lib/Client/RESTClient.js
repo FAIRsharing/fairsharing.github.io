@@ -987,13 +987,14 @@ class RESTClient {
    * @returns {Promise}
    */
   async sendOrcidVerification(user) {
+    let _client = this;
     const request = {
-      method: "get",
-      baseURL: this.baseURL + "/users/auth/orcid/send_email",
-      headers: this.headers,
+      method: "post",
+      baseURL: this.baseURL + "/users/auth/identify_user",
+      headers: this.auth_headers(user),
       data: { user: user },
     };
-    let response = await this.executeQuery(request);
+    let response = await _client.executeQuery(request);
     return response;
   }
 }

@@ -77,7 +77,7 @@ export default {
     };
   },
   methods: {
-    sendVerificationRequest: async function () {
+    async sendVerificationRequest() {
       const _module = this;
       _module.error = false;
       _module.loading = true;

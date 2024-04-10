@@ -140,6 +140,6 @@ describe("RESTClient", () => {
       identifier: "55324a98-4b8d-4d55-93a6-a37b55ce906c",
       uid: "0009-0009-7606-5584",
     });
-    expect(resp).toBe("testData");
+    await expect(resp).toBe("testData");
   });
 });

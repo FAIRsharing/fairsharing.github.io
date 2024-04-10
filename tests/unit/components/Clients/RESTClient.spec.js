@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import Vue from "vue";
 
 import Client from "@/lib/Client/RESTClient.js";
@@ -8,7 +8,7 @@ describe("RESTClient", () => {
   let dataStub = { data: "testData" };
   let stub = sinon.stub(Client.prototype, "executeQuery");
 
-  jest.mock("axios");
+  // jest.mock("axios");
 
   beforeAll(() => {
     stub.withArgs(sinon.match.any).returns(dataStub);
@@ -137,17 +137,17 @@ describe("RESTClient", () => {
   });
 
   it("can sendOrcidVerification email", async () => {
-    jest.spyOn(axios, "post");
+    // jest.spyOn(axios, "post");
     let user = {
       email: "example@fairsharing.org",
-      identifier: "55324a98-4b8d-4d55-93a6-a37b55ce906c",
-      uid: "0009-0009-7606-5584",
+      // identifier: "55324a98-4b8d-4d55-93a6-a37b55ce906c",
+      // uid: "0009-0009-7606-5584",
     };
-    axios.post.mockImplementationOnce(() => Promise.resolve(user));
-    await expect(client.sendOrcidVerification(user)).resolves.toEqual(
-      "testData"
-    );
-    // let resp = await client.sendOrcidVerification(user);
-    // expect(resp).toBe("testData");
+    // axios.post.mockImplementationOnce(() => Promise.resolve(user));
+    // await expect(client.sendOrcidVerification(user)).resolves.toEqual(
+    //   "testData"
+    // );
+    let resp = await client.sendOrcidVerification(user);
+    expect(resp).toBe("testData");
   });
 });

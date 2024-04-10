@@ -135,12 +135,11 @@ describe("RESTClient", () => {
   });
 
   it("can sendOrcidVerification email", async () => {
-    const user = {
+    let resp = await client.sendOrcidVerification({
       email: "example@fairsharing.org",
-      uid: "xxxxx",
-      identifier: "yyyy-yyy-yyyy",
-    };
-    let resp = await client.sendOrcidVerification(user);
+      identifier: "55324a98-4b8d-4d55-93a6-a37b55ce906c",
+      uid: "0009-0009-7606-5584",
+    });
     expect(resp).toBe("testData");
   });
 });

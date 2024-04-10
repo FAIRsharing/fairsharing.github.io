@@ -995,7 +995,7 @@ class RESTClient {
       data: { user: user },
     };
     let response = await _client.executeQuery(request);
-    return response;
+    return response.data;
   }
 }
 

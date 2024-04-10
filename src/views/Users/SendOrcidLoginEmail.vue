@@ -35,8 +35,8 @@
                   v-if="success"
                   type="success"
                 >
-                  Verification message sent successfully, please check your
-                  email {{ emailId }}.
+                  Verification email sent successfully, please check your email
+                  {{ emailId }}.
                 </v-alert>
 
                 <v-text-field
@@ -119,12 +119,12 @@ export default {
       };
       if (_module.email) {
         const outcome = await restClient.sendOrcidVerification(user);
-        if (outcome.status === 503) {
-          _module.error = "Verification message not sent!";
-        } else if (outcome.status === 201) {
+        if (outcome.message === "Verification email sent successfully!") {
           _module.success = true;
           _module.emailId = _module.email;
           _module.$refs.emailRef.reset();
+        } else {
+          _module.error = "Verification email not sent!";
         }
       }
       _module.loading = false;

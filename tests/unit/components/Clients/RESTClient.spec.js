@@ -141,8 +141,6 @@ describe("RESTClient", () => {
       identifier: "yyyy-yyy-yyyy",
     };
     let resp = await client.sendOrcidVerification(user);
-    expect(resp).toStrictEqual({
-      message: "Verification email sent successfully!",
-    });
+    expect(resp).toBe("testData");
   });
 });

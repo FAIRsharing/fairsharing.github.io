@@ -982,8 +982,8 @@ class RESTClient {
   }
 
   /**
-   * Resend the verification link for a given user
-   * @param {Object} user - contains the email of the user.
+   * Send the verification link for a given user
+   * @param {Object} user - contains the email, uid, identifier of the user.
    * @returns {Promise}
    */
   async sendOrcidVerification(user) {

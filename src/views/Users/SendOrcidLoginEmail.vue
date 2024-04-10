@@ -94,8 +94,8 @@ export default {
       _module.success = false;
       const user = {
         email: _module.email,
-        // uid: _module.uid,
-        // identifier: _module.identifier,
+        uid: _module.uid,
+        identifier: _module.identifier,
       };
       if (_module.email) {
         const outcome = await restClient.sendOrcidVerification(user);

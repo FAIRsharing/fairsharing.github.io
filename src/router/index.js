@@ -37,6 +37,7 @@ import {
   RequestNewPassword,
   ResendConfirmation,
   ResetPassword,
+  SendOrcidLoginEmail,
   ServerError,
   Signup,
   Stakeholders,
@@ -592,6 +593,11 @@ let routes = [
     name: "Reset your password",
     path: "/users/password/edit",
     component: ResetPassword,
+  },
+  {
+    name: "Send ORCID login email",
+    path: "/users/orcid/sendEmail",
+    component: SendOrcidLoginEmail,
   },
   {
     name: "User",

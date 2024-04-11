@@ -41,7 +41,7 @@
                 <p>
                   FAIRsharing needs an email address, and ORCID hasn't told us
                   yours. Please type your address below and click on the
-                  verification link we'll send. If you already have
+                  verification link we'll send you. If you already have
                   an account on FAIRsharing then please use the same email
                   address. If you don't have an account or use a different email
                   address a new account will be created for you.

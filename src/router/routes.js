@@ -134,3 +134,7 @@ export const AdvancedSearchRecords = () =>
   import(
     /* webpackChunkName: "organisationsList-chunk" */ "@/views/AdvancedSearch/AdvancedSearchRecordsView.vue"
   );
+export const SendOrcidLoginEmail = () =>
+  import(
+    /* webpackChunkName: "editProfile-chunk" */ "@/views/Users/SendOrcidLoginEmail"
+  );

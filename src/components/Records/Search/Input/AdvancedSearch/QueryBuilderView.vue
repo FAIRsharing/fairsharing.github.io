@@ -6,10 +6,22 @@
     <!-- To use the custom text instead of default text 'Operator' -->
 
     <template #groupOperator="props">
-      <div class="query-builder-group__group-selection">
-        <TooltipComponent :tool-tip-text="toolTipText" />
-        <span class="query-builder-group__group-operator">SLOT</span>
+      <div
+        ref="grpSelector"
+        class="query-builder-group__group-selection"
+      >
+        <div class="tooltip">
+          <v-icon
+            small
+            class="mr-1 white--text tooltipIcon"
+          >
+            fa-question-circle
+          </v-icon>
+          <span class="tooltiptext" />
+        </div>
+        <span class="query-builder-group__group-operator">Select an Operator between Groups</span>
         <select
+          class="operatorSelect"
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
@@ -35,7 +47,6 @@
 import QueryBuilder from "query-builder-vue";
 import { mapGetters } from "vuex";
 
-import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/TooltipComponent.vue";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
@@ -57,7 +68,7 @@ import {
 } from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
-  components: { TooltipComponent, QueryBuilder },
+  components: { QueryBuilder },
   props: {
     isDialog: {
       type: Boolean,
@@ -350,9 +361,13 @@ export default {
       color: white;
       font-weight: 500;
     }
-    select {
-      max-width: 80px;
+    select.operatorSelect {
+      max-width: 80px !important;
       width: 100%;
+      @media #{map-get($display-breakpoints, 'sm-and-down')} {
+        max-width: 90% !important;
+        margin-top: 10px;
+      }
     }
   }
   input[type="text"] {
@@ -425,6 +440,63 @@ export default {
     .query-builder-group__group-selection {
       margin: 0 0 15px 0;
       border-radius: 4px 4px 0 0;
+      .tooltiptext {
+        &:after {
+          content: "Connect each group of rules with either 'AND' or 'OR'";
+        }
+      }
+    }
+  }
+
+  .query-builder-group__group-children--depth-1 {
+    .query-builder-group__group-operator {
+      visibility: hidden;
+      position: relative;
+      &:after {
+        visibility: visible;
+        position: absolute;
+        top: -2px;
+        left: 0;
+        width: 240px;
+        content: "Select an Operator for this Group";
+      }
+    }
+    .tooltiptext {
+      &:after {
+        content: "Connect the rules inside this group with either 'AND' or 'OR'";
+      }
+    }
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: default;
+    .tooltiptext {
+      visibility: hidden;
+      width: 250px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 4px;
+      padding: 5px 16px;
+      opacity: 0;
+      transition: opacity 1s, visibility 1s;
+
+      /* Position the tooltip */
+      position: absolute;
+      z-index: 1;
+      top: 100%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: 10px;
+    }
+    /* Hover the tooltip icon*/
+    &:hover {
+      .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
     }
   }
 }

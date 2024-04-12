@@ -456,7 +456,9 @@ export default {
       }
     }
     .operatorSelect {
-      margin-left: -80px;
+      @media #{map-get($display-breakpoints, 'md-and-up')} {
+        margin-left: -80px;
+      }
     }
   }
 

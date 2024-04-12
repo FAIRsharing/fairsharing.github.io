@@ -3,16 +3,17 @@
     <!-- To use the custom text instead of default text 'Operator' -->
 
     <template #groupOperator="props">
-      <div ref="grpSelector" class="query-builder-group__group-selection">
+      <div class="query-builder-group__group-selection">
         <div class="tooltip">
           <v-icon small class="mr-1 white--text tooltipIcon">
             fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
         </div>
-        <span class="query-builder-group__group-operator"
-          >Select an Operator to apply across all groups</span
-        >
+        <span class="query-builder-group__group-operator">
+          Select an Operator to apply across all groups
+        </span>
+
         <select
           class="operatorSelect"
           :value="props.currentOperator"
@@ -453,6 +454,9 @@ export default {
       &:after {
         content: "Connect the rules inside this group with either 'AND' or 'OR'";
       }
+    }
+    .operatorSelect {
+      margin-left: -80px;
     }
   }
 

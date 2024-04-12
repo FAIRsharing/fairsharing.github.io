@@ -1,36 +1,24 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  >
+  <query-builder v-model="query" :config="config">
     <!-- To use the custom text instead of default text 'Operator' -->
 
     <template #groupOperator="props">
-      <div
-        ref="grpSelector"
-        class="query-builder-group__group-selection"
-      >
+      <div ref="grpSelector" class="query-builder-group__group-selection">
         <div class="tooltip">
-          <v-icon
-            small
-            class="mr-1 white--text tooltipIcon"
-          >
+          <v-icon small class="mr-1 white--text tooltipIcon">
             fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
         </div>
-        <span class="query-builder-group__group-operator">Select an Operator between Groups</span>
+        <span class="query-builder-group__group-operator"
+          >Select an Operator to apply across all groups</span
+        >
         <select
           class="operatorSelect"
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          <option
-            disabled
-            value=""
-          >
-            Select an operator
-          </option>
+          <option disabled value="">Select an operator</option>
           <option
             v-for="operator in props.operators"
             :key="operator.identifier"
@@ -458,7 +446,7 @@ export default {
         top: -2px;
         left: 0;
         width: 240px;
-        content: "Select an Operator for this Group";
+        content: "Select an Operator for this group";
       }
     }
     .tooltiptext {

@@ -3,6 +3,7 @@
   "queryParam": null,
   "fields": [
     "id",
+    "exhaustiveLicences",
     "metadata",
     {
       "name": "licenceLinks",

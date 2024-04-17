@@ -210,58 +210,64 @@ export default {
         Array.isArray(this.getAdvancedSearchQuery["fields"]) &&
         !this.getAdvancedSearchQuery["fields"].length
       ) {
-        const routeQuery = this.$route.query;
-        //Query format is same as setAdvancedSearch mutation
-        let searchQuery = {
-          operatorIdentifier: "",
-          children: [],
-        };
-
-        searchQuery["operatorIdentifier"] = routeQuery["operator"];
-
-        //Destructuring the fields string into valid setAdvancedSearch format to execute the query
-        const searchFieldsArr = routeQuery["fields"]
-          .split("(")
-          .join("")
-          .split(")")
-          .filter((item) => item); //Filter is used to remove empty string
-
-        searchFieldsArr.forEach((item) => {
-          const itemArr = item.split("&");
-          let searchObj = {
+        // Checking if advancedsearch has query parameters
+        if (Object.keys(this.$route.query).length) {
+          const routeQuery = this.$route.query;
+          //Query format is same as setAdvancedSearch mutation
+          let searchQuery = {
             operatorIdentifier: "",
             children: [],
           };
-          itemArr.forEach((subItem) => {
-            const paramValues = subItem.split("=");
-            if (paramValues[0] === "operator") {
-              searchObj["operatorIdentifier"] = paramValues[1];
-            } else {
-              let advancedSearchParams = {
-                identifier: "",
-                value: [],
-              };
-              advancedSearchParams["identifier"] = paramValues[0];
-              advancedSearchParams["value"] = paramValues[1].split(",");
-              searchObj["children"].push(advancedSearchParams);
-            }
+
+          searchQuery["operatorIdentifier"] = routeQuery["operator"];
+
+          //Destructuring the fields string into valid setAdvancedSearch format to execute the query
+          const searchFieldsArr = routeQuery["fields"]
+            .split("(")
+            .join("")
+            .split(")")
+            .filter((item) => item); //Filter is used to remove empty string
+
+          searchFieldsArr.forEach((item) => {
+            const itemArr = item.split("&");
+            let searchObj = {
+              operatorIdentifier: "",
+              children: [],
+            };
+            itemArr.forEach((subItem) => {
+              const paramValues = subItem.split("=");
+              if (paramValues[0] === "operator") {
+                searchObj["operatorIdentifier"] = paramValues[1];
+              } else {
+                let advancedSearchParams = {
+                  identifier: "",
+                  value: [],
+                };
+                advancedSearchParams["identifier"] = paramValues[0];
+                advancedSearchParams["value"] = paramValues[1].split(",");
+                searchObj["children"].push(advancedSearchParams);
+              }
+            });
+
+            searchQuery["children"].push(searchObj);
           });
 
-          searchQuery["children"].push(searchObj);
-        });
+          //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
+          advancedSearch.commit(
+            "advancedSearch/setAdvancedSearch",
+            searchQuery
+          );
 
-        //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
-        advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
+          //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
+          advancedSearch.commit(
+            "advancedSearch/setEditAdvancedSearch",
+            searchQuery
+          );
 
-        //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
-        advancedSearch.commit(
-          "advancedSearch/setEditAdvancedSearch",
-          searchQuery
-        );
-
-        //Calling the fetch method to get the result
-        if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
-        else this.fetchAdvancedSearchResults(routeQuery["q"]);
+          //Calling the fetch method to get the result
+          if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
+          else this.fetchAdvancedSearchResults(routeQuery["q"]);
+        }
       }
     },
     /**

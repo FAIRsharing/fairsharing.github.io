@@ -213,6 +213,19 @@ export default {
       }
     },
   },
+  mounted() {
+    //When the user is redirected to advancedsearch url directly
+    //it will open the dialog box
+    if (
+      this.$route.fullPath === "/advancedsearch" ||
+      this.$route.fullPath === "/advancedSearch"
+    ) {
+      advancedSearch.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        true
+      );
+    }
+  },
   methods: {
     ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
 
@@ -223,6 +236,13 @@ export default {
         "advancedSearch/setAdvancedSearchDialogStatus",
         false
       );
+      // Redirecting to home page after closing
+      if (
+        this.$route.fullPath === "/advancedsearch" ||
+        this.$route.fullPath === "/advancedSearch"
+      ) {
+        this.$router.push("/");
+      }
     },
 
     isAdvancedSearchTerm(queryString) {

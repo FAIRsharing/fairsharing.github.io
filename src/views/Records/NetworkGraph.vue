@@ -172,6 +172,36 @@
                   </v-col>
                 </v-row>
               </div>
+              <v-divider />
+              <div>
+                <!-- buttons here -->
+                <h3 class="mb-4">
+                  Export as SVG
+                </h3>
+                <v-row
+                  no-gutters
+                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                >
+                  <v-col
+                    cols="12"
+                    xs="12"
+                    sm="3"
+                    md="12"
+                    lg="12"
+                    xl="12"
+                    fluid
+                    class="d-flex justify-center"
+                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                  >
+                    <v-btn
+                      class="status_style mx-3 mb-2"
+                      @click="exportGraph"
+                    >
+                      Export!
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </div>
             </v-container>
           </v-card-text>
         </v-card>
@@ -262,6 +292,7 @@
 import Graph from "graphology";
 import forceAtlas2 from "graphology-layout-forceatlas2";
 import FA2Layout from "graphology-layout-forceatlas2/worker";
+import * as lib from 'graphology-library/browser';
 import Sigma from "sigma";
 import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
 
@@ -550,6 +581,10 @@ export default {
       if (itemName === 'in development')  itemName = "in_development"
       this.active[itemName] = !this.active[itemName];
       item.active = !item.active
+    },
+    exportGraph() {
+      let render = require('graphology-svg');
+      render(graph, './graph.svg', () => console.log('Done!'));
     }
   }
 }

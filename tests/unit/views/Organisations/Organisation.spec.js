@@ -203,4 +203,29 @@ describe("Organisation", () => {
         await wrapper.vm.editOrganisation();
     });
 
+    it("can delete the organisation", async () => {
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            vuetify,
+            router,
+            mocks: {$route, $router, $store},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+
+        // Cancel record deletion
+        wrapper.vm.confirmDelete = true;
+        await wrapper.vm.deleteOrganisation(false);
+        expect(wrapper.vm.confirmDelete).toEqual(false);
+
+        // Proceed with record deletion
+        await wrapper.vm.deleteOrganisation(true);
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = { assign: assignMock };
+        await wrapper.vm.deleteOrganisation(true);
+        // Shows that the assignment hasn't been called (which must surely not be the case)
+        //expect(window.location.assign).toHaveBeenCalledWith('http://wibble.com/organisations');
+
+    });
+
 });

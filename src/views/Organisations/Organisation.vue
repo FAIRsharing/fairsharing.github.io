@@ -674,17 +674,14 @@ export default {
       this.loading = false;
     },
     async deleteOrganisation(del) {
-      console.log("Del: " + del);
       if (del) {
         let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
         if (!data.error) {
           // Deploy to organisations page.
-          console.log("Deleted!");
           const url = new URL(process.env.VUE_APP_HOSTNAME + '/organisations');
           window.location.href = url.toString();
         }
       }
-      console.log("Not deleted!");
       this.confirmDelete = false;
     }
   }

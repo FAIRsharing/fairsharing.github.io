@@ -676,9 +676,10 @@ export default {
     async deleteOrganisation(del) {
       if (del) {
         let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
+
         if (!data.error) {
-          // Redirect to organisations page after deletion
-          await this.$router.push('/organisations')
+          // Redirects to organisations page.
+          window.location.pathname = '/organisations'
         }
       }
       this.confirmDelete = false;

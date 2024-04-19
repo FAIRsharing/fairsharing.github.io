@@ -217,6 +217,10 @@ describe("Organisation", () => {
     });
 
     it("can delete the organisation", async () => {
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = { assign: assignMock };
+
         wrapper = await shallowMount(Organisation, {
             localVue,
             vuetify,
@@ -233,7 +237,16 @@ describe("Organisation", () => {
         // Proceed with record deletion
         await wrapper.vm.deleteOrganisation(true);
         await wrapper.vm.deleteOrganisation(true);
-        expect($router.push).toHaveBeenCalledWith('/organisations');
+        const url = "/organisations";
+        Object.defineProperty(window, "location", {
+            value: {
+                pathname: url
+            },
+
+            writable: true,
+        } );
+
+        expect(window.location.pathname).toEqual(url);
     });
 
 });

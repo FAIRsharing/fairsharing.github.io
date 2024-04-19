@@ -677,9 +677,8 @@ export default {
       if (del) {
         let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
         if (!data.error) {
-          // Deploy to organisations page.
-          const url = new URL(process.env.VUE_APP_HOSTNAME + '/organisations');
-          window.location.href = url.toString();
+          // Redirect to organisations page after deletion
+          await this.$router.push('/organisations')
         }
       }
       this.confirmDelete = false;

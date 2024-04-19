@@ -20,10 +20,29 @@ users.state.user = function(){ return {
     credentials: {token: 123, username: 123},
     watchedRecords: [1]
 }};
+let editor = {
+    namespaced: true,
+    state:{
+        organisationTypes: [{
+            id:1,
+            name:"Government body"
+        }],
+        countries:[{
+            code:"AF",
+            id:1,
+            name:"Afghanistan"
+        }],
+        tooltips:{
+            abbreviation:"If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank.",
+        }
+    }
+}
 
 let $store = new Vuex.Store({
+
     modules: {
-        users: users
+        users: users,
+        editor: editor,
     }
 })
 
@@ -154,15 +173,9 @@ describe("Organisation", () => {
 
     it("can generate the correct URL for the logo", async () => {
         graphStub.restore();
+
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            organisation: {
-                urlForLogo: "/logo12345678",
-                alternativeNames: [],
-                types: [],
-                users: [],
-                parentOrganisations: [],
-                childOrganisations: []
-            }
+            organisation: organisation
         });
         wrapper = await shallowMount(Organisation, {
             localVue,
@@ -219,13 +232,8 @@ describe("Organisation", () => {
 
         // Proceed with record deletion
         await wrapper.vm.deleteOrganisation(true);
-        let assignMock = jest.fn();
-        delete window.location;
-        window.location = { assign: assignMock };
         await wrapper.vm.deleteOrganisation(true);
-        // Shows that the assignment hasn't been called (which must surely not be the case)
-        //expect(window.location.assign).toHaveBeenCalledWith('http://wibble.com/organisations');
-
+        expect($router.push).toHaveBeenCalledWith('/organisations');
     });
 
 });

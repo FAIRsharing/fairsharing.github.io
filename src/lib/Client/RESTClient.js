@@ -627,6 +627,23 @@ class RESTClient {
   }
 
   /**
+   * Delete the given organisation link
+   * @param {Number} organisationId - the id of the link to remove
+   * @param {String} userToken - the user jwt
+   * @returns {Promise}
+   */
+  async deleteOrganisation(organisationId, userToken) {
+    let _client = this;
+    const request = {
+      method: "delete",
+      baseURL: _client.baseURL + "/organisations/" + organisationId,
+      headers: this.auth_headers(userToken),
+    };
+    let response = await _client.executeQuery(request);
+    return response.data;
+  }
+
+  /**
    * Create a given grant
    * @param {Object} grant
    * @param {String} userToken - the user jwt

@@ -3,7 +3,7 @@
     id="loginPage"
     ref="loginPage"
     v-model="formValid"
-    class="login"
+    class="login mb-9"
     style="background: white"
   >
     <v-container>
@@ -12,12 +12,14 @@
         <v-col
           cols="12"
           sm="12"
-          :md="!popUp ? '8' : '12' "
-          :lg="!popUp ? '8' : '12' "
-          :xl="!popUp ? '5' : '12' "
+          :md="!popUp ? '8' : '12'"
+          :lg="!popUp ? '8' : '12'"
+          :xl="!popUp ? '5' : '12'"
         >
           <v-card :flat="popUp">
-            <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
+            <v-card-title
+              :class="{ 'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp }"
+            >
               <h2 class="ma-0">
                 {{ currentPanel | capitalize }}
               </h2>
@@ -28,22 +30,20 @@
               <MessageHandler field="login" />
 
               <!-- button to re-send confirmation if login failed -->
-              <div
-                v-if="resendButton"
-                class="d-flex flex-row justify-center"
-              >
+              <div v-if="resendButton" class="d-flex flex-row justify-center">
                 <v-btn
                   class="text-center teal white--text px-2"
                   href="/users/resendConfirmation"
-                  @click="()=>{$emit('ClosePopup', true)}"
+                  @click="
+                    () => {
+                      $emit('ClosePopup', true);
+                    }
+                  "
                 >
                   Resend me the confirmation email
                 </v-btn>
               </div>
-              <v-divider
-                v-if="resendButton"
-                class="pb-0 mb-0"
-              />
+              <v-divider v-if="resendButton" class="pb-0 mb-0" />
 
               <!-- OAUTH -->
               <v-list>
@@ -59,11 +59,8 @@
                     :href="provider.callback + returnTo()"
                   >
                     <v-layout width="100%">
-                      <v-icon
-                        left
-                        class="mr-5"
-                      >
-                        {{ 'fab fa-' + provider.name.toLowerCase() }}
+                      <v-icon left class="mr-5">
+                        {{ "fab fa-" + provider.name.toLowerCase() }}
                       </v-icon>
                       <v-layout>with {{ provider.name }}</v-layout>
                     </v-layout>
@@ -72,14 +69,9 @@
               </v-list>
             </v-card-text>
 
-
             <!-- card content // Form -->
             <v-card-text v-if="currentPanel === 'login'">
-              <v-form
-                id="loginForm"
-                ref="loginForm"
-                v-model="formValid"
-              >
+              <v-form id="loginForm" ref="loginForm" v-model="formValid">
                 <!-- account -->
                 <v-text-field
                   v-model="loginData.name"
@@ -106,24 +98,45 @@
 
                 <v-card-text class="text-center py-1">
                   <router-link to="/accounts/forgotPassword">
-                    <span @click="()=>{$emit('ClosePopup', true)}">Forgotten your password?</span>
+                    <span
+                      @click="
+                        () => {
+                          $emit('ClosePopup', true);
+                        }
+                      "
+                      >Forgotten your password?</span
+                    >
                   </router-link>
                   <v-divider />
                   <router-link to="/accounts/signup">
-                    <span @click="()=>{$emit('ClosePopup', true)}">Need to create a new account?</span>
+                    <span
+                      @click="
+                        () => {
+                          $emit('ClosePopup', true);
+                        }
+                      "
+                      >Need to create a new account?</span
+                    >
                   </router-link>
                   <v-divider />
                   <a
                     href="https://fairsharing.gitbook.io/fairsharing/#accessing-fairsharing-through-3rd-party-accounts"
                     target="_blank"
                   >
-                    <span @click="()=>{$emit('ClosePopup', true)}">Can't login with ORCID?</span>
+                    <span
+                      @click="
+                        () => {
+                          $emit('ClosePopup', true);
+                        }
+                      "
+                      >Can't login with ORCID?</span
+                    >
                   </a>
                 </v-card-text>
 
                 <v-card-actions class="mt-2 justify-center">
                   <v-btn
-                    class=" px-4"
+                    class="px-4"
                     light
                     color="primary"
                     :disabled="!formValid"
@@ -142,18 +155,18 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import { mapActions, mapState } from "vuex";
 
 import MessageHandler from "@/components/Users/MessageHandler";
-import { isRequired } from "@/utils/rules.js"
-import stringUtils from '@/utils/stringUtils';
+import { isRequired } from "@/utils/rules.js";
+import stringUtils from "@/utils/stringUtils";
 
 /** This component handles the login page
  *
  */
 export default {
   name: "Login",
-  components: {MessageHandler},
+  components: { MessageHandler },
   mixins: [stringUtils],
   props: {
     redirect: {
@@ -189,47 +202,47 @@ export default {
           name: "GitHub",
           color: "black white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
-        }
+        },
       ],
       rules: {
-        isRequired: function(){return isRequired()},
+        isRequired: function () {
+          return isRequired();
+        },
       },
-      formValid: false
-    }
+      formValid: false,
+    };
   },
   computed: {
     ...mapState("users", ["messages", "user"]),
   },
   methods: {
-    ...mapActions('users', ['login', 'logout']),
+    ...mapActions("users", ["login", "logout"]),
     async logUser() {
       const _module = this;
       const user = {
-        "name": _module.loginData.name,
-        "password": _module.loginData.password
+        name: _module.loginData.name,
+        password: _module.loginData.password,
       };
-      _module.$emit('ClosePopup',false);
+      _module.$emit("ClosePopup", false);
       await _module.login(user);
 
       if (_module.messages().login.error) {
-        const confirmationError = "You have to confirm your email address before continuing.";
+        const confirmationError =
+          "You have to confirm your email address before continuing.";
         if (_module.messages().login.message === confirmationError) {
           _module.resendButton = true;
         }
-      }
-
-      else {
+      } else {
         const goTo = _module.$route.query.goTo;
         if (_module.redirect) {
           if (goTo) {
             _module.$router.push({
-              path: goTo
-            })
-          }
-          else {
+              path: goTo,
+            });
+          } else {
             _module.$router.push({
-              path: "/accounts/profile"
-            })
+              path: "/accounts/profile",
+            });
           }
         }
       }
@@ -240,10 +253,10 @@ export default {
       if (goTo) {
         return `?return_to=${goTo}`;
       }
-      return '';
-    }
-  }
-}
+      return "";
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -251,9 +264,7 @@ export default {
   text-decoration: none !important;
 }
 
-.v-card__text
-{
+.v-card__text {
   width: auto;
 }
-
 </style>

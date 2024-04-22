@@ -166,6 +166,12 @@
           >
             Edit Organisation
           </v-btn>
+          <v-btn
+            class="error ml-2"
+            @click="confirmDelete = true"
+          >
+            Delete Organisation
+          </v-btn>
         </p>
       </v-card>
 
@@ -393,6 +399,40 @@
         </v-form>
       </v-dialog>
     </v-expand-transition>
+    <v-dialog
+      v-model="confirmDelete"
+      max-width="700px"
+      persistent
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          Deleting organisation!
+        </v-card-title>
+        <v-card-text>
+          <p>
+            <b>Are you sure you want to do that? It will be permanently deleted.</b>
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="info"
+            @click="deleteOrganisation(false)"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            class="error"
+            @click="deleteOrganisation(true)"
+          >
+            Delete
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -469,6 +509,7 @@ export default {
         isURL: function(){ return isUrl() },
         isImage: function(){ return isImage() }
       },
+      confirmDelete: false
     }
   },
   computed: {
@@ -631,6 +672,17 @@ export default {
       );
       await this.getCountries();
       this.loading = false;
+    },
+    async deleteOrganisation(del) {
+      if (del) {
+        let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
+
+        if (!data.error) {
+          // Redirects to organisations page.
+          window.location.pathname = '/organisations'
+        }
+      }
+      this.confirmDelete = false;
     }
   }
 }

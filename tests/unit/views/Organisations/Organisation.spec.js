@@ -20,10 +20,29 @@ users.state.user = function(){ return {
     credentials: {token: 123, username: 123},
     watchedRecords: [1]
 }};
+let editor = {
+    namespaced: true,
+    state:{
+        organisationTypes: [{
+            id:1,
+            name:"Government body"
+        }],
+        countries:[{
+            code:"AF",
+            id:1,
+            name:"Afghanistan"
+        }],
+        tooltips:{
+            abbreviation:"If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank.",
+        }
+    }
+}
 
 let $store = new Vuex.Store({
+
     modules: {
-        users: users
+        users: users,
+        editor: editor,
     }
 })
 
@@ -154,15 +173,9 @@ describe("Organisation", () => {
 
     it("can generate the correct URL for the logo", async () => {
         graphStub.restore();
+
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            organisation: {
-                urlForLogo: "/logo12345678",
-                alternativeNames: [],
-                types: [],
-                users: [],
-                parentOrganisations: [],
-                childOrganisations: []
-            }
+            organisation: organisation
         });
         wrapper = await shallowMount(Organisation, {
             localVue,
@@ -201,6 +214,39 @@ describe("Organisation", () => {
         });
         wrapper.vm.editedOrganisation.name = 'changed name';
         await wrapper.vm.editOrganisation();
+    });
+
+    it("can delete the organisation", async () => {
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = { assign: assignMock };
+
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            vuetify,
+            router,
+            mocks: {$route, $router, $store},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+
+        // Cancel record deletion
+        wrapper.vm.confirmDelete = true;
+        await wrapper.vm.deleteOrganisation(false);
+        expect(wrapper.vm.confirmDelete).toEqual(false);
+
+        // Proceed with record deletion
+        await wrapper.vm.deleteOrganisation(true);
+        await wrapper.vm.deleteOrganisation(true);
+        const url = "/organisations";
+        Object.defineProperty(window, "location", {
+            value: {
+                pathname: url
+            },
+
+            writable: true,
+        } );
+
+        expect(window.location.pathname).toEqual(url);
     });
 
 });

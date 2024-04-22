@@ -1,5 +1,5 @@
 <template>
-  <v-btn class="mb-2 white--text" color="accent2" small>
+  <v-btn class="mb-2 white--text saveSearchResults" color="accent2" small>
     Save Search Results
   </v-btn>
 </template>

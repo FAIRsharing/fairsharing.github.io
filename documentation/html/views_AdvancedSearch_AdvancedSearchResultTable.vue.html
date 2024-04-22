@@ -96,11 +96,16 @@
     &lt;ErrorPage />
   &lt;/div>
   &lt;div v-else fluid class="pa-5 mb-15">
-    &lt;v-btn class="mb-2" color="primary" small @click="downloadResults()">
-      Download Results
-    &lt;/v-btn>
-    &lt;SaveSearchButton />
-
+    &lt;div
+      :class="
+        $vuetify.breakpoint.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
+      "
+    >
+      &lt;v-btn class="mb-2" color="primary" small @click="downloadResults()">
+        Download Results
+      &lt;/v-btn>
+      &lt;SaveSearchButton />
+    &lt;/div>
     &lt;p class="body-2 mb-0">
       &lt;v-icon x-small class="infoIcon">
         {{ "fa fa-info" }} &lt;/v-icon
@@ -356,12 +361,19 @@ export default {
   },
 };
 &lt;/script>
-&lt;style scoped>
+&lt;style lang="scss" scoped>
 .infoIcon {
   border: 1px solid;
   border-radius: 50%;
   padding: 3px 6px;
   margin: -2px 2px 0 0;
+}
+.buttonWrapper {
+  position: relative;
+  .saveSearchResults {
+    position: absolute;
+    left: 40%;
+  }
 }
 &lt;/style>
 </pre>

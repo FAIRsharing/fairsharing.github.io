@@ -6,12 +6,19 @@
     </v-fade-transition>
     <!--Loader-->
     <v-fade-transition>
-      <v-overlay v-if="getLoadingStatus" :absolute="false" opacity="0.8">
+      <v-overlay
+        v-if="getLoadingStatus"
+        :absolute="false"
+        opacity="0.8"
+      >
         <Loaders />
       </v-overlay>
     </v-fade-transition>
     <!--Search result -->
-    <v-container fluid class="pa-0">
+    <v-container
+      fluid
+      class="pa-0"
+    >
       <v-row v-if="$vuetify.breakpoint.mdAndDown">
         <v-col>
           <AdvancedSearchButtons />

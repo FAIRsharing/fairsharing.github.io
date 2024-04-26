@@ -16,6 +16,7 @@ import messages from "./messages";
 import ontologyBrowser from "./ontologyBrowser";
 import record from "./recordData.js";
 import records from "./recordSearch.js";
+import saveSearch from "./saveSearch.js";
 import searchFilters from "./searchFilters.js";
 import uiController from "./uiController";
 import users from "./users.js";
@@ -42,5 +43,6 @@ export default new Vuex.Store({
     domainsSearch,
     taxonomiesSearch,
     licencesSearch,
+    saveSearch,
   },
 });

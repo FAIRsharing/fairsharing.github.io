@@ -6,19 +6,12 @@
     </v-fade-transition>
     <!--Loader-->
     <v-fade-transition>
-      <v-overlay
-        v-if="getLoadingStatus"
-        :absolute="false"
-        opacity="0.8"
-      >
+      <v-overlay v-if="getLoadingStatus" :absolute="false" opacity="0.8">
         <Loaders />
       </v-overlay>
     </v-fade-transition>
     <!--Search result -->
-    <v-container
-      fluid
-      class="pa-0"
-    >
+    <v-container fluid class="pa-0">
       <v-row v-if="$vuetify.breakpoint.mdAndDown">
         <v-col>
           <AdvancedSearchButtons />
@@ -44,6 +37,9 @@
     </v-container>
     <!--Dialog Box -->
     <AdvancedSearchDialogBox />
+
+    <!--Save Search Stepper Dialog Box -->
+    <SaveSearchStepper />
   </v-main>
 </template>
 <script>
@@ -52,6 +48,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 import JumpToTop from "@/components/Navigation/jumpToTop.vue";
 import Loaders from "@/components/Navigation/Loaders.vue";
 import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
+import SaveSearchStepper from "@/components/Records/Search/SaveSearch/SaveSearchStepper.vue";
 import onScrollUtil from "@/utils/onScrollUtil";
 import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
@@ -66,6 +63,7 @@ export default {
     AdvancedSearchResultTable,
     AdvancedSearchSelection,
     AdvancedSearchButtons,
+    SaveSearchStepper,
   },
   mixins: [onScrollUtil],
   data() {

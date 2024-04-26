@@ -13,6 +13,7 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
+import saveSearch from "@/store";
 
 const restClient = new RESTClient();
 
@@ -20,7 +21,6 @@ export default {
   name: "SaveSearchButton",
   computed: {
     ...mapState("users", ["user"]),
-    ...mapGetters("users", ["getUserRecords"]),
     ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
   },
 
@@ -31,10 +31,10 @@ export default {
      */
     async saveSearchResults() {
       await this.getUser();
-      //Get the list of mainted records/organisations associated to
-      console.log("this.getUserRecords", this.getUserRecords);
       //Below checks if it normal user/supercurator/iscurator
       console.log("this.user()::", this.user());
+
+      saveSearch.commit("saveSearch/setSaveSearchStepper", true);
 
       let saveSearchObj = {
         name: "Test name",

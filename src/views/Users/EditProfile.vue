@@ -10,7 +10,7 @@
       >
         <v-card>
           <v-card-title class="primary white--text">
-            <h2> Edit your profile</h2>
+            <h2>Edit your profile</h2>
           </v-card-title>
 
           <v-card-text
@@ -35,8 +35,9 @@
                     >
                       <ul>
                         <li
-                          v-for="(errorLocal, errorName, index) in messages().updateProfile.message "
-                          :key="'errorLocal_'+index"
+                          v-for="(errorLocal, errorName, index) in messages()
+                            .updateProfile.message"
+                          :key="'errorLocal_' + index"
                         >
                           {{ errorName }}: {{ errorLocal[0] }}
                         </li>
@@ -127,13 +128,17 @@
                 </v-row>
 
                 <p>
-                  If you would like to request an update to any non-editable profile fields, please
-                  <a href="mailto:contact@fairsharing.org?subject=FAIRsharing user profile modification">
+                  If you would like to request an update to any non-editable
+                  profile fields, please
+                  <a
+                    href="mailto:contact@fairsharing.org?subject=FAIRsharing user profile modification"
+                  >
                     get in touch</a>.
                 </p>
                 <p v-if="!user().metadata.orcid">
-                  <b>We strongly recommend including your ORCID ID to provide extra information for the FAIRsharing
-                    community about you and the resources you develop.</b>
+                  <b>We strongly recommend including your ORCID ID to provide
+                    extra information for the FAIRsharing community about you
+                    and the resources you develop.</b>
                 </p>
                 <!-- ACTIONS -->
                 <v-row>
@@ -159,11 +164,15 @@
         v-if="newOrganisation.show"
         :dark="false"
         opacity="0.8"
-        style="z-index:50"
+        style="z-index: 50"
       >
         <v-card
           class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
-          style="border: 2px dashed grey !important; border-radius:5px;max-width: 1200px"
+          style="
+            border: 2px dashed grey !important;
+            border-radius: 5px;
+            max-width: 1200px;
+          "
           width="800px"
         >
           <v-card-title class="mb-4">
@@ -218,8 +227,10 @@
                 multiple
                 outlined
                 return-object
-                :rules="[newOrganisation.data.country_ids &&
-                  !(newOrganisation.data.country_ids.length === 0)]"
+                :rules="[
+                  newOrganisation.data.country_ids &&
+                    !(newOrganisation.data.country_ids.length === 0),
+                ]"
               >
                 <!-- autocomplete selected -->
                 <template #selection="cnameData">
@@ -244,7 +255,7 @@
                     src="@/assets/placeholders/country.png"
                     class="ml-4 mr-3"
                   >
-                  <div> {{ ccodeData.item.name }} </div>
+                  <div>{{ ccodeData.item.name }}</div>
                 </template>
               </v-autocomplete>
             </v-form>
@@ -273,21 +284,21 @@
 
 <script>
 import CountryFlag from "vue-country-flag";
-import { mapActions,mapState } from "vuex"
+import { mapActions, mapState } from "vuex";
 
-import RESTClient from "@/lib/Client/RESTClient.js"
-import {isEmail, isLongEnough, isRequired, isUrl} from "@/utils/rules.js"
+import RESTClient from "@/lib/Client/RESTClient.js";
+import { isEmail, isLongEnough, isRequired, isUrl } from "@/utils/rules.js";
 
 const restClient = new RESTClient();
 
 export default {
   name: "EditProfile",
-  components: {CountryFlag},
+  components: { CountryFlag },
   data: () => {
     return {
       data: {
         profileTypes: [],
-        organisations: []
+        organisations: [],
       },
       selectedProfileType: null,
       message: null,
@@ -306,84 +317,74 @@ export default {
           label: "Email address",
           hint: null,
           type: "input",
-          rules: [
-            isEmail(),
-            isRequired()
-          ]
+          rules: [isEmail(), isRequired()],
         },
         {
           name: "first_name",
           label: "First Name",
           hint: null,
           type: "input",
-          rules: [
-            isRequired()
-          ]
+          rules: [isRequired()],
         },
         {
           name: "last_name",
           label: "Last Name",
           hint: null,
           type: "input",
-          rules: [
-            isRequired()
-          ]
+          rules: [isRequired()],
         },
         {
           name: "homepage",
           label: "Homepage",
           hint: null,
           type: "input",
-          rules: [
-            isUrl()
-          ]
+          rules: [isUrl()],
         },
         {
           name: "twitter",
           label: "Twitter",
           hint: null,
-          type: "input"
+          type: "input",
         },
         {
           name: "orcid",
           label: "Orcid ID",
           hint: "To change this field, log in with ORCID",
-          type: "input"
+          type: "input",
         },
         {
           name: "profile_type",
           label: "Profile Type",
           hint: null,
           type: "select",
-          rules: [
-            isRequired()
-          ],
-          data: "profileTypes"
+          rules: [isRequired()],
+          data: "profileTypes",
         },
         {
           name: "organisations",
           label: "Organisations",
           hint: null,
           type: "autocomplete",
-          data: "organisations"
+          data: "organisations",
         },
         {
           name: "preferences_hide",
           label: "Hide your email address on public pages.",
           hint: null,
-          type: "checkbox"
+          type: "checkbox",
         },
         {
           name: "preferences_send",
           label: "Receive record update emails from FAIRsharing.",
           hint: null,
-          type: "checkbox"
+          type: "checkbox",
         },
         {
           name: "preferences_orcid",
-          label: "Allow the crediting of my FAIRsharing curation to my ORCID profile.",
+          label:
+            "Allow the crediting of my FAIRsharing curation to my ORCID profile.",
           hint: null,
-          type: "checkbox"
+          type: "checkbox",
         },
       ],
       loading: false,
@@ -398,54 +399,66 @@ export default {
         formValid: true,
         show: false,
         loading: false,
-        error: false
+        error: false,
       },
       rules: {
-        isRequired: ()=> isRequired(),
-        isURL: ()=> isUrl(),
-        isLongEnough: (val)=> isLongEnough(val),
+        isRequired: () => isRequired(),
+        isURL: () => isUrl(),
+        isLongEnough: (val) => isLongEnough(val),
       },
-    }
+    };
   },
   computed: {
     ...mapState("users", ["user", "messages"]),
-    ...mapState('editor', ['organisations', 'organisationsTypes', 'countries']),
-    formData: function(){
+    ...mapState("editor", ["organisations", "organisationsTypes", "countries"]),
+    formData: function () {
       if (this.user().metadata.preferences) {
         return {
           username: this.user().credentials.username,
           email: this.user().metadata.email,
-          preferences_hide: this.user().metadata['preferences']['hide_email'],
-          preferences_send: this.user().metadata['preferences']['email_updates'],
-          preferences_orcid: this.user().metadata['preferences']['push_to_orcid'],
+          preferences_hide: this.user().metadata["preferences"]["hide_email"],
+          preferences_send:
+            this.user().metadata["preferences"]["email_updates"],
+          preferences_orcid:
+            this.user().metadata["preferences"]["push_to_orcid"],
           first_name: this.user().metadata.first_name,
           last_name: this.user().metadata.last_name,
           homepage: this.user().metadata.homepage,
           profile_type: this.user().metadata.profile_type,
           orcid: this.user().metadata.orcid,
-          twitter: this.user().metadata.twitter
-        }
+          twitter: this.user().metadata.twitter,
+        };
       }
       return null;
-    }
+    },
   },
-  async created(){
-    this.loading = true
+  async created() {
+    this.loading = true;
     await Promise.all([
       this.getUser(), // REST & GQL -- OK
       this.getUserMeta(), // REST -- OK
       this.getProfileTypes(), // REST -- OK
-      this.getOrganisations(),  // GQL
+      this.getOrganisations(), // GQL
       this.getOrganisationsTypes(), // GQL
-      this.getCountries()
-    ])
-    this.data.organisations = this.organisations
-    this.userOrganisations = this.user().records.organisations
-    this.loading = false
+      this.getCountries(),
+    ]);
+    this.data.organisations = this.organisations;
+    this.userOrganisations = this.user().records.organisations;
+    this.loading = false;
+    console.log("this.getUserMeta()::", this.getUserMeta());
   },
   methods: {
-    ...mapActions('users', ['getUserMeta', "updateUser", "setMessage", "getUser"]),
-    ...mapActions('editor', ['getOrganisations', 'getOrganisationsTypes', 'getCountries']),
+    ...mapActions("users", [
+      "getUserMeta",
+      "updateUser",
+      "setMessage",
+      "getUser",
+    ]),
+    ...mapActions("editor", [
+      "getOrganisations",
+      "getOrganisationsTypes",
+      "getCountries",
+    ]),
     async updateProfile() {
       this.loading = true;
       let data = JSON.parse(JSON.stringify(this.formData));
@@ -454,59 +467,73 @@ export default {
         email_updates: this.formData.preferences_send,
         push_to_orcid: this.formData.preferences_orcid,
       };
-      data.organisation_ids = this.userOrganisations.map(item => item.id)
+      data.organisation_ids = this.userOrganisations.map((item) => item.id);
       await this.updateUser(data);
       this.loading = false;
       if (!this.messages().updateProfile.error) {
-        this.setMessage({field: 'getUser', message: "Your profile was updated successfully."});
-        await this.$router.push({path: "/accounts/profile"})
+        this.setMessage({
+          field: "getUser",
+          message: "Your profile was updated successfully.",
+        });
+        await this.$router.push({ path: "/accounts/profile" });
       }
     },
     isDisabled(name) {
-      return name === 'username' || name === 'orcid' || (name === 'email' && this.user().metadata.third_party);
+      return (
+        name === "username" ||
+        name === "orcid" ||
+        (name === "email" && this.user().metadata.third_party)
+      );
     },
     async getProfileTypes() {
       this.data.profileTypes = await restClient.getProfileTypes();
     },
     async createOrganisation() {
-      let organisationInput = JSON.parse(JSON.stringify(this.newOrganisation.data));
+      let organisationInput = JSON.parse(
+        JSON.stringify(this.newOrganisation.data)
+      );
       /* istanbul ignore else */
       if (organisationInput.country_ids) {
-        organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
+        organisationInput.country_ids = organisationInput.country_ids.map(
+          (obj) => obj.id
+        );
       }
-      this.newOrganisation.loading = true
-      this.newOrganisation.error = false
-      let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
+      this.newOrganisation.loading = true;
+      this.newOrganisation.error = false;
+      let data = await restClient.createOrganisation(
+        organisationInput,
+        this.user().credentials.token
+      );
       if (!data.error) {
         let created = {
           id: data.data.id,
-          name: data.data.attributes.name
-        }
-        this.data.organisations.push(created)
+          name: data.data.attributes.name,
+        };
+        this.data.organisations.push(created);
         this.newOrganisation = {
           data: {
             name: null,
             homepage: null,
             organisation_type_ids: [],
-            country_ids: []
+            country_ids: [],
           },
           formValid: true,
           show: false,
           loading: false,
-          error: false
-        }
-        this.userOrganisations.push(created)
-      }
-      else this.newOrganisation.error = data.error.response.data
-      this.newOrganisation.loading = false
+          error: false,
+        };
+        this.userOrganisations.push(created);
+      } else this.newOrganisation.error = data.error.response.data;
+      this.newOrganisation.loading = false;
     },
     removeCountry(country) {
-      this.newOrganisation.data.country_ids = this.newOrganisation.data.country_ids.filter(obj =>
-          obj.label !== country.name && obj.id !== country.id
-      );
-    }
+      this.newOrganisation.data.country_ids =
+        this.newOrganisation.data.country_ids.filter(
+          (obj) => obj.label !== country.name && obj.id !== country.id
+        );
+    },
   },
-}
+};
 </script>
 
 <style>
@@ -515,7 +542,7 @@ export default {
 }
 #edit_organisations .v-chip,
 #edit_organisations .fa-times-circle {
-  background: #27AAE1;
+  background: #27aae1;
   color: white;
 }
 .menuable__content__active.v-autocomplete__content .v-list-item__content {

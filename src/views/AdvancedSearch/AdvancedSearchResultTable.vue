@@ -1,29 +1,45 @@
 <template>
-  <div v-if="getErrorStatus" fluid class="pa-0">
+  <div
+    v-if="getErrorStatus"
+    fluid
+    class="pa-0"
+  >
     <ErrorPage />
   </div>
-  <div v-else fluid class="pa-5 mb-15">
+  <div
+    v-else
+    fluid
+    class="pa-5 mb-15"
+  >
     <div
       :class="
         $vuetify.breakpoint.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
       "
     >
-      <v-btn class="mb-2" color="primary" small @click="downloadResults()">
+      <v-btn
+        class="mb-2"
+        color="primary"
+        small
+        @click="downloadResults()"
+      >
         Download Results
       </v-btn>
       <SaveSearchButton />
     </div>
     <p class="body-2 mb-0">
-      <v-icon x-small class="infoIcon">
-        {{ "fa fa-info" }} </v-icon
-      >Find out more about our Advanced Search in our
+      <v-icon
+        x-small
+        class="infoIcon"
+      >
+        {{ "fa fa-info" }}
+      </v-icon>Find out more about our Advanced Search in our
       <a
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
         target="_blank"
         class="text-decoration-underline"
-        >gitbook documentation<v-icon x-small>
-          {{ "fa fa-link" }}
-        </v-icon>
+      >gitbook documentation<v-icon x-small>
+        {{ "fa fa-link" }}
+      </v-icon>
       </a>
     </p>
     <v-data-iterator
@@ -48,7 +64,11 @@
           items-per-page-text="Records per page:"
           @update:options="updateOptions"
         />
-        <v-toolbar dark color="blue lighten-1" class="mb-5">
+        <v-toolbar
+          dark
+          color="blue lighten-1"
+          class="mb-5"
+        >
           <v-text-field
             v-model="search"
             clearable
@@ -70,11 +90,24 @@
               label="Sort by"
             />
             <v-spacer />
-            <v-btn-toggle v-model="sortDesc" mandatory>
-              <v-btn large depressed color="blue" :value="false">
+            <v-btn-toggle
+              v-model="sortDesc"
+              mandatory
+            >
+              <v-btn
+                large
+                depressed
+                color="blue"
+                :value="false"
+              >
                 <v-icon>mdi-arrow-up</v-icon>
               </v-btn>
-              <v-btn large depressed color="blue" :value="true">
+              <v-btn
+                large
+                depressed
+                color="blue"
+                :value="true"
+              >
                 <v-icon>mdi-arrow-down</v-icon>
               </v-btn>
             </v-btn-toggle>
@@ -85,7 +118,11 @@
       <!-- data section begins -->
       <template #default="props">
         <v-row>
-          <v-col v-for="item in props.items" :key="item.name" cols="12">
+          <v-col
+            v-for="item in props.items"
+            :key="item.name"
+            cols="12"
+          >
             <v-card>
               <v-card-title class="subheading font-weight-bold">
                 <RecordStatus :record="item" />
@@ -109,7 +146,10 @@
                 {{ item.description }}
               </p>
 
-              <TagChips :record="item" class="ml-10" />
+              <TagChips
+                :record="item"
+                class="ml-10"
+              />
               <p class="pb-5" />
             </v-card>
           </v-col>
@@ -117,7 +157,9 @@
       </template>
       <!-- data section ends -->
 
-      <template #loading> Loading... </template>
+      <template #loading>
+        Loading...
+      </template>
     </v-data-iterator>
   </div>
 </template>

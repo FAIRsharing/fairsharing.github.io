@@ -205,6 +205,9 @@ export const mutations = {
     };
     localStorage.setItem("user", JSON.stringify(state.user()));
   },
+  setUserRecords(state, userRecords) {
+    state.userRecords = userRecords;
+  },
 };
 
 export const actions = {
@@ -301,6 +304,7 @@ export const actions = {
             metadata: userMetadata,
             records: userRecords,
           });
+          this.commit("users/setUserRecords", userRecords);
         }
       }
     } catch (e) {
@@ -503,6 +507,11 @@ export const actions = {
     this.commit("users/setMessage", message);
   },
 };
+let getters = {
+  getUserRecords(state) {
+    return state.userRecords;
+  },
+};
 
 let currentUser = {
   namespaced: true,
@@ -526,10 +535,11 @@ let currentUser = {
       preferences: {},
       deactivated: null,
     },
+    userRecords: {},
   },
   mutations: mutations,
   actions: actions,
-  getters: {},
+  getters: getters,
   modules: {},
 };
 

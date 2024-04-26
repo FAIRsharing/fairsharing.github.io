@@ -30,7 +30,10 @@
               <MessageHandler field="login" />
 
               <!-- button to re-send confirmation if login failed -->
-              <div v-if="resendButton" class="d-flex flex-row justify-center">
+              <div
+                v-if="resendButton"
+                class="d-flex flex-row justify-center"
+              >
                 <v-btn
                   class="text-center teal white--text px-2"
                   href="/users/resendConfirmation"
@@ -43,7 +46,10 @@
                   Resend me the confirmation email
                 </v-btn>
               </div>
-              <v-divider v-if="resendButton" class="pb-0 mb-0" />
+              <v-divider
+                v-if="resendButton"
+                class="pb-0 mb-0"
+              />
 
               <!-- OAUTH -->
               <v-list>
@@ -59,7 +65,10 @@
                     :href="provider.callback + returnTo()"
                   >
                     <v-layout width="100%">
-                      <v-icon left class="mr-5">
+                      <v-icon
+                        left
+                        class="mr-5"
+                      >
                         {{ "fab fa-" + provider.name.toLowerCase() }}
                       </v-icon>
                       <v-layout>with {{ provider.name }}</v-layout>
@@ -71,7 +80,11 @@
 
             <!-- card content // Form -->
             <v-card-text v-if="currentPanel === 'login'">
-              <v-form id="loginForm" ref="loginForm" v-model="formValid">
+              <v-form
+                id="loginForm"
+                ref="loginForm"
+                v-model="formValid"
+              >
                 <!-- account -->
                 <v-text-field
                   v-model="loginData.name"
@@ -104,8 +117,7 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                      >Forgotten your password?</span
-                    >
+                    >Forgotten your password?</span>
                   </router-link>
                   <v-divider />
                   <router-link to="/accounts/signup">
@@ -115,8 +127,7 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                      >Need to create a new account?</span
-                    >
+                    >Need to create a new account?</span>
                   </router-link>
                   <v-divider />
                   <a
@@ -129,8 +140,7 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                      >Can't login with ORCID?</span
-                    >
+                    >Can't login with ORCID?</span>
                   </a>
                 </v-card-text>
 

@@ -1014,6 +1014,26 @@ class RESTClient {
     let response = await _client.executeQuery(request);
     return response.data;
   }
+
+  /**
+   * Save the advancedSearch results to the user
+   * @param {Object} saveSearchObj - save search object having required parameters
+   * @param {String} jwt - the user jwt
+   * @returns {Promise}
+   */
+
+  async saveSearch(saveSearchObj, jwt) {
+    let _client = this;
+    const request = {
+      method: "post",
+      baseURL: _client.baseURL + "/saved_searches",
+      headers: this.auth_headers(jwt),
+      data: saveSearchObj,
+    };
+    let response = await _client.executeQuery(request);
+    console.log("response.data::", response.data);
+    return response.data;
+  }
 }
 
 export default RESTClient;

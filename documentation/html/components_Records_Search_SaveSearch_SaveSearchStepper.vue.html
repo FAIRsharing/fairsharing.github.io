@@ -104,29 +104,21 @@
           &lt;!--Stepper Header -->
           &lt;v-stepper-header>
             &lt;!--Header 1 -->
-            &lt;v-stepper-step
-              :complete="steps > 1"
-              step="1"
-            >
+            &lt;v-stepper-step :complete="steps > 1" step="1">
               Select Policy
               &lt;small>Optional&lt;/small>
             &lt;/v-stepper-step>
 
             &lt;v-divider />
             &lt;!--Header 2 -->
-            &lt;v-stepper-step
-              :complete="steps > 2"
-              step="2"
-            >
+            &lt;v-stepper-step :complete="steps > 2" step="2">
               Select Organisation
               &lt;small>Optional&lt;/small>
             &lt;/v-stepper-step>
 
             &lt;v-divider />
             &lt;!--Header 3 -->
-            &lt;v-stepper-step step="3">
-              Save Search
-            &lt;/v-stepper-step>
+            &lt;v-stepper-step step="3"> Save Search &lt;/v-stepper-step>
           &lt;/v-stepper-header>
 
           &lt;!--Stepper Body -->
@@ -140,12 +132,7 @@
                 :label="name"
                 :value="id"
               />
-              &lt;v-btn
-                color="primary"
-                @click="steps = 2"
-              >
-                Continue
-              &lt;/v-btn>
+              &lt;v-btn color="primary" @click="steps = 2"> Continue &lt;/v-btn>
             &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 2 Organisation List-->
@@ -157,32 +144,19 @@
                 :label="name"
                 :value="id"
               />
-              &lt;v-btn
-                class="white--text"
-                color="accent3"
-                @click="steps = 1"
-              >
+              &lt;v-btn class="white--text" color="accent3" @click="steps = 1">
                 Back
               &lt;/v-btn>
-              &lt;v-btn
-                color="primary"
-                @click="steps = 3"
-              >
-                Continue
-              &lt;/v-btn>
+              &lt;v-btn color="primary" @click="steps = 3"> Continue &lt;/v-btn>
             &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 3 Save Search Form-->
             &lt;v-stepper-content step="3">
-              &lt;v-form
-                ref="searchFormRef"
-                v-model="searchForm"
-                lazy-validation
-              >
+              &lt;v-form ref="searchFormRef" v-model="searchForm" lazy-validation>
                 &lt;v-text-field
                   v-model="searchName"
                   label="Search Name"
-                  :rules="[rules.isRequired()]"
+                  :rules="[isRequired()]"
                 />
                 &lt;v-text-field
                   v-model="searchComment"
@@ -191,11 +165,7 @@
                 />
               &lt;/v-form>
 
-              &lt;v-btn
-                class="white--text"
-                color="accent3"
-                @click="steps = 2"
-              >
+              &lt;v-btn class="white--text" color="accent3" @click="steps = 2">
                 Back
               &lt;/v-btn>
               &lt;v-btn
@@ -223,10 +193,13 @@
 &lt;/template>
 
 &lt;script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
+import RESTClient from "@/lib/Client/RESTClient";
 import saveSearch from "@/store";
 import { isRequired } from "@/utils/rules.js";
+
+const restClient = new RESTClient();
 
 export default {
   name: "SaveSearchStepper",
@@ -241,16 +214,13 @@ export default {
       searchForm: false,
       searchName: "",
       searchComment: "",
-      rules: {
-        isRequired: function () {
-          return isRequired();
-        },
-      },
     };
   },
   computed: {
+    ...mapState("users", ["user"]),
     ...mapGetters("saveSearch", ["getSaveSearchStepper"]),
     ...mapGetters("users", ["getUserRecords"]),
+    ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
   },
   watch: {
     async getSaveSearchStepper(newValue) {
@@ -262,16 +232,18 @@ export default {
       }
     },
   },
-  async mounted() {},
+
   methods: {
+    isRequired,
+
     ...mapActions("users", ["getUser"]),
+
     /**
      * Return FairSharing Records of the Policy records maintained
      * by the user
      * @return {Array} - Policy record name used in the stepper
      */
     fetchUserRecordData() {
-      console.log("this.getUserRecords", this.getUserRecords);
       let maintainedRecordsArr = this.getUserRecords.user["maintainedRecords"];
       if (maintainedRecordsArr &amp;&amp; maintainedRecordsArr.length) {
         return maintainedRecordsArr.filter(
@@ -286,16 +258,30 @@ export default {
      */
     fetchUserOrganisationData() {
       let organisationsArr = this.getUserRecords.user["organisations"];
-
       if (organisationsArr &amp;&amp; organisationsArr.length) {
         return organisationsArr;
       }
     },
+
     /**
      * Save Search method
      */
-    saveSearch() {
+    async saveSearch() {
       this.$refs.searchFormRef.validate();
+      //Below checks if it normal user/supercurator/iscurator
+      console.log("this.user()::", this.user());
+
+      let saveSearchObj = {
+        name: this.searchName,
+        comments: this.searchComment,
+        url: this.$route.fullPath,
+        fairsharing_record_ids: this.policySelected,
+        user_ids: [2],
+        organisation_ids: this.organisationSelected,
+        params: this.getAdvancedSearchQuery,
+      };
+
+      await restClient.saveSearch(saveSearchObj, this.user().credentials.token);
     },
 
     /**

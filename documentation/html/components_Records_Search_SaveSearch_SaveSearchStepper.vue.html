@@ -101,25 +101,37 @@
     >
       &lt;div>
         &lt;v-stepper v-model="steps">
+          &lt;!--Stepper Header -->
           &lt;v-stepper-header>
             &lt;!--Header 1 -->
-            &lt;v-stepper-step :complete="steps > 1" step="1">
+            &lt;v-stepper-step
+              :complete="steps > 1"
+              step="1"
+            >
               Select Policy
               &lt;small>Optional&lt;/small>
             &lt;/v-stepper-step>
 
             &lt;v-divider />
             &lt;!--Header 2 -->
-            &lt;v-stepper-step :complete="steps > 2" step="2">
+            &lt;v-stepper-step
+              :complete="steps > 2"
+              step="2"
+            >
               Select Organisation
               &lt;small>Optional&lt;/small>
             &lt;/v-stepper-step>
+
             &lt;v-divider />
             &lt;!--Header 3 -->
-            &lt;v-stepper-step step="3"> Save Search &lt;/v-stepper-step>
+            &lt;v-stepper-step step="3">
+              Save Search
+            &lt;/v-stepper-step>
           &lt;/v-stepper-header>
+
+          &lt;!--Stepper Body -->
           &lt;v-stepper-items>
-            &lt;!--Content 1 Policy List-->
+            &lt;!--Stepper Content 1 Policy List-->
             &lt;v-stepper-content step="1">
               &lt;v-checkbox
                 v-for="({ id, name }, index) in policyList"
@@ -128,9 +140,15 @@
                 :label="name"
                 :value="id"
               />
-              &lt;v-btn color="primary" @click="steps = 2"> Continue &lt;/v-btn>
+              &lt;v-btn
+                color="primary"
+                @click="steps = 2"
+              >
+                Continue
+              &lt;/v-btn>
             &lt;/v-stepper-content>
-            &lt;!--Content 2 Organisation List-->
+
+            &lt;!--Stepper Content 2 Organisation List-->
             &lt;v-stepper-content step="2">
               &lt;v-checkbox
                 v-for="({ id, name }, index) in organisationList"
@@ -139,39 +157,67 @@
                 :label="name"
                 :value="id"
               />
-              &lt;v-btn text @click="steps = 1"> Back &lt;/v-btn>
-              &lt;v-btn color="primary" @click="steps = 3"> Continue &lt;/v-btn>
+              &lt;v-btn
+                class="white--text"
+                color="accent3"
+                @click="steps = 1"
+              >
+                Back
+              &lt;/v-btn>
+              &lt;v-btn
+                color="primary"
+                @click="steps = 3"
+              >
+                Continue
+              &lt;/v-btn>
             &lt;/v-stepper-content>
-            &lt;!--Content 3 Save Search Form-->
+
+            &lt;!--Stepper Content 3 Save Search Form-->
             &lt;v-stepper-content step="3">
-              &lt;v-btn text @click="steps = 2"> Back &lt;/v-btn>
-              &lt;v-btn color="primary" @click="steps = 3"> Continue &lt;/v-btn>
+              &lt;v-form
+                ref="searchFormRef"
+                v-model="searchForm"
+                lazy-validation
+              >
+                &lt;v-text-field
+                  v-model="searchName"
+                  label="Search Name"
+                  :rules="[rules.isRequired()]"
+                />
+                &lt;v-text-field
+                  v-model="searchComment"
+                  :counter="100"
+                  label="Comments"
+                />
+              &lt;/v-form>
+
+              &lt;v-btn
+                class="white--text"
+                color="accent3"
+                @click="steps = 2"
+              >
+                Back
+              &lt;/v-btn>
+              &lt;v-btn
+                color="success"
+                :disabled="!searchForm"
+                @click="saveSearch"
+              >
+                Save
+              &lt;/v-btn>
             &lt;/v-stepper-content>
           &lt;/v-stepper-items>
         &lt;/v-stepper>
       &lt;/div>
-      &lt;v-card-actions>
-        &lt;v-btn
-          color="green"
-          variant="text"
-          class="white--text order-md-2"
-          :class="{
-            'mb-3': $vuetify.breakpoint.smAndDown,
-          }"
-          :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
-        >
-          Proceed
-        &lt;/v-btn>
-        &lt;v-btn
-          color="accent3"
-          variant="text"
-          class="white--text order-md-1 ml-0"
-          :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
-          @click="closeStepperDialog()"
-        >
-          Close
-        &lt;/v-btn>
-      &lt;/v-card-actions>
+
+      &lt;v-btn
+        color="accent3"
+        variant="text"
+        class="white--text order-md-1 ml-0"
+        @click="closeStepperDialog()"
+      >
+        Close
+      &lt;/v-btn>
     &lt;/v-dialog>
   &lt;/v-row>
 &lt;/template>
@@ -180,6 +226,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 import saveSearch from "@/store";
+import { isRequired } from "@/utils/rules.js";
 
 export default {
   name: "SaveSearchStepper",
@@ -191,6 +238,14 @@ export default {
       organisationSelected: [],
       policyList: [],
       organisationList: [],
+      searchForm: false,
+      searchName: "",
+      searchComment: "",
+      rules: {
+        isRequired: function () {
+          return isRequired();
+        },
+      },
     };
   },
   computed: {
@@ -236,7 +291,16 @@ export default {
         return organisationsArr;
       }
     },
+    /**
+     * Save Search method
+     */
+    saveSearch() {
+      this.$refs.searchFormRef.validate();
+    },
 
+    /**
+     * Close Stepper Dialog Box method
+     */
     closeStepperDialog() {
       saveSearch.commit("saveSearch/setSaveSearchStepper", false);
     },

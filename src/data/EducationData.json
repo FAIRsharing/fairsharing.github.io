@@ -293,10 +293,11 @@
       {
         "id": "policies_overview",
         "logo": "policies_overview.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
+        "text": "",
+        "doi": "10.5281/zenodo.11059819",
+        "url": "https://zenodo.org/records/11059819/files/FAIRsharing%20content_%20policies%20overview%20V1.0.pdf?download=1",
+        "copyButtonStatus": false,
+        "hash": "policies"
       },
       {
         "id": "collections_overview",

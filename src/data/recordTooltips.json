@@ -1,0 +1,17 @@
+{
+  "descriptions": {
+    "name": "The full name of this resource.",
+    "homepage": "The homepage of the resource itself. If there is no official homepage, a related URL may be used. For policies, the resource homepage can be the policy document itself.",
+    "abbreviation": "An official or commonly-used abbreviation for the resource.",
+    "year": "The year in which the resource was created.",
+    "description": "Free text summary of the resource and its purpose.",
+    "countries": " The country or countries in which the resource was developed and/or is currently maintained.",
+    "deprecation_reason": "An explanation as to why this resource is no longer considered suitable for use.",
+    "species": "The organismal taxonomies covered by this resource. ",
+    "subjects": "A discipline is a term describing a subject area / academic discipline used within FAIRsharing records by curators and the user community.",
+    "domains": "A domain is a term describing a cross-discipline research domain used within FAIRsharing records by curators and the user community.",
+    "userDefinedTags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies.",
+    "how_to_cite": "This is the citation information for the FAIRsharing record describing this resource.",
+    "publication_for_citation": "Use this to directly cite the resource itself."
+  }
+}

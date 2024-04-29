@@ -18,7 +18,19 @@
             item="howToCite"
             size="20"
           />
-          <v-card-title class="pa-0 text--primary card-title-customize">
+          <v-card-title
+            class="pa-0 text--primary card-title-customize"
+          >
+            <template #prepend>
+              <v-tooltip bottom>
+                <template #activator="{ on }">
+                  <v-icon v-on="on">
+                    fa-question-circle
+                  </v-icon>
+                </template>
+                {{ recordTooltips['how_to_cite'] }}
+              </v-tooltip>
+            </template>
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
@@ -159,6 +171,7 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
+    ...mapState("editor", ["recordTooltips"]),
     ...mapGetters("record", ["getField"]),
   },
   methods: {

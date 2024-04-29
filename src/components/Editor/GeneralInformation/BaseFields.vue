@@ -76,7 +76,7 @@
                   fa-question-circle
                 </v-icon>
               </template>
-              Name of the record
+              {{ tooltips['name'] }}
             </v-tooltip>
           </template>
         </v-text-field>

@@ -11,21 +11,29 @@
           <!--Stepper Header -->
           <v-stepper-header>
             <!--Header 1 -->
-            <v-stepper-step :complete="steps > 1" step="1">
+            <v-stepper-step
+              :complete="steps > 1"
+              step="1"
+            >
               Select Policy
               <small>Optional</small>
             </v-stepper-step>
 
             <v-divider />
             <!--Header 2 -->
-            <v-stepper-step :complete="steps > 2" step="2">
+            <v-stepper-step
+              :complete="steps > 2"
+              step="2"
+            >
               Select Organisation
               <small>Optional</small>
             </v-stepper-step>
 
             <v-divider />
             <!--Header 3 -->
-            <v-stepper-step step="3"> Save Search </v-stepper-step>
+            <v-stepper-step step="3">
+              Save Search
+            </v-stepper-step>
           </v-stepper-header>
 
           <!--Stepper Body -->
@@ -39,7 +47,12 @@
                 :label="name"
                 :value="id"
               />
-              <v-btn color="primary" @click="steps = 2"> Continue </v-btn>
+              <v-btn
+                color="primary"
+                @click="steps = 2"
+              >
+                Continue
+              </v-btn>
             </v-stepper-content>
 
             <!--Stepper Content 2 Organisation List-->
@@ -51,15 +64,28 @@
                 :label="name"
                 :value="id"
               />
-              <v-btn class="white--text" color="accent3" @click="steps = 1">
+              <v-btn
+                class="white--text"
+                color="accent3"
+                @click="steps = 1"
+              >
                 Back
               </v-btn>
-              <v-btn color="primary" @click="steps = 3"> Continue </v-btn>
+              <v-btn
+                color="primary"
+                @click="steps = 3"
+              >
+                Continue
+              </v-btn>
             </v-stepper-content>
 
             <!--Stepper Content 3 Save Search Form-->
             <v-stepper-content step="3">
-              <v-form ref="searchFormRef" v-model="searchForm" lazy-validation>
+              <v-form
+                ref="searchFormRef"
+                v-model="searchForm"
+                lazy-validation
+              >
                 <v-text-field
                   v-model="searchName"
                   label="Search Name"
@@ -72,7 +98,11 @@
                 />
               </v-form>
 
-              <v-btn class="white--text" color="accent3" @click="steps = 2">
+              <v-btn
+                class="white--text"
+                color="accent3"
+                @click="steps = 2"
+              >
                 Back
               </v-btn>
               <v-btn

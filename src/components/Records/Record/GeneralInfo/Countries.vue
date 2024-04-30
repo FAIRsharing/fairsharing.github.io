@@ -1,5 +1,17 @@
 <template>
   <div class="d-flex flex-row mt-4 min-height-40">
+    <v-tooltip bottom>
+      <template #activator="{ on }">
+        <v-icon
+          class="mr-2"
+          size="15"
+          v-on="on"
+        >
+          fa-question-circle
+        </v-icon>
+      </template>
+      {{ recordTooltips['how_to_cite'] }}
+    </v-tooltip>
     <b class="width-15-percent-flex">Countries developing this resource</b>
     <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
       <NoneFound
@@ -36,7 +48,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 import NoneFound from "@/components/Records/Record/NoneFound";
 
@@ -50,6 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+    ...mapState("editor", ["recordTooltips"])
   },
   methods: {
     sortCountries() {

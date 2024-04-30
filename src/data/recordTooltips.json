@@ -12,6 +12,7 @@
     "domains": "A domain is a term describing a cross-discipline research domain used within FAIRsharing records by curators and the user community.",
     "userDefinedTags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies.",
     "how_to_cite": "This is the citation information for the FAIRsharing record describing this resource.",
-    "publication_for_citation": "Use this to directly cite the resource itself."
+    "publication_for_citation": "Use this to directly cite the resource itself.",
+    "tools": "Any tools associated with or maintained by this resource."
   }
 }

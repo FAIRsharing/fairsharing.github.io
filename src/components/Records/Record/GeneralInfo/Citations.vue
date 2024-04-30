@@ -15,22 +15,24 @@
           elevation="3"
         >
           <Icon
-            item="howToCite"
             size="20"
+            item="howToCite"
           />
           <v-card-title
             class="pa-0 text--primary card-title-customize"
           >
-            <template #prepend>
-              <v-tooltip bottom>
-                <template #activator="{ on }">
-                  <v-icon v-on="on">
-                    fa-question-circle
-                  </v-icon>
-                </template>
-                {{ recordTooltips['how_to_cite'] }}
-              </v-tooltip>
-            </template>
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-icon
+                  class="mr-2"
+                  size="15"
+                  v-on="on"
+                >
+                  fa-question-circle
+                </v-icon>
+              </template>
+              {{ recordTooltips['how_to_cite'] }}
+            </v-tooltip>
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
@@ -95,6 +97,18 @@
             size="20"
           />
           <v-card-title class="pa-0 card-title-customize">
+            <v-tooltip bottom>
+              <template #activator="{ on }">
+                <v-icon
+                  class="mr-2"
+                  size="15"
+                  v-on="on"
+                >
+                  fa-question-circle
+                </v-icon>
+              </template>
+              {{ recordTooltips['publication_for_citation'] }}
+            </v-tooltip>
             Publication for citation
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">

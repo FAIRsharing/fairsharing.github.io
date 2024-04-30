@@ -95,16 +95,43 @@
   &lt;v-row justify="center">
     &lt;v-dialog
       :value="stepperDialog"
+      width="900"
       persistent
       :retain-focus="false"
       @keydown.esc="closeStepperDialog()"
     >
+      &lt;!--Close Button -->
+      &lt;v-card class="d-flex rounded-0">
+        &lt;v-card-title class="mx-auto my-0">
+          Save Your Search
+        &lt;/v-card-title>
+        &lt;v-card-actions class="justify-end">
+          &lt;v-btn
+            icon
+            dark
+            @click="closeStepperDialog()"
+          >
+            &lt;v-icon
+              color="black"
+              size="40px"
+            >
+              mdi-close
+            &lt;/v-icon>
+          &lt;/v-btn>
+        &lt;/v-card-actions>
+      &lt;/v-card>
+      &lt;!--Stepper Form -->
       &lt;div>
-        &lt;v-stepper v-model="steps">
+        &lt;v-stepper
+          v-model="steps"
+          non-linear
+          class="rounded-t-0"
+        >
           &lt;!--Stepper Header -->
-          &lt;v-stepper-header>
+          &lt;v-stepper-header class="rounded-0">
             &lt;!--Header 1 -->
             &lt;v-stepper-step
+              editable
               :complete="steps > 1"
               step="1"
             >
@@ -115,6 +142,7 @@
             &lt;v-divider />
             &lt;!--Header 2 -->
             &lt;v-stepper-step
+              editable
               :complete="steps > 2"
               step="2"
             >
@@ -124,7 +152,10 @@
 
             &lt;v-divider />
             &lt;!--Header 3 -->
-            &lt;v-stepper-step step="3">
+            &lt;v-stepper-step
+              editable
+              step="3"
+            >
               Save Search
             &lt;/v-stepper-step>
           &lt;/v-stepper-header>
@@ -141,6 +172,8 @@
                 :value="id"
               />
               &lt;v-btn
+                class="float-md-right my-3"
+                :class="{ 'full-width': $vuetify.breakpoint.smAndDown }"
                 color="primary"
                 @click="steps = 2"
               >
@@ -157,19 +190,27 @@
                 :label="name"
                 :value="id"
               />
-              &lt;v-btn
-                class="white--text"
-                color="accent3"
-                @click="steps = 1"
+              &lt;div
+                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
-                Back
-              &lt;/v-btn>
-              &lt;v-btn
-                color="primary"
-                @click="steps = 3"
-              >
-                Continue
-              &lt;/v-btn>
+                &lt;v-btn
+                  class="order-md-2"
+                  :class="{
+                    'mb-3': $vuetify.breakpoint.smAndDown,
+                  }"
+                  color="primary"
+                  @click="steps = 3"
+                >
+                  Continue
+                &lt;/v-btn>
+                &lt;v-btn
+                  class="white--text order-md-1"
+                  color="accent3"
+                  @click="steps = 1"
+                >
+                  Back
+                &lt;/v-btn>
+              &lt;/div>
             &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 3 Save Search Form-->
@@ -177,7 +218,6 @@
               &lt;v-form
                 ref="searchFormRef"
                 v-model="searchForm"
-                lazy-validation
               >
                 &lt;v-text-field
                   v-model="searchName"
@@ -190,34 +230,32 @@
                   label="Comments"
                 />
               &lt;/v-form>
-
-              &lt;v-btn
-                class="white--text"
-                color="accent3"
-                @click="steps = 2"
+              &lt;div
+                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
-                Back
-              &lt;/v-btn>
-              &lt;v-btn
-                color="success"
-                :disabled="!searchForm"
-                @click="saveSearch"
-              >
-                Save
-              &lt;/v-btn>
+                &lt;v-btn
+                  class="order-md-2"
+                  :class="{
+                    'mb-3': $vuetify.breakpoint.smAndDown,
+                  }"
+                  color="success order-md-1"
+                  :disabled="!searchForm"
+                  @click="saveSearch"
+                >
+                  Save
+                &lt;/v-btn>
+                &lt;v-btn
+                  class="white--text"
+                  color="accent3"
+                  @click="steps = 2"
+                >
+                  Back
+                &lt;/v-btn>
+              &lt;/div>
             &lt;/v-stepper-content>
           &lt;/v-stepper-items>
         &lt;/v-stepper>
       &lt;/div>
-
-      &lt;v-btn
-        color="accent3"
-        variant="text"
-        class="white--text order-md-1 ml-0"
-        @click="closeStepperDialog()"
-      >
-        Close
-      &lt;/v-btn>
     &lt;/v-dialog>
   &lt;/v-row>
 &lt;/template>
@@ -255,10 +293,12 @@ export default {
   watch: {
     async getSaveSearchStepper(newValue) {
       this.stepperDialog = newValue;
+      //When the search stepper is visible
       if (newValue) {
         await this.getUser();
         this.policyList = this.fetchUserRecordData();
         this.organisationList = this.fetchUserOrganisationData();
+        this.searchForm = false;
       }
     },
   },
@@ -297,7 +337,7 @@ export default {
      * Save Search method
      */
     async saveSearch() {
-      this.$refs.searchFormRef.validate();
+      // this.$refs.searchFormRef.validate();
       //Below checks if it normal user/supercurator/iscurator
       console.log("this.user()::", this.user());
 

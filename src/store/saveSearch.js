@@ -1,5 +1,6 @@
 const state = {
   saveSearchStepper: false,
+  saveSearchResult: [],
 };
 
 const actions = {
@@ -12,6 +13,9 @@ const mutations = {
   setSaveSearchStepper(state, stepper) {
     state.saveSearchStepper = stepper;
   },
+  setSaveSearchResult(state, saveSearchResult) {
+    state.saveSearchResult.push(saveSearchResult);
+  },
   resetSaveSearchStepper(state) {
     state.saveSearchStepper = false;
   },
@@ -20,6 +24,9 @@ const mutations = {
 const getters = {
   getSaveSearchStepper(state) {
     return state.saveSearchStepper;
+  },
+  getSaveSearchResult(state) {
+    return state.saveSearchResult;
   },
 };
 const saveSearch = {

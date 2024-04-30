@@ -16,7 +16,6 @@ const actions = {
       q: queryParams,
     };
     let response = await CLIENT.executeQuery(SEARCH_ORGANISATIONS);
-
     //Only label/name is passed to field so that while clicking on the Edit Advanced Search button the field should be pre-filled with the selection
     if (
       response["searchOrganisations"] &&

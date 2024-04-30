@@ -71,6 +71,14 @@
           <v-stepper-items>
             <!--Stepper Content 1 Policy List-->
             <v-stepper-content step="1">
+              <v-text-field
+                v-if="user().is_super_curator"
+                id="searchPolicyRecord"
+                v-model="searchPolicy"
+                label="Search Policy"
+                single-line
+                clearable
+              />
               <v-checkbox
                 v-for="({ id, name }, index) in policyList"
                 :key="index"
@@ -90,13 +98,8 @@
 
             <!--Stepper Content 2 Organisation List-->
             <v-stepper-content step="2">
-              <v-checkbox
-                v-for="({ id, name }, index) in organisationList"
-                :key="index"
-                v-model="organisationSelected"
-                :label="name"
-                :value="id"
-              />
+              <OrganisationStepper :is-super-curator="isSuperCurator" />
+
               <div
                 class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
@@ -170,6 +173,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
+import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
 import RESTClient from "@/lib/Client/RESTClient";
 import saveSearch from "@/store";
 import { isRequired } from "@/utils/rules.js";
@@ -178,6 +182,7 @@ const restClient = new RESTClient();
 
 export default {
   name: "SaveSearchStepper",
+  components: { OrganisationStepper },
   data() {
     return {
       stepperDialog: false,
@@ -189,6 +194,8 @@ export default {
       searchForm: false,
       searchName: "",
       searchComment: "",
+      searchPolicy: "",
+      isSuperCurator: false,
     };
   },
   computed: {
@@ -196,6 +203,7 @@ export default {
     ...mapGetters("saveSearch", ["getSaveSearchStepper"]),
     ...mapGetters("users", ["getUserRecords"]),
     ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
+    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
   },
   watch: {
     async getSaveSearchStepper(newValue) {
@@ -203,10 +211,26 @@ export default {
       //When the search stepper is visible
       if (newValue) {
         await this.getUser();
-        this.policyList = this.fetchUserRecordData();
-        this.organisationList = this.fetchUserOrganisationData();
+        //If the user is not super curator
+        if (!this.user().is_super_curator) {
+          this.isSuperCurator = false;
+          this.policyList = this.fetchUserPolicyRecordData();
+        }
+        //If the user IS super curator
+        if (this.user().is_super_curator) {
+          this.isSuperCurator = true;
+        }
         this.searchForm = false;
       }
+    },
+    async searchPolicy(val) {
+      if (!val || val.length < 3) {
+        return;
+      }
+      val = val.trim();
+      this.loading = true;
+      await this.getUsersList(val);
+      this.loading = false;
     },
   },
 
@@ -220,23 +244,12 @@ export default {
      * by the user
      * @return {Array} - Policy record name used in the stepper
      */
-    fetchUserRecordData() {
+    fetchUserPolicyRecordData() {
       let maintainedRecordsArr = this.getUserRecords.user["maintainedRecords"];
       if (maintainedRecordsArr && maintainedRecordsArr.length) {
         return maintainedRecordsArr.filter(
           (record) => record["registry"] === "Policy"
         );
-      }
-    },
-
-    /**
-     * Returns Organisation List associated to use
-     * @return {Array} - Organisation List
-     */
-    fetchUserOrganisationData() {
-      let organisationsArr = this.getUserRecords.user["organisations"];
-      if (organisationsArr && organisationsArr.length) {
-        return organisationsArr;
       }
     },
 
@@ -247,18 +260,30 @@ export default {
       // this.$refs.searchFormRef.validate();
       //Below checks if it normal user/supercurator/iscurator
       console.log("this.user()::", this.user());
-
       let saveSearchObj = {
         name: this.searchName,
         comments: this.searchComment,
-        url: this.$route.fullPath,
+        url:
+          process.env.VUE_APP_HOSTNAME + this.$route.fullPath.replace(/\//, ""),
         fairsharing_record_ids: this.policySelected,
-        user_ids: [2],
+        user_ids: [this.user()["id"]],
         organisation_ids: this.organisationSelected,
         params: this.getAdvancedSearchQuery,
       };
 
-      await restClient.saveSearch(saveSearchObj, this.user().credentials.token);
+      const outcome = await restClient.saveSearch(
+        saveSearchObj,
+        this.user().credentials.token
+      );
+
+      this.saveSearchProfile(outcome);
+    },
+
+    /**
+     * Save the search result for the user profile
+     */
+    saveSearchProfile(data) {
+      saveSearch.commit("saveSearch/setSaveSearchResult", data);
     },
 
     /**

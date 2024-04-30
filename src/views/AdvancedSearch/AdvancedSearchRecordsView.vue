@@ -45,7 +45,7 @@
     <!--Dialog Box -->
     <AdvancedSearchDialogBox />
 
-    <!--Save Search Stepper Dialog Box -->
+    <!--Save Search Stepper in Dialog Box -->
     <SaveSearchStepper />
   </v-main>
 </template>

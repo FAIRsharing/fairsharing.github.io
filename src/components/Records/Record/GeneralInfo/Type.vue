@@ -10,7 +10,7 @@
           fa-question-circle
         </v-icon>
       </template>
-      {{ recordTooltips['fairsharing_registry'] }}
+      {{ recordTooltips['record_type'] }}
     </v-tooltip>
     <b class="width-15-percent-flex">Type</b>
     <p class="ma-0 full-width ml-md-12 ml-13">

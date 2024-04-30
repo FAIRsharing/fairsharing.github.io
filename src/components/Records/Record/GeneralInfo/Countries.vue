@@ -10,7 +10,7 @@
           fa-question-circle
         </v-icon>
       </template>
-      {{ recordTooltips['how_to_cite'] }}
+      {{ recordTooltips['countries'] }}
     </v-tooltip>
     <b class="width-15-percent-flex">Countries developing this resource</b>
     <div class="d-flex full-width flex-wrap ml-md-12 ml-13">

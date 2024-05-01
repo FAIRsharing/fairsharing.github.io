@@ -98,24 +98,26 @@
         v-model="organisationSelected"
         :items="getSearchOrganisations"
         :search-input.sync="searchOrganisation"
-        class="mx-4"
-        flat
+        class="mb-7"
         hide-no-data
         hide-details
-        solo
         multiple
         closable-chips
         chips
+        item-value="id"
+        item-text="name"
+        label="Enter text to search organisation"
+        no-data-text="No organisation found"
       >
         &lt;template #selection="data">
           &lt;v-chip
             v-bind="data.attrs"
-            :input-value="data.selected"
+            :input-value="data.name"
             close
             @click="data.select"
-            @click:close="remove(data.item)"
+            @click:close="remove(data.item['name'])"
           >
-            {{ data.item }}
+            {{ data.item["name"] }}
           &lt;/v-chip>
         &lt;/template>
       &lt;/v-autocomplete>
@@ -164,7 +166,8 @@ export default {
       }
     },
     searchOrganisation(val) {
-      if (this.getSearchOrganisations.length) return;
+      if (!val || val.length &lt; 3) return;
+      val = val.trim();
       this.fetchSearchOrganisations(val);
     },
   },
@@ -183,8 +186,13 @@ export default {
       }
     },
 
+    /**
+     * Remove the selected item from selection
+     * @param item
+     * @return {Array}
+     */
     remove(item) {
-      return removeItem(item, this.model);
+      return removeItem(item, this.organisationSelected);
     },
   },
 };

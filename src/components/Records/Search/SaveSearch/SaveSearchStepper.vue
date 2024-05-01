@@ -8,25 +8,29 @@
       @keydown.esc="closeStepperDialog()"
     >
       <!--Close Button -->
-      <v-card class="d-flex rounded-0">
-        <v-card-title class="mx-auto my-0">
+      <div
+        class="rounded-0 white py-3"
+        style="position: relative"
+      >
+        <h2 class="text-center">
           Save Your Search
-        </v-card-title>
-        <v-card-actions class="justify-end">
-          <v-btn
-            icon
-            dark
+        </h2>
+
+        <v-btn
+          icon
+          dark
+          style="position: absolute; top: 10px; right: 15px"
+        >
+          <v-icon
+            color="
+          black"
+            size="40px"
             @click="closeStepperDialog()"
           >
-            <v-icon
-              color="black"
-              size="40px"
-            >
-              mdi-close
-            </v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+            mdi-close
+          </v-icon>
+        </v-btn>
+      </div>
       <!--Stepper Form -->
       <div>
         <v-stepper
@@ -71,21 +75,7 @@
           <v-stepper-items>
             <!--Stepper Content 1 Policy List-->
             <v-stepper-content step="1">
-              <v-text-field
-                v-if="user().is_super_curator"
-                id="searchPolicyRecord"
-                v-model="searchPolicy"
-                label="Search Policy"
-                single-line
-                clearable
-              />
-              <v-checkbox
-                v-for="({ id, name }, index) in policyList"
-                :key="index"
-                v-model="policySelected"
-                :label="name"
-                :value="id"
-              />
+              <PolicyStepper :is-super-curator="isSuperCurator" />
               <v-btn
                 class="float-md-right my-3"
                 :class="{ 'full-width': $vuetify.breakpoint.smAndDown }"
@@ -174,6 +164,7 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
+import PolicyStepper from "@/components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue";
 import RESTClient from "@/lib/Client/RESTClient";
 import saveSearch from "@/store";
 import { isRequired } from "@/utils/rules.js";
@@ -182,7 +173,7 @@ const restClient = new RESTClient();
 
 export default {
   name: "SaveSearchStepper",
-  components: { OrganisationStepper },
+  components: { PolicyStepper, OrganisationStepper },
   data() {
     return {
       stepperDialog: false,
@@ -201,10 +192,9 @@ export default {
   computed: {
     ...mapState("users", ["user"]),
     ...mapGetters("saveSearch", ["getSaveSearchStepper"]),
-    ...mapGetters("users", ["getUserRecords"]),
     ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
-    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
   },
+
   watch: {
     async getSaveSearchStepper(newValue) {
       this.stepperDialog = newValue;
@@ -214,7 +204,6 @@ export default {
         //If the user is not super curator
         if (!this.user().is_super_curator) {
           this.isSuperCurator = false;
-          this.policyList = this.fetchUserPolicyRecordData();
         }
         //If the user IS super curator
         if (this.user().is_super_curator) {
@@ -223,35 +212,12 @@ export default {
         this.searchForm = false;
       }
     },
-    async searchPolicy(val) {
-      if (!val || val.length < 3) {
-        return;
-      }
-      val = val.trim();
-      this.loading = true;
-      await this.getUsersList(val);
-      this.loading = false;
-    },
   },
 
   methods: {
     isRequired,
 
     ...mapActions("users", ["getUser"]),
-
-    /**
-     * Return FairSharing Records of the Policy records maintained
-     * by the user
-     * @return {Array} - Policy record name used in the stepper
-     */
-    fetchUserPolicyRecordData() {
-      let maintainedRecordsArr = this.getUserRecords.user["maintainedRecords"];
-      if (maintainedRecordsArr && maintainedRecordsArr.length) {
-        return maintainedRecordsArr.filter(
-          (record) => record["registry"] === "Policy"
-        );
-      }
-    },
 
     /**
      * Save Search method

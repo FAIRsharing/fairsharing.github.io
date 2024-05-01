@@ -13,7 +13,7 @@
         chips
         item-value="id"
         item-text="name"
-        label="Enter text to search organisation"
+        label="Enter text to search policy record"
         no-data-text="No organisation found"
       >
         <template #selection="data">
@@ -30,17 +30,17 @@
       </v-autocomplete>
     </template>
     <template v-else>
-      <template v-if="organisationList && organisationList.length">
+      <template v-if="policyList && policyList.length">
         <v-checkbox
-          v-for="({ id, name }, index) in organisationList"
+          v-for="({ id, name }, index) in policyList"
           :key="index"
-          v-model="organisationSelected"
+          v-model="policySelected"
           :label="name"
           :value="id"
         />
       </template>
       <template v-else>
-        No Organisation found.
+        No policy found.
       </template>
     </template>
   </div>
@@ -52,7 +52,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
-  name: "OrganisationStepper",
+  name: "PolicyStepper",
   props: {
     isSuperCurator: {
       type: Boolean,
@@ -61,9 +61,9 @@ export default {
   },
   data() {
     return {
-      organisationSelected: [],
-      organisationList: [],
-      searchOrganisation: null,
+      policySelected: [],
+      policyList: [],
+      searchPolicy: null,
     };
   },
   computed: {
@@ -75,17 +75,16 @@ export default {
     isSuperCurator: {
       async handler(newValue) {
         if (!newValue) {
-          this.organisationSelected = this.fetchUserOrganisationData();
+          this.policySelected = await this.fetchUserPolicyRecordData();
         }
       },
       deep: true,
       immediate: true,
     },
-
-    searchOrganisation(val) {
+    searchPolicy(val) {
       if (!val || val.length < 3) return;
       val = val.trim();
-      this.fetchSearchOrganisations(val);
+      this.getUsersList(val);
     },
   },
 
@@ -94,14 +93,19 @@ export default {
     ...mapActions("users", ["getUser"]),
 
     /**
-     * Returns Organisation List associated to use
-     * @return {Array} - Organisation List
+     * Return FairSharing Records of the Policy records maintained
+     * by the user
+     * @return {Array} - Policy record name used in the stepper
      */
-    async fetchUserOrganisationData() {
+    async fetchUserPolicyRecordData() {
       await this.getUser();
-      let organisationsArr = this.getUserRecords.user["organisations"];
-      if (organisationsArr && organisationsArr.length) {
-        return organisationsArr;
+      let maintainedRecordsArr = await this.getUserRecords.user[
+        "maintainedRecords"
+      ];
+      if (maintainedRecordsArr && maintainedRecordsArr.length) {
+        return maintainedRecordsArr.filter(
+          (record) => record["registry"] === "Policy"
+        );
       }
       return [];
     },

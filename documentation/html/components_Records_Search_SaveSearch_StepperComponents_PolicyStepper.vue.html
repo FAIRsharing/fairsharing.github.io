@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,7 +86,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue</h1>
     
 <section>
     <article>
@@ -106,7 +106,7 @@
         chips
         item-value="id"
         item-text="name"
-        label="Enter text to search organisation"
+        label="Enter text to search policy record"
         no-data-text="No organisation found"
       >
         &lt;template #selection="data">
@@ -123,17 +123,17 @@
       &lt;/v-autocomplete>
     &lt;/template>
     &lt;template v-else>
-      &lt;template v-if="organisationList &amp;&amp; organisationList.length">
+      &lt;template v-if="policyList &amp;&amp; policyList.length">
         &lt;v-checkbox
-          v-for="({ id, name }, index) in organisationList"
+          v-for="({ id, name }, index) in policyList"
           :key="index"
-          v-model="organisationSelected"
+          v-model="policySelected"
           :label="name"
           :value="id"
         />
       &lt;/template>
       &lt;template v-else>
-        No Organisation found.
+        No policy found.
       &lt;/template>
     &lt;/template>
   &lt;/div>
@@ -145,7 +145,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
-  name: "OrganisationStepper",
+  name: "PolicyStepper",
   props: {
     isSuperCurator: {
       type: Boolean,
@@ -154,9 +154,9 @@ export default {
   },
   data() {
     return {
-      organisationSelected: [],
-      organisationList: [],
-      searchOrganisation: null,
+      policySelected: [],
+      policyList: [],
+      searchPolicy: null,
     };
   },
   computed: {
@@ -168,17 +168,16 @@ export default {
     isSuperCurator: {
       async handler(newValue) {
         if (!newValue) {
-          this.organisationSelected = this.fetchUserOrganisationData();
+          this.policySelected = await this.fetchUserPolicyRecordData();
         }
       },
       deep: true,
       immediate: true,
     },
-
-    searchOrganisation(val) {
+    searchPolicy(val) {
       if (!val || val.length &lt; 3) return;
       val = val.trim();
-      this.fetchSearchOrganisations(val);
+      this.getUsersList(val);
     },
   },
 
@@ -187,14 +186,19 @@ export default {
     ...mapActions("users", ["getUser"]),
 
     /**
-     * Returns Organisation List associated to use
-     * @return {Array} - Organisation List
+     * Return FairSharing Records of the Policy records maintained
+     * by the user
+     * @return {Array} - Policy record name used in the stepper
      */
-    async fetchUserOrganisationData() {
+    async fetchUserPolicyRecordData() {
       await this.getUser();
-      let organisationsArr = this.getUserRecords.user["organisations"];
-      if (organisationsArr &amp;&amp; organisationsArr.length) {
-        return organisationsArr;
+      let maintainedRecordsArr = await this.getUserRecords.user[
+        "maintainedRecords"
+      ];
+      if (maintainedRecordsArr &amp;&amp; maintainedRecordsArr.length) {
+        return maintainedRecordsArr.filter(
+          (record) => record["registry"] === "Policy"
+        );
       }
       return [];
     },

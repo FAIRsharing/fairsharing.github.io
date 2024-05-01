@@ -22,7 +22,11 @@ const actions = {
       response["searchOrganisations"].length
     ) {
       const organisationsList = response["searchOrganisations"].map(
-        ({ name }) => name
+        (organisation) => {
+          let id = organisation.id,
+            name = organisation.name;
+          return { id, name };
+        }
       );
       commit("setSearchOrganisations", organisationsList);
     }
@@ -49,6 +53,9 @@ const mutations = {
 const getters = {
   getSearchOrganisations(state) {
     return state.searchOrganisations;
+  },
+  getSearchOrganisationNames(state) {
+    return state.searchOrganisations.map(({ name }) => name);
   },
   getLoadingStatus(state) {
     return state.loadingStatus;

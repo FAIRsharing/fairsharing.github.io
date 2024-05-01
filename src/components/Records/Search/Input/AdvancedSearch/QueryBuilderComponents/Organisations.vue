@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchOrganisations"
+      :item-list="getSearchOrganisationNames"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -37,7 +37,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
+    ...mapGetters("organisationSearch", ["getSearchOrganisationNames"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {

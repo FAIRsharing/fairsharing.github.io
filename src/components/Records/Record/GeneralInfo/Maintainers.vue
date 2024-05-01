@@ -1,7 +1,23 @@
 <template>
   <div class="d-flex flex-row mt-4 min-height-40">
-    <b class="width-15-percent-flex">Maintainers</b>
-    <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+    <span
+      style="white-space: nowrap;"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['maintainers'] }}
+      </v-tooltip>
+      <b class="width-15-percent-flex">Maintainers</b>
+    </span>
+    <div class="d-flex full-width flex-wrap ml-md-12 ml-8">
       <div
         v-if="getField('maintainers').length === 0"
         class="d-flex flex-wrap"
@@ -88,6 +104,7 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState('users', ["user"]),
+    ...mapState('editor', ['recordTooltips'])
   }
 }
 </script>

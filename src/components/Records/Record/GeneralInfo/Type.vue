@@ -13,7 +13,7 @@
       {{ recordTooltips['record_type'] }}
     </v-tooltip>
     <b class="width-15-percent-flex">Type</b>
-    <p class="ma-0 full-width ml-md-12 ml-13">
+    <p class="ma-0 full-width ml-md-6 ml-2">
       {{ cleanString(getField('type')) | capitalize }}
     </p>
   </div>

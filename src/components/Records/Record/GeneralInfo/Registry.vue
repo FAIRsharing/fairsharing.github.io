@@ -13,7 +13,7 @@
       {{ recordTooltips['fairsharing_registry'] }}
     </v-tooltip>
     <b class="width-15-percent-flex">Registry</b>
-    <p class="ma-0 full-width ml-md-12 ml-13">
+    <p class="ma-0 full-width ml-md-6 ml-2">
       {{ getField('registry') | capitalize }}
     </p>
   </div>

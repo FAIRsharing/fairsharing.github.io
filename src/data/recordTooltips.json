@@ -11,10 +11,10 @@
     "name": "The full name of this resource.",
     "publication_for_citation": "Use this to directly cite the resource itself.",
     "record_type": "Each FAIRsharing registry has various types of record.",
-    "species": "The organismal taxonomies covered by this resource. ",
+    "taxonomies": "The organismal taxonomies covered by this resource. ",
     "subjects": "A discipline is a term describing a subject area / academic discipline used within FAIRsharing records by curators and the user community.",
     "tools": "Any tools associated with or maintained by this resource.",
-    "userDefinedTags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies.",
+    "user_defined_tags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies.",
     "year": "The year in which the resource was created."
   }
 }

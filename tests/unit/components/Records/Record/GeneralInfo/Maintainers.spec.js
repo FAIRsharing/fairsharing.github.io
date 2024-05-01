@@ -10,6 +10,15 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            maintainers: "maintainer tooltip.",
+        }
+    }
+}
+
 Record.state.currentRecord["fairsharingRecord"] = {
     doi: 'FAIRsharing.wibble',
     subjects:[],
@@ -20,8 +29,9 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record,
-        users
+        record: Record,
+        users,
+        editor: editor
     }});
 
 describe("Maintainers.vue", function(){

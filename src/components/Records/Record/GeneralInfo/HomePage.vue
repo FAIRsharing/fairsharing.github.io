@@ -13,7 +13,7 @@
           fa-question-circle
         </v-icon>
       </template>
-      {{ recordTooltips['hompage'] }}
+      {{ recordTooltips['homepage'] }}
     </v-tooltip>
     <b class="width-15-percent-flex">Homepage</b>
     <div class="d-flex full-width ml-md-6 ml-2">

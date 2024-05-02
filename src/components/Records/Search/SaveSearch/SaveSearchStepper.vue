@@ -7,30 +7,8 @@
       :retain-focus="false"
       @keydown.esc="closeStepperDialog()"
     >
-      <!--Close Button -->
-      <div
-        class="rounded-0 white py-3"
-        style="position: relative"
-      >
-        <h2 class="text-center">
-          Save Your Search
-        </h2>
-
-        <v-btn
-          icon
-          dark
-          style="position: absolute; top: 10px; right: 15px"
-        >
-          <v-icon
-            color="
-          black"
-            size="40px"
-            @click="closeStepperDialog()"
-          >
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </div>
+      <!--Dialog Header -->
+      <StepperDialogHeader />
       <!--Stepper Form -->
       <div>
         <v-stepper
@@ -163,17 +141,21 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
-import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
-import PolicyStepper from "@/components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue";
 import RESTClient from "@/lib/Client/RESTClient";
 import saveSearch from "@/store";
 import { isRequired } from "@/utils/rules.js";
+
+import {
+  OrganisationStepper,
+  PolicyStepper,
+  StepperDialogHeader,
+} from "./StepperComponents";
 
 const restClient = new RESTClient();
 
 export default {
   name: "SaveSearchStepper",
-  components: { PolicyStepper, OrganisationStepper },
+  components: { StepperDialogHeader, PolicyStepper, OrganisationStepper },
   data() {
     return {
       stepperDialog: false,
@@ -234,7 +216,7 @@ export default {
         url:
           process.env.VUE_APP_HOSTNAME + this.$route.fullPath.replace(/\//, ""),
         fairsharing_record_ids: this.getPolicySelected,
-        user_ids: [this.user()["id"]],
+        user_ids: [this.user().id],
         organisation_ids: this.getOrganisationSelected,
         params: this.getAdvancedSearchQuery,
       };

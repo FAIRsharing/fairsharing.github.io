@@ -3,8 +3,8 @@
     <template v-if="user().is_super_curator">
       <v-autocomplete
         v-model="policySelected"
-        :items="getSearchOrganisations"
-        :search-input.sync="searchOrganisation"
+        :items="getSearchPolicy"
+        :search-input.sync="searchPolicy"
         class="mb-7"
         hide-no-data
         hide-details
@@ -39,9 +39,7 @@
           :value="id"
         />
       </template>
-      <template v-else>
-        No policy found.
-      </template>
+      <template v-else> No policy found. </template>
     </template>
   </div>
 </template>
@@ -70,7 +68,6 @@ export default {
   computed: {
     ...mapState("users", ["user"]),
     ...mapGetters("users", ["getUserRecords"]),
-    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
   },
   watch: {
     isSuperCurator: {
@@ -94,7 +91,6 @@ export default {
   },
 
   methods: {
-    ...mapActions("organisationSearch", ["fetchSearchOrganisations"]),
     ...mapActions("users", ["getUser"]),
 
     /**

@@ -1,6 +1,8 @@
 const state = {
   saveSearchStepper: false,
   saveSearchResult: [],
+  organisationSelected: [],
+  policySelected: [],
 };
 
 const actions = {
@@ -16,6 +18,12 @@ const mutations = {
   setSaveSearchResult(state, saveSearchResult) {
     state.saveSearchResult.push(saveSearchResult);
   },
+  setOrganisationSelected(state, organisationSelected) {
+    state.organisationSelected = organisationSelected;
+  },
+  setPolicySelected(state, policySelected) {
+    state.policySelected = policySelected;
+  },
   resetSaveSearchStepper(state) {
     state.saveSearchStepper = false;
   },
@@ -27,6 +35,13 @@ const getters = {
   },
   getSaveSearchResult(state) {
     return state.saveSearchResult;
+  },
+
+  getOrganisationSelected(state) {
+    return state.organisationSelected;
+  },
+  getPolicySelected(state) {
+    return state.policySelected;
   },
 };
 const saveSearch = {

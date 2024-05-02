@@ -49,6 +49,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
+import saveSearch from "@/store";
 import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -75,7 +76,7 @@ export default {
     isSuperCurator: {
       async handler(newValue) {
         if (!newValue) {
-          this.organisationSelected = this.fetchUserOrganisationData();
+          this.organisationList = await this.fetchUserOrganisationData();
         }
       },
       deep: true,
@@ -86,6 +87,9 @@ export default {
       if (!val || val.length < 3) return;
       val = val.trim();
       this.fetchSearchOrganisations(val);
+    },
+    organisationSelected(val) {
+      saveSearch.commit("saveSearch/setOrganisationSelected", val);
     },
   },
 

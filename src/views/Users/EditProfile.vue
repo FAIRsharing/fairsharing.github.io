@@ -445,7 +445,6 @@ export default {
     this.data.organisations = this.organisations;
     this.userOrganisations = this.user().records.organisations;
     this.loading = false;
-    console.log("this.getUserMeta()::", this.getUserMeta());
   },
   methods: {
     ...mapActions("users", [

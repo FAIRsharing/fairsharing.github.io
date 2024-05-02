@@ -2,7 +2,7 @@
   <div>
     <template v-if="user().is_super_curator">
       <v-autocomplete
-        v-model="organisationSelected"
+        v-model="policySelected"
         :items="getSearchOrganisations"
         :search-input.sync="searchOrganisation"
         class="mb-7"
@@ -49,6 +49,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
+import saveSearch from "@/store";
 import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -75,7 +76,7 @@ export default {
     isSuperCurator: {
       async handler(newValue) {
         if (!newValue) {
-          this.policySelected = await this.fetchUserPolicyRecordData();
+          this.policyList = await this.fetchUserPolicyRecordData();
         }
       },
       deep: true,
@@ -85,6 +86,10 @@ export default {
       if (!val || val.length < 3) return;
       val = val.trim();
       this.getUsersList(val);
+    },
+
+    policySelected(val) {
+      saveSearch.commit("saveSearch/setPolicySelected", val);
     },
   },
 

@@ -191,7 +191,11 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
-    ...mapGetters("saveSearch", ["getSaveSearchStepper"]),
+    ...mapGetters("saveSearch", [
+      "getSaveSearchStepper",
+      "getOrganisationSelected",
+      "getPolicySelected",
+    ]),
     ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
   },
 
@@ -223,17 +227,15 @@ export default {
      * Save Search method
      */
     async saveSearch() {
-      // this.$refs.searchFormRef.validate();
-      //Below checks if it normal user/supercurator/iscurator
       console.log("this.user()::", this.user());
       let saveSearchObj = {
         name: this.searchName,
         comments: this.searchComment,
         url:
           process.env.VUE_APP_HOSTNAME + this.$route.fullPath.replace(/\//, ""),
-        fairsharing_record_ids: this.policySelected,
+        fairsharing_record_ids: this.getPolicySelected,
         user_ids: [this.user()["id"]],
-        organisation_ids: this.organisationSelected,
+        organisation_ids: this.getOrganisationSelected,
         params: this.getAdvancedSearchQuery,
       };
 

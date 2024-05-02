@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/SaveSearchStepper.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/StepperDialogHeader.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,249 +86,44 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SaveSearch/SaveSearchStepper.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/StepperDialogHeader.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-row justify="center">
-    &lt;v-dialog
-      :value="stepperDialog"
-      width="900"
-      persistent
-      :retain-focus="false"
-      @keydown.esc="closeStepperDialog()"
+  &lt;div
+    class="rounded-0 white py-3"
+    style="position: relative"
+  >
+    &lt;h2 class="text-center">
+      Save Your Search
+    &lt;/h2>
+
+    &lt;v-btn
+      icon
+      dark
+      style="position: absolute; top: 10px; right: 15px"
     >
-      &lt;!--Dialog Header -->
-      &lt;StepperDialogHeader />
-      &lt;!--Stepper Form -->
-      &lt;div>
-        &lt;v-stepper
-          v-model="steps"
-          non-linear
-          class="rounded-t-0"
-        >
-          &lt;!--Stepper Header -->
-          &lt;v-stepper-header class="rounded-0">
-            &lt;!--Header 1 -->
-            &lt;v-stepper-step
-              editable
-              :complete="steps > 1"
-              step="1"
-            >
-              Select Policy
-              &lt;small>Optional&lt;/small>
-            &lt;/v-stepper-step>
-
-            &lt;v-divider />
-            &lt;!--Header 2 -->
-            &lt;v-stepper-step
-              editable
-              :complete="steps > 2"
-              step="2"
-            >
-              Select Organisation
-              &lt;small>Optional&lt;/small>
-            &lt;/v-stepper-step>
-
-            &lt;v-divider />
-            &lt;!--Header 3 -->
-            &lt;v-stepper-step
-              editable
-              step="3"
-            >
-              Save Search
-            &lt;/v-stepper-step>
-          &lt;/v-stepper-header>
-
-          &lt;!--Stepper Body -->
-          &lt;v-stepper-items>
-            &lt;!--Stepper Content 1 Policy List-->
-            &lt;v-stepper-content step="1">
-              &lt;PolicyStepper :is-super-curator="isSuperCurator" />
-              &lt;v-btn
-                class="float-md-right my-3"
-                :class="{ 'full-width': $vuetify.breakpoint.smAndDown }"
-                color="primary"
-                @click="steps = 2"
-              >
-                Continue
-              &lt;/v-btn>
-            &lt;/v-stepper-content>
-
-            &lt;!--Stepper Content 2 Organisation List-->
-            &lt;v-stepper-content step="2">
-              &lt;OrganisationStepper :is-super-curator="isSuperCurator" />
-
-              &lt;div
-                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
-              >
-                &lt;v-btn
-                  class="order-md-2"
-                  :class="{
-                    'mb-3': $vuetify.breakpoint.smAndDown,
-                  }"
-                  color="primary"
-                  @click="steps = 3"
-                >
-                  Continue
-                &lt;/v-btn>
-                &lt;v-btn
-                  class="white--text order-md-1"
-                  color="accent3"
-                  @click="steps = 1"
-                >
-                  Back
-                &lt;/v-btn>
-              &lt;/div>
-            &lt;/v-stepper-content>
-
-            &lt;!--Stepper Content 3 Save Search Form-->
-            &lt;v-stepper-content step="3">
-              &lt;v-form
-                ref="searchFormRef"
-                v-model="searchForm"
-              >
-                &lt;v-text-field
-                  v-model="searchName"
-                  label="Search Name"
-                  :rules="[isRequired()]"
-                />
-                &lt;v-text-field
-                  v-model="searchComment"
-                  :counter="100"
-                  label="Comments"
-                />
-              &lt;/v-form>
-              &lt;div
-                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
-              >
-                &lt;v-btn
-                  class="order-md-2"
-                  :class="{
-                    'mb-3': $vuetify.breakpoint.smAndDown,
-                  }"
-                  color="success order-md-1"
-                  :disabled="!searchForm"
-                  @click="saveSearch"
-                >
-                  Save
-                &lt;/v-btn>
-                &lt;v-btn
-                  class="white--text"
-                  color="accent3"
-                  @click="steps = 2"
-                >
-                  Back
-                &lt;/v-btn>
-              &lt;/div>
-            &lt;/v-stepper-content>
-          &lt;/v-stepper-items>
-        &lt;/v-stepper>
-      &lt;/div>
-    &lt;/v-dialog>
-  &lt;/v-row>
+      &lt;v-icon
+        color="
+          black"
+        size="40px"
+        @click="closeStepperDialog()"
+      >
+        mdi-close
+      &lt;/v-icon>
+    &lt;/v-btn>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-import { mapActions, mapGetters, mapState } from "vuex";
-
-import RESTClient from "@/lib/Client/RESTClient";
 import saveSearch from "@/store";
-import { isRequired } from "@/utils/rules.js";
-
-import {
-  OrganisationStepper,
-  PolicyStepper,
-  StepperDialogHeader,
-} from "./StepperComponents";
-
-const restClient = new RESTClient();
 
 export default {
-  name: "SaveSearchStepper",
-  components: { StepperDialogHeader, PolicyStepper, OrganisationStepper },
-  data() {
-    return {
-      stepperDialog: false,
-      steps: 1,
-      policySelected: [],
-      organisationSelected: [],
-      policyList: [],
-      organisationList: [],
-      searchForm: false,
-      searchName: "",
-      searchComment: "",
-      searchPolicy: "",
-      isSuperCurator: false,
-    };
-  },
-  computed: {
-    ...mapState("users", ["user"]),
-    ...mapGetters("saveSearch", [
-      "getSaveSearchStepper",
-      "getOrganisationSelected",
-      "getPolicySelected",
-    ]),
-    ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
-  },
-
-  watch: {
-    async getSaveSearchStepper(newValue) {
-      this.stepperDialog = newValue;
-      //When the search stepper is visible
-      if (newValue) {
-        await this.getUser();
-        //If the user is not super curator
-        if (!this.user().is_super_curator) {
-          this.isSuperCurator = false;
-        }
-        //If the user IS super curator
-        if (this.user().is_super_curator) {
-          this.isSuperCurator = true;
-        }
-        this.searchForm = false;
-      }
-    },
-  },
+  name: "StepperDialogHeader",
 
   methods: {
-    isRequired,
-
-    ...mapActions("users", ["getUser"]),
-
-    /**
-     * Save Search method
-     */
-    async saveSearch() {
-      console.log("this.user()::", this.user());
-      let saveSearchObj = {
-        name: this.searchName,
-        comments: this.searchComment,
-        url:
-          process.env.VUE_APP_HOSTNAME + this.$route.fullPath.replace(/\//, ""),
-        fairsharing_record_ids: this.getPolicySelected,
-        user_ids: [this.user().id],
-        organisation_ids: this.getOrganisationSelected,
-        params: this.getAdvancedSearchQuery,
-      };
-
-      const outcome = await restClient.saveSearch(
-        saveSearchObj,
-        this.user().credentials.token
-      );
-
-      this.saveSearchProfile(outcome);
-    },
-
-    /**
-     * Save the search result for the user profile
-     */
-    saveSearchProfile(data) {
-      saveSearch.commit("saveSearch/setSaveSearchResult", data);
-    },
-
     /**
      * Close Stepper Dialog Box method
      */

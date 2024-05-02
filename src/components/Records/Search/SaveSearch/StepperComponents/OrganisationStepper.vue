@@ -6,6 +6,7 @@
         :items="getSearchOrganisations"
         :search-input.sync="searchOrganisation"
         class="mb-7"
+        :loading="getLoadingStatus"
         hide-no-data
         hide-details
         multiple
@@ -70,7 +71,10 @@ export default {
   computed: {
     ...mapState("users", ["user"]),
     ...mapGetters("users", ["getUserRecords"]),
-    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
+    ...mapGetters("organisationSearch", [
+      "getSearchOrganisations",
+      "getLoadingStatus",
+    ]),
   },
   watch: {
     isSuperCurator: {

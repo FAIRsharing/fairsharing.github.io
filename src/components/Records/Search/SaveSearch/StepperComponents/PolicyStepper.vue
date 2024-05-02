@@ -3,9 +3,10 @@
     <template v-if="user().is_super_curator">
       <v-autocomplete
         v-model="policySelected"
-        :items="getSearchPolicy"
+        :items="getPolicyRecords"
         :search-input.sync="searchPolicy"
         class="mb-7"
+        :loading="getLoadingStatus"
         hide-no-data
         hide-details
         multiple
@@ -14,7 +15,7 @@
         item-value="id"
         item-text="name"
         label="Enter text to search policy record"
-        no-data-text="No organisation found"
+        no-data-text="No Policy found"
       >
         <template #selection="data">
           <v-chip
@@ -39,7 +40,9 @@
           :value="id"
         />
       </template>
-      <template v-else> No policy found. </template>
+      <template v-else>
+        No policy found.
+      </template>
     </template>
   </div>
 </template>
@@ -68,6 +71,7 @@ export default {
   computed: {
     ...mapState("users", ["user"]),
     ...mapGetters("users", ["getUserRecords"]),
+    ...mapGetters("saveSearch", ["getPolicyRecords", "getLoadingStatus"]),
   },
   watch: {
     isSuperCurator: {
@@ -81,8 +85,7 @@ export default {
     },
     searchPolicy(val) {
       if (!val || val.length < 3) return;
-      val = val.trim();
-      this.getUsersList(val);
+      this.fetchPolicyRecords();
     },
 
     policySelected(val) {
@@ -92,6 +95,7 @@ export default {
 
   methods: {
     ...mapActions("users", ["getUser"]),
+    ...mapActions("saveSearch", ["fetchPolicyRecords"]),
 
     /**
      * Return FairSharing Records of the Policy records maintained

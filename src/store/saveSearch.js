@@ -1,14 +1,18 @@
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import recordTypes from "@/lib/GraphClient/queries/getRecordsTypes.json";
+import registryRecords from "@/lib/GraphClient/queries/getRegistryRecords.json";
 
 const CLIENT = new GraphClient(),
-  RECORD_TYPES = JSON.parse(JSON.stringify(recordTypes));
+  RECORD_TYPES = JSON.parse(JSON.stringify(recordTypes)),
+  REGISTRY_RECORDS = JSON.parse(JSON.stringify(registryRecords));
 
 const state = {
+  loadingStatus: false,
   saveSearchStepper: false,
   saveSearchResult: [],
   organisationSelected: [],
   policySelected: [],
+  policyRecords: [],
 };
 
 const actions = {
@@ -16,10 +20,20 @@ const actions = {
     commit("setLoadingStatus", true);
 
     let response = await CLIENT.executeQuery(RECORD_TYPES);
-    const policyRecord = response["records"].filter(
+    const policyRecord = response.fairsharingRegistries["records"].filter(
       (item) => item["name"] === "Policy"
     );
-    console.log("policyRecord::", policyRecord);
+    let policyRecordId = policyRecord[0].id;
+
+    REGISTRY_RECORDS.queryParam = {
+      id: policyRecordId,
+    };
+    let policyRecordResponse = await CLIENT.executeQuery(REGISTRY_RECORDS);
+    commit(
+      "setPolicyRecords",
+      policyRecordResponse.fairsharingRegistry["fairsharingRecords"]
+    );
+
     commit("setLoadingStatus", false);
   },
 
@@ -35,14 +49,20 @@ const mutations = {
   setSaveSearchResult(state, saveSearchResult) {
     state.saveSearchResult.push(saveSearchResult);
   },
-  setOrganisationSelected(state, organisationSelected) {
-    state.organisationSelected = organisationSelected;
+  setPolicyRecords(state, policyRecords) {
+    state.policyRecords = policyRecords;
   },
   setPolicySelected(state, policySelected) {
     state.policySelected = policySelected;
   },
+  setOrganisationSelected(state, organisationSelected) {
+    state.organisationSelected = organisationSelected;
+  },
   resetSaveSearchStepper(state) {
     state.saveSearchStepper = false;
+  },
+  setLoadingStatus(state, loadingStatus) {
+    state.loadingStatus = loadingStatus;
   },
 };
 
@@ -53,12 +73,18 @@ const getters = {
   getSaveSearchResult(state) {
     return state.saveSearchResult;
   },
+  getPolicyRecords(state) {
+    return state.policyRecords;
+  },
+  getPolicySelected(state) {
+    return state.policySelected;
+  },
 
   getOrganisationSelected(state) {
     return state.organisationSelected;
   },
-  getPolicySelected(state) {
-    return state.policySelected;
+  getLoadingStatus(state) {
+    return state.loadingStatus;
   },
 };
 const saveSearch = {

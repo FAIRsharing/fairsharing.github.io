@@ -613,7 +613,64 @@
         "mastodon" : "",
         "logo": "priyadarshini_large.jpg",
         "year_active": ["2024"]
-      }
+      },
+    {
+      "name": "Alex Fraser",
+      "id": 10490,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Developmental Cognitive Neruoscience and RDM",
+      "orcid": "0000-0001-8809-8572",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "alex_fraser.jpg",
+      "year_active": ["2024"]
+    },
+    {
+      "name": "Laurence Brown ",
+      "id": "",
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Circadian Biology and RDM",
+      "orcid": "0000-0001-8116-4100",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "LozRiviera",
+      "linkedin" : "laurence-a-brown",
+      "mastodon" : "",
+      "logo": "laurence_brown.jpg",
+      "year_active": ["2024"]
+    },
+    {
+      "name": "Tim Gamble-Turner",
+      "id": "",
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Research Technology",
+      "orcid": "0000-0002-6610-0835",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "tim_gamble_turner.jpg",
+      "year_active": ["2024"]
+    }
   ],
     "quotes": [
       {

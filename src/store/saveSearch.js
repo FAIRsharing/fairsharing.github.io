@@ -13,6 +13,7 @@ const state = {
   organisationSelected: [],
   policySelected: [],
   policyRecords: [],
+  userSelected: [],
 };
 
 const actions = {
@@ -58,6 +59,9 @@ const mutations = {
   setOrganisationSelected(state, organisationSelected) {
     state.organisationSelected = organisationSelected;
   },
+  setUserSelected(state, userSelected) {
+    state.userSelected = userSelected;
+  },
   resetSaveSearchStepper(state) {
     state.saveSearchStepper = false;
   },
@@ -79,9 +83,11 @@ const getters = {
   getPolicySelected(state) {
     return state.policySelected;
   },
-
   getOrganisationSelected(state) {
     return state.organisationSelected;
+  },
+  getUserSelected(state) {
+    return state.userSelected;
   },
   getLoadingStatus(state) {
     return state.loadingStatus;

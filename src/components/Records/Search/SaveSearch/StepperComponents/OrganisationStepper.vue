@@ -20,10 +20,10 @@
         <template #selection="data">
           <v-chip
             v-bind="data.attrs"
-            :input-value="data.name"
+            :input-value="data.item['id']"
             close
             @click="data.select"
-            @click:close="remove(data.item['name'])"
+            @click:close="remove(data.item['id'])"
           >
             {{ data.item["name"] }}
           </v-chip>

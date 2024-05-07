@@ -20,10 +20,10 @@
         <template #selection="data">
           <v-chip
             v-bind="data.attrs"
-            :input-value="data.name"
+            :input-value="data.item['id']"
             close
             @click="data.select"
-            @click:close="remove(data.item['name'])"
+            @click:close="remove(data.item['id'])"
           >
             {{ data.item["name"] }}
           </v-chip>
@@ -69,7 +69,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("users", ["user"]),
+    ...mapState("users", ["user", "usersList"]),
     ...mapGetters("users", ["getUserRecords"]),
     ...mapGetters("saveSearch", ["getPolicyRecords", "getLoadingStatus"]),
   },
@@ -121,7 +121,7 @@ export default {
      * @return {Array}
      */
     remove(item) {
-      return removeItem(item, this.organisationSelected);
+      return removeItem(item, this.policySelected);
     },
   },
 };

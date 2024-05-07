@@ -104,42 +104,25 @@
       &lt;StepperDialogHeader />
       &lt;!--Stepper Form -->
       &lt;div>
-        &lt;v-stepper
-          v-model="steps"
-          non-linear
-          class="rounded-t-0"
-        >
+        &lt;v-stepper v-model="steps" non-linear class="rounded-t-0">
           &lt;!--Stepper Header -->
           &lt;v-stepper-header class="rounded-0">
             &lt;!--Header 1 -->
-            &lt;v-stepper-step
-              editable
-              :complete="steps > 1"
-              step="1"
-            >
+            &lt;v-stepper-step editable :complete="steps > 1" step="1">
               Select Policy
               &lt;small>Optional&lt;/small>
             &lt;/v-stepper-step>
 
             &lt;v-divider />
             &lt;!--Header 2 -->
-            &lt;v-stepper-step
-              editable
-              :complete="steps > 2"
-              step="2"
-            >
+            &lt;v-stepper-step editable :complete="steps > 2" step="2">
               Select Organisation
               &lt;small>Optional&lt;/small>
             &lt;/v-stepper-step>
 
             &lt;v-divider />
             &lt;!--Header 3 -->
-            &lt;v-stepper-step
-              editable
-              step="3"
-            >
-              Save Search
-            &lt;/v-stepper-step>
+            &lt;v-stepper-step editable step="3"> Save Search &lt;/v-stepper-step>
           &lt;/v-stepper-header>
 
           &lt;!--Stepper Body -->
@@ -186,10 +169,7 @@
 
             &lt;!--Stepper Content 3 Save Search Form-->
             &lt;v-stepper-content step="3">
-              &lt;v-form
-                ref="searchFormRef"
-                v-model="searchForm"
-              >
+              &lt;v-form ref="searchFormRef" v-model="searchForm">
                 &lt;v-text-field
                   v-model="searchName"
                   label="Search Name"
@@ -215,11 +195,7 @@
                 >
                   Save
                 &lt;/v-btn>
-                &lt;v-btn
-                  class="white--text"
-                  color="accent3"
-                  @click="steps = 2"
-                >
+                &lt;v-btn class="white--text" color="accent3" @click="steps = 2">
                   Back
                 &lt;/v-btn>
               &lt;/div>
@@ -302,7 +278,7 @@ export default {
      * Save Search method
      */
     async saveSearch() {
-      console.log("this.user()::", this.user());
+      // console.log("this.user()::", this.user());
       let saveSearchObj = {
         name: this.searchName,
         comments: this.searchComment,

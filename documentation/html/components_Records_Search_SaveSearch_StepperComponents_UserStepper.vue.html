@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Signup</title>
+	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/UserStepper.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,101 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Signup</h1>
+		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/UserStepper.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div>
+    &lt;template v-if="user().is_super_curator">
+      &lt;v-autocomplete
+        v-model="userSelected"
+        :items="usersList"
+        :search-input.sync="searchUser"
+        class="mb-7"
+        :loading="loading"
+        hide-no-data
+        hide-details
+        multiple
+        closable-chips
+        chips
+        item-value="id"
+        item-text="username"
+        label="Enter name to search user"
+        no-data-text="No User found"
+      >
+        &lt;template #selection="data">
+          &lt;v-chip
+            v-bind="data.attrs"
+            :input-value="data.item['id']"
+            close
+            @click="data.select"
+            @click:close="remove(data.item['id'])"
+          >
+            {{ data.item["username"] }}
+          &lt;/v-chip>
+        &lt;/template>
+      &lt;/v-autocomplete>
+    &lt;/template>
+  &lt;/div>
+&lt;/template>
 
-<header>
-    
-</header>
+&lt;script>
+import { mapActions, mapState } from "vuex";
 
+import saveSearch from "@/store";
+import { removeItem } from "@/utils/advancedSearchUtils";
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>This component handles the sign-up/register page</p></div>
-        
+export default {
+  name: "UserStepper",
+  data() {
+    return {
+      loading: false,
+      userSelected: [],
+      searchUser: null,
+    };
+  },
+  computed: {
+    ...mapState("users", ["user", "usersList"]),
+  },
+  watch: {
+    async searchUser(val) {
+      if (!val || val.length &lt; 3) return;
+      val = val.trim();
+      this.loading = true;
+      await this.getUsersList(val);
+      this.loading = false;
+    },
 
-        
-<dl class="details">
-    
+    userSelected(val) {
+      saveSearch.commit("saveSearch/setUserSelected", val);
+    },
+  },
 
-	
+  methods: {
+    ...mapActions("users", ["getUsersList"]),
 
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Users_Signup.vue.html">views/Users/Signup.vue</a>,
-				 <a href="views_Users_Signup.vue.html#sunlight-1-line-6">line 6</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+    /**
+     * Remove the selected item from selection
+     * @param item
+     * @return {Array}
+     */
+    remove(item) {
+      return removeItem(item, this.userSelected);
+    },
+  },
+};
+&lt;/script>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +185,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

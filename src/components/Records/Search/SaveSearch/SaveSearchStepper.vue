@@ -42,15 +42,16 @@
             <v-divider />
             <!--Header 3 -->
             <v-stepper-step
-              v-if="isSuperCurator"
+              v-if="user().is_super_curator"
               editable
+              :complete="steps > 3"
               step="3"
             >
               Select User
               <small>Optional</small>
             </v-stepper-step>
 
-            <v-divider v-if="isSuperCurator" />
+            <v-divider v-if="user().is_super_curator" />
             <!--Header 4 -->
             <v-stepper-step
               editable
@@ -224,6 +225,7 @@ export default {
       "getSaveSearchStepper",
       "getOrganisationSelected",
       "getPolicySelected",
+      "getUserSelected",
     ]),
     ...mapGetters("advancedSearch", ["getAdvancedSearchQuery"]),
   },
@@ -263,7 +265,10 @@ export default {
         url:
           process.env.VUE_APP_HOSTNAME + this.$route.fullPath.replace(/\//, ""),
         fairsharing_record_ids: this.getPolicySelected,
-        user_ids: [this.user().id],
+        user_ids:
+          this.getUserSelected && this.getUserSelected.length
+            ? this.getUserSelected
+            : [this.user().id],
         organisation_ids: this.getOrganisationSelected,
         params: this.getAdvancedSearchQuery,
       };

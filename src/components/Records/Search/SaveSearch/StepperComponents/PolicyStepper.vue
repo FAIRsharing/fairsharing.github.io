@@ -48,7 +48,7 @@
         />
       </template>
       <template v-else>
-        No policy found.
+        <p v-if="!loading">No policy found</p>
       </template>
     </template>
   </div>

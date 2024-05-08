@@ -124,6 +124,13 @@
       &lt;/v-autocomplete>
     &lt;/template>
     &lt;template v-else>
+      &lt;v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        height="6"
+        rounded
+        color="primary"
+      />
       &lt;template v-if="organisationList &amp;&amp; organisationList.length">
         &lt;v-checkbox
           v-for="({ id, name }, index) in organisationList"
@@ -134,7 +141,7 @@
         />
       &lt;/template>
       &lt;template v-else>
-        No Organisation found.
+        &lt;p v-if="!loading">No organisation found&lt;/p>
       &lt;/template>
     &lt;/template>
   &lt;/div>
@@ -153,6 +160,7 @@ export default {
       organisationSelected: [],
       organisationList: [],
       searchOrganisation: null,
+      loading: false,
     };
   },
   computed: {
@@ -176,7 +184,9 @@ export default {
 
   async mounted() {
     if (!this.user().is_super_curator) {
+      this.loading = true;
       this.organisationList = await this.fetchUserOrganisationData();
+      this.loading = false;
     }
   },
 

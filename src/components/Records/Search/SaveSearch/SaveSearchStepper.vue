@@ -65,7 +65,7 @@
           <v-stepper-items>
             <!--Stepper Content 1 Policy List-->
             <v-stepper-content step="1">
-              <PolicyStepper :is-super-curator="isSuperCurator" />
+              <PolicyStepper />
               <v-btn
                 class="float-md-right my-3"
                 :class="{ 'full-width': $vuetify.breakpoint.smAndDown }"
@@ -78,7 +78,7 @@
 
             <!--Stepper Content 2 Organisation List-->
             <v-stepper-content step="2">
-              <OrganisationStepper :is-super-curator="isSuperCurator" />
+              <OrganisationStepper />
 
               <div
                 class="d-flex flex-column flex-md-row justify-md-space-between my-3"

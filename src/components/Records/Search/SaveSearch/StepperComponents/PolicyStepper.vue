@@ -31,6 +31,13 @@
       </v-autocomplete>
     </template>
     <template v-else>
+      <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        height="6"
+        rounded
+        color="primary"
+      />
       <template v-if="policyList && policyList.length">
         <v-checkbox
           v-for="({ id, name }, index) in policyList"
@@ -55,17 +62,12 @@ import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "PolicyStepper",
-  props: {
-    isSuperCurator: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
     return {
       policySelected: [],
       policyList: [],
       searchPolicy: null,
+      loading: false,
     };
   },
   computed: {
@@ -74,15 +76,6 @@ export default {
     ...mapGetters("saveSearch", ["getPolicyRecords", "getLoadingStatus"]),
   },
   watch: {
-    isSuperCurator: {
-      async handler(newValue) {
-        if (!newValue) {
-          this.policyList = await this.fetchUserPolicyRecordData();
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
     searchPolicy(val) {
       if (!val || val.length < 3) return;
       this.fetchPolicyRecords();
@@ -91,6 +84,13 @@ export default {
     policySelected(val) {
       saveSearch.commit("saveSearch/setPolicySelected", val);
     },
+  },
+  async mounted() {
+    if (!this.user().is_super_curator) {
+      this.loading = true;
+      this.policyList = await this.fetchUserPolicyRecordData();
+      this.loading = false;
+    }
   },
 
   methods: {

@@ -55,12 +55,6 @@ import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "OrganisationStepper",
-  props: {
-    isSuperCurator: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
     return {
       organisationSelected: [],
@@ -77,16 +71,6 @@ export default {
     ]),
   },
   watch: {
-    isSuperCurator: {
-      async handler(newValue) {
-        if (!newValue) {
-          this.organisationList = await this.fetchUserOrganisationData();
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
-
     searchOrganisation(val) {
       if (!val || val.length < 3) return;
       val = val.trim();
@@ -95,6 +79,12 @@ export default {
     organisationSelected(val) {
       saveSearch.commit("saveSearch/setOrganisationSelected", val);
     },
+  },
+
+  async mounted() {
+    if (!this.user().is_super_curator) {
+      this.organisationList = await this.fetchUserOrganisationData();
+    }
   },
 
   methods: {

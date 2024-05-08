@@ -111,5 +111,52 @@
         }
       ]
     }
+  ],
+  "savedSearchSummary": [
+    "id",
+    "name",
+    "url",
+    "comments",
+    {
+      "queryName": "creator",
+      "fields": [
+        "id",
+        "username"
+      ]
+    },
+    {
+      "queryName": "fairsharingRecords",
+      "fields": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "queryName": "organisations",
+      "fields": [
+        "id",
+        "name"
+      ]
+    }
+  ],
+  "createdSearches": [
+    {
+      "queryName": "createdSearches",
+      "fields": [
+        {
+          "$ref": "savedSearchSummary"
+        }
+      ]
+    }
+  ],
+  "savedSearches": [
+    {
+      "queryName": "savedSearches",
+      "fields": [
+        {
+          "$ref": "savedSearchSummary"
+        }
+      ]
+    }
   ]
 }

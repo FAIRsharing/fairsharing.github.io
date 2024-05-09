@@ -5,3 +5,5 @@ export const PolicyStepper = () => import("./PolicyStepper.vue");
 export const OrganisationStepper = () => import("./OrganisationStepper.vue");
 
 export const UserStepper = () => import("./UserStepper.vue");
+
+export const SaveResult = () => import("./SaveResult.vue");

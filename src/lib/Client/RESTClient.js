@@ -1023,19 +1023,14 @@ class RESTClient {
    */
 
   async saveSearch(saveSearchObj, jwt) {
-    let saved_search = {
-      saved_search: saveSearchObj,
-    };
-
     let _client = this;
     const request = {
       method: "post",
       baseURL: _client.baseURL + "/saved_searches",
       headers: this.auth_headers(jwt),
-      data: saved_search,
+      data: { saved_search1: saveSearchObj },
     };
     let response = await _client.executeQuery(request);
-    console.log("response.data::", response.data);
     return response.data;
   }
 }

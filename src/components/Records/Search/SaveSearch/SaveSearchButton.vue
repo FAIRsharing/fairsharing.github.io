@@ -26,7 +26,7 @@ export default {
      * Save the advancedSearch Results
      */
     async saveSearchResults() {
-      saveSearch.commit("saveSearch/setSaveSearchStepper", true);
+      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", true);
     },
     /**
      * Goto To login page if user is not loggedIn

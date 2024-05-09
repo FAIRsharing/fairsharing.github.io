@@ -8,12 +8,14 @@ const CLIENT = new GraphClient(),
 
 const state = {
   loadingStatus: false,
-  saveSearchStepper: false,
-  saveSearchResult: [],
-  organisationSelected: [],
+  saveSearchStepperDialog: false,
+  showStepper: true,
   policySelected: [],
   policyRecords: [],
+  organisationSelected: [],
   userSelected: [],
+  saveSearchStatus: false,
+  saveSearchResult: [],
 };
 
 const actions = {
@@ -38,14 +40,14 @@ const actions = {
     commit("setLoadingStatus", false);
   },
 
-  resetFiltersSelected({ commit }) {
+  resetSaveSearchDialog({ commit }) {
     commit("resetSaveSearchStepper");
   },
 };
 
 const mutations = {
-  setSaveSearchStepper(state, stepper) {
-    state.saveSearchStepper = stepper;
+  setSaveSearchStepperDialog(state, stepper) {
+    state.saveSearchStepperDialog = stepper;
   },
   setSaveSearchResult(state, saveSearchResult) {
     state.saveSearchResult.push(saveSearchResult);
@@ -63,16 +65,29 @@ const mutations = {
     state.userSelected = userSelected;
   },
   resetSaveSearchStepper(state) {
-    state.saveSearchStepper = false;
+    (state.loadingStatus = false),
+      (state.saveSearchResult = []),
+      (state.organisationSelected = []),
+      (state.policySelected = []),
+      (state.policyRecords = []),
+      (state.userSelected = []),
+      (state.saveSearchStatus = false),
+      (state.showStepper = true);
   },
   setLoadingStatus(state, loadingStatus) {
     state.loadingStatus = loadingStatus;
   },
+  setSaveSearchStatus(state, saveSearchStatus) {
+    state.saveSearchStatus = saveSearchStatus;
+  },
+  setShowStepper(state, showStepper) {
+    state.showStepper = showStepper;
+  },
 };
 
 const getters = {
-  getSaveSearchStepper(state) {
-    return state.saveSearchStepper;
+  getSaveSearchStepperDialog(state) {
+    return state.saveSearchStepperDialog;
   },
   getSaveSearchResult(state) {
     return state.saveSearchResult;
@@ -91,6 +106,12 @@ const getters = {
   },
   getLoadingStatus(state) {
     return state.loadingStatus;
+  },
+  getSaveSearchStatus(state) {
+    return state.saveSearchStatus;
+  },
+  getShowStepper(state) {
+    return state.showStepper;
   },
 };
 const saveSearch = {

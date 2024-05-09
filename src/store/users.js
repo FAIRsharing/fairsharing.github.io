@@ -293,6 +293,7 @@ export const actions = {
         graphClient.setHeader(state.state.user().credentials.token);
         const userRecords = await graphClient.executeQuery(getUserQuery);
         graphClient.initalizeHeader();
+        console.log("userRecords::", userRecords);
         if (userRecords.error) {
           this.commit("users/setError", {
             field: "getUser",

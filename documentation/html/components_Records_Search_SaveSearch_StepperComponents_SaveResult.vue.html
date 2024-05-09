@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/AdvancedSearch/AdvancedSearchSelection.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/SaveResult.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,243 +86,117 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/AdvancedSearch/AdvancedSearchSelection.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/SaveResult.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-card
-    elevation="3"
-    :class="[
-      'mx-2 full-width d-flex flex-column',
-      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
-    ]"
-  >
-    &lt;AdvancedSearchButtons />
-    &lt;div
-      v-if="getAdvancedSearchText"
-      class="searchText chips-holder ma-2"
+  &lt;!--Success -->
+  &lt;v-card v-if="getSaveSearchStatus" class="mx-auto rounded-t-0 pb-2">
+    &lt;v-card-title
+      class="justify-center white--text mb-4"
+      style="background-color: green"
     >
-      &lt;v-chip
-        class="ma-2 mt-2 text-capitalize"
-        color="accent3"
-        text-color="white"
-        label
-      >
-        Search Text : {{ getAdvancedSearchText }}
-      &lt;/v-chip>
-    &lt;/div>
+      Success !!
+    &lt;/v-card-title>
+    &lt;v-card-text class="pb-0">
+      &lt;p class="text-body-1">
+        Your search is saved successfully. Please check saved search table under
+        profile page.
+      &lt;/p>
+    &lt;/v-card-text>
 
-    &lt;div
-      v-for="(item, index) in getAdvancedSearchQuery['fields']"
-      :key="index"
-      class="ma-2 selectionWrapper d-flex flex-column"
+    &lt;v-card-actions
+      class="flex-column flex-md-row justify-md-space-between my-3"
     >
-      &lt;div class="chips-holder mb-2">
-        &lt;div
-          v-for="([key, value], idx) in Object.entries(item)"
-          id="individualChips"
-          :key="idx"
-          class="individualChips d-flex flex-column align-center"
-        >
-          &lt;div
-            class="my-2 mx-1 text-capitalize primary px-3 py-1 white--text rounded d-flex"
-            style="font-size: 14px"
-          >
-            &lt;span>{{ printSelectionKeys(key) }} &lt;/span>
-            &lt;span>&lt;strong>&amp;nbsp;:&amp;nbsp;&lt;/strong>&lt;/span>
-            &lt;!-- eslint-disable vue/no-v-html -->
-            &lt;span v-html="printSelectionValues(key, value)" />
-            &lt;!-- eslint-enable vue/no-v-html -->
-          &lt;/div>
-
-          &lt;v-chip
-            class="operatorChip"
-            color="accent"
-            text-color="accent"
-            outlined
-            small
-          >
-            {{ printSelectedOperator(item) }}
-          &lt;/v-chip>
-        &lt;/div>
-      &lt;/div>
-      &lt;v-chip
+      &lt;v-btn
+        class="white--text order-md-2"
+        :class="{
+          'mb-3': $vuetify.breakpoint.smAndDown,
+        }"
         color="accent2"
-        class="parentOperatorChip text-uppercase font-weight-medium"
-        text-color="white"
       >
-        {{ printOperator(getAdvancedSearchQuery["operator"]) }}
-      &lt;/v-chip>
-    &lt;/div>
+        Goto Profile page
+      &lt;/v-btn>
+      &lt;v-btn
+        class="white--text order-md-1"
+        color="accent3"
+        @click="closeStepperDialog"
+      >
+        Close
+      &lt;/v-btn>
+    &lt;/v-card-actions>
+  &lt;/v-card>
+
+  &lt;!-- Error -->
+  &lt;v-card v-else-if="!getSaveSearchStatus" class="mx-auto pb-2">
+    &lt;v-card-title
+      class="justify-center white--text mb-4"
+      style="background-color: darkred"
+    >
+      Error
+    &lt;/v-card-title>
+    &lt;v-card-text class="pb-0">
+      &lt;p class="text-body-1">Something went wrong. Please try again.&lt;/p>
+    &lt;/v-card-text>
+    &lt;v-card-actions
+      class="flex-column flex-md-row justify-md-space-between my-3"
+    >
+      &lt;v-btn
+        class="white--text order-md-2"
+        :class="{
+          'mb-3': $vuetify.breakpoint.smAndDown,
+        }"
+        color="accent2"
+        @click="openStepperDialog"
+      >
+        Start Again
+      &lt;/v-btn>
+      &lt;v-btn
+        class="white--text order-md-1"
+        color="secondary"
+        @click="closeStepperDialog"
+      >
+        Close
+      &lt;/v-btn>
+    &lt;/v-card-actions>
   &lt;/v-card>
 &lt;/template>
-&lt;script>
-import { mapGetters, mapState } from "vuex";
 
-import extraFilterChips from "@/data/extraFilterChips.json";
-import stringUtils from "@/utils/stringUtils";
-import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
+
+import saveSearch from "@/store";
 
 export default {
-  name: "AdvancedSearchSelection",
-  components: { AdvancedSearchButtons },
-  mixins: [stringUtils],
+  name: "SaveResult",
   data() {
-    return {
-      operatorArr: [],
-    };
+    return {};
   },
   computed: {
-    ...mapState("uiController", ["UIGeneralStatus"]),
-    ...mapGetters("advancedSearch", [
-      "getAdvancedSearchQuery",
-      "getAdvancedSearch",
-      "getAdvancedSearchText",
-    ]),
-    responsiveClassObject() {
-      return {
-        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
-        "filters-holder-after-scroll":
-          !this.UIGeneralStatus.headerVisibilityState,
-      };
-    },
+    ...mapGetters("saveSearch", ["getSaveSearchStatus"]),
   },
 
   methods: {
+    ...mapActions("saveSearch", ["resetSaveSearchDialog"]),
     /**
-     * Print the within selection operator (_and/_or)
-     * @param {Object} item - Selection object
-     * @returns {String} operator - Operator _and/_or formatted as and/or
+     * Open Stepper Dialog Box method
      */
-    printSelectedOperator(item) {
-      let operatorValue;
-      for (let i = 0; i &lt; Object.entries(item).length; i++) {
-        operatorValue = Object.entries(item)[0][1];
-      }
-      return this.printOperator(operatorValue);
+    openStepperDialog() {
+      saveSearch.commit("saveSearch/setShowStepper", true);
+      this.resetSaveSearchDialog();
     },
 
     /**
-     * Print the values with OR operator if multiple selection is done
-     * @param {Object} key,value - Selection key value pair
-     * @returns {String} value - Selection
+     * Close Stepper Dialog Box method
      */
-    printSelectionValues(key, value) {
-      let refinedValues = "";
-      if (key !== "operator") {
-        refinedValues = value
-          .map((item) => this.cleanString(item))
-          .join(" OR ");
-
-        if (refinedValues !== " ") {
-          refinedValues = this.boldString(refinedValues, "OR");
-          return refinedValues;
-        }
-      }
-    },
-    /**
-     * Print the keys and update the text transform if the key within the
-     * extraFilterChips
-     * @param {string } key - Selected key
-     * @returns {string} key - Updated key
-     */
-    printSelectionKeys(key) {
-      let refinedKeys = key;
-      extraFilterChips.forEach((item) => {
-        let itemKey = Object.keys(item)[0];
-        let itemValue = Object.values(item)[0];
-        if (itemKey === key) refinedKeys = itemValue;
-      });
-      return refinedKeys;
-    },
-
-    printOperator(value) {
-      if (value === "_and") return "And";
-      else if (value === "_or") return "Or";
-    },
-
-    /**
-     * @param {String} str - String
-     * @param {String} find - Find text to make it bold
-     * @returns {String} - String with bold text
-     */
-    boldString(str, find) {
-      const re = new RegExp(find, "g");
-      return str.replace(
-        re,
-        "&lt;span class='font-weight-medium'>" + find + "&lt;/span>"
-      );
+    closeStepperDialog() {
+      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
     },
   },
 };
 &lt;/script>
-
-&lt;style scoped lang="scss">
-.fullHeight {
-  height: 90vh;
-  overflow: scroll;
-}
-.filters-holder-default {
-  overflow-x: hidden;
-  height: calc(100vh - 355px);
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-}
-.filters-holder-after-scroll {
-  overflow-x: hidden;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  margin-bottom: 94px;
-}
-.chips-holder {
-  background: #f5f5f5;
-  border: 2px dotted #dbdbdb;
-  border-radius: 10px !important;
-}
-.selectionWrapper {
-  .parentOperatorChip {
-    width: 50%;
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    //font-weight: 500;
-  }
-  &amp;:last-child {
-    .parentOperatorChip {
-      display: none;
-    }
-  }
-  .chips-holder {
-    .individualChips {
-      width: 98%;
-      margin: 0 auto;
-      .chipText {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-      }
-      &amp;:first-child {
-        display: none !important;
-      }
-
-      &amp;:last-child {
-        .operatorChip {
-          display: none !important;
-        }
-      }
-    }
-  }
-}
-&lt;/style>
 </pre>
     </article>
 </section>

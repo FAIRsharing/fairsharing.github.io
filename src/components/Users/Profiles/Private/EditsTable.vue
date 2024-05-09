@@ -69,6 +69,27 @@
           </v-list>
         </v-menu>
       </template>
+
+      <template #no-data>
+        <v-btn
+          class="ma-1 white--text"
+          color="orange"
+          :disabled="loading"
+          @click="loadEditEvents"
+        >
+          <v-progress-circular
+            :size="25"
+            :class="'pa-1' + [loading ? 'd-flex' : ' d-none']"
+            color="white"
+            indeterminate
+          />
+          <span
+            :class="[!loading ? 'd-flex' : ' d-none']"
+          >
+            Load
+          </span>
+        </v-btn>
+      </template>
     </v-data-table>
 
     <!-- PREVIEW RECORD -->
@@ -91,7 +112,7 @@
 
 <script>
 import moment from "moment";
-import { mapState } from "vuex"
+import {mapActions, mapState} from "vuex"
 
 import Icon from "@/components/Icon";
 import { cleanString } from "@/utils/stringUtils"
@@ -103,13 +124,12 @@ export default {
   //components: {Icon, Record, StatusPills},
   components: {Icon, Record},
   mixins: [cleanString],
-  props: {
-    edits: {type: Array, default: () => []}
-  },
   data: () => {
     return {
       showOverlay: false,
-      targetID: null
+      targetID: null,
+      edits: [],
+      loading: false
     }
   },
   computed: {
@@ -135,6 +155,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('users', ['getUserEditEvents']),
     moment (date) {
       return moment(date).format('dddd, MMMM Do YYYY, H:mm');
     },
@@ -148,6 +169,26 @@ export default {
     hideOverlay(){
       this.showOverlay = false;
       this.targetID = null;
+    },
+    async loadEditEvents() {
+      this.loading = true;
+      // The means of getting a user's ID differs depending on whether this component is active in the
+      // public or private profile. I'm checking the route to see which it is.
+      let loc = this.$router.currentRoute.path;
+      let data;
+      let userId;
+      if (loc === '/accounts/profile') {
+        userId = this.user().id;
+      }
+      else {
+        userId = loc.split('/')[2]
+      }
+      if (userId) {
+        data = await this.getUserEditEvents(userId);
+        this.edits = data.user.editEvents;
+      }
+      // If everything went as planned...
+      this.loading = false
     }
   }
 }

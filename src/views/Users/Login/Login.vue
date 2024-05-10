@@ -62,7 +62,7 @@
                     width="250px"
                     :class="provider.color"
                     class="text-left"
-                    :href="provider.callback + returnTo()"
+                    :href="provider.callback + getCurrentLocation()"
                   >
                     <v-layout width="100%">
                       <v-icon
@@ -265,6 +265,19 @@ export default {
       }
       return "";
     },
+    getCurrentLocation() {
+      let loc = this.$router.currentRoute.path;
+      let params = this.$route.query;
+      let query = Object.keys(params).map(k=>`${k}=${params[k]}`).join('&').replace("next=","");
+      let origin;
+      if (params.length > 0) {
+        origin = encodeURI(`${loc}`);
+      }
+      else {
+        origin = encodeURI(`${loc}?${query}`);
+      }
+      return `?origin=${origin}`;
+    }
   },
 };
 </script>

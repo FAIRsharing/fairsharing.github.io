@@ -22,7 +22,10 @@ let routes = [
 const router = new VueRouter({routes});
 const $router = {
     go: jest.fn(),
-    push: jest.fn()
+    push: jest.fn(),
+    currentRoute: {
+        path: "/accounts/login"
+    }
 };
 
 

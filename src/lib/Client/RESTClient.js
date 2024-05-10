@@ -1028,7 +1028,7 @@ class RESTClient {
       method: "post",
       baseURL: _client.baseURL + "/saved_searches",
       headers: this.auth_headers(jwt),
-      data: { saved_search1: saveSearchObj },
+      data: { saved_search: saveSearchObj },
     };
     let response = await _client.executeQuery(request);
     return response.data;

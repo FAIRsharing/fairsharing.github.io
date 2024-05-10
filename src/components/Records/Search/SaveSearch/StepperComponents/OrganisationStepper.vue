@@ -48,7 +48,9 @@
         />
       </template>
       <template v-else>
-        <p v-if="!loading">No organisation found</p>
+        <p v-if="!loading">
+          No organisation found
+        </p>
       </template>
     </template>
   </div>

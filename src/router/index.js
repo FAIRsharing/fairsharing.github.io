@@ -472,17 +472,17 @@ let routes = [
     component: Community,
   },
   {
-    name: "CommunityCuration",
+    name: "Community Champions",
     path: "/community_champions",
     component: CommunityCuration,
   },
   {
-    name: "CuratorCohorts",
+    name: "Our Champions",
     path: "/community_champions/our_champions",
     component: CuratorCohorts,
   },
   {
-    name: "CommunityCurationBis",
+    name: "Community Curation",
     path: "/communitycuration",
     component: CommunityCuration,
   },

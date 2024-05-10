@@ -246,7 +246,13 @@ export default {
       let loc = this.$router.currentRoute.path;
       let params = this.$route.query;
       let query = Object.keys(params).map(k=>`${k}=${params[k]}`).join('&').replace("next=","");
-      let origin = encodeURI(`${loc}?${query}`);
+      let origin;
+      if (params.length > 0) {
+        origin = encodeURI(`${loc}`);
+      }
+      else {
+        origin = encodeURI(`${loc}?${query}`);
+      }
       return `?origin=${origin}`;
     }
   }

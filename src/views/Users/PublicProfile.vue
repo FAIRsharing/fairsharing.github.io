@@ -224,9 +224,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <EditsTable
-                    :edits="userData.user.editEvents"
-                  />
+                  <EditsTable />
                 </v-card-text>
               </v-card>
             </v-col>

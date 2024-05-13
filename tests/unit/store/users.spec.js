@@ -457,8 +457,23 @@ describe('Actions/Mutations', () => {
                 }
             }
         };
-
         await actions.getPublicUser(state, 1);
         expect(actions.commit).toHaveBeenCalledTimes(0);
+    });
+
+    it('Can run getUserEditEvents', async() => {
+        let state = {
+            state: {
+                user: function(){
+                    return {}
+                }
+            }
+        };
+        await actions.getUserEditEvents(state, 1);
+        expect(actions.commit).toHaveBeenCalledTimes(0);
+        state.state.user = () => {
+            return {credentials:{ token: 123}}
+        };
+        await actions.getUserEditEvents(state, 1);
     });
 });

@@ -1,9 +1,6 @@
 <template>
   <!--Success -->
-  <v-card
-    v-if="getSaveSearchStatus"
-    class="mx-auto rounded-t-0 pb-2"
-  >
+  <v-card v-if="getSaveSearchStatus" class="mx-auto rounded-t-0 pb-2">
     <v-card-title
       class="justify-center white--text mb-4"
       style="background-color: green"
@@ -42,10 +39,7 @@
   </v-card>
 
   <!-- Error -->
-  <v-card
-    v-else-if="!getSaveSearchStatus"
-    class="mx-auto pb-2"
-  >
+  <v-card v-else-if="!getSaveSearchStatus" class="mx-auto pb-2">
     <v-card-title
       class="justify-center white--text mb-4"
       style="background-color: darkred"
@@ -53,9 +47,7 @@
       Error
     </v-card-title>
     <v-card-text class="pb-0">
-      <p class="text-body-1">
-        Something went wrong. Please try again.
-      </p>
+      <p class="text-body-1">Something went wrong. Please try again.</p>
     </v-card-text>
     <v-card-actions
       class="flex-column flex-md-row justify-md-space-between my-3"
@@ -87,7 +79,7 @@ import { mapActions, mapGetters } from "vuex";
 import saveSearch from "@/store";
 
 export default {
-  name: "SaveResult",
+  name: "ResultCard",
   data() {
     return {};
   },
@@ -101,9 +93,10 @@ export default {
      * Open Stepper Dialog Box method
      */
     restartStepper() {
-      saveSearch.commit("saveSearch/setShowStepper", true);
       this.resetSaveSearchDialog();
       this.$emit("restartStepper", 1);
+      saveSearch.commit("saveSearch/setShowStepper", true);
+      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", true);
     },
 
     /**
@@ -111,6 +104,8 @@ export default {
      */
     closeStepperDialog() {
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
+      this.resetSaveSearchDialog();
+      this.$emit("restartStepper", 1);
     },
   },
 };

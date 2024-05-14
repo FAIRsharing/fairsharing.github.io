@@ -66,6 +66,7 @@ const mutations = {
   },
   resetSaveSearchStepper(state) {
     (state.loadingStatus = false),
+      (state.saveSearchStepperDialog = false),
       (state.saveSearchResult = []),
       (state.organisationSelected = []),
       (state.policySelected = []),

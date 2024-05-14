@@ -1,55 +1,25 @@
 <template>
-  <v-container
-    id="userPage"
-    fluid
-    class="standard grey lighten-3 pb-10"
-  >
+  <v-container id="userPage" fluid class="standard grey lighten-3 pb-10">
     <v-row v-if="messages()['getUser'].message">
       <v-col cols="12">
-        <v-alert
-          type="success"
-          class="mb-0"
-          dismissible
-        >
+        <v-alert type="success" class="mb-0" dismissible>
           {{ messages()["getUser"].message }}
         </v-alert>
       </v-col>
     </v-row>
     <v-row v-if="user().isLoggedIn && !messages()['getUser'].error">
       <v-col cols="12">
-        <v-toolbar
-          flat
-          color="primary"
-          dark
-          height="55"
-        >
+        <v-toolbar flat color="primary" dark height="55">
           <v-toolbar-title>User Profile</v-toolbar-title>
           <v-spacer />
           <user-profile-menu />
         </v-toolbar>
       </v-col>
-      <v-col
-        v-if="!loading"
-        cols="12"
-      >
-        <v-container
-          fluid
-          class="py-0 pa-0"
-        >
+      <v-col v-if="!loading" cols="12">
+        <v-container fluid class="py-0 pa-0">
           <v-row>
-            <v-col
-              cols="12"
-              xl="2"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                class="d-flex flex-column rounded-0"
-                height="100%"
-              >
+            <v-col cols="12" xl="2" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="primary white--text py-3">
                   Personal Information
                 </v-card-title>
@@ -64,16 +34,15 @@
                         v-if="fieldName !== 'preferences'"
                         class="py-0 d-block"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        <b class="blue--text"
+                          >{{ fieldName | cleanString }}:
                         </b>
                         <span v-if="field"> {{ field }} </span>
                         <span v-else> None </span>
                       </v-list-item-content>
-                      <v-list-item-content
-                        v-else
-                        class="py-2"
-                      >
-                        <b class="blue--text">{{ fieldName | cleanString }}:
+                      <v-list-item-content v-else class="py-2">
+                        <b class="blue--text"
+                          >{{ fieldName | cleanString }}:
                         </b>
                         <ul>
                           <li
@@ -116,26 +85,12 @@
               </v-card>
             </v-col>
 
-            <v-col
-              class="pt-0"
-              cols="12"
-              xl="6"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col class="pt-0" cols="12" xl="6" lg="6" md="12" sm="12" xs="12">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Most recent publications
                 </v-card-title>
-                <v-card-text
-                  class="pt-3 pb-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pt-3 pb-0" style="flex-grow: 1">
                   <v-list v-if="publications.length > 0">
                     <v-list-item
                       v-for="(pub, index) in publications"
@@ -148,9 +103,11 @@
                             :href="pub.url"
                             rel="noreferrer"
                             target="_blank"
-                          >{{ pub.title }}</a>
+                            >{{ pub.title }}</a
+                          >
                           <span v-else>
-                            {{ pub.title }} (No available link)</span>
+                            {{ pub.title }} (No available link)</span
+                          >
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -172,26 +129,12 @@
               </v-card>
             </v-col>
 
-            <v-col
-              class="pt-0"
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col class="pt-0" cols="12" xl="4" lg="6" md="12" sm="12" xs="12">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Watched Records
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <RecordsTable
                     :records="user().records.watchedRecords"
                     source="watchedRecords"
@@ -200,51 +143,23 @@
               </v-card>
             </v-col>
 
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="6"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="6" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Record Edits
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <EditsTable :edits="user().metadata.editEvents" />
                 </v-card-text>
               </v-card>
             </v-col>
 
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Created Records
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <RecordsTable
                     :records="user().records.createdRecords"
                     source="createdRecords"
@@ -253,26 +168,12 @@
               </v-card>
             </v-col>
 
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Maintained Records
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <RecordsTable
                     :records="user().records.maintainedRecords"
                     source="maintainedRecords"
@@ -281,26 +182,12 @@
               </v-card>
             </v-col>
 
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Maintenance Requests
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <RecordsTable
                     :records="maintenanceRequests"
                     source="maintenanceRequests"
@@ -309,26 +196,12 @@
               </v-card>
             </v-col>
 
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Organisations
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <ViewOrganisations
                     :organisations="user().records.organisations"
                   />
@@ -336,51 +209,26 @@
               </v-card>
             </v-col>
 
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Awards
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
+                <v-card-text class="pa-0" style="flex-grow: 1">
                   <ViewAwards :awards="user().metadata.awards" />
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
+              <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="primary white--text py-3">
                   Saved Searches
                 </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
-                  <ViewSavedSearchesTable :searches="user().metadata.awards" />
+                <v-card-text class="pa-0" style="flex-grow: 1">
+                  <ViewSavedSearchesTable
+                    :created-searches="user().records.createdSearches"
+                    :saved-searches="user().records.savedSearches"
+                  />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -389,11 +237,7 @@
       </v-col>
     </v-row>
     <v-fade-transition>
-      <v-overlay
-        v-if="loading"
-        :absolute="false"
-        opacity="0.8"
-      >
+      <v-overlay v-if="loading" :absolute="false" opacity="0.8">
         <loaders />
       </v-overlay>
     </v-fade-transition>

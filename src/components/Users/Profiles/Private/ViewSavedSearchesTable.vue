@@ -2,14 +2,14 @@
   <div>
     <v-data-table
       class="userProfileSavedSearches"
-      :items="searches"
+      :items="createdSearches"
       :headers="headers"
       :items-per-page="perPage"
       :footer-props="footer"
       calculate-widths
     >
       <template #[`item.creator`]="{ item }">
-        {{ item.creator }}
+        {{ item.creator["username"] }}
       </template>
       <template #[`item.date`]="{ item }">
         {{ item.date }}
@@ -21,7 +21,7 @@
         {{ item.comments }}
       </template>
       <template #[`item.link`]="{ item }">
-        {{ item.link }}
+        <a :href="item.url">Link</a>
       </template>
     </v-data-table>
   </div>
@@ -31,7 +31,8 @@
 export default {
   name: "ViewSavedSearchesTable",
   props: {
-    searches: { type: Array, default: null },
+    createdSearches: { type: Array, default: null },
+    savedSearches: { type: Array, default: null },
   },
   computed: {
     headers() {

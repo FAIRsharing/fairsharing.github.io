@@ -54,7 +54,12 @@ const $route = {
     path: "/create"
 };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = {
+    push: jest.fn(),
+    currentRoute: {
+        path: "/edit/123"
+    }
+};
 
 let wrapper;
 

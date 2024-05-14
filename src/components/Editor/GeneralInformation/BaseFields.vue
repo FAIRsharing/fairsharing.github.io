@@ -570,7 +570,10 @@
       },
       mounted() {
         this.$refs.form.validate();
-        this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
+        if (this.$router.currentRoute.path !== '/create' && this.currentRecord.fairsharingRecord.urlForLogo)
+        {
+          this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
+        }
       },
       methods: {
         async deleteLogo() {

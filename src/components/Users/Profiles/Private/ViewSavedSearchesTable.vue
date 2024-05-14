@@ -2,17 +2,20 @@
   <div>
     <v-data-table
       class="userProfileSavedSearches"
-      :items="createdSearches"
+      :items="combinedSearches"
       :headers="headers"
       :items-per-page="perPage"
       :footer-props="footer"
       calculate-widths
+      :sort-desc.sync="sort_desc"
     >
       <template #[`item.creator`]="{ item }">
-        {{ item.creator["username"] }}
+        <a :href="`/users/${item.creator['id']}`"
+          >{{ item.creator["username"] }}
+        </a>
       </template>
       <template #[`item.date`]="{ item }">
-        {{ item.date }}
+        {{ item.createdAt.split("T", 1)[0] }}
       </template>
       <template #[`item.name`]="{ item }">
         {{ item.name }}
@@ -34,6 +37,11 @@ export default {
     createdSearches: { type: Array, default: null },
     savedSearches: { type: Array, default: null },
   },
+  data: () => {
+    return {
+      sort_desc: true,
+    };
+  },
   computed: {
     headers() {
       let headers = [
@@ -50,6 +58,16 @@ export default {
     },
     footer() {
       return { "items-per-page-options": [5] };
+    },
+    combinedSearches() {
+      let mergedSearches = [];
+      mergedSearches = this.createdSearches.concat(this.savedSearches);
+      let mapSearches = new Map();
+      for (const search of mergedSearches) {
+        mapSearches.set(search.id, search);
+      }
+      //Reversed array to show latest entry first
+      return [...mapSearches.values()].toReversed();
     },
   },
 };

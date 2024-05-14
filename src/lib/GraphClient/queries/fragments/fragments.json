@@ -117,6 +117,7 @@
     "name",
     "url",
     "comments",
+    "createdAt",
     {
       "queryName": "creator",
       "fields": [

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: lib/Client/ExternalClients.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/ResultCard.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,103 +86,123 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: lib/Client/ExternalClients.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/ResultCard.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import axios from "axios"
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;!--Success -->
+  &lt;v-card v-if="getSaveSearchStatus" class="mx-auto rounded-t-0 pb-2">
+    &lt;v-card-title
+      class="justify-center white--text mb-4"
+      style="background-color: green"
+    >
+      Success !!
+    &lt;/v-card-title>
+    &lt;v-card-text class="pb-0">
+      &lt;p class="text-body-1">
+        Your search is saved successfully. Please check saved search table under
+        profile page.
+      &lt;/p>
+    &lt;/v-card-text>
 
-class ExternalRESTClients {
+    &lt;v-card-actions
+      class="flex-column flex-md-row justify-md-space-between my-3"
+    >
+      &lt;v-btn
+        class="white--text order-md-2"
+        :class="{
+          'mb-3': $vuetify.breakpoint.smAndDown,
+        }"
+        color="accent2"
+        to="/accounts/profile"
+        @click="resetSaveSearchDialog()"
+      >
+        Goto Profile page
+      &lt;/v-btn>
+      &lt;v-btn
+        class="white--text order-md-1"
+        color="accent3"
+        @click="closeStepperDialog"
+      >
+        Close
+      &lt;/v-btn>
+    &lt;/v-card-actions>
+  &lt;/v-card>
+
+  &lt;!-- Error -->
+  &lt;v-card v-else-if="!getSaveSearchStatus" class="mx-auto pb-2">
+    &lt;v-card-title
+      class="justify-center white--text mb-4"
+      style="background-color: darkred"
+    >
+      Error
+    &lt;/v-card-title>
+    &lt;v-card-text class="pb-0">
+      &lt;p class="text-body-1">Something went wrong. Please try again.&lt;/p>
+    &lt;/v-card-text>
+    &lt;v-card-actions
+      class="flex-column flex-md-row justify-md-space-between my-3"
+    >
+      &lt;v-btn
+        class="white--text order-md-2"
+        :class="{
+          'mb-3': $vuetify.breakpoint.smAndDown,
+        }"
+        color="accent2"
+        @click="restartStepper"
+      >
+        Start Again
+      &lt;/v-btn>
+      &lt;v-btn
+        class="white--text order-md-1"
+        color="secondary"
+        @click="closeStepperDialog"
+      >
+        Close
+      &lt;/v-btn>
+    &lt;/v-card-actions>
+  &lt;/v-card>
+&lt;/template>
+
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
+
+import saveSearch from "@/store";
+
+export default {
+  name: "ResultCard",
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters("saveSearch", ["getSaveSearchStatus"]),
+  },
+
+  methods: {
+    ...mapActions("saveSearch", ["resetSaveSearchDialog"]),
+    /**
+     * Open Stepper Dialog Box method
+     */
+    restartStepper() {
+      this.resetSaveSearchDialog();
+      this.$emit("restartStepper", 1);
+      saveSearch.commit("saveSearch/setShowStepper", true);
+      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", true);
+    },
 
     /**
-     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
-     * REST API.
+     * Close Stepper Dialog Box method
      */
-    constructor() {
-        if (ExternalRESTClients._instance) {
-            return ExternalRESTClients._instance
-        }
-        ExternalRESTClients._instance = this;
-        this.doiBaseURL = 'https://dx.doi.org/';
-        this.headers = {
-            'Accept': 'application/x-bibtex',
-        };
-        this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;id=";
-        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
-        this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
-        this.rorOrganisationsBaseURL = "https://api.ror.org/organizations?query=";
-    }
-
-    async getDOI(doi){
-        let localHeaders = this.headers;
-        localHeaders['Accept'] = 'application/json';
-        const request = {
-            url: this.doiBaseURL + doi,
-            headers: localHeaders
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    async getPMID(id){
-        const request = {
-            url: this.pmidBaseURL + id,
-            headers: {
-                'Accept': 'application/json',
-            }
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    async getTessRecords(string){
-        const request = {
-            url: this.tessBaseURL + string,
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    async getOrcidUser(user){
-        this.headers['Accept'] = "application/orcid+json";
-        const request = {
-            url: this.orcidBaseURL + user,
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        this.headers['Accept'] = 'application/x-bibtex';
-        return response.data;
-    }
-
-    async getROROrganisation(organisation){
-        let localHeaders = this.headers;
-        localHeaders['Accept'] = 'application/json';
-        const request = {
-            url: this.rorOrganisationsBaseURL + organisation,
-            headers: localHeaders
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    /**
-     * Trigger the given query with Axios
-     * @param query
-     * @returns {Promise&lt;*>}
-     */
-    async executeQuery(query) {
-        try {
-            return await axios.get(query.url, {headers: query.headers});
-        }
-        catch(e){
-            return({data: {error: e}});
-        }
-    }
-}
-
-export default ExternalRESTClients;
+    closeStepperDialog() {
+      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
+      this.resetSaveSearchDialog();
+      this.$emit("restartStepper", 1);
+    },
+  },
+};
+&lt;/script>
 </pre>
     </article>
 </section>

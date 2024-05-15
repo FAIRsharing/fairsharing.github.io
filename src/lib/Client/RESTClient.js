@@ -1033,6 +1033,23 @@ class RESTClient {
     let response = await _client.executeQuery(request);
     return response.data;
   }
+
+  /**
+   * Delete the saved search
+   * @param {Number} savedSearchId - the id of the savedSearch to remove
+   * @param {String} userToken - the user jwt
+   * @returns {Promise}
+   */
+  async deleteSavedSearch(savedSearchId, jwt) {
+    let _client = this;
+    const request = {
+      method: "delete",
+      baseURL: _client.baseURL + "/saved_searches/" + savedSearchId,
+      headers: this.auth_headers(jwt),
+    };
+    let response = await _client.executeQuery(request);
+    return response.data;
+  }
 }
 
 export default RESTClient;

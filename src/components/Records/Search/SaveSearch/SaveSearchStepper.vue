@@ -243,7 +243,6 @@ export default {
      * Save Search method
      */
     async saveSearch() {
-      console.log("this.user()::", this.user());
       this.loading = true;
       let saveSearchObj = {
         name: this.searchName,

@@ -191,7 +191,7 @@ import {mapActions, mapMutations, mapState} from "vuex";
 
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RESTClient from "@/lib/Client/RESTClient";
-import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
+import { isEmail, isMastodon, isRequired, isUrl } from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 
@@ -255,6 +255,15 @@ export default {
           type: "input"
         },
         {
+          name: "mastodon",
+          label: "Mastodon",
+          hint: null,
+          type: "input",
+          rules: [
+              isMastodon()
+          ]
+        },
+        {
           name: "orcid",
           label: "Orcid ID",
           hint: "To change this field log in with ORCID",
@@ -311,6 +320,7 @@ export default {
         profile_type: null,
         orcid: null,
         twitter: null,
+        mastodon: null,
         deactivated:null,
         role: null
       }
@@ -337,6 +347,7 @@ export default {
       this.formData.role = this.currentPublicUser.role;
       this.formData.orcid = this.currentPublicUser.orcid;
       this.formData.twitter = this.currentPublicUser.twitter;
+      this.formData.mastodon = this.currentPublicUser.mastodon;
       this.formData.deactivated = !this.currentPublicUser.deactivated;
     }
     this.pageLoad = false;

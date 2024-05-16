@@ -43,10 +43,11 @@
     </v-data-table>
     <!--Edit/Delete action dialog box -->
     <v-dialog
-      v-model="dialogDelete"
+      v-model="modifyDialog"
       max-width="500px"
     >
-      <v-card>
+      <!--Delete -->
+      <v-card v-if="deleteSavedSearch">
         <v-card-title class="text-h5">
           Are you sure you want to delete this item?
         </v-card-title>
@@ -55,7 +56,7 @@
           <v-btn
             class="white--text"
             color="accent3"
-            @click="closeDelete"
+            @click="closeDialog"
           >
             Cancel
           </v-btn>
@@ -64,6 +65,35 @@
             color="success"
             :loading="loading"
             @click="deleteItemConfirm()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+      <!--Edit -->
+      <v-card v-if="editSavedSearch">
+        <v-card-title class="text-h5">
+          Are you sure you want to edit this item?
+        </v-card-title>
+        <v-card-subtitle>
+          Editing this item will redirect to the respective search and will
+          create new search.
+        </v-card-subtitle>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            :href="savedSearchLink"
           >
             OK
           </v-btn>
@@ -85,10 +115,13 @@ export default {
   name: "ViewSavedSearchesTable",
   data: () => {
     return {
-      dialogDelete: false,
+      modifyDialog: false,
+      deleteSavedSearch: false,
+      editSavedSearch: false,
       selectedItem: {},
       totalSearches: [],
       loading: false,
+      savedSearchLink: "",
     };
   },
   computed: {
@@ -142,7 +175,8 @@ export default {
      */
     deleteItem(item) {
       this.selectedItem = item;
-      this.dialogDelete = true;
+      this.modifyDialog = true;
+      this.deleteSavedSearch = true;
     },
 
     /**
@@ -150,6 +184,7 @@ export default {
      * and close the dialog if pressed OK
      */
     async deleteItemConfirm() {
+      this.editSavedSearch = false;
       this.loading = true;
       let data = await restClient.deleteSavedSearch(
         this.selectedItem["id"],
@@ -160,14 +195,25 @@ export default {
         await this.combinedSearches();
       }
       this.loading = false;
-      this.closeDelete();
+      this.deleteSavedSearch = false;
+      this.closeDialog();
+    },
+    /**
+     * Edit the savedSearch
+     * @param item
+     */
+    editItem(item) {
+      this.deleteSavedSearch = false;
+      this.savedSearchLink = item["url"];
+      this.modifyDialog = true;
+      this.editSavedSearch = true;
     },
 
     /**
-     * Close the delete dialog
+     * Close dialog
      */
-    closeDelete() {
-      this.dialogDelete = false;
+    closeDialog() {
+      this.modifyDialog = false;
     },
   },
 };

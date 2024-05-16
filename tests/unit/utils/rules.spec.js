@@ -7,6 +7,7 @@ import {
     isLongEnough,
     isOrcid,
     isRequired,
+    isMastodon,
     isUrl} from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
@@ -78,6 +79,15 @@ describe('Form validation rules', () => {
         expect(test([{size:2000},{size:40000000000}])).toBe("One or some of your selected files' size is more than 3 MB!");
         expect(test([{size:2000}])).toBe(true);
         expect(test([{size:50000000000}])).toBe("file size should be less than 3 MB!");
+    });
+
+    it("can check if it's a Mastodon handle", () => {
+        let fail = 'Invalid mastodon handle: Use @user@server.'
+        let tester = isMastodon();
+        expect(tester('a string')).toEqual(fail);
+        expect(tester('@ftang@wibble.com')).toBe(true);
+        expect(tester('')).toBe(true);
+        expect(tester("hardcore.science")).toEqual(fail);
     });
 
 });

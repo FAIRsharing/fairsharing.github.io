@@ -2,7 +2,7 @@ import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import getAllUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import getPublicUserQuery from "@/lib/GraphClient/queries/getPublicUserMeta.json";
-import getUserEditEventsQuery from '@/lib/GraphClient/queries/getUserEditEvents.json';
+import getUserEditEventsQuery from "@/lib/GraphClient/queries/getUserEditEvents.json";
 import getUserQuery from "@/lib/GraphClient/queries/getUserMeta.json";
 
 import {
@@ -295,9 +295,10 @@ export const actions = {
       } else {
         getUserQuery.queryParam.id = userMetadata.id;
         graphClient.setHeader(state.state.user().credentials.token);
+
         const userRecords = await graphClient.executeQuery(getUserQuery);
         graphClient.initalizeHeader();
-        console.log("userRecords::", userRecords);
+
         if (userRecords.error) {
           this.commit("users/setError", {
             field: "getUser",

@@ -2,15 +2,14 @@
   <div>
     <v-data-table
       class="userProfileSavedSearches"
-      :items="combinedSearches"
+      :items="totalSearches"
       :headers="headers"
       :items-per-page="perPage"
       :footer-props="footer"
       calculate-widths
     >
       <template #[`item.creator`]="{ item }">
-        <a :href="`/users/${item.creator['id']}`"
-          >{{ item.creator["username"] }}
+        <a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
         </a>
       </template>
       <template #[`item.date`]="{ item }">
@@ -27,25 +26,45 @@
       </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-      </template>
-      <template #no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
       </template>
     </v-data-table>
     <!--Edit/Delete action dialog box -->
-    <v-dialog v-model="dialogDelete" max-width="500px">
+    <v-dialog
+      v-model="dialogDelete"
+      max-width="500px"
+    >
       <v-card>
         <v-card-title class="text-h5">
           Are you sure you want to delete this item?
         </v-card-title>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="blue darken-1" text @click="closeDelete">
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDelete"
+          >
             Cancel
           </v-btn>
-          <v-btn color="blue darken-1" text @click="deleteItemConfirm(true)">
+          <v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            @click="deleteItemConfirm()"
+          >
             OK
           </v-btn>
           <v-spacer />
@@ -56,7 +75,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
 
@@ -64,25 +83,17 @@ const restClient = new RESTClient();
 
 export default {
   name: "ViewSavedSearchesTable",
-  props: {
-    createdSearches: { type: Array, default: null },
-    savedSearches: { type: Array, default: null },
-  },
   data: () => {
     return {
       dialogDelete: false,
       selectedItem: {},
-      editedItem: {
-        creator: "",
-        date: "",
-        name: "",
-        comments: "",
-        link: "",
-      },
+      totalSearches: [],
+      loading: false,
     };
   },
   computed: {
     ...mapState("users", ["user"]),
+    ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
         { text: "Creator", value: "creator", align: "center" },
@@ -100,44 +111,63 @@ export default {
     footer() {
       return { "items-per-page-options": [5] };
     },
-    combinedSearches() {
-      let mergedSearches = [];
-      mergedSearches = this.createdSearches.concat(this.savedSearches);
+  },
+
+  mounted() {
+    this.combinedSearches();
+  },
+  methods: {
+    ...mapActions("users", ["getUser"]),
+    /**
+     * Fetch createdSearch and savedSearch from the userRecords
+     * removing the duplicates and displaying in user profile
+     * page
+     */
+    async combinedSearches() {
+      await this.getUser();
+      let createdSearches = this.getUserRecords.user["createdSearches"];
+      let savedSearches = this.getUserRecords.user["savedSearches"];
+      let mergedSearches = createdSearches.concat(savedSearches);
       let mapSearches = new Map();
       for (const search of mergedSearches) {
         mapSearches.set(search.id, search);
       }
       //Reversed array to show latest entry first
-      return [...mapSearches.values()].toReversed();
+      this.totalSearches = [...mapSearches.values()].toReversed();
     },
-  },
-  watch: {
-    // dialogDelete(val) {
-    //   val || this.closeDelete();
-    // },
-  },
-  methods: {
+
+    /**
+     * Delete the selection savedSearch
+     * @param item
+     */
     deleteItem(item) {
       this.selectedItem = item;
       this.dialogDelete = true;
     },
-    async deleteItemConfirm(del) {
-      if (del) {
-        let data = await restClient.deleteSavedSearch(
-          this.selectedItem["id"],
-          this.user().credentials.token
-        );
-        console.log("data", data);
-      }
 
+    /**
+     * Confirmation dialog to delete the savedSearch
+     * and close the dialog if pressed OK
+     */
+    async deleteItemConfirm() {
+      this.loading = true;
+      let data = await restClient.deleteSavedSearch(
+        this.selectedItem["id"],
+        this.user().credentials.token
+      );
+
+      if (data["message"] === "success") {
+        await this.combinedSearches();
+      }
+      this.loading = false;
       this.closeDelete();
     },
+
+    /**
+     * Close the delete dialog
+     */
     closeDelete() {
       this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.editedItem);
-        this.editedIndex = -1;
-      });
     },
   },
 };

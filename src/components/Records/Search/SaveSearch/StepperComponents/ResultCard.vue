@@ -1,6 +1,9 @@
 <template>
   <!--Success -->
-  <v-card v-if="getSaveSearchStatus" class="mx-auto rounded-t-0 pb-2">
+  <v-card
+    v-if="getSaveSearchStatus"
+    class="mx-auto rounded-t-0 pb-2"
+  >
     <v-card-title
       class="justify-center white--text mb-4"
       style="background-color: green"
@@ -39,7 +42,10 @@
   </v-card>
 
   <!-- Error -->
-  <v-card v-else-if="!getSaveSearchStatus" class="mx-auto pb-2">
+  <v-card
+    v-else-if="!getSaveSearchStatus"
+    class="mx-auto pb-2"
+  >
     <v-card-title
       class="justify-center white--text mb-4"
       style="background-color: darkred"
@@ -47,7 +53,9 @@
       Error
     </v-card-title>
     <v-card-text class="pb-0">
-      <p class="text-body-1">Something went wrong. Please try again.</p>
+      <p class="text-body-1">
+        Something went wrong. Please try again.
+      </p>
     </v-card-text>
     <v-card-actions
       class="flex-column flex-md-row justify-md-space-between my-3"

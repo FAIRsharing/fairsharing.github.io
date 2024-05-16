@@ -87,9 +87,19 @@
         "urlType": "internal"
       },
       {
-        "title": "Privacy Policy",
-        "url": "/privacy",
+        "title": "Terms of use",
+        "url": "/terms",
         "urlType": "internal"
+      }
+    ]
+  },
+  "fifthBlock": {
+    "header": "Documentation",
+    "content": [
+      {
+        "title": "In-depth Guidance",
+        "url": "https://fairsharing.gitbook.io/fairsharing",
+        "urlType": "external"
       },
       {
         "title": "API and data licence",
@@ -97,13 +107,8 @@
         "urlType": "internal"
       },
       {
-        "title": "API Documentation",
-        "url": "/API_doc",
-        "urlType": "internal"
-      },
-      {
-        "title": "Terms of use",
-        "url": "/terms",
+        "title": "Privacy Policy",
+        "url": "/privacy",
         "urlType": "internal"
       },
       {

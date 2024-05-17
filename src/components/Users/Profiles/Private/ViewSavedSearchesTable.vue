@@ -25,7 +25,9 @@
       <template #[`item.link`]="{ item }">
         <a :href="item.url">Link</a>
       </template>
-
+      <template #no-data>
+        <div>You do not have any saved search.</div>
+      </template>
       <template #[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>

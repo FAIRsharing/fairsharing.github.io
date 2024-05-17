@@ -118,7 +118,9 @@
       &lt;template #[`item.link`]="{ item }">
         &lt;a :href="item.url">Link&lt;/a>
       &lt;/template>
-
+      &lt;template #no-data>
+        &lt;div>You do not have any saved search.&lt;/div>
+      &lt;/template>
       &lt;template #[`item.actions`]="{ item }">
         &lt;v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil &lt;/v-icon>
         &lt;v-icon small @click="deleteItem(item)"> mdi-delete &lt;/v-icon>

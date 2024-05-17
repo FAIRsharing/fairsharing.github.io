@@ -25,12 +25,15 @@
       <template #[`item.link`]="{ item }">
         <a :href="item.url">Link</a>
       </template>
-      <template #no-data>
-        <div>You do not have any saved search.</div>
-      </template>
       <template #[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      </template>
+      <template #no-data>
+        <div>
+          You did not saved any search yet. Start saving one
+          <a @click.stop="openAdvancedSearch">here</a>.
+        </div>
       </template>
     </v-data-table>
     <!--Edit/Delete action dialog box -->
@@ -89,6 +92,7 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
+import advancedSearch from "@/store";
 
 const restClient = new RESTClient();
 
@@ -195,6 +199,15 @@ export default {
      */
     closeDialog() {
       this.modifyDialog = false;
+    },
+    /**
+     * Open advancedSearch Dialog Box
+     */
+    openAdvancedSearch() {
+      advancedSearch.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        true
+      );
     },
   },
 };

@@ -170,6 +170,21 @@
         "username",
         "orcid"
       ]
+    },
+    {
+      "name": "savedSearches",
+      "fields": [
+        "id",
+        "name",
+        "url",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": [
+            "id",
+            "name"
+          ]
+        }
+      ]
     }
   ]
 }

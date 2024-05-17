@@ -9,7 +9,8 @@
       calculate-widths
     >
       <template #[`item.creator`]="{ item }">
-        <a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
+        <a :href="`/users/${item.creator['id']}`"
+          >{{ item.creator["username"] }}
         </a>
       </template>
       <template #[`item.date`]="{ item }">
@@ -26,26 +27,12 @@
       </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
     <!--Edit/Delete action dialog box -->
-    <v-dialog
-      v-model="modifyDialog"
-      max-width="500px"
-    >
+    <v-dialog v-model="modifyDialog" max-width="500px">
       <!--Delete -->
       <v-card v-if="deleteSavedSearch">
         <v-card-title class="text-h5">
@@ -53,11 +40,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            class="white--text"
-            color="accent3"
-            @click="closeDialog"
-          >
+          <v-btn class="white--text" color="accent3" @click="closeDialog">
             Cancel
           </v-btn>
           <v-btn
@@ -76,17 +59,13 @@
         <v-card-title class="text-h5">
           Are you sure you want to edit this item?
         </v-card-title>
-        <v-card-subtitle>
+        <v-card-subtitle class="text-subtitle-1 mt-0">
           Editing this item will redirect to the respective search and will
           create new search.
         </v-card-subtitle>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            class="white--text"
-            color="accent3"
-            @click="closeDialog"
-          >
+          <v-btn class="white--text" color="accent3" @click="closeDialog">
             Cancel
           </v-btn>
           <v-btn

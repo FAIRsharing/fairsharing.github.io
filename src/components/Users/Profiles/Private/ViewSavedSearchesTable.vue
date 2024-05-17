@@ -31,7 +31,7 @@
       </template>
       <template #no-data>
         <div>
-          You did not saved any search yet. Start saving one
+          You haven't saved any searches yet. Create one
           <a @click.stop="openAdvancedSearch">here</a>.
         </div>
       </template>
@@ -65,8 +65,7 @@
           Are you sure you want to edit this item?
         </v-card-title>
         <v-card-subtitle class="text-subtitle-1 mt-0">
-          Editing this item will redirect to the respective search and will
-          create new search.
+          Editing this item will create a new search.
         </v-card-subtitle>
         <v-card-actions>
           <v-spacer />

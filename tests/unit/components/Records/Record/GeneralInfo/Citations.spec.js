@@ -11,6 +11,14 @@ localVue.use(Vuex);
 localVue.use(VueMoment);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            how_to_cite: "citation tooltip.",
+        }
+    }
+}
 
 Record.state.currentRecord["fairsharingRecord"] = {
     subjects:[],
@@ -22,7 +30,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record
+        record: Record,
+        editor: editor
     }});
 
 describe("Citations.vue", function(){

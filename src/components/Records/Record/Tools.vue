@@ -25,6 +25,18 @@
         />
 
         <v-card-title class="pa-0 text--primary card-title-customize">
+          <v-tooltip bottom>
+            <template #activator="{ on }">
+              <v-icon
+                class="mr-2"
+                size="15"
+                v-on="on"
+              >
+                fa-question-circle
+              </v-icon>
+            </template>
+            {{ recordTooltips['tools'] }}
+          </v-tooltip>
           Tools associated with this record
         </v-card-title>
         <v-card-text class="ma-0 pt-8">
@@ -51,7 +63,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 import Icon from "@/components/Icon"
 import SectionTitle from '@/components/Records/Record/SectionTitle'
@@ -70,6 +82,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+    ...mapState("editor", ["recordTooltips"])
   },
   methods: {
     showTools() {

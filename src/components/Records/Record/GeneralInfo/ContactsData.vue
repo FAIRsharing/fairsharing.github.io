@@ -54,7 +54,7 @@ export default {
   name: "ContactsData",
   components:{Icon},
   computed: {
-    ...mapGetters("record", ["getField"]),
+    ...mapGetters("record", ["getField"])
   }
 }
 </script>

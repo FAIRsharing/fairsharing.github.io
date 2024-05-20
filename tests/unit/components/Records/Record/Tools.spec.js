@@ -9,6 +9,16 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            tools: "tools tooltip.",
+        }
+    }
+}
+
+
 Record.state.currentRecord["fairsharingRecord"] = {
     metadata: {
         associated_tools: [{url: 'http://url.com', name: 'name'}]
@@ -26,7 +36,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record: Record
+        record: Record,
+        editor: editor
     }
 });
 

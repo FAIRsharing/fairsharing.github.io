@@ -2,7 +2,23 @@
   <div>
     <!--Domains-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-15-percent-flex">Subjects</b>
+      <span
+        style="white-space: nowrap;"
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2"
+              size="15"
+              v-on="on"
+            >
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ recordTooltips['subjects'] }}
+        </v-tooltip>
+        <b class="width-15-percent-flex">Subjects</b>
+      </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('subjects').length">
           N/A
@@ -24,7 +40,23 @@
     </div>
     <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-15-percent-flex">Domains</b>
+      <span
+        style="white-space: nowrap;"
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2"
+              size="15"
+              v-on="on"
+            >
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ recordTooltips['domains'] }}
+        </v-tooltip>
+        <b class="width-15-percent-flex">Domains</b>
+      </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('domains').length">
           N/A
@@ -46,7 +78,23 @@
     </div>
     <!--Taxonomic Range-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-15-percent-flex">Taxonomic Range</b>
+      <span
+        style="white-space: nowrap;"
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2"
+              size="15"
+              v-on="on"
+            >
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ recordTooltips['taxonomies'] }}
+        </v-tooltip>
+        <b class="width-15-percent-flex">Taxonomic Range</b>
+      </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('taxonomies').length">
           N/A
@@ -68,7 +116,23 @@
     </div>
     <!--User Defined Tags-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-15-percent-flex">User Defined Tags</b>
+      <span
+        style="white-space: nowrap;"
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2"
+              size="15"
+              v-on="on"
+            >
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ recordTooltips['user_defined_tags'] }}
+        </v-tooltip>
+        <b class="width-15-percent-flex">User Defined Tags</b>
+      </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('userDefinedTags').length">
           N/A
@@ -92,7 +156,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
@@ -104,7 +168,8 @@ export default {
   },
   mixins: [recordsCardUtils],
   computed: {
-    ...mapGetters("record", ["getField"])
+    ...mapGetters("record", ["getField"]),
+    ...mapState("editor", ["recordTooltips"])
   },
   methods: {
     returnToSearch(field, item) {

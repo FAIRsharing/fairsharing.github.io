@@ -8,6 +8,7 @@
     "fairsharing_registry": "The name of the registry to which this record belongs; one of Standards, Policies, or Databases.",
     "homepage": "The homepage of the resource. If there is no official homepage, a related URL may be used. For policies, the resource homepage must be the policy document itself.",
     "how_to_cite": "How to cite this FAIRsharing record.",
+    "maintainers": "A list of developers of this resource who have claimed ownership of the record both for attribution and to perform updates the record.",
     "name": "The full name of this resource.",
     "publication_for_citation": "How to cite the resource described by this record.",
     "record_type": "The type of resource this record describes; each FAIRsharing registry is composed of several types.",

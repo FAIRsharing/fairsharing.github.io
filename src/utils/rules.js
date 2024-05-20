@@ -19,6 +19,19 @@ export function isEmail(){
 }
 
 /**
+ * Assess mastodon username @user@server.
+ * @returns {function(*): (boolean|string)}
+ */
+export function isMastodon(){
+    return value => {
+        if (!value) return true;
+        const pattern = /^@[A-Za-z]+@[A-Za-z\\.]+$/
+        return pattern.test(value) || 'Invalid mastodon handle: Use @user@server.'
+    }
+}
+
+
+/**
  * Assess the presence of the field
  * @returns {function(*=): (boolean|string)}
  */

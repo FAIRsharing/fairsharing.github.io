@@ -1,14 +1,10 @@
 <template>
-  <v-row class="white--text pt-5 footer-container">
+  <v-row class="white--text pt-5 footer-container justify-center">
     <!--  Footer Blocks  -->
     <v-col
       v-for="(block,index) in footerData"
       :key="block.header+'_'+index"
-      :cols="$vuetify.breakpoint.xsOnly?'12':3"
-      lg="3"
-      md="3"
-      sm="12"
-      xsm="12"
+      xl="auto"
       class="flex-column align-center d-flex"
     >
       <h4 class="min-width-200 mb-2">
@@ -65,7 +61,7 @@
     </div>
     <!--  Licence and copy right  -->
     <v-row
-      class="d-flex flex-row justify-center align-center mb-2"
+      class="d-flex flex-row justify-center align-center mb-2 pt-6"
     >
       <p class="mb-0 mr-2">
         © FAIRsharing 2009-Present | Licenced under

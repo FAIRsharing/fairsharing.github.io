@@ -276,7 +276,7 @@ import CountryFlag from "vue-country-flag";
 import { mapActions,mapState } from "vuex"
 
 import RESTClient from "@/lib/Client/RESTClient.js"
-import {isEmail, isLongEnough, isRequired, isUrl} from "@/utils/rules.js"
+import {isEmail, isLongEnough, isMastodon, isRequired, isUrl} from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 
@@ -345,6 +345,15 @@ export default {
           type: "input"
         },
         {
+          name: "mastodon",
+          label: "Mastodon",
+          hint: null,
+          type: "input",
+          rules: [
+              isMastodon()
+          ]
+        },
+        {
           name: "orcid",
           label: "Orcid ID",
           hint: "To change this field, log in with ORCID",
@@ -404,6 +413,7 @@ export default {
         isRequired: ()=> isRequired(),
         isURL: ()=> isUrl(),
         isLongEnough: (val)=> isLongEnough(val),
+        isMastodon: (val)=> isMastodon(val),
       },
     }
   },
@@ -423,7 +433,8 @@ export default {
           homepage: this.user().metadata.homepage,
           profile_type: this.user().metadata.profile_type,
           orcid: this.user().metadata.orcid,
-          twitter: this.user().metadata.twitter
+          twitter: this.user().metadata.twitter,
+          mastodon: this.user().metadata.mastodon,
         }
       }
       return null;

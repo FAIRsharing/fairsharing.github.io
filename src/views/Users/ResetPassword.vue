@@ -19,21 +19,15 @@
 
           <v-card-text>
             <v-form if="resetPwd">
+              <!-- if user is logged in and has a password, ask them for it -->
               <v-text-field
-                v-if="user().isLoggedIn"
+                v-if="user().isLoggedIn && !user().third_party"
                 v-model="formData['oldPwd']"
                 type="password"
                 label="Enter your current password"
                 required
                 outlined
               />
-              <!--
-              <p>
-                Forgotten your password, or never set it? Click <router-link to="/accounts/forgotPassword">
-                  here
-                </router-link>.
-              </p>
-              -->
 
               <v-text-field
                 v-model="password"

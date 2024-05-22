@@ -20,14 +20,31 @@
           <v-card-text>
             <v-form if="resetPwd">
               <!-- if user is logged in and has a password, ask them for it -->
-              <v-text-field
-                v-if="user().isLoggedIn && !user().third_party"
-                v-model="formData['oldPwd']"
-                type="password"
-                label="Enter your current password"
-                required
-                outlined
-              />
+              <div
+                v-if="user().isLoggedIn"
+              >
+                <v-text-field
+                  v-model="formData['oldPwd']"
+                  type="password"
+                  label="Enter your current password"
+                  required
+                  outlined
+                />
+                <p>
+                  Don't know your current password or never set one? Please make sure you're
+                  logged out and then request a password reset.
+                </p>
+                <p>
+                  <v-btn
+                    class="mb-5 white--text"
+                    color="red darken-1"
+                    small
+                    @click="ensureLogout"
+                  >
+                    Log out and reset
+                  </v-btn>
+                </p>
+              </div>
 
               <v-text-field
                 v-model="password"
@@ -94,7 +111,7 @@
             })
         },
         methods: {
-            ...mapActions("users", ["resetPwdWithoutToken", 'resetPwd', "setError"]),
+            ...mapActions("users", ["resetPwdWithoutToken", 'resetPwd', "setError", "logout"]),
             async submitPassword() {
                 this.loading = true;
                 let _module = this;
@@ -120,6 +137,11 @@
                         _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
                     }
                 }
+            },
+            async ensureLogout() {
+              await this.logout();
+              this.$store.commit("users/logout");
+              this.$router.push({path: '/accounts/forgotPassword'});
             }
         }
     }

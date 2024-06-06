@@ -68,7 +68,7 @@
         <v-divider class="dashed-line" />
         <!--  Associated Records Summary  -->
         <associated-records-summary
-          :associated-records="associatedRecords(record)"
+          :associated-records="record.relatedRecordsCount"
           class="ml-5"
         />
       </v-card>

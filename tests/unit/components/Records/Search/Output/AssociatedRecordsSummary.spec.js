@@ -18,14 +18,10 @@ describe("AssociatedRecordsSummary.vue", function () {
     });
 
     it("can check setRecordLabels method", () => {
-        wrapper.vm.associatedRecords.registry = "database"
-        expect(wrapper.vm.setRecordLabels("standards")).toBe("Standards Implemented");
-        expect(wrapper.vm.setRecordLabels("databases")).toBe("Related Databases");
-        expect(wrapper.vm.setRecordLabels("policies")).toBe("Endorsing Policies");
-        wrapper.vm.associatedRecords.registry = "collection"
-        expect(wrapper.vm.setRecordLabels("standards")).toBe("Related Standards");
-        expect(wrapper.vm.setRecordLabels("databases")).toBe("Related Databases");
-        expect(wrapper.vm.setRecordLabels("policies")).toBe("Related Policies");
+        expect(wrapper.vm.setRecordLabels("standard")).toBe("Linked Standards");
+        expect(wrapper.vm.setRecordLabels("database")).toBe("Linked Databases");
+        expect(wrapper.vm.setRecordLabels("policy")).toBe("Linked Policies");
+        expect(wrapper.vm.setRecordLabels("collection")).toBe("Linked Collections");
     });
 
 });

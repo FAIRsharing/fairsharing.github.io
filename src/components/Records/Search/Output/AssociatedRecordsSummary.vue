@@ -1,18 +1,18 @@
 <template>
   <div class="d-flex flex-column">
     <div
-      v-for="(associatedRecord, associationName) in associatedRecords.registryNumber"
-      :key="associationName+'_'+associatedRecord.val"
+      v-for="(associatedRecord, associationName) in associatedRecords"
+      :key="associationName+'_'+associatedRecord"
       class="d-flex flex-row"
     >
       <h4
         :class="['my-0 font-weight-light',{'opacity-low':associatedRecord.val===0}]"
       >
-        {{ setRecordLabels(associatedRecord.label) }}
+        {{ setRecordLabels(associationName) }}
       </h4>
       <span
-        :class="['counter-style',{'opacity-low':associatedRecord.val===0}]"
-      >{{ associatedRecord.val }}</span>
+        :class="['counter-style',{'opacity-low':associatedRecord===0}]"
+      >{{ associatedRecord }}</span>
     </div>
   </div>
 </template>
@@ -32,40 +32,16 @@ export default {
   },
   methods: {
     setRecordLabels(label) {
-      if (this.associatedRecords.registry === 'standard')
+      switch (label)
       {
-        switch (label)
-        {
-          case 'standards':
-            return 'Related Standards';
-          case 'databases':
-            return 'Implementing Databases';
-          case 'policies':
-            return 'Endorsing Policies';
-        }
-      }
-      else if(this.associatedRecords.registry === 'database')
-      {
-        switch (label)
-        {
-          case 'standards':
-            return 'Standards Implemented';
-          case 'databases':
-            return 'Related Databases';
-          case 'policies':
-            return 'Endorsing Policies';
-        }
-      }else
-      {
-        switch (label)
-        {
-          case 'standards':
-            return 'Related Standards';
-          case 'databases':
-            return 'Related Databases';
-          case 'policies':
-            return 'Related Policies';
-        }
+        case 'standard':
+          return 'Linked Standards';
+        case 'database':
+          return 'Linked Databases';
+        case 'policy':
+          return 'Linked Policies';
+        case 'collection':
+          return 'Linked Collections';
       }
     }
   }

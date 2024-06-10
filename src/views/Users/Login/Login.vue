@@ -242,7 +242,8 @@ export default {
         if (_module.messages().login.message === confirmationError) {
           _module.resendButton = true;
         }
-      } else {
+      }
+      else {
         const goTo = _module.$route.query.goTo;
         if (_module.redirect) {
           if (goTo) {

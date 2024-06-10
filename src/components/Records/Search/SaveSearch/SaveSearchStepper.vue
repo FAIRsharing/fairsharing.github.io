@@ -11,30 +11,18 @@
       <StepperDialogHeader />
       <!--Stepper Form -->
       <div v-if="getShowStepper">
-        <v-stepper
-          v-model="steps"
-          non-linear
-          class="rounded-t-0"
-        >
+        <v-stepper v-model="steps" non-linear class="rounded-t-0">
           <!--Stepper Header -->
           <v-stepper-header class="rounded-0">
             <!--Header 1 -->
-            <v-stepper-step
-              editable
-              :complete="steps > 1"
-              step="1"
-            >
+            <v-stepper-step editable :complete="steps > 1" step="1">
               Select Policy
               <small>Optional</small>
             </v-stepper-step>
 
             <v-divider />
             <!--Header 2 -->
-            <v-stepper-step
-              editable
-              :complete="steps > 2"
-              step="2"
-            >
+            <v-stepper-step editable :complete="steps > 2" step="2">
               Select Organisation
               <small>Optional</small>
             </v-stepper-step>
@@ -53,10 +41,7 @@
 
             <v-divider v-if="user().is_super_curator" />
             <!--Header 4 -->
-            <v-stepper-step
-              editable
-              :step="isSuperCurator ? 4 : 3"
-            >
+            <v-stepper-step editable :step="isSuperCurator ? 4 : 3">
               Save Search
             </v-stepper-step>
           </v-stepper-header>
@@ -104,10 +89,7 @@
             </v-stepper-content>
 
             <!--Stepper Content 3 Save Search Form-->
-            <v-stepper-content
-              v-if="isSuperCurator"
-              step="3"
-            >
+            <v-stepper-content v-if="isSuperCurator" step="3">
               <UserStepper />
 
               <div
@@ -135,10 +117,7 @@
 
             <!--Stepper Content 4 Save Search Form-->
             <v-stepper-content :step="isSuperCurator ? 4 : 3">
-              <v-form
-                ref="searchFormRef"
-                v-model="searchForm"
-              >
+              <v-form ref="searchFormRef" v-model="searchForm">
                 <v-text-field
                   v-model="searchName"
                   label="Search Name"
@@ -177,10 +156,7 @@
           </v-stepper-items>
         </v-stepper>
       </div>
-      <ResultCard
-        v-else
-        @restartStepper="restartStepper"
-      />
+      <ResultCard v-else @restartStepper="restartStepper" />
     </v-dialog>
   </v-row>
 </template>
@@ -271,8 +247,7 @@ export default {
       let saveSearchObj = {
         name: this.searchName,
         comments: this.searchComment,
-        url:
-          process.env.VUE_APP_HOSTNAME + this.$route.fullPath.replace(/\//, ""),
+        url: window.location.origin + this.$route.fullPath,
         fairsharing_record_ids: this.getPolicySelected,
         user_ids:
           this.getUserSelected && this.getUserSelected.length

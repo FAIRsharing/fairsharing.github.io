@@ -9,8 +9,7 @@
       calculate-widths
     >
       <template #[`item.creator`]="{ item }">
-        <a :href="`/users/${item.creator['id']}`"
-          >{{ item.creator["username"] }}
+        <a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
         </a>
       </template>
       <template #[`item.date`]="{ item }">
@@ -26,8 +25,19 @@
         <a :href="item.url">Link</a>
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+          small
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
       </template>
       <template #no-data>
         <div>
@@ -37,7 +47,10 @@
       </template>
     </v-data-table>
     <!--Edit/Delete action dialog box -->
-    <v-dialog v-model="modifyDialog" max-width="500px">
+    <v-dialog
+      v-model="modifyDialog"
+      max-width="500px"
+    >
       <!--Delete -->
       <v-card v-if="deleteSavedSearch">
         <v-card-title class="text-h5">
@@ -45,7 +58,11 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer />
-          <v-btn class="white--text" color="accent3" @click="closeDialog">
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
             Cancel
           </v-btn>
           <v-btn
@@ -69,7 +86,11 @@
         </v-card-subtitle>
         <v-card-actions>
           <v-spacer />
-          <v-btn class="white--text" color="accent3" @click="closeDialog">
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
             Cancel
           </v-btn>
           <v-btn
@@ -88,7 +109,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
 import advancedSearch from "@/store";
@@ -97,6 +118,10 @@ const restClient = new RESTClient();
 
 export default {
   name: "ViewSavedSearchesTable",
+  props: {
+    createdSearches: { type: Array, default: null },
+    savedSearches: { type: Array, default: null }
+  },
   data: () => {
     return {
       modifyDialog: false,
@@ -110,16 +135,17 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
-    ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
-        { text: "Creator", value: "creator", align: "center" },
-        { text: "Date", value: "date", align: "center" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Comments", value: "comments", align: "center" },
-        { text: "Link", value: "link", align: "center" },
-        { text: "Actions", value: "actions", sortable: false },
+        { text: "Creator", value: "creator", align: "center", sortable: false },
+        { text: "Date", value: "date", align: "center", sortable: false },
+        { text: "Name", value: "name", align: "center", sortable: false },
+        { text: "Comments", value: "comments", align: "center", sortable: false },
+        { text: "Link", value: "link", align: "center", sortable: false },
       ];
+      if (this.user().isLoggedIn) {
+        headers.push({ text: "Actions", value: "actions", sortable: false },)
+      }
       return headers;
     },
     perPage() {
@@ -134,16 +160,14 @@ export default {
     this.combinedSearches();
   },
   methods: {
-    ...mapActions("users", ["getUser"]),
     /**
      * Fetch createdSearch and savedSearch from the userRecords
      * removing the duplicates and displaying in user profile
      * page
      */
     async combinedSearches() {
-      await this.getUser();
-      let createdSearches = this.getUserRecords.user["createdSearches"];
-      let savedSearches = this.getUserRecords.user["savedSearches"];
+      let createdSearches = this.createdSearches;
+      let savedSearches = this.savedSearches;
       let mergedSearches = createdSearches.concat(savedSearches);
       let mapSearches = new Map();
       for (const search of mergedSearches) {

@@ -380,7 +380,10 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <ViewSavedSearchesTable />
+                  <ViewSavedSearchesTable
+                    :created-searches="user().records.createdSearches"
+                    :saved-searches="user().records.savedSearches"
+                  />
                 </v-card-text>
               </v-card>
             </v-col>

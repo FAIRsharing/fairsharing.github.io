@@ -14,7 +14,7 @@
         chips
         item-value="id"
         item-text="name"
-        label="Enter text to search policy record"
+        label="Enter text to search for policy record(s) to associate with this saved search"
         no-data-text="No Policy found"
       >
         <template #selection="data">

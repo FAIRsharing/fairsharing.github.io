@@ -14,7 +14,7 @@
         chips
         item-value="id"
         item-text="name"
-        label="Enter text to search organisation"
+        label="Enter text to search for organisation(s) to associate with this saved search"
         no-data-text="No organisation found"
       >
         <template #selection="data">

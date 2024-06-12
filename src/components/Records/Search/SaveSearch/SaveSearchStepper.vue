@@ -24,22 +24,23 @@
               :complete="steps > 1"
               step="1"
             >
-              Select Policy
+              Create Policy Link
               <small>Optional</small>
             </v-stepper-step>
 
             <v-divider />
             <!--Header 2 -->
             <v-stepper-step
+              v-if="user().is_super_curator"
               editable
               :complete="steps > 2"
               step="2"
             >
-              Select Organisation
+              Create Organisation Link
               <small>Optional</small>
             </v-stepper-step>
 
-            <v-divider />
+            <v-divider v-if="user().is_super_curator" />
             <!--Header 3 -->
             <v-stepper-step
               v-if="user().is_super_curator"
@@ -47,7 +48,7 @@
               :complete="steps > 3"
               step="3"
             >
-              Select User
+              Create User Link
               <small>Optional</small>
             </v-stepper-step>
 
@@ -55,7 +56,7 @@
             <!--Header 4 -->
             <v-stepper-step
               editable
-              :step="isSuperCurator ? 4 : 3"
+              :step="isSuperCurator ? 4 : 2"
             >
               Save Search
             </v-stepper-step>
@@ -77,7 +78,10 @@
             </v-stepper-content>
 
             <!--Stepper Content 2 Organisation List-->
-            <v-stepper-content step="2">
+            <v-stepper-content
+              v-if="isSuperCurator"
+              step="2"
+            >
               <OrganisationStepper />
 
               <div
@@ -134,7 +138,7 @@
             </v-stepper-content>
 
             <!--Stepper Content 4 Save Search Form-->
-            <v-stepper-content :step="isSuperCurator ? 4 : 3">
+            <v-stepper-content :step="isSuperCurator ? 4 : 2">
               <v-form
                 ref="searchFormRef"
                 v-model="searchForm"
@@ -168,7 +172,7 @@
                 <v-btn
                   class="white--text"
                   color="accent3"
-                  @click="steps = isSuperCurator ? 3 : 2"
+                  @click="steps = isSuperCurator ? 3 : 1"
                 >
                   Back
                 </v-btn>

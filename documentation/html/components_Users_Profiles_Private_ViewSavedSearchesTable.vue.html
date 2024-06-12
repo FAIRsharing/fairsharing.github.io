@@ -109,28 +109,60 @@
         {{ item.createdAt.split("T", 1)[0] }}
       &lt;/template>
       &lt;template #[`item.name`]="{ item }">
-        {{ item.name }}
+        &lt;a :href="item.url">{{ item.name }}&lt;/a>
       &lt;/template>
       &lt;template #[`item.comments`]="{ item }">
         {{ item.comments }}
       &lt;/template>
-      &lt;template #[`item.link`]="{ item }">
-        &lt;a :href="item.url">Link&lt;/a>
+      &lt;template #[`item.record`]="{ item }">
+        &lt;ul>
+          &lt;li
+            v-for="record in item.fairsharingRecords"
+            :key="record.id"
+            class="mb-2"
+          >
+            &lt;a :href="`/${record['id']}`">{{ record["name"] }}
+            &lt;/a>
+          &lt;/li>
+        &lt;/ul>
+      &lt;/template>
+      &lt;template #[`item.organisation`]="{ item }">
+        &lt;ul>
+          &lt;li
+            v-for="organisation in item.organisations"
+            :key="organisation.id"
+            class="mb-2"
+          >
+            &lt;a :href="`/organisations/${organisation['id']}`">{{ organisation["name"] }}
+            &lt;/a>
+          &lt;/li>
+        &lt;/ul>
       &lt;/template>
       &lt;template #[`item.actions`]="{ item }">
-        &lt;v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
+        &lt;v-menu
+          offset-x
         >
-          mdi-pencil
-        &lt;/v-icon>
-        &lt;v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        &lt;/v-icon>
+          &lt;template #activator="{ on, attrs }">
+            &lt;v-icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              fas fa-ellipsis-v
+            &lt;/v-icon>
+          &lt;/template>
+          &lt;v-list>
+            &lt;v-list-item
+              @click="editItem(item)"
+            >
+              &lt;v-list-item-avatar>&lt;v-icon>fas fa-pen&lt;/v-icon>&lt;/v-list-item-avatar>
+              &lt;v-list-item-content>&lt;v-list-item-title> Edit Search &lt;/v-list-item-title>&lt;/v-list-item-content>
+            &lt;/v-list-item>
+            &lt;v-list-item @click="deleteItem(item)">
+              &lt;v-list-item-avatar>&lt;v-icon>mdi-delete&lt;/v-icon>&lt;/v-list-item-avatar>
+              &lt;v-list-item-content>&lt;v-list-item-title> Delete Search &lt;/v-list-item-title>&lt;/v-list-item-content>
+            &lt;/v-list-item>
+          &lt;/v-list>
+        &lt;/v-menu>
       &lt;/template>
       &lt;template #no-data>
         &lt;div>
@@ -202,7 +234,7 @@
 &lt;/template>
 
 &lt;script>
-import { mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
 import advancedSearch from "@/store";
@@ -228,13 +260,15 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
+    ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
         { text: "Creator", value: "creator", align: "center", sortable: false },
-        { text: "Date", value: "date", align: "center", sortable: false },
+        { text: "Date", value: "date", align: "center", width:"110", sortable: false },
         { text: "Name", value: "name", align: "center", sortable: false },
         { text: "Comments", value: "comments", align: "center", sortable: false },
-        { text: "Link", value: "link", align: "center", sortable: false },
+        { text: "Record", value: "record", align: "center", sortable: false },
+        { text: "Organisation", value: "organisation", align: "center", sortable: false },
       ];
       if (this.user().isLoggedIn) {
         headers.push({ text: "Actions", value: "actions", sortable: false },)
@@ -253,14 +287,24 @@ export default {
     this.combinedSearches();
   },
   methods: {
+    ...mapActions("users", ["getUser"]),
     /**
-     * Fetch createdSearch and savedSearch from the userRecords
+     * Fetch combinedSearches and savedSearches from the props
      * removing the duplicates and displaying in user profile
      * page
      */
-    async combinedSearches() {
-      let createdSearches = this.createdSearches;
-      let savedSearches = this.savedSearches;
+    async combinedSearches(searchDeleted) {
+      let createdSearches, savedSearches
+
+      if (searchDeleted) {
+        await this.getUser();
+        createdSearches = this.getUserRecords.user["createdSearches"];
+        savedSearches = this.getUserRecords.user["savedSearches"];
+      } else {
+        createdSearches = this.createdSearches;
+        savedSearches = this.savedSearches;
+      }
+
       let mergedSearches = createdSearches.concat(savedSearches);
       let mapSearches = new Map();
       for (const search of mergedSearches) {
@@ -277,6 +321,7 @@ export default {
     deleteItem(item) {
       this.selectedItem = item;
       this.modifyDialog = true;
+      this.editSavedSearch = false;
       this.deleteSavedSearch = true;
     },
 
@@ -293,7 +338,7 @@ export default {
       );
 
       if (data["message"] === "success") {
-        await this.combinedSearches();
+        await this.combinedSearches(true);
       }
       this.loading = false;
       this.deleteSavedSearch = false;
@@ -375,7 +420,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
 	
-		on Tue Jun 11th 2024
+		on Wed Jun 12th 2024
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

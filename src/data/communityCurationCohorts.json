@@ -670,6 +670,63 @@
       "mastodon" : "",
       "logo": "tim_gamble_turner.jpg",
       "year_active": ["2024"]
+    },
+    {
+      "name": "Hugh Shanahan",
+      "id": 1100,
+      "organisation": [
+        {
+          "id": 4403,
+          "name": "Royal Holloway"
+        }
+      ],
+      "scope": "Computer Science",
+      "orcid": "0000-0003-1374-6015",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "hugh-shanahan-340b343/",
+      "mastodon" : "mastodon.ie/@HughShanahan",
+      "logo": "hugh_shanahan.jpeg",
+      "year_active": ["2024"]
+    },
+    {
+      "name": "Clara Boavida",
+      "id": 11048,
+      "organisation": [
+        {
+          "id": 4361,
+          "name": "Iscte-Instituto Universitário de Lisboa"
+        }
+      ],
+      "scope": "Research Data Management and Open Research",
+      "orcid": "0000-0002-4837-6395",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "claraparenteboavida",
+      "mastodon" : "",
+      "logo": "clara.boavida.png",
+      "year_active": ["2024"]
+    },
+    {
+      "name": "Timothée Aubourg",
+      "id": 11305,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Data Science, Experimental Methods and Digital Health",
+      "orcid": "0000-0002-0151-6397",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "timothee-aubourg",
+      "mastodon" : "",
+      "logo": "timothee-aubourg.jpeg",
+      "year_active": ["2024"]
     }
   ],
     "quotes": [

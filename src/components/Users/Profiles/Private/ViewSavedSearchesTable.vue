@@ -16,28 +16,60 @@
         {{ item.createdAt.split("T", 1)[0] }}
       </template>
       <template #[`item.name`]="{ item }">
-        {{ item.name }}
+        <a :href="item.url">{{ item.name }}</a>
       </template>
       <template #[`item.comments`]="{ item }">
         {{ item.comments }}
       </template>
-      <template #[`item.link`]="{ item }">
-        <a :href="item.url">Link</a>
+      <template #[`item.record`]="{ item }">
+        <ul>
+          <li
+            v-for="record in item.fairsharingRecords"
+            :key="record.id"
+            class="mb-2"
+          >
+            <a :href="`/${record['id']}`">{{ record["name"] }}
+            </a>
+          </li>
+        </ul>
+      </template>
+      <template #[`item.organisation`]="{ item }">
+        <ul>
+          <li
+            v-for="organisation in item.organisations"
+            :key="organisation.id"
+            class="mb-2"
+          >
+            <a :href="`/organisations/${organisation['id']}`">{{ organisation["name"] }}
+            </a>
+          </li>
+        </ul>
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
+        <v-menu
+          offset-x
         >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              fas fa-ellipsis-v
+            </v-icon>
+          </template>
+          <v-list>
+            <v-list-item
+              @click="editItem(item)"
+            >
+              <v-list-item-avatar><v-icon>fas fa-pen</v-icon></v-list-item-avatar>
+              <v-list-item-content><v-list-item-title> Edit Search </v-list-item-title></v-list-item-content>
+            </v-list-item>
+            <v-list-item @click="deleteItem(item)">
+              <v-list-item-avatar><v-icon>mdi-delete</v-icon></v-list-item-avatar>
+              <v-list-item-content><v-list-item-title> Delete Search </v-list-item-title></v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
       <template #no-data>
         <div>
@@ -109,7 +141,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
 import advancedSearch from "@/store";
@@ -135,13 +167,15 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
+    ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
         { text: "Creator", value: "creator", align: "center", sortable: false },
-        { text: "Date", value: "date", align: "center", sortable: false },
+        { text: "Date", value: "date", align: "center", width:"110", sortable: false },
         { text: "Name", value: "name", align: "center", sortable: false },
         { text: "Comments", value: "comments", align: "center", sortable: false },
-        { text: "Link", value: "link", align: "center", sortable: false },
+        { text: "Record", value: "record", align: "center", sortable: false },
+        { text: "Organisation", value: "organisation", align: "center", sortable: false },
       ];
       if (this.user().isLoggedIn) {
         headers.push({ text: "Actions", value: "actions", sortable: false },)
@@ -160,14 +194,24 @@ export default {
     this.combinedSearches();
   },
   methods: {
+    ...mapActions("users", ["getUser"]),
     /**
-     * Fetch createdSearch and savedSearch from the userRecords
+     * Fetch combinedSearches and savedSearches from the props
      * removing the duplicates and displaying in user profile
      * page
      */
-    async combinedSearches() {
-      let createdSearches = this.createdSearches;
-      let savedSearches = this.savedSearches;
+    async combinedSearches(searchDeleted) {
+      let createdSearches, savedSearches
+
+      if (searchDeleted) {
+        await this.getUser();
+        createdSearches = this.getUserRecords.user["createdSearches"];
+        savedSearches = this.getUserRecords.user["savedSearches"];
+      } else {
+        createdSearches = this.createdSearches;
+        savedSearches = this.savedSearches;
+      }
+
       let mergedSearches = createdSearches.concat(savedSearches);
       let mapSearches = new Map();
       for (const search of mergedSearches) {
@@ -184,6 +228,7 @@ export default {
     deleteItem(item) {
       this.selectedItem = item;
       this.modifyDialog = true;
+      this.editSavedSearch = false;
       this.deleteSavedSearch = true;
     },
 
@@ -200,7 +245,7 @@ export default {
       );
 
       if (data["message"] === "success") {
-        await this.combinedSearches();
+        await this.combinedSearches(true);
       }
       this.loading = false;
       this.deleteSavedSearch = false;

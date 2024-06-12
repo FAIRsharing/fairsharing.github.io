@@ -696,7 +696,7 @@
       "organisation": [
         {
           "id": 4361,
-          "name": "Iscte-Instituto Universitário de Lisboa "
+          "name": "Iscte-Instituto Universitário de Lisboa"
         }
       ],
       "scope": "Research Data Management and Open Research",
@@ -707,6 +707,25 @@
       "linkedin" : "claraparenteboavida",
       "mastodon" : "",
       "logo": "clara.boavida.png",
+      "year_active": ["2024"]
+    },
+    {
+      "name": "Timothée Aubourg",
+      "id": 11305,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Data Science, Experimental Methods and Digital Health",
+      "orcid": "0000-0002-0151-6397",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "timothee-aubourg",
+      "mastodon" : "",
+      "logo": "timothee-aubourg.jpeg",
       "year_active": ["2024"]
     }
   ],

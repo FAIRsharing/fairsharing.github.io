@@ -141,22 +141,26 @@
 
         <!--- saved searches -->
         <div
-          v-if="organisation.savedSearches.length > 0"
+          v-if="organisation.savedSearches && organisation.savedSearches.length"
           class="d-flex flex-row mt-4 align-center"
         >
           <b class="width-15-percent-flex">Saved Search</b>
           <div class="d-flex ml-md-12 ml-13">
-            <div
-              v-for="(search, index) in organisation.savedSearches"
+            <v-chip
+              v-for="search in organisation.savedSearches"
               :key="search.id"
+              variant="elevated"
+              :close="user().is_super_curator? true:false"
+              close-icon="mdi-delete"
+              @click:close="confirmDeleteSavedSearch(search)"
             >
-              <span
-                v-if="index !== 0"
-              >,</span>
-              <a :href="search.url">
+              <a
+                class="black--text"
+                :href="search.url"
+              >
                 {{ search.name }}
               </a>
-            </div>
+            </v-chip>
           </div>
         </div>
 
@@ -190,7 +194,7 @@
           </v-btn>
           <v-btn
             class="error ml-2"
-            @click="confirmDelete = true"
+            @click="confirmDeleteOrganisation"
           >
             Delete Organisation
           </v-btn>
@@ -421,12 +425,14 @@
         </v-form>
       </v-dialog>
     </v-expand-transition>
+    <!-- Delete dialog box -->
     <v-dialog
       v-model="confirmDelete"
       max-width="700px"
       persistent
     >
-      <v-card>
+      <!-- Delete organisation -->
+      <v-card v-if="deleteOrganisationCard">
         <v-card-title
           class="headline"
         >
@@ -450,6 +456,32 @@
             @click="deleteOrganisation(true)"
           >
             Delete
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+      <!-- Delete saved search -->
+      <v-card v-if="deleteSavedSearchCard">
+        <v-card-title class="text-h5">
+          Deleting saved search
+        </v-card-title>
+        <v-card-text>This is will delete all instances of the search from FAIRsharing</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="deleteSavedSearch(false)"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            @click="deleteSavedSearch(true)"
+          >
+            OK
           </v-btn>
           <v-spacer />
         </v-card-actions>
@@ -531,7 +563,10 @@ export default {
         isURL: function(){ return isUrl() },
         isImage: function(){ return isImage() }
       },
-      confirmDelete: false
+      confirmDelete: false,
+      deleteOrganisationCard: false,
+      deleteSavedSearchCard: false,
+      selectedItem: {},
     }
   },
   computed: {
@@ -695,7 +730,21 @@ export default {
       await this.getCountries();
       this.loading = false;
     },
+
+    /**
+     * Confirmation dialog to delete the organisation
+     */
+    confirmDeleteOrganisation(){
+      this.confirmDelete = true;
+      this.deleteOrganisationCard = true;
+      this.deleteSavedSearchCard = false;
+    },
+    /**
+     * Delete the organisation and redirect to organisation search page after deletion
+     * @param del - Boolean
+     */
     async deleteOrganisation(del) {
+      this.deleteSavedSearchCard = false;
       if (del) {
         let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
 
@@ -704,9 +753,35 @@ export default {
           window.location.pathname = '/organisations'
         }
       }
+      this.deleteOrganisationCard = false;
       this.confirmDelete = false;
-    }
-  }
+    },
+
+    /**
+     * Confirmation dialog to delete the saved search
+     */
+    confirmDeleteSavedSearch(item){
+      this.selectedItem = item;
+      this.confirmDelete = true;
+      this.deleteOrganisationCard = false;
+      this.deleteSavedSearchCard = true;
+    },
+    /**
+     * Delete the saved search
+     * @param del - Boolean
+     */
+    async deleteSavedSearch(del) {
+      this.deleteOrganisationCard = false;
+      if (del) {
+        await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
+
+      }
+      this.deleteSavedSearchCard = false;
+      this.confirmDelete = false;
+    },
+  },
+
+
 }
 </script>
 

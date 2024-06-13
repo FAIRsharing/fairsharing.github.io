@@ -139,11 +139,32 @@
           </p>
         </div>
 
+        <!--- saved searches -->
+        <div
+          v-if="organisation.savedSearches.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          <b class="width-15-percent-flex">Saved Search</b>
+          <div class="d-flex ml-md-12 ml-13">
+            <div
+              v-for="(search, index) in organisation.savedSearches"
+              :key="search.id"
+            >
+              <span
+                v-if="index !== 0"
+              >,</span>
+              <a :href="search.url">
+                {{ search.name }}
+              </a>
+            </div>
+          </div>
+        </div>
+
         
         <!-- ror link -->
         <p
           v-if="organisation.rorLink"
-          class="d-flex flex-row mt-4 align-center"
+          class="d-flex flex-row mt-4 mb-0 align-center"
         >
           <img
             src="/assets/icons/ror-icon-rbg-32.png"
@@ -159,6 +180,7 @@
         <!-- edit -->
         <p
           v-if="user().is_curator"
+          class="mt-4"
         >
           <v-btn
             class="warning"

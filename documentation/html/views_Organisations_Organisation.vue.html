@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Organisations/Organisation.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Organisations/Organisation.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-container
+    id="organisationPage"
+    fluid
+    class="standard grey lighten-3 pb-10"
+  >
+    &lt;Loaders
+      v-if="loading"
+    />
+    &lt;div v-if="error &amp;&amp; !loading">
+      &lt;NotFound />
+    &lt;/div>
+    &lt;div v-else>
+      &lt;!-- new stuff below here -->
+      &lt;v-card
+        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column"
+        outlined
+        :color="$vuetify.theme.themes.bg_organisation_record_card"
+        tile
+        elevation="3"
+      >
+        &lt;SectionTitle title="Organisation" />
+        &lt;!-- TODO: This image refuses to go anywhere but centrally on the page -->
+        &lt;v-img
+          v-if="logoUrl"
+          :src="logoUrl"
+          contain
+          aspect-ratio="1"
+          height="120px"
+        />
+        &lt;h2
+          class="mt-3"
+        >
+          {{ organisation.name }}
+        &lt;/h2>
+        &lt;!-- alternative names -->
+        &lt;div
+          v-if="getAltNames(organisation)"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          &lt;b class="width-15-percent-flex">Also known as&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            {{ getAltNames(organisation) }}
+          &lt;/p>
+        &lt;/div>
+        &lt;!-- homepage -->
+        &lt;div class="d-flex flex-row mt-4 align-center">
+          &lt;b class="width-15-percent-flex">Homepage&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            &lt;a :href="organisation.homepage">{{ organisation.homepage }}&lt;/a>
+          &lt;/p>
+        &lt;/div>
+        &lt;!-- types -->
+        &lt;div class="d-flex flex-row mt-4 align-center">
+          &lt;b class="width-15-percent-flex">Types&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            &lt;v-chip
+              v-for="type in organisation.types"
+              :key="type + '_type'"
+              variant="elevated"
+              class="ma-1"
+            >
+              {{ type }}
+            &lt;/v-chip>
+          &lt;/p>
+        &lt;/div>
+        &lt;!--- parent organisations -->
+        &lt;div
+          v-if="organisation.parentOrganisations.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          &lt;b class="width-15-percent-flex">Member of&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            &lt;v-chip
+              v-for="parent in organisation.parentOrganisations"
+              :key="'parent_' + parent.id"
+              :href="orgUrl() + parent.id"
+              color="light-blue"
+              variant="elevated"
+              class="ma-1"
+            >
+              {{ parent.name }}
+            &lt;/v-chip>
+          &lt;/p>
+        &lt;/div>
+        &lt;!--- child organisations -->
+        &lt;div
+          v-if="organisation.childOrganisations.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          &lt;b class="width-15-percent-flex">Has members&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            &lt;v-chip
+              v-for="child in organisation.childOrganisations"
+              :key="'child_' + child.id"
+              :href="orgUrl() + child.id"
+              color="light-blue"
+              variant="elevated"
+              class="ma-1"
+            >
+              {{ child.name }}
+            &lt;/v-chip>
+          &lt;/p>
+        &lt;/div>
+        &lt;!--- users -->
+        &lt;div
+          v-if="organisation.users.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          &lt;b class="width-15-percent-flex">Users&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            &lt;v-chip
+              v-for="user in organisation.users"
+              :key="'user_' + user.id"
+              :href="getUserLink() + user.id"
+              color="light-blue"
+              variant="elevated"
+              class="ma-1"
+            >
+              {{ formatUser(user) }}
+            &lt;/v-chip>
+          &lt;/p>
+        &lt;/div>
+        &lt;!--- countries -->
+        &lt;div
+          v-if="organisation.countries.length > 0"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          &lt;b class="width-15-percent-flex">Countries&lt;/b>
+          &lt;p class="ma-0 full-width ml-md-12 ml-13">
+            &lt;v-chip
+              v-for="country in organisation.countries"
+              :key="'country_' + country.id"
+              variant="elevated"
+              class="ma-1"
+            >
+              {{ country.name }}
+            &lt;/v-chip>
+          &lt;/p>
+        &lt;/div>
+
+        &lt;!--- saved searches -->
+        &lt;div
+          v-if="organisation.savedSearches &amp;&amp; organisation.savedSearches.length"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          &lt;b class="width-15-percent-flex">Saved Search&lt;/b>
+          &lt;div class="d-flex ml-md-12 ml-13">
+            &lt;v-chip
+              v-for="search in organisation.savedSearches"
+              :key="search.id"
+              variant="elevated"
+              :close="user().is_super_curator? true:false"
+              close-icon="mdi-delete"
+              @click:close="confirmDeleteSavedSearch(search)"
+            >
+              &lt;a
+                class="black--text"
+                :href="search.url"
+              >
+                {{ search.name }}
+              &lt;/a>
+            &lt;/v-chip>
+          &lt;/div>
+        &lt;/div>
+
+        
+        &lt;!-- ror link -->
+        &lt;p
+          v-if="organisation.rorLink"
+          class="d-flex flex-row mt-4 mb-0 align-center"
+        >
+          &lt;img
+            src="/assets/icons/ror-icon-rbg-32.png"
+            class="mr-1"
+          >
+          &lt;a
+            :href="organisation.rorLink"
+          >
+            {{ organisation.rorLink }}
+          &lt;/a>
+        &lt;/p>
+
+        &lt;!-- edit -->
+        &lt;p
+          v-if="user().is_curator"
+          class="mt-4"
+        >
+          &lt;v-btn
+            class="warning"
+            @click="startEditing"
+          >
+            Edit Organisation
+          &lt;/v-btn>
+          &lt;v-btn
+            class="error ml-2"
+            @click="confirmDeleteOrganisation"
+          >
+            Delete Organisation
+          &lt;/v-btn>
+        &lt;/p>
+      &lt;/v-card>
+
+
+      &lt;SearchOrganisationRecords
+        id="searchOrganisationRecords"
+        class="mb-10 ma-4"
+        :organisation="organisation"
+      />
+
+      &lt;v-col
+        v-if="!loading"
+        cols="12"
+      >
+        &lt;v-container
+          fluid
+          class="py-0"
+        />
+
+        &lt;v-fade-transition>
+          &lt;v-overlay
+            v-if="loading"
+            :absolute="false"
+            opacity="0.8"
+          >
+            &lt;loaders />
+          &lt;/v-overlay>
+        &lt;/v-fade-transition>
+      &lt;/v-col>
+    &lt;/div>
+    &lt;!-- Edit existing organisation -->
+    &lt;v-expand-transition>
+      &lt;v-dialog
+        v-model="showEditDialog"
+        height="100%"
+      >
+        &lt;v-form
+          id="editOrganisation"
+          ref="editOrganisation"
+          v-model="editFormValid"
+        >
+          &lt;v-card>
+            &lt;v-card-text>
+              &lt;v-container fluid>
+                &lt;v-row>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-text-field
+                      v-model="editedOrganisation.name"
+                      label="Name"
+                      outlined
+                      :rules="[rules.isRequired()]"
+                    />
+                  &lt;/v-col>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-text-field
+                      v-model="editedOrganisation.homepage"
+                      label="Homepage"
+                      outlined
+                      :rules="[rules.isRequired(), rules.isURL()]"
+                    />
+                  &lt;/v-col>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-text-field
+                      v-model="editedOrganisation.rorLink"
+                      label="ROR Link"
+                      outlined
+                      :rules="[rules.isURL()]"
+                    />
+                  &lt;/v-col>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-text-field
+                      v-model="editedOrganisation.alternativeNames"
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Alternative names"
+                      :rules="[]"
+                    />
+                  &lt;/v-col>
+                  &lt;!-- TODO insert parent and child organisations here -->
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-autocomplete
+                      v-model="editedOrganisation.types"
+                      :items="organisationsTypes"
+                      multiple
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Select an organisation type(s)"
+                      :rules="[rules.isRequired()]"
+                    >
+                      &lt;!-- autocomplete selected -->
+                      &lt;template #selection="data">
+                        &lt;v-chip
+                          class="blue white--text removeStyle"
+                          close
+                          @click:close="removeType(data.item)"
+                        >
+                          {{ data.item.name }}
+                        &lt;/v-chip>
+                      &lt;/template>
+                    &lt;/v-autocomplete>
+                  &lt;/v-col>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-autocomplete
+                      v-model="editedOrganisation.countries"
+                      label="Countries"
+                      :items="countries"
+                      item-text="name"
+                      item-value="name"
+                      multiple
+                      outlined
+                      return-object
+                      :rules="[editedOrganisation.countries &amp;&amp;
+                        !(editedOrganisation.countries === 0)]"
+                    >
+                      &lt;template #prepend>
+                        &lt;v-tooltip
+                          bottom
+                          max-width="300px"
+                          class="text-justify"
+                        >
+                          &lt;template #activator="{ on }">
+                            &lt;v-icon v-on="on">
+                              fa-question-circle
+                            &lt;/v-icon>
+                          &lt;/template>
+                          {{ tooltips['countries'] }}
+                        &lt;/v-tooltip>
+                      &lt;/template>
+
+                      &lt;!-- autocomplete selected -->
+                      &lt;template #selection="data">
+                        &lt;v-chip
+                          class="blue white--text removeStyle"
+                          close
+                          @click:close="removeCountry( data.item )"
+                        >
+                          {{ data.item.name }}
+                        &lt;/v-chip>
+                      &lt;/template>
+
+                      &lt;!-- autocomplete data -->
+                      &lt;template #item="data">
+                        &lt;country-flag
+                          v-if="data.item.code !== null"
+                          :country="data.item.code"
+                          size="normal"
+                        />
+                        &lt;img
+                          v-else
+                          src="@/assets/placeholders/country.png"
+                          class="ml-4 mr-3"
+                        >
+                        &lt;div> {{ data.item.name }} &lt;/div>
+                      &lt;/template>
+                    &lt;/v-autocomplete>
+                  &lt;/v-col>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-file-input
+                      v-model="editedOrganisation.logo"
+                      :rules="[rules.isImage(), imageSizeCorrect]"
+                      clearable
+                      :loading="logoLoading"
+                      accept="images/png,image/jpeg"
+                      label="Logo"
+                      prepend-icon="fa-image"
+                    />
+                    &lt;span>JPEG or PNG, max. file size 3MB.&lt;/span>
+                  &lt;/v-col>
+                  &lt;v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    &lt;v-img
+                      v-if="logoUrl"
+                      :src="logoUrl"
+                      contain
+                      aspect-ratio="1"
+                      height="120px"
+                    />
+                  &lt;/v-col>
+                &lt;/v-row>
+              &lt;/v-container>
+            &lt;/v-card-text>
+            &lt;v-card-actions>
+              &lt;v-btn
+                class="error"
+                @click="showEditDialog = false"
+              >
+                Cancel
+              &lt;/v-btn>
+              &lt;v-btn
+                class="success"
+                :disabled="!editFormValid || imageTooBig"
+                @click="editOrganisation()"
+              >
+                Save
+              &lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-card>
+        &lt;/v-form>
+      &lt;/v-dialog>
+    &lt;/v-expand-transition>
+    &lt;!-- Delete dialog box -->
+    &lt;v-dialog
+      v-model="confirmDelete"
+      max-width="700px"
+      persistent
+    >
+      &lt;!-- Delete organisation -->
+      &lt;v-card v-if="deleteOrganisationCard">
+        &lt;v-card-title
+          class="headline"
+        >
+          Deleting organisation!
+        &lt;/v-card-title>
+        &lt;v-card-text>
+          &lt;p>
+            &lt;b>Are you sure you want to do that? It will be permanently deleted.&lt;/b>
+          &lt;/p>
+        &lt;/v-card-text>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            class="info"
+            @click="deleteOrganisation(false)"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            class="error"
+            @click="deleteOrganisation(true)"
+          >
+            Delete
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+      &lt;!-- Delete saved search -->
+      &lt;v-card v-if="deleteSavedSearchCard">
+        &lt;v-card-title class="text-h5">
+          Deleting saved search
+        &lt;/v-card-title>
+        &lt;v-card-text>This is will delete all instances of the search from FAIRsharing&lt;/v-card-text>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            class="white--text"
+            color="accent3"
+            @click="deleteSavedSearch(false)"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            @click="deleteSavedSearch(true)"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
+  &lt;/v-container>
+&lt;/template>
+
+&lt;script>
+import {mapActions, mapState} from "vuex";
+
+import Loaders from "@/components/Navigation/Loaders";
+import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
+import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import { isImage, isRequired, isUrl } from "@/utils/rules.js"
+import { cleanString } from "@/utils/stringUtils"
+import NotFound from "@/views/Errors/404"
+
+let graphClient = new GraphClient();
+import RestClient from "@/lib/Client/RESTClient.js"
+import {toBase64} from "@/utils/generalUtils";
+
+const restClient = new RestClient();
+
+export default {
+  name: "Organisation",
+  components: {SearchOrganisationRecords, SectionTitle, NotFound, Loaders},
+  mixins: [cleanString],
+  data: () => {
+    return {
+      error: true,
+      allowedFileSize: 3145728,
+      organisation: {
+        alternativeNames: [],
+        types: [],
+        users: [],
+        parentOrganisations: [],
+        childOrganisations: [],
+        countries: []
+      },
+      editedOrganisation: {
+        name: '',
+        homepage: '',
+        types: [],
+        logo: null,
+        countries: [],
+        rorLink: [],
+        alternativeNames: [],
+        parentOrganisations: [],
+        childOrganisations: [],
+      },
+      loading: false,
+      logoLoading: false,
+      imageTooBig: true,
+      perPage: 10,
+      footer: {'items-per-page-options': [10]},
+      showOverlay: false,
+      targetID: null,
+      testEnvironment: false,
+      headers: [
+        {text: 'Name', value: 'name', align: 'center'},
+        {text: 'Status', value: 'status', align: 'center'},
+        {text: 'Relation', value: 'relation', align: 'center'},
+        {text: 'Grant', value: 'grant', align: 'center'},
+        {text: 'Actions', value: 'actions', align: 'center', sortable: false}
+      ],
+      userHeaders: [
+        {text: 'Username', value: 'username', align: 'center'},
+        {text: 'Email address', value: 'email', align: 'center'},
+        {text: 'ORCID ID', value: 'orcid', align: 'center'},
+        {text: 'Twitter', value: 'twitter', align: 'center'},
+      ],
+      showEditDialog: false,
+      editFormValid: false,
+      rules: {
+        isRequired: function(){return isRequired() },
+        isURL: function(){ return isUrl() },
+        isImage: function(){ return isImage() }
+      },
+      confirmDelete: false,
+      deleteOrganisationCard: false,
+      deleteSavedSearchCard: false,
+      selectedItem: {},
+    }
+  },
+  computed: {
+    ...mapState('users', ['user']),
+    ...mapState("editor", ["organisationsTypes", "countries", "tooltips"]),
+    currentRoute() {
+      return this.$route.params['id'];
+    },
+    logoUrl() {
+      if (this.organisation.urlForLogo) {
+        return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
+      }
+      return null;
+    }
+  },
+  watch: {
+    async currentRoute() {
+      await this.getOrganisation();
+    },
+  },
+  async created() {
+    await this.getOrganisation();
+  },
+  methods: {
+    ...mapActions("editor", ["getOrganisationsTypes", "getCountries"]),
+    async getOrganisation() {
+      try {
+        // testEnvironment variable is only for test case.
+        if (this.testEnvironment) throw new Error("an error occurred while fetching data")
+        this.loading = true;
+        getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
+        let org = await graphClient.executeQuery(getOrganisationQuery);
+        if (org.organisation != null) {
+          this.organisation = JSON.parse(JSON.stringify(org.organisation));
+          this.editedOrganisation.name = this.organisation.name;
+          this.editedOrganisation.homepage = this.organisation.homepage;
+          this.editedOrganisation.rorLink = this.organisation.rorLink;
+          this.editedOrganisation.countries = this.organisation.countries;
+          this.editedOrganisation.alternativeNames = this.organisation.alternativeNames;
+          this.error = false;
+        }
+        this.loading = false;
+      } catch (e) {
+        this.errors = e.message;
+      }
+    },
+    async editOrganisation() {
+      // TODO complete organisation input
+      // A Ruby-style map would be better here. Please feel free to refactor if you know how! ;-)
+      let type_ids = []
+      this.editedOrganisation.types.forEach((type) => {
+        type_ids.push(type.id)
+      })
+      let country_ids = []
+      this.editedOrganisation.countries.forEach((country) => {
+        country_ids.push(country.id)
+      })
+      let alt_names;
+      try {
+        alt_names = this.editedOrganisation.alternativeNames.split(',');
+      }
+      catch {
+        alt_names = [];
+      }
+      this.logoLoading = true;
+      let organisationInput = {
+        name: this.editedOrganisation.name,
+        homepage: this.editedOrganisation.homepage,
+        organisation_type_ids: type_ids,
+        country_ids: country_ids,
+        ror_link: this.editedOrganisation.rorLink,
+        alternative_names: alt_names
+      }
+      if (this.editedOrganisation.logo) {
+        let convertedFile = await toBase64(this.editedOrganisation.logo);
+        organisationInput.logo = {
+          filename: this.editedOrganisation.logo.name,
+          content_type: this.editedOrganisation.logo.type,
+          data: convertedFile
+        }
+      }
+      let data = await restClient.editOrganisation(organisationInput, this.organisation.id, this.user().credentials.token);
+      if (!data.error) {
+        // Reload to get the new data.
+        await this.getOrganisation();
+        this.showEditDialog = false;
+      }
+      this.logoLoading = false;
+    },
+    imageSizeCorrect() {
+      if (!this.editedOrganisation.logo) {
+        this.imageTooBig = false;
+        return true;
+      }
+      if (this.editedOrganisation.logo.size &lt; this.allowedFileSize) {
+        this.imageTooBig = false;
+        return true;
+      }
+      this.$emit('imageTooBig', true);
+      this.imageTooBig = true;
+      return false;
+    },
+    goToEdit(id) {
+      this.$router.push({path: `/${id}/edit`})
+    },
+    previewRecord(id) {
+      this.targetID = id;
+      this.showOverlay = true;
+    },
+    goToRecord(id) {
+      window.open("/" + id, '_blank');
+    },
+    hideOverlay() {
+      this.showOverlay = false;
+      this.targetID = null;
+    },
+    filterRecords() {
+      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase())}
+      this.$router.push({
+        name: 'search',
+        query: params
+      });
+    },
+    getAltNames(org) {
+      if (org.alternativeNames.length > 0) {
+        return org.alternativeNames.join(', ');
+      }
+      return null;
+    },
+    formatUser(user) {
+      if (user.orcid) {
+        return `${user.username} (${user.orcid})`
+      }
+      else {
+        return user.username;
+      }
+    },
+    getUserLink() {
+      return process.env.VUE_APP_HOSTNAME + 'users/'
+    },
+    orgUrl() {
+      return process.env.VUE_APP_HOSTNAME + 'organisations/'
+    },
+    removeType(type) {
+      this.editedOrganisation.types = this.editedOrganisation.types.filter(obj =>
+          obj.label !== type.name &amp;&amp; obj.id !== type.id
+      );
+    },
+    removeCountry(country) {
+      this.editedOrganisation.countries = this.editedOrganisation.countries.filter(obj =>
+          obj.label !== country.name &amp;&amp; obj.id !== country.id
+      );
+    },
+    async startEditing() {
+      this.loading = true;
+      this.showEditDialog = true;
+      await this.getOrganisationsTypes();
+      this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
+          this.organisation.types.indexOf(obj.name) > -1
+      );
+      await this.getCountries();
+      this.loading = false;
+    },
+
+    /**
+     * Confirmation dialog to delete the organisation
+     */
+    confirmDeleteOrganisation(){
+      this.confirmDelete = true;
+      this.deleteOrganisationCard = true;
+      this.deleteSavedSearchCard = false;
+    },
+    /**
+     * Delete the organisation and redirect to organisation search page after deletion
+     * @param del - Boolean
+     */
+    async deleteOrganisation(del) {
+      this.deleteSavedSearchCard = false;
+      if (del) {
+        let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
+
+        if (!data.error) {
+          // Redirects to organisations page.
+          window.location.pathname = '/organisations'
+        }
+      }
+      this.deleteOrganisationCard = false;
+      this.confirmDelete = false;
+    },
+
+    /**
+     * Confirmation dialog to delete the saved search
+     */
+    confirmDeleteSavedSearch(item){
+      this.selectedItem = item;
+      this.confirmDelete = true;
+      this.deleteOrganisationCard = false;
+      this.deleteSavedSearchCard = true;
+    },
+    /**
+     * Delete the saved search
+     * @param del - Boolean
+     */
+    async deleteSavedSearch(del) {
+      this.deleteOrganisationCard = false;
+      if (del) {
+        await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
+
+      }
+      this.deleteSavedSearchCard = false;
+      this.confirmDelete = false;
+    },
+  },
+
+
+}
+&lt;/script>
+
+&lt;style scoped>
+.card-class {
+  min-width: 500px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+&lt;/style></pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
+	
+		on Thu Jun 13th 2024
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

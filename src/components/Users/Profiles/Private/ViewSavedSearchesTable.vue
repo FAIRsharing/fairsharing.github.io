@@ -178,7 +178,7 @@ export default {
         { text: "Organisation", value: "organisation", align: "center", sortable: false },
       ];
       if (this.user().isLoggedIn) {
-        headers.push({ text: "Actions", value: "actions", sortable: false },)
+        headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
       }
       return headers;
     },

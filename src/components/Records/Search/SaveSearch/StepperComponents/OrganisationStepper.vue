@@ -7,7 +7,6 @@
         :search-input.sync="searchOrganisation"
         class="mb-7"
         :loading="getLoadingStatus"
-        hide-no-data
         hide-details
         multiple
         closable-chips

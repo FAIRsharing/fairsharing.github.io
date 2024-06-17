@@ -218,7 +218,11 @@ export default {
         mapSearches.set(search.id, search);
       }
       //Reversed array to show latest entry first
-      this.totalSearches = [...mapSearches.values()].toReversed();
+      let searchValues = [...mapSearches.values()];
+      this.totalSearches = searchValues.sort((a, b) => new Date(b.createdAt)
+          - new Date(a.createdAt)
+      );
+
     },
 
     /**

@@ -176,14 +176,7 @@
       "fields": [
         "id",
         "name",
-        "url",
-        {
-          "queryName": "fairsharingRecords",
-          "fields": [
-            "id",
-            "name"
-          ]
-        }
+        "url"
       ]
     }
   ]

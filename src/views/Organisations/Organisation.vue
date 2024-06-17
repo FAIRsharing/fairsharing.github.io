@@ -152,6 +152,7 @@
               variant="elevated"
               :close="user().is_super_curator? true:false"
               close-icon="mdi-delete"
+              class="ma-1"
               @click:close="confirmDeleteSavedSearch(search)"
             >
               <a
@@ -478,7 +479,7 @@
           <v-btn
             class="white--text"
             color="success"
-            :loading="loading"
+            :loading="deleteLoader"
             @click="deleteSavedSearch(true)"
           >
             OK
@@ -567,6 +568,7 @@ export default {
       deleteOrganisationCard: false,
       deleteSavedSearchCard: false,
       selectedItem: {},
+      deleteLoader: false
     }
   },
   computed: {
@@ -773,9 +775,13 @@ export default {
     async deleteSavedSearch(del) {
       this.deleteOrganisationCard = false;
       if (del) {
-        await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
-
+        this.deleteLoader = true;
+        let data = await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
+        if (data["message"] === "success") {
+          await this.getOrganisation();
+        }
       }
+      this.deleteLoader = false;
       this.deleteSavedSearchCard = false;
       this.confirmDelete = false;
     },

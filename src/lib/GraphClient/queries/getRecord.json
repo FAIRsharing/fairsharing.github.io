@@ -21,6 +21,7 @@
     "curatorNotes",
     "exhaustiveLicences",
     "urlForLogo",
+    "lastReviewed",
     {
       "name": "reviews",
       "fields": [

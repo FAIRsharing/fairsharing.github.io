@@ -94,28 +94,70 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div
     v-if="getField('savedSearches') &amp;&amp; getField('savedSearches').length"
-    class="d-flex flex-row mt-4 align-center min-height-40"
   >
-    &lt;b class="width-15-percent-flex">Saved Search&lt;/b>
-    &lt;div class="d-flex ml-md-12 ml-13">
-      &lt;v-chip
-        v-for="search in getSavedSearches"
-        :key="search.id"
-        class="ma-1"
-        color="secondary"
-        :close="user().is_super_curator ? true : false"
-        close-icon="mdi-delete"
-        text-color="white"
-        @click:close="confirmDeleteSavedSearch(search)"
+    &lt;!--      &lt;v-chip-->
+    &lt;!--        v-for="search in getSavedSearches"-->
+    &lt;!--        :key="search.id"-->
+    &lt;!--        class="ma-1"-->
+    &lt;!--        color="secondary"-->
+    &lt;!--        :close="user().is_super_curator ? true : false"-->
+    &lt;!--        close-icon="mdi-delete"-->
+    &lt;!--        text-color="white"-->
+    &lt;!--        @click:close="confirmDeleteSavedSearch(search)"-->
+    &lt;!--      >-->
+    &lt;!--        &lt;a-->
+    &lt;!--          class="white&amp;#45;&amp;#45;text"-->
+    &lt;!--          :href="search.url"-->
+    &lt;!--        >-->
+    &lt;!--          {{ search.name }}-->
+    &lt;!--        &lt;/a>-->
+    &lt;!--      &lt;/v-chip>-->
+    &lt;p>
+      This policy has certain requirements and recommendations that have been used to create a conformant FAIRsharing search. The searches listed within this section will provide an initial filtering of the FAIRsharing registries. Clicking on a saved search will take you to a set of search results which you may further refine according to your needs and any additional policy requirements. More information on Conforming Resources and Saved Searches can be found in our &lt;a
+        href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+        target="_blank"
       >
-        &lt;a
-          class="white--text"
-          :href="search.url"
+        Gitbook
+        documentation&lt;/a>.
+    &lt;/p>
+    &lt;div
+      v-for="search in getSavedSearches"
+      :key="search.id"
+      class="d-flex align-center"
+    >
+      &lt;v-card
+        class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
+        flat
+        outlined
+        :href="search.url"
+      >
+        &lt;div class="d-flex align-center">
+          &lt;record-status
+            :record="search.fairsharingRecords[0]"
+            :show-status="false"
+          />
+          &lt;div
+            class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+          >
+            {{ search.name }}
+          &lt;/div>
+        &lt;/div>
+        &lt;p
+          class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5"
         >
-          {{ search.name }}
-        &lt;/a>
-      &lt;/v-chip>
+          {{ search.comments }}
+        &lt;/p>
+      &lt;/v-card>
+      &lt;v-btn
+        v-if="user().is_super_curator"
+        rounded
+        text
+        @click="confirmDeleteSavedSearch(search)"
+      >
+        &lt;v-icon>mdi-delete&lt;/v-icon>
+      &lt;/v-btn>
     &lt;/div>
+
 
     &lt;!-- Delete dialog box -->
     &lt;v-dialog
@@ -129,8 +171,7 @@
           Deleting saved search
         &lt;/v-card-title>
         &lt;v-card-text>
-          This is will delete all instances of the search from
-          FAIRsharing
+          This is will delete all instances of the search from FAIRsharing
         &lt;/v-card-text>
         &lt;v-card-actions>
           &lt;v-spacer />
@@ -157,39 +198,40 @@
 &lt;/template>
 
 &lt;script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
-import RestClient from "@/lib/Client/RESTClient.js"
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
+import RestClient from "@/lib/Client/RESTClient.js";
 
 const restClient = new RestClient();
 export default {
   name: "SavedSearches",
-  data: () =>{
+  components: { RecordStatus },
+  data: () => {
     return {
       getSavedSearches: [],
       confirmDelete: false,
       deleteSavedSearchCard: false,
       selectedItem: {},
-      deleteLoader: false
-    }
+      deleteLoader: false,
+    };
   },
   computed: {
-    ...mapState('users', ['user']),
-    ...mapState('record', ["currentRecord"]),
+    ...mapState("users", ["user"]),
+    ...mapState("record", ["currentRecord"]),
     ...mapGetters("record", ["getField"]),
   },
   mounted() {
-    this.getSavedSearches = this.getField('savedSearches')
+    this.getSavedSearches = this.getField("savedSearches");
   },
-  methods:{
-    ...mapActions('record', ['fetchRecord']),
+  methods: {
+    ...mapActions("record", ["fetchRecord"]),
     /**
      * Confirmation dialog to delete the saved search
      */
-    confirmDeleteSavedSearch(item){
+    confirmDeleteSavedSearch(item) {
       this.selectedItem = item;
       this.confirmDelete = true;
-      this.deleteOrganisationCard = false;
       this.deleteSavedSearchCard = true;
     },
     /**
@@ -197,22 +239,25 @@ export default {
      * @param del - Boolean
      */
     async deleteSavedSearch(del) {
-      this.deleteOrganisationCard = false;
       if (del) {
         this.deleteLoader = true;
-        let data = await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
+        let data = await restClient.deleteSavedSearch(
+          this.selectedItem["id"],
+          this.user().credentials.token
+        );
         if (data["message"] === "success") {
-          await this.fetchRecord({id: this.currentRecord.fairsharingRecord
-              .id, token: this.user().credentials.token})
-          this.getSavedSearches = this.getField('savedSearches')
-
+          await this.fetchRecord({
+            id: this.currentRecord.fairsharingRecord.id,
+            token: this.user().credentials.token,
+          });
+          this.getSavedSearches = this.getField("savedSearches");
         }
       }
       this.deleteLoader = false;
       this.deleteSavedSearchCard = false;
       this.confirmDelete = false;
     },
-  }
+  },
 };
 &lt;/script></pre>
     </article>
@@ -259,7 +304,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
 	
-		on Mon Jun 17th 2024
+		on Wed Jun 19th 2024
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

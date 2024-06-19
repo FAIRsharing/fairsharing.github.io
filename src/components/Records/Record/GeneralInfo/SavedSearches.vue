@@ -1,28 +1,70 @@
 <template>
   <div
     v-if="getField('savedSearches') && getField('savedSearches').length"
-    class="d-flex flex-row mt-4 align-center min-height-40"
   >
-    <b class="width-15-percent-flex">Saved Search</b>
-    <div class="d-flex ml-md-12 ml-13">
-      <v-chip
-        v-for="search in getSavedSearches"
-        :key="search.id"
-        class="ma-1"
-        color="secondary"
-        :close="user().is_super_curator ? true : false"
-        close-icon="mdi-delete"
-        text-color="white"
-        @click:close="confirmDeleteSavedSearch(search)"
+    <!--      <v-chip-->
+    <!--        v-for="search in getSavedSearches"-->
+    <!--        :key="search.id"-->
+    <!--        class="ma-1"-->
+    <!--        color="secondary"-->
+    <!--        :close="user().is_super_curator ? true : false"-->
+    <!--        close-icon="mdi-delete"-->
+    <!--        text-color="white"-->
+    <!--        @click:close="confirmDeleteSavedSearch(search)"-->
+    <!--      >-->
+    <!--        <a-->
+    <!--          class="white&#45;&#45;text"-->
+    <!--          :href="search.url"-->
+    <!--        >-->
+    <!--          {{ search.name }}-->
+    <!--        </a>-->
+    <!--      </v-chip>-->
+    <p>
+      This policy has certain requirements and recommendations that have been used to create a conformant FAIRsharing search. The searches listed within this section will provide an initial filtering of the FAIRsharing registries. Clicking on a saved search will take you to a set of search results which you may further refine according to your needs and any additional policy requirements. More information on Conforming Resources and Saved Searches can be found in our <a
+        href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+        target="_blank"
       >
-        <a
-          class="white--text"
-          :href="search.url"
+        Gitbook
+        documentation</a>.
+    </p>
+    <div
+      v-for="search in getSavedSearches"
+      :key="search.id"
+      class="d-flex align-center"
+    >
+      <v-card
+        class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
+        flat
+        outlined
+        :href="search.url"
+      >
+        <div class="d-flex align-center">
+          <record-status
+            :record="search.fairsharingRecords[0]"
+            :show-status="false"
+          />
+          <div
+            class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+          >
+            {{ search.name }}
+          </div>
+        </div>
+        <p
+          class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5"
         >
-          {{ search.name }}
-        </a>
-      </v-chip>
+          {{ search.comments }}
+        </p>
+      </v-card>
+      <v-btn
+        v-if="user().is_super_curator"
+        rounded
+        text
+        @click="confirmDeleteSavedSearch(search)"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </div>
+
 
     <!-- Delete dialog box -->
     <v-dialog
@@ -36,8 +78,7 @@
           Deleting saved search
         </v-card-title>
         <v-card-text>
-          This is will delete all instances of the search from
-          FAIRsharing
+          This is will delete all instances of the search from FAIRsharing
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -64,39 +105,40 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
-import RestClient from "@/lib/Client/RESTClient.js"
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
+import RestClient from "@/lib/Client/RESTClient.js";
 
 const restClient = new RestClient();
 export default {
   name: "SavedSearches",
-  data: () =>{
+  components: { RecordStatus },
+  data: () => {
     return {
       getSavedSearches: [],
       confirmDelete: false,
       deleteSavedSearchCard: false,
       selectedItem: {},
-      deleteLoader: false
-    }
+      deleteLoader: false,
+    };
   },
   computed: {
-    ...mapState('users', ['user']),
-    ...mapState('record', ["currentRecord"]),
+    ...mapState("users", ["user"]),
+    ...mapState("record", ["currentRecord"]),
     ...mapGetters("record", ["getField"]),
   },
   mounted() {
-    this.getSavedSearches = this.getField('savedSearches')
+    this.getSavedSearches = this.getField("savedSearches");
   },
-  methods:{
-    ...mapActions('record', ['fetchRecord']),
+  methods: {
+    ...mapActions("record", ["fetchRecord"]),
     /**
      * Confirmation dialog to delete the saved search
      */
-    confirmDeleteSavedSearch(item){
+    confirmDeleteSavedSearch(item) {
       this.selectedItem = item;
       this.confirmDelete = true;
-      this.deleteOrganisationCard = false;
       this.deleteSavedSearchCard = true;
     },
     /**
@@ -104,21 +146,24 @@ export default {
      * @param del - Boolean
      */
     async deleteSavedSearch(del) {
-      this.deleteOrganisationCard = false;
       if (del) {
         this.deleteLoader = true;
-        let data = await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
+        let data = await restClient.deleteSavedSearch(
+          this.selectedItem["id"],
+          this.user().credentials.token
+        );
         if (data["message"] === "success") {
-          await this.fetchRecord({id: this.currentRecord.fairsharingRecord
-              .id, token: this.user().credentials.token})
-          this.getSavedSearches = this.getField('savedSearches')
-
+          await this.fetchRecord({
+            id: this.currentRecord.fairsharingRecord.id,
+            token: this.user().credentials.token,
+          });
+          this.getSavedSearches = this.getField("savedSearches");
         }
       }
       this.deleteLoader = false;
       this.deleteSavedSearchCard = false;
       this.confirmDelete = false;
     },
-  }
+  },
 };
 </script>

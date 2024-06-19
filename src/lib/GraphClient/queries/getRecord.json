@@ -177,7 +177,12 @@
       "fields": [
         "id",
         "name",
-        "url"
+        "comments",
+        "url",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": ["name", "id", "registry", "type", "status"]
+        }
       ]
     }
   ]

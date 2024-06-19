@@ -63,7 +63,12 @@
           v-for="(tabItem,tabItemIndex) in filterList"
           :key="tabItem+'_'+tabItemIndex"
         >
+          <SavedSearches
+            v-if="tabItem.type === 'conforming_resources'"
+          />
+
           <v-virtual-scroll
+            v-else
             :items="tabItem.data"
             height="400"
             item-height="130"
@@ -117,6 +122,7 @@
 <script>
 import {mapState} from "vuex";
 
+import SavedSearches from '@/components/Records/Record/GeneralInfo/SavedSearches'
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
@@ -128,6 +134,7 @@ export default {
   components: {
     RecordStatus,
     SectionTitle,
+    SavedSearches
   },
   mixins: [stringUtils, recordTabUtils],
   props:{
@@ -161,6 +168,12 @@ export default {
           registry: ['Policy'],
           data: [],
           count:0
+        },
+        _module.tabsData.tabs.conforming_resources = {
+          registry: ['Policy'],
+          data: [],
+          count:0,
+          type:'conforming_resources'
         }
       }
       else {
@@ -188,6 +201,13 @@ export default {
                   item => item.recordAssociationLabel !== 'collects'
               )
               _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
+            }
+            //Save searches for the policy
+            if (tabName === 'conforming_resources') {
+              _module.tabsData.tabs[tabName].data =
+                  _module.currentRecord['fairsharingRecord'].savedSearches
+
+              _module.tabsData.tabs[tabName].count = _module.currentRecord['fairsharingRecord'].savedSearches.length;
             }
             // All incoming collections.
             else {

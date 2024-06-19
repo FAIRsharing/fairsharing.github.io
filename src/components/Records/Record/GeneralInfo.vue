@@ -48,9 +48,6 @@
       <!-- Licence needs to go here -->
       <Licence v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
 
-      <!--Advanced search saved to the record -->
-      <SavedSearches />
-
       <!-- Duplicate link to graph (see also action menu) -->
       <div class="d-flex flex-row">
         <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
@@ -86,7 +83,6 @@
 <script>
 import {mapGetters, mapState} from "vuex";
 
-import SavedSearches from '@/components/Records/Record//GeneralInfo/SavedSearches'
 import Licence from '@/components/Records/Record/CollectionRecord/Licence.vue'
 import Citations from "@/components/Records/Record/GeneralInfo/Citations";
 import CommunityCuratorInfo from "@/components/Records/Record/GeneralInfo/CommunityCuratorInfo";
@@ -128,8 +124,7 @@ export default {
     Keywords,
     SectionTitle,
     CommunityCuratorInfo,
-    Licence,
-    SavedSearches
+    Licence
   },
   props: {
     canClaim: {

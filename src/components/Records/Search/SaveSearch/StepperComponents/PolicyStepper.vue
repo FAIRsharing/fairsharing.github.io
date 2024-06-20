@@ -48,9 +48,7 @@
         />
       </template>
       <template v-else>
-        <p v-if="!loading">
-          No policy found
-        </p>
+        <p v-if="!loading">No policy found</p>
       </template>
     </template>
   </div>
@@ -73,7 +71,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("users", ["user", "usersList"]),
+    ...mapState("users", ["user"]),
     ...mapGetters("users", ["getUserRecords"]),
     ...mapGetters("saveSearch", ["getPolicyRecords", "getLoadingStatus"]),
   },

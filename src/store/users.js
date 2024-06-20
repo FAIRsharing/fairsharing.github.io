@@ -520,7 +520,7 @@ export const actions = {
     this.commit("users/setMessage", message);
   },
 };
-let getters = {
+export const getters = {
   getUserRecords(state) {
     return state.userRecords;
   },

@@ -168,7 +168,7 @@ export default {
           registry: ['Policy'],
           data: [],
           count:0
-        },
+        }
         _module.tabsData.tabs.conforming_resources = {
           registry: ['Policy'],
           data: [],
@@ -203,7 +203,7 @@ export default {
               _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
             }
             //Save searches for the policy
-            if (tabName === 'conforming_resources') {
+            else if (tabName === 'conforming_resources') {
               _module.tabsData.tabs[tabName].data =
                   _module.currentRecord['fairsharingRecord'].savedSearches
 

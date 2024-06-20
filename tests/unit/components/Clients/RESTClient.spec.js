@@ -122,6 +122,7 @@ describe("RESTClient", () => {
     expect(resp).toBe("testData");
   });
 
+
   it("can process network errors", async () => {
     stub.restore();
     jest.spyOn(console, "error");
@@ -141,5 +142,35 @@ describe("RESTClient", () => {
     expect(client.auth_headers("fun_token")["Authorization"]).toEqual(
       "Bearer fun_token"
     );
+  });
+
+  it("can saveSearch", async () => {
+    let search =
+    {
+      name: "Test Search",
+        comments: "",
+        url: "http://www.test.com",
+        fairsharing_record_ids: [1],
+        user_ids: [7339],
+        organisation_ids: [2],
+        params: {
+        operator: "_and",
+            fields: [
+            {
+            operator: "_and",
+            registry: ["policy"]
+          }
+        ]
+      }
+    };
+
+    let resp = await client.saveSearch(search, "userToken");
+    expect(resp).toBe("testData");
+  });
+
+  it("can deleteSavedSearch", async () => {
+
+    let resp = await client.deleteSavedSearch(1, "userToken");
+    expect(resp).toBe("testData");
   });
 });

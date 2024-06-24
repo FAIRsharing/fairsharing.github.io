@@ -25,16 +25,27 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex";
+
 import saveSearch from "@/store";
 
 export default {
   name: "StepperDialogHeader",
 
+  computed: {
+    ...mapGetters("saveSearch", ["getSaveSearchStatus"]),
+  },
+
   methods: {
+    ...mapActions("saveSearch", ["resetSaveSearchDialog"]),
     /**
      * Close Stepper Dialog Box method
      */
     closeStepperDialog() {
+      if (this.getSaveSearchStatus) {
+        this.resetSaveSearchDialog();
+        this.$emit("restartStepper", 1);
+      }
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
     },
   },

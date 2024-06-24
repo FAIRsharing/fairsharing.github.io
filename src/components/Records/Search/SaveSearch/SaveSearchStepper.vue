@@ -8,7 +8,7 @@
       @keydown.esc="closeStepperDialog()"
     >
       <!--Dialog Header -->
-      <StepperDialogHeader />
+      <StepperDialogHeader @restartStepper="restartStepper" />
       <!--Stepper Form -->
       <div v-if="getShowStepper">
         <v-stepper
@@ -56,7 +56,7 @@
             <!--Header 4 -->
             <v-stepper-step
               editable
-              :step="isSuperCurator ? 4 : 2"
+              :step="user().is_super_curator ? 4 : 2"
             >
               Save Search
             </v-stepper-step>
@@ -79,7 +79,7 @@
 
             <!--Stepper Content 2 Organisation List-->
             <v-stepper-content
-              v-if="isSuperCurator"
+              v-if="user().is_super_curator"
               step="2"
             >
               <OrganisationStepper />
@@ -109,7 +109,7 @@
 
             <!--Stepper Content 3 Save Search Form-->
             <v-stepper-content
-              v-if="isSuperCurator"
+              v-if="user().is_super_curator"
               step="3"
             >
               <UserStepper />
@@ -138,7 +138,7 @@
             </v-stepper-content>
 
             <!--Stepper Content 4 Save Search Form-->
-            <v-stepper-content :step="isSuperCurator ? 4 : 2">
+            <v-stepper-content :step="user().is_super_curator ? 4 : 2">
               <v-form
                 ref="searchFormRef"
                 v-model="searchForm"
@@ -151,6 +151,7 @@
                 <v-text-field
                   v-model="searchComment"
                   :counter="100"
+                  maxlength="100"
                   label="Comments"
                 />
               </v-form>
@@ -172,7 +173,7 @@
                 <v-btn
                   class="white--text"
                   color="accent3"
-                  @click="steps = isSuperCurator ? 3 : 1"
+                  @click="steps = user().is_super_curator ? 3 : 1"
                 >
                   Back
                 </v-btn>
@@ -321,6 +322,10 @@ export default {
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
     },
 
+    /**
+     * Restart the Save Search from step 1
+     * @param value - Step number 1
+     */
     restartStepper(value) {
       this.steps = value;
     },

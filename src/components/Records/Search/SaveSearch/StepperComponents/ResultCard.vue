@@ -97,8 +97,9 @@ export default {
 
   methods: {
     ...mapActions("saveSearch", ["resetSaveSearchDialog"]),
+
     /**
-     * Open Stepper Dialog Box method
+     * Open & restart Stepper Dialog Box method
      */
     restartStepper() {
       this.resetSaveSearchDialog();
@@ -111,6 +112,9 @@ export default {
      * Close Stepper Dialog Box method
      */
     closeStepperDialog() {
+      if (this.getSaveSearchStatus) {
+        this.resetSaveSearchDialog();
+      }
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
       this.resetSaveSearchDialog();
       this.$emit("restartStepper", 1);

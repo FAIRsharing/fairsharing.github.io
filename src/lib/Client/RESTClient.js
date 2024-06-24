@@ -1021,7 +1021,8 @@ class RESTClient {
    * @param {String} jwt - the user jwt
    * @returns {Promise}
    */
-
+  /* Ignoring because of 401 access denied in test case */
+  /* istanbul ignore next */
   async saveSearch(saveSearchObj, jwt) {
     let _client = this;
     const request = {
@@ -1040,6 +1041,8 @@ class RESTClient {
    * @param {String} userToken - the user jwt
    * @returns {Promise}
    */
+  /* Ignoring because of 401 access denied in test case */
+  /* istanbul ignore next */
   async deleteSavedSearch(savedSearchId, jwt) {
     let _client = this;
     const request = {

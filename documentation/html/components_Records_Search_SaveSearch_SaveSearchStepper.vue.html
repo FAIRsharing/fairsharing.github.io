@@ -101,7 +101,7 @@
       @keydown.esc="closeStepperDialog()"
     >
       &lt;!--Dialog Header -->
-      &lt;StepperDialogHeader />
+      &lt;StepperDialogHeader @restartStepper="restartStepper" />
       &lt;!--Stepper Form -->
       &lt;div v-if="getShowStepper">
         &lt;v-stepper
@@ -149,7 +149,7 @@
             &lt;!--Header 4 -->
             &lt;v-stepper-step
               editable
-              :step="isSuperCurator ? 4 : 2"
+              :step="user().is_super_curator ? 4 : 2"
             >
               Save Search
             &lt;/v-stepper-step>
@@ -172,7 +172,7 @@
 
             &lt;!--Stepper Content 2 Organisation List-->
             &lt;v-stepper-content
-              v-if="isSuperCurator"
+              v-if="user().is_super_curator"
               step="2"
             >
               &lt;OrganisationStepper />
@@ -202,7 +202,7 @@
 
             &lt;!--Stepper Content 3 Save Search Form-->
             &lt;v-stepper-content
-              v-if="isSuperCurator"
+              v-if="user().is_super_curator"
               step="3"
             >
               &lt;UserStepper />
@@ -231,7 +231,7 @@
             &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 4 Save Search Form-->
-            &lt;v-stepper-content :step="isSuperCurator ? 4 : 2">
+            &lt;v-stepper-content :step="user().is_super_curator ? 4 : 2">
               &lt;v-form
                 ref="searchFormRef"
                 v-model="searchForm"
@@ -244,6 +244,7 @@
                 &lt;v-text-field
                   v-model="searchComment"
                   :counter="100"
+                  maxlength="100"
                   label="Comments"
                 />
               &lt;/v-form>
@@ -265,7 +266,7 @@
                 &lt;v-btn
                   class="white--text"
                   color="accent3"
-                  @click="steps = isSuperCurator ? 3 : 1"
+                  @click="steps = user().is_super_curator ? 3 : 1"
                 >
                   Back
                 &lt;/v-btn>
@@ -414,6 +415,10 @@ export default {
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
     },
 
+    /**
+     * Restart the Save Search from step 1
+     * @param value - Step number 1
+     */
     restartStepper(value) {
       this.steps = value;
     },

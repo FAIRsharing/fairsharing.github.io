@@ -2,23 +2,6 @@
   <div
     v-if="getField('savedSearches') && getField('savedSearches').length"
   >
-    <!--      <v-chip-->
-    <!--        v-for="search in getSavedSearches"-->
-    <!--        :key="search.id"-->
-    <!--        class="ma-1"-->
-    <!--        color="secondary"-->
-    <!--        :close="user().is_super_curator ? true : false"-->
-    <!--        close-icon="mdi-delete"-->
-    <!--        text-color="white"-->
-    <!--        @click:close="confirmDeleteSavedSearch(search)"-->
-    <!--      >-->
-    <!--        <a-->
-    <!--          class="white&#45;&#45;text"-->
-    <!--          :href="search.url"-->
-    <!--        >-->
-    <!--          {{ search.name }}-->
-    <!--        </a>-->
-    <!--      </v-chip>-->
     <p>
       This policy has certain requirements and recommendations that have been used to create a conformant FAIRsharing search. The searches listed within this section will provide an initial filtering of the FAIRsharing registries. Clicking on a saved search will take you to a set of search results which you may further refine according to your needs and any additional policy requirements. More information on Conforming Resources and Saved Searches can be found in our <a
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"

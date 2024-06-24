@@ -12,8 +12,7 @@
     </v-card-title>
     <v-card-text class="pb-0">
       <p class="text-body-1">
-        Your search is saved successfully. Please check saved search table under
-        profile page.
+        Your search was saved successfully. Please check the saved search table under profile page.
       </p>
     </v-card-text>
 

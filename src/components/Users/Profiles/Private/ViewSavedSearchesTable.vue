@@ -46,30 +46,11 @@
         </ul>
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-menu
-          offset-x
+        <v-icon
+          @click="deleteItem(item)"
         >
-          <template #activator="{ on, attrs }">
-            <v-icon
-              v-bind="attrs"
-              v-on="on"
-            >
-              fas fa-ellipsis-v
-            </v-icon>
-          </template>
-          <v-list>
-            <v-list-item
-              @click="editItem(item)"
-            >
-              <v-list-item-avatar><v-icon>fas fa-pen</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Edit Search </v-list-item-title></v-list-item-content>
-            </v-list-item>
-            <v-list-item @click="deleteItem(item)">
-              <v-list-item-avatar><v-icon>mdi-delete</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Delete Search </v-list-item-title></v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
+          mdi-delete
+        </v-icon>
       </template>
       <template #no-data>
         <div>
@@ -78,7 +59,7 @@
         </div>
       </template>
     </v-data-table>
-    <!--Edit/Delete action dialog box -->
+    <!--Delete action dialog box -->
     <v-dialog
       v-model="modifyDialog"
       max-width="500px"
@@ -108,34 +89,6 @@
           <v-spacer />
         </v-card-actions>
       </v-card>
-      <!--Edit -->
-      <v-card v-if="editSavedSearch">
-        <v-card-title class="text-h5">
-          Are you sure you want to edit this item?
-        </v-card-title>
-        <v-card-subtitle class="text-subtitle-1 mt-0">
-          Editing this item will create a new search.
-        </v-card-subtitle>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            class="white--text"
-            color="accent3"
-            @click="closeDialog"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            class="white--text"
-            color="success"
-            :loading="loading"
-            :href="savedSearchLink"
-          >
-            OK
-          </v-btn>
-          <v-spacer />
-        </v-card-actions>
-      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -158,7 +111,6 @@ export default {
     return {
       modifyDialog: false,
       deleteSavedSearch: false,
-      editSavedSearch: false,
       selectedItem: {},
       totalSearches: [],
       loading: false,
@@ -180,6 +132,9 @@ export default {
       if (this.user().isLoggedIn) {
         headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
       }
+      // if(this.user().is_super_curator) {
+      //   headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
+      // }
       return headers;
     },
     perPage() {
@@ -232,7 +187,6 @@ export default {
     deleteItem(item) {
       this.selectedItem = item;
       this.modifyDialog = true;
-      this.editSavedSearch = false;
       this.deleteSavedSearch = true;
     },
 
@@ -241,7 +195,6 @@ export default {
      * and close the dialog if pressed OK
      */
     async deleteItemConfirm() {
-      this.editSavedSearch = false;
       this.loading = true;
       let data = await restClient.deleteSavedSearch(
         this.selectedItem["id"],
@@ -254,16 +207,6 @@ export default {
       this.loading = false;
       this.deleteSavedSearch = false;
       this.closeDialog();
-    },
-    /**
-     * Edit the savedSearch
-     * @param item
-     */
-    editItem(item) {
-      this.deleteSavedSearch = false;
-      this.savedSearchLink = item["url"];
-      this.modifyDialog = true;
-      this.editSavedSearch = true;
     },
 
     /**

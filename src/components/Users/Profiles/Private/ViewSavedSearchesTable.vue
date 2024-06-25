@@ -12,6 +12,18 @@
         <a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
         </a>
       </template>
+      <template #[`item.additionalUser`]="{ item }">
+        <ul class="pl-0">
+          <li
+            v-for="user in additionalUsers(item)"
+            :key="user.id"
+            class="mb-2"
+          >
+            <a :href="`/users/${user['id']}`">{{ user["username"] }}
+            </a>
+          </li>
+        </ul>
+      </template>
       <template #[`item.date`]="{ item }">
         {{ item.createdAt.split("T", 1)[0] }}
       </template>
@@ -132,9 +144,9 @@ export default {
       if (this.user().isLoggedIn) {
         headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
       }
-      // if(this.user().is_super_curator) {
-      //   headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
-      // }
+      if(this.user().is_super_curator) {
+        headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
+      }
       return headers;
     },
     perPage() {
@@ -224,8 +236,17 @@ export default {
         true
       );
     },
+    /**
+     * Filter creator from additional users list
+     * @param { Object } - user
+     * @return {Array} - additional user list without creator
+     */
+    additionalUsers(item) {
+      let additionalUsersList =  item["users"].filter((e) => {
+         return e['id'] !== item.creator['id']
+      })
+      return additionalUsersList;
+    }
   },
 };
 </script>
-
-<style scoped></style>

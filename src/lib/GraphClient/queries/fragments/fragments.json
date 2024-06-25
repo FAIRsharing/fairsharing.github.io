@@ -138,6 +138,13 @@
         "id",
         "name"
       ]
+    },
+    {
+      "queryName": "users",
+      "fields": [
+        "id",
+        "username"
+      ]
     }
   ],
   "createdSearches": [

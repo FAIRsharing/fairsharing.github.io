@@ -112,19 +112,28 @@
         class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
         flat
         outlined
-        :href="search.url"
       >
         &lt;div class="d-flex align-center">
           &lt;record-status
             :record="search.fairsharingRecords[0]"
             :show-status="false"
           />
-          &lt;div
-            class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
-          >
-            {{ search.name }}
+          &lt;div class="d-flex flex-column">
+            &lt;div
+              class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+            >
+              &lt;a :href="search.url">{{ search.name }}&lt;/a>
+            &lt;/div>
+            &lt;p class="text-body-2 ml-10">
+              (Created by: &lt;a
+                class="underline-effect"
+                :href="`/users/${search.creator['id']}`"
+              >{{ search.creator["username"] }}&lt;/a>)
+            &lt;/p>
           &lt;/div>
         &lt;/div>
+
+
         &lt;p
           class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5"
         >

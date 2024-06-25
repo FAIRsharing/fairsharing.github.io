@@ -182,6 +182,13 @@
         {
           "queryName": "fairsharingRecords",
           "fields": ["name", "id", "registry", "type", "status"]
+        },
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
         }
       ]
     }

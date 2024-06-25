@@ -19,19 +19,28 @@
         class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
         flat
         outlined
-        :href="search.url"
       >
         <div class="d-flex align-center">
           <record-status
             :record="search.fairsharingRecords[0]"
             :show-status="false"
           />
-          <div
-            class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
-          >
-            {{ search.name }}
+          <div class="d-flex flex-column">
+            <div
+              class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+            >
+              <a :href="search.url">{{ search.name }}</a>
+            </div>
+            <p class="text-body-2 ml-10">
+              (Created by: <a
+                class="underline-effect"
+                :href="`/users/${search.creator['id']}`"
+              >{{ search.creator["username"] }}</a>)
+            </p>
           </div>
         </div>
+
+
         <p
           class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5"
         >

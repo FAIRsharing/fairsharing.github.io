@@ -28,6 +28,8 @@
           ]
         }
       ]
-    }
+    },
+    {"$ref": "createdSearches"},
+    {"$ref": "savedSearches"}
   ]
 }

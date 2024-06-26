@@ -65,11 +65,31 @@ describe("OrganisationSearchStore store methods", () => {
 
   it("can check getSearchOrganisations getters", () => {
     const getOrganisationsResult = {
-      searchOrganisations: ["test", "test1", "test2"],
+      searchOrganisations: [
+        { id: 1, name: "test1" },
+        { id: 2, name: "test2" },
+        { id: 3, name: "test3" },
+      ],
     };
     const builtData = getters.getSearchOrganisations(getOrganisationsResult);
     expect(builtData).toStrictEqual(
       getOrganisationsResult["searchOrganisations"]
+    );
+  });
+
+  it("can check getSearchOrganisationNames getters", () => {
+    const getOrganisationsResult = {
+      searchOrganisations: [
+        { id: 1, name: "test1" },
+        { id: 2, name: "test2" },
+        { id: 3, name: "test3" },
+      ],
+    };
+    const builtData = getters.getSearchOrganisationNames(
+      getOrganisationsResult
+    );
+    expect(builtData).toStrictEqual(
+      getOrganisationsResult["searchOrganisations"].map(({ name }) => name)
     );
   });
 

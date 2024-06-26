@@ -16,14 +16,17 @@ const actions = {
       q: queryParams,
     };
     let response = await CLIENT.executeQuery(SEARCH_ORGANISATIONS);
-
     //Only label/name is passed to field so that while clicking on the Edit Advanced Search button the field should be pre-filled with the selection
     if (
       response["searchOrganisations"] &&
       response["searchOrganisations"].length
     ) {
       const organisationsList = response["searchOrganisations"].map(
-        ({ name }) => name
+        (organisation) => {
+          let id = organisation.id,
+            name = organisation.name;
+          return { id, name };
+        }
       );
       commit("setSearchOrganisations", organisationsList);
     }
@@ -50,6 +53,9 @@ const mutations = {
 const getters = {
   getSearchOrganisations(state) {
     return state.searchOrganisations;
+  },
+  getSearchOrganisationNames(state) {
+    return state.searchOrganisations.map(({ name }) => name);
   },
   getLoadingStatus(state) {
     return state.loadingStatus;

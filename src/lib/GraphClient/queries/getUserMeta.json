@@ -37,6 +37,8 @@
           ]
         }
       ]
-    }
+    },
+    {"$ref": "createdSearches"},
+    {"$ref": "savedSearches"}
   ]
 }

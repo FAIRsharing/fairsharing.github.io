@@ -101,6 +101,14 @@
           ]
         }
       ]
+    },
+    {
+      "name": "savedSearches",
+      "fields": [
+        "id",
+        "name",
+        "url"
+      ]
     }
   ]
 }

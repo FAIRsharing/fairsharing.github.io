@@ -5,6 +5,7 @@
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchSubjects"
+      :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -37,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("subjectSearch", ["getSearchSubjects"]),
+    ...mapGetters("subjectSearch", ["getSearchSubjects", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
     model: {
       get() {

@@ -51,6 +51,7 @@ import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
+  Countries,
   DataAccessCondition,
   DatabaseRecordType,
   DataCuration,
@@ -64,8 +65,7 @@ import {
   StandardRecordType,
   Subject,
   Taxonomies,
-  UserDefinedTag,
-} from "./QueryBuilderComponents";
+  UserDefinedTag} from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder },
@@ -160,6 +160,12 @@ export default {
             identifier: "licences",
             name: "Licences",
             component: Licences,
+            initialValue: () => [],
+          },
+          {
+            identifier: "countries",
+            name: "Countries",
+            component: Countries,
             initialValue: () => [],
           },
           {

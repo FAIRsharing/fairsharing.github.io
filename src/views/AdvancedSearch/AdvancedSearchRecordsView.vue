@@ -102,6 +102,7 @@ export default {
     this.resetSearchDomains();
     this.resetSearchTaxonomies();
     this.resetSearchLicences();
+    this.resetSearchCountries()
   },
   methods: {
     ...mapActions("uiController", ["setStickToTop"]),
@@ -113,6 +114,7 @@ export default {
     ...mapActions("domainsSearch", ["resetSearchDomains"]),
     ...mapActions("taxonomiesSearch", ["resetSearchTaxonomies"]),
     ...mapActions("licencesSearch", ["resetSearchLicences"]),
+    ...mapActions("countriesSearch", ["resetSearchCountries"]),
   },
 };
 </script>

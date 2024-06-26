@@ -98,6 +98,7 @@
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchOrganisations"
+      :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -130,7 +131,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("organisationSearch", ["getSearchOrganisations"]),
+    ...mapGetters("organisationSearch", ["getSearchOrganisations", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {

@@ -179,7 +179,7 @@ class RESTClient {
     let headers = JSON.parse(JSON.stringify(this.headers));
     const request = {
       method: "post",
-      baseURL: this.baseURL + " /users/check_password",
+      baseURL: this.baseURL + "/users/check_password",
       headers: headers,
       data: { password: password },
     };

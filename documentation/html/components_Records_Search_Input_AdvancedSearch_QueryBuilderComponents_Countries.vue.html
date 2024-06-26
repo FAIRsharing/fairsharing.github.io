@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UserDefinedTag.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Countries.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,7 +86,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UserDefinedTag.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Countries.vue</h1>
     
 <section>
     <article>
@@ -97,7 +97,7 @@
     &lt;AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchUserDefinedTags"
+      :item-list="getSearchCountries"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -107,13 +107,13 @@
 &lt;script>
 import { mapActions, mapGetters } from "vuex";
 
-import userDefinedTagsSearch from "@/store";
+import countriesSearch from "@/store";
 
 import AutoCompleteComponent from "./AutoCompleteComponent.vue";
 import TooltipComponent from "./TooltipComponent.vue";
 
 export default {
-  name: "UserDefinedTag",
+  name: "Countries",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -126,12 +126,12 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Tags created by FAIRsharing's user community. Multiple selections will be joined with OR. Start typing to see UserDefined tags.",
+        "Countries applicable to this resource or its data. Multiple selections will be joined with OR. Start typing to see Countries.",
     };
   },
 
   computed: {
-    ...mapGetters("userDefinedTagsSearch", ["getSearchUserDefinedTags", "getLoadingStatus"]),
+    ...mapGetters("countriesSearch", ["getSearchCountries", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -155,8 +155,8 @@ export default {
       handler(open) {
         if (open) {
           if (this.value &amp;&amp; this.value.length) {
-            userDefinedTagsSearch.commit(
-              "userDefinedTagsSearch/setSearchUserDefinedTags",
+            countriesSearch.commit(
+              "countriesSearch/setSearchCountries",
               this.value
             );
           }
@@ -170,13 +170,13 @@ export default {
     this.itemValue = this.value;
   },
   methods: {
-    ...mapActions("userDefinedTagsSearch", ["fetchSearchUserDefinedTags"]),
+    ...mapActions("countriesSearch", ["fetchSearchCountries"]),
 
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchUserDefinedTags(queryParams);
+      if (queryParams) this.fetchSearchCountries(queryParams);
     },
   },
 };

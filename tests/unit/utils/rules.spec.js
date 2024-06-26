@@ -5,9 +5,9 @@ import {
     isEmailOrUrl,
     isImage,
     isLongEnough,
+    isMastodon,
     isOrcid,
     isRequired,
-    isMastodon,
     isUrl} from "@/utils/rules.js"
 
 describe('Form validation rules', () => {

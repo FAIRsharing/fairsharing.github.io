@@ -127,10 +127,19 @@
                   - I already have an account -
                 </router-link>
               </div>
-
+              <div class="px-5 mb-5">
+                Please see our
+                <a
+                  href="https://fairsharing.gitbook.io/fairsharing#password-advice"
+                  _target="_blank"
+                >
+                  password advice
+                </a>
+                if you're having trouble creating a password.
+              </div>
               <v-btn
                 :loading="isLoading"
-                class="success"
+                class="success full-width"
                 :disabled="!formValid"
                 @click="register()"
               >

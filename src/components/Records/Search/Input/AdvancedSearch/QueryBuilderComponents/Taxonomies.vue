@@ -5,6 +5,7 @@
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchTaxonomies"
+      :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -37,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("taxonomiesSearch", ["getSearchTaxonomies"]),
+    ...mapGetters("taxonomiesSearch", ["getSearchTaxonomies", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {

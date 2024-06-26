@@ -97,7 +97,8 @@
     &lt;AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchOrganisationNames"
+      :item-list="getSearchOrganisations"
+      :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -130,7 +131,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("organisationSearch", ["getSearchOrganisationNames"]),
+    ...mapGetters("organisationSearch", ["getSearchOrganisations", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {

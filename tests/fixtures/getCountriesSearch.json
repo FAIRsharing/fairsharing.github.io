@@ -1,0 +1,12 @@
+{
+  "searchCountries": [
+    {
+      "id": 1,
+      "name": "Country 1"
+    },
+    {
+      "id": 2,
+      "name": "Country 2"
+    }
+  ]
+}

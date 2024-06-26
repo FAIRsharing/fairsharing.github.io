@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
+import countriesSearch from "@/store/AdvancedSearchComponents/countriesSearch";
 import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
 import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
 import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
@@ -16,7 +17,6 @@ import messages from "./messages";
 import ontologyBrowser from "./ontologyBrowser";
 import record from "./recordData.js";
 import records from "./recordSearch.js";
-import saveSearch from "./saveSearch.js";
 import searchFilters from "./searchFilters.js";
 import uiController from "./uiController";
 import users from "./users.js";
@@ -43,6 +43,6 @@ export default new Vuex.Store({
     domainsSearch,
     taxonomiesSearch,
     licencesSearch,
-    saveSearch,
+    countriesSearch
   },
 });

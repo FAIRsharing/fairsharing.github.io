@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchOrganisations"
+      :item-list="getSearchCountries"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -14,13 +14,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import organisationSearch from "@/store";
+import countriesSearch from "@/store";
 
 import AutoCompleteComponent from "./AutoCompleteComponent.vue";
 import TooltipComponent from "./TooltipComponent.vue";
 
 export default {
-  name: "Organisations",
+  name: "Countries",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -33,12 +33,12 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Organisations related to this record. Multiple selections will be joined with OR. Start typing to see Organisations.",
+        "Countries applicable to this resource or its data. Multiple selections will be joined with OR. Start typing to see Countries.",
     };
   },
 
   computed: {
-    ...mapGetters("organisationSearch", ["getSearchOrganisations", "getLoadingStatus"]),
+    ...mapGetters("countriesSearch", ["getSearchCountries", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -62,8 +62,8 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            organisationSearch.commit(
-              "organisationSearch/setSearchOrganisations",
+            countriesSearch.commit(
+              "countriesSearch/setSearchCountries",
               this.value
             );
           }
@@ -72,20 +72,18 @@ export default {
       immediate: true,
     },
   },
-
   mounted() {
     //Pre-fill selected values on edit advanced search is clicked and open
     this.itemValue = this.value;
   },
-
   methods: {
-    ...mapActions("organisationSearch", ["fetchSearchOrganisations"]),
+    ...mapActions("countriesSearch", ["fetchSearchCountries"]),
 
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchOrganisations(queryParams);
+      if (queryParams) this.fetchSearchCountries(queryParams);
     },
   },
 };

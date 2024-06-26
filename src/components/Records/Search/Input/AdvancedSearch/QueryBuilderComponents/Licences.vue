@@ -5,6 +5,7 @@
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchLicences"
+      :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -37,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("licencesSearch", ["getSearchLicences"]),
+    ...mapGetters("licencesSearch", ["getSearchLicences", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {

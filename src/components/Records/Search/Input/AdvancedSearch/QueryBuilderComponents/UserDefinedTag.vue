@@ -5,6 +5,7 @@
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchUserDefinedTags"
+      :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
     />
@@ -37,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("userDefinedTagsSearch", ["getSearchUserDefinedTags"]),
+    ...mapGetters("userDefinedTagsSearch", ["getSearchUserDefinedTags", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {

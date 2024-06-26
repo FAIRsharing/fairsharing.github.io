@@ -13,6 +13,9 @@
     solo
     min-height="36px"
     class="text-capitalize"
+    :loading="loading"
+    loader-height="3"
+    color="accent3"
   >
     <template #selection="data">
       <v-chip
@@ -40,6 +43,10 @@ export default {
     itemValue: {
       type: Array,
       default: () => [],
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   data: () => {

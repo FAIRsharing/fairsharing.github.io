@@ -17,3 +17,4 @@ export const Taxonomies = () => import("./Taxonomies.vue");
 
 export const Licences = () => import("./Licences.vue");
 export const Organisations = () => import("./Organisations.vue");
+export const Countries = () => import("./Countries.vue")

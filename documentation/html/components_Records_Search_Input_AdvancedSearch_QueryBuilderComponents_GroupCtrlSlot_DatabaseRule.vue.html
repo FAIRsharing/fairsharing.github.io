@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Curator</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/DatabaseRule.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,108 +81,115 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Curator</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/DatabaseRule.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">
+&lt;template>
+  &lt;!-- General Component -->
+  &lt;div class="d-flex">
+    &lt;select
+      v-model="selectedDatabaseRule"
+      class="query-builder-group-slot__rule-selection mb-3"
+    >
+      &lt;option
+        disabled
+        value=""
+      >
+        Select a database rule
+      &lt;/option>
+      &lt;option
+        v-for="rule in databaseQueryBuilderComponents()"
+        :key="rule.identifier"
+        :value="rule.identifier"
+        v-text="rule.name"
+      />
+    &lt;/select>
+    &lt;button
+      :disabled="selectedDatabaseRule === ''"
+      class="query-builder-group-slot__rule-adding-button ml-3"
+      @click="addNewRule(groupCtrl, selectedDatabaseRule)"
+    >
+      Add Rule
+    &lt;/button>
+  &lt;/div>
+&lt;/template>
 
-<header>
-    
-</header>
+&lt;script>
+import {
+  DataAccessCondition,
+  DatabaseRecordType,
+  DataCuration,
+  DataDepositionCondition,
+} from "../index";
+export default {
+  name: "DatabaseRule",
+  props: {
+    groupCtrl: {
+      type: Object,
+      default: null
+    }
+  },
+  data: () => {
+    return {
+      selectedDatabaseRule: "",
+    };
+  },
 
+  methods:{
+    databaseQueryBuilderComponents() {
+      return [
+        {
+          identifier: "databasetype",
+          name: "Database Record Type",
+          component: DatabaseRecordType,
+          initialValue: () => [],
+        },
+        {
+          identifier: "dataCuration",
+          name: "Data Curation",
+          component: DataCuration,
+          initialValue: () => [],
+        },
+        {
+          identifier: "dataDepositionCondition",
+          name: "Data Deposition Condition",
+          component: DataDepositionCondition,
+          initialValue: () => [],
+        },
+        {
+          identifier: "dataAccessCondition",
+          name: "Data Access Condition ",
+          component: DataAccessCondition,
+          initialValue: () => [],
+        },
+      ]
+    },
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"></p></div></div> 
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>hideFields</code></td>
-        <td>Object</td>
-        <td>-</td>
-        <td>an array of field to NOT display</td>
-    </tr></tbody>
-</table>
-<div class="container-overview"><div><p></div>
-        
+    /**
+     * Add rule to query builder
+     * @param item - Object
+     * @param selectedRule - String
+     */
+    addNewRule(item, selectedRule) {
+      item.addRule(selectedRule)
+      this.selectedDatabaseRule = ''
+    },
+  }
+};
+&lt;/script>
 
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -192,10 +199,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

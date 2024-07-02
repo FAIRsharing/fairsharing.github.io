@@ -42,7 +42,9 @@
     }
   }
   .query-builder-group__rule-adding-button,
-  .query-builder-group__group-adding-button {
+  .query-builder-group__group-adding-button,
+  .query-builder-group-slot__group-adding-button,
+  .query-builder-group-slot__rule-adding-button {
     padding: 0 8px;
     height: 36px;
     min-width: 64px;
@@ -65,8 +67,10 @@
   .query-builder-group__spacer,
   .query-builder-group__rule-adding-button,
   .query-builder-group__group-control select,
-  .query-builder-group__group-children,
-  .query-builder-group__group-adding-button {
+  .query-builder-group__group-children
+  .query-builder-group__group-adding-button,
+  .query-builder-group-slot__group-control .query-builder-group-slot__rule-selection,
+  .query-builder-group-slot__group-control .query-builder-group-slot__rule-adding-button {
     display: none;
   }
 
@@ -139,7 +143,7 @@
         }
       }
       select {
-        max-width: 150px;
+        max-width: 350px;
         width: 100%;
         color: black;
         @media #{map-get($display-breakpoints, 'sm-and-down')} {
@@ -197,6 +201,12 @@
       @media #{map-get($display-breakpoints, 'md-and-up')} {
         margin-left: -80px;
       }
+    }
+    .query-builder-group-slot__group-adding-button {
+      display: none;
+    }
+    .query-builder-group-slot__rule-selection, .query-builder-group-slot__rule-adding-button {
+      display: inline-block;
     }
   }
 

@@ -54,13 +54,18 @@ import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
+  CitationToRelatedPublications,
   Countries,
   DataAccessCondition,
+  DataAccessForPrePublicationReview,
   DatabaseRecordType,
+  DataContactInformation,
   DataCuration,
   DataDepositionCondition,
+  DataVersioning,
   Domain,
-  GroupCtrlSlot,  Licences,
+  GroupCtrlSlot,
+  Licences,
   Organisations,
   PolicyRecordType,
   RecordStatus,
@@ -190,10 +195,35 @@ export default {
           },
           {
             identifier: "dataAccessCondition",
-            name: "Data Access Condition ",
+            name: "Data Access Condition",
             component: DataAccessCondition,
             initialValue: () => [],
           },
+          {
+            identifier: "citationToRelatedPublications",
+            name: "Citation To Related Publications",
+            component: CitationToRelatedPublications,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataAccessForPrePublicationReview",
+            name: "Data Access For Pre Publication Review",
+            component: DataAccessForPrePublicationReview,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataContactInformation",
+            name: "Data Contact Information",
+            component: DataContactInformation,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataVersioning",
+            name: "Data Versioning",
+            component: DataVersioning,
+            initialValue: () => [],
+          },
+
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };

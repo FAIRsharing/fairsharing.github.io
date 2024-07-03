@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import SelectComponent from "./SelectComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import SelectComponent from "../SelectComponent.vue";
+import TooltipComponent from "../TooltipComponent.vue";
 
 export default {
-  name: "DataCuration",
+  name: "DataAccessForPrePublicationReview",
   components: { TooltipComponent, SelectComponent },
   props: {
     value: {
@@ -26,16 +26,13 @@ export default {
   data: () => {
     return {
       itemList: [
-        "manual",
-        "automated",
-        "uncertain",
-        "manual/automated",
-        "none",
-        "not found",
+        "yes",
+        "no",
+        "not found"
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, automated, or manual curation). Multiple selections will be joined with OR.",
+      toolTipText: "DataAccessForPrePublicationReview",
     };
   },
   computed: {

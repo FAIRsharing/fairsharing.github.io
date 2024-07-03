@@ -1,7 +1,6 @@
 
 <template>
-  <!-- General Component -->
-  <div class="d-flex">
+  <div class="d-flex mr-4">
     <select
       v-model="selectedDatabaseRule"
       class="query-builder-group-slot__rule-selection mb-3"
@@ -31,10 +30,14 @@
 
 <script>
 import {
+  CitationToRelatedPublications,
   DataAccessCondition,
+  DataAccessForPrePublicationReview,
   DatabaseRecordType,
+  DataContactInformation,
   DataCuration,
   DataDepositionCondition,
+  DataVersioning
 } from "../index";
 export default {
   name: "DatabaseRule",
@@ -75,6 +78,30 @@ export default {
           identifier: "dataAccessCondition",
           name: "Data Access Condition ",
           component: DataAccessCondition,
+          initialValue: () => [],
+        },
+        {
+          identifier: "citationToRelatedPublications",
+          name: "Citation To Related Publications",
+          component: CitationToRelatedPublications,
+          initialValue: () => [],
+        },
+        {
+          identifier: "dataAccessForPrePublicationReview",
+          name: "Data Access For Pre Publication Review",
+          component: DataAccessForPrePublicationReview,
+          initialValue: () => [],
+        },
+        {
+          identifier: "dataContactInformation",
+          name: "Data Contact Information",
+          component: DataContactInformation,
+          initialValue: () => [],
+        },
+        {
+          identifier: "dataVersioning",
+          name: "Data Versioning",
+          component: DataVersioning,
           initialValue: () => [],
         },
       ]

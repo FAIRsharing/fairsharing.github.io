@@ -1,6 +1,6 @@
 
 <template>
-  <div class="query-builder-group-slot__group-control pa-4">
+  <div class="query-builder-group-slot__group-control pa-4 d-flex">
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />
 

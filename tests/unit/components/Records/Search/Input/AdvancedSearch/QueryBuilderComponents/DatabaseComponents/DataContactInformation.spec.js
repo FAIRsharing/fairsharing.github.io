@@ -2,22 +2,22 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import DataDepositionCondition from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DataDepositionCondition.vue";
+import DataContactInformation from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DataContactInformation.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("DataDepositionCondition.vue", () => {
+describe("DataContactInformation.vue", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallowMount(DataDepositionCondition, {
+    wrapper = shallowMount(DataContactInformation, {
       localVue,
       vuetify,
     });
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("DataDepositionCondition");
+    expect(wrapper.vm.$options.name).toBe("DataContactInformation");
   });
 });

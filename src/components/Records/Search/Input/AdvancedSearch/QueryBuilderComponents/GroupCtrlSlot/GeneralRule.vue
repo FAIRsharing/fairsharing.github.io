@@ -1,7 +1,6 @@
 
 <template>
-  <!-- General Component -->
-  <div class="d-flex">
+  <div class="ruleWrapper d-flex mr-4">
     <select
       v-model="selectedGeneralRule"
       class="query-builder-group-slot__rule-selection mb-3"

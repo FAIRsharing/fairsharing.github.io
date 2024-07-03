@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import DatabaseRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/RecordTypes/DatabaseRecordType.vue";
+import DatabaseRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DatabaseRecordType.vue";
 import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 import { recordTypes as recordTypesMixin } from "@/utils/advancedSearchUtils";
 

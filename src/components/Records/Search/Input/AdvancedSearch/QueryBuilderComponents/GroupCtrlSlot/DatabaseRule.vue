@@ -30,6 +30,7 @@
 
 <script>
 import {
+  AssociatedTools,
   CitationToRelatedPublications,
   DataAccessCondition,
   DataAccessForPrePublicationReview,
@@ -103,6 +104,12 @@ export default {
           name: "Data Versioning",
           component: DataVersioning,
           initialValue: () => [],
+        },
+        {
+          identifier: "associatedTools",
+          name: "Associated Tools",
+          component: AssociatedTools,
+          initialValue: true,
         },
       ]
     },

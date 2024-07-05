@@ -14,3 +14,13 @@
     }
   }
 }
+
+// Styling for checkbox
+.v-input--checkbox::v-deep {
+  .v-input--selection-controls__input {
+    margin-right: 0;
+  }
+  .v-messages {
+    display: none
+  }
+}

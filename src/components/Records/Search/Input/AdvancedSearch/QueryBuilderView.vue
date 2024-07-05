@@ -54,6 +54,7 @@ import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
+  AssociatedTools,
   CitationToRelatedPublications,
   Countries,
   DataAccessCondition,
@@ -73,7 +74,8 @@ import {
   StandardRecordType,
   Subject,
   Taxonomies,
-  UserDefinedTag} from "./QueryBuilderComponents";
+  UserDefinedTag
+} from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder, GroupCtrlSlot },
@@ -222,6 +224,12 @@ export default {
             name: "Data Versioning",
             component: DataVersioning,
             initialValue: () => [],
+          },
+          {
+            identifier: "associatedTools",
+            name: "Associated Tools",
+            component: AssociatedTools,
+            initialValue: true,
           },
 
         ],

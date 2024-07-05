@@ -66,6 +66,7 @@
   </v-card>
 </template>
 <script>
+import {isBoolean} from "lodash";
 import { mapGetters, mapState } from "vuex";
 
 import extraFilterChips from "@/data/extraFilterChips.json";
@@ -119,13 +120,18 @@ export default {
     printSelectionValues(key, value) {
       let refinedValues = "";
       if (key !== "operator") {
-        refinedValues = value
-          .map((item) => this.cleanString(item))
-          .join(" OR ");
+        if (isBoolean(value) || value[0] === "true")  {
+          return true
+        }
+        else {
+          refinedValues = value
+            .map((item) => this.cleanString(item))
+            .join(" OR ");
 
-        if (refinedValues !== " ") {
-          refinedValues = this.boldString(refinedValues, "OR");
-          return refinedValues;
+          if (refinedValues !== " ") {
+            refinedValues = this.boldString(refinedValues, "OR");
+            return refinedValues;
+          }
         }
       }
     },

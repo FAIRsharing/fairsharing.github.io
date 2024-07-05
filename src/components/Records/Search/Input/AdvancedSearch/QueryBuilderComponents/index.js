@@ -25,3 +25,4 @@ export const CitationToRelatedPublications = () => import("./DatabaseComponents/
 export const DataAccessForPrePublicationReview = () => import("./DatabaseComponents/DataAccessForPrePublicationReview.vue");
 export const DataContactInformation = () => import("./DatabaseComponents/DataContactInformation.vue");
 export const DataVersioning = () => import("./DatabaseComponents/DataVersioning.vue");
+export const AssociatedTools = () => import("./DatabaseComponents/AssociatedTools.vue");

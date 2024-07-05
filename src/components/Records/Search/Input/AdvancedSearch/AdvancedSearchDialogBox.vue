@@ -189,7 +189,7 @@ export default {
       ) {
         this.getAdvancedSearch["children"].forEach(({ children }) => {
           if (children && children.length) {
-            isTrue = children.every(({ value: { length } }) => length);
+            isTrue = children.every(({ value }) => value.length || value === true);
             isTrueArr.push(isTrue);
           }
         });

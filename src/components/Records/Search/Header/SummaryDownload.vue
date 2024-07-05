@@ -16,7 +16,7 @@
             class="info mr-10"
             v-on="on"
           >
-            <a @click="commenceDownload()">
+            <a @click="chooseDownload()">
               <span class="white--text">Download</span>
             </a>
           </v-btn>
@@ -25,8 +25,50 @@
       </v-tooltip>
       <!-- eslint-enable-next-line  vue/no-template-shadow -->
     </p>
+    <v-dialog 
+      v-model="chooseDownloadActive"
+      max-width="500"
+    >
+      <v-card>
+        <v-card-title>
+          Do you need information on organisations?
+        </v-card-title>
+        <v-card-text>
+          Selecting "yes" here will add a FAIRsharing record's organisations to your download file. This will increase
+          the file size as each organisation will require a separate line. Select "no" to download without organisations.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="commenceDownload(true)"
+          >
+            Yes
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="commenceDownload(false)"
+          >
+            No
+          </v-btn>
+          <v-btn
+            color="red darken-1"
+            text
+            @click="chooseDownloadActive = false"
+          >
+            Cancel
+          </v-btn>
+
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
+
 
 <script>
 import { mapGetters, mapState } from "vuex";
@@ -47,6 +89,7 @@ export default {
       listControllerData: listControllerData,
       recordTypes: recordsLabels["recordTypes"],
       buttonDisabled: false,
+      chooseDownloadActive: false
     };
   },
   computed: {
@@ -73,16 +116,20 @@ export default {
     },
   },
   methods: {
+    chooseDownload() {
+      this.chooseDownloadActive = true;
+    },
     // Please refer to SummaryDownload.spec.js for comments on why this is ignored.
     /* istanbul ignore next */
-    async commenceDownload() {
+    async commenceDownload(includeOrgs) {
+      this.chooseDownloadActive = false;
       this.buttonDisabled = true;
       let params = this.$store.getters["introspection/buildQueryParameters"](
         this.currentPath
       );
+      params["includeOrgs"] = includeOrgs;
       params["searchUrl"] =
         this.getHostname().slice(0, -1) + this.$route.fullPath;
-      // TODO: ids must be added to the params. It's in recordSearch.js/fetchCollectionRecords
       if (this.getCollectionIdsParams && this.getCollectionIdsParams.length) {
         params["ids"] = this.getCollectionIdsParams;
       }

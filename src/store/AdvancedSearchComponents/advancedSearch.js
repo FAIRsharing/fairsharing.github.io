@@ -65,13 +65,20 @@ const actions = {
                 fieldValue = params["value"];
               }
               else if (params["value"]) {
-                fieldValue = [params["value"]];
+                //When string is boolean value, convert to boolean format
+                if((params["value"] === "true") || (params["value"] === "false")) {
+                  fieldValue = JSON.parse(params["value"]);
+                } else {
+                  fieldValue = [params["value"]];
+                }
+
               }
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
               fieldsObj[fieldKey] = fieldValue;
-            } else if(isBoolean(fieldValue)) {
+            }
+            else if(isBoolean(fieldValue)) {
               fieldsObj[fieldKey] = fieldValue;
             }
           });

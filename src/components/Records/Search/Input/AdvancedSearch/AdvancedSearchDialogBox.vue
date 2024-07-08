@@ -143,6 +143,7 @@
 </template>
 
 <script>
+import { isBoolean } from "lodash";
 import { mapActions, mapGetters } from "vuex";
 
 import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/TooltipComponent.vue";
@@ -189,7 +190,7 @@ export default {
       ) {
         this.getAdvancedSearch["children"].forEach(({ children }) => {
           if (children && children.length) {
-            isTrue = children.every(({ value }) => value.length || value === true);
+            isTrue = children.every(({ value }) => value.length || isBoolean(value));
             isTrueArr.push(isTrue);
           }
         });

@@ -66,7 +66,6 @@
   </v-card>
 </template>
 <script>
-import {isBoolean} from "lodash";
 import { mapGetters, mapState } from "vuex";
 
 import extraFilterChips from "@/data/extraFilterChips.json";
@@ -120,8 +119,11 @@ export default {
     printSelectionValues(key, value) {
       let refinedValues = "";
       if (key !== "operator") {
-        if (isBoolean(value) || value[0] === "true")  {
-          return true
+        if ((value === true) || (value[0] === "true"))  {
+          return "true"
+        }
+        if ((value === false) || (value[0] === "false"))  {
+          return "false"
         }
         else {
           refinedValues = value

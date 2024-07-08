@@ -1,37 +1,37 @@
 <template>
   <div class="d-flex width-90">
     <TooltipComponent :tool-tip-text="toolTipText" />
-    <CheckboxComponent
+    <RadioComponent
       v-model="model"
-      :item-name="itemName"
+      :item-value="itemValue"
       @input="selectedValue"
     />
   </div>
 </template>
 
 <script>
-import CheckboxComponent from "../CheckboxComponent.vue";
+import RadioComponent from "../RadioComponent.vue";
 import TooltipComponent from "../TooltipComponent.vue";
 
 export default {
   name: "AssociatedTools",
-  components: { TooltipComponent, CheckboxComponent },
+  components: { TooltipComponent, RadioComponent },
   props: {
     value: {
-      type: Boolean,
-      default: true,
+      type: String,
+      default: "",
     },
   },
   data: () => {
     return {
-      itemName: "AssociatedTools",
       toolTipText: "AssociatedTools",
+      itemValue:""
     };
   },
   computed: {
     model: {
       get() {
-        return this.itemSelected;
+        return this.value;
       },
       set(value) {
         this.$emit("input", value);

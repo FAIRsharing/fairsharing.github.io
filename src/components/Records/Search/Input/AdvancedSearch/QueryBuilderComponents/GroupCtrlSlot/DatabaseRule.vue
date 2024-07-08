@@ -109,7 +109,7 @@ export default {
           identifier: "associatedTools",
           name: "Associated Tools",
           component: AssociatedTools,
-          initialValue: true,
+          initialValue: "",
         },
       ]
     },

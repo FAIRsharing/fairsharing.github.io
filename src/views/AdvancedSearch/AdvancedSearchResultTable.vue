@@ -244,9 +244,9 @@ export default {
                   value: [] || Boolean,
                 };
                 advancedSearchParams["identifier"] = paramValues[0];
-                // For Boolean values
+                // For boolean/string values
                 if ((paramValues[1] === "true") || paramValues[1] === "false") {
-                  advancedSearchParams["value"] = JSON.parse(paramValues[1]);
+                  advancedSearchParams["value"] = paramValues[1];
                 }
                 else {
                   advancedSearchParams["value"] = paramValues[1].split(",");

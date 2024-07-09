@@ -40,3 +40,11 @@ export const DataPreservation = () =>
   import("./PolicyComponents/DataPreservation.vue");
 export const ExceptionsToDataSharing = () =>
   import("./PolicyComponents/ExceptionsToDataSharing.vue");
+export const MandatedDataSharing = () =>
+  import("./PolicyComponents/MandatedDataSharing.vue");
+export const MandatedDmpCreation = () =>
+  import("./PolicyComponents/MandatedDmpCreation.vue");
+export const SharingResearchSoftware = () =>
+  import("./PolicyComponents/SharingResearchSoftware.vue");
+export const TimingOfDmp = () =>
+  import("./PolicyComponents/TimingOfDmp.vue");

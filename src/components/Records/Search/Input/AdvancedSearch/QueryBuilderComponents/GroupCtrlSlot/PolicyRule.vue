@@ -36,7 +36,11 @@ import {
   DataCitation, DataPreservation,
   DataProtection,
   ExceptionsToDataSharing,
-  PolicyRecordType
+  MandatedDataSharing,
+  MandatedDmpCreation,
+  PolicyRecordType,
+  SharingResearchSoftware,
+  TimingOfDmp
 } from "../index";
 export default {
   name: "PolicyRule",
@@ -90,6 +94,30 @@ export default {
           name: "Exceptions To Data Sharing",
           component: ExceptionsToDataSharing,
           initialValue: "",
+        },
+        {
+          identifier: "mandatedDataSharing",
+          name: "Mandated Data Sharing",
+          component: MandatedDataSharing,
+          initialValue: () => [],
+        },
+        {
+          identifier: "mandatedDmpCreation",
+          name: "Mandated Dmp Creation",
+          component: MandatedDmpCreation,
+          initialValue: () => [],
+        },
+        {
+          identifier: "sharingResearchSoftware",
+          name: "Sharing Research Software",
+          component: SharingResearchSoftware,
+          initialValue: () => [],
+        },
+        {
+          identifier: "timingOfDmp",
+          name: "Timing Of Dmp",
+          component: TimingOfDmp,
+          initialValue: () => [],
         },
 
       ], "name")

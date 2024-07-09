@@ -2,7 +2,7 @@
 export const StandardRecordType = () =>
   import("./RecordTypes/StandardRecordType.vue");
 export const PolicyRecordType = () =>
-  import("./RecordTypes/PolicyRecordType.vue");
+  import("./PolicyComponents/PolicyRecordType.vue");
 export const Registry = () => import("./Registry.vue");
 export const Subject = () => import("./Subject.vue");
 export const UserDefinedTag = () => import("./UserDefinedTag.vue");
@@ -30,3 +30,13 @@ export const CertificationsAndCommunityBadges = () => import("./DatabaseComponen
 export const DataProcessesAndConditions = () => import("./DatabaseComponents/DataProcessesAndConditions.vue");
 export const DataPreservationPolicy = () => import("./DatabaseComponents/DataPreservationPolicy.vue");
 export const ResourceSustainability = () => import("./DatabaseComponents/ResourceSustainability.vue");
+export const DataAvailabilityStatement = () =>
+  import("./PolicyComponents/DataAvailabilityStatement.vue");
+export const DataProtection = () =>
+  import("./PolicyComponents/DataProtection.vue");
+export const DataCitation = () =>
+  import("./PolicyComponents/DataCitation.vue");
+export const DataPreservation = () =>
+  import("./PolicyComponents/DataPreservation.vue");
+export const ExceptionsToDataSharing = () =>
+  import("./PolicyComponents/ExceptionsToDataSharing.vue");

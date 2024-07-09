@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import PolicyRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/RecordTypes/PolicyRecordType.vue";
+import PolicyRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/PolicyRecordType.vue";
 import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 
 const $router = {

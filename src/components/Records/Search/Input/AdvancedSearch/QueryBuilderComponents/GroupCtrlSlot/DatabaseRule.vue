@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { sortBy } from "lodash"
+
 import {
   AssociatedTools,
   CertificationsAndCommunityBadges,
@@ -60,7 +62,7 @@ export default {
 
   methods:{
     databaseQueryBuilderComponents() {
-      return [
+      return sortBy([
         {
           identifier: "databasetype",
           name: "Database Record Type",
@@ -139,7 +141,7 @@ export default {
           component: ResourceSustainability,
           initialValue: "",
         },
-      ]
+      ], "name")
     },
 
     /**

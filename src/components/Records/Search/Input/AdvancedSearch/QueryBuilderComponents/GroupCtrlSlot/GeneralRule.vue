@@ -34,7 +34,6 @@ import {
   Domain,
   Licences,
   Organisations,
-  PolicyRecordType,
   RecordStatus,
   Registry,
   StandardRecordType,
@@ -69,12 +68,6 @@ export default {
           identifier: "standardtype",
           name: "Standard Record Type",
           component: StandardRecordType,
-          initialValue: () => [],
-        },
-        {
-          identifier: "policytype",
-          name: "Policy Record Type",
-          component: PolicyRecordType,
           initialValue: () => [],
         },
         {

@@ -3,3 +3,6 @@ export const GeneralRule = () =>
 
 export const DatabaseRule = () =>
   import("./DatabaseRule.vue");
+
+export const PolicyRule = () =>
+  import("./PolicyRule.vue");

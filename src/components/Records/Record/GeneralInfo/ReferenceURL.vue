@@ -23,7 +23,7 @@
   >
     <b class="width-15-percent-flex">Reference URL</b>
     <div class="d-flex full-width ml-md-12 ml-13">
-      N/A
+      Not Available
     </div>
   </div>
 </template>

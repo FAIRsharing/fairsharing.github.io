@@ -31,6 +31,7 @@
 <script>
 import {
   AssociatedTools,
+  CertificationsAndCommunityBadges,
   CitationToRelatedPublications,
   DataAccessCondition,
   DataAccessForPrePublicationReview,
@@ -38,7 +39,10 @@ import {
   DataContactInformation,
   DataCuration,
   DataDepositionCondition,
-  DataVersioning
+  DataPreservationPolicy,
+  DataProcessesAndConditions,
+  DataVersioning,
+  ResourceSustainability
 } from "../index";
 export default {
   name: "DatabaseRule",
@@ -109,6 +113,30 @@ export default {
           identifier: "associatedTools",
           name: "Associated Tools",
           component: AssociatedTools,
+          initialValue: "",
+        },
+        {
+          identifier: "certificationsAndCommunityBadges",
+          name: "Certifications And Community Badges",
+          component: CertificationsAndCommunityBadges,
+          initialValue: "",
+        },
+        {
+          identifier: "dataProcessesAndConditions",
+          name: "Data Processes And Conditions",
+          component: DataProcessesAndConditions,
+          initialValue: "",
+        },
+        {
+          identifier: "dataPreservationPolicy",
+          name: "Data Preservation Policy",
+          component: DataPreservationPolicy,
+          initialValue: "",
+        },
+        {
+          identifier: "resourceSustainability",
+          name: "Resource Sustainability",
+          component: ResourceSustainability,
           initialValue: "",
         },
       ]

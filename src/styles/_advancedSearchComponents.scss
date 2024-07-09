@@ -24,3 +24,14 @@
     display: none
   }
 }
+
+//Styling for radio
+.v-input--radio-group::v-deep {
+  .v-icon {
+    background-color: white;
+    border-radius: 50%
+  }
+  .v-messages {
+    display: none
+  }
+}

@@ -14,7 +14,7 @@ import RadioComponent from "../RadioComponent.vue";
 import TooltipComponent from "../TooltipComponent.vue";
 
 export default {
-  name: "AssociatedTools",
+  name: "DataProcessesAndConditions",
   components: { TooltipComponent, RadioComponent },
   props: {
     value: {
@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "Resource has a standalone tool that is designed around your resource, you can showcase it here. This will help your users understand the various libraries and software that support your resource.",
+      toolTipText: "Stores metadata regarding human (i.e. user interfaces) and machine-readable access points for your resource",
 
     };
   },

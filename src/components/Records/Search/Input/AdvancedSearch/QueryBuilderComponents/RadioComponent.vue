@@ -1,4 +1,5 @@
 <template>
+  <!-- Commented code is kept if the radio button needs to be changed to checkbox in future -->
   <!--  <v-checkbox-->
   <!--    v-model="model"-->
   <!--    background-color="white"-->
@@ -8,18 +9,29 @@
   <v-radio-group
     v-model="model"
     row
-    background-color="white"
+    class="mt-0 ml-1"
   >
     <v-radio
-      label="Yes"
       color="success"
       value="true"
-    />
+      class="mr-6"
+    >
+      <template #label>
+        <div class="white--text">
+          Yes
+        </div>
+      </template>
+    </v-radio>
     <v-radio
-      label="No"
       color="error"
       value="false"
-    />
+    >
+      <template #label>
+        <div class="white--text">
+          No
+        </div>
+      </template>
+    </v-radio>
   </v-radio-group>
 </template>
 

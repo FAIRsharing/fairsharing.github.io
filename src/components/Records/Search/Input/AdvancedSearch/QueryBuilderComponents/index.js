@@ -26,3 +26,7 @@ export const DataAccessForPrePublicationReview = () => import("./DatabaseCompone
 export const DataContactInformation = () => import("./DatabaseComponents/DataContactInformation.vue");
 export const DataVersioning = () => import("./DatabaseComponents/DataVersioning.vue");
 export const AssociatedTools = () => import("./DatabaseComponents/AssociatedTools.vue");
+export const CertificationsAndCommunityBadges = () => import("./DatabaseComponents/CertificationsAndCommunityBadges.vue");
+export const DataProcessesAndConditions = () => import("./DatabaseComponents/DataProcessesAndConditions.vue");
+export const DataPreservationPolicy = () => import("./DatabaseComponents/DataPreservationPolicy.vue");
+export const ResourceSustainability = () => import("./DatabaseComponents/ResourceSustainability.vue");

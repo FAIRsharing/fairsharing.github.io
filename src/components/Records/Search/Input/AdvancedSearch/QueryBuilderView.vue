@@ -55,6 +55,7 @@ import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
   AssociatedTools,
+  CertificationsAndCommunityBadges,
   CitationToRelatedPublications,
   Countries,
   DataAccessCondition,
@@ -63,6 +64,7 @@ import {
   DataContactInformation,
   DataCuration,
   DataDepositionCondition,
+  DataPreservationPolicy, DataProcessesAndConditions,
   DataVersioning,
   Domain,
   GroupCtrlSlot,
@@ -71,6 +73,7 @@ import {
   PolicyRecordType,
   RecordStatus,
   Registry,
+  ResourceSustainability,
   StandardRecordType,
   Subject,
   Taxonomies,
@@ -229,6 +232,30 @@ export default {
             identifier: "associatedTools",
             name: "Associated Tools",
             component: AssociatedTools,
+            initialValue: "",
+          },
+          {
+            identifier: "certificationsAndCommunityBadges",
+            name: "Certifications And Community Badges",
+            component: CertificationsAndCommunityBadges,
+            initialValue: "",
+          },
+          {
+            identifier: "dataProcessesAndConditions",
+            name: "Data Processes And Conditions",
+            component: DataProcessesAndConditions,
+            initialValue: "",
+          },
+          {
+            identifier: "dataPreservationPolicy",
+            name: "Data Preservation Policy",
+            component: DataPreservationPolicy,
+            initialValue: "",
+          },
+          {
+            identifier: "resourceSustainability",
+            name: "Resource Sustainability",
+            component: ResourceSustainability,
             initialValue: "",
           },
 

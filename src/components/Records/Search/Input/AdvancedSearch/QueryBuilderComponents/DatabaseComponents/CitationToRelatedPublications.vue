@@ -32,7 +32,7 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "CitationToRelatedPublications",
+      toolTipText: "The repository have a particular, standardized mechanism to link datasets to related articles or pre-prints. Multiple selections will be joined with OR.",
     };
   },
   computed: {

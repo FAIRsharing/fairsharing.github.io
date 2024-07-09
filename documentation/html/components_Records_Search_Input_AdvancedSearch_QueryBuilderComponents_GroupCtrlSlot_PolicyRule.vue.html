@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/GeneralRule.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/PolicyRule.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,35 +86,35 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/GeneralRule.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/PolicyRule.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">
 &lt;template>
-  &lt;div class="ruleWrapper d-flex mr-4">
+  &lt;div class="d-flex mr-4">
     &lt;select
-      v-model="selectedGeneralRule"
+      v-model="selectedPolicyRule"
       class="query-builder-group-slot__rule-selection mb-3"
     >
       &lt;option
         disabled
         value=""
       >
-        Select a rule
+        Select a policy rule
       &lt;/option>
       &lt;option
-        v-for="rule in generalQueryBuilderComponents()"
+        v-for="rule in policyQueryBuilderComponents()"
         :key="rule.identifier"
         :value="rule.identifier"
         v-text="rule.name"
       />
     &lt;/select>
     &lt;button
-      :disabled="selectedGeneralRule === ''"
+      :disabled="selectedPolicyRule === ''"
       class="query-builder-group-slot__rule-adding-button ml-3"
-      @click="addNewRule(groupCtrl, selectedGeneralRule)"
+      @click="addNewRule(groupCtrl, selectedPolicyRule)"
     >
       Add Rule
     &lt;/button>
@@ -122,20 +122,17 @@
 &lt;/template>
 
 &lt;script>
+import { sortBy } from "lodash"
+
 import {
-  Countries,
-  Domain,
-  Licences,
-  Organisations,
-  RecordStatus,
-  Registry,
-  StandardRecordType,
-  Subject,
-  Taxonomies,
-  UserDefinedTag
+  DataAvailabilityStatement,
+  DataCitation, DataPreservation,
+  DataProtection,
+  ExceptionsToDataSharing,
+  PolicyRecordType
 } from "../index";
 export default {
-  name: "GeneralRule",
+  name: "PolicyRule",
   props: {
     groupCtrl: {
       type: Object,
@@ -144,74 +141,51 @@ export default {
   },
   data: () => {
     return {
-      selectedGeneralRule: "",
+      selectedPolicyRule: "",
     };
   },
 
   methods:{
-    generalQueryBuilderComponents() {
-      return [
+    policyQueryBuilderComponents() {
+      return sortBy([
         {
-          identifier: "registry",
-          name: "Registry",
-          component: Registry,
+          identifier: "policytype",
+          name: "Policy Record Type",
+          component: PolicyRecordType,
           initialValue: () => [],
         },
         {
-          identifier: "standardtype",
-          name: "Standard Record Type",
-          component: StandardRecordType,
-          initialValue: () => [],
+          identifier: "dataAvailabilityStatement",
+          name: "Data Availability Statement",
+          component: DataAvailabilityStatement,
+          initialValue: "",
         },
         {
-          identifier: "subjects",
-          name: "Subject",
-          component: Subject,
-          initialValue: () => [],
+          identifier: "dataProtection",
+          name: "Data Protection",
+          component: DataProtection,
+          initialValue: "",
         },
         {
-          identifier: "domains",
-          name: "Domain",
-          component: Domain,
-          initialValue: () => [],
+          identifier: "dataCitation",
+          name: "Data Citation",
+          component: DataCitation,
+          initialValue: "",
         },
         {
-          identifier: "userDefinedTags",
-          name: "User Defined Tag",
-          component: UserDefinedTag,
-          initialValue: () => [],
+          identifier: "dataPreservation",
+          name: "Data Preservation",
+          component: DataPreservation,
+          initialValue: "",
         },
         {
-          identifier: "status",
-          name: "Record Status",
-          component: RecordStatus,
-          initialValue: () => [],
+          identifier: "exceptionsToDataSharing",
+          name: "Exceptions To Data Sharing",
+          component: ExceptionsToDataSharing,
+          initialValue: "",
         },
-        {
-          identifier: "taxonomies",
-          name: "Taxonomies",
-          component: Taxonomies,
-          initialValue: () => [],
-        },
-        {
-          identifier: "licences",
-          name: "Licences",
-          component: Licences,
-          initialValue: () => [],
-        },
-        {
-          identifier: "countries",
-          name: "Countries",
-          component: Countries,
-          initialValue: () => [],
-        },
-        {
-          identifier: "organisations",
-          name: "Organisations",
-          component: Organisations,
-          initialValue: () => [],
-        },
-      ]
+
+      ], "name")
     },
 
     /**
@@ -221,7 +195,7 @@ export default {
      */
     addNewRule(item, selectedRule) {
       item.addRule(selectedRule)
-      this.selectedGeneralRule = ''
+      this.selectedPolicyRule = ''
     },
   }
 };

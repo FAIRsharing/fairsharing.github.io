@@ -96,9 +96,10 @@
   &lt;div class="query-builder-group-slot__group-control pa-4 d-flex">
     &lt;!-- General Component -->
     &lt;GeneralRule :group-ctrl="groupCtrl" />
-
     &lt;!-- Database Component -->
     &lt;DatabaseRule :group-ctrl="groupCtrl" />
+    &lt;!-- Policy Component -->
+    &lt;PolicyRule :group-ctrl="groupCtrl" />
     &lt;div class="query-builder-group-slot__spacer" />
     &lt;button
       class="query-builder-group-slot__group-adding-button"
@@ -110,10 +111,10 @@
 &lt;/template>
 
 &lt;script>
-import {DatabaseRule,GeneralRule} from "./index";
+import {DatabaseRule,GeneralRule, PolicyRule} from "./index";
 export default {
   name: "GroupCtrlSlot",
-  components:{GeneralRule, DatabaseRule},
+  components:{GeneralRule, DatabaseRule, PolicyRule},
   props: {
     groupCtrl: {
       type: Object,

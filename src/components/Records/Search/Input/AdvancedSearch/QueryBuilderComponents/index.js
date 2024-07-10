@@ -52,3 +52,19 @@ export const LicencesForOutputs = () =>
   import("./PolicyComponents/LicencesForOutputs.vue");
 export const SupportedCosts = () =>
   import("./PolicyComponents/SupportedCosts.vue");
+export const IsImplemented = () =>
+  import("./OtherBooleanComponents/IsImplemented.vue");
+export const HasPublication = () =>
+  import("./OtherBooleanComponents/HasPublication.vue");
+export const UsesPersistentIdentifier = () =>
+  import("./OtherBooleanComponents/UsesPersistentIdentifier.vue");
+export const RecommendsDatabase = () =>
+  import("./OtherBooleanComponents/RecommendsDatabase.vue");
+export const RecommendsStandard = () =>
+  import("./OtherBooleanComponents/RecommendsStandard.vue");
+export const UpdatingOfDmp = () =>
+  import("./OtherBooleanComponents/UpdatingOfDmp.vue");
+export const GuidanceToHelpEnableCompliance = () =>
+  import("./OtherBooleanComponents/GuidanceToHelpEnableCompliance.vue");
+export const MonitoringOfCompliance = () =>
+  import("./OtherBooleanComponents/MonitoringOfCompliance.vue");

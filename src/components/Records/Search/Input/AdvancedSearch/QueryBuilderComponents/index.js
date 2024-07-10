@@ -48,3 +48,7 @@ export const SharingResearchSoftware = () =>
   import("./PolicyComponents/SharingResearchSoftware.vue");
 export const TimingOfDmp = () =>
   import("./PolicyComponents/TimingOfDmp.vue");
+export const LicencesForOutputs = () =>
+  import("./PolicyComponents/LicencesForOutputs.vue");
+export const SupportedCosts = () =>
+  import("./PolicyComponents/SupportedCosts.vue");

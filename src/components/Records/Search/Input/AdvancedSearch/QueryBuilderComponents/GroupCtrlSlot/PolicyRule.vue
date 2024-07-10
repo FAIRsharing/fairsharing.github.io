@@ -33,13 +33,16 @@ import { sortBy } from "lodash"
 
 import {
   DataAvailabilityStatement,
-  DataCitation, DataPreservation,
+  DataCitation,
+  DataPreservation,
   DataProtection,
   ExceptionsToDataSharing,
+  LicencesForOutputs,
   MandatedDataSharing,
   MandatedDmpCreation,
   PolicyRecordType,
   SharingResearchSoftware,
+  SupportedCosts,
   TimingOfDmp
 } from "../index";
 export default {
@@ -96,6 +99,18 @@ export default {
           initialValue: "",
         },
         {
+          identifier: "licencesForOutputs",
+          name: "Licences For Outputs",
+          component: LicencesForOutputs,
+          initialValue: "",
+        },
+        {
+          identifier: "supportedCosts",
+          name: "Supported Costs",
+          component: SupportedCosts,
+          initialValue: "",
+        },
+        {
           identifier: "mandatedDataSharing",
           name: "Mandated Data Sharing",
           component: MandatedDataSharing,
@@ -118,8 +133,7 @@ export default {
           name: "Timing Of Dmp",
           component: TimingOfDmp,
           initialValue: () => [],
-        },
-
+        }
       ], "name")
     },
 

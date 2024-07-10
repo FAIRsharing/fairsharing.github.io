@@ -249,6 +249,12 @@
         flex-grow: 1;
         flex-basis: 0;
         min-width: 0;
+        select {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          padding-right: 30px
+        }
       }
 
       .slotSpacer {

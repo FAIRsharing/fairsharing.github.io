@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "Document that gives information about sustainability plans for the repository if your database has a webpage or document that describes them",
+      toolTipText: "Document that gives information about sustainability plans for the repository if your database has a webpage or document that describes them.",
 
     };
   },

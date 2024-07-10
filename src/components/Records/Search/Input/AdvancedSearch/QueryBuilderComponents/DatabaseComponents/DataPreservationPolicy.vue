@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "Policy that details how the preservation of the data is ensured",
+      toolTipText: "Policy that details how the preservation of the data is ensured.",
 
     };
   },

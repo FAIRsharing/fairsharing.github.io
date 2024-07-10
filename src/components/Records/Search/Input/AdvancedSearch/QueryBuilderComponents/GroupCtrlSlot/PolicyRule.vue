@@ -1,9 +1,9 @@
 
 <template>
-  <div class="d-flex mr-4">
+  <div class="d-flex ruleWrapper">
     <select
       v-model="selectedPolicyRule"
-      class="query-builder-group-slot__rule-selection mb-3"
+      class="query-builder-group-slot__rule-selection"
     >
       <option
         disabled

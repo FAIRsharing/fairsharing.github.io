@@ -3,10 +3,13 @@
   <div class="query-builder-group-slot__group-control pa-4 d-flex">
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />
+    <div class="slotSpacer" />
     <!-- Other Boolean Component -->
     <OtherBooleanRule :group-ctrl="groupCtrl" />
+    <div class="slotSpacer" />
     <!-- Database Component -->
     <DatabaseRule :group-ctrl="groupCtrl" />
+    <div class="slotSpacer" />
     <!-- Policy Component -->
     <PolicyRule :group-ctrl="groupCtrl" />
     <div class="query-builder-group-slot__spacer" />
@@ -20,7 +23,7 @@
 </template>
 
 <script>
-import {DatabaseRule,GeneralRule, OtherBooleanRule, PolicyRule } from "./index";
+import { DatabaseRule, GeneralRule, OtherBooleanRule, PolicyRule } from "./index";
 export default {
   name: "GroupCtrlSlot",
   components:{GeneralRule, OtherBooleanRule, DatabaseRule, PolicyRule},

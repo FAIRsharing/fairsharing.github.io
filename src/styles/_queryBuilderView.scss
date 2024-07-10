@@ -69,8 +69,10 @@
   .query-builder-group__group-control select,
   .query-builder-group__group-children
   .query-builder-group__group-adding-button,
-  .query-builder-group-slot__group-control .query-builder-group-slot__rule-selection,
-  .query-builder-group-slot__group-control .query-builder-group-slot__rule-adding-button {
+  .query-builder-group-slot__group-control .query-builder-group-slot__rule-selection:not(.query-builder-group__group-children--depth-1 *),
+  .query-builder-group-slot__group-control .query-builder-group-slot__rule-adding-button:not(.query-builder-group__group-children--depth-1 *),
+  .query-builder-group-slot__group-control .slotSpacer:not(.query-builder-group__group-children--depth-1 *),
+  .query-builder-group__group-children--depth-2 {
     display: none;
   }
 
@@ -238,6 +240,22 @@
       .tooltiptext {
         visibility: visible;
         opacity: 1;
+      }
+    }
+  }
+  .query-builder-group__group-children--depth-1 {
+    .query-builder-group-slot__group-control {
+      .ruleWrapper {
+        flex-grow: 1;
+        flex-basis: 0;
+        min-width: 0;
+      }
+
+      .slotSpacer {
+        width: 0;
+        margin-left: 12px;
+        margin-right: 12px;
+        border-left: 1px solid hsl(0, 0%, 75%);
       }
     }
   }

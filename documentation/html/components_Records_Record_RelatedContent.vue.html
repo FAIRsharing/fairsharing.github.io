@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
 				</ul>
 			</li>
 			
@@ -215,7 +215,7 @@
                     {{ item.subject }}
                   &lt;/p>
                 &lt;/v-card>
-              &lt;/router-link>.
+              &lt;/router-link>
             &lt;/template>
           &lt;/v-virtual-scroll>
         &lt;/v-tab-item>
@@ -225,12 +225,13 @@
 &lt;/template>
 
 &lt;script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapState} from "vuex";
-import stringUtils from "@/utils/stringUtils"
+
+import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import recordTabUtils from "@/utils/recordTabUtils";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
+import recordTabUtils from "@/utils/recordTabUtils";
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "RelatedContent",
@@ -263,8 +264,14 @@ export default {
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
+    // This code is a bit of a mess due to multiple rewrites related to vague/changing requirements. It would be better
+    // off being re-written or replaced with the original plan (a single table for all relations, with filters).
     prepareTabsData() {
       const _module = this;
+      // A policy may recommend collections; other records may be collected.
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
+        _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
+      }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
           Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
@@ -274,6 +281,12 @@ export default {
           ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
+          // 0. This hack is related to this comment:
+          // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
+          if (tabName === 'related_collections') {
+            _module.tabsData.tabs['related_collections'].data =  _module.tabsData.tabs['related_collections'].data
+                .filter((item) => item.recordAssociationLabel === 'recommends');
+          }
           // 1. Create a hash with keys for each linked record ID of all the relations, containing an
           // array of all relations.
           let duplicates = {};
@@ -362,9 +375,9 @@ export default {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
 	
-		on Wed Sep 27th 2023
+		on Mon Jul 15th 2024
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

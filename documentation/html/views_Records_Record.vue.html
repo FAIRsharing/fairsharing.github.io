@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
 				</ul>
 			</li>
 			
@@ -200,9 +200,8 @@
 
         &lt;!-- Bottom Block -->
         &lt;Publications
-          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           id="publications"
-          class="mb-8 ma-4"
+          :class="['ma-4 mb-8', {'mb-10 mt-0':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :back-color="getRecordCardBackground"
         />
         &lt;!-- Additional Information -->
@@ -389,30 +388,32 @@
 
 &lt;script>
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-import Client from '@/lib/GraphClient/GraphClient.js'
-import RestClient from "@/lib/Client/RESTClient.js"
-import stringUtils from '@/utils/stringUtils';
-import getHostname from "@/utils/generalUtils";
-import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-import Tools from '@/components/Records/Record/Tools';
-import DataProcessesAndConditions from '@/components/Records/Record/DataProcessesAndConditions';
-import Publications from '@/components/Records/Record/Publications';
-import Support from '@/components/Records/Record/Support';
-import NotFound from "@/views/Errors/404"
-import Organisations from "@/components/Records/Record/Organisations";
-import Collections from "@/components/Records/Record/Collections";
-import RelatedContent from "@/components/Records/Record/RelatedContent";
-import RecordHistory from "@/components/Records/Record/History/RecordHistory";
+
 import Loaders from "@/components/Navigation/Loaders";
-import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
-import Tombstone from "../Errors/Tombstone";
-import Hidden from "../Errors/Hidden";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
+import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
+import Collections from "@/components/Records/Record/Collections";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
-import RecordMenu from "@/components/Records/Record/RecordMenu";
+import DataProcessesAndConditions from '@/components/Records/Record/DataProcessesAndConditions';
+import GeneralInfo from "@/components/Records/Record/GeneralInfo";
+import RecordHistory from "@/components/Records/Record/History/RecordHistory";
+import Organisations from "@/components/Records/Record/Organisations";
+import Publications from '@/components/Records/Record/Publications';
 import RecordAlert from "@/components/Records/Record/RecordAlert";
-import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
+import RelatedContent from "@/components/Records/Record/RelatedContent";
+import Support from '@/components/Records/Record/Support';
+import Tools from '@/components/Records/Record/Tools';
+import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import RestClient from "@/lib/Client/RESTClient.js"
+import Client from '@/lib/GraphClient/GraphClient.js'
+import getHostname from "@/utils/generalUtils";
+import stringUtils from '@/utils/stringUtils';
+import NotFound from "@/views/Errors/404"
+
+import Hidden from "../Errors/Hidden";
+import Tombstone from "../Errors/Tombstone";
 
 const client = new RestClient();
 export default {
@@ -507,27 +508,38 @@ export default {
   head: {
     link: function() {
       if (this.recordID) {
-        let results = [
-          {
-            rel: 'describedby',
-            type: "application/json",
-            href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
-          }
-        ]
+        let results = [];
         let citeAsUrl;
+        let describedByUrl;
         // Mysteriously not covered even if a doi value is provided in tests.
         /* istanbul ignore if */
         if (this.currentRecord.fairsharingRecord.doi) {
           citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
+          describedByUrl = this.getHostname() + this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
         }
         else {
           citeAsUrl = this.getHostname() + this.recordID;
+          describedByUrl = this.getHostname() + this.recordId;
         }
         results.push({
           rel: 'cite-as',
           type: "application/html",
           href: citeAsUrl
         });
+        results.push(
+          {
+            rel: 'describedby',
+            type: "application/json",
+            href: describedByUrl
+          }
+        )
+        results.push(
+          {
+            rel: 'describedby',
+            type: "application/ld+json",
+            href: describedByUrl
+          }
+        )
         return results;
       }
     }
@@ -1213,14 +1225,43 @@ export default {
   },
   metaInfo() {
     try {
+      let id;
+      if (this.currentRecord.fairsharingRecord.doi) {
+        id = this.currentRecord.fairsharingRecord.doi.split('/')[1];
+      }
+      else {
+        id = this.currentRecord.fairsharingRecord.id;
+      }
       if (this.currentRecord.fairsharingRecord.abbreviation) {
         return {
-          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
+          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation,
+          meta: [
+            {
+              name: 'description',
+              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name} (${this.currentRecord.fairsharingRecord.abbreviation})`
+            },
+            {
+              name: 'link',
+              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              rel: 'canonical'
+            }
+          ]
         }
       }
       else {
         return {
-          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.name
+          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.name,
+          meta: [
+            {
+              name: 'description',
+              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name}`
+            },
+            {
+              name: 'link',
+              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              rel: 'canonical'
+            }
+          ]
         }
       }
     } catch (e) {
@@ -1291,9 +1332,9 @@ ul,li {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
 	
-		on Wed Sep 27th 2023
+		on Mon Jul 15th 2024
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

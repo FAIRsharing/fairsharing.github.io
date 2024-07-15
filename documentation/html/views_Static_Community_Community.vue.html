@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
 				</ul>
 			</li>
 			
@@ -533,6 +533,7 @@
         Governance
       &lt;/h3>
       &lt;!--   Meet the team   -->
+      &lt;a id="team" />
       &lt;h4 class="text-h5 mb-2">
         {{ meettheteam.title }}
       &lt;/h4>
@@ -583,6 +584,7 @@
         &lt;/li>
       &lt;/ul>
       &lt;!--  Advisory Board   -->
+      &lt;a id="board" />
       &lt;div
         v-for="(governanceItem,key,index) in governance"
         :key="Object.keys(governanceItem)[index]+'_'+'index'"
@@ -592,14 +594,20 @@
             {{ key }}
           &lt;/h4>
           &lt;div
+            v-for="(itemText,itemIndex) in governance_text"
+            :key="itemText+'_'+itemIndex"
+          >
+            &lt;p
+              class="ma-1"
+              v-html="$sanitize(itemText.text)"
+            />
+          &lt;/div>
+          &lt;div
             v-for="(item,itemIndex) in governanceItem"
             :key="item.title+'_'+itemIndex"
-            class="ml-8"
+            class="mt-5"
           >
             &lt;div class="mb-5">
-              &lt;h4 class="text-h5">
-                {{ item.title }}
-              &lt;/h4>
               &lt;ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 &lt;li
                   v-for="(itemData,itemDataIndex) in item.data"
@@ -659,6 +667,7 @@
           &lt;/div>
         &lt;/div>
       &lt;/div>
+      &lt;a id="rda" />
       &lt;!--   RDA FAIRsharing WG    -->
       &lt;h4 class="text-h5 mb-2">
         {{ rda.title }}
@@ -718,6 +727,29 @@
           &lt;/div>
         &lt;/div>
       &lt;/div>
+      &lt;div>
+        &lt;p
+          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        >
+          &lt;a
+            href="https://zulip.com/"
+            target="_blank"
+          >
+            &lt;img
+              height="27px"
+              width="27px"
+              src="/assets/icons/zulip-icon.png"
+            >
+          &lt;/a>
+          We'd like to thank &lt;a
+            href="https://zulip.com/"
+            target="_blank"
+            class="underline-effect"
+          >Zulip&lt;/a>
+          for access to their community plan, which helps both our core team and our champions.
+          Zulip is an open-source modern team chat app designed to keep both live and asynchronous conversations organized.
+        &lt;/p>
+      &lt;/div>
     &lt;/section>
 
     &lt;!-- eslint-enable vue/no-v-html -->
@@ -726,64 +758,66 @@
 
 &lt;script>
 /**
-* All static pages will be handle through this namespace
-* @namespace Static
-*/
-import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {externalLinks, contentTabs, tables, governance, meettheteam, rda} from "@/data/communityPageData.json"
-import Icon from "@/components/Icon";
+ * All static pages will be handle through this namespace
+ * @namespace Static
+ */
 import {isArray} from "lodash";
+
+import Icon from "@/components/Icon";
+import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import communityData from "@/data/communityPageData.json"
 /** This component handles the sign-up/register page
-* @memberOf Static
-* @name Community
-* @type module
-* @instance
-* */
+ * @memberOf Static
+ * @name Community
+ * @type module
+ * @instance
+ * */
 export default {
-  name: "Community",
-  components: {Icon, ActivitiesStaticTable},
-  title: "This will be the community page",
-  data: () => {
-    return {
-      applyCss: false,
-      currentAnchor:'',
-      externalLinks,
-      contentTabs,
-      tables,
-      governance,
-      meettheteam,
-      Icon,
-      rda
-    }
-  },
-  watch: {
-    $route: {
-      deep:true,
-      handler() {
-        this.applyCss = false
-        this.$nextTick(() => {
-          this.applyCss = true
-        })
-      }
-    }
-  },
-  created() {
-    this.$nextTick(() => {
-      // update the UI padding and margin after DOM is fully loaded.
-      this.applyCss = true
-    })
-  },
-  methods: {
-    jumpToAnchor(selectedAnchor) {
-      if (selectedAnchor !== this.currentAnchor) {
-        this.$router.push({hash: `${selectedAnchor}`});
-        this.currentAnchor = selectedAnchor;
-      }
+    name: "Community",
+    components: {Icon, ActivitiesStaticTable},
+    title: "This will be the community page",
+    data: () => {
+        return {
+            contentTabs:  communityData.contentTabs,
+            externalLinks:  communityData.externalLinks,
+            governance:  communityData.governance,
+            governance_text:  communityData.governance_text,
+            meettheteam:  communityData.meettheteam,
+            rda:  communityData.rda,
+            tables:  communityData.tables,
+            applyCss: false,
+            currentAnchor:'',
+            Icon
+        }
     },
-    isArray(input){
-      return isArray(input)
+    watch: {
+        $route: {
+            deep:true,
+            handler() {
+                this.applyCss = false
+                this.$nextTick(() => {
+                    this.applyCss = true
+                })
+            }
+        }
+    },
+    created() {
+        this.$nextTick(() => {
+            // update the UI padding and margin after DOM is fully loaded.
+            this.applyCss = true
+        })
+    },
+    methods: {
+        jumpToAnchor(selectedAnchor) {
+            if (selectedAnchor !== this.currentAnchor) {
+                this.$router.push({hash: `${selectedAnchor}`});
+                this.currentAnchor = selectedAnchor;
+            }
+        },
+        isArray(input){
+            return isArray(input)
+        }
     }
-  }
 }
 &lt;/script>
 
@@ -856,8 +890,7 @@ td {
   white-space: break-spaces;
 }
 
-&lt;/style>
-</pre>
+&lt;/style></pre>
     </article>
 </section>
 
@@ -900,9 +933,9 @@ td {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
 	
-		on Wed Sep 27th 2023
+		on Mon Jul 15th 2024
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

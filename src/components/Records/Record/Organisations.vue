@@ -144,7 +144,7 @@
       v-else
       class="ma-0 full-width ml-md-12 ml-13"
     >
-      Not applicable
+      N/A
     </p>
   </div>
   <div
@@ -153,7 +153,7 @@
   >
     <b class="width-15-percent-flex">Organisations</b>
     <p class="ma-0 full-width ml-md-12 ml-13">
-      Not applicable
+      N/A
     </p>
   </div>
 </template>

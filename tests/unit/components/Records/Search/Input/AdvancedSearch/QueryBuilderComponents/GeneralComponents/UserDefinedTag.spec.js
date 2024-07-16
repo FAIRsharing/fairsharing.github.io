@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import UserDefinedTag from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UserDefinedTag.vue";
+import UserDefinedTag from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/UserDefinedTag.vue";
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import userDefinedTagsSearch from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 

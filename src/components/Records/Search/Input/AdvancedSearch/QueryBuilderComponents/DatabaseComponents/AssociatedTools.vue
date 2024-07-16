@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import RadioComponent from "../RadioComponent.vue";
-import TooltipComponent from "../TooltipComponent.vue";
+import RadioComponent from "../UtilComponents/RadioComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "AssociatedTools",

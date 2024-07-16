@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchSubjects"
+      :item-list="getSearchDomains"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -14,13 +14,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import subjectSearch from "@/store";
+import domainsSearch from "@/store";
 
-import AutoCompleteComponent from "./AutoCompleteComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "Subject",
+  name: "Domains",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -33,13 +33,14 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Tags from the FAIRsharing subject ontology. Multiple selections will be joined with OR. Start typing to see Subject tags.",
+        "Tags from the FAIRsharing Domain ontology. Multiple selections will be joined with OR. Start typing to see Domain tags.",
     };
   },
 
   computed: {
-    ...mapGetters("subjectSearch", ["getSearchSubjects", "getLoadingStatus"]),
+    ...mapGetters("domainsSearch", ["getSearchDomains", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+
     model: {
       get() {
         return this.itemSelected;
@@ -61,7 +62,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            subjectSearch.commit("subjectSearch/setSearchSubjects", this.value);
+            domainsSearch.commit("domainsSearch/setSearchDomains", this.value);
           }
         }
       },
@@ -72,18 +73,15 @@ export default {
     //Pre-fill selected values on edit advanced search is clicked and open
     this.itemValue = this.value;
   },
-
   methods: {
-    ...mapActions("subjectSearch", ["fetchSearchSubjects"]),
+    ...mapActions("domainsSearch", ["fetchSearchDomains"]),
+
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchSubjects(queryParams);
+      if (queryParams) this.fetchSearchDomains(queryParams);
     },
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Organisations from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Organisations.vue";
+import Organisations from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Organisations.vue";
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
 

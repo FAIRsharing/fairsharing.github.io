@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchTaxonomies"
+      :item-list="getSearchSubjects"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -14,13 +14,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import taxonomiesSearch from "@/store";
+import subjectSearch from "@/store";
 
-import AutoCompleteComponent from "./AutoCompleteComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "Taxonomies",
+  name: "Subject",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -33,14 +33,13 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Taxonomy terms (a.k.a 'species') relating to a resource. Multiple selections will be joined with OR. Start typing to see Taxonomy terms.",
+        "Tags from the FAIRsharing subject ontology. Multiple selections will be joined with OR. Start typing to see Subject tags.",
     };
   },
 
   computed: {
-    ...mapGetters("taxonomiesSearch", ["getSearchTaxonomies", "getLoadingStatus"]),
+    ...mapGetters("subjectSearch", ["getSearchSubjects", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
-
     model: {
       get() {
         return this.itemSelected;
@@ -62,10 +61,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            taxonomiesSearch.commit(
-              "taxonomiesSearch/setSearchTaxonomies",
-              this.value
-            );
+            subjectSearch.commit("subjectSearch/setSearchSubjects", this.value);
           }
         }
       },
@@ -76,15 +72,18 @@ export default {
     //Pre-fill selected values on edit advanced search is clicked and open
     this.itemValue = this.value;
   },
-  methods: {
-    ...mapActions("taxonomiesSearch", ["fetchSearchTaxonomies"]),
 
+  methods: {
+    ...mapActions("subjectSearch", ["fetchSearchSubjects"]),
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchTaxonomies(queryParams);
+      if (queryParams) this.fetchSearchSubjects(queryParams);
     },
   },
 };
 </script>
+<style lang="scss" scoped>
+@import "@/styles/advancedSearchComponents";
+</style>

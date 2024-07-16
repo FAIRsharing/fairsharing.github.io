@@ -2,9 +2,9 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Countries from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Countries.vue";
+import Domains from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Domains.vue";
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
-import countriesSearch from "@/store/AdvancedSearchComponents/countriesSearch";
+import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
 
 const $router = {
   push: jest.fn(),
@@ -14,11 +14,11 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("Countries.vue", () => {
+describe("Domains.vue", () => {
   let wrapper, store, actions;
   beforeEach(() => {
-    countriesSearch.getters = {
-      getSearchCountries: () => {
+    domainsSearch.getters = {
+      getSearchDomains: () => {
         return ["Test", "Abc"];
       },
     };
@@ -28,17 +28,17 @@ describe("Countries.vue", () => {
       },
     };
     actions = {
-      fetchSearchCountries: jest.fn(),
+      fetchSearchDomains: jest.fn(),
     };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
         actions,
         advancedSearch: advancedSearch,
-        countriesSearch: countriesSearch,
+        domainsSearch: domainsSearch,
       },
     });
-    wrapper = shallowMount(Countries, {
+    wrapper = shallowMount(Domains, {
       localVue,
       vuetify,
       store,
@@ -47,6 +47,6 @@ describe("Countries.vue", () => {
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("Countries");
+    expect(wrapper.vm.$options.name).toBe("Domains");
   });
 });

@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchDomains"
+      :item-list="getSearchTaxonomies"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -14,13 +14,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import domainsSearch from "@/store";
+import taxonomiesSearch from "@/store";
 
-import AutoCompleteComponent from "./AutoCompleteComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "Domains",
+  name: "Taxonomies",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -33,12 +33,12 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Tags from the FAIRsharing Domain ontology. Multiple selections will be joined with OR. Start typing to see Domain tags.",
+        "Taxonomy terms (a.k.a 'species') relating to a resource. Multiple selections will be joined with OR. Start typing to see Taxonomy terms.",
     };
   },
 
   computed: {
-    ...mapGetters("domainsSearch", ["getSearchDomains", "getLoadingStatus"]),
+    ...mapGetters("taxonomiesSearch", ["getSearchTaxonomies", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -62,7 +62,10 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            domainsSearch.commit("domainsSearch/setSearchDomains", this.value);
+            taxonomiesSearch.commit(
+              "taxonomiesSearch/setSearchTaxonomies",
+              this.value
+            );
           }
         }
       },
@@ -74,13 +77,13 @@ export default {
     this.itemValue = this.value;
   },
   methods: {
-    ...mapActions("domainsSearch", ["fetchSearchDomains"]),
+    ...mapActions("taxonomiesSearch", ["fetchSearchTaxonomies"]),
 
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchDomains(queryParams);
+      if (queryParams) this.fetchSearchTaxonomies(queryParams);
     },
   },
 };

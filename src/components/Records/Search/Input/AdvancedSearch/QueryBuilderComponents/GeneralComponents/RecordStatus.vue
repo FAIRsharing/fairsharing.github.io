@@ -4,23 +4,19 @@
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="filteredRecordTypes('Standard')"
+      :item-list="itemList"
       @input="selectedValue"
     />
   </div>
 </template>
+
 <script>
-import { mapActions } from "vuex";
-
-import { recordTypes } from "@/utils/advancedSearchUtils";
-
-import SelectComponent from "../SelectComponent.vue";
-import TooltipComponent from "../TooltipComponent.vue";
+import SelectComponent from "../UtilComponents/SelectComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "StandardRecordType",
+  name: "RecordStatus",
   components: { TooltipComponent, SelectComponent },
-  mixins: [recordTypes],
   props: {
     value: {
       type: Array,
@@ -29,10 +25,10 @@ export default {
   },
   data: () => {
     return {
+      itemList: ["ready", "deprecated", "uncertain", "in_development"],
       itemSelected: [],
       itemValue: [],
-      toolTipText:
-        "The type of record within a FAIRsharing Standard registry. Multiple selections will be joined with OR.",
+      toolTipText: "The status of this resource. Multiple selections will be joined with OR.",
     };
   },
   computed: {
@@ -51,13 +47,11 @@ export default {
     },
   },
   mounted() {
-    this.fetchAllRecordTypes();
     //Pre-fill selected values on edit advanced search fields
     this.itemValue = this.value;
   },
 
   methods: {
-    ...mapActions("recordTypes", ["fetchAllRecordTypes"]),
     selectedValue(item) {
       this.itemSelected = item;
     },

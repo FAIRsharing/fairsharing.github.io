@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchCountries"
+      :item-list="getSearchUserDefinedTags"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -14,13 +14,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import countriesSearch from "@/store";
+import userDefinedTagsSearch from "@/store";
 
-import AutoCompleteComponent from "./AutoCompleteComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "Countries",
+  name: "UserDefinedTag",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -33,12 +33,12 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Countries applicable to this resource or its data. Multiple selections will be joined with OR. Start typing to see Countries.",
+        "Tags created by FAIRsharing's user community. Multiple selections will be joined with OR. Start typing to see UserDefined tags.",
     };
   },
 
   computed: {
-    ...mapGetters("countriesSearch", ["getSearchCountries", "getLoadingStatus"]),
+    ...mapGetters("userDefinedTagsSearch", ["getSearchUserDefinedTags", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -62,8 +62,8 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            countriesSearch.commit(
-              "countriesSearch/setSearchCountries",
+            userDefinedTagsSearch.commit(
+              "userDefinedTagsSearch/setSearchUserDefinedTags",
               this.value
             );
           }
@@ -77,13 +77,13 @@ export default {
     this.itemValue = this.value;
   },
   methods: {
-    ...mapActions("countriesSearch", ["fetchSearchCountries"]),
+    ...mapActions("userDefinedTagsSearch", ["fetchSearchUserDefinedTags"]),
 
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchCountries(queryParams);
+      if (queryParams) this.fetchSearchUserDefinedTags(queryParams);
     },
   },
 };

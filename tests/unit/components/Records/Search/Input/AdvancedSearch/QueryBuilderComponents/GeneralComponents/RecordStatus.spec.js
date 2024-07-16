@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import RecordStatus from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/RecordStatus.vue";
+import RecordStatus from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/RecordStatus.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

@@ -16,8 +16,8 @@ import { mapActions, mapGetters } from "vuex";
 
 import licencesSearch from "@/store";
 
-import AutoCompleteComponent from "./AutoCompleteComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Licences",

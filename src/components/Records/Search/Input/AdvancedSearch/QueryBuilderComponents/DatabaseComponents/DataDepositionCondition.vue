@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import SelectComponent from "../SelectComponent.vue";
-import TooltipComponent from "../TooltipComponent.vue";
+import SelectComponent from "../UtilComponents/SelectComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataDepositionCondition",

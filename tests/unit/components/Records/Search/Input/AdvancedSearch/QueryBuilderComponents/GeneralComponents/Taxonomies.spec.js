@@ -2,9 +2,9 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Subject from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Subject.vue";
+import Taxonomies from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Taxonomies.vue";
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
-import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
+import taxonomiesSearch from "@/store/AdvancedSearchComponents/taxonomiesSearch";
 
 const $router = {
   push: jest.fn(),
@@ -14,11 +14,11 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 let vuetify = new Vuetify();
 
-describe("Subject.vue", () => {
+describe("Taxonomies.vue", () => {
   let wrapper, store, actions;
   beforeEach(() => {
-    subjectSearch.getters = {
-      getSearchSubjects: () => {
+    taxonomiesSearch.getters = {
+      getSearchTaxonomies: () => {
         return ["Test", "Abc"];
       },
     };
@@ -28,17 +28,17 @@ describe("Subject.vue", () => {
       },
     };
     actions = {
-      fetchSearchSubjects: jest.fn(),
+      fetchSearchTaxonomies: jest.fn(),
     };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
         actions,
         advancedSearch: advancedSearch,
-        subjectSearch: subjectSearch,
+        taxonomiesSearch: taxonomiesSearch,
       },
     });
-    wrapper = shallowMount(Subject, {
+    wrapper = shallowMount(Taxonomies, {
       localVue,
       vuetify,
       store,
@@ -47,6 +47,6 @@ describe("Subject.vue", () => {
   });
 
   it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("Subject");
+    expect(wrapper.vm.$options.name).toBe("Taxonomies");
   });
 });

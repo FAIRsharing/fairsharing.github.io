@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Licences from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/Licences.vue";
+import Licences from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Licences.vue";
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
 

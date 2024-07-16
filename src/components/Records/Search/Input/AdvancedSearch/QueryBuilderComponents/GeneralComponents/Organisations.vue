@@ -4,7 +4,7 @@
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
-      :item-list="getSearchUserDefinedTags"
+      :item-list="getSearchOrganisations"
       :loading="getLoadingStatus"
       @input="selectedValue"
       @fetchData="getResults"
@@ -14,13 +14,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import userDefinedTagsSearch from "@/store";
+import organisationSearch from "@/store";
 
-import AutoCompleteComponent from "./AutoCompleteComponent.vue";
-import TooltipComponent from "./TooltipComponent.vue";
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "UserDefinedTag",
+  name: "Organisations",
   components: { TooltipComponent, AutoCompleteComponent },
   props: {
     value: {
@@ -33,12 +33,12 @@ export default {
       itemSelected: [],
       itemValue: [],
       toolTipText:
-        "Tags created by FAIRsharing's user community. Multiple selections will be joined with OR. Start typing to see UserDefined tags.",
+        "Organisations related to this record. Multiple selections will be joined with OR. Start typing to see Organisations.",
     };
   },
 
   computed: {
-    ...mapGetters("userDefinedTagsSearch", ["getSearchUserDefinedTags", "getLoadingStatus"]),
+    ...mapGetters("organisationSearch", ["getSearchOrganisations", "getLoadingStatus"]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -62,8 +62,8 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            userDefinedTagsSearch.commit(
-              "userDefinedTagsSearch/setSearchUserDefinedTags",
+            organisationSearch.commit(
+              "organisationSearch/setSearchOrganisations",
               this.value
             );
           }
@@ -72,18 +72,20 @@ export default {
       immediate: true,
     },
   },
+
   mounted() {
     //Pre-fill selected values on edit advanced search is clicked and open
     this.itemValue = this.value;
   },
+
   methods: {
-    ...mapActions("userDefinedTagsSearch", ["fetchSearchUserDefinedTags"]),
+    ...mapActions("organisationSearch", ["fetchSearchOrganisations"]),
 
     selectedValue(item) {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      if (queryParams) this.fetchSearchUserDefinedTags(queryParams);
+      if (queryParams) this.fetchSearchOrganisations(queryParams);
     },
   },
 };

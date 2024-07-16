@@ -1,19 +1,19 @@
 
 export const StandardRecordType = () =>
-  import("./RecordTypes/StandardRecordType.vue");
+  import("./GeneralComponents/StandardRecordType.vue");
 export const PolicyRecordType = () =>
   import("./PolicyComponents/PolicyRecordType.vue");
-export const Registry = () => import("./Registry.vue");
-export const Subject = () => import("./Subject.vue");
-export const UserDefinedTag = () => import("./UserDefinedTag.vue");
-export const Domain = () => import("./Domains.vue");
-export const RecordStatus = () => import("./RecordStatus.vue");
+export const Registry = () => import("./GeneralComponents/Registry.vue");
+export const Subject = () => import("./GeneralComponents/Subject.vue");
+export const UserDefinedTag = () => import("./GeneralComponents/UserDefinedTag.vue");
+export const Domain = () => import("./GeneralComponents/Domains.vue");
+export const RecordStatus = () => import("./GeneralComponents/RecordStatus.vue");
 
-export const Taxonomies = () => import("./Taxonomies.vue");
+export const Taxonomies = () => import("./GeneralComponents/Taxonomies.vue");
 
-export const Licences = () => import("./Licences.vue");
-export const Organisations = () => import("./Organisations.vue");
-export const Countries = () => import("./Countries.vue")
+export const Licences = () => import("./GeneralComponents/Licences.vue");
+export const Organisations = () => import("./GeneralComponents/Organisations.vue");
+export const Countries = () => import("./GeneralComponents/Countries.vue")
 export const GroupCtrlSlot = () => import("./GroupCtrlSlot/GroupCtrlSlot.vue")
 export const DatabaseRecordType = () =>
   import("./DatabaseComponents/DatabaseRecordType.vue");

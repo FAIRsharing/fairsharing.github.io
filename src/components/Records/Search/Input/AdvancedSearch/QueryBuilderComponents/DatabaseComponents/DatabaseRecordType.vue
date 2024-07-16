@@ -14,8 +14,8 @@ import { mapActions } from "vuex";
 
 import { recordTypes } from "@/utils/advancedSearchUtils";
 
-import SelectComponent from "../SelectComponent.vue";
-import TooltipComponent from "../TooltipComponent.vue";
+import SelectComponent from "../UtilComponents/SelectComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DatabaseRecordType",

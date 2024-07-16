@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "RecommendsStandard",
+      toolTipText: "Does it recommend any standards?",
 
     };
   },

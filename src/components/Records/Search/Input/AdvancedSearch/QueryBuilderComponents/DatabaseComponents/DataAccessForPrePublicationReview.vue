@@ -32,7 +32,7 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The repository have a mechanism to facilitate peer review of embargoed data. Multiple selections will be joined with OR.",
+      toolTipText: "Does the repository have a mechanism to facilitate peer review of embargoed data. Multiple selections will be joined with OR.",
     };
   },
   computed: {

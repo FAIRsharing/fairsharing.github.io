@@ -1,7 +1,8 @@
 
 <template>
-  <div class="query-builder-group-slot__group-control pa-4 d-flex"
-       :class="{'flex-column': $vuetify.breakpoint.smAndDown}"
+  <div
+    class="query-builder-group-slot__group-control pa-4 d-flex"
+    :class="{'flex-column': $vuetify.breakpoint.smAndDown}"
   >
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />

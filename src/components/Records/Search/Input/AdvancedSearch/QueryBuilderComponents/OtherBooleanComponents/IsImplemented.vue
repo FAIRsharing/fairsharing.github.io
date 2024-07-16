@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "IsImplemented",
+      toolTipText: "Implemented by at least one database.",
 
     };
   },

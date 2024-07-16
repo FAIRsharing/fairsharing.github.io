@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "funding bodies’ data policies support justified costs associated with RDM and making data FAIR.",
+      toolTipText: "Funding bodies’ data policies support justified costs associated with RDM and making data FAIR.",
 
     };
   },

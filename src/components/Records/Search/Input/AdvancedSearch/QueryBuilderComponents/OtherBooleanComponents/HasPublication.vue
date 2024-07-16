@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "HasPublication",
+      toolTipText: "Does it have a publication? ",
 
     };
   },

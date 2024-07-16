@@ -32,7 +32,7 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The resource enable modifications to published data (e.g., to correct it or append additional information) and is there a process to distinguish, link and access all public versions of the data. Multiple selections will be joined with OR.",
+      toolTipText: "Does the resource enable modifications to published data (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all public versions of the data? Multiple selections will be joined with OR.",
     };
   },
   computed: {

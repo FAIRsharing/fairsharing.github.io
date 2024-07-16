@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "UsesPersistentIdentifier",
+      toolTipText: "Does it have persistent identifiers?",
 
     };
   },

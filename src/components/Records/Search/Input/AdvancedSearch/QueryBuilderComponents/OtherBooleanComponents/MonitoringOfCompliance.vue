@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "MonitoringOfCompliance",
+      toolTipText: "'Yes' is applicable when the policy makes clear whether compliance will be monitored and provides clarity on related rewards or penalties. When the policy lacks clarity, or does not address this topic, 'no' is used.",
 
     };
   },

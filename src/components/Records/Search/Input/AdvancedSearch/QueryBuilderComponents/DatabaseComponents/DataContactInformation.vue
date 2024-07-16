@@ -32,7 +32,7 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The contact information for a piece of data within a database may be for an organisation or an individual (or group of individuals), depending on who has ownership of that data. Multiple selections will be joined with OR.",
+      toolTipText: "Does the repository show data depositor contact information on dataset landing pages? Multiple selections will be joined with OR.",
     };
   },
   computed: {

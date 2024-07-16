@@ -25,7 +25,7 @@ export default {
   data: () => {
     return {
       itemValue:"",
-      toolTipText: "GuidanceToHelpEnableCompliance",
+      toolTipText: "'Yes' is applicable when associated guidance is provided to help researchers adhere to the policy. When the policy lacks clarity, or does not address this topic, 'no' is used.",
 
     };
   },

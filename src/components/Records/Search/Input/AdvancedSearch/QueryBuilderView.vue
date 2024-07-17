@@ -315,7 +315,7 @@ export default {
           },
           {
             identifier: "mandatedDmpCreation",
-            name: "Mandated Dmp Creation",
+            name: "Mandated DMP Creation",
             component: MandatedDmpCreation,
             initialValue: () => [],
           },
@@ -327,7 +327,7 @@ export default {
           },
           {
             identifier: "timingOfDmp",
-            name: "Timing Of Dmp",
+            name: "Timing Of DMP",
             component: TimingOfDmp,
             initialValue: () => [],
           },
@@ -363,19 +363,19 @@ export default {
           },
           {
             identifier: "recommendsDatabase",
-            name: "Recommends Database",
+            name: "Recommends At Least One Database",
             component: RecommendsDatabase,
             initialValue: "",
           },
           {
             identifier: "recommendsStandard",
-            name: "Recommends Standard",
+            name: "Recommends At Least One Standard",
             component: RecommendsStandard,
             initialValue: "",
           },
           {
             identifier: "updatingOfDmp",
-            name: "Updating Of Dmp",
+            name: "Updating of DMP",
             component: UpdatingOfDmp,
             initialValue: "",
           },

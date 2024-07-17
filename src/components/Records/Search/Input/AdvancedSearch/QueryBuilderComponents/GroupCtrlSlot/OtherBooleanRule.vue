@@ -9,7 +9,7 @@
         disabled
         value=""
       >
-        Select an additional rule
+        Select a standards rule
       </option>
       <option
         v-for="rule in otherBooleanQueryBuilderComponents()"
@@ -32,14 +32,8 @@
 import { sortBy } from "lodash"
 
 import {
-  GuidanceToHelpEnableCompliance,
-  HasPublication,
   IsImplemented,
-  MonitoringOfCompliance,
-  RecommendsDatabase,
-  RecommendsStandard,
-  UpdatingOfDmp,
-  UsesPersistentIdentifier} from "../index";
+} from "../index";
 export default {
   name: "OtherBooleanRule",
   props: {
@@ -61,48 +55,6 @@ export default {
           identifier: "isImplemented",
           name: "Is Implemented",
           component: IsImplemented,
-          initialValue: "",
-        },
-        {
-          identifier: "hasPublication",
-          name: "Has Publication",
-          component: HasPublication,
-          initialValue: "",
-        },
-        {
-          identifier: "usesPersistentIdentifier",
-          name: "Uses Persistent Identifier",
-          component: UsesPersistentIdentifier,
-          initialValue: "",
-        },
-        {
-          identifier: "recommendsDatabase",
-          name: "Recommends Database",
-          component: RecommendsDatabase,
-          initialValue: "",
-        },
-        {
-          identifier: "recommendsStandard",
-          name: "Recommends Standard",
-          component: RecommendsStandard,
-          initialValue: "",
-        },
-        {
-          identifier: "updatingOfDmp",
-          name: "Updating Of Dmp",
-          component: UpdatingOfDmp,
-          initialValue: "",
-        },
-        {
-          identifier: "guidanceToHelpEnableCompliance",
-          name: "Guidance To Help Enable Compliance",
-          component: GuidanceToHelpEnableCompliance,
-          initialValue: "",
-        },
-        {
-          identifier: "monitoringOfCompliance",
-          name: "Monitoring Of Compliance",
-          component: MonitoringOfCompliance,
           initialValue: "",
         },
       ], "name")

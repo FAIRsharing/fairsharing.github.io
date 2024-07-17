@@ -44,7 +44,8 @@ import {
   DataPreservationPolicy,
   DataProcessesAndConditions,
   DataVersioning,
-  ResourceSustainability
+  ResourceSustainability,
+  UsesPersistentIdentifier
 } from "../index";
 export default {
   name: "DatabaseRule",
@@ -139,6 +140,12 @@ export default {
           identifier: "resourceSustainability",
           name: "Resource Sustainability",
           component: ResourceSustainability,
+          initialValue: "",
+        },
+        {
+          identifier: "usesPersistentIdentifier",
+          name: "Uses Persistent Identifier",
+          component: UsesPersistentIdentifier,
           initialValue: "",
         },
       ], "name")

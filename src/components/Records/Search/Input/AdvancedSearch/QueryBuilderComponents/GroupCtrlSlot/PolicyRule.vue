@@ -37,13 +37,17 @@ import {
   DataPreservation,
   DataProtection,
   ExceptionsToDataSharing,
+  GuidanceToHelpEnableCompliance,
   LicencesForOutputs,
   MandatedDataSharing,
   MandatedDmpCreation,
+  MonitoringOfCompliance,
   PolicyRecordType,
+  RecommendsDatabase,
+  RecommendsStandard,
   SharingResearchSoftware,
   SupportedCosts,
-  TimingOfDmp
+  TimingOfDmp, UpdatingOfDmp
 } from "../index";
 export default {
   name: "PolicyRule",
@@ -118,7 +122,7 @@ export default {
         },
         {
           identifier: "mandatedDmpCreation",
-          name: "Mandated Dmp Creation",
+          name: "Mandated DMP Creation",
           component: MandatedDmpCreation,
           initialValue: () => [],
         },
@@ -130,10 +134,40 @@ export default {
         },
         {
           identifier: "timingOfDmp",
-          name: "Timing Of Dmp",
+          name: "Timing Of DMP",
           component: TimingOfDmp,
           initialValue: () => [],
-        }
+        },
+        {
+          identifier: "guidanceToHelpEnableCompliance",
+          name: "Guidance To Help Enable Compliance",
+          component: GuidanceToHelpEnableCompliance,
+          initialValue: "",
+        },
+        {
+          identifier: "monitoringOfCompliance",
+          name: "Monitoring Of Compliance",
+          component: MonitoringOfCompliance,
+          initialValue: "",
+        },
+        {
+          identifier: "recommendsDatabase",
+          name: "Recommends At Least One Database",
+          component: RecommendsDatabase,
+          initialValue: "",
+        },
+        {
+          identifier: "recommendsStandard",
+          name: "Recommends At Least One Standard",
+          component: RecommendsStandard,
+          initialValue: "",
+        },
+        {
+          identifier: "updatingOfDmp",
+          name: "Updating of DMP",
+          component: UpdatingOfDmp,
+          initialValue: "",
+        },
       ], "name")
     },
 

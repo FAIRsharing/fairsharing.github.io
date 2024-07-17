@@ -9,7 +9,7 @@
         disabled
         value=""
       >
-        Select a rule
+        Select a generic rule
       </option>
       <option
         v-for="rule in generalQueryBuilderComponents()"
@@ -31,7 +31,7 @@
 <script>
 import {
   Countries,
-  Domain,
+  Domain, HasPublication,
   Licences,
   Organisations,
   RecordStatus,
@@ -117,6 +117,12 @@ export default {
           name: "Organisations",
           component: Organisations,
           initialValue: () => [],
+        },
+        {
+          identifier: "hasPublication",
+          name: "Has Publication",
+          component: HasPublication,
+          initialValue: "",
         },
       ]
     },

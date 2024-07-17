@@ -7,14 +7,14 @@
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />
     <div class="slotSpacer" />
-    <!-- Other Boolean Component -->
-    <OtherBooleanRule :group-ctrl="groupCtrl" />
-    <div class="slotSpacer" />
     <!-- Database Component -->
     <DatabaseRule :group-ctrl="groupCtrl" />
     <div class="slotSpacer" />
     <!-- Policy Component -->
     <PolicyRule :group-ctrl="groupCtrl" />
+    <div class="slotSpacer" />
+    <!-- Other Boolean/Standard Component -->
+    <OtherBooleanRule :group-ctrl="groupCtrl" />
     <div class="query-builder-group-slot__spacer" />
     <button
       class="query-builder-group-slot__group-adding-button"

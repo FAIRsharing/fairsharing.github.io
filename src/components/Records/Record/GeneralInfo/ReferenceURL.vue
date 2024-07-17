@@ -1,6 +1,15 @@
 <template>
   <div
-    v-if="getField('homepage') !== getField('metadata').reference_url"
+    v-if="getField('homepage') === getField('metadata').reference_url"
+    class="d-flex flex-row mt-4 align-center min-height-40"
+  >
+    <b class="width-15-percent-flex">Reference URL</b>
+    <div class="d-flex full-width ml-md-12 ml-13">
+      As above
+    </div>
+  </div>
+  <div
+    v-else-if="getField('metadata').reference_url"
     class="d-flex flex-row mt-4 align-center min-height-40"
   >
     <b class="width-15-percent-flex">Reference URL</b>
@@ -23,7 +32,7 @@
   >
     <b class="width-15-percent-flex">Reference URL</b>
     <div class="d-flex full-width ml-md-12 ml-13">
-      Not Available
+      N/A
     </div>
   </div>
 </template>

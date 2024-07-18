@@ -1053,6 +1053,24 @@ class RESTClient {
     let response = await _client.executeQuery(request);
     return response.data;
   }
+
+  /**
+   * Update the saved search
+   * @param {Object} saveSearchObj - save search object having required parameters
+   * @param {String} jwt the user token
+   * @returns {Promise}
+   */
+  async updateSaveSearch(saveSearchObj, jwt) {
+    let _client = this;
+    const request = {
+      method: "put",
+      baseURL: _client.baseURL + "/saved_searches/" + saveSearchObj.id,
+      headers: this.auth_headers(jwt),
+      data: { saved_search: saveSearchObj },
+    };
+    let response = await _client.executeQuery(request);
+    return response.data;
+  }
 }
 
 export default RESTClient;

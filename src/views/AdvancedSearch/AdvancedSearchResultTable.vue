@@ -248,10 +248,16 @@ export default {
               } else {
                 let advancedSearchParams = {
                   identifier: "",
-                  value: [],
+                  value: [] || Boolean,
                 };
                 advancedSearchParams["identifier"] = paramValues[0];
-                advancedSearchParams["value"] = paramValues[1].split(",");
+                // For boolean/string values
+                if ((paramValues[1] === "true") || paramValues[1] === "false") {
+                  advancedSearchParams["value"] = paramValues[1];
+                }
+                else {
+                  advancedSearchParams["value"] = paramValues[1].split(",");
+                }
                 searchObj["children"].push(advancedSearchParams);
               }
             });

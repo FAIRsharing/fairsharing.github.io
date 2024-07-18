@@ -143,9 +143,10 @@
 </template>
 
 <script>
+import { isBoolean } from "lodash";
 import { mapActions, mapGetters } from "vuex";
 
-import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/TooltipComponent.vue";
+import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/TooltipComponent.vue";
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
 import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
@@ -189,7 +190,7 @@ export default {
       ) {
         this.getAdvancedSearch["children"].forEach(({ children }) => {
           if (children && children.length) {
-            isTrue = children.every(({ value: { length } }) => length);
+            isTrue = children.every(({ value }) => value.length || isBoolean(value));
             isTrueArr.push(isTrue);
           }
         });

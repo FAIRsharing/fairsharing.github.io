@@ -1,4 +1,5 @@
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
+import {isBoolean} from "lodash";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
@@ -36,7 +37,7 @@ const actions = {
       state.advancedSearch["children"].forEach((item) => {
         if (item["children"] && item["children"].length) {
           let fieldsObj = {};
-          let fieldValue = [];
+          let fieldValue = [] || Boolean;
           let fieldTypeValue = [];
           fieldsObj["operator"] = item["operatorIdentifier"];
           const mergedValues = uniqueValues(item["children"]);
@@ -56,14 +57,28 @@ const actions = {
               fieldTypeValue = fieldTypeValue.flatMap((value) => value);
               fieldValue = fieldTypeValue;
             } else {
+
               if (Array.isArray(params["value"])) {
                 fieldValue = params["value"];
-              } else if (params["value"]) {
-                fieldValue = [params["value"]];
+              }
+              else if (isBoolean(params["value"])) {
+                fieldValue = params["value"];
+              }
+              else if (params["value"]) {
+                //When string is boolean value, convert to boolean format
+                if((params["value"] === "true") || (params["value"] === "false")) {
+                  fieldValue = JSON.parse(params["value"]);
+                } else {
+                  fieldValue = [params["value"]];
+                }
+
               }
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
+              fieldsObj[fieldKey] = fieldValue;
+            }
+            else if(isBoolean(fieldValue)) {
               fieldsObj[fieldKey] = fieldValue;
             }
           });

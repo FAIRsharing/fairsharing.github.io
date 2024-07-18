@@ -14,3 +14,24 @@
     }
   }
 }
+
+// Styling for checkbox
+.v-input--checkbox::v-deep {
+  .v-input--selection-controls__input {
+    margin-right: 0;
+  }
+  .v-messages {
+    display: none
+  }
+}
+
+//Styling for radio
+.v-input--radio-group::v-deep {
+  .v-icon {
+    background-color: white;
+    border-radius: 50%
+  }
+  .v-messages {
+    display: none
+  }
+}

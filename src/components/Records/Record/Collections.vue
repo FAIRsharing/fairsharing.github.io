@@ -204,6 +204,7 @@ export default {
             }
             //Save searches for the policy
             else if (tabName === 'conforming_resources') {
+              console.log("Hi")
               _module.tabsData.tabs[tabName].data =
                   _module.currentRecord['fairsharingRecord'].savedSearches
 

@@ -1056,15 +1056,16 @@ class RESTClient {
 
   /**
    * Update the saved search
+   * @param {Number} saveSearchId - save search id
    * @param {Object} saveSearchObj - save search object having required parameters
    * @param {String} jwt the user token
    * @returns {Promise}
    */
-  async updateSaveSearch(saveSearchObj, jwt) {
+  async updateSaveSearch(saveSearchId, saveSearchObj, jwt) {
     let _client = this;
     const request = {
       method: "put",
-      baseURL: _client.baseURL + "/saved_searches/" + saveSearchObj.id,
+      baseURL: _client.baseURL + "/saved_searches/" + saveSearchId,
       headers: this.auth_headers(jwt),
       data: { saved_search: saveSearchObj },
     };

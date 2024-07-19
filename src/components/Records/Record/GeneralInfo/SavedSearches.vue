@@ -51,41 +51,41 @@
         v-if="user().is_super_curator"
         rounded
         text
-        @click="confirmDeleteSavedSearch(search)"
+        @click="confirmunlinkSavedSearch(search)"
       >
-        <v-icon>mdi-delete</v-icon>
+        <v-icon>mdi-link-off</v-icon>
       </v-btn>
     </div>
 
 
-    <!-- Delete dialog box -->
+    <!-- Unlink dialog box -->
     <v-dialog
-      v-model="confirmDelete"
+      v-model="confirmUnlink"
       max-width="700px"
       persistent
     >
-      <!-- Delete saved search -->
-      <v-card v-if="deleteSavedSearchCard">
+      <!-- Unlink saved search -->
+      <v-card v-if="unlinkSavedSearchCard">
         <v-card-title class="text-h5">
-          Deleting saved search
+          Unlinking saved search
         </v-card-title>
         <v-card-text>
-          This is will delete all instances of the search from FAIRsharing
+          This is will unlink instance of the search from this policy record.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
             class="white--text"
             color="accent3"
-            @click="deleteSavedSearch(false)"
+            @click="unlinkSavedSearch(false)"
           >
             Cancel
           </v-btn>
           <v-btn
             class="white--text"
             color="success"
-            :loading="deleteLoader"
-            @click="deleteSavedSearch(true)"
+            :loading="unlinkLoader"
+            @click="unlinkSavedSearch(true)"
           >
             OK
           </v-btn>
@@ -101,6 +101,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
+import saveSearch from "@/store";
 
 const restClient = new RestClient();
 export default {
@@ -109,10 +110,10 @@ export default {
   data: () => {
     return {
       getSavedSearches: [],
-      confirmDelete: false,
-      deleteSavedSearchCard: false,
+      confirmUnlink: false,
+      unlinkSavedSearchCard: false,
       selectedItem: {},
-      deleteLoader: false,
+      unlinkLoader: false,
     };
   },
   computed: {
@@ -126,36 +127,78 @@ export default {
   methods: {
     ...mapActions("record", ["fetchRecord"]),
     /**
-     * Confirmation dialog to delete the saved search
+     * Confirmation dialog to unlink the saved search
      */
-    confirmDeleteSavedSearch(item) {
+    confirmunlinkSavedSearch(item) {
       this.selectedItem = item;
-      this.confirmDelete = true;
-      this.deleteSavedSearchCard = true;
+      console.log("this.selectedItem::", this.selectedItem)
+      this.confirmUnlink = true;
+      this.unlinkSavedSearchCard = true;
     },
+
     /**
-     * Delete the saved search
+     * Unlink the saved search
      * @param del - Boolean
      */
-    async deleteSavedSearch(del) {
+    async unlinkSavedSearch(del) {
       if (del) {
-        this.deleteLoader = true;
-        let data = await restClient.deleteSavedSearch(
-          this.selectedItem["id"],
-          this.user().credentials.token
+        this.unlinkLoader = true;
+        //Filter the currentRecord to unlink
+        let linkRecord = this.selectedItem.fairsharingRecords.filter(({id}) => id !== this.currentRecord.fairsharingRecord.id);
+
+        //Array of id of the remaining record
+        linkRecord = linkRecord.map(({id}) => id)
+
+        let saveSearchObj = {
+          fairsharing_record_ids: linkRecord,
+        };
+
+        let updatedSearchResult = await restClient.updateSaveSearch(
+            this.selectedItem["id"],
+            saveSearchObj,
+            this.user().credentials.token
         );
-        if (data["message"] === "success") {
-          await this.fetchRecord({
-            id: this.currentRecord.fairsharingRecord.id,
-            token: this.user().credentials.token,
-          });
-          this.getSavedSearches = this.getField("savedSearches");
-        }
+
+        //Commit the updated result to store
+        saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
+
+        //Update the page after unlinking the savedSearch
+        await this.fetchRecord({
+          id: this.currentRecord.fairsharingRecord.id,
+          token: this.user().credentials.token,
+        });
+
+        this.getSavedSearches = this.getField("savedSearches");
       }
-      this.deleteLoader = false;
-      this.deleteSavedSearchCard = false;
-      this.confirmDelete = false;
+      this.unlinkLoader = false;
+      this.unlinkSavedSearchCard = false;
+      this.confirmUnlink = false;
+
     },
+
+    // /**
+    //  * Delete the saved search
+    //  * @param del - Boolean
+    //  */
+    // async unlinkSavedSearch(del) {
+    //   if (del) {
+    //     this.unlinkLoader = true;
+    //     let data = await restClient.unlinkSavedSearch(
+    //       this.selectedItem["id"],
+    //       this.user().credentials.token
+    //     );
+    //     if (data["message"] === "success") {
+    //       await this.fetchRecord({
+    //         id: this.currentRecord.fairsharingRecord.id,
+    //         token: this.user().credentials.token,
+    //       });
+    //       this.getSavedSearches = this.getField("savedSearches");
+    //     }
+    //   }
+    //   this.unlinkLoader = false;
+    //   this.unlinkSavedSearchCard = false;
+    //   this.confirmUnlink = false;
+    // },
   },
 };
 </script>

@@ -51,7 +51,7 @@
         v-if="user().is_super_curator"
         rounded
         text
-        @click="confirmunlinkSavedSearch(search)"
+        @click="confirmUnlinkSavedSearch(search)"
       >
         <v-icon>mdi-link-off</v-icon>
       </v-btn>
@@ -126,12 +126,12 @@ export default {
   },
   methods: {
     ...mapActions("record", ["fetchRecord"]),
+
     /**
      * Confirmation dialog to unlink the saved search
      */
-    confirmunlinkSavedSearch(item) {
+    confirmUnlinkSavedSearch(item) {
       this.selectedItem = item;
-      console.log("this.selectedItem::", this.selectedItem)
       this.confirmUnlink = true;
       this.unlinkSavedSearchCard = true;
     },

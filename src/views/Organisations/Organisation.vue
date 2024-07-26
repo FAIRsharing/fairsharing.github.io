@@ -151,9 +151,9 @@
               :key="search.id"
               variant="elevated"
               :close="user().is_super_curator? true:false"
-              close-icon="mdi-delete"
+              close-icon="mdi-link-off"
               class="ma-1"
-              @click:close="confirmDeleteSavedSearch(search)"
+              @click:close="confirmUnlinkSavedSearch(search)"
             >
               <a
                 class="black--text"
@@ -461,18 +461,18 @@
           <v-spacer />
         </v-card-actions>
       </v-card>
-      <!-- Delete saved search -->
-      <v-card v-if="deleteSavedSearchCard">
+      <!-- Unlink saved search -->
+      <v-card v-if="unlinkSavedSearchCard">
         <v-card-title class="text-h5">
-          Deleting saved search
+          Unlinking saved search
         </v-card-title>
-        <v-card-text>This is will delete all instances of the search from FAIRsharing</v-card-text>
+        <v-card-text>This is will unlink saved search from this organisaton</v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
             class="white--text"
             color="accent3"
-            @click="deleteSavedSearch(false)"
+            @click="unlinkSavedSearch(false)"
           >
             Cancel
           </v-btn>
@@ -480,7 +480,7 @@
             class="white--text"
             color="success"
             :loading="deleteLoader"
-            @click="deleteSavedSearch(true)"
+            @click="unlinkSavedSearch(true)"
           >
             OK
           </v-btn>
@@ -499,6 +499,7 @@ import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisa
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import saveSearch from "@/store";
 import { isImage, isRequired, isUrl } from "@/utils/rules.js"
 import { cleanString } from "@/utils/stringUtils"
 import NotFound from "@/views/Errors/404"
@@ -566,7 +567,7 @@ export default {
       },
       confirmDelete: false,
       deleteOrganisationCard: false,
-      deleteSavedSearchCard: false,
+      unlinkSavedSearchCard: false,
       selectedItem: {},
       deleteLoader: false
     }
@@ -739,14 +740,14 @@ export default {
     confirmDeleteOrganisation(){
       this.confirmDelete = true;
       this.deleteOrganisationCard = true;
-      this.deleteSavedSearchCard = false;
+      this.unlinkSavedSearchCard = false;
     },
     /**
      * Delete the organisation and redirect to organisation search page after deletion
      * @param del - Boolean
      */
     async deleteOrganisation(del) {
-      this.deleteSavedSearchCard = false;
+      this.unlinkSavedSearchCard = false;
       if (del) {
         let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
 
@@ -760,29 +761,43 @@ export default {
     },
 
     /**
-     * Confirmation dialog to delete the saved search
+     * Confirmation dialog to unlink the saved search
      */
-    confirmDeleteSavedSearch(item){
+    confirmUnlinkSavedSearch(item){
       this.selectedItem = item;
       this.confirmDelete = true;
       this.deleteOrganisationCard = false;
-      this.deleteSavedSearchCard = true;
+      this.unlinkSavedSearchCard = true;
     },
     /**
-     * Delete the saved search
+     * Unlink the saved search
      * @param del - Boolean
      */
-    async deleteSavedSearch(del) {
+    async unlinkSavedSearch(del) {
       this.deleteOrganisationCard = false;
       if (del) {
         this.deleteLoader = true;
-        let data = await restClient.deleteSavedSearch(this.selectedItem["id"], this.user().credentials.token);
-        if (data["message"] === "success") {
+        //Filter the currentOrganisation to unlink
+        let linkOrganisation = this.organisation.savedSearches
+            .filter(({id}) => id !== this.selectedItem.id);
+
+        //Array of id of the remaining organisation
+        linkOrganisation = linkOrganisation.map(({id}) => id)
+        let saveSearchObj = {
+          organisation_ids: linkOrganisation,
+        };
+
+        let updatedSearchResult = await restClient.updateSaveSearch(
+            this.selectedItem["id"],
+            saveSearchObj,
+            this.user().credentials.token
+        );
+        //Commit the updated result to store
+        saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
           await this.getOrganisation();
-        }
       }
       this.deleteLoader = false;
-      this.deleteSavedSearchCard = false;
+      this.unlinkSavedSearchCard = false;
       this.confirmDelete = false;
     },
   },

@@ -175,30 +175,6 @@ export default {
       this.confirmUnlink = false;
 
     },
-
-    // /**
-    //  * Delete the saved search
-    //  * @param del - Boolean
-    //  */
-    // async unlinkSavedSearch(del) {
-    //   if (del) {
-    //     this.unlinkLoader = true;
-    //     let data = await restClient.unlinkSavedSearch(
-    //       this.selectedItem["id"],
-    //       this.user().credentials.token
-    //     );
-    //     if (data["message"] === "success") {
-    //       await this.fetchRecord({
-    //         id: this.currentRecord.fairsharingRecord.id,
-    //         token: this.user().credentials.token,
-    //       });
-    //       this.getSavedSearches = this.getField("savedSearches");
-    //     }
-    //   }
-    //   this.unlinkLoader = false;
-    //   this.unlinkSavedSearchCard = false;
-    //   this.confirmUnlink = false;
-    // },
   },
 };
 </script>

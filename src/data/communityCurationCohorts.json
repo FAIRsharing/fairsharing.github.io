@@ -442,7 +442,7 @@
           },
           {
             "id": 4234,
-            "name": "UK Reproducibility Network"            
+            "name": "UK Reproducibility Network"
           }
         ],
         "scope": "Training, Policies and UKRN link",
@@ -472,7 +472,8 @@
         "linkedin" : "kelly-cobey-b0a83b55",
         "mastodon" : "",
         "logo": "k_cobey.jpg",
-        "year_active": ["2023", "2024"]
+        "year_active": ["2023", "2024"],
+        "hidden": true
       },
       {
         "name": "Yojana Gadiya",
@@ -531,7 +532,8 @@
         "linkedin" : "",
         "mastodon" : "fosstodon.org/@RichardJActon",
         "logo": "r_acton.png",
-        "year_active": ["2023", "2024"]
+        "year_active": ["2023", "2024"],
+        "hidden": true
       },
       {
         "name": "David Tomkins",

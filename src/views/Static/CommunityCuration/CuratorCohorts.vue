@@ -368,7 +368,7 @@ export default {
 
         this.communityCurationCohorts.data = this.communityCurationCohorts.data.sort((a, b) => a.name.localeCompare(b.name))
         this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
-          return curator.year_active.includes(yearSelected.toString())
+          return curator.year_active.includes(yearSelected.toString()) && !curator.hidden
         })
       }
       else {

@@ -149,11 +149,8 @@
             <v-chip
               v-for="search in organisation.savedSearches"
               :key="search.id"
-              variant="elevated"
-              :close="user().is_super_curator? true:false"
-              close-icon="mdi-link-off"
               class="ma-1"
-              @click:close="confirmUnlinkSavedSearch(search)"
+              variant="elevated"
             >
               <a
                 class="black--text"
@@ -161,6 +158,16 @@
               >
                 {{ search.name }}
               </a>
+              <v-icon
+                v-if="user().is_super_curator? true:false"
+                right
+                class="ml-4"
+                size="20"
+                color="error"
+                @click="confirmUnlinkSavedSearch(search)"
+              >
+                mdi-link-off
+              </v-icon>
             </v-chip>
           </div>
         </div>

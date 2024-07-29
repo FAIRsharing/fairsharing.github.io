@@ -34,11 +34,11 @@
         {{ item.comments }}
       </template>
       <template #[`item.record`]="{ item }">
-        <ul>
+        <ul class="pl-0">
           <li
             v-for="record in item.fairsharingRecords"
             :key="record.id"
-            class="mb-2"
+            class="my-2"
           >
             <a :href="`/${record['id']}`">{{ record["name"] }}
             </a>
@@ -46,11 +46,11 @@
         </ul>
       </template>
       <template #[`item.organisation`]="{ item }">
-        <ul>
+        <ul class="pl-0">
           <li
             v-for="organisation in item.organisations"
             :key="organisation.id"
-            class="mb-2"
+            class="my-2"
           >
             <a :href="`/organisations/${organisation['id']}`">{{ organisation["name"] }}
             </a>
@@ -127,6 +127,11 @@ export default {
       totalSearches: [],
       loading: false,
       savedSearchLink: "",
+      perPage: 5,
+      footer: {
+        showFirstLastPage: true,
+        itemsPerPageText: "Saved Search:",
+      },
     };
   },
   computed: {
@@ -135,7 +140,7 @@ export default {
     headers() {
       let headers = [
         { text: "Creator", value: "creator", align: "center", sortable: false },
-        { text: "Date", value: "date", align: "center", width:"110", sortable: false },
+        { text: "Date", value: "date", align: "center", sortable: false },
         { text: "Name", value: "name", align: "center", sortable: false },
         { text: "Comments", value: "comments", align: "center", sortable: false },
         { text: "Record", value: "record", align: "center", sortable: false },
@@ -148,12 +153,6 @@ export default {
         headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
       }
       return headers;
-    },
-    perPage() {
-      return 5;
-    },
-    footer() {
-      return { "items-per-page-options": [5] };
     },
   },
 
@@ -250,3 +249,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.userProfileSavedSearches::v-deep {
+  table {
+    tbody {
+      tr {
+        td {
+          width: 100px;
+          min-width: 100px;
+          max-width: 100px;
+        }
+      }
+    }
+  }
+}
+</style>

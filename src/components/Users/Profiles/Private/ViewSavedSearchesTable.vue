@@ -7,6 +7,7 @@
       :items-per-page="perPage"
       :footer-props="footer"
       calculate-widths
+      mobile-breakpoint="960"
     >
       <template #[`item.creator`]="{ item }">
         <a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
@@ -251,15 +252,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~vuetify/src/styles/settings/_variables.scss';
 .userProfileSavedSearches::v-deep {
   table {
     tbody {
       tr {
-        td {
-          width: 100px;
-          min-width: 100px;
-          max-width: 100px;
-        }
+          td {
+            word-break: break-all;
+            @media #{map-get($display-breakpoints, 'md-and-up')} {
+              width: 100px;
+              min-width: 100px;
+              max-width: 100px;
+            }
+          }
       }
     }
   }

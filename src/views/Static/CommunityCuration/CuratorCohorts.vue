@@ -360,6 +360,15 @@ export default {
   methods: {
     getCuratorsList(yearSelected) {
       if (Object.keys(this.communityCurationCohorts).length) {
+        /*
+         * Due to https://github.com/FAIRsharing/fairsharing.github.io/issues/2371 (i.e. a change in requirements
+         * after building) this has become unnecessarily complex. Curators will need to both set a champion's active
+         * years and an active boolean to have them appear in the correction place. The options are:
+         * -> current year + active => current
+         * -> current year + !active => alumnus
+         * -> previous year + active => invisible
+         * -> previous year + !active => alumnus
+         */
         this.alumniCurator = false
         this.error = false;
         const yearsActiveList = this.communityCurationCohorts.data.map(el => el.year_active)
@@ -368,7 +377,7 @@ export default {
 
         this.communityCurationCohorts.data = this.communityCurationCohorts.data.sort((a, b) => a.name.localeCompare(b.name))
         this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
-          return curator.year_active.includes(yearSelected.toString())
+          return curator.year_active.includes(yearSelected.toString()) && curator.active
         })
       }
       else {
@@ -382,7 +391,7 @@ export default {
       this.alumniCurator = !this.alumniCurator
       if(this.alumniCurator) {
         this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
-          return curator.year_active.every(el => el < new Date().getFullYear())
+          return curator.year_active.every(el => el < new Date().getFullYear()) || !curator.active
         })
         this.year = null;
       } else {

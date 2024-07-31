@@ -24,7 +24,7 @@ describe("CuratorCohorts.vue", function(){
         expect(wrapper.vm.$options.name).toMatch("CuratorCohorts");
         expect(wrapper.vm.communityCurationCohorts.data).toStrictEqual(realData.data);
         let currentCuratorsList = realData.data.filter(curator => {
-          return curator.year_active.includes(new Date().getFullYear().toString())
+          return curator.year_active.includes(new Date().getFullYear().toString()) && curator.active
         })
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(new Date().getFullYear());
@@ -38,7 +38,7 @@ describe("CuratorCohorts.vue", function(){
         wrapper.vm.listAlumni()
         expect(wrapper.vm.alumniCurator).toBe(true)
         let currentCuratorsList = realData.data.filter(curator => {
-          return curator.year_active.every(el => el < new Date().getFullYear())
+          return curator.year_active.every(el => el < new Date().getFullYear()) || !curator.active
         })
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(null);

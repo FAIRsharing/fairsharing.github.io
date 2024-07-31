@@ -107,7 +107,11 @@
       "fields": [
         "id",
         "name",
-        "url"
+        "url",
+        {
+          "queryName": "organisations",
+          "fields": ["id", "name"]
+        }
       ]
     }
   ]

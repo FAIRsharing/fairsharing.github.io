@@ -785,8 +785,8 @@ export default {
       if (del) {
         this.deleteLoader = true;
         //Filter the currentOrganisation to unlink
-        let linkOrganisation = this.organisation.savedSearches
-            .filter(({id}) => id !== this.selectedItem.id);
+        let linkOrganisation = this.selectedItem.organisations
+            .filter(({id}) => id !== this.organisation.id);
 
         //Array of id of the remaining organisation
         linkOrganisation = linkOrganisation.map(({id}) => id)

@@ -59,7 +59,23 @@
         </ul>
       </template>
       <template #[`item.actions`]="{ item }">
+        <!--User logged in and is on its public profile page-->
         <v-icon
+          v-if="Number($route.params.id) === user().id"
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
+        <!--User is on any other user's public profile page-->
+        <v-icon
+          v-else-if="$route.name === 'PublicProfile'"
+          @click="unlinkItem(item)"
+        >
+          mdi-link-off
+        </v-icon>
+        <!--User is on its account profile page-->
+        <v-icon
+          v-else
           @click="deleteItem(item)"
         >
           mdi-delete
@@ -102,6 +118,31 @@
           <v-spacer />
         </v-card-actions>
       </v-card>
+      <!--Unlink -->
+      <v-card v-if="unlinkSavedSearch">
+        <v-card-title class="text-h5">
+          Are you sure you want to unlink this user?
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            @click="unlinkItemConfirm()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -111,6 +152,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
 import advancedSearch from "@/store";
+import saveSearch from "@/store";
 
 const restClient = new RESTClient();
 
@@ -124,6 +166,7 @@ export default {
     return {
       modifyDialog: false,
       deleteSavedSearch: false,
+      unlinkSavedSearch: false,
       selectedItem: {},
       totalSearches: [],
       loading: false,
@@ -161,20 +204,28 @@ export default {
     this.combinedSearches();
   },
   methods: {
-    ...mapActions("users", ["getUser"]),
+    ...mapActions("users", ["getUser", "getPublicUser"]),
     /**
      * Fetch combinedSearches and savedSearches from the props
      * removing the duplicates and displaying in user profile
      * page
      */
-    async combinedSearches(searchDeleted) {
+    async combinedSearches(searchDeleted, searchUnlinked) {
       let createdSearches, savedSearches
 
       if (searchDeleted) {
         await this.getUser();
         createdSearches = this.getUserRecords.user["createdSearches"];
         savedSearches = this.getUserRecords.user["savedSearches"];
-      } else {
+      }
+      else if (searchUnlinked) {
+        let userId = this.$route.params.id;
+        let userR = await this.getPublicUser(userId);
+        await this.getUser();
+        createdSearches = userR.user["createdSearches"];
+        savedSearches = userR.user["savedSearches"];
+      }
+      else {
         createdSearches = this.createdSearches;
         savedSearches = this.savedSearches;
       }
@@ -194,11 +245,12 @@ export default {
 
     /**
      * Delete the selection savedSearch
-     * @param item
+     * @param item - {Object} - Saved Search details
      */
     deleteItem(item) {
       this.selectedItem = item;
       this.modifyDialog = true;
+      this.unlinkSavedSearch = false;
       this.deleteSavedSearch = true;
     },
 
@@ -214,11 +266,57 @@ export default {
       );
 
       if (data["message"] === "success") {
-        await this.combinedSearches(true);
+        await this.combinedSearches(true, false);
       }
       this.loading = false;
       this.deleteSavedSearch = false;
       this.closeDialog();
+    },
+
+    /**
+     * Unlink saved search from the user
+     * @param item - {Object} - Saved Search details
+     */
+    unlinkItem(item) {
+      this.selectedItem = item;
+      this.modifyDialog = true;
+      this.deleteSavedSearch = false;
+      this.unlinkSavedSearch = true;
+    },
+
+    /**
+     * Confirmation dialog to unlink the savedSearch
+     * and close the dialog if pressed OK
+     */
+    async unlinkItemConfirm() {
+      this.loading = true;
+      let additionalUsersArr = this.additionalUsers(this.selectedItem)
+
+      //Filter the user to unlink
+      let linkedUser = additionalUsersArr.filter(({id}) => id !== Number(this.$route.params.id))
+
+      //Array of id of the remaining users
+      linkedUser = linkedUser.map(({id}) => id)
+
+      let saveSearchObj = {
+        user_ids: linkedUser,
+      };
+
+      let updatedSearchResult = await restClient.updateSaveSearch(
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token
+      );
+
+      //Commit the updated result to store
+      saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
+
+      await this.combinedSearches(false, true);
+
+      this.loading = false;
+      this.unlinkSavedSearch = false;
+      this.closeDialog();
+
     },
 
     /**
@@ -246,7 +344,8 @@ export default {
          return e['id'] !== item.creator['id']
       })
       return additionalUsersList;
-    }
+    },
+
   },
 };
 </script>

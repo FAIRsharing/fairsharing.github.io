@@ -1,17 +1,38 @@
 <template>
   <div class="d-flex flex-row mt-4 min-height-40">
-    <b class="width-15-percent-flex">Maintainers</b>
-    <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+    <span
+      class="d-flex align-baseline width-15-percent-flex"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['maintainers'] }}
+      </v-tooltip>
+      <b>Maintainers</b>
+    </span>
+    <div class="d-flex full-width flex-wrap ml-md-12 ml-8">
       <div
         v-if="getField('maintainers').length === 0"
         class="d-flex flex-wrap"
+        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
       >
-        <p class="ma-0 mr-1">
+        <p
+          class="ma-0 mr-1"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+        >
           This record is in need of a maintainer.
         </p>
         <p
           v-if="canClaim && user().isLoggedIn || !canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
         >
           If you are affiliated with this project,
         </p>
@@ -26,16 +47,18 @@
         <p
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
         >
           and claim it now!
         </p>
-        <a
+        <p
           v-if="canClaim"
-          class="underline-effect"
+          class="underline-effect blue--text"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
           @click="()=>{$emit('requestOwnership')}"
         >
           claim it now!
-        </a>
+        </p>
       </div>
       <!--<NoneFound :data-field="getField('maintainers')" />-->
       <!--Contact-->
@@ -88,6 +111,7 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState('users', ["user"]),
+    ...mapState('editor', ['recordTooltips'])
   }
 }
 </script>

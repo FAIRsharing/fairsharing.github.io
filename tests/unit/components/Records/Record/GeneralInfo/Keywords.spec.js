@@ -12,6 +12,18 @@ let $route = {params: {id: "123"}};
 const router = new VueRouter();
 const $router = { push: jest.fn() };
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            subjects: "subject tooltip.",
+            domains: "domain tooltip.",
+            taxonomies: "taxonomy tooltip",
+            user_defined_tags: "user_defined tooltip"
+        }
+    }
+}
+
 Record.state.currentRecord["fairsharingRecord"] = {
     taxonomies: [
         {label: "Turdus turdus"},
@@ -26,7 +38,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record
+        record: Record,
+        editor: editor
     }});
 
 describe("Keywords.vue", function(){

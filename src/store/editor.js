@@ -1,4 +1,5 @@
 import descriptionData from "@/data/fieldsDescription.json"
+import recordTooltipData from "@/data/recordTooltips.json"
 import status from "@/data/status.json"
 import supportLinksTypes from "@/data/SupportLinksTypes.json"
 import RESTClient from "@/lib/Client/RESTClient.js"
@@ -23,6 +24,7 @@ let editorStore = {
         recordTypes: null,
         status: status.status,
         tooltips: descriptionData.descriptions,
+        recordTooltips: recordTooltipData.descriptions,
         tags: [],
         years(){
             let years = [];

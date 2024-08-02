@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-row mt-4 min-height-40">
     <span
-      style="white-space: nowrap;"
+      class="d-flex align-baseline width-15-percent-flex"
     >
       <v-tooltip bottom>
         <template #activator="{ on }">
@@ -15,7 +15,7 @@
         </template>
         {{ recordTooltips['maintainers'] }}
       </v-tooltip>
-      <b class="width-15-percent-flex">Maintainers</b>
+      <b>Maintainers</b>
     </span>
     <div class="d-flex full-width flex-wrap ml-md-12 ml-8">
       <div

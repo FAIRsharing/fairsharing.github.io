@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!--Domains-->
+    <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <span
-        style="white-space: nowrap;"
+        class="d-flex align-baseline width-15-percent-flex"
       >
         <v-tooltip bottom>
           <template #activator="{ on }">
@@ -17,7 +17,7 @@
           </template>
           {{ recordTooltips['subjects'] }}
         </v-tooltip>
-        <b class="width-15-percent-flex">Subjects</b>
+        <b>Subjects</b>
       </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('subjects').length">
@@ -38,10 +38,10 @@
         </v-chip>
       </div>
     </div>
-    <!--Subjects-->
+    <!--Domains-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <span
-        style="white-space: nowrap;"
+        class="d-flex align-baseline width-15-percent-flex"
       >
         <v-tooltip bottom>
           <template #activator="{ on }">
@@ -55,7 +55,7 @@
           </template>
           {{ recordTooltips['domains'] }}
         </v-tooltip>
-        <b class="width-15-percent-flex">Domains</b>
+        <b>Domains</b>
       </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('domains').length">
@@ -79,7 +79,7 @@
     <!--Taxonomic Range-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <span
-        style="white-space: nowrap;"
+        class="d-flex align-baseline width-15-percent-flex"
       >
         <v-tooltip bottom>
           <template #activator="{ on }">
@@ -93,7 +93,7 @@
           </template>
           {{ recordTooltips['taxonomies'] }}
         </v-tooltip>
-        <b class="width-15-percent-flex">Taxonomic Range</b>
+        <b>Taxonomic Range</b>
       </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('taxonomies').length">
@@ -117,7 +117,7 @@
     <!--User Defined Tags-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <span
-        style="white-space: nowrap;"
+        class="d-flex align-baseline width-15-percent-flex"
       >
         <v-tooltip bottom>
           <template #activator="{ on }">
@@ -131,7 +131,7 @@
           </template>
           {{ recordTooltips['user_defined_tags'] }}
         </v-tooltip>
-        <b class="width-15-percent-flex">User Defined Tags</b>
+        <b>User Defined Tags</b>
       </span>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('userDefinedTags').length">

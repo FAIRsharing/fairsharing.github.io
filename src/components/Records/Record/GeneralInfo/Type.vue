@@ -1,19 +1,24 @@
 <template>
   <div class="d-flex flex-row mt-4 align-center">
-    <v-tooltip bottom>
-      <template #activator="{ on }">
-        <v-icon
-          class="mr-2"
-          size="15"
-          v-on="on"
-        >
-          fa-question-circle
-        </v-icon>
-      </template>
-      {{ recordTooltips['record_type'] }}
-    </v-tooltip>
-    <b class="width-15-percent-flex">Type</b>
-    <p class="ma-0 full-width ml-md-6 ml-2">
+    <span
+      class="width-15-percent-flex"
+      style="white-space: nowrap;"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['record_type'] }}
+      </v-tooltip>
+      <b>Type</b>
+    </span>
+    <p class="ma-0 full-width ml-md-12 ml-8 text-justify">
       {{ cleanString(getField('type')) | capitalize }}
     </p>
   </div>

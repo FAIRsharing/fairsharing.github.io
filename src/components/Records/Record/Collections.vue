@@ -42,15 +42,15 @@
         color="accent3"
         slider-color="accent3"
         class="mb-5"
-        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
+        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].type === 'conforming_resources'? !currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
       >
         <v-tab
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
           :key="tabName+'_'+tabIndex"
-          :disabled="tabsData.tabs[tabName].data.length===0"
+          :disabled="tabName === 'conforming_resources' ? !currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[tabName].data.length===0"
           @change="selectedValues=null"
         >
-          {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
+          {{ cleanString(tabName) }} ({{ tabName === 'conforming_resources' ? currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[tabName].count }})
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
@@ -63,7 +63,12 @@
           v-for="(tabItem,tabItemIndex) in filterList"
           :key="tabItem+'_'+tabItemIndex"
         >
+          <SavedSearches
+            v-if="tabItem.type === 'conforming_resources'"
+          />
+
           <v-virtual-scroll
+            v-else
             :items="tabItem.data"
             height="400"
             item-height="130"
@@ -117,6 +122,7 @@
 <script>
 import {mapState} from "vuex";
 
+import SavedSearches from '@/components/Records/Record/GeneralInfo/SavedSearches'
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
@@ -128,6 +134,7 @@ export default {
   components: {
     RecordStatus,
     SectionTitle,
+    SavedSearches
   },
   mixins: [stringUtils, recordTabUtils],
   props:{
@@ -145,11 +152,41 @@ export default {
         tabs: {
           in_collections: {relation: 'collects', data: [], count:0}
         }
-      }
+      },
     }
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
+  },
+  watch:{
+    currentRecord() {
+      let _module = this
+      Object.keys(_module.tabsData.tabs).forEach(tabName => {
+        //Update the count of the conforming resources after unlinking saved search
+        if (tabName === 'conforming_resources') {
+          _module.tabsData.tabs[tabName].count = _module.currentRecord['fairsharingRecord'].savedSearches.length;
+        }
+        //If no saved search is available in conforming resources tab
+        if(!_module.currentRecord['fairsharingRecord'].savedSearches.length) {
+          //If no conforming resources is available then shift focus to Related Policies tab
+          if(tabName === "related_policies") {
+            if(_module.tabsData.tabs[tabName].data.length) {
+              this.tabsData.selectedTab = 1
+            }
+          }
+          //If no related policies is available then shift focus to In collections tab
+          else if(tabName === "in_collections") {
+            if(_module.tabsData.tabs[tabName].data.length) {
+              this.tabsData.selectedTab = 0
+            }
+          }
+          //If nothing is available make all tabs section disabled with its initial value i.e null
+          else {
+            this.selectedValues = null
+          }
+        }
+      })
+    }
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
@@ -161,6 +198,12 @@ export default {
           registry: ['Policy'],
           data: [],
           count:0
+        }
+        _module.tabsData.tabs.conforming_resources = {
+          registry: ['Policy'],
+          data: [],
+          count:0,
+          type:'conforming_resources'
         }
       }
       else {
@@ -188,6 +231,13 @@ export default {
                   item => item.recordAssociationLabel !== 'collects'
               )
               _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
+            }
+            //Save searches for the policy
+            else if (tabName === 'conforming_resources') {
+              _module.tabsData.tabs[tabName].data =
+                  _module.currentRecord['fairsharingRecord'].savedSearches
+
+              _module.tabsData.tabs[tabName].count = _module.currentRecord['fairsharingRecord'].savedSearches.length;
             }
             // All incoming collections.
             else {

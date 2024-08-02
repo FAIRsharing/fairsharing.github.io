@@ -139,11 +139,44 @@
           </p>
         </div>
 
+        <!--- saved searches -->
+        <div
+          v-if="organisation.savedSearches && organisation.savedSearches.length"
+          class="d-flex flex-row mt-4 align-center"
+        >
+          <b class="width-15-percent-flex">Saved Search</b>
+          <div class="d-flex ml-md-12 ml-13">
+            <v-chip
+              v-for="search in organisation.savedSearches"
+              :key="search.id"
+              class="ma-1"
+              variant="elevated"
+            >
+              <a
+                class="black--text"
+                :href="search.url"
+              >
+                {{ search.name }}
+              </a>
+              <v-icon
+                v-if="user().is_super_curator? true:false"
+                right
+                class="ml-4"
+                size="20"
+                color="error"
+                @click="confirmUnlinkSavedSearch(search)"
+              >
+                mdi-link-off
+              </v-icon>
+            </v-chip>
+          </div>
+        </div>
+
         
         <!-- ror link -->
         <p
           v-if="organisation.rorLink"
-          class="d-flex flex-row mt-4 align-center"
+          class="d-flex flex-row mt-4 mb-0 align-center"
         >
           <img
             src="/assets/icons/ror-icon-rbg-32.png"
@@ -159,6 +192,7 @@
         <!-- edit -->
         <p
           v-if="user().is_curator"
+          class="mt-4"
         >
           <v-btn
             class="warning"
@@ -168,7 +202,7 @@
           </v-btn>
           <v-btn
             class="error ml-2"
-            @click="confirmDelete = true"
+            @click="confirmDeleteOrganisation"
           >
             Delete Organisation
           </v-btn>
@@ -399,12 +433,14 @@
         </v-form>
       </v-dialog>
     </v-expand-transition>
+    <!-- Delete dialog box -->
     <v-dialog
       v-model="confirmDelete"
       max-width="700px"
       persistent
     >
-      <v-card>
+      <!-- Delete organisation -->
+      <v-card v-if="deleteOrganisationCard">
         <v-card-title
           class="headline"
         >
@@ -432,6 +468,32 @@
           <v-spacer />
         </v-card-actions>
       </v-card>
+      <!-- Unlink saved search -->
+      <v-card v-if="unlinkSavedSearchCard">
+        <v-card-title class="text-h5">
+          Unlinking saved search
+        </v-card-title>
+        <v-card-text>This is will unlink saved search from this organisaton</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="white--text"
+            color="accent3"
+            @click="unlinkSavedSearch(false)"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            class="white--text"
+            color="success"
+            :loading="deleteLoader"
+            @click="unlinkSavedSearch(true)"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </v-container>
 </template>
@@ -444,6 +506,7 @@ import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisa
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import saveSearch from "@/store";
 import { isImage, isRequired, isUrl } from "@/utils/rules.js"
 import { cleanString } from "@/utils/stringUtils"
 import NotFound from "@/views/Errors/404"
@@ -509,7 +572,11 @@ export default {
         isURL: function(){ return isUrl() },
         isImage: function(){ return isImage() }
       },
-      confirmDelete: false
+      confirmDelete: false,
+      deleteOrganisationCard: false,
+      unlinkSavedSearchCard: false,
+      selectedItem: {},
+      deleteLoader: false
     }
   },
   computed: {
@@ -673,7 +740,21 @@ export default {
       await this.getCountries();
       this.loading = false;
     },
+
+    /**
+     * Confirmation dialog to delete the organisation
+     */
+    confirmDeleteOrganisation(){
+      this.confirmDelete = true;
+      this.deleteOrganisationCard = true;
+      this.unlinkSavedSearchCard = false;
+    },
+    /**
+     * Delete the organisation and redirect to organisation search page after deletion
+     * @param del - Boolean
+     */
     async deleteOrganisation(del) {
+      this.unlinkSavedSearchCard = false;
       if (del) {
         let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
 
@@ -682,9 +763,53 @@ export default {
           window.location.pathname = '/organisations'
         }
       }
+      this.deleteOrganisationCard = false;
       this.confirmDelete = false;
-    }
-  }
+    },
+
+    /**
+     * Confirmation dialog to unlink the saved search
+     */
+    confirmUnlinkSavedSearch(item){
+      this.selectedItem = item;
+      this.confirmDelete = true;
+      this.deleteOrganisationCard = false;
+      this.unlinkSavedSearchCard = true;
+    },
+    /**
+     * Unlink the saved search
+     * @param del - Boolean
+     */
+    async unlinkSavedSearch(del) {
+      this.deleteOrganisationCard = false;
+      if (del) {
+        this.deleteLoader = true;
+        //Filter the currentOrganisation to unlink
+        let linkOrganisation = this.selectedItem.organisations
+            .filter(({id}) => id !== this.organisation.id);
+
+        //Array of id of the remaining organisation
+        linkOrganisation = linkOrganisation.map(({id}) => id)
+        let saveSearchObj = {
+          organisation_ids: linkOrganisation,
+        };
+
+        let updatedSearchResult = await restClient.updateSaveSearch(
+            this.selectedItem["id"],
+            saveSearchObj,
+            this.user().credentials.token
+        );
+        //Commit the updated result to store
+        saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
+          await this.getOrganisation();
+      }
+      this.deleteLoader = false;
+      this.unlinkSavedSearchCard = false;
+      this.confirmDelete = false;
+    },
+  },
+
+
 }
 </script>
 

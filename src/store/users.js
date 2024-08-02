@@ -2,7 +2,7 @@ import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import getAllUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import getPublicUserQuery from "@/lib/GraphClient/queries/getPublicUserMeta.json";
-import getUserEditEventsQuery from '@/lib/GraphClient/queries/getUserEditEvents.json';
+import getUserEditEventsQuery from "@/lib/GraphClient/queries/getUserEditEvents.json";
 import getUserQuery from "@/lib/GraphClient/queries/getUserMeta.json";
 
 import {
@@ -206,6 +206,9 @@ export const mutations = {
     };
     localStorage.setItem("user", JSON.stringify(state.user()));
   },
+  setUserRecords(state, userRecords) {
+    state.userRecords = userRecords;
+  },
 };
 
 export const actions = {
@@ -292,8 +295,10 @@ export const actions = {
       } else {
         getUserQuery.queryParam.id = userMetadata.id;
         graphClient.setHeader(state.state.user().credentials.token);
+
         const userRecords = await graphClient.executeQuery(getUserQuery);
         graphClient.initalizeHeader();
+
         if (userRecords.error) {
           this.commit("users/setError", {
             field: "getUser",
@@ -305,6 +310,7 @@ export const actions = {
             metadata: userMetadata,
             records: userRecords,
           });
+          this.commit("users/setUserRecords", userRecords);
         }
       }
     } catch (e) {
@@ -514,6 +520,11 @@ export const actions = {
     this.commit("users/setMessage", message);
   },
 };
+export const getters = {
+  getUserRecords(state) {
+    return state.userRecords;
+  },
+};
 
 let currentUser = {
   namespaced: true,
@@ -537,10 +548,11 @@ let currentUser = {
       preferences: {},
       deactivated: null,
     },
+    userRecords: {},
   },
   mutations: mutations,
   actions: actions,
-  getters: {},
+  getters: getters,
   modules: {},
 };
 

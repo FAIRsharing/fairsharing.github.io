@@ -11,15 +11,21 @@
     fluid
     class="pa-5 mb-15"
   >
-    <v-btn
-      class="mb-2"
-      color="primary"
-      small
-      @click="downloadResults()"
+    <div
+      :class="
+        $vuetify.breakpoint.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
+      "
     >
-      Download Results
-    </v-btn>
-
+      <v-btn
+        class="mb-2"
+        color="primary"
+        small
+        @click="downloadResults()"
+      >
+        Download Results
+      </v-btn>
+      <SaveSearchButton />
+    </div>
     <p class="body-2 mb-0">
       <v-icon
         x-small
@@ -160,6 +166,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
+import SaveSearchButton from "@/components/Records/Search/SaveSearch/SaveSearchButton.vue";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import TagChips from "@/components/Records/Shared/TagChips.vue";
 import advancedSearch from "@/store";
@@ -167,7 +174,7 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
 export default {
   name: "AdvancedSearchResultTable",
-  components: { RecordStatus, TagChips, ErrorPage },
+  components: { RecordStatus, TagChips, ErrorPage, SaveSearchButton },
   mixins: [recordsCardUtils],
   data() {
     return {
@@ -309,11 +316,18 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .infoIcon {
   border: 1px solid;
   border-radius: 50%;
   padding: 3px 6px;
   margin: -2px 2px 0 0;
+}
+.buttonWrapper {
+  position: relative;
+  .saveSearchResults {
+    position: absolute;
+    left: 40%;
+  }
 }
 </style>

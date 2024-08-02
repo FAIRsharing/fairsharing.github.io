@@ -1,0 +1,13 @@
+{
+  "queryName": "fairsharingRegistry",
+  "queryParam": null,
+  "fields": [
+    {
+      "name": "fairsharingRecords",
+      "fields": [
+        "id",
+        "name"
+      ]
+    }
+  ]
+}

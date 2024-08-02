@@ -1,479 +1,522 @@
-import sinon from "sinon"
-import Vue from "vue"
+import sinon from "sinon";
+import Vue from "vue";
 
-import Client from "@/lib/Client/RESTClient.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import { actions,mutations } from "@/store/users.js"
-import { initUserDataState } from "@/store/utils.js"
+import Client from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import { actions, getters, mutations } from "@/store/users.js";
+import { initUserDataState } from "@/store/utils.js";
 
 Vue.config.silent = true;
 
-describe('Actions/Mutations', () => {
-    let getStub;
-    let restClientStub;
-    let graphStub;
+describe("Actions/Mutations", () => {
+  let getStub;
+  let restClientStub;
+  let graphStub;
 
-    beforeEach(() => {
-        // jest.spyOn(Storage.prototype, 'setItem');
-        jest.spyOn(Storage.prototype, 'removeItem');
-        getStub = sinon.stub(Storage.prototype, 'getItem');
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
-        actions.commit = jest.fn();
-        restClientStub = sinon.stub(Client.prototype, "executeQuery");
-    });
-    afterEach(() => {
-        jest.clearAllMocks();
-        getStub.restore();
-        restClientStub.restore();
-        graphStub.restore();
-    });
+  beforeEach(() => {
+    // jest.spyOn(Storage.prototype, 'setItem');
+    jest.spyOn(Storage.prototype, "removeItem");
+    getStub = sinon.stub(Storage.prototype, "getItem");
+    graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
+    actions.commit = jest.fn();
+    restClientStub = sinon.stub(Client.prototype, "executeQuery");
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+    getStub.restore();
+    restClientStub.restore();
+    graphStub.restore();
+  });
 
-    it("Login: testing no user and valid token", async () => {
-        getStub.withArgs("user").returns(JSON.stringify({
+  it("Login: testing no user and valid token", async () => {
+    getStub.withArgs("user").returns(
+      JSON.stringify({
+        credentials: {
+          username: "Terazus",
+          token: "123",
+          id: 1,
+          tokenValidity: "2042-02-23T13:33:54.175+00:00",
+        },
+      })
+    );
+    let state = {};
+    await actions.login(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/autoLogin");
+  });
+
+  it("Login: testing no user and invalid token", async () => {
+    let state = {};
+    getStub.withArgs("user").returns(
+      JSON.stringify({
+        credentials: {
+          username: "Terazus",
+          token: "123",
+          id: 1,
+          tokenValidity: -1816434501,
+        },
+      })
+    );
+    await actions.login(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "login",
+      message: "You session has expired. Please log in again.",
+    });
+  });
+
+  it("Login: testing no user and no data", async () => {
+    let state = {};
+    getStub.withArgs("user").returns();
+    await actions.login(state);
+    expect(actions.commit).not.toHaveBeenCalled();
+  });
+
+  it("Login: testing with a user and no error", async () => {
+    let state = {};
+    restClientStub.withArgs(sinon.match.any).returns({
+      data: {
+        username: "Terazus",
+        jwt: 123,
+        expiry: 456,
+      },
+    });
+    let user = {
+      name: "Terazus",
+      password: "fakePassword",
+    };
+    await actions.login(state, user);
+    expect(actions.commit).toHaveBeenCalledWith("users/clearMessages");
+    expect(actions.commit).toHaveBeenCalledWith("users/login", {
+      expiry: 456,
+      jwt: 123,
+      username: "Terazus",
+    });
+  });
+
+  it("Login: testing with a user and errors", async () => {
+    let state = {};
+    restClientStub.withArgs(sinon.match.any).returns({
+      data: { error: { response: { data: { error: "Error" } } } },
+    });
+    let user = {
+      name: "Terazus",
+      password: "fakePassword",
+    };
+    await actions.login(state, user);
+    expect(actions.commit).toHaveBeenCalledWith("users/clearUserData");
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "login",
+      message: "Error",
+    });
+    restClientStub.withArgs(sinon.match.any).returns(new Error("error"));
+    await expect(actions.login(state, user)).rejects;
+  });
+
+  it("Login: testing automatically", () => {
+    const state = {};
+    getStub.withArgs("user").returns(
+      JSON.stringify({
+        credentials: {
+          username: "Terazus",
+          token: "123",
+        },
+      })
+    );
+    mutations.autoLogin(state);
+    expect(state.user()).toStrictEqual({
+      credentials: { token: "123", username: "Terazus" },
+    });
+  });
+
+  it("Logout Action: can logout a user", async () => {
+    let state = {};
+    mutations.logout(state);
+    expect(localStorage.removeItem).toHaveBeenCalledWith("user");
+  });
+
+  it("Logout Mutation: can logout a user", async () => {
+    restClientStub.returns({
+      data: {
+        message: "Success",
+      },
+    });
+    let state = {
+      state: {
+        user: function () {
+          return {
             credentials: {
-                username: "Terazus",
-                token: "123",
-                id: 1,
-                tokenValidity: '2042-02-23T13:33:54.175+00:00'
-            }
-        }));
-        let state = {};
-        await actions.login(state);
-        expect(actions.commit).toHaveBeenCalledWith('users/autoLogin');
-    });
-
-    it("Login: testing no user and invalid token", async () => {
-        let state = {};
-        getStub.withArgs("user").returns(JSON.stringify({
-            credentials: {
-                username: "Terazus",
-                token: "123",
-                id: 1,
-                tokenValidity: -1816434501
-            }
-        }));
-        await actions.login(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {"field": "login", "message": "You session has expired. Please log in again."});
-    });
-
-    it("Login: testing no user and no data", async () => {
-        let state = {};
-        getStub.withArgs("user").returns();
-        await actions.login(state);
-        expect(actions.commit).not.toHaveBeenCalled()
-    });
-
-    it("Login: testing with a user and no error", async () => {
-        let state = {};
-        restClientStub.withArgs(sinon.match.any).returns({data:{
-            username: "Terazus",
-            jwt: 123,
-            expiry: 456
-        }});
-        let user = {
-            name: "Terazus",
-            password: "fakePassword"
-        };
-        await actions.login(state, user);
-        expect(actions.commit).toHaveBeenCalledWith("users/clearMessages");
-        expect(actions.commit).toHaveBeenCalledWith("users/login", {
-            expiry: 456,
-            jwt: 123,
-            username: "Terazus",
-        })
-    });
-
-    it("Login: testing with a user and errors", async () => {
-        let state = {};
-        restClientStub.withArgs(sinon.match.any).returns({
-            data: {error: {response: {data: {error: "Error"}}}}
-        });
-        let user = {
-            name: "Terazus",
-            password: "fakePassword"
-        };
-        await actions.login(state, user);
-        expect(actions.commit).toHaveBeenCalledWith("users/clearUserData");
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",
-            {field: "login", message: "Error"});
-        restClientStub.withArgs(sinon.match.any).returns(new Error("error"));
-        await expect(actions.login(state, user)).rejects;
-
-    });
-
-    it("Login: testing automatically", () => {
-        const state = {};
-        getStub.withArgs("user").returns(JSON.stringify({
-            credentials: {
-                username: "Terazus",
-                token: "123",
-            }
-        }));
-        mutations.autoLogin(state);
-        expect(state.user()).toStrictEqual({"credentials": {"token": "123", "username": "Terazus"}})
-    });
-
-    it("Logout Action: can logout a user", async () => {
-        let state = {};
-        mutations.logout(state);
-        expect(localStorage.removeItem).toHaveBeenCalledWith('user');
-    });
-
-    it("Logout Mutation: can logout a user", async () => {
-        restClientStub.returns({
-            data: {
-                message: "Success"
-            }
-        });
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
-                        }
-                    }
-                }
-            }
-        };
-        actions.commit = jest.fn();
-        actions.logout(state);
-        expect(actions.commit).not.toHaveBeenCalled();
-        restClientStub.returns({
-            data: new Error("error")
-        });
-        state = {};
-        actions.logout(state);
-        expect(actions.commit).toHaveBeenCalledWith(
-            "users/setError",
-            {
-                "field": "logout",
-                "message": "Cannot read properties of undefined (reading 'user')"
-            }
-        );
-    });
-
-    it("setUser: can set user data", () => {
-        const state = {};
-        const user = {
-            id: 1,
-            credentials: {
-                username: "Terazus",
-                token: 123,
-                tokenValidity: 123
+              token: 123,
             },
-            records: {user: {}},
-            watchedRecords: [],
-            metadata: {
-                username: "Terazus"
-            },
-            isLoggedIn: true,
-            is_curator: false,
-            is_super_curator: false,
-            role: null,
-            third_party: false,
-            orcid: 123456,
-            twitter: 'terazus'
-        };
-        getStub.withArgs("user").returns(JSON.stringify(user));
-        mutations.setUser(state, user);
-        expect(state.user()).toStrictEqual({
-            id: 1,
+          };
+        },
+      },
+    };
+    actions.commit = jest.fn();
+    actions.logout(state);
+    expect(actions.commit).not.toHaveBeenCalled();
+    restClientStub.returns({
+      data: new Error("error"),
+    });
+    state = {};
+    actions.logout(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "logout",
+      message: "Cannot read properties of undefined (reading 'user')",
+    });
+  });
+
+  it("setUser: can set user data", () => {
+    const state = {};
+    const user = {
+      id: 1,
+      credentials: {
+        username: "Terazus",
+        token: 123,
+        tokenValidity: 123,
+      },
+      records: { user: {} },
+      watchedRecords: [],
+      metadata: {
+        username: "Terazus",
+      },
+      isLoggedIn: true,
+      is_curator: false,
+      is_super_curator: false,
+      role: null,
+      third_party: false,
+      orcid: 123456,
+      twitter: "terazus",
+    };
+    getStub.withArgs("user").returns(JSON.stringify(user));
+    mutations.setUser(state, user);
+    expect(state.user()).toStrictEqual({
+      id: 1,
+      credentials: {
+        username: "Terazus",
+        token: 123,
+        tokenValidity: 123,
+      },
+      records: {},
+      watchedRecords: [],
+      metadata: { username: "Terazus" },
+      isLoggedIn: true,
+      is_curator: false,
+      is_super_curator: false,
+      role: null,
+      third_party: false,
+      orcid: 123456,
+      twitter: "terazus",
+    });
+  });
+
+  it("setUser: can set user metadata", () => {
+    const state = {};
+    const user = {
+      username: "Terazus",
+    };
+    getStub.withArgs("user").returns(
+      JSON.stringify({
+        credentials: {
+          username: "Terazus",
+          token: 123,
+          tokenValidity: 123,
+        },
+      })
+    );
+    mutations.setUserMeta(state, user);
+    expect(state.user()).toStrictEqual({
+      credentials: {
+        username: "Terazus",
+        token: 123,
+        tokenValidity: 123,
+      },
+      records: {},
+      watchedRecords: [],
+      metadata: { username: "Terazus" },
+      isLoggedIn: true,
+    });
+  });
+
+  it("Utils: can correctly clear the store", () => {
+    const state = {
+      user: "test",
+    };
+    const userDefaultState = initUserDataState();
+    mutations.clearUserData(state);
+    expect(localStorage.removeItem).toHaveBeenCalledWith("user");
+    expect(state.user()).toStrictEqual(userDefaultState);
+  });
+
+  it("Error Handling: getUser outer case", async () => {
+    let state = {};
+    restClientStub.returns({
+      data: new Error("error"),
+    });
+    await actions.getUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUser",
+      message: "Cannot read properties of undefined (reading 'user')",
+    });
+  });
+
+  it("Error Handling: getUser inner case 1", async () => {
+    let state = {
+      state: {
+        user: function () {
+          return {
             credentials: {
-                username: "Terazus",
-                token: 123,
-                tokenValidity: 123
+              token: 123,
             },
-            records: {},
-            watchedRecords: [],
-            metadata: {username: "Terazus"},
-            isLoggedIn: true,
-            is_curator: false,
-            is_super_curator: false,
-            role: null,
-            third_party: false,
-            orcid: 123456,
-            twitter: 'terazus'
-        });
+          };
+        },
+      },
+    };
+    restClientStub.returns({
+      data: { error: { response: { data: { error: "Error" } } } },
     });
+    await actions.getUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUser",
+      message: "Error",
+    });
+  });
 
-    it("setUser: can set user metadata", () => {
-        const state = {};
-        const user = {
-            username: "Terazus"
-        };
-        getStub.withArgs("user").returns(JSON.stringify({
+  it("Error Handling: getUser inner case 2", async () => {
+    let state = {
+      state: {
+        user: function () {
+          return {
             credentials: {
-                username: "Terazus",
-                token: 123,
-                tokenValidity: 123
-            }
-        }));
-        mutations.setUserMeta(state, user);
-        expect(state.user()).toStrictEqual({
-            credentials: {
-                username: "Terazus",
-                token: 123,
-                tokenValidity: 123
+              token: 123,
             },
-            records: {},
-            watchedRecords: [],
-            metadata: {username: "Terazus"},
-            isLoggedIn: true
-        });
+          };
+        },
+      },
+    };
+    restClientStub.returns({
+      data: {
+        message: "Hello",
+      },
     });
-
-    it("Utils: can correctly clear the store", () => {
-        const state = {
-            user: "test"
-        } ;
-        const userDefaultState = initUserDataState();
-        mutations.clearUserData(state);
-        expect(localStorage.removeItem).toHaveBeenCalledWith('user');
-        expect(state.user()).toStrictEqual(userDefaultState);
+    graphStub.returns({
+      error: { response: { data: { error: "Error" } } },
     });
-
-    it("Error Handling: getUser outer case", async () => {
-        let state = {};
-        restClientStub.returns({
-            data: new Error("error")
-        });
-        await actions.getUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            "field": "getUser",
-            "message": "Cannot read properties of undefined (reading 'user')"
-        });
-
+    await actions.getUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUser",
+      message: "Error",
     });
+  });
 
-    it('Error Handling: getUser inner case 1', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
-                        }
-                    }
-                }
-            }
-        };
-        restClientStub.returns({
-            data: {error: {response: {data: {error: "Error"}}}}
-        });
-        await actions.getUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",
-            {"field": "getUser", "message": "Error"})
+  it("Error Handling: getUserMeta outer case", async () => {
+    restClientStub.returns({
+      data: new Error("Error"),
     });
-
-    it('Error Handling: getUser inner case 2', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
-                        }
-                    }
-                }
-            }
-        };
-        restClientStub.returns({
-            data: {
-                message: "Hello"
-            }
-        });
-        graphStub.returns({
-            error: {response: {data: {error: "Error"}}}
-        });
-        await actions.getUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",
-            {"field": "getUser", "message": "Error"})
+    const state = {};
+    await actions.getUserMeta(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUser",
+      message: "Cannot read properties of undefined (reading 'user')",
     });
+  });
 
-    it("Error Handling: getUserMeta outer case", async () => {
-        restClientStub.returns({
-            data: new Error("Error")
-        });
-        const state = {};
-        await actions.getUserMeta(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "getUser",
-            message: "Cannot read properties of undefined (reading 'user')"
-        })
+  it("Error Handling: getUserMeta inner case", async () => {
+    let state = {
+      state: {
+        user: function () {
+          return {
+            credentials: {
+              token: 123,
+            },
+          };
+        },
+      },
+    };
+    restClientStub.returns({
+      data: { error: "Error" },
     });
-
-    it('Error Handling: getUserMeta inner case', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
-                        }
-                    }
-                }
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.getUserMeta(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "getUser", "message": "Error"
-        });
+    await actions.getUserMeta(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUser",
+      message: "Error",
     });
+  });
 
-    it("Error Handling: getUserMeta outer case", async () => {
-        restClientStub.returns({
-            data: new Error("Error")
-        });
-        const state = {};
-        await actions.updateUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "updateProfile",
-            message: "Cannot read properties of undefined (reading 'user')"
-        })
+  it("Error Handling: getUserMeta outer case", async () => {
+    restClientStub.returns({
+      data: new Error("Error"),
     });
-
-    it('Error Handling: getUserMeta inner case', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
-                        }
-                    }
-                }
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.updateUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "updateProfile", "message": "Cannot read properties of undefined (reading 'data')"
-        });
+    const state = {};
+    await actions.updateUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "updateProfile",
+      message: "Cannot read properties of undefined (reading 'user')",
     });
+  });
 
-    it('Error Handling: getUsersList', async () => {
-        let state = {
-            state: {
-                usersList: []
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.getUsersList(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "getUsersList", "message": "state.state.user is not a function"
-        });
+  it("Error Handling: getUserMeta inner case", async () => {
+    let state = {
+      state: {
+        user: function () {
+          return {
+            credentials: {
+              token: 123,
+            },
+          };
+        },
+      },
+    };
+    restClientStub.returns({
+      data: { error: "Error" },
     });
-
-    it('Error Handling: updatePublicUsers', async () => {
-        let state = {
-            state: {
-                usersList:[]
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.updatePublicUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "updateProfile", "message": "state.state.user is not a function"
-        });
+    await actions.updateUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "updateProfile",
+      message: "Cannot read properties of undefined (reading 'data')",
     });
+  });
 
-    it('Error Handling: deletePublicUser', async () => {
-        let state = {
-            state: {
-                usersList:[]
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.deletePublicUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "updateProfile", "message": "state.state.user is not a function"
-        });
+  it("Error Handling: getUsersList", async () => {
+    let state = {
+      state: {
+        usersList: [],
+      },
+    };
+    restClientStub.returns({
+      data: { error: "Error" },
     });
-
-
-    it("Error Handling: resetPwd outer case", async () => {
-        restClientStub.returns(new Error("Error"));
-        const state = {};
-        await actions.resetPwd(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "resetPassword",
-            message: "Cannot read properties of undefined (reading 'error')"
-        })
+    await actions.getUsersList(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUsersList",
+      message: "state.state.user is not a function",
     });
+  });
 
-    it("Error Handling: resetPwdWithoutToken outer case", async () => {
-        restClientStub.returns(new Error("Error"));
-        const state = {};
-        await actions.resetPwdWithoutToken(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "resetPassword",
-            message: "Cannot read properties of undefined (reading 'user')"
-        })
+  it("Error Handling: updatePublicUsers", async () => {
+    let state = {
+      state: {
+        usersList: [],
+      },
+    };
+    restClientStub.returns({
+      data: { error: "Error" },
     });
-
-    it("Can correctly validate a user token", async() => {
-        restClientStub.returns({data: {success: true}});
-        let state = {
-            state: {user: () => {
-                return {credentials:{ token: 123}}
-            }}
-        };
-        await actions.validateUserToken(state);
-        expect(actions.commit).toHaveBeenCalledTimes(0);
-        restClientStub.restore();
-        restClientStub.restore();
-
-        restClientStub = sinon.stub(Client.prototype, 'executeQuery');
-        restClientStub.returns({data: {success: false}});
-        state.state.user = () => {
-            return {credentials:{ token: 123}}
-        };
-        await actions.validateUserToken(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/logout");
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "getUser",
-            message: {success: false}
-        });
-        restClientStub.restore();
+    await actions.updatePublicUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "updateProfile",
+      message: "state.state.user is not a function",
     });
+  });
 
-    it('Error Handling: getPublicUser', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {}
-                }
-            }
-        };
-        await actions.getPublicUser(state, 1);
-        expect(actions.commit).toHaveBeenCalledTimes(0);
+  it("Error Handling: deletePublicUser", async () => {
+    let state = {
+      state: {
+        usersList: [],
+      },
+    };
+    restClientStub.returns({
+      data: { error: "Error" },
     });
+    await actions.deletePublicUser(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "updateProfile",
+      message: "state.state.user is not a function",
+    });
+  });
 
-    it('Can run getUserEditEvents', async() => {
-        let state = {
-            state: {
-                user: function(){
-                    return {}
-                }
-            }
-        };
-        await actions.getUserEditEvents(state, 1);
-        expect(actions.commit).toHaveBeenCalledTimes(0);
-        state.state.user = () => {
-            return {credentials:{ token: 123}}
-        };
-        await actions.getUserEditEvents(state, 1);
+  it("Error Handling: resetPwd outer case", async () => {
+    restClientStub.returns(new Error("Error"));
+    const state = {};
+    await actions.resetPwd(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "resetPassword",
+      message: "Cannot read properties of undefined (reading 'error')",
     });
+  });
+
+  it("Error Handling: resetPwdWithoutToken outer case", async () => {
+    restClientStub.returns(new Error("Error"));
+    const state = {};
+    await actions.resetPwdWithoutToken(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "resetPassword",
+      message: "Cannot read properties of undefined (reading 'user')",
+    });
+  });
+
+  it("Can correctly validate a user token", async () => {
+    restClientStub.returns({ data: { success: true } });
+    let state = {
+      state: {
+        user: () => {
+          return { credentials: { token: 123 } };
+        },
+      },
+    };
+    await actions.validateUserToken(state);
+    expect(actions.commit).toHaveBeenCalledTimes(0);
+    restClientStub.restore();
+    restClientStub.restore();
+
+    restClientStub = sinon.stub(Client.prototype, "executeQuery");
+    restClientStub.returns({ data: { success: false } });
+    state.state.user = () => {
+      return { credentials: { token: 123 } };
+    };
+    await actions.validateUserToken(state);
+    expect(actions.commit).toHaveBeenCalledWith("users/logout");
+    expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+      field: "getUser",
+      message: { success: false },
+    });
+    restClientStub.restore();
+  });
+
+  it("Error Handling: getPublicUser", async () => {
+    let state = {
+      state: {
+        user: function () {
+          return {};
+        },
+      },
+    };
+    await actions.getPublicUser(state, 1);
+    expect(actions.commit).toHaveBeenCalledTimes(0);
+  });
+
+  it("Can run getUserEditEvents", async () => {
+    let state = {
+      state: {
+        user: function () {
+          return {};
+        },
+      },
+    };
+    await actions.getUserEditEvents(state, 1);
+    expect(actions.commit).toHaveBeenCalledTimes(0);
+    state.state.user = () => {
+      return { credentials: { token: 123 } };
+    };
+    await actions.getUserEditEvents(state, 1);
+  });
+
+  it("can check getUserRecords getter", async () => {
+    const getUserRecords = {
+      user: {
+        savedSearches: [
+          {
+            id: 206,
+            name: "Test",
+            url: "http://www.example.com",
+            comments: "",
+            createdAt: "2024-06-19T14:52:28Z",
+            creator: { id: 1, username: "dummy" },
+            fairsharingRecords: [],
+            organisations: [],
+          },
+        ],
+      },
+    };
+    const builtData = getters.getUserRecords(getUserRecords);
+    expect(builtData).toStrictEqual(getUserRecords["userRecords"]);
+  });
 });

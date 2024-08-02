@@ -217,7 +217,6 @@ export default {
           _module.resendButton = true;
         }
       }
-
       else {
         const goTo = _module.$route.query.goTo;
         if (_module.redirect) {

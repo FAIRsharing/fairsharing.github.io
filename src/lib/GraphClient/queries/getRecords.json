@@ -43,34 +43,7 @@
             "label"
           ]
         },
-        {
-          "queryName": "recordAssociations",
-          "fields": [
-            {
-              "name": "linkedRecord",
-              "fields": [
-                "name",
-                "id",
-                "registry"
-              ]
-            },
-            "recordAssocLabel"
-          ]
-        },
-        {
-          "queryName": "reverseRecordAssociations",
-          "fields": [
-            {
-              "name": "fairsharingRecord",
-              "fields": [
-                "name",
-                "id",
-                "registry"
-              ]
-            },
-            "recordAssocLabel"
-          ]
-        },
+        "relatedRecordsCount",
         "status",
         "isRecommended"
       ]

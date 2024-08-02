@@ -57,9 +57,9 @@
               </b>
             </span>
 
-            <b v-if="getField('lastEdited')">
-              Last Edited: {{ moment(getField("lastEdited")) }},
-            </b>
+            <span v-if="getField('lastEdited')">
+              <b>Last Edited:</b> {{ moment(getField("lastEdited")) }},
+            </span>
             <b v-if="getField('lastEditor') !== null"><span class="mr-2">Last Editor:</span></b><span
               v-if="
                 getField('lastEditor') !== null &&
@@ -69,7 +69,15 @@
             >{{ getField("lastEditor").username }},</span>
             <b>Last Accessed:</b>
             <span class="mr-2">
-              {{ moment(new Date()) }}
+              {{ moment(new Date()) }}<span v-if="getField('lastReviewed')">,</span>
+            </span>
+            <span
+              v-if="getField('lastReviewed')"
+            >
+              <b>Last Reviewed:</b>
+              <span class="mr-2">
+                {{ moment(getField('lastReviewed')) }}
+              </span>
             </span>
           </v-card-text>
         </v-card>

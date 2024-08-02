@@ -40,6 +40,9 @@
         </select>
       </div>
     </template>
+    <template #groupControl="props">
+      <GroupCtrlSlot :group-ctrl="props" />
+    </template>
   </query-builder>
 </template>
 
@@ -51,24 +54,53 @@ import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
+  AssociatedTools,
+  CertificationsAndCommunityBadges,
+  CitationToRelatedPublications,
+  Countries,
   DataAccessCondition,
+  DataAccessForPrePublicationReview, DataAvailabilityStatement,
   DatabaseRecordType,
+  DataCitation,
+  DataContactInformation,
   DataCuration,
   DataDepositionCondition,
+  DataPreservation,
+  DataPreservationPolicy,
+  DataProcessesAndConditions,
+  DataProtection,
+  DataVersioning,
   Domain,
+  ExceptionsToDataSharing,
+  GroupCtrlSlot,
+  GuidanceToHelpEnableCompliance,
+  HasPublication,
+  IsImplemented,
   Licences,
+  LicencesForOutputs,
+  MandatedDataSharing,
+  MandatedDmpCreation,
+  MonitoringOfCompliance,
   Organisations,
   PolicyRecordType,
+  RecommendsDatabase,
+  RecommendsStandard,
   RecordStatus,
   Registry,
+  ResourceSustainability,
+  SharingResearchSoftware,
   StandardRecordType,
   Subject,
+  SupportedCosts,
   Taxonomies,
+  TimingOfDmp,
+  UpdatingOfDmp,
   UserDefinedTag,
+  UsesPersistentIdentifier
 } from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
-  components: { QueryBuilder },
+  components: { QueryBuilder, GroupCtrlSlot },
   props: {
     isDialog: {
       type: Boolean,
@@ -81,7 +113,6 @@ export default {
         operatorIdentifier: "_and",
         children: [],
       },
-      toolTipText: "TEST",
     };
   },
   computed: {
@@ -106,12 +137,6 @@ export default {
             identifier: "registry",
             name: "Registry",
             component: Registry,
-            initialValue: () => [],
-          },
-          {
-            identifier: "databasetype",
-            name: "Database Record Type",
-            component: DatabaseRecordType,
             initialValue: () => [],
           },
           {
@@ -163,33 +188,215 @@ export default {
             initialValue: () => [],
           },
           {
+            identifier: "countries",
+            name: "Countries",
+            component: Countries,
+            initialValue: () => [],
+          },
+          {
             identifier: "organisations",
             name: "Organisations",
             component: Organisations,
             initialValue: () => [],
           },
           {
+            identifier: "databasetype",
+            name: "Database Record Type",
+            component: DatabaseRecordType,
+            initialValue: () => [],
+          },
+          {
             identifier: "dataCuration",
-            name: "Data Curation - Databases only",
+            name: "Data Curation",
             component: DataCuration,
             initialValue: () => [],
           },
           {
             identifier: "dataDepositionCondition",
-            name: "Data Deposition Condition - Databases only",
+            name: "Data Deposition Condition",
             component: DataDepositionCondition,
             initialValue: () => [],
           },
           {
             identifier: "dataAccessCondition",
-            name: "Data Access Condition - Databases only",
+            name: "Data Access Condition",
             component: DataAccessCondition,
             initialValue: () => [],
           },
+          {
+            identifier: "citationToRelatedPublications",
+            name: "Citation To Related Publications",
+            component: CitationToRelatedPublications,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataAccessForPrePublicationReview",
+            name: "Data Access For Pre Publication Review",
+            component: DataAccessForPrePublicationReview,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataContactInformation",
+            name: "Data Contact Information",
+            component: DataContactInformation,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataVersioning",
+            name: "Data Versioning",
+            component: DataVersioning,
+            initialValue: () => [],
+          },
+          {
+            identifier: "associatedTools",
+            name: "Associated Tools",
+            component: AssociatedTools,
+            initialValue: "",
+          },
+          {
+            identifier: "certificationsAndCommunityBadges",
+            name: "Certifications And Community Badges",
+            component: CertificationsAndCommunityBadges,
+            initialValue: "",
+          },
+          {
+            identifier: "dataProcessesAndConditions",
+            name: "Data Processes And Conditions",
+            component: DataProcessesAndConditions,
+            initialValue: "",
+          },
+          {
+            identifier: "dataPreservationPolicy",
+            name: "Data Preservation Policy",
+            component: DataPreservationPolicy,
+            initialValue: "",
+          },
+          {
+            identifier: "resourceSustainability",
+            name: "Resource Sustainability",
+            component: ResourceSustainability,
+            initialValue: "",
+          },
+          {
+            identifier: "dataAvailabilityStatement",
+            name: "Data Availability Statement",
+            component: DataAvailabilityStatement,
+            initialValue: "",
+          },
+          {
+            identifier: "dataProtection",
+            name: "Data Protection",
+            component: DataProtection,
+            initialValue: "",
+          },
+          {
+            identifier: "dataCitation",
+            name: "Data Citation",
+            component: DataCitation,
+            initialValue: "",
+          },
+          {
+            identifier: "dataPreservation",
+            name: "Data Preservation",
+            component: DataPreservation,
+            initialValue: "",
+          },
+          {
+            identifier: "exceptionsToDataSharing",
+            name: "Exceptions To Data Sharing",
+            component: ExceptionsToDataSharing,
+            initialValue: "",
+          },
+          {
+            identifier: "mandatedDataSharing",
+            name: "Mandated Data Sharing",
+            component: MandatedDataSharing,
+            initialValue: () => [],
+          },
+          {
+            identifier: "mandatedDmpCreation",
+            name: "Mandated DMP Creation",
+            component: MandatedDmpCreation,
+            initialValue: () => [],
+          },
+          {
+            identifier: "sharingResearchSoftware",
+            name: "Sharing Research Software",
+            component: SharingResearchSoftware,
+            initialValue: () => [],
+          },
+          {
+            identifier: "timingOfDmp",
+            name: "Timing Of DMP",
+            component: TimingOfDmp,
+            initialValue: () => [],
+          },
+          {
+            identifier: "licencesForOutputs",
+            name: "Licences For Outputs",
+            component: LicencesForOutputs,
+            initialValue: "",
+          },
+          {
+            identifier: "supportedCosts",
+            name: "Supported Costs",
+            component: SupportedCosts,
+            initialValue: "",
+          },
+          {
+            identifier: "isImplemented",
+            name: "Is Implemented",
+            component: IsImplemented,
+            initialValue: "",
+          },
+          {
+            identifier: "hasPublication",
+            name: "Has Publication",
+            component: HasPublication,
+            initialValue: "",
+          },
+          {
+            identifier: "usesPersistentIdentifier",
+            name: "Uses Persistent Identifier",
+            component: UsesPersistentIdentifier,
+            initialValue: "",
+          },
+          {
+            identifier: "recommendsDatabase",
+            name: "Recommends At Least One Database",
+            component: RecommendsDatabase,
+            initialValue: "",
+          },
+          {
+            identifier: "recommendsStandard",
+            name: "Recommends At Least One Standard",
+            component: RecommendsStandard,
+            initialValue: "",
+          },
+          {
+            identifier: "updatingOfDmp",
+            name: "Updating of DMP",
+            component: UpdatingOfDmp,
+            initialValue: "",
+          },
+          {
+            identifier: "guidanceToHelpEnableCompliance",
+            name: "Guidance To Help Enable Compliance",
+            component: GuidanceToHelpEnableCompliance,
+            initialValue: "",
+          },
+          {
+            identifier: "monitoringOfCompliance",
+            name: "Monitoring Of Compliance",
+            component: MonitoringOfCompliance,
+            initialValue: "",
+          },
+
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };
     },
+
     /**
      * Removes duplicate entries and return unique values
      * @returns {Object}
@@ -216,6 +423,7 @@ export default {
       return searchValues;
     },
   },
+
   watch: {
     query(newValue) {
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
@@ -267,242 +475,10 @@ export default {
       immediate: true,
     },
   },
+
 };
 </script>
 <style lang="scss" scoped>
 @import "~vuetify/src/styles/settings/_variables.scss";
-.query-builder-group::v-deep {
-  color: black;
-
-  select {
-    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-      linear-gradient(135deg, gray 50%, transparent 50%);
-    background-position: calc(100% - 20px) calc(1em + 2px),
-      calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
-    background-size: 5px 5px, 5px 5px, 1px 1.5em;
-    background-repeat: no-repeat;
-    background-color: white;
-    border-radius: 4px;
-    display: inline-block;
-    line-height: 1.5em;
-    padding: 0 12px;
-    /* reset */
-    margin: 0;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    min-height: 36px;
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-  }
-
-  .query-builder-child__delete-child {
-    opacity: 1;
-    color: white;
-    background-color: #6b1e1e;
-    font-size: 25px;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    margin-left: 8px !important;
-    vertical-align: middle;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    @media #{map-get($display-breakpoints, 'sm-and-down')} {
-      position: absolute;
-      right: 0;
-      top: -5px;
-    }
-  }
-  .query-builder-group__rule-adding-button,
-  .query-builder-group__group-adding-button {
-    padding: 0 8px;
-    height: 36px;
-    min-width: 64px;
-    color: white;
-    background-color: #e67e22;
-    border-color: #e67e22;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    font-weight: 500;
-  }
-
-  button:disabled,
-  button[disabled] {
-    border-color: #ccc;
-    background-color: #ccc;
-    color: #666666;
-  }
-
-  .query-builder-group__spacer,
-  .query-builder-group__rule-adding-button,
-  .query-builder-group__group-control select,
-  .query-builder-group__group-children
-    .query-builder-group__group-adding-button {
-    display: none;
-  }
-
-  .query-builder-group__group-children {
-    .query-builder-group__rule-adding-button,
-    .query-builder-group__group-control select {
-      display: block;
-    }
-  }
-
-  .query-builder-group__group-selection {
-    background-color: #ababab;
-    border-radius: 4px;
-    padding: 15px;
-    margin: 15px 0;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    .query-builder-group__group-operator {
-      color: white;
-      font-weight: 500;
-    }
-    select.operatorSelect {
-      max-width: 80px !important;
-      width: 100%;
-      @media #{map-get($display-breakpoints, 'sm-and-down')} {
-        max-width: 90% !important;
-        margin-top: 10px;
-      }
-    }
-  }
-  input[type="text"] {
-    background-color: white;
-    padding: 0 12px;
-    min-height: 36px;
-    width: 90%;
-    border-radius: 4px;
-    @media #{map-get($display-breakpoints, 'sm-and-down')} {
-      max-width: 100%;
-    }
-  }
-
-  .query-builder-child {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding: 0;
-    .query-builder-rule {
-      background-color: #27aae1;
-      border-color: #27aae1;
-      display: flex;
-      align-items: center;
-    }
-    .query-builder-child__component {
-      padding: 15px;
-      border-radius: 0 4px 4px 0;
-      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-      @media #{map-get($display-breakpoints, 'sm-and-down')} {
-        flex-direction: column;
-        align-items: unset;
-        position: relative;
-        width: 100%;
-      }
-      .query-builder-rule__name {
-        font-size: 14px;
-        color: white;
-        font-weight: 500;
-        @media #{map-get($display-breakpoints, 'sm-and-down')} {
-          margin-bottom: 10px;
-        }
-      }
-      select {
-        max-width: 150px;
-        width: 100%;
-        color: black;
-        @media #{map-get($display-breakpoints, 'sm-and-down')} {
-          max-width: 100%;
-          margin-bottom: 10px;
-        }
-      }
-      .query-builder-group__group-control {
-        select {
-          @media #{map-get($display-breakpoints, 'md-and-up')} {
-            max-width: 320px;
-          }
-        }
-      }
-    }
-  }
-  & > .query-builder-group__control {
-    position: sticky;
-    top: 0;
-    background-color: white;
-    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    z-index: 1;
-    .query-builder-group__group-selection {
-      margin: 0 0 15px 0;
-      border-radius: 4px 4px 0 0;
-      .tooltiptext {
-        &:after {
-          content: "Connect each group of rules with either 'AND' or 'OR'";
-        }
-      }
-    }
-  }
-
-  .query-builder-group__group-children--depth-1 {
-    .query-builder-group__group-operator {
-      visibility: hidden;
-      position: relative;
-      &:after {
-        visibility: visible;
-        position: absolute;
-        top: -2px;
-        left: 0;
-        width: 240px;
-        content: "Select an Operator for this group";
-      }
-    }
-    .tooltiptext {
-      &:after {
-        content: "Connect the rules inside this group with either 'AND' or 'OR'";
-      }
-    }
-    .operatorSelect {
-      @media #{map-get($display-breakpoints, 'md-and-up')} {
-        margin-left: -80px;
-      }
-    }
-  }
-
-  .tooltip {
-    position: relative;
-    display: inline-block;
-    cursor: default;
-    .tooltiptext {
-      visibility: hidden;
-      width: 250px;
-      background-color: black;
-      color: #fff;
-      text-align: center;
-      border-radius: 4px;
-      padding: 5px 16px;
-      opacity: 0;
-      transition: opacity 1s, visibility 1s;
-
-      /* Position the tooltip */
-      position: absolute;
-      z-index: 1;
-      top: 100%;
-      left: 50%;
-      margin-left: -10px;
-      margin-top: 10px;
-    }
-    /* Hover the tooltip icon*/
-    &:hover {
-      .tooltiptext {
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-  }
-}
+@import "@/styles/queryBuilderView";
 </style>

@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
+import countriesSearch from "@/store/AdvancedSearchComponents/countriesSearch";
 import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
 import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
 import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
@@ -42,5 +43,6 @@ export default new Vuex.Store({
     domainsSearch,
     taxonomiesSearch,
     licencesSearch,
+    countriesSearch
   },
 });

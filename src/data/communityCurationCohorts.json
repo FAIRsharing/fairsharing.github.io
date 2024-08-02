@@ -727,6 +727,21 @@
       "mastodon" : "",
       "logo": "timothee-aubourg.jpeg",
       "year_active": ["2024"]
+    },
+    {
+      "name": "Beth Knazook",
+      "id": 7666,
+      "organisation": [],
+      "scope": "Cultural Heritage",
+      "orcid": "0000-0002-0151-6397",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "bethknazook",
+      "linkedin" : "",
+      "mastodon" : "digipres.club/bethknazook",
+      "logo": "beth_knazook.jpg",
+      "year_active": ["2024"],
+      "active": true
     }
   ],
     "quotes": [

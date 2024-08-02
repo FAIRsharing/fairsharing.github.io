@@ -19,7 +19,10 @@
         </v-tooltip>
         <b>Subjects</b>
       </span>
-      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+      <div
+        class="d-flex full-width flex-wrap ml-md-12 ml-13"
+        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+      >
         <span v-if="!getField('subjects').length">
           N/A
         </span>
@@ -57,7 +60,10 @@
         </v-tooltip>
         <b>Domains</b>
       </span>
-      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+      <div
+        class="d-flex full-width flex-wrap ml-md-12 ml-13"
+        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+      >
         <span v-if="!getField('domains').length">
           N/A
         </span>
@@ -95,7 +101,10 @@
         </v-tooltip>
         <b>Taxonomic Range</b>
       </span>
-      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+      <div
+        class="d-flex full-width flex-wrap ml-md-12 ml-13"
+        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+      >
         <span v-if="!getField('taxonomies').length">
           N/A
         </span>
@@ -133,7 +142,10 @@
         </v-tooltip>
         <b>User Defined Tags</b>
       </span>
-      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+      <div
+        class="d-flex full-width flex-wrap ml-md-12 ml-13"
+        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+      >
         <span v-if="!getField('userDefinedTags').length">
           N/A
         </span>

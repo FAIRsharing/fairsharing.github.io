@@ -17,7 +17,10 @@
       </v-tooltip>
       <b>Countries developing this resource</b>
     </span>
-    <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+    <div
+      class="d-flex full-width flex-wrap ml-md-12 ml-13"
+      :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+    >
       <NoneFound
         v-if="!getField('countries')"
         :data-field="getField('countries')"

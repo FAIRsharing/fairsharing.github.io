@@ -21,13 +21,18 @@
       <div
         v-if="getField('maintainers').length === 0"
         class="d-flex flex-wrap"
+        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
       >
-        <p class="ma-0 mr-1">
+        <p
+          class="ma-0 mr-1"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+        >
           This record is in need of a maintainer.
         </p>
         <p
           v-if="canClaim && user().isLoggedIn || !canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
         >
           If you are affiliated with this project,
         </p>
@@ -42,16 +47,18 @@
         <p
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
         >
           and claim it now!
         </p>
-        <a
+        <p
           v-if="canClaim"
-          class="underline-effect"
+          class="underline-effect blue--text"
+          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
           @click="()=>{$emit('requestOwnership')}"
         >
           claim it now!
-        </a>
+        </p>
       </div>
       <!--<NoneFound :data-field="getField('maintainers')" />-->
       <!--Contact-->

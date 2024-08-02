@@ -20,7 +20,10 @@
       </v-tooltip>
       <b>Homepage</b>
     </span>
-    <div class="d-flex ma-0 full-width ml-md-12 ml-8 text-justify">
+    <div
+      class="d-flex ma-0 full-width ml-md-12 ml-8"
+      :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+    >
       <a
         v-if="getField('homepage')"
         :href="getField('homepage')"

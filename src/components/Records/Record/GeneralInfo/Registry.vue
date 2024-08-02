@@ -17,7 +17,10 @@
       </v-tooltip>
       <b>Registry</b>
     </span>
-    <p class="ma-0 full-width ml-md-12 ml-8 text-justify">
+    <p
+      class="ma-0 full-width ml-md-12 ml-8"
+      :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+    >
       {{ getField('registry') | capitalize }}
     </p>
   </div>

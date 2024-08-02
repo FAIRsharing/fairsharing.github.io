@@ -1,8 +1,7 @@
 <template>
   <div class="d-flex flex-row mt-4 align-center">
     <span
-      class="width-15-percent-flex"
-      style="white-space: nowrap;"
+      class="d-flex align-baseline width-15-percent-flex"
     >
       <v-tooltip bottom>
         <template #activator="{ on }">
@@ -18,7 +17,10 @@
       </v-tooltip>
       <b>Type</b>
     </span>
-    <p class="ma-0 full-width ml-md-12 ml-8 text-justify">
+    <p
+      class="ma-0 full-width ml-md-12 ml-8"
+      :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+    >
       {{ cleanString(getField('type')) | capitalize }}
     </p>
   </div>

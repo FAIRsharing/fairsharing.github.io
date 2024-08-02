@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>FAIRsharing.org Source: store/nodeListStore.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+	</div>
+	<div class="navbar-collapse">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#currentPath">currentPath</a></li><li><a href="global.html#deleteNode">deleteNode</a></li><li><a href="global.html#isFilterPresent">isFilterPresent</a></li><li><a href="global.html#isNodePresent">isNodePresent</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+</div>
+
+
+<div class="container">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: store/nodeListStore.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import isFilterPresent from "@/utils/Others/isFilterPresent"
+import deleteNode from "@/utils/Others/deleteNode"
+
+const state = {
+  nodeList: {
+    resourceNodeList: [],
+    subjectNodeList: [],
+    domainNodeList: [],
+
+  },
+  nodeFound: {
+    isResourceNode: false,
+    isSubjectNode: false,
+    isDomainNode: false,
+
+  },
+  filters: {
+    filtersList: [],
+    isFilter: false
+  }
+};
+/**
+ *
+ * @param recordArray - array of records
+ * @param nodeItem - Object of a record
+ * @returns {Object}
+ */
+const isNodePresent = (recordArray, nodeItem) => {
+  return recordArray.find(({records}) => records === nodeItem["records"])
+}
+
+const actions = {
+  resetNodeLists({commit}) {
+    commit('resetNodeLists');
+  },
+  resetFilterLists({commit}) {
+    commit('resetFilters');
+  }
+}
+
+const mutations = {
+  nodeLists (state, [nodeItem, routeName]) {
+    let {resourceNodeList, subjectNodeList, domainNodeList} = state.nodeList
+
+    // When any of the Resource Node is selected
+    if ((routeName === "DatabaseView") || (routeName === "StandardsView") || (routeName === "PoliciesView")) {
+      const isFound = isNodePresent(resourceNodeList, nodeItem)
+      if(!isFound) {
+        if (Object.keys(nodeItem).length) {
+          resourceNodeList.push(nodeItem)
+          state.nodeFound["isResourceNode"] = false
+        }
+        else {
+          state.nodeFound["isResourceNode"] = true
+        }
+      }
+      else {
+        state.nodeFound["isResourceNode"] = true
+      }
+    }
+
+    //When user lands on refine page after selecting a card from home page
+    if (routeName === "RefineResourceView") {
+      resourceNodeList.length = 0
+      resourceNodeList.push(nodeItem)
+    }
+
+    // When Subject Node is selected
+    if (routeName === "SubjectTypeView") {
+      const isFound = isNodePresent(subjectNodeList, nodeItem)
+      if(!isFound) {
+        if (Object.keys(nodeItem).length) {
+          subjectNodeList.push(nodeItem)
+          state.nodeFound["isSubjectNode"] = false
+        }
+        else {
+          state.nodeFound["isSubjectNode"] = true
+        }
+      }
+      else {
+        state.nodeFound["isSubjectNode"] = true
+      }
+    }
+
+    // When Domain Node is selected
+    if (routeName === "DomainTypeView") {
+      const isFound = isNodePresent(domainNodeList, nodeItem)
+      if(!isFound) {
+        if (Object.keys(nodeItem).length) {
+          domainNodeList.push(nodeItem)
+          state.nodeFound["isDomainNode"] = false
+        }
+        else {
+          state.nodeFound["isDomainNode"] = true
+        }
+      }
+      else {
+        state.nodeFound["isDomainNode"] = true
+      }
+    }
+  },
+
+  filterLists (state, noNullFilters){
+    // console.log("noNullFilters::", noNullFilters)
+    // state.filters.filtersList = noNullFilters
+
+    const isFound = isFilterPresent(state.filters.filtersList, noNullFilters)
+
+    //If the no filter is selected
+    if (!Object.keys(noNullFilters).length) {
+      state.filters.filtersList.length = 0
+    }
+    //If the filter is not present in the array
+    else if(!isFound)  {
+      state.filters.filtersList.push(noNullFilters)
+    }
+
+    else {
+      state.filters.filtersList.forEach(item => {
+        if (item["key"] === noNullFilters["key"]) {
+          //When filters have a values
+          if(noNullFilters["value"] &amp;&amp; noNullFilters["value"].length) {
+            item["value"] = noNullFilters["value"]
+          }
+        }
+        else {
+          deleteNode(state.filters.filtersList, item)
+        }
+      })
+    }
+
+    if(state.filters.filtersList &amp;&amp; state.filters.filtersList.length) state.filters.isFilter = true
+    else state.filters.isFilter = false
+  },
+
+  deleteNode(state, nodeItem) {
+    let {resourceNodeList, subjectNodeList, domainNodeList} = state.nodeList
+    const {type} = nodeItem
+
+    // For resource node is selected
+    if ((type === "resource") || (type === "resourceParent")) {
+      deleteNode(resourceNodeList, nodeItem)
+    }
+    // For subject node is selected
+    else if (type === "subject") {
+      deleteNode(subjectNodeList, nodeItem)
+    }
+    // For domain node is selected
+    else if (type === "domain") {
+      deleteNode(domainNodeList, nodeItem)
+    }
+   
+  },
+  resetNodeLists(state) {
+    state.nodeList = {
+      resourceNodeList: [],
+      subjectNodeList: [],
+      domainNodeList: []
+    }
+  },
+
+  resetNodeFound(state) {
+    state.nodeFound = {
+      isResourceNode: false,
+      isSubjectNode: false,
+      isDomainNode: false,
+    }
+  },
+
+  resetFilters(state) {
+    state.filters = {
+      filtersList: [],
+      isFilter: false,
+    }
+  },
+
+};
+
+const getters = {
+  getNodeList(state)  {
+    return state.nodeList;
+  },
+  getNodeFound(state)  {
+    return state.nodeFound;
+  },
+  getFilterLists(state)  {
+    return state.filters;
+  },
+}
+const nodeListStore = {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions,
+  isNodePresent,
+  deleteNode
+}
+
+export default nodeListStore</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
+	on Wed Jul 19th 2023 using the <a
+	href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<!--<script src="scripts/sunlight.js"></script>-->
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/bootstrap-dropdown.js"></script>
+<script src="scripts/toc.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "h1,h2,h3,h4",
+		showAndHide : false,
+                navbarOffset: 10,
+		smoothScrolling: true
+	} );
+
+	$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+	//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+  $( "table" ).each( function () {
+    var $this = $( this );
+    $this.addClass('table');
+  } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+</body>
+</html>

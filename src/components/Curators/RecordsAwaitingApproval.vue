@@ -425,7 +425,7 @@
               const _module = this;
               _module.dialogs.disableButton = true;
               let preparedRecord = {
-                processing_notes: '',
+                processing_notes: undefined,
                 create_review: _module.dialogs.createReview,
                 hidden: _module.dialogs.recordHidden
               };

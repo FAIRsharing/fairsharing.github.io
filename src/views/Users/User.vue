@@ -376,7 +376,7 @@
                 <v-card-title class="primary white--text py-3">
                   <span>Saved Searches</span>
                   <v-card-subtitle class="pa-0">
-                    Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on ~~Conforming Resources and ~~Saved Searches can be found in our <a
+                    Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on Conforming Resources and Saved Searches can be found in our <a
                       href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                       target="_blank"
                       class="white--text text-decoration-underline "

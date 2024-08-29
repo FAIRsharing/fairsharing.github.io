@@ -9,12 +9,12 @@
         :loading="loading"
         hide-details
         multiple
-        closable-chips
+        cache-items
         chips
+        deletable-chips
         item-value="id"
         item-text="username"
         label="Enter text to search for additional user(s) to associate with this saved search"
-        no-data-text="No User found"
       >
         <template #selection="data">
           <v-chip
@@ -26,6 +26,20 @@
           >
             {{ data.item["username"] }}
           </v-chip>
+        </template>
+        <template #no-data>
+          <div
+            v-show="!loading"
+            class="py-3 px-4"
+          >
+            No User found
+          </div>
+          <div
+            v-show="loading"
+            class="py-3 px-4"
+          >
+            Loading...
+          </div>
         </template>
       </v-autocomplete>
     </template>

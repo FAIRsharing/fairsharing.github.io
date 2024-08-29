@@ -9,12 +9,12 @@
         :loading="getLoadingStatus"
         hide-details
         multiple
-        closable-chips
+        cache-items
         chips
+        deletable-chips
         item-value="id"
         item-text="name"
         label="Enter text to search for organisation(s) to associate with this saved search"
-        no-data-text="No organisation found"
       >
         <template #selection="data">
           <v-chip
@@ -26,6 +26,20 @@
           >
             {{ data.item["name"] }}
           </v-chip>
+        </template>
+        <template #no-data>
+          <div
+            v-show="!getLoadingStatus"
+            class="py-3 px-4"
+          >
+            No organisation found
+          </div>
+          <div
+            v-show="getLoadingStatus"
+            class="py-3 px-4"
+          >
+            Loading...
+          </div>
         </template>
       </v-autocomplete>
     </template>
@@ -103,7 +117,7 @@ export default {
     ...mapActions("users", ["getUser"]),
 
     /**
-     * Returns Organisation List associated to use
+     * Returns Organisation List associated to user
      * @return {Array} - Organisation List
      */
     async fetchUserOrganisationData() {

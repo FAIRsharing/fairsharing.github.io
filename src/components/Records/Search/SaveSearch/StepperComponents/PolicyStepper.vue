@@ -7,15 +7,14 @@
         :search-input.sync="searchPolicy"
         class="mb-7"
         :loading="getLoadingStatus"
-        hide-selected
         hide-details
         multiple
-        closable-chips
+        cache-items
         chips
+        deletable-chips
         item-value="id"
         item-text="name"
         label="Enter text to search for policy record(s) to associate with this saved search"
-        no-data-text="No Policy found"
       >
         <template #selection="data">
           <v-chip
@@ -27,6 +26,20 @@
           >
             {{ data.item["name"] }}
           </v-chip>
+        </template>
+        <template #no-data>
+          <div
+            v-show="!getLoadingStatus"
+            class="py-3 px-4"
+          >
+            No Policy found
+          </div>
+          <div
+            v-show="getLoadingStatus"
+            class="py-3 px-4"
+          >
+            Loading...
+          </div>
         </template>
       </v-autocomplete>
     </template>

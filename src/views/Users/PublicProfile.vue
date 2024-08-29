@@ -301,7 +301,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="primary white--text py-3 flex-column align-start">
                   <span>Saved Searches</span>
                   <v-card-subtitle class="pa-0">
                     Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on Conforming Resources and Saved Searches can be found in our <a

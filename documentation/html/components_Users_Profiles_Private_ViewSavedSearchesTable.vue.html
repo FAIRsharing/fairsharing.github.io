@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Users/Profiles/Private/ViewSavedSearchesTable.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Users/Profiles/Private/ViewSavedSearchesTable.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div>
+    &lt;v-data-table
+      class="userProfileSavedSearches"
+      :items="totalSearches"
+      :headers="headers"
+      :items-per-page="perPage"
+      :footer-props="footer"
+      calculate-widths
+      mobile-breakpoint="960"
+    >
+      &lt;template #[`item.creator`]="{ item }">
+        &lt;a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
+        &lt;/a>
+      &lt;/template>
+      &lt;template #[`item.additionalUser`]="{ item }">
+        &lt;ul class="pl-0">
+          &lt;li
+            v-for="user in additionalUsers(item)"
+            :key="user.id"
+            class="mb-2"
+          >
+            &lt;a :href="`/users/${user['id']}`">{{ user["username"] }}
+            &lt;/a>
+          &lt;/li>
+        &lt;/ul>
+      &lt;/template>
+      &lt;template #[`item.date`]="{ item }">
+        {{ item.createdAt.split("T", 1)[0] }}
+      &lt;/template>
+      &lt;template #[`item.name`]="{ item }">
+        &lt;a :href="item.url">{{ item.name }}&lt;/a>
+      &lt;/template>
+      &lt;template #[`item.comments`]="{ item }">
+        {{ item.comments }}
+      &lt;/template>
+      &lt;template #[`item.record`]="{ item }">
+        &lt;ul class="pl-0">
+          &lt;li
+            v-for="record in item.fairsharingRecords"
+            :key="record.id"
+            class="my-2"
+          >
+            &lt;a :href="`/${record['id']}`">{{ record["name"] }}
+            &lt;/a>
+          &lt;/li>
+        &lt;/ul>
+      &lt;/template>
+      &lt;template #[`item.organisation`]="{ item }">
+        &lt;ul class="pl-0">
+          &lt;li
+            v-for="organisation in item.organisations"
+            :key="organisation.id"
+            class="my-2"
+          >
+            &lt;a :href="`/organisations/${organisation['id']}`">{{ organisation["name"] }}
+            &lt;/a>
+          &lt;/li>
+        &lt;/ul>
+      &lt;/template>
+      &lt;template #[`item.actions`]="{ item }">
+        &lt;!--User logged in and is on its public profile page-->
+        &lt;v-icon
+          v-if="Number($route.params.id) === user().id"
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        &lt;/v-icon>
+        &lt;!--User is on any other user's public profile page-->
+        &lt;v-icon
+          v-else-if="$route.name === 'PublicProfile'"
+          @click="unlinkItem(item)"
+        >
+          mdi-link-off
+        &lt;/v-icon>
+        &lt;!--User is on its account profile page-->
+        &lt;v-icon
+          v-else
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        &lt;/v-icon>
+      &lt;/template>
+      &lt;template #no-data>
+        &lt;div>
+          You haven't saved any searches yet. Create one
+          &lt;a @click.stop="openAdvancedSearch">here&lt;/a>.
+        &lt;/div>
+      &lt;/template>
+    &lt;/v-data-table>
+    &lt;!--Delete action dialog box -->
+    &lt;v-dialog
+      v-model="modifyDialog"
+      max-width="500px"
+    >
+      &lt;!--Delete -->
+      &lt;v-card v-if="deleteSavedSearch">
+        &lt;v-card-title class="text-h5">
+          Are you sure you want to delete this item?
+        &lt;/v-card-title>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            @click="deleteItemConfirm()"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+      &lt;!--Unlink -->
+      &lt;v-card v-if="unlinkSavedSearch">
+        &lt;v-card-title class="text-h5">
+          Are you sure you want to unlink this user?
+        &lt;/v-card-title>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            class="white--text"
+            color="success"
+            :loading="loading"
+            @click="unlinkItemConfirm()"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import { mapActions, mapGetters, mapState } from "vuex";
+
+import RESTClient from "@/lib/Client/RESTClient";
+import advancedSearch from "@/store";
+import saveSearch from "@/store";
+
+const restClient = new RESTClient();
+
+export default {
+  name: "ViewSavedSearchesTable",
+  props: {
+    createdSearches: { type: Array, default: null },
+    savedSearches: { type: Array, default: null }
+  },
+  data: () => {
+    return {
+      modifyDialog: false,
+      deleteSavedSearch: false,
+      unlinkSavedSearch: false,
+      selectedItem: {},
+      totalSearches: [],
+      loading: false,
+      savedSearchLink: "",
+      perPage: 5,
+      footer: {
+        showFirstLastPage: true,
+        itemsPerPageText: "Saved Search:",
+      },
+    };
+  },
+  computed: {
+    ...mapState("users", ["user"]),
+    ...mapGetters("users", ["getUserRecords"]),
+    headers() {
+      let headers = [
+        { text: "Creator", value: "creator", align: "center", sortable: false },
+        { text: "Date", value: "date", align: "center", sortable: false },
+        { text: "Name", value: "name", align: "center", sortable: false },
+        { text: "Comments", value: "comments", align: "center", sortable: false },
+        { text: "Record", value: "record", align: "center", sortable: false },
+        { text: "Organisation", value: "organisation", align: "center", sortable: false },
+      ];
+      if (this.user().isLoggedIn) {
+        headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
+      }
+      if(this.user().is_super_curator) {
+        headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
+      }
+      return headers;
+    },
+  },
+
+  mounted() {
+    this.combinedSearches();
+  },
+  methods: {
+    ...mapActions("users", ["getUser", "getPublicUser"]),
+    /**
+     * Fetch combinedSearches and savedSearches from the props
+     * removing the duplicates and displaying in user profile
+     * page
+     */
+    async combinedSearches(searchDeleted, searchUnlinked) {
+      let createdSearches, savedSearches
+
+      if (searchDeleted) {
+        await this.getUser();
+        createdSearches = this.getUserRecords.user["createdSearches"];
+        savedSearches = this.getUserRecords.user["savedSearches"];
+      }
+      else if (searchUnlinked) {
+        let userId = this.$route.params.id;
+        let userR = await this.getPublicUser(userId);
+        await this.getUser();
+        createdSearches = userR.user["createdSearches"];
+        savedSearches = userR.user["savedSearches"];
+      }
+      else {
+        createdSearches = this.createdSearches;
+        savedSearches = this.savedSearches;
+      }
+
+      let mergedSearches = createdSearches.concat(savedSearches);
+      let mapSearches = new Map();
+      for (const search of mergedSearches) {
+        mapSearches.set(search.id, search);
+      }
+      //Reversed array to show latest entry first
+      let searchValues = [...mapSearches.values()];
+      this.totalSearches = searchValues.sort((a, b) => new Date(b.createdAt)
+          - new Date(a.createdAt)
+      );
+
+    },
+
+    /**
+     * Delete the selection savedSearch
+     * @param item - {Object} - Saved Search details
+     */
+    deleteItem(item) {
+      this.selectedItem = item;
+      this.modifyDialog = true;
+      this.unlinkSavedSearch = false;
+      this.deleteSavedSearch = true;
+    },
+
+    /**
+     * Confirmation dialog to delete the savedSearch
+     * and close the dialog if pressed OK
+     */
+    async deleteItemConfirm() {
+      this.loading = true;
+      let data = await restClient.deleteSavedSearch(
+        this.selectedItem["id"],
+        this.user().credentials.token
+      );
+
+      if (data["message"] === "success") {
+        await this.combinedSearches(true, false);
+      }
+      this.loading = false;
+      this.deleteSavedSearch = false;
+      this.closeDialog();
+    },
+
+    /**
+     * Unlink saved search from the user
+     * @param item - {Object} - Saved Search details
+     */
+    unlinkItem(item) {
+      this.selectedItem = item;
+      this.modifyDialog = true;
+      this.deleteSavedSearch = false;
+      this.unlinkSavedSearch = true;
+    },
+
+    /**
+     * Confirmation dialog to unlink the savedSearch
+     * and close the dialog if pressed OK
+     */
+    async unlinkItemConfirm() {
+      this.loading = true;
+      let additionalUsersArr = this.additionalUsers(this.selectedItem)
+
+      //Filter the user to unlink
+      let linkedUser = additionalUsersArr.filter(({id}) => id !== Number(this.$route.params.id))
+
+      //Array of id of the remaining users
+      linkedUser = linkedUser.map(({id}) => id)
+
+      let saveSearchObj = {
+        user_ids: linkedUser,
+      };
+
+      let updatedSearchResult = await restClient.updateSaveSearch(
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token
+      );
+
+      //Commit the updated result to store
+      saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
+
+      await this.combinedSearches(false, true);
+
+      this.loading = false;
+      this.unlinkSavedSearch = false;
+      this.closeDialog();
+
+    },
+
+    /**
+     * Close dialog
+     */
+    closeDialog() {
+      this.modifyDialog = false;
+    },
+    /**
+     * Open advancedSearch Dialog Box
+     */
+    openAdvancedSearch() {
+      advancedSearch.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        true
+      );
+    },
+    /**
+     * Filter creator from additional users list
+     * @param { Object } - user
+     * @return {Array} - additional user list without creator
+     */
+    additionalUsers(item) {
+      let additionalUsersList =  item["users"].filter((e) => {
+         return e['id'] !== item.creator['id']
+      })
+      return additionalUsersList;
+    },
+
+  },
+};
+&lt;/script>
+
+&lt;style lang="scss" scoped>
+@import '~vuetify/src/styles/settings/_variables.scss';
+.userProfileSavedSearches::v-deep {
+  table {
+    tbody {
+      tr {
+          td {
+            word-break: break-all;
+            @media #{map-get($display-breakpoints, 'md-and-up')} {
+              width: 100px;
+              min-width: 100px;
+              max-width: 100px;
+            }
+          }
+      }
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
+	
+		on Thu Aug 29th 2024
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

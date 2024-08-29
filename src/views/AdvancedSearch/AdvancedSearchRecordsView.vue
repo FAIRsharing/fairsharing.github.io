@@ -44,6 +44,9 @@
     </v-container>
     <!--Dialog Box -->
     <AdvancedSearchDialogBox />
+
+    <!--Save Search Stepper in Dialog Box -->
+    <SaveSearchStepper />
   </v-main>
 </template>
 <script>
@@ -52,6 +55,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 import JumpToTop from "@/components/Navigation/jumpToTop.vue";
 import Loaders from "@/components/Navigation/Loaders.vue";
 import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
+import SaveSearchStepper from "@/components/Records/Search/SaveSearch/SaveSearchStepper.vue";
 import onScrollUtil from "@/utils/onScrollUtil";
 import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
@@ -66,6 +70,7 @@ export default {
     AdvancedSearchResultTable,
     AdvancedSearchSelection,
     AdvancedSearchButtons,
+    SaveSearchStepper,
   },
   mixins: [onScrollUtil],
   data() {

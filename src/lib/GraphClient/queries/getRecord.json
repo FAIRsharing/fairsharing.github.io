@@ -171,6 +171,26 @@
         "username",
         "orcid"
       ]
+    },
+    {
+      "name": "savedSearches",
+      "fields": [
+        "id",
+        "name",
+        "comments",
+        "url",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": ["name", "id", "registry", "type", "status"]
+        },
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
     }
   ]
 }

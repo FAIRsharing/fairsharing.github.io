@@ -10,6 +10,7 @@ import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
 import taxonomiesSearch from "@/store/AdvancedSearchComponents/taxonomiesSearch";
 import userDefinedTagsSearch from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
+import saveSearch from "@/store/saveSearch";
 
 import editor from "./editor";
 import introspection from "./introspector.js";
@@ -43,6 +44,7 @@ export default new Vuex.Store({
     domainsSearch,
     taxonomiesSearch,
     licencesSearch,
-    countriesSearch
+    countriesSearch,
+    saveSearch
   },
 });

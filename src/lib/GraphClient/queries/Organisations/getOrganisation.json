@@ -101,6 +101,18 @@
           ]
         }
       ]
+    },
+    {
+      "name": "savedSearches",
+      "fields": [
+        "id",
+        "name",
+        "url",
+        {
+          "queryName": "organisations",
+          "fields": ["id", "name"]
+        }
+      ]
     }
   ]
 }

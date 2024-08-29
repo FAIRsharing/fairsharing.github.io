@@ -12,6 +12,7 @@ module.exports = {
     "!src/router/routes.js",
     "!views/Records/NetworkGraph.vue",
     "!src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
+    "!src/components/Records/Search/SaveSearch/StepperComponents/index.js",
   ],
   testMatch: [
     "**/**.spec.js",

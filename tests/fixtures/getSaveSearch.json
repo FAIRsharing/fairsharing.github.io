@@ -1,0 +1,125 @@
+{
+  "fairsharingRegistries": {
+    "records": [
+      {
+        "id": 2,
+        "name": "Database",
+        "description": "Refers to all databases",
+        "recordTypes": [
+          {
+            "id": 1,
+            "name": "repository",
+            "description": "Repositories allow the submission, storage of and access to data (datasets, code and other digital objects) and include (multi)disciplinary, generalist, data type, project and institutional repositories."
+          },
+          {
+            "id": 2,
+            "name": "knowledgebase",
+            "description": "Knowledgebases synthesise data from a number of sources including published literature, databases and tools, and often have a manual curation component. They are often considered secondary databases as they store data derived from primary sources."
+          },
+          {
+            "id": 3,
+            "name": "knowledgebase_and_repository",
+            "description": "A type of database that has the features of both knowledgebases and repositories."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Policy",
+        "description": "Refers to all policies",
+        "recordTypes": [
+          {
+            "id": 10,
+            "name": "journal_publisher",
+            "description": "Journal publisher policies originate from a specific publisher and describe the requirements for data associated with a manuscript submission across all that publisher's journals."
+          },
+          {
+            "id": 9,
+            "name": "journal",
+            "description": "Journal policies originate from a specific journal and describe the requirements for data associated with a manuscript submission to that journal."
+          },
+          {
+            "id": 13,
+            "name": "project",
+            "description": "Project policies describe the resources that should be used by researchers to conform to the data requirements of that project."
+          },
+          {
+            "id": 14,
+            "name": "institution",
+            "description": "Institution policies describe the standards and databases that should be used by researchers funded by the organisation."
+          },
+          {
+            "id": 12,
+            "name": "funder",
+            "description": "Funder policies describe the standards and databases that should be used by researchers funded by the organisation."
+          },
+          {
+            "id": 11,
+            "name": "society",
+            "description": "Society policies describe the resources that should be used by researchers to conform to the data requirements of that society."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Collection",
+        "description": "Refers to all collections",
+        "recordTypes": [
+          {
+            "id": 15,
+            "name": "collection",
+            "description": "Collections are groupings of standard and database records."
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "name": "Standard",
+        "description": "Refers to all standards",
+        "recordTypes": [
+          {
+            "id": 4,
+            "name": "model_and_format",
+            "description": "Models/formats or syntax define the representation of information from a conceptual model or schema, and the transmission format, such as XML, CSV or RDF, which facilitate information exchange."
+          },
+          {
+            "id": 5,
+            "name": "metric",
+            "description": "Metrics are criteria to assesses some aspect of a digital resource, for example - but not limited to - its discoverability. For example, the FAIR Metrics are a set of machine-actionable criteria that allow the assessment of the level of FAIRness of a resource."
+          },
+          {
+            "id": 6,
+            "name": "terminology_artefact",
+            "description": "Terminology artefacts are semantic objects that encompass controlled vocabularies, taxonomies, thesauri and ontologies. They add an interpretive/translational layer (beyond any that might be provided by the syntax), and enable complex hierarchical grouping and querying of the data."
+          },
+          {
+            "id": 7,
+            "name": "reporting_guideline",
+            "description": "Reporting guidelines or checklists outline the minimum information that should be reported alongside an experiment or dataset in order to place it into context. These vary from general guidance to itemised prescriptions of the information that should be provided, both in terms of data and associated metadata."
+          },
+          {
+            "id": 8,
+            "name": "identifier_schema",
+            "description": "Identifier schemata are formal systems for resources and other digital objects that allow their unique and unambiguous identification."
+          }
+        ]
+      }
+    ]
+  },
+  "fairsharingRegistry": {
+    "fairsharingRecords": [
+      {
+        "id": 3389,
+        "name": "Nature - Reporting standards and availability of data, materials, code and protocols"
+      },
+      {
+        "id": 4003,
+        "name": "American Heart Association / American Stroke Association journals - Research Guidelines"
+      },
+      {
+        "id": 3381,
+        "name": "PLOS - Data Availability"
+      }
+    ]
+  }
+}

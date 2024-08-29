@@ -11,7 +11,7 @@
           class="mb-0"
           dismissible
         >
-          {{ messages()['getPublicUser'].message }}
+          {{ messages()["getPublicUser"].message }}
         </v-alert>
       </v-col>
     </v-row>
@@ -32,9 +32,7 @@
             User Profile for {{ userData.user.username }}
           </v-toolbar-title>
           <v-spacer />
-          <user-profile-menu
-            :viewing-id="Number($route.params.id)"
-          />
+          <user-profile-menu :viewing-id="Number($route.params.id)" />
         </v-toolbar>
       </v-col>
       <v-col
@@ -70,36 +68,44 @@
                       class="body-1"
                     >
                       <v-list-item-content
-                        v-if="fieldName !== 'preferences' && fieldName!=='orcid'"
+                        v-if="
+                          fieldName !== 'preferences' && fieldName !== 'orcid'
+                        "
                         class="py-0 d-block"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}: </b>
-                        <span v-if="field && fieldName!=='orcid'"> {{ field }} </span>
+                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        </b>
+                        <span v-if="field && fieldName !== 'orcid'">
+                          {{ field }}
+                        </span>
                         <span v-else> None </span>
                       </v-list-item-content>
                       <v-list-item-content
-                        v-else-if="fieldName==='preferences'"
+                        v-else-if="fieldName === 'preferences'"
                         class="py-2"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}: </b>
+                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        </b>
                         <ul>
                           <li
                             v-for="(pref, prefName, prefKey) in field"
                             :key="'pref_' + prefKey"
                           >
-                            {{ prefName | cleanString }}: {{ booleanToString(pref) }}
+                            {{ prefName | cleanString }}:
+                            {{ booleanToString(pref) }}
                           </li>
                         </ul>
                       </v-list-item-content>
                       <v-list-item-content
-                        v-else-if="fieldName==='orcid'"
+                        v-else-if="fieldName === 'orcid'"
                         class="d-block py-0"
                       >
                         <div class="d-flex align-center">
                           <b
                             class="blue--text"
                             style="margin-right: 0.2rem"
-                          >{{ fieldName | cleanString }}: </b>
+                          >{{ fieldName | cleanString }}:
+                          </b>
                           <a
                             v-if="field"
                             class="d-flex align-center underline-effect"
@@ -154,7 +160,8 @@
                             rel="noreferrer"
                             target="_blank"
                           >{{ pub.title }}</a>
-                          <span v-else> {{ pub.title }} (No available link)</span>
+                          <span v-else>
+                            {{ pub.title }} (No available link)</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -276,8 +283,41 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <ViewAwards
-                    :awards="userData.user.awards"
+                  <ViewAwards :awards="userData.user.awards" />
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <v-col
+              cols="12"
+              xl="12"
+              lg="12"
+              md="12"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3 flex-column align-start">
+                  <span>Saved Searches</span>
+                  <v-card-subtitle class="pa-0">
+                    Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on Conforming Resources and Saved Searches can be found in our <a
+                      href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+                      target="_blank"
+                      class="white--text text-decoration-underline "
+                    >Gitbook documentation</a>.
+                  </v-card-subtitle>
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <ViewSavedSearchesTable
+                    :created-searches="userData.user.createdSearches"
+                    :saved-searches="userData.user.savedSearches"
                   />
                 </v-card-text>
               </v-card>
@@ -299,147 +339,158 @@
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
+import { mapActions, mapState } from "vuex";
 
-    import Icon from "@/components/Icon";
-    import Loaders from "@/components/Navigation/Loaders";
-    import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
-    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
-    import UserProfileMenu from "@/components/Users/UserProfileMenu";
-    import ExternalClient from "@/lib/Client/ExternalClients.js"
-    import { cleanString } from "@/utils/stringUtils"
-    import NotFound from "@/views/Errors/404"
+import Icon from "@/components/Icon";
+import Loaders from "@/components/Navigation/Loaders";
+import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
+import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSavedSearchesTable.vue";
+import UserProfileMenu from "@/components/Users/UserProfileMenu";
+import ExternalClient from "@/lib/Client/ExternalClients.js";
+import { cleanString } from "@/utils/stringUtils";
+import NotFound from "@/views/Errors/404";
 
-    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
-    import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
+import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
+import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
 
-    let client = new ExternalClient();
+let client = new ExternalClient();
 
-    export default {
-      name: "PublicProfile",
-      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, NotFound, UserProfileMenu, Icon, ViewAwards},
-      mixins: [cleanString],
-      data: () => {
-        return {
-            panel: 0,
-            loading: false,
-            error: false,
-            publications: [],
-            activeTab: 0,
-            userData: {
-              user: {
-                username: 'none'
-              }
-            }
-        }
-      },
-      computed: {
-        ...mapState('users', ['user', "messages"]),
-        ...mapState('editor', ['icons']),
-        // The deletes here achieve the same function as hideFields in User.vue
-        getPublicUserMeta: function(){
-          let userMeta = JSON.parse(JSON.stringify(this.userData.user));
-          delete userMeta["maintainedRecords"];
-          delete userMeta["organisations"];
-          delete userMeta["editEvents"];
-          delete userMeta["role"];
-          delete userMeta["awards"];
-          delete userMeta["thirdParty"];
-          return userMeta;
+export default {
+  name: "PublicProfile",
+  components: {
+    ViewSavedSearchesTable,
+    ViewOrganisations,
+    RecordsTable,
+    EditsTable,
+    Loaders,
+    NotFound,
+    UserProfileMenu,
+    Icon,
+    ViewAwards,
+  },
+  mixins: [cleanString],
+  data: () => {
+    return {
+      panel: 0,
+      loading: false,
+      error: false,
+      publications: [],
+      activeTab: 0,
+      userData: {
+        user: {
+          username: "none",
         },
       },
-      async created(){
-          this.loading = true;
-          let userId = this.$route.params.id;
-          let data = await this.getPublicUser(userId);
-          if (data == null || data.user == null){
-            // No userdata, so don't look for publications.
-            this.publications = [];
-            this.error = true;
-          }
-          else {
-            // Get user's publications.
-            this.userData = data;
-            this.publications = await this.getPublications();
-          }
-          this.loading = false;
-      },
-      methods: {
-          ...mapActions('users', ['getPublicUser', 'setError']),
-          async getPublications(){
-            let output = [];
-            if (this.userData.user.orcid) {
-              let publications = await client.getOrcidUser(this.userData.user.orcid);
-              /* istanbul ignore if */
-              if (publications.error) {
-                return [];
-              }
-              else {
-                output = publications['activities-summary']['works']['group']
-                    .slice(0, 7)
-                    .map(obj => {
-                      let url = null;
-                      if (obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
-                        let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
-                            obj => obj['external-id-type'] === "doi"
-                        )[0];
-                        // See ORCIDpub.json
-                        url = null;
-                        /* istanbul ignore next */
-                        if (DOI) {
-                          if (DOI['external-id-url']) {
-                            url = DOI['external-id-url'].value
-                          }
-                          else if (DOI['external-id-value']) {
-                            url = "https://doi.org/" + DOI['external-id-value']
-                          }
-                        }
-                      }
-                      return {
-                        title: obj['work-summary'][0].title.title.value,
-                        url: url
-                      }
-                    });
-              }
-            }
-            return output;
-          },
-
-      },
-
+    };
+  },
+  computed: {
+    ...mapState("users", ["user", "messages"]),
+    ...mapState("editor", ["icons"]),
+    // The deletes here achieve the same function as hideFields in User.vue
+    getPublicUserMeta: function () {
+      let userMeta = JSON.parse(JSON.stringify(this.userData.user));
+      delete userMeta["maintainedRecords"];
+      delete userMeta["organisations"];
+      delete userMeta["editEvents"];
+      delete userMeta["role"];
+      delete userMeta["awards"];
+      delete userMeta["thirdParty"];
+      delete userMeta["createdSearches"];
+      delete userMeta["savedSearches"];
+      return userMeta;
+    },
+  },
+  async created() {
+    this.loading = true;
+    let userId = this.$route.params.id;
+    let data = await this.getPublicUser(userId);
+    if (data == null || data.user == null) {
+      // No userdata, so don't look for publications.
+      this.publications = [];
+      this.error = true;
+    } else {
+      // Get user's publications.
+      this.userData = data;
+      this.publications = await this.getPublications();
     }
+    this.loading = false;
+  },
+  methods: {
+    ...mapActions("users", ["getPublicUser", "setError"]),
+    async getPublications() {
+      let output = [];
+      if (this.userData.user.orcid) {
+        let publications = await client.getOrcidUser(this.userData.user.orcid);
+        /* istanbul ignore if */
+        if (publications.error) {
+          return [];
+        } else {
+          output = publications["activities-summary"]["works"]["group"]
+            .slice(0, 7)
+            .map((obj) => {
+              let url = null;
+              if (
+                obj["work-summary"][0]["external-ids"] &&
+                obj["work-summary"][0]["external-ids"]["external-id"]
+              ) {
+                let DOI = obj["work-summary"][0]["external-ids"][
+                  "external-id"
+                ].filter((obj) => obj["external-id-type"] === "doi")[0];
+                // See ORCIDpub.json
+                url = null;
+                /* istanbul ignore next */
+                if (DOI) {
+                  if (DOI["external-id-url"]) {
+                    url = DOI["external-id-url"].value;
+                  } else if (DOI["external-id-value"]) {
+                    url = "https://doi.org/" + DOI["external-id-value"];
+                  }
+                }
+              }
+              return {
+                title: obj["work-summary"][0].title.title.value,
+                url: url,
+              };
+            });
+        }
+      }
+      return output;
+    },
+  },
+};
 </script>
 
 <style scoped>
-  #userPage .text-truncate {
-    max-width: 80%;
-  }
+#userPage .text-truncate {
+  max-width: 80%;
+}
 
-  #userPage .v-toolbar {
-    display: block !important;
-    flex: initial !important;
-  }
+#userPage .v-toolbar {
+  display: block !important;
+  flex: initial !important;
+}
 
-  #userPage .v-slide-group__wrapper {
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    max-height: 71vh;
-  }
+#userPage .v-slide-group__wrapper {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  max-height: 71vh;
+}
 
-  #userPage .v-tabs .v-item-group {
-    position: initial !important;
-  }
+#userPage .v-tabs .v-item-group {
+  position: initial !important;
+}
 
-  #userPage .v-window.v-item-group {
-    min-height: 70vh;
-    background: #EEEEEE !important;
-  }
+#userPage .v-window.v-item-group {
+  min-height: 70vh;
+  background: #eeeeee !important;
+}
 
-  #userPage .v-tabs-bar {
-    background-color: #EEEEEE !important
-  }
+#userPage .v-tabs-bar {
+  background-color: #eeeeee !important;
+}
 
-  #userPage .v-slide-group__wrapper {
-    background-color: white !important;
-  }
-
+#userPage .v-slide-group__wrapper {
+  background-color: white !important;
+}
 </style>

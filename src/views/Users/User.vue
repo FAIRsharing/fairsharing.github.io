@@ -11,7 +11,7 @@
           class="mb-0"
           dismissible
         >
-          {{ messages()['getUser'].message }}
+          {{ messages()["getUser"].message }}
         </v-alert>
       </v-col>
     </v-row>
@@ -64,7 +64,8 @@
                         v-if="fieldName !== 'preferences'"
                         class="py-0 d-block"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}: </b>
+                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        </b>
                         <span v-if="field"> {{ field }} </span>
                         <span v-else> None </span>
                       </v-list-item-content>
@@ -72,27 +73,27 @@
                         v-else
                         class="py-2"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}: </b>
+                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        </b>
                         <ul>
                           <li
                             v-for="(pref, prefName, prefKey) in field"
                             :key="'pref_' + prefKey"
                           >
-                            {{ prefName | cleanString }}: {{ booleanToString(pref) }}
+                            {{ prefName | cleanString }}:
+                            {{ booleanToString(pref) }}
                           </li>
                         </ul>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
-                  <div
-                    class="d-flex flex-row ml-4 mb-4"
-                  >
+                  <div class="d-flex flex-row ml-4 mb-4">
                     <a
                       :href="getHostname() + 'users/' + user().id"
                       target="_blank"
                       class="underline-effect"
                     >
-                      {{ getHostname() + 'users/' + user().id }}
+                      {{ getHostname() + "users/" + user().id }}
                     </a>
                     <v-tooltip top>
                       <template #activator="{ on, attrs }">
@@ -148,7 +149,8 @@
                             rel="noreferrer"
                             target="_blank"
                           >{{ pub.title }}</a>
-                          <span v-else> {{ pub.title }} (No available link)</span>
+                          <span v-else>
+                            {{ pub.title }} (No available link)</span>
                         </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -218,7 +220,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <EditsTable />
+                  <EditsTable :edits="user().metadata.editEvents" />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -354,8 +356,41 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <ViewAwards
-                    :awards="user().metadata.awards"
+                  <ViewAwards :awards="user().metadata.awards" />
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col
+              cols="12"
+              xl="12"
+              lg="12"
+              md="12"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3 flex-column align-start">
+                  <span>Saved Searches</span>
+                  <v-card-subtitle class="pa-0">
+                    Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on Conforming Resources and Saved Searches can be found in our <a
+                      href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+                      target="_blank"
+                      class="white--text text-decoration-underline "
+                    >Gitbook documentation</a>.
+                  </v-card-subtitle>
+                </v-card-title>
+
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <ViewSavedSearchesTable
+                    :created-searches="user().records.createdSearches"
+                    :saved-searches="user().records.savedSearches"
                   />
                 </v-card-text>
               </v-card>
@@ -377,168 +412,186 @@
 </template>
 
 <script>
-    import { mapActions, mapMutations,mapState } from "vuex"
+import { mapActions, mapMutations, mapState } from "vuex";
 
-    import Loaders from "@/components/Navigation/Loaders";
-    import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
-    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
-    import UserProfileMenu from "@/components/Users/UserProfileMenu";
-    import ExternalClient from "@/lib/Client/ExternalClients.js"
-    import getHostname from "@/utils/generalUtils"
-    import { cleanString } from "@/utils/stringUtils"
+import Loaders from "@/components/Navigation/Loaders";
+import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
+import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSavedSearchesTable.vue";
+import UserProfileMenu from "@/components/Users/UserProfileMenu";
+import ExternalClient from "@/lib/Client/ExternalClients.js";
+import getHostname from "@/utils/generalUtils";
+import { cleanString } from "@/utils/stringUtils";
 
-    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
-    import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
+import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
+import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
 
-    let client = new ExternalClient();
+let client = new ExternalClient();
 
-    /**
-     * @vue-data {Object} hideFields - an array of field to NOT display
-     * */
+/**
+ * @vue-data {Object} hideFields - an array of field to NOT display
+ * */
 
-    export default {
-      name: "User",
-      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, UserProfileMenu, ViewAwards},
-      mixins: [cleanString, getHostname],
-      data: () => {
-        return {
-            copyButtonStatus: false,
-            panel: 0,
-            hideFields: [
-              "role_id",
-              "deactivated",
-              "id",
-              "created_at",
-              "updated_at",
-              "username",
-              "watched_records",
-              "expiry",
-              "is_curator",
-              "is_super_curator",
-              "editEvents",
-              "awards"
-            ],
-            loading: false,
-            publications: [],
-            activeTab: 0
+export default {
+  name: "User",
+  components: {
+    ViewOrganisations,
+    RecordsTable,
+    EditsTable,
+    Loaders,
+    UserProfileMenu,
+    ViewAwards,
+    ViewSavedSearchesTable,
+  },
+  mixins: [cleanString, getHostname],
+  data: () => {
+    return {
+      copyButtonStatus: false,
+      panel: 0,
+      hideFields: [
+        "role_id",
+        "deactivated",
+        "id",
+        "created_at",
+        "updated_at",
+        "username",
+        "watched_records",
+        "expiry",
+        "is_curator",
+        "is_super_curator",
+        "editEvents",
+        "awards",
+      ],
+      loading: false,
+      publications: [],
+      activeTab: 0,
+    };
+  },
+  computed: {
+    ...mapState("users", ["user", "userResetPwdMessage", "messages"]),
+    ...mapState("editor", ["icons"]),
+    getUserMeta: function () {
+      let userMeta = {};
+      const _module = this;
+      Object.keys(_module.user().metadata).forEach(function (field) {
+        if (!_module.hideFields.includes(field)) {
+          userMeta[field] = _module.user().metadata[field];
         }
-      },
-      computed: {
-        ...mapState('users', ['user', "userResetPwdMessage", "messages"]),
-        ...mapState('editor', ['icons']),
-        getUserMeta: function(){
-          let userMeta = {};
-          const _module = this;
-          Object.keys(_module.user().metadata).forEach(function(field) {
-            if (!_module.hideFields.includes(field)) {
-              userMeta[field] = _module.user().metadata[field]
-            }
+      });
+      return userMeta;
+    },
+    maintenanceRequests() {
+      let output = [];
+      if (this.user().records.maintenanceRequests) {
+        this.user().records.maintenanceRequests.forEach(function (record) {
+          output.push({
+            ...record["fairsharingRecord"],
+            createdAt: record.createdAt,
+            status: record.status,
           });
-          return userMeta;
-        },
-        maintenanceRequests(){
-          let output = [];
-          if (this.user().records.maintenanceRequests) {
-            this.user().records.maintenanceRequests.forEach(function (record) {
-              output.push({
-                ...record["fairsharingRecord"],
-                createdAt: record.createdAt,
-                status: record.status
-              })
-            });
-          }
-          return output;
-        }
-      },
-      async created(){
-        this.loading = true;
-        await this.getUser(); // we need the user BEFORE getting the publications.
-        if (this.messages()["getUser"].error) {
-          this.setError({field: "login", message: "You've been logged out automatically"});
-          await this.$router.push({path: "/accounts/login"})
-        }
-        this.publications = await this.getPublications();
-        this.loading = false;
-      },
-      beforeDestroy() {
-        this.cleanStore();
-      },
-      methods: {
-          ...mapActions('users', ['getUser', 'resetPwd', 'setError']),
-          ...mapMutations('users', ['cleanStore']),
-          async getPublications(){
-            let output = [];
-            if (this.user().metadata.orcid) {
-              let publications = await client.getOrcidUser(this.user().metadata.orcid);
-              /* istanbul ignore if */
-              if (publications.error) {
-                return [];
-              }
-              else {
-                output = publications['activities-summary']['works']['group']
-                    .slice(0, 7)
-                    .map(obj => {
-                      let url = null;
-                      if (obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
-                        let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
-                            obj => obj['external-id-type'] === "doi"
-                        )[0];
-                        url = null;
-                        /* istanbul ignore next */
-                        if (DOI) {
-                          url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
-                        }
-                      }
-                      return {
-                        title: obj['work-summary'][0].title.title.value,
-                        url: url
-                      }
-                    });
-              }
-            }
-            return output;
-          },
-          booleanToString(bool){
-            return (bool) ? "Yes" : "No";
-          },
-          copyURL() {
-            this.copyButtonStatus = true;
-            return this.getHostname() + 'users/' + this.user().id;
-          }
+        });
       }
+      return output;
+    },
+  },
+  async created() {
+    this.loading = true;
+    await this.getUser(); // we need the user BEFORE getting the publications.
+    if (this.messages()["getUser"].error) {
+      this.setError({
+        field: "login",
+        message: "You've been logged out automatically",
+      });
+      await this.$router.push({ path: "/accounts/login" });
     }
+    this.publications = await this.getPublications();
+    this.loading = false;
+  },
+  beforeDestroy() {
+    this.cleanStore();
+  },
+  methods: {
+    ...mapActions("users", ["getUser", "resetPwd", "setError"]),
+    ...mapMutations("users", ["cleanStore"]),
+    async getPublications() {
+      let output = [];
+      if (this.user().metadata.orcid) {
+        let publications = await client.getOrcidUser(
+          this.user().metadata.orcid
+        );
+        /* istanbul ignore if */
+        if (publications.error) {
+          return [];
+        } else {
+          output = publications["activities-summary"]["works"]["group"]
+            .slice(0, 7)
+            .map((obj) => {
+              let url = null;
+              if (
+                obj["work-summary"][0]["external-ids"] &&
+                obj["work-summary"][0]["external-ids"]["external-id"]
+              ) {
+                let DOI = obj["work-summary"][0]["external-ids"][
+                  "external-id"
+                ].filter((obj) => obj["external-id-type"] === "doi")[0];
+                url = null;
+                /* istanbul ignore next */
+                if (DOI) {
+                  url = DOI["external-id-url"]
+                    ? DOI["external-id-url"].value
+                    : null;
+                }
+              }
+              return {
+                title: obj["work-summary"][0].title.title.value,
+                url: url,
+              };
+            });
+        }
+      }
+      return output;
+    },
+    booleanToString(bool) {
+      return bool ? "Yes" : "No";
+    },
+    copyURL() {
+      this.copyButtonStatus = true;
+      return this.getHostname() + "users/" + this.user().id;
+    },
+  },
+};
 </script>
 
 <style scoped>
-  #userPage .text-truncate {
-    max-width: 80%;
-  }
+#userPage .text-truncate {
+  max-width: 80%;
+}
 
-  #userPage .v-toolbar {
-    display: block !important;
-    flex: initial !important;
-  }
+#userPage .v-toolbar {
+  display: block !important;
+  flex: initial !important;
+}
 
-  #userPage .v-slide-group__wrapper {
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    max-height: 71vh;
-  }
+#userPage .v-slide-group__wrapper {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  max-height: 71vh;
+}
 
-  #userPage .v-tabs .v-item-group {
-    position: initial !important;
-  }
+#userPage .v-tabs .v-item-group {
+  position: initial !important;
+}
 
-  #userPage .v-window.v-item-group {
-    min-height: 70vh;
-    background: #EEEEEE !important;
-  }
+#userPage .v-window.v-item-group {
+  min-height: 70vh;
+  background: #eeeeee !important;
+}
 
-  #userPage .v-tabs-bar {
-    background-color: #EEEEEE !important
-  }
+#userPage .v-tabs-bar {
+  background-color: #eeeeee !important;
+}
 
-  #userPage .v-slide-group__wrapper {
-    background-color: white !important;
-  }
-
+#userPage .v-slide-group__wrapper {
+  background-color: white !important;
+}
 </style>

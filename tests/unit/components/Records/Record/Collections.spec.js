@@ -98,6 +98,23 @@ Record.state.currentRecord["fairsharingRecord"] = {
             recordAssocLabel: "recommends"
         }
     ],
+    savedSearches:[
+        {
+            id: 203,
+            name: "June17_4",
+            comments: "",
+            url: "http://www.test.com",
+            fairsharingRecords: [
+                {
+                    name: "Test name",
+                    id: 5239,
+                    status: "ready",
+                    registry: "Policy",
+                    type: "journal"
+                }
+            ]
+        }
+    ]
 };
 
 
@@ -148,6 +165,7 @@ describe("Collections.vue", function(){
         expect(wrapper.vm.tabsData.tabs.in_collections.count).toEqual(1);
         expect(wrapper.vm.tabsData.tabs.related_policies.count).toEqual(4);
         expect(wrapper.vm.tabsData.tabs.in_policies).toBe(undefined);
+        expect(wrapper.vm.tabsData.tabs.conforming_resources.count).toEqual(1);
         wrapper.vm.currentRecord.fairsharingRecord.registry = "Standard"
         wrapper.vm.prepareTabsData();
         expect(wrapper.vm.tabsData.tabs.in_collections.count).toEqual(1);

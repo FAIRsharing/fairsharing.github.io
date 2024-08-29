@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Records/Record/GeneralInfo/SavedSearches.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Records/Record/GeneralInfo/SavedSearches.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div
+    v-if="getField('savedSearches') &amp;&amp; getField('savedSearches').length"
+  >
+    &lt;p>
+      This policy has certain requirements and recommendations that have been used to create a conformant FAIRsharing search. The searches listed within this section will provide an initial filtering of the FAIRsharing registries. Clicking on a saved search will take you to a set of search results which you may further refine according to your needs and any additional policy requirements. If you are logged in, you may also save any search results to your own profile. More information on Conforming Resources and Saved Searches can be found in our &lt;a
+        href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
+        target="_blank"
+      >
+        Gitbook
+        documentation&lt;/a>.
+    &lt;/p>
+    &lt;div
+      v-for="search in getSavedSearches"
+      :key="search.id"
+      class="d-flex align-center"
+    >
+      &lt;v-card
+        class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
+        flat
+        outlined
+      >
+        &lt;div class="d-flex align-center">
+          &lt;record-status
+            :record="search.fairsharingRecords[0]"
+            :show-status="false"
+          />
+          &lt;div class="d-flex flex-column">
+            &lt;div
+              class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+            >
+              &lt;a :href="search.url">{{ search.name }}&lt;/a>
+            &lt;/div>
+            &lt;p class="text-body-2 ml-10">
+              (Created by: &lt;a
+                class="underline-effect"
+                :href="`/users/${search.creator['id']}`"
+              >{{ search.creator["username"] }}&lt;/a>)
+            &lt;/p>
+          &lt;/div>
+        &lt;/div>
+
+
+        &lt;p
+          class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5"
+        >
+          {{ search.comments }}
+        &lt;/p>
+      &lt;/v-card>
+      &lt;v-btn
+        v-if="user().is_super_curator"
+        rounded
+        text
+        @click="confirmUnlinkSavedSearch(search)"
+      >
+        &lt;v-icon>mdi-link-off&lt;/v-icon>
+      &lt;/v-btn>
+    &lt;/div>
+
+
+    &lt;!-- Unlink dialog box -->
+    &lt;v-dialog
+      v-model="confirmUnlink"
+      max-width="700px"
+      persistent
+    >
+      &lt;!-- Unlink saved search -->
+      &lt;v-card v-if="unlinkSavedSearchCard">
+        &lt;v-card-title class="text-h5">
+          Unlinking saved search
+        &lt;/v-card-title>
+        &lt;v-card-text>
+          This is will unlink instance of the search from this policy record.
+        &lt;/v-card-text>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            class="white--text"
+            color="accent3"
+            @click="unlinkSavedSearch(false)"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            class="white--text"
+            color="success"
+            :loading="unlinkLoader"
+            @click="unlinkSavedSearch(true)"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import { mapActions, mapGetters, mapState } from "vuex";
+
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
+import RestClient from "@/lib/Client/RESTClient.js";
+import saveSearch from "@/store";
+
+const restClient = new RestClient();
+export default {
+  name: "SavedSearches",
+  components: { RecordStatus },
+  data: () => {
+    return {
+      getSavedSearches: [],
+      confirmUnlink: false,
+      unlinkSavedSearchCard: false,
+      selectedItem: {},
+      unlinkLoader: false,
+    };
+  },
+  computed: {
+    ...mapState("users", ["user"]),
+    ...mapState("record", ["currentRecord"]),
+    ...mapGetters("record", ["getField"]),
+  },
+  mounted() {
+    this.getSavedSearches = this.getField("savedSearches");
+  },
+  methods: {
+    ...mapActions("record", ["fetchRecord"]),
+
+    /**
+     * Confirmation dialog to unlink the saved search
+     */
+    confirmUnlinkSavedSearch(item) {
+      this.selectedItem = item;
+      this.confirmUnlink = true;
+      this.unlinkSavedSearchCard = true;
+    },
+
+    /**
+     * Unlink the saved search
+     * @param del - Boolean
+     */
+    async unlinkSavedSearch(del) {
+      if (del) {
+        this.unlinkLoader = true;
+        //Filter the currentRecord to unlink
+        let linkRecord = this.selectedItem.fairsharingRecords.filter(({id}) => id !== this.currentRecord.fairsharingRecord.id);
+
+        //Array of id of the remaining record
+        linkRecord = linkRecord.map(({id}) => id)
+
+        let saveSearchObj = {
+          fairsharing_record_ids: linkRecord,
+        };
+
+        let updatedSearchResult = await restClient.updateSaveSearch(
+            this.selectedItem["id"],
+            saveSearchObj,
+            this.user().credentials.token
+        );
+
+        //Commit the updated result to store
+        saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
+
+        //Update the page after unlinking the savedSearch
+        await this.fetchRecord({
+          id: this.currentRecord.fairsharingRecord.id,
+          token: this.user().credentials.token,
+        });
+
+        this.getSavedSearches = this.getField("savedSearches");
+      }
+      this.unlinkLoader = false;
+      this.unlinkSavedSearchCard = false;
+      this.confirmUnlink = false;
+
+    },
+  },
+};
+&lt;/script></pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
+	
+		on Thu Aug 29th 2024
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

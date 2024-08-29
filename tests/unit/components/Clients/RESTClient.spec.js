@@ -122,6 +122,7 @@ describe("RESTClient", () => {
     expect(resp).toBe("testData");
   });
 
+
   it("can process network errors", async () => {
     stub.restore();
     jest.spyOn(console, "error");

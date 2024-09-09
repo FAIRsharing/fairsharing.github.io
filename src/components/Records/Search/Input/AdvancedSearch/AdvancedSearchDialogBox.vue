@@ -276,7 +276,7 @@ export default {
 
     /**
      * Add advancedSearch selection to query params in
-     * the URL by creating array of objects into string
+     * and create URL by inserting array of objects into string
      */
     advancedSearchQueryString() {
       if (
@@ -293,7 +293,7 @@ export default {
             this.queryString += params["identifier"];
             this.queryString += "=";
             if (Array.isArray(params["value"])) {
-              this.queryString += params["value"].toString();
+              this.queryString += params["value"].join('+');
             } else if (params["value"]) {
               this.queryString += params["value"];
             }

@@ -256,7 +256,7 @@ export default {
                   advancedSearchParams["value"] = paramValues[1];
                 }
                 else {
-                  advancedSearchParams["value"] = paramValues[1].split(",");
+                  advancedSearchParams["value"] = paramValues[1].split("+");
                 }
                 searchObj["children"].push(advancedSearchParams);
               }

@@ -21,13 +21,7 @@ const actions = {
       response["searchOrganisations"] &&
       response["searchOrganisations"].length
     ) {
-      const organisationsList = response["searchOrganisations"].map(
-        (organisation) => {
-          let id = organisation.id,
-            name = organisation.name;
-          return { id, name };
-        }
-      );
+      const organisationsList = response["searchOrganisations"].map(({ name }) => name);
       commit("setSearchOrganisations", organisationsList);
     }
 

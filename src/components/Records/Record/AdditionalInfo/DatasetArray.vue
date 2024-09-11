@@ -9,7 +9,11 @@
       class="d-inline-block mr-2"
     >
       <template #activator="{ on }">
-        <v-icon v-on="on">
+        <v-icon
+          size="15"
+          class="mb-1"
+          v-on="on"
+        >
           fa-question-circle
         </v-icon>
       </template>

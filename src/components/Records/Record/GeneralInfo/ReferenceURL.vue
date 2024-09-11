@@ -3,7 +3,23 @@
     v-if="getField('homepage') === getField('metadata').reference_url"
     class="d-flex flex-row mt-4 align-center min-height-40"
   >
-    <b class="width-15-percent-flex">Reference URL</b>
+    <span
+      class="d-flex align-baseline width-15-percent-flex"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['reference_url'] }}
+      </v-tooltip>
+      <b class="width-15-percent-flex">Reference URL</b>
+    </span>
     <div class="d-flex full-width ml-md-12 ml-13">
       As above
     </div>
@@ -12,7 +28,23 @@
     v-else-if="getField('metadata').reference_url"
     class="d-flex flex-row mt-4 align-center min-height-40"
   >
-    <b class="width-15-percent-flex">Reference URL</b>
+    <span
+      class="d-flex align-baseline width-15-percent-flex"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['reference_url'] }}
+      </v-tooltip>
+      <b class="width-15-percent-flex">Reference URL</b>
+    </span>
     <div class="d-flex full-width ml-md-12 ml-13">
       <a
         v-if="getField('metadata').reference_url"
@@ -30,7 +62,23 @@
     v-else
     class="d-flex flex-row mt-4 align-center min-height-40"
   >
-    <b class="width-15-percent-flex">Reference URL</b>
+    <span
+      class="d-flex align-baseline width-15-percent-flex"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['reference_url'] }}
+      </v-tooltip>
+      <b class="width-15-percent-flex">Reference URL</b>
+    </span>
     <div class="d-flex full-width ml-md-12 ml-13">
       N/A
     </div>
@@ -38,7 +86,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 import NoneFound from "@/components/Records/Record/NoneFound";
 export default {
@@ -46,6 +94,7 @@ export default {
   components: {NoneFound},
   computed: {
     ...mapGetters("record", ["getField"]),
+    ...mapState("editor", ["recordTooltips"]),
   }
 }
 </script>

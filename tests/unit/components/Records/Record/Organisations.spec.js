@@ -9,6 +9,16 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            organisations: "description tooltip.",
+        }
+    }
+}
+
+
 Record.state.currentRecord["fairsharingRecord"] = {
     organisationLinks: [
         {
@@ -49,7 +59,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record: Record
+        record: Record,
+        editor: editor
     }
 });
 

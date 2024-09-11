@@ -121,7 +121,23 @@
     v-else-if="inlineStyle && getField('organisations') && getField('organisations').length"
     class="d-flex flex-row mt-4 align-center"
   >
-    <b class="width-15-percent-flex">Organisations</b>
+    <span
+      class="d-flex align-baseline width-15-percent-flex"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['organisations'] }}
+      </v-tooltip>
+      <b class="width-15-percent-flex">Organisations</b>
+    </span>
     <p
       v-if="jointOrganisations && jointOrganisations.length"
       class="ma-0 full-width ml-md-12 ml-13"
@@ -151,7 +167,23 @@
     v-else
     class="d-flex flex-row mt-4 align-center"
   >
-    <b class="width-15-percent-flex">Organisations</b>
+    <span
+      class="d-flex align-baseline width-15-percent-flex"
+    >
+      <v-tooltip bottom>
+        <template #activator="{ on }">
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          >
+            fa-question-circle
+          </v-icon>
+        </template>
+        {{ recordTooltips['organisations'] }}
+      </v-tooltip>
+      <b class="width-15-percent-flex">Organisations</b>
+    </span>
     <p class="ma-0 full-width ml-md-12 ml-13">
       N/A
     </p>
@@ -159,7 +191,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 
 import Icon from "@/components/Icon";
 import SectionTitle from '@/components/Records/Record/SectionTitle';
@@ -185,6 +217,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+    ...mapState("editor", ["recordTooltips"]),
     jointOrganisations(){
       return this.getRelations('maintains').concat(this.getRelations('collaborates_on').concat(this.getRelations('associated_with')));
     }

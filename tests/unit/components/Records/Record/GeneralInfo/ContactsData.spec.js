@@ -9,6 +9,16 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            contacts: "contacts tooltip.",
+        }
+    }
+}
+
+
 Record.state.currentRecord["fairsharingRecord"] = {
     doi: 'FAIRsharing.wibble',
     subjects:[],
@@ -19,7 +29,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record
+        record:Record,
+        editor: editor
     }});
 
 describe("ContactsData.vue", function(){

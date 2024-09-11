@@ -65,7 +65,7 @@
               <a
                 :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
                 target="_blank"
-                class="underline-effect"
+                class="underline-effect ma-1"
               >
                 View on PubMed
               </a>
@@ -76,7 +76,7 @@
               text
               outlined
               small
-              class="mr-1"
+              class="ma-1"
             >
               <a
                 :href="'https://doi.org/' + publication.doi"

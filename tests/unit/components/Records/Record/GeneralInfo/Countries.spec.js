@@ -9,6 +9,15 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            countries: "Country tooltip.",
+        }
+    }
+}
+
 Record.state.currentRecord["fairsharingRecord"] = {
     doi: 'FAIRsharing.wibble',
     metadata: {
@@ -22,7 +31,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record
+        record: Record,
+        editor: editor
     }});
 
 describe("Countries.vue", function(){

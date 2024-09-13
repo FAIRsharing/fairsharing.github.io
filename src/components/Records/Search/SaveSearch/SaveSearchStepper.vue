@@ -258,7 +258,6 @@ export default {
         if (this.user().is_super_curator) {
           this.isSuperCurator = true;
         }
-        this.searchForm = false;
       }
     },
   },

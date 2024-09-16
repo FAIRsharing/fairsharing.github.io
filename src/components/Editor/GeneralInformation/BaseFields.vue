@@ -31,7 +31,7 @@
           v-model="recordLogo"
           :rules="[rules.isImage(), imageSizeCorrect]"
           clearable
-          accept="images/png,image/jpeg"
+          accept="image/png,image/jpeg"
           label="Logo"
           :loading="logoLoading"
           prepend-icon="fa-image"

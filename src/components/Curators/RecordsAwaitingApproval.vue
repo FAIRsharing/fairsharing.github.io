@@ -370,7 +370,8 @@
                 general: null
               };
               let preparedRecord = {
-                processing_notes: ""
+                processing_notes: "",
+                skip_approval: true
               };
               preparedRecord.processing_notes = notesText;
               let data = {

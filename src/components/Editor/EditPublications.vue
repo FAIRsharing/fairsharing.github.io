@@ -575,7 +575,13 @@ export default {
         this.newPublication.title = data.title;
         this.newPublication.url = data["URL"];
         if (data["created"]) {
-          let dateParts = data["created"]["date-parts"][0].toString();
+          let dateParts;
+          if (data['published-print']) {
+            dateParts = data["published-print"]["date-parts"][0].toString();
+          }
+          else {
+            dateParts = data["created"]["date-parts"][0].toString();
+          }
           this.newPublication.year = Number(dateParts.split(",")[0]);
         }
         let authors = [];

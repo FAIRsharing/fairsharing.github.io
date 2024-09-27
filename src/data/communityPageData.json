@@ -380,7 +380,7 @@
           "types": ["(Meta)data retrieval/integration"],
           "logo": "fipWizard.png",
           "status": "In progress",
-          "description": "We use FAIRsharing metadata in the description and provenance fields of FAIR Enabling Resource (FER) nanopublications when availabe in FAIRsharing and use SKOS relations to specify how FERs relate to FAIRsharing resources.",
+          "description": "We use FAIRsharing metadata in the description and provenance fields of FAIR Enabling Resource (FER) nanopublications when available in FAIRsharing and use SKOS relations to specify how FERs relate to FAIRsharing resources.",
           "homepage": "https://fip-wizard.ds-wizard.org/",
           "usage_image": "",
           "id": "fip_wizard"

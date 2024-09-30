@@ -1,11 +1,11 @@
 import { shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
 
-import PreservationPolicy from "@/views/Static/PreservationPolicy/PreservationPolicy.vue"
+import PreservationPolicy from "@/views/Static/SustainabilityAndPreservation/SustainabilityAndPreservation.vue"
 
 const vuetify = new Vuetify();
 
-describe("PreservationPolicy.vue", function(){
+describe("SustainabilityAndPreservation.vue", function(){
     let wrapper;
 
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe("PreservationPolicy.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("PreservationPolicy");
+        expect(wrapper.vm.$options.name).toMatch("SustainabilityAndPreservation");
     });
 
 });

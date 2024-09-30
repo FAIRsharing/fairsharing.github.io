@@ -126,9 +126,9 @@ export const OrganisationsList = () =>
   import(
     /* webpackChunkName: "organisationsList-chunk" */ "@/views/Organisations/OrganisationsList"
   );
-export const PreservationPolicy = () =>
+export const SustainabilityAndPreservation = () =>
   import(
-    /* webpackChunkName: "privacy-chunk" */ "@/views/Static/PreservationPolicy/PreservationPolicy"
+    /* webpackChunkName: "privacy-chunk" */ "@/views/Static/SustainabilityAndPreservation/SustainabilityAndPreservation.vue"
   );
 export const AdvancedSearchRecords = () =>
   import(

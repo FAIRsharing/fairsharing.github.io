@@ -2,6 +2,30 @@
   <main class="pa-15 mb-10">
     <!--  main_title -->
     <h1 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
+      FAIRsharing Sustainability
+    </h1>
+
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Since 2011, FAIRsharing is a sustainable service operating with and for the international researcher community
+      and other stakeholders involved in the research life cycle. The FAIRsharing resource, along its core operational
+      team, are based at the University of Oxford, UK. As with the vast majority of the community resources,
+      FAIRsharing is mainly funded by continuous and multiple R&D and infrastructure projects, but it is also supported
+      by University-enabled access to DOI generation and the member-only ORCID API.
+    </p>
+
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Other key factors contributing to its sustainability are the extensive network of national and international
+      collaborations and formal endorsements by organizations and research infrastructures in all disciplines,
+      including RDA, EOSC, and ELIXIR. A key example is the flourishing
+      <a href="/community_champions">FAIRsharing Community Champions Programme</a>
+      that roots the growth and relevance of FAIRsharing into communities of practice.
+    </p>
+
+    <h1 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
       FAIRsharing Data Preservation Policy
     </h1>
 
@@ -33,9 +57,9 @@
       </a>.
     </p>
 
-    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
+    <h1 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
       Contact
-    </h2>
+    </h1>
 
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -49,7 +73,7 @@
 <script>
 
 export default {
-  name: "PreservationPolicy",
+  name: "SustainabilityAndPreservation",
   data: () => {
     return {}
   }

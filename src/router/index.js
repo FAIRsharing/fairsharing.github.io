@@ -29,7 +29,6 @@ import {
   OntologyBrowser,
   Organisation,
   OrganisationsList,
-  PreservationPolicy,
   Privacy,
   PublicProfile,
   Record,
@@ -42,6 +41,7 @@ import {
   Signup,
   Stakeholders,
   Stat,
+  SustainabilityAndPreservation,
   Terms,
   Timeline,
   User,
@@ -519,7 +519,19 @@ let routes = [
   {
     name: "PreservationPolicy",
     path: "/preservation_policy",
-    component: PreservationPolicy,
+    redirect: () => {
+      window.location.assign(
+          [
+            process.env.VUE_APP_API_HOSTNAME,
+            "/sustainability_and_preservation",
+          ].join("")
+      );
+    },
+  },
+  {
+    name: "SustainabilityAndPreservation",
+    path: "/sustainability_and_preservation",
+    component: SustainabilityAndPreservation,
   },
   {
     name: "API Documentation",

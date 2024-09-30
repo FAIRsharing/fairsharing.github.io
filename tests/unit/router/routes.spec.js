@@ -242,6 +242,26 @@ describe("Routes", () => {
         // eslint-enable no-promise-executor-return
     });
 
+    it("performs preservation policy redirections correctly", async () => {
+        let link;
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = {assign: assignMock};
+        const redirections = {
+            PreservationPolicy: '/sustainability_and_preservation',
+        }
+
+        // eslint-disable no-promise-executor-return
+        Object.keys(redirections).forEach(async (goto) => {
+            link = router.options.routes.find((obj) => {
+                return obj.name === goto;
+            });
+            await link.redirect();
+            expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
+        });
+        // eslint-enable no-promise-executor-return
+    });
+
 
 
     it("gets sitemap from the api", async () => {

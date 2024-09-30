@@ -248,7 +248,7 @@ describe("Routes", () => {
         delete window.location;
         window.location = {assign: assignMock};
         const redirections = {
-            PreservationPolicy: '/sustainability_and_preservation',
+            preservation_policy: '/sustainability_and_preservation',
         }
 
         // eslint-disable no-promise-executor-return

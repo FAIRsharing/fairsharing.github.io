@@ -517,7 +517,7 @@ let routes = [
     component: Privacy,
   },
   {
-    name: "PreservationPolicy",
+    name: "preservation_policy",
     path: "/preservation_policy",
     redirect: () => {
       window.location.assign(

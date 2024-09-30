@@ -528,17 +528,6 @@
         ]
       },
       {
-        "name": "Dominique Batista",
-        "role": "Senior Research Software Engineer",
-        "profileImg": "assets/Community/profiles/dominique.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-2109-489X", "icon": "Orcid"},
-          {"link": "https://github.com/terazus", "icon": "github"},
-          {"link": "dominique.batista@oerc.ox.ac.uk", "icon": "contacts"}
-        ]
-      },
-      {
         "name": "Delphine Dauga",
         "role": "Curation Manager",
         "profileImg": "assets/Community/profiles/delphine.jpg",

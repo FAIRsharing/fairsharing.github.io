@@ -416,7 +416,13 @@
           "id": "argos"
         },
         {
-          "organisations": [],
+          "organisations": [
+            {
+              "name": "Center for Marine Environmental Sciences (MARUM)",
+              "url": "https://www.marum.de",
+              "id": 427
+            }
+          ],
           "contacts": [
             {
               "name": "R. Huber",

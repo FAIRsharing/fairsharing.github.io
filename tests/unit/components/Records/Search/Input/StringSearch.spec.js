@@ -93,11 +93,12 @@ describe("StringSearch.vue", () => {
     wrapper.vm.searchTerm = null;
 
     wrapper.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(2);
+    // this won't have been called with a null search string
+    expect($router.push).toHaveBeenCalledTimes(1);
 
     wrapper.vm.searchTerm = "testStringHome";
     wrapper.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(3);
+    expect($router.push).toHaveBeenCalledTimes(2);
     expect($router.push).toHaveBeenCalledWith({
       path: "/search",
       query: { q: "testStringHome" },
@@ -108,7 +109,7 @@ describe("StringSearch.vue", () => {
       { label: "standards", value: "standard" },
     ];
     wrapper2.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(4);
+    expect($router.push).toHaveBeenCalledTimes(3);
     expect($router.push).toHaveBeenCalledWith({
       path: "/search",
       query: {
@@ -117,12 +118,12 @@ describe("StringSearch.vue", () => {
         searchAnd: false,
       },
     });
-    wrapper2.vm.searchTerm = undefined;
+    wrapper2.vm.searchTerm = "another test string";
     wrapper2.vm.selectedRegistries = [
       { label: "standards", value: "standard" },
     ];
     wrapper2.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(5);
+    expect($router.push).toHaveBeenCalledTimes(4);
   });
 
   it("appends terms when relevant prop is set", () => {

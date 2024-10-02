@@ -414,6 +414,36 @@
           "homepage": "https://argos.openaire.eu/splash/",
           "usage_image": "argos_usage.png",
           "id": "argos"
+        },
+        {
+          "organisations": [
+            {
+              "name": "Center for Marine Environmental Sciences (MARUM)",
+              "url": "https://www.marum.de",
+              "id": 427
+            }
+          ],
+          "contacts": [
+            {
+              "name": "R. Huber",
+              "url": "mailto:rhuber@uni-bremen.de",
+              "id": "r_huber"
+            }
+          ],
+          "methods": [
+            "Cross-referencing FAIRsharing content within your resource"
+          ],
+          "name": "F-UJI",
+          "types": [
+            "Data Management Plan (DMP) development/lifecycle",
+            "(Meta)data retrieval/integration"
+          ],
+          "logo": "fuji.png",
+          "status": "In progress",
+          "description": "FAIRsharing URLs/DOIs are used to reference metadata standards, ontologies and other FAIR enabling resources identified by F-UJI.",
+          "homepage": "https://www.f-uji.net",
+          "usage_image": "",
+          "id": "f-uji"
         }
       ]
     }

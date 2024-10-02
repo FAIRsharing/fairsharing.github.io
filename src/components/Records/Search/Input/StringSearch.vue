@@ -85,35 +85,6 @@
         </template>
       </v-checkbox>
     </div>
-    <v-dialog
-      v-model="searchTermRequired"
-      max-width="700px"
-    >
-      <v-card>
-        <v-card-title
-          class="headline"
-        >
-          <p>
-            <b>Please enter a search term</b>
-          </p>
-        </v-card-title>
-        <v-card-text>
-          A basic search will return any records matching the text in the box, which you may then further refine.
-          Or, you may click the advanced search button for more specific filtering without needing to enter text
-          first.
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="blue darken-1"
-            class="white--text"
-            @click="searchTermRequired = false"
-          >
-            OK
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -143,8 +114,7 @@ export default {
         { label: "policies", value: "policy" },
         { label: "collections", value: "collection" },
       ],
-      formValid: true,
-      searchTermRequired: false
+      formValid: true
     };
   },
   computed: {
@@ -168,9 +138,8 @@ export default {
   methods: {
     searchString() {
       const _module = this;
-      console.log("TERM: " + _module.searchTerm);
+      let query = {};
       if (_module.searchTerm) {
-        let query;
         // For ticket #1505 using _module.$route.path allows this
         // component to trigger a search on the same page, instead of going
         // to search from a collection's page.
@@ -185,19 +154,17 @@ export default {
             q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
           };
         }
-        _module.$router.push({
-          path: _module.searchPath,
-          query: query,
-        });
-        _module.searchTerm = null;
-        _module.$refs.form.resetValidation();
       }
-      else {
-        this.searchTermRequired = true;
-      }
+      _module.$router.push({
+        path: _module.searchPath,
+        query: query,
+      });
+      _module.searchTerm = null;
+      _module.$refs.form.resetValidation();
     },
     searchStringHomePage() {
       const _module = this;
+      let query = {}
       if (_module.searchTerm) {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
@@ -213,20 +180,18 @@ export default {
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);
           });
-          _module.$router.push({
-            path: "/search",
-            query: {
-              q: _module.searchTerm ? _module.searchTerm : undefined,
-              fairsharingRegistry: selectedRegistriesValues.toString(),
-              searchAnd: false,
-            },
-          });
-          _module.searchTerm = null;
-          _module.$refs.form.resetValidation();
+        query = {
+          q: _module.searchTerm ? _module.searchTerm : undefined,
+          fairsharingRegistry: selectedRegistriesValues.toString(),
+          searchAnd: false,
         }
       }
-      else {
-        this.searchTermRequired = true;
+      _module.$router.push({
+        path: "/search",
+        query: query,
+      });
+      _module.searchTerm = null;
+      _module.$refs.form.resetValidation();
       }
     },
     clearSearchField(item) {

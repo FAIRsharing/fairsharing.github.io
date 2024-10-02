@@ -28,7 +28,6 @@ export default {
       itemList: [
         "manual",
         "automated",
-        "uncertain",
         "manual/automated",
         "none",
         "not found",

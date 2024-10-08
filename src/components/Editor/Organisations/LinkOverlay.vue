@@ -201,7 +201,7 @@
                             :rules="[rules.isImage(), imageSizeCorrect]"
                             clearable
                             :loading="logoLoading"
-                            accept="images/png,image/jpeg"
+                            accept="image/png,image/jpeg"
                             label="Organisation Logo"
                             prepend-icon="fa-image"
                           />

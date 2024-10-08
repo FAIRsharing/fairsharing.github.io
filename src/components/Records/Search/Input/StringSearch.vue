@@ -159,7 +159,6 @@ export default {
         path: _module.searchPath,
         query: query,
       });
-      _module.searchTerm = null;
       _module.$refs.form.resetValidation();
     },
     searchStringHomePage() {
@@ -180,19 +179,18 @@ export default {
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);
           });
-        query = {
-          q: _module.searchTerm ? _module.searchTerm : undefined,
-          fairsharingRegistry: selectedRegistriesValues.toString(),
-          searchAnd: false,
+          query = {
+            q: _module.searchTerm ? _module.searchTerm : undefined,
+            fairsharingRegistry: selectedRegistriesValues.toString(),
+            searchAnd: false,
+          }
         }
+        _module.$router.push({
+          path: "/search",
+          query: query,
+        });
       }
-      _module.$router.push({
-        path: "/search",
-        query: query,
-      });
-      _module.searchTerm = null;
       _module.$refs.form.resetValidation();
-      }
     },
     clearSearchField(item) {
       if (item) this.searchTerm = null;

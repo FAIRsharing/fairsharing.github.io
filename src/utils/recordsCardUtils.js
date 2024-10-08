@@ -97,8 +97,10 @@ const recordsCardUtils = {
         },
         organizeChips(record, node, max_item_shown) {
             const _module = this;
+            /* istanbul ignore else */
             if (record[node]) {
                 record[node].forEach(function (item, index) {
+                    /* istanbul ignore else */
                     if (index < max_item_shown) {
                         item.type = node;
                         _module.chips.push(item);

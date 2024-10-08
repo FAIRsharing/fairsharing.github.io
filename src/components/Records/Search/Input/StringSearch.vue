@@ -18,8 +18,6 @@
         :class="$vuetify.breakpoint.lgAndDown ? 'v-input' : 'v-input-lg-up'"
         :height="responsiveHeightTextBox"
         :placeholder="placeholder"
-        :rules="[rules.isRequired()]"
-        validate-on-blur
       />
 
       <!--  reusable search box  -->
@@ -92,7 +90,6 @@
 
 <script>
 import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
-import { isRequired } from "@/utils/rules";
 export default {
   name: "StringSearch",
   components: { AdvancedSearch },
@@ -117,12 +114,7 @@ export default {
         { label: "policies", value: "policy" },
         { label: "collections", value: "collection" },
       ],
-      formValid: true,
-      rules: {
-        isRequired: function () {
-          return isRequired();
-        },
-      },
+      formValid: true
     };
   },
   computed: {
@@ -146,9 +138,8 @@ export default {
   methods: {
     searchString() {
       const _module = this;
-      const isValid = _module.$refs.form.validate();
-      if (_module.searchTerm || isValid) {
-        let query;
+      let query = {};
+      if (_module.searchTerm) {
         // For ticket #1505 using _module.$route.path allows this
         // component to trigger a search on the same page, instead of going
         // to search from a collection's page.
@@ -163,18 +154,17 @@ export default {
             q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
           };
         }
-        _module.$router.push({
-          path: _module.searchPath,
-          query: query,
-        });
-        _module.searchTerm = null;
-        _module.$refs.form.resetValidation();
       }
+      _module.$router.push({
+        path: _module.searchPath,
+        query: query,
+      });
+      _module.$refs.form.resetValidation();
     },
     searchStringHomePage() {
       const _module = this;
-      const isValid = _module.$refs.form.validate();
-      if (isValid) {
+      let query = {}
+      if (_module.searchTerm) {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
             path: "/search",
@@ -189,18 +179,18 @@ export default {
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);
           });
-          _module.$router.push({
-            path: "/search",
-            query: {
-              q: _module.searchTerm ? _module.searchTerm : undefined,
-              fairsharingRegistry: selectedRegistriesValues.toString(),
-              searchAnd: false,
-            },
-          });
-          _module.searchTerm = null;
-          _module.$refs.form.resetValidation();
+          query = {
+            q: _module.searchTerm ? _module.searchTerm : undefined,
+            fairsharingRegistry: selectedRegistriesValues.toString(),
+            searchAnd: false,
+          }
         }
+        _module.$router.push({
+          path: "/search",
+          query: query,
+        });
       }
+      _module.$refs.form.resetValidation();
     },
     clearSearchField(item) {
       if (item) this.searchTerm = null;

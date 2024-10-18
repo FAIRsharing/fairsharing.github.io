@@ -49,7 +49,10 @@
       <Licence v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
 
       <!-- Duplicate link to graph (see also action menu) -->
-      <div class="d-flex flex-row">
+      <div
+        v-if="currentRecord['fairsharingRecord'].hasGraph"
+        class="d-flex flex-row"
+      >
         <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
           <v-btn
             class="my-5"

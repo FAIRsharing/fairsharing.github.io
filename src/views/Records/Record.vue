@@ -688,7 +688,12 @@ export default {
           }
         },
         {
-          name: function() { return "View Relation Graph" },
+          name: function() {
+            if (_module.currentRecord['fairsharingRecord'].hasGraph) {
+              return "View Relation Graph"
+            }
+            return "No graph available"
+          },
           isDisabled: function(){
             if (_module.currentRecord['fairsharingRecord'].hasGraph) {
               return false;

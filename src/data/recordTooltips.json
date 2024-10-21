@@ -7,6 +7,7 @@
     "description": "Free text summary of the resource and its purpose.",
     "domains": "The domains for this record; domains tend to be more fine-grained terms relating to the scope of the resource.",
     "fairsharing_registry": "The name of the registry to which this record belongs; one of Standards, Policies, or Databases.",
+    "graph_button": "Relation graphs are available for all records unless there are no relations or the graph has not yet been generated.",
     "homepage": "The homepage of the resource. If there is no official homepage, a related URL may be used. For policies, the resource homepage must be the policy document itself.",
     "how_to_cite": "How to cite this FAIRsharing record.",
     "maintainers": "A list of developers of this resource who have claimed ownership of the record both for attribution and to perform updates to the record.",

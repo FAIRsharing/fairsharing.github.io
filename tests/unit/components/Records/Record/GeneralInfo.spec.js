@@ -11,6 +11,16 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let editor = {
+    namespaced: true,
+    state: {
+        recordTooltips: {
+            graph_button: "graph button tooltip.",
+        }
+    }
+}
+
+
 const router = new VueRouter(),
     $router = { push: jest.fn() };
 
@@ -20,7 +30,8 @@ record.state.currentRecord.fairsharingRecord = {
 
 const $store = new Vuex.Store({
     modules: {
-        record:Record
+        record: Record,
+        editor: editor
     }});
 
 describe("GeneralInfo.vue", function(){

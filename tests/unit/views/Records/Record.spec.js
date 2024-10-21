@@ -234,8 +234,8 @@ describe("Record.vue", function () {
     expect(wrapper.vm.buttons[1].isDisabled()).toBe(false);
     expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
     expect(wrapper.vm.buttons[2].isDisabled()).toBe(false);
-    expect(wrapper.vm.buttons[3].name()).toEqual("View Relation Graph");
-    expect(wrapper.vm.buttons[3].isDisabled()).toBe(false);
+    expect(wrapper.vm.buttons[3].name().toLowerCase()).toEqual("no graph available");
+    expect(wrapper.vm.buttons[3].isDisabled()).toBe(true);
     expect(wrapper.vm.buttons[4].name()).toEqual("View record history");
     expect(wrapper.vm.buttons[4].isDisabled()).toBe(false);
     expect(wrapper.vm.buttons[5].name()).toEqual(

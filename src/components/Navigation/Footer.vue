@@ -30,6 +30,7 @@
             v-else
             class="underline-effect"
             :href="item.url"
+            rel="noreferer,noopener"
             target="_blank"
           >
             <i
@@ -69,6 +70,7 @@
       <a
         class="mr-2 underline-effect"
         href="http://creativecommons.org/licenses/by-sa/4.0/"
+        rel="noreferer,noopener"
         target="_blank"
       >Creative Commons
         by

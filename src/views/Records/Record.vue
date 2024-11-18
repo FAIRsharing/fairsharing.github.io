@@ -653,7 +653,6 @@ export default {
             }
           }
         },
-
         {
           name: () => {
             if (!_module.userIsLoggedIn){
@@ -689,8 +688,18 @@ export default {
           }
         },
         {
-          name: function() { return "View Relation Graph" },
-          isDisabled: function(){ return false },
+          name: function() {
+            if (_module.currentRecord['fairsharingRecord'].hasGraph) {
+              return "View Relation Graph"
+            }
+            return "No graph available"
+          },
+          isDisabled: function(){
+            if (_module.currentRecord['fairsharingRecord'].hasGraph) {
+              return false;
+            }
+            return true;
+          },
           method: function(){
             _module.$router.push({
               path: "/graph/" + _module.currentRecord['fairsharingRecord'].id

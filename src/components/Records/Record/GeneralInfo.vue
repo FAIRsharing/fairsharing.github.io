@@ -49,23 +49,46 @@
       <Licence v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
 
       <!-- Duplicate link to graph (see also action menu) -->
-      <div class="d-flex flex-row">
-        <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
-          <v-btn
-            class="my-5"
-            color="primary"
-            outlined
-          >
+      <span
+        class="d-flex align-baseline width-15-percent-flex"
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
             <v-icon
-              small
-              left
+              class="mr-2"
+              size="15"
+              v-on="on"
             >
-              fa-project-diagram
+              fa-question-circle
             </v-icon>
-            View Relation Graph&nbsp;
-          </v-btn>
-        </router-link>
-      </div>
+          </template>
+          {{ recordTooltips['graph_button'] }}
+        </v-tooltip>
+        <v-btn
+          class="my-5"
+          color="primary"
+          outlined
+          style="max-width: 250px"
+          :disabled="graphButtonDisabled()"
+          @click="loadGraph"
+        >
+          <v-icon
+            small
+            left
+          >
+            fa-project-diagram
+          </v-icon>
+          <span
+            v-if="currentRecord.fairsharingRecord.hasGraph"
+          >
+            View Relation Graph
+          </span>
+          <span v-else>
+            No Graph Available
+          </span>
+        </v-btn>
+
+      </span>
 
       <!--How to cite & publication for record named Citations-->
       <Citations />
@@ -138,11 +161,24 @@ export default {
   },
   computed: {
     ...mapState('record', ["currentRecord"]),
+    ...mapState('editor', ['recordTooltips']),
     ...mapGetters("record", ["getField"])
   },
   methods: {
     callRequestOwnership() {
       this.$emit('requestOwnership')
+    },
+    loadGraph() {
+      let _module = this;
+      if(_module.currentRecord.fairsharingRecord.hasGraph) {
+        _module.$router.push({path: `/graph/${_module.currentRecord['fairsharingRecord'].id}`})
+      }
+    },
+    graphButtonDisabled() {
+      if(this.currentRecord.fairsharingRecord.hasGraph) {
+        return false;
+      }
+      return true;
     }
   }
 }

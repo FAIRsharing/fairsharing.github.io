@@ -199,6 +199,11 @@ const customIcons = {
       icon: "/assets/records/db-icon.svg",
       tooltip: "Knowledge Base & repository",
     },
+    benchmark: {
+      type: "img",
+      icon: "/assets/records/benchmark.svg",
+      tooltip: "Benchmark",
+    },
     DOI: {
       type: "img",
       icon: "/assets/icons/DOI_logo.svg",

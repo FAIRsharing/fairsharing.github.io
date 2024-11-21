@@ -571,6 +571,8 @@ export default {
             }
           }
           else {
+            // TODO: Add a query to osf.io here:
+            // TODO: https://developer.osf.io/
             this.errors.doi = true;
           }
         }

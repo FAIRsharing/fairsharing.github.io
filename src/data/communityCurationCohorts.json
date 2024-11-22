@@ -766,7 +766,12 @@
     {
       "name": "Beth Knazook",
       "id": 7666,
-      "organisation": [],
+      "organisation": [
+        {
+          "id": 4666,
+          "name": "Digital Repository of Ireland"
+        }
+      ],
       "scope": "Cultural Heritage",
       "orcid": "0000-0002-0151-6397",
       "early_adopter" : false,

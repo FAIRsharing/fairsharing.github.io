@@ -527,47 +527,55 @@ export default {
           } else {
             dataPublication = data;
           }
-          if (
-            dataPublication.metadata.upload_type === "publication" ||
-            (dataPublication.metadata.resource_type &&
-              dataPublication.metadata.resource_type.type &&
-              dataPublication.metadata.resource_type.type === "publication")
-          ) {
-            this.newPublication = {
-              journal: null,
-              doi: null,
-              title: null,
-              url: null,
-              year: null,
-              authors: null,
-            };
-            if (dataPublication.metadata.journal_title) {
-              this.newPublication.journal =
-                dataPublication.metadata.journal_title;
-            } else {
-              if (dataPublication.metadata.meeting) {
+          if (dataPublication.metadata !== undefined) {
+            if (dataPublication.metadata.upload_type === "publication" ||
+                (dataPublication.metadata.resource_type &&
+                    dataPublication.metadata.resource_type.type &&
+                    dataPublication.metadata.resource_type.type === "publication")
+            ) {
+              this.newPublication = {
+                journal: null,
+                doi: null,
+                title: null,
+                url: null,
+                year: null,
+                authors: null,
+              };
+              if (dataPublication.metadata.journal_title) {
                 this.newPublication.journal =
-                  dataPublication.metadata.meeting.title;
+                    dataPublication.metadata.journal_title;
+              } else {
+                if (dataPublication.metadata.meeting) {
+                  this.newPublication.journal =
+                      dataPublication.metadata.meeting.title;
+                }
               }
+              this.newPublication.doi = dataPublication.doi;
+              this.newPublication.title = dataPublication.metadata.title;
+              this.newPublication.url = dataPublication.links.doi;
+              this.newPublication.year = Number(
+                  dataPublication.metadata.publication_date.split("-")[0]
+              );
+              let authors = [];
+              dataPublication.metadata.creators.forEach(function (a) {
+                authors.push(a.name + "; ");
+              });
+              this.newPublication.authors = authors.join("");
+              this.newPublication.isCitation = false;
+              this.openEditor = true;
             }
-            this.newPublication.doi = dataPublication.doi;
-            this.newPublication.title = dataPublication.metadata.title;
-            this.newPublication.url = dataPublication.links.doi;
-            this.newPublication.year = Number(
-              dataPublication.metadata.publication_date.split("-")[0]
-            );
-            let authors = [];
-            dataPublication.metadata.creators.forEach(function (a) {
-              authors.push(a.name + "; ");
-            });
-            this.newPublication.authors = authors.join("");
-            this.newPublication.isCitation = false;
-            this.openEditor = true;
-          } else {
+            else {
+              this.errors.doi = true;
+            }
+          }
+          else {
+            // TODO: Add a query to osf.io here:
+            // TODO: https://developer.osf.io/
             this.errors.doi = true;
           }
         }
-      } else {
+      }
+      else {
         /* istanbul ignore next */
         this.newPublication.journal =
           data["container-title-short"] || data["container-title"];

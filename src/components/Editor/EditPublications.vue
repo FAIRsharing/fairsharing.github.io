@@ -523,10 +523,8 @@ export default {
         } else {
           let dataPublication;
           if (Array.isArray(data)) {
-            console.log("Array!");
             dataPublication = data[0];
           } else {
-            console.log("Object!");
             dataPublication = data;
           }
           if (dataPublication.metadata !== undefined) {

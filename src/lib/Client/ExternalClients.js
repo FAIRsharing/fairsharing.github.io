@@ -18,7 +18,8 @@ class ExternalRESTClients {
         this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=";
         this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
         this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
-        this.rorOrganisationsBaseURL = "https://api.ror.org/organizations?query=";
+        //this.rorOrganisationsBaseURL = "https://api.ror.org/organizations?query=";
+        this.rorOrganisationsBaseURL = "https://api.ror.org/v2/organizations?query=";
     }
 
     async getDOI(doi){

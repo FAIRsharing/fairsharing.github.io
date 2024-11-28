@@ -26,7 +26,7 @@
       </v-btn>
       <SaveSearchButton />
     </div>
-    <p class="body-2 mb-0">
+    <p class="body-2 mb-0 mt-4">
       <v-icon
         x-small
         class="infoIcon"

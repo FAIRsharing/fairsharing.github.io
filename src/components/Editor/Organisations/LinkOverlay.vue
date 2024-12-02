@@ -712,7 +712,6 @@
             this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name
             /**************  Homepage Link **************/
             this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links.filter(link => link.type ===  'website')[0].value
-            //his.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links[0]
             /***************  ROR Link ***************/
             this.menus.newOrganisation.data.ror_link = this.menus.newOrganisation.selectOrganisation.id
             /***************  Alternative Names ***************/
@@ -738,7 +737,7 @@
           if (matchedType && matchedType.length) {
             this.menus.newOrganisation.data.organisation_type_ids = matchedType
           } else{
-            switch (selectedType) {
+            switch (selectedType.toLowerCase()) {
               case 'government':
                 this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[0]]
                 break

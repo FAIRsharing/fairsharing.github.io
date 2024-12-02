@@ -19,8 +19,8 @@
       </v-icon>
       <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">{{
         $vuetify.breakpoint.mdAndDown
-          ? "Show/Edit Advanced Search"
-          : "Edit Advanced Search"
+          ? "Show/Edit"
+          : "Edit"
       }}</span>
     </v-btn>
     <v-btn
@@ -38,7 +38,7 @@
       >
         fa-solid fa-reply
       </v-icon>
-      <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">Restart Advanced Search</span>
+      <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">Restart</span>
     </v-btn>
   </div>
 </template>
@@ -53,6 +53,7 @@ export default {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
     },
     openAdvancedSearch() {
+      this.$router.replace({'query': null});
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
         true

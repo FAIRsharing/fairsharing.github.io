@@ -39,18 +39,26 @@ const formValidation = {
 };
 
 const organisation = {
-    "items":[{
-        "country":{
-            "country_code": "GB",
-            "country_name": "Great Britain"
-        },
-        "links":["http://www.obsmedical.com/"],
-        "name":"OBS Medical (United Kingdom)",
-        "types":["Company"],
-        "ror_link": "https:rororere.rere",
-        "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
-        "child_ror_links": ["https:rororere.rere3", "https:rororere.rere4"]
-    }],
+    "items": [{
+            "locations":[{
+                "geonames_details": {
+                  "country_code": "GB",
+                  "country_name": "Great Britain"
+              }
+            }],
+            "links":[{
+              "type": "website",
+              "value": "http://www.obsmedical.com/"
+          }],
+            "names":[{
+              "types": ["ror_display"],
+              "value": "OBS Medical (United Kingdom)"
+            }],
+            "ror_link": "https:rororere.rere",
+            "types":["company"],
+            "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
+            "child_ror_links": ["https:rororere.rere3", "https:rororere.rere4"]
+        }],
 };
 
 describe("Edit -> LinkOverlay.vue", function() {
@@ -237,14 +245,23 @@ describe("Edit -> LinkOverlay.vue", function() {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data:organisation});
         const expectedOrganisation = [{
-                "country":{
-                    "country_code": "GB",
-                    "country_name": "Great Britain"
-                },
-                "links":["http://www.obsmedical.com/"],
-                "name":"OBS Medical (United Kingdom)",
+                "locations":[{
+                    "geonames_details": {
+                      "country_code": "GB",
+                      "country_name": "Great Britain"
+                  }
+                }],
+                "links":[{
+                  "type": "website",
+                  "value": "http://www.obsmedical.com/"
+              }],
+                "names":[{
+                  "types": ["ror_display"],
+                  "value": "OBS Medical (United Kingdom)"
+                }],
+                "name": "OBS Medical (United Kingdom)",
                 "ror_link": "https:rororere.rere",
-                "types":["Company"],
+                "types":["company"],
                 "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
                 "child_ror_links": ["https:rororere.rere3", "https:rororere.rere4"]
             }]

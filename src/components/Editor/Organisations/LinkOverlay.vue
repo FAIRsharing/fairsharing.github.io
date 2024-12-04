@@ -687,6 +687,15 @@
             this.enterName = false
             this.importROR = true
             this.validName = true
+            data.items.forEach( it => {
+              it.names.every(e => {
+                if (e.types.includes('ror_display')){
+                  it.name = e.value
+                  return false
+                } else {
+                  return true
+                }})
+            })
             this.organisationsList = data.items
             this.organisationsNameList = data.items.map(item => item.name)
           } else {
@@ -702,21 +711,23 @@
             /************  Organisation Name ************/
             this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name
             /**************  Homepage Link **************/
-            this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links[0]
+            this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links.filter(link => link.type ===  'website')[0].value
             /***************  ROR Link ***************/
             this.menus.newOrganisation.data.ror_link = this.menus.newOrganisation.selectOrganisation.id
             /***************  Alternative Names ***************/
-            this.menus.newOrganisation.data.alternative_names =
-                this.menus.newOrganisation.selectOrganisation.aliases.concat(
-                    this.menus.newOrganisation.selectOrganisation.acronyms
-                )
+            this.menus.newOrganisation.data.alternative_names = []
+            this.menus.newOrganisation.selectOrganisation.names.forEach( it =>{
+              if (!it.types.includes('ror_display')){
+                this.menus.newOrganisation.data.alternative_names.push(it.value)
+              }
+            })
             /***************  Type Select ***************/
             this.selectTypes()
             /*************  Country Select *************/
-            this.menus.newOrganisation.data.country_ids = this.countries.filter(country => country.name === this.menus.newOrganisation.selectOrganisation.country["country_name"])
+            this.menus.newOrganisation.data.country_ids = this.countries.filter(country => country.name === this.menus.newOrganisation.selectOrganisation.locations[0].geonames_details["country_name"])
             /*************  Parent ror relationship *************/
-            this.menus.newOrganisation.data.parent_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "Parent")
-            this.menus.newOrganisation.data.child_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "Child")
+            this.menus.newOrganisation.data.parent_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "parent")
+            this.menus.newOrganisation.data.child_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "child")
           }
         },
 
@@ -726,20 +737,23 @@
           if (matchedType && matchedType.length) {
             this.menus.newOrganisation.data.organisation_type_ids = matchedType
           } else{
-            switch (selectedType) {
-              case 'Government':
+            switch (selectedType.toLowerCase()) {
+              case 'government':
                 this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[0]]
                 break
-              case 'Nonprofit':
+              case 'nonprofit':
                 this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[1]]
                 break
-              case 'Education':
+              case 'education':
                 this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[2]]
                 break
-              case 'Healthcare':
-              case 'Archive':
-              case 'Facility':
-              case 'Other':
+              case 'company':
+                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[5]]
+                break
+              case 'healthcare':
+              case 'archive':
+              case 'facility':
+              case 'other':
               default:
                 this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[8]]
             }

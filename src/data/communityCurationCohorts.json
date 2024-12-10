@@ -561,13 +561,7 @@
       {
         "name": "David Tomkins",
         "id": 5491,
-        "organisation": [
-          {
-            "id": 291,
-            "name": "Bodleian Library",
-            "tooltip": "Bodleian Library, University of Oxford"
-          }
-        ],
+        "organisation": [],
         "scope": "Research Data Management",
         "orcid": "0009-0000-4679-676X",
         "early_adopter" : false,

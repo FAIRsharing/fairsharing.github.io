@@ -48,7 +48,7 @@
       },
       data: () => {
         return {
-          dialog: false
+          dialog: false,
         }
       },
       computed: {
@@ -85,6 +85,13 @@
                           _module.$router.push({
                             path: "/profiles/usersList"
                           })
+                      }
+                    },
+                    {
+                      name: "Delete Account",
+                      isDisabled: _module.disableEdit(),
+                      action: function() {
+                        _module.$emit('showConfirmDelete', true)
                       }
                     },
                     {

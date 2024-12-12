@@ -73,6 +73,21 @@ class RESTClient {
   }
 
   /**
+   * Delete the user's account (they must be logged in).
+   * @param {String} jwt - the user token to expire.
+   * @returns {Promise}
+   */
+  async delete(jwt) {
+    const request = {
+      method: "delete",
+      baseURL: this.baseURL + "/users",
+      headers: this.auth_headers(jwt),
+    };
+    let response = await this.executeQuery(request);
+    return response.data;
+  }
+
+  /**
    *  Method to create a new user
    * @param {Object} userLogin - the user account to create
    * @returns {Promise} response - server response

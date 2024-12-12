@@ -25,7 +25,7 @@
         >
           <v-toolbar-title>User Profile</v-toolbar-title>
           <v-spacer />
-          <user-profile-menu />
+          <user-profile-menu @showConfirmDelete="showDeleteDialog()" />
         </v-toolbar>
       </v-col>
       <v-col
@@ -408,6 +408,41 @@
         <loaders />
       </v-overlay>
     </v-fade-transition>
+    <v-dialog
+      v-model="confirmDelete"
+      max-width="700px"
+      persistent
+    >
+      <v-card>
+        <v-card-title
+          class="headline, justify-center"
+        >
+          Deleting User Account!
+        </v-card-title>
+        <v-card-text
+          class="text-center"
+        >
+            <b>Are you sure you want to do that? Your account will be permanently deleted!</b>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="info"
+            @click="confirmDelete = false"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            class="error"
+            @click="deleteAccount()"
+          >
+            Delete
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -420,6 +455,7 @@ import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisat
 import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSavedSearchesTable.vue";
 import UserProfileMenu from "@/components/Users/UserProfileMenu";
 import ExternalClient from "@/lib/Client/ExternalClients.js";
+import RestClient from "@/lib/Client/RESTClient.js";
 import getHostname from "@/utils/generalUtils";
 import { cleanString } from "@/utils/stringUtils";
 
@@ -427,6 +463,7 @@ import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
 import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
 
 let client = new ExternalClient();
+let restClient = new RestClient();
 
 /**
  * @vue-data {Object} hideFields - an array of field to NOT display
@@ -465,6 +502,7 @@ export default {
       loading: false,
       publications: [],
       activeTab: 0,
+      confirmDelete: false
     };
   },
   computed: {
@@ -558,6 +596,13 @@ export default {
       this.copyButtonStatus = true;
       return this.getHostname() + "users/" + this.user().id;
     },
+    showDeleteDialog() {
+      this.confirmDelete = true;
+    },
+    async deleteAccount() {
+      await restClient.delete(this.user().credentials.token);
+      this.$router.push({ path: "/" });
+    }
   },
 };
 </script>

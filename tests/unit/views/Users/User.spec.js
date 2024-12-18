@@ -126,4 +126,19 @@ describe("User.vue", () => {
         expect(wrapper.vm.copyButtonStatus).toBe(true);
     });
 
+    it("can delete a user", async () => {
+        let wrapper = await shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        await wrapper.vm.deleteAccount();
+        // TODO: How to check that the RESTClient was called?
+        expect($router.push).toHaveBeenCalledWith({
+            path: "/",
+        });
+
+    })
+
 });

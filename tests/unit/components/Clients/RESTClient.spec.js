@@ -112,6 +112,11 @@ describe("RESTClient", () => {
     expect(resp).toBe("testData");
   });
 
+  it("can delete a user's account", async () => {
+    let resp = await client.delete("userToken");
+    expect(resp).toBe("testData");
+  });
+
   it("can sendOrcidVerification email", async () => {
     let user = {
       email: "example@fairsharing.org",
@@ -143,4 +148,5 @@ describe("RESTClient", () => {
       "Bearer fun_token"
     );
   });
+
 });

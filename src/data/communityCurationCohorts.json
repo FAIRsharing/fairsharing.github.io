@@ -18,7 +18,7 @@
         "linkedin" : "kylecopas",
         "mastodon" : "scicomm.xyz/@kylecopas",
         "logo": "kyle_copas.jpg",
-        "year_active": ["2022", "2023", "2024"],
+        "year_active": ["2022", "2023", "2024", "2025"],
         "active": true
       },
       {
@@ -81,7 +81,7 @@
         "linkedin" : "lnanderscience",
         "mastodon" : "fediscience.org/@lnanderscience",
         "logo": "lindseyanderson.jpg",
-        "year_active": ["2022", "2023", "2024"],
+        "year_active": ["2022", "2023", "2024", "2025"],
         "active": true,
         "curator_expert" : true
       },
@@ -135,7 +135,7 @@
         "mastodon" : "mastodon.online/@neuropelletier",
         "logo": "gabriel_pelletier.jpg",
         "year_active": ["2022", "2023", "2024"],
-        "active": true
+        "active": false
       },
       {
         "name": "Daniel Pereira Costa",
@@ -318,7 +318,7 @@
         "linkedin" : "geta-mitrea",
         "mastodon" : "",
         "logo": "getamitrea.jpg",
-        "year_active": ["2022", "2023", "2024"],
+        "year_active": ["2022", "2023", "2024", "2025"],
         "active": true
       },
       {
@@ -366,7 +366,7 @@
         "mastodon" : "mas.to/@stephenserjeant",
         "logo": "stephen_serjeant.jpg",
         "year_active": ["2022", "2023", "2024"],
-        "active": true
+        "active": false
       },
       {
         "name": "Kay Burrows",
@@ -386,7 +386,7 @@
         "linkedin" : "kayeburrows",
         "mastodon" : "",
         "logo": "kay_burrows.jpg",
-        "year_active": ["2022", "2023", "2024"],
+        "year_active": ["2022", "2023", "2024", "2025"],
         "active": true
       },
       {
@@ -407,7 +407,7 @@
         "linkedin" : "francispcrawley",
         "mastodon" : "",
         "logo": "francis_crawley.jpg",
-        "year_active": ["2022", "2023", "2024"],
+        "year_active": ["2022", "2023", "2024", "2025"],
         "active": true
       },
       {
@@ -428,7 +428,7 @@
         "linkedin" : "debora-drucker",
         "mastodon" : "",
         "logo": "debora_druker.jpeg",
-        "year_active": ["2022", "2023", "2024"],
+        "year_active": ["2022", "2023", "2024", "2025"],
         "active": true
       },
       {
@@ -449,7 +449,7 @@
         "linkedin" : "yu-he-liang-66650033",
         "mastodon" : "",
         "logo": "yuhen.jpg",
-        "year_active": ["2023", "2024"],
+        "year_active": ["2023", "2024", "2025"],
         "active": true
       },
       {
@@ -473,7 +473,7 @@
         "linkedin" : "",
         "mastodon" : "",
         "logo": "adam_partridge.jpg",
-        "year_active": ["2023", "2024"],
+        "year_active": ["2023", "2024", "2025"],
         "active": true
       },
       {
@@ -513,7 +513,7 @@
         "linkedin" : "yojana-gadiya-477739113",
         "mastodon" : "",
         "logo": "y_gadiya.jpg",
-        "year_active": ["2023", "2024"],
+        "year_active": ["2023", "2024", "2025"],
         "active": true
       },
       {
@@ -534,7 +534,7 @@
         "linkedin" : "joy-davidson",
         "mastodon" : "",
         "logo": "Joy-Davidson.jpg",
-        "year_active": ["2023", "2024"],
+        "year_active": ["2023", "2024", "2025"],
         "active": true
       },
       {
@@ -570,7 +570,7 @@
         "linkedin" : "david-tomkins-83b92534",
         "mastodon" : "",
         "logo": "d_tomkins.jpeg",
-        "year_active": ["2023", "2024"],
+        "year_active": ["2023", "2024", "2025"],
         "active": true
       },
       {
@@ -594,7 +594,7 @@
         "linkedin" : "lyndon-zass-10b731145",
         "mastodon" : "",
         "logo": "l_zass.png",
-        "year_active": ["2023", "2024"],
+        "year_active": ["2023", "2024", "2025"],
         "active": true
       },
       {
@@ -614,7 +614,7 @@
         "linkedin" : "christian-bonatto-minella-780b7710",
         "mastodon" : "",
         "logo": "christian_bonatto.jpg",
-        "year_active": ["2024"],
+        "year_active": ["2024", "2025"],
         "active": true
       },
       {
@@ -635,7 +635,7 @@
         "mastodon" : "",
         "logo": "priyadarshini_large.jpg",
         "year_active": ["2024"],
-        "active": true
+        "active": false
       },
     {
       "name": "Alex Fraser",
@@ -655,7 +655,7 @@
       "mastodon" : "",
       "logo": "alex_fraser.jpg",
       "year_active": ["2024"],
-      "active": true
+      "active": false
     },
     {
       "name": "Laurence Brown",
@@ -674,7 +674,7 @@
       "linkedin" : "laurence-a-brown",
       "mastodon" : "",
       "logo": "laurence_brown.jpg",
-      "year_active": ["2024"],
+      "year_active": ["2024", "2025"],
       "active": true
     },
     {
@@ -694,7 +694,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "tim_gamble_turner.jpg",
-      "year_active": ["2024"],
+      "year_active": ["2024", "2025"],
       "active": true
     },
     {
@@ -714,7 +714,7 @@
       "linkedin" : "hugh-shanahan-340b343/",
       "mastodon" : "mastodon.ie/@HughShanahan",
       "logo": "hugh_shanahan.jpeg",
-      "year_active": ["2024"],
+      "year_active": ["2024", "2025"],
       "active": true
     },
     {
@@ -734,7 +734,7 @@
       "linkedin" : "claraparenteboavida",
       "mastodon" : "",
       "logo": "clara_boavida.jpg",
-      "year_active": ["2024"],
+      "year_active": ["2024", "2025"],
       "active": true
     },
     {
@@ -754,7 +754,7 @@
       "linkedin" : "timothee-aubourg",
       "mastodon" : "",
       "logo": "timothee-aubourg.jpeg",
-      "year_active": ["2024"],
+      "year_active": ["2024", "2025"],
       "active": true
     },
     {
@@ -774,7 +774,47 @@
       "linkedin" : "",
       "mastodon" : "digipres.club/bethknazook",
       "logo": "beth_knazook.jpg",
-      "year_active": ["2024"],
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Mark McKerracher",
+      "id": 12756,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "Archeology and RDM",
+      "orcid": "0000-0002-0299-6687",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "mark_mckerracher.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Jason Partridge",
+      "id": 10061,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "Institutional repositories",
+      "orcid": "0000-0001-9819-9991",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "0000-0002-0299-6687",
+      "mastodon" : "",
+      "logo": "jason_partridge.jpg",
+      "year_active": ["2025"],
       "active": true
     }
   ],

@@ -13,12 +13,19 @@
             contain
             class="mr-2"
           />
-          <h3>{{ getField('name') }}</h3>
+          <h3
+            :style="currentRecord['fairsharingRecord'].status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
+          >
+            {{ getField('name') }}
+          </h3>
           <b
             v-if="getField('abbreviation') && getField('registry')!=='Collection'"
             style="font-size: 16px"
+            :style="currentRecord['fairsharingRecord'].status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
             class="ml-2"
-          >({{ getField('abbreviation') }})</b>
+          >
+            ({{ getField('abbreviation') }})
+          </b>
         </div>
         <div class="d-flex align-center mt-2">
           <div class="width-35">

@@ -422,7 +422,7 @@
         <v-card-text
           class="text-center"
         >
-            <b>Are you sure you want to do that? Your account will be permanently deleted!</b>
+          <b>Are you sure you want to do that? Your account will be permanently deleted!</b>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -432,7 +432,7 @@
           >
             Cancel
           </v-btn>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
             class="error"
             @click="deleteAccount()"

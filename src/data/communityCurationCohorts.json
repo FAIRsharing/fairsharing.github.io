@@ -811,9 +811,29 @@
       "early_adopter" : false,
       "show_more" : false,
       "twitter": "",
-      "linkedin" : "0000-0002-0299-6687",
+      "linkedin" : "",
       "mastodon" : "",
       "logo": "jason_partridge.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Baptiste Cecconi",
+      "id": 10988,
+      "organisation": [
+        {
+          "id": 4385,
+          "name": "Observatoire de Paris"
+        }
+      ],
+      "scope": "Planetary sciences and heliophysics",
+      "orcid": "0000-0001-7915-5571",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "baptiste_cecconi.png",
       "year_active": ["2025"],
       "active": true
     }

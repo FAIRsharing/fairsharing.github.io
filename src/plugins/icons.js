@@ -179,6 +179,11 @@ const customIcons = {
       icon: "/assets/records/metric.svg",
       tooltip: "Metric",
     },
+    benchmark: {
+      type: "img",
+      icon: "/assets/records/benchmark.svg",
+      tooltip: "Benchmark",
+    },
     repository: {
       type: "img",
       icon: "/assets/records/db-icon.svg",
@@ -198,11 +203,6 @@ const customIcons = {
       type: "img",
       icon: "/assets/records/db-icon.svg",
       tooltip: "Knowledge Base & repository",
-    },
-    benchmark: {
-      type: "img",
-      icon: "/assets/records/benchmark.svg",
-      tooltip: "Benchmark",
     },
     DOI: {
       type: "img",

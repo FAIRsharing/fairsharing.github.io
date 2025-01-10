@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/UserDefinedTag.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/StandardRule.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,101 +86,91 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/UserDefinedTag.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/StandardRule.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div class="d-flex width-90">
-    &lt;TooltipComponent :tool-tip-text="toolTipText" />
-    &lt;AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchUserDefinedTags"
-      :loading="getLoadingStatus"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
+            class="sunlight-highlight-javascript linenums">
+&lt;template>
+  &lt;div class="d-flex ruleWrapper">
+    &lt;select
+      v-model="selectedStandardRule"
+      class="query-builder-group-slot__rule-selection"
+    >
+      &lt;option
+        disabled
+        value=""
+      >
+        Select a standards rule
+      &lt;/option>
+      &lt;option
+        v-for="rule in standardQueryBuilderComponents()"
+        :key="rule.identifier"
+        :value="rule.identifier"
+        v-text="rule.name"
+      />
+    &lt;/select>
+    &lt;button
+      :disabled="selectedStandardRule === ''"
+      class="query-builder-group-slot__rule-adding-button ml-3"
+      @click="addNewRule(groupCtrl, selectedStandardRule)"
+    >
+      Add Rule
+    &lt;/button>
   &lt;/div>
 &lt;/template>
+
 &lt;script>
-import { mapActions, mapGetters } from "vuex";
 
-import userDefinedTagsSearch from "@/store";
-
-import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
-
+import {
+  IsImplemented, StandardRecordType,
+} from "../index";
 export default {
-  name: "UserDefinedTag",
-  components: { TooltipComponent, AutoCompleteComponent },
+  name: "StandardRule",
   props: {
-    value: {
-      type: Array,
-      default: () => [],
-    },
+    groupCtrl: {
+      type: Object,
+      default: null
+    }
   },
   data: () => {
     return {
-      itemSelected: [],
-      itemValue: [],
-      toolTipText:
-        "Tags created by FAIRsharing's user community. Multiple selections will be joined with OR. Start typing to see UserDefined tags.",
+      selectedStandardRule: "",
     };
   },
 
-  computed: {
-    ...mapGetters("userDefinedTagsSearch", ["getSearchUserDefinedTags", "getLoadingStatus"]),
-    ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+  methods:{
+    standardQueryBuilderComponents() {
+      return [
+        {
+          identifier: "standardtype",
+          name: "Standard Record Type",
+          component: StandardRecordType,
+          initialValue: () => [],
+        },
+        {
+          identifier: "isImplemented",
+          name: "Is Implemented",
+          component: IsImplemented,
+          initialValue: "",
+        },
+      ]
+    },
 
-    model: {
-      get() {
-        return this.itemSelected;
-      },
-      set(value) {
-        this.$emit("input", value);
-      },
-    },
-  },
-  watch: {
-    itemSelected(newValue) {
-      this.itemValue = newValue;
-    },
     /**
-     * Item list for the autocomplete should not be empty
-     * It is assigned with selected values when edit field is opened
+     * Add rule to query builder
+     * @param item - Object
+     * @param selectedRule - String
      */
-    getEditDialogStatus: {
-      handler(open) {
-        if (open) {
-          if (this.value &amp;&amp; this.value.length) {
-            userDefinedTagsSearch.commit(
-              "userDefinedTagsSearch/setSearchUserDefinedTags",
-              this.value
-            );
-          }
-        }
-      },
-      immediate: true,
+    addNewRule(item, selectedRule) {
+      item.addRule(selectedRule)
+      this.selectedStandardRule = ''
     },
-  },
-  mounted() {
-    //Pre-fill selected values on edit advanced search is clicked and open
-    this.itemValue = this.value;
-  },
-  methods: {
-    ...mapActions("userDefinedTagsSearch", ["fetchSearchUserDefinedTags"]),
-
-    selectedValue(item) {
-      this.itemSelected = item;
-    },
-    getResults(queryParams) {
-      if (queryParams) this.fetchSearchUserDefinedTags(queryParams);
-    },
-  },
+  }
 };
 &lt;/script>
+
 </pre>
     </article>
 </section>

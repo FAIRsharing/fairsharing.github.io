@@ -14,7 +14,7 @@
     <PolicyRule :group-ctrl="groupCtrl" />
     <div class="slotSpacer" />
     <!-- Other Boolean/Standard Component -->
-    <OtherBooleanRule :group-ctrl="groupCtrl" />
+    <StandardRule :group-ctrl="groupCtrl" />
     <div class="query-builder-group-slot__spacer" />
     <button
       class="query-builder-group-slot__group-adding-button"
@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import { DatabaseRule, GeneralRule, OtherBooleanRule, PolicyRule } from "./index";
+import { DatabaseRule, GeneralRule, PolicyRule,StandardRule } from "./index";
 export default {
   name: "GroupCtrlSlot",
-  components:{GeneralRule, OtherBooleanRule, DatabaseRule, PolicyRule},
+  components:{GeneralRule, StandardRule, DatabaseRule, PolicyRule},
   props: {
     groupCtrl: {
       type: Object,

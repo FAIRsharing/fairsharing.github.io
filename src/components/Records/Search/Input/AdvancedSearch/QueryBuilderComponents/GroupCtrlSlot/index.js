@@ -6,5 +6,5 @@ export const DatabaseRule = () =>
 
 export const PolicyRule = () =>
   import("./PolicyRule.vue");
-export const OtherBooleanRule = () =>
-  import("./OtherBooleanRule.vue");
+export const StandardRule = () =>
+  import("./StandardRule.vue");

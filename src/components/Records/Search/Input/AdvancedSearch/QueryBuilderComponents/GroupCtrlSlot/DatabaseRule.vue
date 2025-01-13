@@ -63,13 +63,23 @@ export default {
 
   methods:{
     databaseQueryBuilderComponents() {
-      return sortBy([
+      let databaseRecordType = [
         {
           identifier: "databasetype",
           name: "Database Record Type",
           component: DatabaseRecordType,
           initialValue: () => [],
         },
+      ]
+
+      return databaseRecordType.concat(this.sortedArrayList())
+    },
+
+    /**
+     * Sort Array list by name
+     */
+    sortedArrayList() {
+      return sortBy([
         {
           identifier: "dataCuration",
           name: "Data Curation",

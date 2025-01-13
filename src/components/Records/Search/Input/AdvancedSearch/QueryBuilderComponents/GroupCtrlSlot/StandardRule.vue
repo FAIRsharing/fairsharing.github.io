@@ -2,7 +2,7 @@
 <template>
   <div class="d-flex ruleWrapper">
     <select
-      v-model="selectedOtherBooleanRule"
+      v-model="selectedStandardRule"
       class="query-builder-group-slot__rule-selection"
     >
       <option
@@ -12,16 +12,16 @@
         Select a standards rule
       </option>
       <option
-        v-for="rule in otherBooleanQueryBuilderComponents()"
+        v-for="rule in standardQueryBuilderComponents()"
         :key="rule.identifier"
         :value="rule.identifier"
         v-text="rule.name"
       />
     </select>
     <button
-      :disabled="selectedOtherBooleanRule === ''"
+      :disabled="selectedStandardRule === ''"
       class="query-builder-group-slot__rule-adding-button ml-3"
-      @click="addNewRule(groupCtrl, selectedOtherBooleanRule)"
+      @click="addNewRule(groupCtrl, selectedStandardRule)"
     >
       Add Rule
     </button>
@@ -29,13 +29,12 @@
 </template>
 
 <script>
-import { sortBy } from "lodash"
 
 import {
-  IsImplemented,
+  IsImplemented, StandardRecordType,
 } from "../index";
 export default {
-  name: "OtherBooleanRule",
+  name: "StandardRule",
   props: {
     groupCtrl: {
       type: Object,
@@ -44,20 +43,26 @@ export default {
   },
   data: () => {
     return {
-      selectedOtherBooleanRule: "",
+      selectedStandardRule: "",
     };
   },
 
   methods:{
-    otherBooleanQueryBuilderComponents() {
-      return sortBy([
+    standardQueryBuilderComponents() {
+      return [
+        {
+          identifier: "standardtype",
+          name: "Standard Record Type",
+          component: StandardRecordType,
+          initialValue: () => [],
+        },
         {
           identifier: "isImplemented",
           name: "Is Implemented",
           component: IsImplemented,
           initialValue: "",
         },
-      ], "name")
+      ]
     },
 
     /**
@@ -67,7 +72,7 @@ export default {
      */
     addNewRule(item, selectedRule) {
       item.addRule(selectedRule)
-      this.selectedOtherBooleanRule = ''
+      this.selectedStandardRule = ''
     },
   }
 };

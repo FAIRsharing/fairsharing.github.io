@@ -65,19 +65,27 @@ export default {
 
   methods:{
     policyQueryBuilderComponents() {
-      return sortBy([
-        {
-          identifier: "policytype",
-          name: "Policy Record Type",
-          component: PolicyRecordType,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataAvailabilityStatement",
-          name: "Data Availability Statement",
-          component: DataAvailabilityStatement,
-          initialValue: "",
-        },
+      let policyRecordType = [
+          {
+            identifier: "policytype",
+            name: "Policy Record Type",
+            component: PolicyRecordType,
+            initialValue: () => [],
+          },
+        ]
+      return policyRecordType.concat(this.sortedArrayList())
+    },
+
+    /**
+     * Sort Array list by name
+     */
+    sortedArrayList(){
+      return sortBy([{
+        identifier: "dataAvailabilityStatement",
+        name: "Data Availability Statement",
+        component: DataAvailabilityStatement,
+        initialValue: "",
+      },
         {
           identifier: "dataProtection",
           name: "Data Protection",

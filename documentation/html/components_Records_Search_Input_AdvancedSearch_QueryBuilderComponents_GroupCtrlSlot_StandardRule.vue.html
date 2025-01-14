@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: utils/advancedSearchUtils.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/StandardRule.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,71 +86,91 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: utils/advancedSearchUtils.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/StandardRule.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import { uniqWith } from "lodash";
-import { mapGetters } from "vuex";
+            class="sunlight-highlight-javascript linenums">
+&lt;template>
+  &lt;div class="d-flex ruleWrapper">
+    &lt;select
+      v-model="selectedStandardRule"
+      class="query-builder-group-slot__rule-selection"
+    >
+      &lt;option
+        disabled
+        value=""
+      >
+        Select a standards rule
+      &lt;/option>
+      &lt;option
+        v-for="rule in standardQueryBuilderComponents()"
+        :key="rule.identifier"
+        :value="rule.identifier"
+        v-text="rule.name"
+      />
+    &lt;/select>
+    &lt;button
+      :disabled="selectedStandardRule === ''"
+      class="query-builder-group-slot__rule-adding-button ml-3"
+      @click="addNewRule(groupCtrl, selectedStandardRule)"
+    >
+      Add Rule
+    &lt;/button>
+  &lt;/div>
+&lt;/template>
 
-/**
- * Removes duplicate values in a set and returns unique values
- * @returns {Array} Array with non-duplicate values
- */
-const uniqueValues = (item) => {
-  let merged = uniqWith(item, (pre, cur) => {
-    if (pre.identifier === cur.identifier) {
-      cur["value"] = cur["value"] + "," + pre["value"];
-      //Combine string values from different text-fields in same set and convert in into array
-      /*istanbul ignore else */
-      if (typeof cur["value"] === "string") {
-        cur["value"] = cur["value"].split(",");
-      }
-      //Remove duplicates and create unique array
-      cur["value"] = [...new Set(cur["value"])];
-      return true;
+&lt;script>
+
+import {
+  IsImplemented, StandardRecordType,
+} from "../index";
+export default {
+  name: "StandardRule",
+  props: {
+    groupCtrl: {
+      type: Object,
+      default: null
     }
-    return false;
-  });
-  return merged;
-};
-
-/**
- * Removes an item from the array
- * @param item
- * @param arrayList
- * @returns {Array} - updated array without the item
- */
-const removeItem = (item, arrayList) => {
-  const index = arrayList.indexOf(item);
-  if (index >= 0) arrayList.splice(index, 1);
-};
-
-/**
- * Mixin to filter the records types based on the registry
- * {{computed: {getRecordTypes: Computed}, methods: {filteredRecordTypes(*): *[]}}}
- * @param {String} registryname
- * @return {Array} - recordTypes filtered by registryname
- */
-const recordTypes = {
-  computed: {
-    ...mapGetters("recordTypes", ["getRecordTypes"]),
   },
-  methods: {
-    filteredRecordTypes(registry) {
-      let filteredRecordTypes = [];
-      this.getRecordTypes.filter(({ name, fairsharingRegistry }) => {
-        if (fairsharingRegistry["name"] === registry) {
-          filteredRecordTypes.push(name);
-        }
-      });
-      return filteredRecordTypes;
+  data: () => {
+    return {
+      selectedStandardRule: "",
+    };
+  },
+
+  methods:{
+    standardQueryBuilderComponents() {
+      return [
+        {
+          identifier: "standardtype",
+          name: "Standard Record Type",
+          component: StandardRecordType,
+          initialValue: () => [],
+        },
+        {
+          identifier: "isImplemented",
+          name: "Is Implemented",
+          component: IsImplemented,
+          initialValue: "",
+        },
+      ]
     },
-  },
-};
 
-export { recordTypes, removeItem, uniqueValues };
+    /**
+     * Add rule to query builder
+     * @param item - Object
+     * @param selectedRule - String
+     */
+    addNewRule(item, selectedRule) {
+      item.addRule(selectedRule)
+      this.selectedStandardRule = ''
+    },
+  }
+};
+&lt;/script>
+
 </pre>
     </article>
 </section>

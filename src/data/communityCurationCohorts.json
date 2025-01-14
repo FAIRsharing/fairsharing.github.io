@@ -836,6 +836,26 @@
       "logo": "baptiste_cecconi.png",
       "year_active": ["2025"],
       "active": true
+    },
+    {
+      "name": "Alexandra Rooney",
+      "id": 13063,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "Clinical Trials & Research Data Management",
+      "orcid": "0000-0003-4975-5773",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "alexandra_rooney.jpg",
+      "year_active": ["2025"],
+      "active": true
     }
   ],
     "quotes": [

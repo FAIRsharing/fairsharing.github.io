@@ -36,7 +36,6 @@ import {
   Organisations,
   RecordStatus,
   Registry,
-  StandardRecordType,
   Subject,
   Taxonomies,
   UserDefinedTag
@@ -62,12 +61,6 @@ export default {
           identifier: "registry",
           name: "Registry",
           component: Registry,
-          initialValue: () => [],
-        },
-        {
-          identifier: "standardtype",
-          name: "Standard Record Type",
-          component: StandardRecordType,
           initialValue: () => [],
         },
         {

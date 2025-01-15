@@ -581,8 +581,9 @@
         "profileImg": "assets/Community/profiles/Lea.jpg",
         "social": [
           {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/", "icon": "linkedin"},
-          {"link": "https://orcid.org/0000-0002-2163-5924", "icon": "Orcid"}
+          {"link": "https://orcid.org/0000-0002-2163-5924", "icon": "Orcid"},
+          {"link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/", "icon": "linkedin"}
+
         ]
       }
     ]

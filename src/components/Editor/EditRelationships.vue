@@ -462,7 +462,14 @@
             initialized: false,
             lastQuery: null,
             duplicateRelationship: false,
-            recordsList: []
+            recordsList: [],
+            fairsharingRegistries: [
+              "collection",
+              "standard",
+              "database",
+              "policy",
+              "fairassist"
+            ]
           }
         },
         computed: {
@@ -607,7 +614,7 @@
                   type: target.type.toLowerCase()
                 },
                 sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
-                sourceType: 'metric',  // TODO: Fix this
+                sourceType: this.sections.relations.data.type.toLowerCase(),
                 prohibited: prohibited
             });
             this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
@@ -618,35 +625,12 @@
           getRelations() {
             let labelsFilter = {};
             let allRegistries = ['standard', 'database', 'collection', 'policy', 'fairassist'];
-            /*
-            let allTypes = [
-              "journal_publisher",
-              "repository",
-              "knowledgebase",
-              "model_and_format",
-              "terminology_artefact",
-              "reporting_guideline",
-              "identifier_schema",
-              "journal",
-              "collection",
-              "metric",
-              "knowledgebase_and_repository",
-              "project",
-              "funder",
-              "institution",
-              "society",
-              "benchmark",
-              "principle"
-            ]
-             */
-
             let allowedRelations = this.allowedRelations({
               target: null,
               sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
-              sourceType: 'metric',  // TODO: Fix this
+              sourceType: this.sections.relations.data.type.toLowerCase(),
               prohibited: null
             });
-            console.log("Allowed relations: " + JSON.stringify(allowedRelations));
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
                 /* istanbul ignore else */
@@ -656,8 +640,6 @@
                 }
               }
             });
-            // TODO: Add some similar code here which will check relations for all record types as well.
-            console.log(JSON.stringify(labelsFilter, null, 2));
             this.labelsFilter = {...labelsFilter};
             this.searchFilters = {...labelsFilter};
           },
@@ -669,16 +651,25 @@
               search = this.search.trim();
             }
             let registries = [];
+            let types = [];
             Object.keys(this.searchFilters).forEach(filter => {
               if (this.searchFilters[filter]){
-                registries.push(filter);
+               // TODO check if this is a registry or type
+                if (this.fairsharingRegistries.indexOf(filter) > -1) {
+                  registries.push(filter);
+                }
+                else {
+                  types.push(filter);
+                }
               }
             });
             this.lastQuery = search;
             await _module.getAvailableRecords({
               q: search,
               fairsharingRegistry: registries,
-              excludeId: _module.currentID
+              recordType: types,
+              excludeId: _module.currentID,
+              searchAnd: false
             });
             let i = 0;
             this.availableRecords.forEach(rec => {

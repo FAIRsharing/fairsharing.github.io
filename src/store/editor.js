@@ -263,23 +263,35 @@ let editorStore = {
         },
         allowedRelations: (state) => (options) => {
             let output = [];
+            let seen = [];
             [options.sourceType, options.sourceRegistry].forEach(type => {
-                state.relationsTypes[type].forEach(relation => {
-                    if ((options.target && options.prohibited) &&
-                        (relation.target === options.target.registry || relation.target === options.target.type) &&
-                        !options.prohibited.includes(relation.relation)){
-                        output.push(relation)
-                    }
-                    if (!options.target && !options.prohibited){
-                        output.push(relation);
-                    }
-                });
+                // This undefined check prevents allowed relations from being pushed to the array twice,
+                // as we're checking for both registry and record type here.
+                /* istanbul ignore else */
+                if (state.relationsTypes[type] !== undefined) {
+                    state.relationsTypes[type].forEach(relation => {
+                        if ((options.target && options.prohibited) &&
+                            (relation.target === options.target.registry || relation.target === options.target.type) &&
+                            !options.prohibited.includes(relation.relation)) {
+                            if (!seen.includes(relation.id)) {
+                                output.push(relation)
+                                seen.push(relation.id);
+                            }
+                        }
+                        if (!options.target && !options.prohibited) {
+                            if (!seen.includes(relation.id)) {
+                                output.push(relation);
+                                seen.push(relation.id);
+                            }
+                        }
+                    });
+                }
             })
             return output;
         },
         allowedTargets: (state) => (source) => {
             let output = [];
-            let allowed = ["standard", "database", "policy", "collection"];
+            let allowed = ["standard", "database", "policy", "collection", "fairassist"];
             state.relationsTypes[source.toLowerCase()].forEach(relation => {
                 /* istanbul ignore else */
                 if (allowed.includes(relation.target)) output.push(relation.target);

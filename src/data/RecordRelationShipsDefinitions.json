@@ -9,5 +9,7 @@
   "shares data with": "This database shares a portion of data with another database",
   "shares code with": "This database shares a portion of code with another database",
   "accepts": "This database accepts data that follows a particular standard",
-  "outputs": "This database outputs data that follows a particular standard"
+  "outputs": "This database outputs data that follows a particular standard",
+  "measures principle": "Used to show which 'owning' principle any given metric belongs to",
+  "part of": "Allows composition of metrics within other metrics, or shows what 'parent' principle a principle bleongs to"
 }

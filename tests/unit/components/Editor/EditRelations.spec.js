@@ -29,6 +29,7 @@ recordStore.state.sections = {
     relations: {
         data: {
             registry: "collection",
+            type: "collection",
             recordAssociations: JSON.parse(JSON.stringify(relations))
         },
         error: false,

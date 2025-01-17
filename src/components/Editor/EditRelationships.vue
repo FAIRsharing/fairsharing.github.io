@@ -48,7 +48,7 @@
                       <v-switch
                         v-model="searchFilters[filterName]"
                         inset
-                        :label="`${capitalize(filterName)}(s)`"
+                        :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
@@ -188,7 +188,7 @@
                       <v-switch
                         v-model="labelsFilter[filterName]"
                         inset
-                        :label="`${capitalize(filterName)}(s)`"
+                        :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
@@ -462,7 +462,14 @@
             initialized: false,
             lastQuery: null,
             duplicateRelationship: false,
-            recordsList: []
+            recordsList: [],
+            fairsharingRegistries: [
+              "collection",
+              "standard",
+              "database",
+              "policy",
+              "fairassist"
+            ]
           }
         },
         computed: {
@@ -606,7 +613,8 @@
                   registry: target.registry.toLowerCase(),
                   type: target.type.toLowerCase()
                 },
-                sourceType: this.sections.relations.data.registry.toLowerCase(),
+                sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
+                sourceType: this.sections.relations.data.type.toLowerCase(),
                 prohibited: prohibited
             });
             this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
@@ -616,19 +624,19 @@
           },
           getRelations() {
             let labelsFilter = {};
-            let allRelations = ['standard', 'database', 'collection', 'policy'];
-
+            let allRegistries = ['standard', 'database', 'collection', 'policy', 'fairassist'];
             let allowedRelations = this.allowedRelations({
               target: null,
-              sourceType: this.sections.relations.data.registry.toLowerCase(),
+              sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
+              sourceType: this.sections.relations.data.type.toLowerCase(),
               prohibited: null
             });
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
                 /* istanbul ignore else */
-                if (allRelations.includes(allowedRelation.target.toLowerCase())) {
+                if (allRegistries.includes(allowedRelation.target.toLowerCase())) {
                   labelsFilter[allowedRelation.target] = true;
-                  allRelations.splice(allRelations.indexOf(allowedRelation.target.toLowerCase()), 1)
+                  allRegistries.splice(allRegistries.indexOf(allowedRelation.target.toLowerCase()), 1)
                 }
               }
             });
@@ -643,16 +651,25 @@
               search = this.search.trim();
             }
             let registries = [];
+            let types = [];
             Object.keys(this.searchFilters).forEach(filter => {
               if (this.searchFilters[filter]){
-                registries.push(filter);
+               // TODO check if this is a registry or type
+                if (this.fairsharingRegistries.indexOf(filter) > -1) {
+                  registries.push(filter);
+                }
+                else {
+                  types.push(filter);
+                }
               }
             });
             this.lastQuery = search;
             await _module.getAvailableRecords({
               q: search,
               fairsharingRegistry: registries,
-              excludeId: _module.currentID
+              recordType: types,
+              excludeId: _module.currentID,
+              searchAnd: false
             });
             let i = 0;
             this.availableRecords.forEach(rec => {
@@ -682,6 +699,12 @@
             if (redirect && !this.message.error){
               await this.$router.push({path: '/' + this.$route.params.id})
             }
+          },
+          prepareFilterName(name) {
+            if (name == 'fairassist') {
+              return 'FAIRassist'
+            }
+            return capitalize(name) + "(s)";
           }
         }
     }

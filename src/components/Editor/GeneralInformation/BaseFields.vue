@@ -276,7 +276,7 @@
         <v-autocomplete
           ref="editRecordType"
           v-model="fields.type"
-          label="Registry type"
+          label="Registry and type"
           :rules="[rules.isRequired()]"
           :items="recordTypes"
           item-text="name"

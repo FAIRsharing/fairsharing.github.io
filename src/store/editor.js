@@ -205,7 +205,7 @@ let editorStore = {
         async getAvailableRelationsTypes({commit}){
             let types = await restClient.getRelationsTypes();
             let allowed = {};
-            let relationTypes = ['standard', 'database', 'policy', 'collection'];
+            let relationTypes = ['standard', 'database', 'policy', 'collection', 'fairassist'];
             for (let typeObject of types) {
                 let relationName = typeObject.name,
                     id = typeObject.id;
@@ -263,16 +263,18 @@ let editorStore = {
         },
         allowedRelations: (state) => (options) => {
             let output = [];
-            state.relationsTypes[options.sourceType].forEach(relation => {
-                if ((options.target && options.prohibited) &&
-                    (relation.target === options.target.registry || relation.target === options.target.type) &&
-                    !options.prohibited.includes(relation.relation)){
-                    output.push(relation)
-                }
-                if (!options.target && !options.prohibited){
-                    output.push(relation);
-                }
-            });
+            [options.sourceType, options.sourceRegistry].forEach(type => {
+                state.relationsTypes[type].forEach(relation => {
+                    if ((options.target && options.prohibited) &&
+                        (relation.target === options.target.registry || relation.target === options.target.type) &&
+                        !options.prohibited.includes(relation.relation)){
+                        output.push(relation)
+                    }
+                    if (!options.target && !options.prohibited){
+                        output.push(relation);
+                    }
+                });
+            })
             return output;
         },
         allowedTargets: (state) => (source) => {

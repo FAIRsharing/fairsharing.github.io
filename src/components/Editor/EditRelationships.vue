@@ -48,7 +48,7 @@
                       <v-switch
                         v-model="searchFilters[filterName]"
                         inset
-                        :label="`${capitalize(filterName)}(s)`"
+                        :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
@@ -188,7 +188,7 @@
                       <v-switch
                         v-model="labelsFilter[filterName]"
                         inset
-                        :label="`${capitalize(filterName)}(s)`"
+                        :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
@@ -606,7 +606,8 @@
                   registry: target.registry.toLowerCase(),
                   type: target.type.toLowerCase()
                 },
-                sourceType: this.sections.relations.data.registry.toLowerCase(),
+                sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
+                sourceType: 'metric',  // TODO: Fix this
                 prohibited: prohibited
             });
             this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
@@ -616,22 +617,47 @@
           },
           getRelations() {
             let labelsFilter = {};
-            let allRelations = ['standard', 'database', 'collection', 'policy'];
+            let allRegistries = ['standard', 'database', 'collection', 'policy', 'fairassist'];
+            /*
+            let allTypes = [
+              "journal_publisher",
+              "repository",
+              "knowledgebase",
+              "model_and_format",
+              "terminology_artefact",
+              "reporting_guideline",
+              "identifier_schema",
+              "journal",
+              "collection",
+              "metric",
+              "knowledgebase_and_repository",
+              "project",
+              "funder",
+              "institution",
+              "society",
+              "benchmark",
+              "principle"
+            ]
+             */
 
             let allowedRelations = this.allowedRelations({
               target: null,
-              sourceType: this.sections.relations.data.registry.toLowerCase(),
+              sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
+              sourceType: 'metric',  // TODO: Fix this
               prohibited: null
             });
+            console.log("Allowed relations: " + JSON.stringify(allowedRelations));
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
                 /* istanbul ignore else */
-                if (allRelations.includes(allowedRelation.target.toLowerCase())) {
+                if (allRegistries.includes(allowedRelation.target.toLowerCase())) {
                   labelsFilter[allowedRelation.target] = true;
-                  allRelations.splice(allRelations.indexOf(allowedRelation.target.toLowerCase()), 1)
+                  allRegistries.splice(allRegistries.indexOf(allowedRelation.target.toLowerCase()), 1)
                 }
               }
             });
+            // TODO: Add some similar code here which will check relations for all record types as well.
+            console.log(JSON.stringify(labelsFilter, null, 2));
             this.labelsFilter = {...labelsFilter};
             this.searchFilters = {...labelsFilter};
           },
@@ -682,6 +708,12 @@
             if (redirect && !this.message.error){
               await this.$router.push({path: '/' + this.$route.params.id})
             }
+          },
+          prepareFilterName(name) {
+            if (name == 'fairassist') {
+              return 'FAIRassist'
+            }
+            return capitalize(name) + "(s)";
           }
         }
     }

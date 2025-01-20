@@ -856,6 +856,42 @@
       "logo": "alexandra_rooney.jpg",
       "year_active": ["2025"],
       "active": true
+    },
+    {
+      "name": "David Romain",
+      "id": 8258,
+      "organisation": [
+        {
+          "id": 3440,
+          "name": "European Research Infrastructure on Highly Pathogenic Agents"
+        },
+        {
+          "id": 873,
+          "name": "EOSC Life"
+        },
+        {
+          "id": 3886,
+          "name": "BY-COVID (BeYond COVID) Project"
+        },
+        {
+          "id": 2426,
+          "name": "Research Data Alliance"
+        },
+        {
+          "id": 3768,
+          "name": "European Open Science Cloud (EOSC)"
+        }
+      ],
+      "scope": "Life sciences & Research Data Management",
+      "orcid": "0000-0003-4073-7456",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "https://x.com/romain_david_13",
+      "linkedin" : "https://www.linkedin.com/in/romain-david-ph-d-77181b32/",
+      "mastodon" : "https://mastouille.fr/@RomainD",
+      "logo": "david_romain.jpg",
+      "year_active": ["2025"],
+      "active": true
     }
   ],
     "quotes": [

@@ -897,7 +897,7 @@
       "name": "Joana Paupério",
       "id": 11091,
       "organisation": [],
-      "scope": "Research Data Management",
+      "scope": "Biodiversity, Genomics, ELIXIR Biodiversity Community",
       "orcid": "0000-0003-2569-0768",
       "early_adopter" : false,
       "show_more" : false,
@@ -905,6 +905,21 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "joana_pauperio.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Gábor Erdős",
+      "id": 13165,
+      "organisation": [],
+      "scope": "Bioinformatics, ELIXIR Intrinsically Disordered Proteins Community",
+      "orcid": "000-0001-6218-5192",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "gabor_erdos.jpg",
       "year_active": ["2025"],
       "active": true
     }

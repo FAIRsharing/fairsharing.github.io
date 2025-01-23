@@ -625,18 +625,24 @@
           getRelations() {
             let labelsFilter = {};
             let allRegistries = ['standard', 'database', 'collection', 'policy', 'fairassist'];
+            let types = [];
             let allowedRelations = this.allowedRelations({
               target: null,
               sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
               sourceType: this.sections.relations.data.type.toLowerCase(),
               prohibited: null
             });
+            console.log("Allowed: " + JSON.stringify(allowedRelations, null, 2));
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
                 /* istanbul ignore else */
                 if (allRegistries.includes(allowedRelation.target.toLowerCase())) {
                   labelsFilter[allowedRelation.target] = true;
                   allRegistries.splice(allRegistries.indexOf(allowedRelation.target.toLowerCase()), 1)
+                }
+                else {  // This must therefore be a record type.
+                  labelsFilter[allowedRelation.target] = true;
+                  types.push(allowedRelation.target);
                 }
               }
             });

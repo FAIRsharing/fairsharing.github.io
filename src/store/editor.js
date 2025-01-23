@@ -192,6 +192,7 @@ let editorStore = {
             getRecordsQuery.queryParam = {perPage: 100};
             if (options.q) getRecordsQuery.queryParam.q = options.q;
             getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
+            getRecordsQuery.queryParam.recordType = options.recordType;
             getRecordsQuery.queryParam.searchAnd = false;
             getRecordsQuery.queryParam.excludeId = options.excludeId;
             let data = await graphClient.executeQuery(getRecordsQuery);

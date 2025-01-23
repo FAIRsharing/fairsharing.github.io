@@ -632,7 +632,6 @@
               sourceType: this.sections.relations.data.type.toLowerCase(),
               prohibited: null
             });
-            console.log("Allowed: " + JSON.stringify(allowedRelations, null, 2));
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
                 /* istanbul ignore else */

@@ -659,7 +659,7 @@
             let types = [];
             Object.keys(this.searchFilters).forEach(filter => {
               if (this.searchFilters[filter]){
-               // TODO check if this is a registry or type
+               // Check if this is a registry or type
                 if (this.fairsharingRegistries.indexOf(filter) > -1) {
                   registries.push(filter);
                 }

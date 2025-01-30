@@ -28,7 +28,6 @@
         :headers="headers"
         :items="approvalRequiredProcessed"
         :search="searches"
-        class="elevation-1"
         :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
         sort-by=""
       >
@@ -288,39 +287,18 @@
 
     import Icon from "@/components/Icon"
     import RestClient from "@/lib/Client/RESTClient.js"
+    import GraphClient from "@/lib/GraphClient/GraphClient";
+    import getApprovalsRequired from "@/lib/GraphClient/queries/curators/getApprovalsRequired.json"
+    import getCuratorList from "@/lib/GraphClient/queries/curators/getCuratorList.json"
+    import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json"
 
+    const client = new GraphClient();
     const restClient = new RestClient();
 
     export default {
         name: "RecordsAwaitingApproval",
         components: {
           Icon
-        },
-        props: {
-            maintenanceRequests: {
-                type: Array,
-                default: null
-            },
-            approvalRequired: {
-                type: Array,
-                default: null
-            },
-            headers: {
-                type: Array,
-                default: null
-            },
-            recordType: {
-                type: Object,
-                default: null
-            },
-            loading: {
-                type: Boolean,
-                default: false
-            },
-            curatorList: {
-              type: Array,
-              default: null
-            }
         },
         data: () => {
             return {
@@ -339,7 +317,26 @@
                 general: null
               },
               searches: '',
-              approvalRequiredProcessed: []
+              approvalRequiredProcessed: [],
+              maintenanceRequests:[],
+              approvalRequired:[],
+              headers: [
+                {
+                  text: 'Date last edit',
+                  align: 'start',
+                  value: 'date',
+                },
+                { text: 'Priority', value: 'priority' },
+                { text: 'Curator', value: 'curator' },
+                { text: 'Record Name (id)', value: 'name' },
+                { text: 'Last editor', value: 'lasteditor' },
+                { text: 'Processing Notes', value: 'notes', sortable: false, },
+                { text: 'Accept record/edit?', value: 'edit', sortable: false, },
+                { text: 'Curation date & user', value: 'curationdate' },
+              ],
+              recordType:{},
+              loading: false,
+              curatorList: []
             }
         },
         computed: {
@@ -357,11 +354,93 @@
             val || this.closeDeleteMenu()
           }
         },
-        mounted: function () {
+      async mounted () {
+          this.loading = true;
+          client.setHeader(this.user().credentials.token);
+          //Fetching records approval awaiting data
+          let data = await client.executeQuery(getApprovalsRequired);
+          let listOfCurators = await client.executeQuery(getCuratorList);
+          let hiddenRecords = await client.executeQuery(getHiddenRecords);
+          this.prepareApprovalRequired(data, listOfCurators, hiddenRecords)
           this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
+          this.loading = false;
         },
         methods: {
             ...mapActions("record", ["updateRecord"]),
+
+          /**
+           * Method to fetch records awaiting approval
+           * @param dataCuration
+           * @param listOfCurators
+           * @param hiddenRecords
+           */
+          prepareApprovalRequired(dataCuration, listOfCurators, hiddenRecords){
+            let userRecords = dataCuration.approvalsRequired;
+            userRecords.forEach(item => {
+              item.fairsharingRecords.forEach(rec => {
+                let object = {
+                  createdAt: rec.createdAt,
+                  updatedAt: rec.updatedAt,
+                  curator: item.username.substring(0,6),
+                  recordName: `${rec.name} (${rec.id})`,
+                  id: rec.id,
+                  type: rec.type,
+                  processingNotes: rec.processingNotes,
+                  hidden: false
+                }
+                if (rec.creator){
+                  object.creator = rec.creator.username.substring(0,10);
+                  object.idCreator = rec.creator.id;
+                }else{
+                  object.creator = "unknown"
+                }
+                if (rec.priority){
+                  object.priority = "Priority";
+                }else{
+                  object.priority = "";
+                }
+                const index = hiddenRecords.hiddenRecords.findIndex((element) => element.id === rec.id);
+                if (index>=0){
+                  object.hidden = true;
+                }
+                if (rec.lastEditor){
+                  object.lastEditor = rec.lastEditor.username;
+                  object.idLastEditor = rec.lastEditor.id;
+                }
+                else{
+                  object.lastEditor = "unknown"
+                }
+                this.approvalRequired.push(object);
+              });
+            });
+            this.approvalRequired.sort(this.compareRecordDescUpdate);
+            for (let i = 0; i < this.approvalRequired.length; i++) {
+              this.approvalRequired[i].updatedAt = this.formatDate(this.approvalRequired[i].updatedAt);
+              this.approvalRequired[i].createdAt = this.formatDate(this.approvalRequired[i].createdAt);
+            }
+            let curators = listOfCurators.curatorList;
+            let listSuper = [];
+            let listCurator = [];
+            curators.forEach(item => {
+              let object = {
+                id: item.id,
+                userName: item.username
+              };
+              let role = item.role.name;
+              if (role === "super_curator") {
+                listSuper.push(object);
+              }
+              else if (role === "curator") {
+                listCurator.push(object);
+              }
+            });
+            this.curatorList = listSuper.concat(listCurator);
+            let object = {
+              id: -1,
+              userName: "none"
+            };
+            this.curatorList.push(object);
+          },
 
             async saveProcessingNotes(idRecord,notesText){
               const _module = this;
@@ -478,7 +557,20 @@
             closeDeleteMenu () {
               this.dialogs.disableButton = true;
               this.dialogs.deleteRecord = false;
-            }
+            },
+
+           compareRecordDescUpdate(a, b) {
+      if (a.updatedAt > b.updatedAt) {
+        return -1;
+      }else{
+        return 1;
+      }
+  },
+
+           formatDate(d){
+      let date = new Date(d);
+      return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+    },
 
         }
     }

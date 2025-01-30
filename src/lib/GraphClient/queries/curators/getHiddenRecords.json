@@ -1,0 +1,24 @@
+{
+  "queryName": "hiddenRecords",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "createdAt",
+    "type",
+    {
+      "name": "creator",
+      "fields": [
+        "id",
+        "username"
+      ]
+    },
+    {
+      "name": "curator",
+      "fields": [
+        "id",
+        "username"
+      ]
+    }
+  ]
+}

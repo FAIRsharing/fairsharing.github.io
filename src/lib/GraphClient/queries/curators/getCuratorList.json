@@ -1,0 +1,9 @@
+{
+  "queryName": "curatorList",
+  "queryParam": null,
+  "fields": [
+    "username",
+    "id",
+    "role"
+  ]
+}

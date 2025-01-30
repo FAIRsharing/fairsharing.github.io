@@ -31,15 +31,31 @@
             ({{ allDataCuration.leastRecentlyUpdated.updated_at }})
           </v-card-text>
         </v-card>
-        <!-- Approval -->
-        <RecordsAwaitingApproval
-          :loading="loading"
-          :headers="headers.approvalRequired"
-          :maintenance-requests="maintenanceRequests"
-          :record-type="recordType"
-          :approval-required="approvalRequired"
-          :curator-list="curatorList"
-        />
+        <!--Tabs-->
+        <v-tabs
+          v-model="selectedTab"
+          dark
+          slider-color="primary"
+          slider-size="5"
+        >
+          <v-tab
+            v-for="tab in tabs"
+            :key="'tab_' + tab.name"
+          >
+            <div>{{ tab.name }}</div>
+          </v-tab>
+          <v-tabs-items v-model="selectedTab">
+            <v-tab-item
+              v-for="(tab, tabIndex) in tabs"
+              :key="tab+'_'+tabIndex"
+              class="px-1 py-3"
+            >
+              <component
+                :is="tab.component"
+              />
+            </v-tab-item>
+          </v-tabs-items>
+        </v-tabs>
         <!-- Maintenance Requests -->
         <MaintenanceRequest
           :loading="loading"
@@ -536,7 +552,6 @@
     import getHostname from "@/utils/generalUtils";
     import Unauthorized from "@/views/Errors/403.vue"
 
-
     const client = new GraphClient();
     const restClient = new RestClient();
 
@@ -547,15 +562,6 @@
         return 1;
       }
     }
-
-    function compareRecordDescUpdate(a, b) {
-      if (a.updatedAt > b.updatedAt) {
-        return -1;
-      }else{
-        return 1;
-      }
-    }
-
 
     function formatDate(d){
       let date = new Date(d);
@@ -591,7 +597,7 @@
           recordsCreatedCuratorsLastWeek: [],
           recordsInCuration: [],
           hiddenRecords: [],
-          curatorList: [],
+          // curatorList: [],
           systemMessages: [],
           recordType: null,
           headers: headersTables,
@@ -608,7 +614,20 @@
           downloadEditsByMonth: null,
           error: {
             general: null
-          }
+          },
+          selectedTab: null,
+          tabs: [
+            {
+              name: "RECORDS/EDITS AWAITING APPROVAL",
+              target: "recordseditsawaitingapproval",
+              component:"RecordsAwaitingApproval"
+            },
+            // {
+            //   name: "OWNERSHIP REQUESTS",
+            //   target: "ownershiprequests",
+            //   component:"MaintenanceRequest"
+            // }
+          ]
         }
       },
       computed: {
@@ -630,6 +649,7 @@
           }
           client.setHeader(this.user().credentials.token);
           let data = await client.executeQuery(getCurationRecords);
+          console.log("data::", data)
           this.allDataCuration = data.curationSummary;
           client.initalizeHeader();
           this.prepareData();
@@ -648,80 +668,13 @@
           ...mapActions("record", ["updateRecord"]),
 
           prepareData(){
-            this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
             this.prepareRecordsInCuration(this.allDataCuration);
             this.prepareHiddenRecords(this.allDataCuration);
             this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
             this.prepareSystemMessages(this.allDataCuration);
           },
-          prepareApprovalRequired(dataCuration){
-            let userRecords = dataCuration.approvalsRequired;
-            userRecords.forEach(item => {
-              item.fairsharingRecords.forEach(rec => {
-                let object = {
-                  createdAt: rec.createdAt,
-                  updatedAt: rec.updatedAt,
-                  curator: item.username.substring(0,6),
-                  recordName: `${rec.name} (${rec.id})`,
-                  id: rec.id,
-                  type: rec.type,
-                  processingNotes: rec.processingNotes,
-                  hidden: false
-                }
-                if (rec.creator){
-                  object.creator = rec.creator.username.substring(0,10);
-                  object.idCreator = rec.creator.id;
-                }else{
-                  object.creator = "unknown"
-                }
-                if (rec.priority){
-                  object.priority = "Priority";
-                }else{
-                  object.priority = "";
-                }
-                const index = dataCuration.hiddenRecords.findIndex((element) => element.id === rec.id);
-                if (index>=0){
-                  object.hidden = true;
-                }
-                if (rec.lastEditor){
-                  object.lastEditor = rec.lastEditor.username;
-                  object.idLastEditor = rec.lastEditor.id;
-                }
-                else{
-                  object.lastEditor = "unknown"
-                }
-                this.approvalRequired.push(object);
-              });
-            });
-            this.approvalRequired.sort(compareRecordDescUpdate);
-            for (let i = 0; i < this.approvalRequired.length; i++) {
-              this.approvalRequired[i].updatedAt = formatDate(this.approvalRequired[i].updatedAt);
-              this.approvalRequired[i].createdAt = formatDate(this.approvalRequired[i].createdAt);
-            }
-            let curators = dataCuration.curatorList;
-            let listSuper = [];
-            let listCurator = [];
-            curators.forEach(item => {
-              let object = {
-                id: item.id,
-                userName: item.username
-              };
-              let role = item.role.name;
-              if (role === "super_curator") {
-                listSuper.push(object);
-              }
-              else if (role === "curator") {
-                listCurator.push(object);
-              }
-            });
-            this.curatorList = listSuper.concat(listCurator);
-            let object = {
-              id: -1,
-              userName: "none"
-            };
-            this.curatorList.push(object);
-          },
+
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {

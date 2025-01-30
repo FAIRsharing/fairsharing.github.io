@@ -3,10 +3,10 @@
       "approvalsRequired": [
          {
               "username": "Terazus",
-              "id": "12345",
+              "id": 12345,
               "fairsharingRecords": [
                   {
-                      "id": "1451",
+                      "id": 1451,
                       "name": "Radiotherapy",
                       "type": "database",
                       "updatedAt": "2020-01-27",
@@ -24,7 +24,7 @@
 
                   },
                   {
-                      "id": "11",
+                      "id": 11,
                       "name": "Radi",
                       "updatedAt": "2020-09-27T09:34:54Z",
                       "creator":
@@ -34,7 +34,7 @@
                           }
                   },
                   {
-                      "id": "12345",
+                      "id": 12345,
                       "name": "Radiotgherapy",
                       "updatedAt": "2020-05-27T09:34:54Z",
                       "priority": true

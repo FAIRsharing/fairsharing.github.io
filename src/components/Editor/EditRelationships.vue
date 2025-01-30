@@ -499,7 +499,8 @@
                 /* istanbul ignore next */
                 if ((obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     obj.linkedRecord.abbreviation.toLowerCase().includes(searchTerm.toLowerCase()) )
-                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                    && (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ||
+                        this.labelsFilter[obj.linkedRecord.type.toLowerCase()]) === true){
                   return obj;
                 }
               }

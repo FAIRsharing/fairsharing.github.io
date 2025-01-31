@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
 				</ul>
 			</li>
 			
@@ -159,21 +159,6 @@ class RESTClient {
     const request = {
       method: "delete",
       baseURL: this.baseURL + "/users/sign_out",
-      headers: this.auth_headers(jwt),
-    };
-    let response = await this.executeQuery(request);
-    return response.data;
-  }
-
-  /**
-   * Delete the user's account (they must be logged in).
-   * @param {String} jwt - the user token to expire.
-   * @returns {Promise}
-   */
-  async delete(jwt) {
-    const request = {
-      method: "delete",
-      baseURL: this.baseURL + "/users",
       headers: this.auth_headers(jwt),
     };
     let response = await this.executeQuery(request);
@@ -287,7 +272,7 @@ class RESTClient {
     let headers = JSON.parse(JSON.stringify(this.headers));
     const request = {
       method: "post",
-      baseURL: this.baseURL + "/users/check_password",
+      baseURL: this.baseURL + " /users/check_password",
       headers: headers,
       data: { password: password },
     };
@@ -1122,66 +1107,6 @@ class RESTClient {
     let response = await _client.executeQuery(request);
     return response.data;
   }
-
-  /**
-   * Save the advancedSearch results to the user
-   * @param {Object} saveSearchObj - save search object having required parameters
-   * @param {String} jwt - the user jwt
-   * @returns {Promise}
-   */
-  /* Ignoring because of 401 access denied in test case */
-  /* istanbul ignore next */
-  async saveSearch(saveSearchObj, jwt) {
-    let _client = this;
-    const request = {
-      method: "post",
-      baseURL: _client.baseURL + "/saved_searches",
-      headers: this.auth_headers(jwt),
-      data: { saved_search: saveSearchObj },
-    };
-    let response = await _client.executeQuery(request);
-    return response.data;
-  }
-
-  /**
-   * Delete the saved search
-   * @param {Number} savedSearchId - the id of the savedSearch to remove
-   * @param {String} userToken - the user jwt
-   * @returns {Promise}
-   */
-  /* Ignoring because of 401 access denied in test case */
-  /* istanbul ignore next */
-  async deleteSavedSearch(savedSearchId, jwt) {
-    let _client = this;
-    const request = {
-      method: "delete",
-      baseURL: _client.baseURL + "/saved_searches/" + savedSearchId,
-      headers: this.auth_headers(jwt),
-    };
-    let response = await _client.executeQuery(request);
-    return response.data;
-  }
-
-  /**
-   * Update the saved search
-   * @param {Number} saveSearchId - save search id
-   * @param {Object} saveSearchObj - save search object having required parameters
-   * @param {String} jwt the user token
-   * @returns {Promise}
-   */
-  /* Ignoring because of 401 access denied in test case */
-  /* istanbul ignore next */
-  async updateSaveSearch(saveSearchId, saveSearchObj, jwt) {
-    let _client = this;
-    const request = {
-      method: "put",
-      baseURL: _client.baseURL + "/saved_searches/" + saveSearchId,
-      headers: this.auth_headers(jwt),
-      data: { saved_search: saveSearchObj },
-    };
-    let response = await _client.executeQuery(request);
-    return response.data;
-  }
 }
 
 export default RESTClient;
@@ -1228,9 +1153,9 @@ export default RESTClient;
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a>
 	
-		on Thu Jan 30th 2025
+		on Fri May 10th 2024
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -425,6 +425,13 @@
     >
       The same record/relation combination may not be added more than once.
     </v-snackbar>
+    <v-snackbar
+      v-model="multipleRelationship"
+      color="warning"
+      class="text-body"
+    >
+      {{ multipleRelationshipMessage }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -462,6 +469,8 @@
             initialized: false,
             lastQuery: null,
             duplicateRelationship: false,
+            multipleRelationship: false,
+            multipleRelationshipMessage: null,
             recordsList: [],
             fairsharingRegistries: [
               "collection",
@@ -473,7 +482,7 @@
           }
         },
         computed: {
-          ...mapState("record", ["sections", "currentID"]),
+          ...mapState("record", ["sections", "currentID", "currentRecord"]),
           ...mapState("users", ["user"]),
           ...mapState("editor", ["availableRecords", "relationsTypes"]),
           ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
@@ -571,10 +580,34 @@
                       tmpRelation === _module.addingRelation.recordAssocLabel.relation;
 
             });
+            // Check if a duplicate relation is being added.
             if (exists) {
               _module.duplicateRelationship = true;
               return;
             }
+            // Check if the user is trying to add multiple examples of FAIRassist relations.
+            // https://github.com/FAIRsharing/FAIRsharing-API/issues/1137
+            if (_module.currentRecord.fairsharingRecord.type === "metric" || _module.currentRecord.fairsharingRecord.type === "principle") {
+              let parts_of = _module.sections.relations.data.recordAssociations.filter((item) => {
+                return item.recordAssocLabel === 'part_of';
+              })
+              if (parts_of.length > 0) {
+                _module.multipleRelationship = true;
+                _module.multipleRelationshipMessage = "A principle or metric can be part of no more than 1 other of the same type.";
+                return;
+              }
+            }
+            if (_module.currentRecord.fairsharingRecord.type === "metric") {
+              let measures = _module.sections.relations.data.recordAssociations.filter((item) => {
+                return item.recordAssocLabel === 'measures_principle';
+              })
+              if (measures.length > 0) {
+                _module.multipleRelationship = true;
+                _module.multipleRelationshipMessage = "A metric can only measure one principle.";
+                return;
+              }
+            }
+            // Finally get to add the new relation.
             let newRelation = {
               linkedRecord: _module.addingRelation.linkedRecord,
               recordAssocLabel: _module.addingRelation.recordAssocLabel,

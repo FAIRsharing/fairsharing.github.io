@@ -1,23 +1,33 @@
 [
   {
     "id": 1,
-    "name": "undefined",
-    "children": [],
-    "allowed_associations": []
+    "name": "implements",
+    "description": null,
+    "children": [
+      {
+        "id": 2,
+        "name": "accepts",
+        "description": null
+      },
+      {
+        "id": 3,
+        "name": "outputs",
+        "description": null
+      }
+    ],
+    "allowed_associations": [
+      {
+        "id": 3,
+        "from": "database",
+        "to": "standard"
+      }
+    ]
   },
   {
     "id": 2,
-    "name": "implements",
-    "children": [
-      {
-        "id": 3,
-        "name": "accepts"
-      },
-      {
-        "id": 4,
-        "name": "outputs"
-      }
-    ],
+    "name": "accepts",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
         "id": 3,
@@ -28,51 +38,41 @@
   },
   {
     "id": 3,
-    "name": "accepts",
-    "children": [],
+    "name": "outputs",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
-        "id": 2,
+        "id": 3,
         "from": "database",
-        "to": "model_and_format"
+        "to": "standard"
       }
     ]
   },
   {
     "id": 4,
-    "name": "outputs",
-    "children": [],
-    "allowed_associations": [
-      {
-        "id": 2,
-        "from": "database",
-        "to": "model_and_format"
-      }
-    ]
-  },
-  {
-    "id": 5,
     "name": "related_to",
+    "description": null,
     "children": [
       {
+        "id": 5,
+        "name": "shares_code_with",
+        "description": null
+      },
+      {
         "id": 6,
-        "name": "shares_code"
+        "name": "shares_data_with",
+        "description": null
       },
       {
         "id": 7,
-        "name": "shares_data"
+        "name": "profiles",
+        "description": null
       },
       {
         "id": 8,
-        "name": "profiles"
-      },
-      {
-        "id": 9,
-        "name": "extends"
-      },
-      {
-        "id": 10,
-        "name": "expresses"
+        "name": "extends",
+        "description": null
       }
     ],
     "allowed_associations": [
@@ -82,16 +82,50 @@
         "to": "database"
       },
       {
+        "id": 3,
+        "from": "database",
+        "to": "standard"
+      },
+      {
         "id": 4,
         "from": "standard",
         "to": "standard"
+      },
+      {
+        "id": 5,
+        "from": "standard",
+        "to": "database"
+      },
+      {
+        "id": 6,
+        "from": "policy",
+        "to": "policy"
+      },
+      {
+        "id": 15,
+        "from": "fairassist",
+        "to": "fairassist"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "shares_code_with",
+    "description": null,
+    "children": [ ],
+    "allowed_associations": [
+      {
+        "id": 1,
+        "from": "database",
+        "to": "database"
       }
     ]
   },
   {
     "id": 6,
-    "name": "shares_code",
-    "children": [],
+    "name": "shares_data_with",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
         "id": 1,
@@ -102,90 +136,160 @@
   },
   {
     "id": 7,
-    "name": "shares_data",
-    "children": [],
+    "name": "profiles",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
-        "id": 1,
-        "from": "database",
-        "to": "database"
+        "id": 4,
+        "from": "standard",
+        "to": "standard"
       }
     ]
   },
   {
     "id": 8,
-    "name": "profiles",
-    "children": [],
+    "name": "extends",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
+      {
+        "id": 1,
+        "from": "database",
+        "to": "database"
+      },
       {
         "id": 4,
         "from": "standard",
         "to": "standard"
+      },
+      {
+        "id": 6,
+        "from": "policy",
+        "to": "policy"
       }
     ]
   },
   {
     "id": 9,
-    "name": "extends",
-    "children": [],
+    "name": "deprecates",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
+      {
+        "id": 1,
+        "from": "database",
+        "to": "database"
+      },
       {
         "id": 4,
         "from": "standard",
         "to": "standard"
+      },
+      {
+        "id": 6,
+        "from": "policy",
+        "to": "policy"
+      },
+      {
+        "id": 12,
+        "from": "collection",
+        "to": "collection"
       }
     ]
   },
   {
     "id": 10,
-    "name": "expresses",
-    "children": [],
+    "name": "collects",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
-        "id": 4,
-        "from": "standard",
+        "id": 9,
+        "from": "collection",
+        "to": "database"
+      },
+      {
+        "id": 10,
+        "from": "collection",
         "to": "standard"
+      },
+      {
+        "id": 11,
+        "from": "collection",
+        "to": "policy"
+      },
+      {
+        "id": 12,
+        "from": "collection",
+        "to": "collection"
       }
     ]
   },
   {
     "id": 11,
-    "name": "deprecates",
-    "children": [],
-    "allowed_associations": []
-  },
-  {
-    "id": 12,
-    "name": "collects",
-    "children": [],
-    "allowed_associations": []
-  },
-  {
-    "id": 13,
     "name": "recommends",
-    "children": [],
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
-        "id": 6,
+        "id": 7,
         "from": "policy",
         "to": "database"
       },
       {
-        "id": 7,
+        "id": 8,
         "from": "policy",
         "to": "standard"
+      },
+      {
+        "id": 13,
+        "from": "policy",
+        "to": "collection"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "part_of",
+    "description": null,
+    "children": [ ],
+    "allowed_associations": [
+      {
+        "id": 14,
+        "from": "principle",
+        "to": "principle"
+      },
+      {
+        "id": 16,
+        "from": "metric",
+        "to": "metric"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "measures_principle",
+    "description": null,
+    "children": [ ],
+    "allowed_associations": [
+      {
+        "id": 17,
+        "from": "metric",
+        "to": "principle"
       }
     ]
   },
   {
     "id": 14,
-    "name": "associated_with",
-    "children": [],
+    "name": "has_associated_metric",
+    "description": null,
+    "children": [ ],
     "allowed_associations": [
       {
-        "id": 5,
-        "from": "policy",
-        "to": "policy"
+        "id": 18,
+        "from": "benchmark",
+        "to": "metric"
       }
     ]
   }

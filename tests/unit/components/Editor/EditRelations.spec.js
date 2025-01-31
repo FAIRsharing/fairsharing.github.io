@@ -40,8 +40,18 @@ recordStore.state.sections = {
         }
     },
     generalInformation: {},
-    record: {fairsharingRecord: {id: 1243}}
+    record: {
+        fairsharingRecord: {
+            id: 1243,
+            type: "metric"
+        }
+    },
+
 };
+recordStore.state.currentRecord.fairsharingRecord = {
+    id: 1243,
+    type: "model"
+}
 
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({

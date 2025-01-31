@@ -210,6 +210,7 @@ let editorStore = {
             for (let typeObject of types) {
                 let relationName = typeObject.name,
                     id = typeObject.id;
+                /* istanbul ignore else */
                 if (typeObject['allowed_associations'].length > 0) {
                     typeObject['allowed_associations'].forEach(allowed_association => {
                         let relationParent = allowed_association.from;

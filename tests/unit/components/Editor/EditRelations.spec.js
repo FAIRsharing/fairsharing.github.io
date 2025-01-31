@@ -20,7 +20,7 @@ localVue.use(VueScrollTo);
 
 let relations = [{
     id: 123,
-    linkedRecord: {id: 111, name: "yes", registry: "collection", abbreviation: "yes"},
+    linkedRecord: {id: 111, name: "yes", registry: "collection", abbreviation: "yes", type: "collection"},
     recordAssocLabel: "?",
     recordAssocLabelId: 1,
 
@@ -122,9 +122,8 @@ describe("EditRelationships.vue", function() {
 
     it("can open the overlay to add a new association", () => {
         let output = [
-            {"relation":"undefined","target":"collection","id":1,"relationId":1},
-            {"relation":"deprecates","target":"collection","id":11,"relationId":11},
-            {"relation":"collects","target":"collection","id":12,"relationId":12}];
+            {"relation":"deprecates","target":"collection","id":9,"relationId":9},
+            {"relation":"collects","target":"collection","id":10,"relationId":10}];
         wrapper.vm.showOverlay({
             name: "no",
             id: 123,

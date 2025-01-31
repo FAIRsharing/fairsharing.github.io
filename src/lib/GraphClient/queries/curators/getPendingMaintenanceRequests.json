@@ -1,0 +1,31 @@
+{
+  "queryName": "pendingMaintenanceRequests",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "createdAt",
+    {
+      "name": "fairsharingRecord",
+      "fields": [
+        "id",
+        "name",
+        "type",
+        "processingNotes",
+        {
+          "queryName": "lastEditor",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "fields": [
+        "username",
+        "id"
+      ]
+    }
+  ]
+}

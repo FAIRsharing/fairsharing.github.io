@@ -324,15 +324,15 @@
                 {
                   text: 'Date last edit',
                   align: 'start',
-                  value: 'date',
+                  value: 'updatedAt',
                 },
                 { text: 'Priority', value: 'priority' },
                 { text: 'Curator', value: 'curator' },
-                { text: 'Record Name (id)', value: 'name' },
-                { text: 'Last editor', value: 'lasteditor' },
-                { text: 'Processing Notes', value: 'notes', sortable: false, },
+                { text: 'Record Name (id)', value: 'recordName' },
+                { text: 'Last editor', value: 'lastEditor' },
+                { text: 'Processing Notes', value: 'processingNotes', sortable: false, },
                 { text: 'Accept record/edit?', value: 'edit', sortable: false, },
-                { text: 'Curation date & user', value: 'curationdate' },
+                { text: 'Curation date & user', value: 'createdAt' },
               ],
               recordType:{},
               loading: false,
@@ -352,7 +352,7 @@
           },
           'dialogs.deleteRecord' (val) {
             val || this.closeDeleteMenu()
-          }
+          },
         },
       async mounted () {
           this.loading = true;

@@ -6,9 +6,13 @@ import Vuex from "vuex";
 import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json";
 import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue";
 import Client from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
+import dataDashboard from "../../../fixtures/curationDashboardData.json"
+
+let curationDataSummary =  dataDashboard.curationSummary;
 const localVue = createLocalVue();
 localVue.use(Vuex);
 usersStore.state.user = function () {
@@ -42,20 +46,34 @@ const $router = { push: jest.fn() };
 describe("Curator -> MaintenanceRequest.vue", () => {
   let restStub;
   let wrapper;
+  let graphStub;
   beforeAll(() => {
+    graphStub = sinon.stub(GraphClient.prototype, "executeQuery")
+        .returns(curationDataSummary)
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns(
+        {
+          data: {
+            error: false
+          }
+        }
+    );
     wrapper = shallowMount(MaintenanceRequest, {
       localVue,
       router,
       mocks: { $store, $router },
-      propsData: fakeData.propsData,
     });
+  });
+  afterEach( () => {
+    graphStub.restore();
+    restStub.restore();
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("MaintenanceRequest");
+    expect(wrapper.vm.prepareMaintenanceRequests).toHaveBeenCalled;
     expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(4);
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
-      "Record1 (23)"
+      "Other thing (22)"
     );
   });
 
@@ -81,7 +99,7 @@ describe("Curator -> MaintenanceRequest.vue", () => {
     await wrapper.vm.assignMaintenanceOwnConfirm("approved");
     expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(3);
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
-      "Record2 (24)"
+      "Other thing (22)"
     );
     //There is an error in the Client query
     restStub.restore();
@@ -120,7 +138,7 @@ describe("Curator -> MaintenanceRequest.vue", () => {
   it("can watch props data", () => {
     wrapper.vm.$options.watch.maintenanceRequests.call(wrapper.vm);
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
-      "Record1 (23)"
+      "Other thing (22)"
     );
   });
 });

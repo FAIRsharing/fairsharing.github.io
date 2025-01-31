@@ -11,7 +11,17 @@ const generalUtils = {
                 result[key] = obj[key];
                 return result;
             }, {});
-        }
+        },
+        formatDate(d){
+           let date = new Date(d);
+           return (
+             date.toLocaleString("default", { month: "short" }) +
+             " " +
+             date.getUTCDate() +
+             ", " +
+             date.getUTCFullYear()
+           );
+         }
     }
 }
 

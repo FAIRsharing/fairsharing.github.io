@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Class: ExternalRESTClients</title>
+	<title>FAIRsharing.org Source: components/Curators/HiddenRecords.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,294 +81,165 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: ExternalRESTClients</h1>
+		<h1 class="page-title">Source: components/Curators/HiddenRecords.vue</h1>
+    
 <section>
-
-<header>
-    
-        <h2>
-        ExternalRESTClients
-        </h2>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-<hr>
-<dt>
-    <h4 class="name" id="ExternalRESTClients"><span class="type-signature"></span>new ExternalRESTClients()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>The RESTClient is a singleton class that handles the connection and data exchange from the back-end
-REST API.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_ExternalClients.js.html">lib/Client/ExternalClients.js</a>,
-				 <a href="lib_Client_ExternalClients.js.html#sunlight-1-line-9">line 9</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="executeQuery"><span class="type-signature">&lt;async> </span>executeQuery(query)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Trigger the given query with Axios</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>query</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_ExternalClients.js.html">lib/Client/ExternalClients.js</a>,
-				 <a href="lib_Client_ExternalClients.js.html#sunlight-1-line-82">line 82</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;*></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-col cols12>
+    &lt;v-card class="mb-2">
+      &lt;v-card-text v-if="hiddenRecords">
+        &lt;v-card-title
+          id="text-curator-search-2"
+          class="green white--text"
+        >
+          &lt;b> HIDDEN RECORDS &lt;/b>
+          &lt;v-spacer />
+          &lt;v-text-field
+            v-model="searches.hiddenRecords"
+            label="Search"
+            color="white--text"
+            single-line
+            hide-details
+          />
+        &lt;/v-card-title>
+        &lt;v-data-table
+          :loading="loading"
+          :headers="headerItems"
+          :items="hiddenRecords"
+          :search="searches.hiddenRecords"
+          class="elevation-1"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
+        >
+          &lt;template
+            v-if="recordType"
+            #item="props"
+          >
+            &lt;tr>
+              &lt;td>
+                &lt;v-avatar
+                  v-if="props.item.type"
+                  class="mr-2"
+                  :height="40"
+                >
+                  &lt;Icon
+                    :item="props.item.type"
+                    :height="40"
+                    wrapper-class=""
+                  />
+                &lt;/v-avatar>
+                &lt;a :href="'/' + props.item.id">
+                  {{ props.item.recordNameID }}
+                &lt;/a>
+              &lt;/td>
+              &lt;td>
+                {{ props.item.createdAt }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.curator }}
+              &lt;/td>
+              &lt;td>
+                &lt;div v-if="props.item.creator === 'unknown'">
+                  {{ props.item.creator }}
+                &lt;/div>
+                &lt;div v-else>
+                  &lt;a :href="'/users/' + props.item.idCreator">
+                    {{ props.item.creator }}
+                  &lt;/a>
+                &lt;/div>
+              &lt;/td>
+            &lt;/tr>
+          &lt;/template>
+        &lt;/v-data-table>
+      &lt;/v-card-text>
+    &lt;/v-card>
+  &lt;/v-col>
+&lt;/template>
+
+&lt;script>
+import { mapState } from "vuex";
+
+import Icon from "@/components/Icon";
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json"
+import formatDate from "@/utils/generalUtils";
+
+const client = new GraphClient();
+
+export default {
+  name: "HiddenRecords",
+  components: {
+    Icon,
+  },
+  mixins: [formatDate],
+  props:{
+    headerItems: {
+      type: Array,
+      default: null
+    },
+  },
+  data: () => {
+    return {
+      hiddenRecords:[],
+      searches: "",
+      recordType: {},
+      loading: false,
+    };
+  },
+  computed: {
+    ...mapState("users", ["user"]),
+  },
+
+  async mounted() {
+    this.loading = true;
+    client.setHeader(this.user().credentials.token);
+    //Fetching hidden records
+    let hiddenRecords = await client.executeQuery(getHiddenRecords);
+    this.prepareHiddenRecords(hiddenRecords)
+    this.loading = false;
+  },
+  methods: {
+
+    /**
+     * Method to fetch hidden records
+     * @param dataCuration
+     */
+    prepareHiddenRecords(dataCuration) {
+      let records = dataCuration.hiddenRecords;
+      records.forEach((item) => {
+        let object = {
+          recordNameID: `${item.name} (${item.id})`,
+          type: item.type,
+          id: item.id,
+        };
+        object.createdAt = this.formatDate(item.createdAt);
+        if (item.curator) {
+          object.curator = item.curator.username;
+        } else {
+          object.curator = "none";
+        }
+        if (item.creator) {
+          object.creator = item.creator.username;
+          object.idCreator = item.creator.id;
+        } else {
+          object.creator = "unknown";
+        }
+        this.hiddenRecords.push(object);
+      });
+    },
+  },
+};
+&lt;/script>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -378,10 +249,6 @@ REST API.</p>
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

@@ -57,70 +57,6 @@
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
-        <!-- Recently created by curators -->
-        <v-card class="mb-2">
-          <v-card-text v-if="recordsCreatedCuratorsLastWeek">
-            <v-card-title
-              id="text-curator-search-3"
-              class="green white--text"
-            >
-              <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recentCuratorCreations"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.recordsCreatedCuratorsLastWeek"
-              :items="recordsCreatedCuratorsLastWeek"
-              :search="searches.recentCuratorCreations"
-              class="elevation-1"
-              :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
-            >
-              <template
-                v-if="recordType"
-                #item="props"
-              >
-                <tr>
-                  <td>
-                    <v-avatar
-                      v-if="props.item.type"
-                      class="mr-2"
-                      :height="40"
-                    >
-                      <Icon
-                        :item="props.item.type"
-                        :height="40"
-                        wrapper-class=""
-                      />
-                    </v-avatar>
-                    <a :href="'/' + props.item.id">
-                      {{ props.item.recordNameID }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ props.item.createdAt }}
-                  </td>
-                  <td>
-                    <div v-if="props.item.creator === 'unknown'">
-                      {{ props.item.creator }}
-                    </div>
-                    <div v-else>
-                      <a :href="'/users/' + props.item.idCreator">
-                        {{ props.item.creator }}
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
         <!-- Records without DOIs -->
         <v-card class="mb-2">
           <v-card-text>
@@ -439,6 +375,7 @@ import { mapActions, mapState } from "vuex";
 
 import HiddenRecords from "@/components/Curators/HiddenRecords.vue";
 import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue";
+import RecentCuratorCreation from "@/components/Curators/RecentCuratorCreation.vue";
 import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue";
 import Icon from "@/components/Icon";
 import headersTables from "@/data/headersCuratorDashboard.json";
@@ -474,6 +411,7 @@ export default {
     RecordsAwaitingApproval,
     MaintenanceRequest,
     HiddenRecords,
+    RecentCuratorCreation,
     Icon,
   },
   mixins: [getHostname],
@@ -488,9 +426,6 @@ export default {
         messageId: null,
       },
       allDataCuration: null,
-      approvalRequired: [],
-      maintenanceRequests: [],
-      recordsCreatedCuratorsLastWeek: [],
       recordsInCuration: [],
       hiddenRecords: [],
       // curatorList: [],
@@ -530,6 +465,12 @@ export default {
           target: "hiddenrecords",
           component: "HiddenRecords",
           headers: headersTables["hiddenRecords"],
+        },
+        {
+          name: "RECORDS CREATED BY CURATORS IN THE PAST WEEK",
+          target: "recentcuatorcreation",
+          component: "RecentCuratorCreation",
+          headers: headersTables["recordsCreatedCuratorsLastWeek"],
         },
       ],
     };
@@ -579,28 +520,10 @@ export default {
 
     prepareData() {
       this.prepareRecordsInCuration(this.allDataCuration);
-      this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
       this.prepareSystemMessages(this.allDataCuration);
     },
 
-    prepareRecordsCuratorCreationsLastWeek(dataCuration) {
-      let records = dataCuration.recentCuratorCreations;
-      records.forEach((item) => {
-        let object = {
-          recordNameID: `${item.name} (${item.id})`,
-          type: item.type,
-          id: item.id,
-        };
-        object.createdAt = formatDate(item.createdAt);
-        if (item.creator) {
-          object.creator = item.creator.username;
-          object.idCreator = item.creator.id;
-        } else {
-          object.creator = "unknown";
-        }
-        this.recordsCreatedCuratorsLastWeek.push(object);
-      });
-    },
+
     prepareRecordsInCuration(dataCuration) {
       let userRecords = dataCuration.recordsInCuration;
       userRecords.forEach((item) => {

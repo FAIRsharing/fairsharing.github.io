@@ -3,7 +3,6 @@ import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
-import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json";
 import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue";
 import Client from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
@@ -15,6 +14,30 @@ import dataDashboard from "../../../fixtures/curationDashboardData.json"
 let curationDataSummary =  dataDashboard.curationSummary;
 const localVue = createLocalVue();
 localVue.use(Vuex);
+let header = [
+      {
+        "text": "Date",
+        "value": "createdAt"
+      },
+      {
+        "text": "Record name (id)",
+        "value": "recordName"
+      },
+      {
+        "text": "User login",
+        "value": "userNameID"
+      },
+      {
+        "text": "Processing Notes",
+        "value": "processingNotes",
+        "sortable": false,
+        "width": 250
+      },
+      { "text": "Accept request?",
+        "value": "actions",
+        "sortable": false
+      }
+    ];
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -61,6 +84,9 @@ describe("Curator -> MaintenanceRequest.vue", () => {
       localVue,
       router,
       mocks: { $store, $router },
+      propsData: {
+        headerItems: header
+      }
     });
   });
   afterEach( () => {

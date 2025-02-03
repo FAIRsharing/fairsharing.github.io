@@ -25,7 +25,7 @@
       </v-card-text>
       <v-data-table
         :loading="loading"
-        :headers="headers"
+        :headers="headerItems"
         :items="approvalRequiredProcessed"
         :search="searches"
         :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
@@ -300,6 +300,12 @@
         components: {
           Icon
         },
+      props:{
+        headerItems: {
+          type: Array,
+          default: null
+        },
+      },
         data: () => {
             return {
               dialogs: {
@@ -320,20 +326,6 @@
               approvalRequiredProcessed: [],
               maintenanceRequests:[],
               approvalRequired:[],
-              headers: [
-                {
-                  text: 'Date last edit',
-                  align: 'start',
-                  value: 'updatedAt',
-                },
-                { text: 'Priority', value: 'priority' },
-                { text: 'Curator', value: 'curator' },
-                { text: 'Record Name (id)', value: 'recordName' },
-                { text: 'Last editor', value: 'lastEditor' },
-                { text: 'Processing Notes', value: 'processingNotes', sortable: false, },
-                { text: 'Accept record/edit?', value: 'edit', sortable: false, },
-                { text: 'Curation date & user', value: 'createdAt' },
-              ],
               recordType:{},
               loading: false,
               curatorList: []

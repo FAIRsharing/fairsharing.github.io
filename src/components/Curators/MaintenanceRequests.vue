@@ -24,7 +24,7 @@
         </v-card-text>
         <v-data-table
           :loading="loading"
-          :headers="headers"
+          :headers="headerItems"
           :items="maintenanceRequestsProcessed"
           :search="searches"
           class="elevation-1"
@@ -258,6 +258,12 @@ export default {
     Icon,
   },
   mixins: [formatDate],
+  props:{
+    headerItems: {
+      type: Array,
+      default: null
+    },
+  },
   data: () => {
     return {
       dialogs: {
@@ -277,17 +283,6 @@ export default {
       maintenanceRequestsProcessed: [],
       maintenanceRequests: [],
       approvalRequired: [],
-      headers: [
-        {
-          text: 'Date',
-          align: 'start',
-          value: 'createdAt',
-        },
-        { text: 'Record Name (id)', value: 'recordName' },
-        { text: 'User login', value: 'userName' },
-        { text: 'Processing Notes', value: 'processingNotes', sortable: false },
-        { text: 'Accept Request', value: 'acceptrequest',sortable: false },
-      ],
       recordType: {},
       loading: false,
     };

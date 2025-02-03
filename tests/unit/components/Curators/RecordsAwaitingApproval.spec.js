@@ -11,11 +11,52 @@ import usersStore from "@/store/users";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
 
-// let { approvalsRequired, hiddenRecords, curatorList } =  dataDashboard.curationSummary;
 let curationDataSummary =  dataDashboard.curationSummary;
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+let header = [
+      {
+        "text": "Date last edit",
+        "value": "updatedAt",
+        "width": 90
+      },
+      {
+        "text": "",
+        "value": "priority",
+        "width": 40
+      },
+      {
+        "text": "Curator",
+        "value": "curator",
+        "width": 50
+      },
+      {
+        "text": "Record name (id)",
+        "value": "recordName",
+        "width": 400
+      },
+      {
+        "text": "Last editor",
+        "value": "lastEditor",
+        "width": 120
+      },
+      {
+        "text": "Processing Notes",
+        "value": "processingNotes",
+        "sortable": false
+      },
+      { "text": "Accept record/edit?",
+        "value": "actions",
+        "sortable": false,
+        "width": 130
+      },
+      {
+        "text": "Creation date & user",
+        "value": "createdAt",
+        "width": 90
+      }
+    ];
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -60,6 +101,9 @@ describe("Curator -> RecordsAwaitingApproval.vue", () => {
       localVue,
       router,
       mocks: { $store, $router },
+      propsData: {
+        headerItems: header
+      }
     });
   });
 

@@ -50,77 +50,13 @@
               :key="tab + '_' + tabIndex"
               class="px-1 py-3"
             >
-              <component :is="tab.component" />
+              <component
+                :is="tab.component"
+                :header-items="tab.headers"
+              />
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
-        <!-- Hidden Records -->
-        <v-card class="mb-2">
-          <v-card-text v-if="hiddenRecords">
-            <v-card-title
-              id="text-curator-search-2"
-              class="green white--text"
-            >
-              <b> HIDDEN RECORDS </b>
-              <v-spacer />
-              <v-text-field
-                v-model="searches.hiddenRecords"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.hiddenRecords"
-              :items="hiddenRecords"
-              :search="searches.hiddenRecords"
-              class="elevation-1"
-              :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
-            >
-              <template
-                v-if="recordType"
-                #item="props"
-              >
-                <tr>
-                  <td>
-                    <v-avatar
-                      v-if="props.item.type"
-                      class="mr-2"
-                      :height="40"
-                    >
-                      <Icon
-                        :item="props.item.type"
-                        :height="40"
-                        wrapper-class=""
-                      />
-                    </v-avatar>
-                    <a :href="'/' + props.item.id">
-                      {{ props.item.recordNameID }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ props.item.createdAt }}
-                  </td>
-                  <td>
-                    {{ props.item.curator }}
-                  </td>
-                  <td>
-                    <div v-if="props.item.creator === 'unknown'">
-                      {{ props.item.creator }}
-                    </div>
-                    <div v-else>
-                      <a :href="'/users/' + props.item.idCreator">
-                        {{ props.item.creator }}
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
         <!-- Recently created by curators -->
         <v-card class="mb-2">
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
@@ -501,6 +437,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
+import HiddenRecords from "@/components/Curators/HiddenRecords.vue";
 import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue";
 import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue";
 import Icon from "@/components/Icon";
@@ -536,6 +473,7 @@ export default {
     Unauthorized,
     RecordsAwaitingApproval,
     MaintenanceRequest,
+    HiddenRecords,
     Icon,
   },
   mixins: [getHostname],
@@ -579,11 +517,19 @@ export default {
           name: "RECORDS/EDITS AWAITING APPROVAL",
           target: "recordseditsawaitingapproval",
           component: "RecordsAwaitingApproval",
+          headers: headersTables["approvalRequired"],
         },
         {
           name: "OWNERSHIP REQUESTS",
           target: "ownershiprequests",
           component: "MaintenanceRequest",
+          headers: headersTables["maintenanceRequests"],
+        },
+        {
+          name: "HIDDEN RECORDS",
+          target: "hiddenrecords",
+          component: "HiddenRecords",
+          headers: headersTables["hiddenRecords"],
         },
       ],
     };
@@ -633,7 +579,6 @@ export default {
 
     prepareData() {
       this.prepareRecordsInCuration(this.allDataCuration);
-      this.prepareHiddenRecords(this.allDataCuration);
       this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
       this.prepareSystemMessages(this.allDataCuration);
     },
@@ -679,29 +624,7 @@ export default {
         });
       });
     },
-    prepareHiddenRecords(dataCuration) {
-      let records = dataCuration.hiddenRecords;
-      records.forEach((item) => {
-        let object = {
-          recordNameID: `${item.name} (${item.id})`,
-          type: item.type,
-          id: item.id,
-        };
-        object.createdAt = formatDate(item.createdAt);
-        if (item.curator) {
-          object.curator = item.curator.username;
-        } else {
-          object.curator = "none";
-        }
-        if (item.creator) {
-          object.creator = item.creator.username;
-          object.idCreator = item.creator.id;
-        } else {
-          object.creator = "unknown";
-        }
-        this.hiddenRecords.push(object);
-      });
-    },
+
     prepareSystemMessages(dataCuration) {
       dataCuration.messages.forEach((item) => {
         this.systemMessages.push({

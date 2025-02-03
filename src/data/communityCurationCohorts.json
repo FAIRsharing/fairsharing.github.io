@@ -922,6 +922,26 @@
       "logo": "gabor_erdos.jpg",
       "year_active": ["2025"],
       "active": true
+    },
+    {
+      "name": "Federico Bianchini",
+      "id": 10527,
+      "organisation": [
+        {
+          "id": 3674,
+          "name": "University of Oslo"
+        }
+      ],
+      "scope": "ELIXIR Research Data Management Community",
+      "orcid": "0000-0002-9016-4820",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "federico_bianchini.jpg",
+      "year_active": ["2025"],
+      "active": true
     }
   ],
     "quotes": [

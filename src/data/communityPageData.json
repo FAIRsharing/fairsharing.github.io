@@ -585,6 +585,16 @@
           {"link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/", "icon": "linkedin"}
 
         ]
+      },
+      {
+        "name": "David Tomkins",
+        "role": "Curator",
+        "profileImg": "assets/Community/profiles/d_tomkins.jpeg",
+        "social": [
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
+          {"link": "https://orcid.org/0009-0000-4679-676X", "icon": "Orcid"},
+          {"link": "https://www.linkedin.com/in/david-tomkins-83b92534/", "icon": "linkedin"}
+        ]
       }
     ]
   },

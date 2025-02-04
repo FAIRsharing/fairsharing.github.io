@@ -7,4 +7,7 @@ export const CuratorSummaryStatistics = () =>
     import("@/components/Curators/DownLoadRecordsComponents/CuratorSummaryStatistics.vue");
 export const RecordsCreatedByMonth = () =>
     import("@/components/Curators/DownLoadRecordsComponents/RecordsCreatedByMonth.vue");
+export const RecordEditsByMonth = () =>
+    import("@/components/Curators/DownLoadRecordsComponents/RecordEditsByMonth.vue");
+
 

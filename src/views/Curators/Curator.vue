@@ -145,33 +145,6 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-
-        <!-- Button to obtain record edits by month -->
-        <v-card class="mb-2">
-          <v-card-text>
-            <v-card-title
-              id="download-curator-summary"
-              class="green white--text"
-            >
-              RECORD EDITS BY MONTH
-              <v-btn
-                v-if="downloadEditsByMonth"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadEditsByMonth"
-                  download="editsPerformedByMonth.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  > fa fa-download </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
       </v-col>
     </v-row>
     <!-- this shouldn't appear as an unauthorised user shouldn't be here -->
@@ -341,7 +314,6 @@ export default {
       },
       loading: false,
       downloadContent: null,
-      downloadEditsByMonth: null,
       error: {
         general: null,
       },
@@ -406,7 +378,6 @@ export default {
       this.allDataCuration = data.curationSummary;
       client.initalizeHeader();
       this.prepareData();
-      await this.obtainFileEditByMonth();
       this.loading = false;
     });
   },
@@ -456,19 +427,7 @@ export default {
     },
 
 
-    async obtainFileEditByMonth() {
-      let data = await restClient.getEditByMonth(this.user().credentials.token);
-      if (data) {
-        let content = JSON.stringify(data)
-          .replace(/^\[(.+)\]$/, "$1")
-          .replace(/","/g, '"\r\n"')
-          .replace(/['"]+/g, "");
-        this.downloadEditsByMonth =
-          "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      } else {
-        this.downloadEditsByMonth = "data:text/json;charset=utf-8," + "";
-      }
-    },
+
     showAddMessage() {
       const _module = this;
       _module.dialogs.addMessage = true;

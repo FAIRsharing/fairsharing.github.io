@@ -8,13 +8,15 @@
     <CuratorSummaryStatistics />
     <!-- Records Created By Month -->
     <RecordsCreatedByMonth />
+    <!-- Record Edit By Month -->
+    <RecordEditsByMonth />
   </v-col>
 </template>
 
 <script>
 import {
   CuratorSummaryStatistics,
-  RecordsCreatedByMonth,
+  RecordEditsByMonth,  RecordsCreatedByMonth,
   RecordsNeedingReview,
   RecordsWithoutDois} from "@/components/Curators/DownLoadRecordsComponents"
 
@@ -24,7 +26,8 @@ export default {
     RecordsWithoutDois,
     RecordsNeedingReview,
     CuratorSummaryStatistics,
-    RecordsCreatedByMonth
+    RecordsCreatedByMonth,
+    RecordEditsByMonth
   },
 };
 </script>

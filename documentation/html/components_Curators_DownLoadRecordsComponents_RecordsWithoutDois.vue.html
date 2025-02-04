@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Organisations.vue</title>
+	<title>FAIRsharing.org Source: components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,99 +86,82 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Organisations.vue</h1>
+		<h1 class="page-title">Source: components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div class="d-flex width-90">
-    &lt;TooltipComponent :tool-tip-text="toolTipText" />
-    &lt;AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchOrganisations"
-      :loading="getLoadingStatus"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
-  &lt;/div>
+  &lt;v-col cols12>
+    &lt;!-- Records without DOIs -->
+    &lt;v-card class="mb-2">
+      &lt;v-card-text>
+        &lt;v-card-title
+          id="text-curator-search-1"
+          class="green white--text"
+        >
+          RECORDS WITHOUT DOIS
+          &lt;v-btn
+            v-if="downloadContent"
+            class="info ml-5"
+          >
+            &lt;a
+              :href="downloadContent"
+              download="recordWithoutDOIs.txt"
+            >
+              &lt;v-icon
+                color="white"
+                class="mr-1"
+              > fa fa-download &lt;/v-icon>
+              &lt;span class="white--text">Obtain file&lt;/span>
+            &lt;/a>
+          &lt;/v-btn>
+        &lt;/v-card-title>
+      &lt;/v-card-text>
+    &lt;/v-card>
+  &lt;/v-col>
 &lt;/template>
+
 &lt;script>
-import { mapActions, mapGetters } from "vuex";
+import { mapState } from "vuex";
 
-import organisationSearch from "@/store";
+import RestClient from "@/lib/Client/RESTClient";
 
-import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
+const restClient = new RestClient();
 
 export default {
-  name: "Organisations",
-  components: { TooltipComponent, AutoCompleteComponent },
-  props: {
-    value: {
-      type: Array,
-      default: () => [],
-    },
-  },
+  name: "RecordsWithoutDois",
   data: () => {
     return {
-      itemSelected: [],
-      itemValue: [],
-      toolTipText:
-        "Organisations related to this record. Multiple selections will be joined with OR. Start typing to see Organisations.",
+      downloadContent: null,
     };
   },
-
   computed: {
-    ...mapGetters("organisationSearch", ["getSearchOrganisations", "getLoadingStatus"]),
-    ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
-
-    model: {
-      get() {
-        return this.itemSelected;
-      },
-      set(value) {
-        this.$emit("input", value);
-      },
-    },
-  },
-  watch: {
-    itemSelected(newValue) {
-      this.itemValue = newValue;
-    },
-    /**
-     * Item list for the autocomplete should not be empty
-     * It is assigned with selected values when edit field is opened
-     */
-    getEditDialogStatus: {
-      handler(open) {
-        if (open) {
-          if (this.value &amp;&amp; this.value.length) {
-            organisationSearch.commit(
-              "organisationSearch/setSearchOrganisations",
-              this.value
-            );
-          }
-        }
-      },
-      immediate: true,
-    },
+    ...mapState("users", ["user"]),
   },
 
-  mounted() {
-    //Pre-fill selected values on edit advanced search is clicked and open
-    this.itemValue = this.value;
+  async mounted() {
+    await this.obtainFileRecordsWODois();
   },
-
   methods: {
-    ...mapActions("organisationSearch", ["fetchSearchOrganisations"]),
 
-    selectedValue(item) {
-      this.itemSelected = item;
-    },
-    getResults(queryParams) {
-      if (queryParams) this.fetchSearchOrganisations(queryParams);
+    /**
+     * Method to download file having records without DOI
+     */
+    async obtainFileRecordsWODois() {
+      let data = await restClient.getRecordsWoDOIs(
+          this.user().credentials.token
+      );
+      if (data) {
+        let content = JSON.stringify(data)
+            .replace(/^\[(.+)\]$/, "$1")
+            .replace(/","/g, '"\r\n"')
+            .replace(/['"]+/g, "");
+        this.downloadContent =
+            "data:text/json;charset=utf-8," + encodeURIComponent(content);
+      } else {
+        this.downloadContent = "data:text/json;charset=utf-8," + "";
+      }
     },
   },
 };

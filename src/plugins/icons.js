@@ -184,6 +184,11 @@ const customIcons = {
       icon: "/assets/records/benchmark.svg",
       tooltip: "Benchmark",
     },
+    principle: {
+      type: "img",
+      icon: "/assets/records/principle.svg",
+      tooltip: "Principle",
+    },
     repository: {
       type: "img",
       icon: "/assets/records/db-icon.svg",

@@ -48,7 +48,7 @@
                       <v-switch
                         v-model="searchFilters[filterName]"
                         inset
-                        :label="`${capitalize(filterName)}(s)`"
+                        :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
@@ -188,7 +188,7 @@
                       <v-switch
                         v-model="labelsFilter[filterName]"
                         inset
-                        :label="`${capitalize(filterName)}(s)`"
+                        :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
@@ -425,6 +425,13 @@
     >
       The same record/relation combination may not be added more than once.
     </v-snackbar>
+    <v-snackbar
+      v-model="multipleRelationship"
+      color="warning"
+      class="text-body"
+    >
+      {{ multipleRelationshipMessage }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -462,11 +469,20 @@
             initialized: false,
             lastQuery: null,
             duplicateRelationship: false,
-            recordsList: []
+            multipleRelationship: false,
+            multipleRelationshipMessage: null,
+            recordsList: [],
+            fairsharingRegistries: [
+              "collection",
+              "standard",
+              "database",
+              "policy",
+              "fairassist"
+            ]
           }
         },
         computed: {
-          ...mapState("record", ["sections", "currentID"]),
+          ...mapState("record", ["sections", "currentID", "currentRecord"]),
           ...mapState("users", ["user"]),
           ...mapState("editor", ["availableRecords", "relationsTypes"]),
           ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
@@ -492,7 +508,8 @@
                 /* istanbul ignore next */
                 if ((obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     obj.linkedRecord.abbreviation.toLowerCase().includes(searchTerm.toLowerCase()) )
-                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                    && (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ||
+                        this.labelsFilter[obj.linkedRecord.type.toLowerCase()]) === true){
                   return obj;
                 }
               }
@@ -563,10 +580,34 @@
                       tmpRelation === _module.addingRelation.recordAssocLabel.relation;
 
             });
+            // Check if a duplicate relation is being added.
             if (exists) {
               _module.duplicateRelationship = true;
               return;
             }
+            // Check if the user is trying to add multiple examples of FAIRassist relations.
+            // https://github.com/FAIRsharing/FAIRsharing-API/issues/1137
+            if (_module.currentRecord.fairsharingRecord.type === "metric" || _module.currentRecord.fairsharingRecord.type === "principle") {
+              let parts_of = _module.sections.relations.data.recordAssociations.filter((item) => {
+                return item.recordAssocLabel === 'part_of';
+              })
+              if (parts_of.length > 0) {
+                _module.multipleRelationship = true;
+                _module.multipleRelationshipMessage = "A principle or metric can be part of no more than 1 other of the same type.";
+                return;
+              }
+            }
+            if (_module.currentRecord.fairsharingRecord.type === "metric") {
+              let measures = _module.sections.relations.data.recordAssociations.filter((item) => {
+                return item.recordAssocLabel === 'measures_principle';
+              })
+              if (measures.length > 0) {
+                _module.multipleRelationship = true;
+                _module.multipleRelationshipMessage = "A metric can only measure one principle.";
+                return;
+              }
+            }
+            // Finally get to add the new relation.
             let newRelation = {
               linkedRecord: _module.addingRelation.linkedRecord,
               recordAssocLabel: _module.addingRelation.recordAssocLabel,
@@ -606,7 +647,8 @@
                   registry: target.registry.toLowerCase(),
                   type: target.type.toLowerCase()
                 },
-                sourceType: this.sections.relations.data.registry.toLowerCase(),
+                sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
+                sourceType: this.sections.relations.data.type.toLowerCase(),
                 prohibited: prohibited
             });
             this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
@@ -616,19 +658,24 @@
           },
           getRelations() {
             let labelsFilter = {};
-            let allRelations = ['standard', 'database', 'collection', 'policy'];
-
+            let allRegistries = ['standard', 'database', 'collection', 'policy', 'fairassist'];
+            let types = [];
             let allowedRelations = this.allowedRelations({
               target: null,
-              sourceType: this.sections.relations.data.registry.toLowerCase(),
+              sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
+              sourceType: this.sections.relations.data.type.toLowerCase(),
               prohibited: null
             });
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
                 /* istanbul ignore else */
-                if (allRelations.includes(allowedRelation.target.toLowerCase())) {
+                if (allRegistries.includes(allowedRelation.target.toLowerCase())) {
                   labelsFilter[allowedRelation.target] = true;
-                  allRelations.splice(allRelations.indexOf(allowedRelation.target.toLowerCase()), 1)
+                  allRegistries.splice(allRegistries.indexOf(allowedRelation.target.toLowerCase()), 1)
+                }
+                else {  // This must therefore be a record type.
+                  labelsFilter[allowedRelation.target] = true;
+                  types.push(allowedRelation.target);
                 }
               }
             });
@@ -643,16 +690,25 @@
               search = this.search.trim();
             }
             let registries = [];
+            let types = [];
             Object.keys(this.searchFilters).forEach(filter => {
               if (this.searchFilters[filter]){
-                registries.push(filter);
+               // Check if this is a registry or type
+                if (this.fairsharingRegistries.indexOf(filter) > -1) {
+                  registries.push(filter);
+                }
+                else {
+                  types.push(filter);
+                }
               }
             });
             this.lastQuery = search;
             await _module.getAvailableRecords({
               q: search,
               fairsharingRegistry: registries,
-              excludeId: _module.currentID
+              recordType: types,
+              excludeId: _module.currentID,
+              searchAnd: false
             });
             let i = 0;
             this.availableRecords.forEach(rec => {
@@ -682,6 +738,12 @@
             if (redirect && !this.message.error){
               await this.$router.push({path: '/' + this.$route.params.id})
             }
+          },
+          prepareFilterName(name) {
+            if (name == 'fairassist') {
+              return 'FAIRassist'
+            }
+            return capitalize(name) + "(s)";
           }
         }
     }

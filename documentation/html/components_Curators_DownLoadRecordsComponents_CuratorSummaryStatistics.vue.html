@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue</title>
+	<title>FAIRsharing.org Source: components/Curators/DownLoadRecordsComponents/CuratorSummaryStatistics.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,29 +86,28 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue</h1>
+		<h1 class="page-title">Source: components/Curators/DownLoadRecordsComponents/CuratorSummaryStatistics.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-col cols12>
-    &lt;!-- Records without DOIs -->
     &lt;v-card class="mb-2">
       &lt;v-card-text>
         &lt;v-card-title
-          id="text-curator-search-1"
+          id="download-curator-summary"
           class="green white--text"
         >
-          RECORDS WITHOUT DOIS
+          CURATOR SUMMARY STATISTICS
           &lt;v-btn
             class="info ml-5"
             :loading="loading"
           >
             &lt;a
-              v-if="downloadContent"
-              :href="downloadContent"
-              download="recordWithoutDOIs.txt"
+              v-if="downloadCuratorContent"
+              :href="downloadCuratorContent"
+              download="curatorSummaryStatistics.txt"
             >
               &lt;v-icon
                 color="white"
@@ -126,15 +125,15 @@
 &lt;script>
 import { mapState } from "vuex";
 
-import RestClient from "@/lib/Client/RESTClient";
-
-const restClient = new RestClient();
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import getCuratorSummaryStatistics from "@/lib/GraphClient/queries/curators/getCuratorSummaryStatistics.json"
+const client = new GraphClient();
 
 export default {
-  name: "RecordsWithoutDois",
+  name: "CuratorSummaryStatistics",
   data: () => {
     return {
-      downloadContent: null,
+      downloadCuratorContent: null,
       loading: false,
     };
   },
@@ -144,28 +143,23 @@ export default {
 
   async mounted() {
     this.loading = true;
-    await this.obtainFileRecordsWODois();
+    client.setHeader(this.user().credentials.token);
+    //Fetching records which needs to be reviewed
+    let data = await client.executeQuery(getCuratorSummaryStatistics);
+    await this.obtainFileRecordsCuratorSummary(data);
     this.loading = false;
   },
   methods: {
 
     /**
-     * Method to download file having records without DOI
+     * Method to download file having records having curator
+     * summary statistics
      */
-    async obtainFileRecordsWODois() {
-      let data = await restClient.getRecordsWoDOIs(
-          this.user().credentials.token
-      );
-      if (data) {
-        let content = JSON.stringify(data)
-            .replace(/^\[(.+)\]$/, "$1")
-            .replace(/","/g, '"\r\n"')
-            .replace(/['"]+/g, "");
-        this.downloadContent =
-            "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      } else {
-        this.downloadContent = "data:text/json;charset=utf-8," + "";
-      }
+    async obtainFileRecordsCuratorSummary(data) {
+      let curatorSummary = data.curatorSummaryStatistics || [];
+      this.downloadCuratorContent =
+          "data:text/json;charset=utf-8," +
+          encodeURIComponent(curatorSummary.join("\n"));
     },
   },
 };

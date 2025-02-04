@@ -29,11 +29,11 @@
   },
   "collection": {
     "title": "Collections",
-    "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organisations. "
+    "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. "
   },
   "collections": {
     "title": "Collections",
-    "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organisations. "
+    "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation."
   },
   "privacy": {
     "title": "Privacy policy",

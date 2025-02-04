@@ -561,7 +561,12 @@
       {
         "name": "David Tomkins",
         "id": 5491,
-        "organisation": [],
+        "organisation": [
+          {
+            "id": 2281,
+            "name": "Oxford e-Research Centre"
+          }
+        ],
         "scope": "Research Data Management",
         "orcid": "0009-0000-4679-676X",
         "early_adopter" : false,

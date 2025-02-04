@@ -57,32 +57,7 @@
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
-        <!-- Records without DOIs -->
-        <v-card class="mb-2">
-          <v-card-text>
-            <v-card-title
-              id="text-curator-search-1"
-              class="green white--text"
-            >
-              RECORDS WITHOUT DOIS
-              <v-btn
-                v-if="downloadContent"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadContent"
-                  download="recordWithoutDOIs.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  > fa fa-download </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
+
         <!-- Records needing review -->
         <v-card class="mb-2">
           <v-card-text>
@@ -373,10 +348,13 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-import HiddenRecords from "@/components/Curators/HiddenRecords.vue";
-import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue";
-import RecentCuratorCreation from "@/components/Curators/RecentCuratorCreation.vue";
-import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue";
+import {
+  DownloadRecords,
+  HiddenRecords,
+  MaintenanceRequests,
+  RecentCuratorCreation,
+  RecordsAwaitingApproval
+} from "@/components/Curators"
 import Icon from "@/components/Icon";
 import headersTables from "@/data/headersCuratorDashboard.json";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -409,9 +387,10 @@ export default {
   components: {
     Unauthorized,
     RecordsAwaitingApproval,
-    MaintenanceRequest,
+    MaintenanceRequests,
     HiddenRecords,
     RecentCuratorCreation,
+    DownloadRecords,
     Icon,
   },
   mixins: [getHostname],
@@ -457,7 +436,7 @@ export default {
         {
           name: "OWNERSHIP REQUESTS",
           target: "ownershiprequests",
-          component: "MaintenanceRequest",
+          component: "MaintenanceRequests",
           headers: headersTables["maintenanceRequests"],
         },
         {
@@ -470,6 +449,12 @@ export default {
           name: "RECORDS CREATED BY CURATORS IN THE PAST WEEK",
           target: "recentcuatorcreation",
           component: "RecentCuratorCreation",
+          headers: headersTables["recordsCreatedCuratorsLastWeek"],
+        },
+        {
+          name: "DOWNLOAD RECORDS",
+          target: "downloadrecords",
+          component: "DownloadRecords",
           headers: headersTables["recordsCreatedCuratorsLastWeek"],
         },
       ],
@@ -501,7 +486,7 @@ export default {
       this.allDataCuration = data.curationSummary;
       client.initalizeHeader();
       this.prepareData();
-      await this.obtainFileRecordsWODois();
+
       await this.obtainFileRecordCreatedByMonth();
       await this.obtainFileEditByMonth();
       this.loading = false;
@@ -558,21 +543,7 @@ export default {
         });
       });
     },
-    async obtainFileRecordsWODois() {
-      let data = await restClient.getRecordsWoDOIs(
-        this.user().credentials.token
-      );
-      if (data) {
-        let content = JSON.stringify(data)
-          .replace(/^\[(.+)\]$/, "$1")
-          .replace(/","/g, '"\r\n"')
-          .replace(/['"]+/g, "");
-        this.downloadContent =
-          "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      } else {
-        this.downloadContent = "data:text/json;charset=utf-8," + "";
-      }
-    },
+
     async obtainFileRecordCreatedByMonth() {
       let data = await restClient.getRecordCreatedByMonth(
         this.user().credentials.token

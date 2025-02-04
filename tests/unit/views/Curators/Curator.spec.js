@@ -166,14 +166,6 @@ describe("Curator.vue", () => {
         expect(wrapper.vm.systemMessages[0].message).toEqual('changed message')
     });
 
-  it("can download a file with records without DOIs", async () => {
-    restStub.restore();
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-        data: "[El1|f1_1|f1_2|f1_3,El2|f2_1|f2_2|f2_3]"
-    });
-    await wrapper.vm.obtainFileRecordsWODois();
-    expect(wrapper.vm.downloadContent).toBe("data:text/json;charset=utf-8,%5BEl1%7Cf1_1%7Cf1_2%7Cf1_3%2CEl2%7Cf2_1%7Cf2_2%7Cf2_3%5D");
-  });
 
   it("can process errors", async () => {
       restStub.restore();

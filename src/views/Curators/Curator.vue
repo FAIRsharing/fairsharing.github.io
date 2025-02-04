@@ -146,34 +146,6 @@
           </v-card-text>
         </v-card>
 
-
-
-        <!-- Button to obtain records created by month -->
-        <v-card class="mb-2">
-          <v-card-text>
-            <v-card-title
-              id="download-curator-summary"
-              class="green white--text"
-            >
-              RECORDS CREATED BY MONTH
-              <v-btn
-                v-if="downloadRecordsByMonth"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadRecordsByMonth"
-                  download="recordsCreatedByMonth.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  > fa fa-download </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
         <!-- Button to obtain record edits by month -->
         <v-card class="mb-2">
           <v-card-text>
@@ -369,7 +341,6 @@ export default {
       },
       loading: false,
       downloadContent: null,
-      downloadRecordsByMonth: null,
       downloadEditsByMonth: null,
       error: {
         general: null,
@@ -435,8 +406,6 @@ export default {
       this.allDataCuration = data.curationSummary;
       client.initalizeHeader();
       this.prepareData();
-
-      await this.obtainFileRecordCreatedByMonth();
       await this.obtainFileEditByMonth();
       this.loading = false;
     });
@@ -486,21 +455,7 @@ export default {
       });
     },
 
-    async obtainFileRecordCreatedByMonth() {
-      let data = await restClient.getRecordCreatedByMonth(
-        this.user().credentials.token
-      );
-      if (data) {
-        let content = JSON.stringify(data)
-          .replace(/^\[(.+)\]$/, "$1")
-          .replace(/","/g, '"\r\n"')
-          .replace(/['"]+/g, "");
-        this.downloadRecordsByMonth =
-          "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      } else {
-        this.downloadRecordsByMonth = "data:text/json;charset=utf-8," + "";
-      }
-    },
+
     async obtainFileEditByMonth() {
       let data = await restClient.getEditByMonth(this.user().credentials.token);
       if (data) {

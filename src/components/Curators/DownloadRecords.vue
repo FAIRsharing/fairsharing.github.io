@@ -6,12 +6,15 @@
     <RecordsNeedingReview />
     <!-- Curator Summary Statistics -->
     <CuratorSummaryStatistics />
+    <!-- Records Created By Month -->
+    <RecordsCreatedByMonth />
   </v-col>
 </template>
 
 <script>
 import {
   CuratorSummaryStatistics,
+  RecordsCreatedByMonth,
   RecordsNeedingReview,
   RecordsWithoutDois} from "@/components/Curators/DownLoadRecordsComponents"
 
@@ -20,7 +23,8 @@ export default {
   components: {
     RecordsWithoutDois,
     RecordsNeedingReview,
-    CuratorSummaryStatistics
+    CuratorSummaryStatistics,
+    RecordsCreatedByMonth
   },
 };
 </script>

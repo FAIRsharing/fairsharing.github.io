@@ -5,32 +5,11 @@ import Vuex from "vuex";
 
 import RecordsWithoutDois from "@/components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue";
 import Client from "@/lib/Client/RESTClient.js";
-// import GraphClient from "@/lib/GraphClient/GraphClient";
 import usersStore from "@/store/users";
 
-// import dataDashboard from "../../../fixtures/curationDashboardData.json"
-
-// let curationDataSummary =  dataDashboard.curationSummary;
 const localVue = createLocalVue();
 localVue.use(Vuex);
-// let header = [
-//       {
-//         "text": "Record name (id)",
-//         "value": "recordNameID"
-//       },
-//       {
-//         "text": "Date created",
-//         "value": "createdAt"
-//       },
-//       {
-//         "text": "Under curation by",
-//         "value": "curator"
-//       },
-//       {
-//         "text": "Created by",
-//         "value": "creator"
-//       }
-//     ];
+
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,

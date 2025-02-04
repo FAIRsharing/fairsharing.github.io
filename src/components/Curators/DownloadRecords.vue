@@ -1,19 +1,26 @@
 <template>
   <v-col cols12>
-    <!-- Records without DOIs -->
+    <!-- Records Without DOIs -->
     <RecordsWithoutDois />
+    <!-- Records Needing Review -->
+    <RecordsNeedingReview />
+    <!-- Curator Summary Statistics -->
+    <CuratorSummaryStatistics />
   </v-col>
 </template>
 
 <script>
 import {
-  RecordsWithoutDois
-} from "@/components/Curators/DownLoadRecordsComponents"
+  CuratorSummaryStatistics,
+  RecordsNeedingReview,
+  RecordsWithoutDois} from "@/components/Curators/DownLoadRecordsComponents"
 
 export default {
   name: "DownloadRecords",
   components: {
-    RecordsWithoutDois
+    RecordsWithoutDois,
+    RecordsNeedingReview,
+    CuratorSummaryStatistics
   },
 };
 </script>

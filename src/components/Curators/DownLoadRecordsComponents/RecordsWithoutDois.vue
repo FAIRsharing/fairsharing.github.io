@@ -9,10 +9,11 @@
         >
           RECORDS WITHOUT DOIS
           <v-btn
-            v-if="downloadContent"
             class="info ml-5"
+            :loading="loading"
           >
             <a
+              v-if="downloadContent"
               :href="downloadContent"
               download="recordWithoutDOIs.txt"
             >
@@ -41,6 +42,7 @@ export default {
   data: () => {
     return {
       downloadContent: null,
+      loading: false,
     };
   },
   computed: {
@@ -48,7 +50,9 @@ export default {
   },
 
   async mounted() {
+    this.loading = true;
     await this.obtainFileRecordsWODois();
+    this.loading = false;
   },
   methods: {
 

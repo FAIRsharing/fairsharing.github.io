@@ -58,32 +58,7 @@
           </v-tabs-items>
         </v-tabs>
 
-        <!-- Records needing review -->
-        <v-card class="mb-2">
-          <v-card-text>
-            <v-card-title
-              id="download-review-needed"
-              class="green white--text"
-            >
-              RECORDS NEEDING REVIEW
-              <v-btn
-                v-if="downloadReviewContent"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadReviewContent"
-                  download="recordsNeedingReview.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  > fa fa-download </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
+
         <!-- System messages -->
         <v-card
           v-if="user().role === 'super_curator' || user().role === 'developer'"
@@ -170,32 +145,8 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-        <!-- Curator Summary Information -->
-        <v-card class="mb-2">
-          <v-card-text>
-            <v-card-title
-              id="download-curator-summary"
-              class="green white--text"
-            >
-              CURATOR SUMMARY STATISTICS
-              <v-btn
-                v-if="downloadCuratorContent"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadCuratorContent"
-                  download="curatorSummaryStatistics.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  > fa fa-download </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
+
+
 
         <!-- Button to obtain records created by month -->
         <v-card class="mb-2">
@@ -418,8 +369,6 @@ export default {
       },
       loading: false,
       downloadContent: null,
-      downloadReviewContent: null,
-      downloadCuratorContent: null,
       downloadRecordsByMonth: null,
       downloadEditsByMonth: null,
       error: {
@@ -490,13 +439,6 @@ export default {
       await this.obtainFileRecordCreatedByMonth();
       await this.obtainFileEditByMonth();
       this.loading = false;
-      let review = this.allDataCuration.needsReview || [];
-      this.downloadReviewContent =
-        "data:text/json;charset=utf-8," + encodeURIComponent(review.join("\n"));
-      let curatorSummary = this.allDataCuration.curatorSummaryStatistics || [];
-      this.downloadCuratorContent =
-        "data:text/json;charset=utf-8," +
-        encodeURIComponent(curatorSummary.join("\n"));
     });
   },
   methods: {

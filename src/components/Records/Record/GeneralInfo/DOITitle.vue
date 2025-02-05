@@ -13,7 +13,6 @@
             contain
             class="mr-2"
           />
-          SRC: {{ newImg.src }} <br/>
           <h3
             :style="currentRecord['fairsharingRecord'].status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
           >
@@ -108,7 +107,7 @@ export default {
     return {
       copyButtonStatus: false,
       finalImageWidth:'100px',
-      newImg:{src:''}
+      newImg:{src:'/'}
     }
   },
   computed: {
@@ -121,7 +120,7 @@ export default {
       newImg.addEventListener('load', (e) => {
         resolve(e.target)
       })
-      newImg.src = this.getAPIEndPoint() + this.currentRecord['fairsharingRecord'].urlForLogo;
+      newImg.src = this.getAPIEndPoint() + '/' + this.currentRecord['fairsharingRecord'].urlForLogo;
     })
     let image = await promiseImageLoader()
     await this.setImageAfterLoading(image)

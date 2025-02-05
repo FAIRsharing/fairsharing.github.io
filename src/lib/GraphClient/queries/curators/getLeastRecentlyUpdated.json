@@ -1,0 +1,9 @@
+{
+  "queryName": "leastRecentlyUpdated",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "updatedAt"
+  ]
+}

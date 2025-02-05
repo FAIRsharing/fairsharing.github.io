@@ -8,3 +8,5 @@ export const RecentCuratorCreation = () =>
     import("@/components/Curators/RecentCuratorCreation.vue");
 export const RecordsAwaitingApproval = () =>
     import("@/components/Curators/RecordsAwaitingApproval.vue");
+export const SystemMessages = () =>
+    import("@/components/Curators/SystemMessages.vue");

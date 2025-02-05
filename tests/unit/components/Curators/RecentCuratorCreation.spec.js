@@ -72,6 +72,11 @@ describe("Curator -> RecentCuratorCreation.vue", () => {
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("RecentCuratorCreation");
     expect(wrapper.vm.prepareRecordsCuratorCreationsLastWeek).toHaveBeenCalled;
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
+      let date = new Date("2017,11,11");
+      let auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getDate()+ ', '+date.getFullYear();
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(auxString);
   });
 
 

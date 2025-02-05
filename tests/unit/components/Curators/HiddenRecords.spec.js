@@ -76,6 +76,10 @@ describe("Curator -> HiddenRecords.vue", () => {
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("HiddenRecords");
     expect(wrapper.vm.prepareHiddenRecords).toHaveBeenCalled;
+      expect(wrapper.vm.hiddenRecords.length).toBe(2);
+      let date = new Date("1425,01,01");
+      let auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getDate()+ ', '+date.getFullYear();
+      expect(wrapper.vm.hiddenRecords[1].createdAt).toBe(auxString);
   });
 
 

@@ -101,6 +101,13 @@ describe("Curator -> MaintenanceRequest.vue", () => {
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
       "Other thing (22)"
     );
+    expect(wrapper.vm.maintenanceRequests.length).toBe(4);
+    expect(wrapper.vm.maintenanceRequests[0].userName).toBe("Mariano");
+    let date = new Date("2020,8,27");
+    let auxString = date.toLocaleString('default', { month: 'short' }) + ' ' +
+        date.getDate() + ', ' + date.getFullYear();
+
+    expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(auxString);
   });
 
   it("can used methods that only change properties", () => {

@@ -119,6 +119,15 @@ describe("Curator -> RecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch(
       "Radi (11)"
     );
+    expect(wrapper.vm.approvalRequired.length).toBe(3);
+    expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");
+    expect(wrapper.vm.approvalRequired[1].creator).toBe("unknown");
+    expect(wrapper.vm.curatorList.length).toBe(3);
+    //It is the super_curator
+    expect(wrapper.vm.curatorList[0].userName).toBe("Luther");
+    //It is the curator
+    expect(wrapper.vm.curatorList[1].userName).toBe("H. Pepa");
+    expect(wrapper.vm.curatorList[2].userName).toBe("none");
   });
 
   it("can use methods that only change properties", () => {

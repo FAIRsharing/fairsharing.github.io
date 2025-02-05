@@ -87,8 +87,6 @@ class AlertBuilder {
 
     // output all collected alerts
     getAlerts() {
-        console.log("Alerts:");
-        console.log(JSON.stringify(this.alerts, null, 2));
         return this.alerts;
     }
 }

@@ -9,7 +9,7 @@
           <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
           <v-spacer />
           <v-text-field
-            v-model="searches.recentCuratorCreations"
+            v-model="searches"
             label="Search"
             color="white--text"
             single-line
@@ -20,8 +20,7 @@
           :loading="loading"
           :headers="headerItems"
           :items="recordsCreatedCuratorsLastWeek"
-          :search="searches.recentCuratorCreations"
-          class="elevation-1"
+          :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
           <template

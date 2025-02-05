@@ -27,7 +27,6 @@
           :headers="headerItems"
           :items="maintenanceRequestsProcessed"
           :search="searches"
-          class="elevation-1"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           sort-by=""
         >
@@ -136,21 +135,21 @@
           <v-card>
             <v-card-title class="headline">
               Are you sure you want to
-              <font style="color: blue; padding-left: 5px; padding-right: 5px">
+              <span style="color: blue; padding-left: 5px; padding-right: 5px">
                 ACCEPT
-              </font>
+              </span>
               this ownership?
               <ul style="list-style-type: none">
                 <li>
-                  <font style="color: gray">
+                  <span style="color: gray">
                     Record:
-                  </font>
+                  </span>
                   {{ dialogs.recordName }}
                 </li>
                 <li>
-                  <font style="color: gray">
+                  <span style="color: gray">
                     User:
-                  </font>
+                  </span>
                   {{ dialogs.userName }}
                 </li>
               </ul>
@@ -192,21 +191,21 @@
           <v-card>
             <v-card-title class="headline">
               Are you sure you want to
-              <font style="color: red; padding-left: 5px; padding-right: 5px">
+              <span style="color: red; padding-left: 5px; padding-right: 5px">
                 REJECT
-              </font>
+              </span>
               this ownership?
               <ul style="list-style-type: none">
                 <li>
-                  <font style="color: gray">
+                  <span style="color: gray">
                     Record:
-                  </font>
+                  </span>
                   {{ dialogs.recordName }}
                 </li>
                 <li>
-                  <font style="color: gray">
+                  <span style="color: gray">
                     User:
-                  </font>
+                  </span>
                   {{ dialogs.userName }}
                 </li>
               </ul>

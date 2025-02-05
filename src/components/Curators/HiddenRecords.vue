@@ -9,7 +9,7 @@
           <b> HIDDEN RECORDS </b>
           <v-spacer />
           <v-text-field
-            v-model="searches.hiddenRecords"
+            v-model="searches"
             label="Search"
             color="white--text"
             single-line
@@ -20,8 +20,7 @@
           :loading="loading"
           :headers="headerItems"
           :items="hiddenRecords"
-          :search="searches.hiddenRecords"
-          class="elevation-1"
+          :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
           <template

@@ -29,7 +29,6 @@
             :loading="loading"
             :headers="headerItems"
             :items="systemMessages"
-            class="elevation-1"
             :footer-props="{ 'items-per-page-options': [5, 10, 20, 25, 30] }"
           >
             <template

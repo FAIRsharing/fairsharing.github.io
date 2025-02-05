@@ -186,9 +186,9 @@
             class="headline"
           >
             Are you sure you want to
-            <font style="color:blue; padding-left: 5px; padding-right: 1px;">
+            <span style="color:blue; padding-left: 5px; padding-right: 1px;">
               ACCEPT/APPROVE CHANGES
-            </font>
+            </span>
             record?
             <ul style="list-style-type:none;">
               <li>
@@ -243,11 +243,11 @@
             class="headline"
           >
             Are you sure you want to
-            <font
+            <span
               style="color:red; padding-left: 5px; padding-right: 5px;"
             >
               DELETE
-            </font>
+            </span>
             this record?
             <ul style="list-style-type:none;">
               <li>

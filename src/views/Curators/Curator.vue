@@ -37,6 +37,7 @@
           dark
           slider-color="primary"
           slider-size="5"
+          show-arrows
         >
           <v-tab
             v-for="tab in tabs"

@@ -13,6 +13,7 @@
             contain
             class="mr-2"
           />
+          SRC: {{ newImg.src }} <br/>
           <h3
             :style="currentRecord['fairsharingRecord'].status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
           >

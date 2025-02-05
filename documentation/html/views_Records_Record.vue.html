@@ -655,7 +655,7 @@ export default {
       _module.$emit('updateHead');
       if (!_module.error) {
         await _module.canEditRecord();
-        //await _module.checkClaimStatus();
+        await _module.checkClaimStatus();
         await _module.getMenuButtons()
       }
       await _module.$nextTick();

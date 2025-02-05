@@ -422,7 +422,7 @@ export default {
         /* istanbul ignore if */
         if (this.currentRecord.fairsharingRecord.doi) {
           citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
-          describedByUrl = this.getHostname() + this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
+          describedByUrl = this.getHostname()  + this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
         }
         else {
           citeAsUrl = this.getHostname() + this.recordID;
@@ -933,7 +933,9 @@ export default {
     async checkClaimStatus() {
       let _module = this;
       if (_module.user().isLoggedIn) {
-        const recordID = _module.currentRecord['fairsharingRecord'].id;
+        //const recordID = _module.currentRecord['fairsharingRecord'].id;
+        _module.canClaim = false;
+        /*
         try {
           const claim = await client.canClaim(recordID, _module.user().credentials.token);
           if (claim.error) {
@@ -962,10 +964,11 @@ export default {
             _module.noClaimRegistered = true;
           }
         }
-        catch (e) {
-          /* istanbul ignore next */
-          _module.canClaim = false;
-        }
+         */
+        //catch (e) {
+        //  /* istanbul ignore next */
+        //  _module.canClaim = false;
+        //}
       }
     },
     /**

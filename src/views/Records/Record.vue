@@ -537,7 +537,7 @@ export default {
       await this.getData();
       if (!this.error) {
         await this.canEditRecord();
-        await this.checkClaimStatus();
+        //await this.checkClaimStatus();
         await this.getMenuButtons();
       }
       await this.$nextTick();
@@ -545,7 +545,7 @@ export default {
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
-      await this.checkClaimStatus();
+      //await this.checkClaimStatus();
       await this.getMenuButtons();
       await this.checkAlerts();
     }
@@ -562,7 +562,7 @@ export default {
       _module.$emit('updateHead');
       if (!_module.error) {
         await _module.canEditRecord();
-        await _module.checkClaimStatus();
+        //await _module.checkClaimStatus();
         await _module.getMenuButtons()
       }
       await _module.$nextTick();
@@ -933,9 +933,8 @@ export default {
     async checkClaimStatus() {
       let _module = this;
       if (_module.user().isLoggedIn) {
-        //const recordID = _module.currentRecord['fairsharingRecord'].id;
+        const recordID = _module.currentRecord['fairsharingRecord'].id;
         _module.canClaim = false;
-        /*
         try {
           const claim = await client.canClaim(recordID, _module.user().credentials.token);
           if (claim.error) {
@@ -964,11 +963,10 @@ export default {
             _module.noClaimRegistered = true;
           }
         }
-         */
-        //catch (e) {
-        //  /* istanbul ignore next */
-        //  _module.canClaim = false;
-        //}
+        catch (e) {
+          /* istanbul ignore next */
+          _module.canClaim = false;
+        }
       }
     },
     /**

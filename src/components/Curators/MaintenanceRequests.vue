@@ -451,7 +451,6 @@ div.theme--light.v-input:not(.v-input--is-disabled)
 input {
   color: #fff;
 }
-
 .testDialog {
   width: 600px !important;
 }

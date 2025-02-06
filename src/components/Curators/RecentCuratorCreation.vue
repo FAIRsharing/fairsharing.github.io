@@ -11,9 +11,11 @@
           <v-text-field
             v-model="searches"
             label="Search"
-            color="white--text"
+            color="white"
             single-line
             hide-details
+            solo
+            class="searchField"
           />
         </v-card-title>
         <v-data-table
@@ -28,7 +30,7 @@
             #item="props"
           >
             <tr>
-              <td>
+              <td class="d-flex align-center">
                 <v-avatar
                   v-if="props.item.type"
                   class="mr-2"
@@ -134,3 +136,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
+}
+</style>

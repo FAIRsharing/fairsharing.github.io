@@ -335,3 +335,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+</style>

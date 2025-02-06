@@ -12,9 +12,11 @@
         <v-text-field
           v-model="searches"
           label="Search"
-          color="white--text"
+          color="white"
           single-line
           hide-details
+          solo
+          class="searchField"
         />
       </v-card-title>
       <v-card-text v-if="error.general">
@@ -74,7 +76,7 @@
                 </v-list>
               </v-menu>
             </td>
-            <td>
+            <td class="d-flex align-center">
               <v-avatar
                 v-if="props.item.type"
                 class="mr-2"
@@ -588,4 +590,13 @@
   max-height: 100px;
   overflow-y: auto;
 }
+
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
+}
+
 </style>

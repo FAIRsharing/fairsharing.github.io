@@ -11,9 +11,11 @@
           <v-text-field
             v-model="searches"
             label="Search"
-            color="white--text"
+            color="white"
             single-line
             hide-details
+            solo
+            class="searchField"
           />
         </v-card-title>
         <v-card-text v-if="error.general">
@@ -38,7 +40,7 @@
               <td>
                 {{ props.item.createdAt }}
               </td>
-              <td>
+              <td class="d-flex align-center">
                 <v-avatar
                   v-if="props.item.type"
                   class="mr-2"
@@ -452,5 +454,13 @@ input {
 
 .testDialog {
   width: 600px !important;
+}
+
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
 }
 </style>

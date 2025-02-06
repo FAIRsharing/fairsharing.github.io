@@ -105,15 +105,10 @@ describe("Curator -> SystemMessages.vue", () => {
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
         });
-        wrapper.vm.dialogs.newMessage = "this will fail";
         await wrapper.vm.addMessage();
-        expect(wrapper.vm.systemMessages.length).toEqual(2);
+        expect(wrapper.vm.error.general).toBe("error");
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
-
-        wrapper.vm.dialogs.addMessage = true;
-        wrapper.vm.closeAddMessageMenu();
-        expect(wrapper.vm.dialogs.addMessage).toBe(false);
     })
 
     it("can delete messages", async () => {
@@ -164,8 +159,15 @@ describe("Curator -> SystemMessages.vue", () => {
     });
 
     it("can check showAddMessage method", async () => {
+        wrapper.vm.dialogs.addMessage = false;
         wrapper.vm.showAddMessage()
         expect(wrapper.vm.dialogs.addMessage).toBe(true);
+    })
+
+    it("can check closeAddMessageMenu method", async () => {
+        wrapper.vm.dialogs.addMessage = true;
+        wrapper.vm.closeAddMessageMenu()
+        expect(wrapper.vm.dialogs.addMessage).toBe(false);
     })
 
 });

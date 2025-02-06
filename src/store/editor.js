@@ -192,6 +192,7 @@ let editorStore = {
             getRecordsQuery.queryParam = {perPage: 100};
             if (options.q) getRecordsQuery.queryParam.q = options.q;
             getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
+            getRecordsQuery.queryParam.recordType = options.recordType;
             getRecordsQuery.queryParam.searchAnd = false;
             getRecordsQuery.queryParam.excludeId = options.excludeId;
             let data = await graphClient.executeQuery(getRecordsQuery);
@@ -205,10 +206,11 @@ let editorStore = {
         async getAvailableRelationsTypes({commit}){
             let types = await restClient.getRelationsTypes();
             let allowed = {};
-            let relationTypes = ['standard', 'database', 'policy', 'collection'];
+            let relationTypes = ['standard', 'database', 'policy', 'collection', 'fairassist'];
             for (let typeObject of types) {
                 let relationName = typeObject.name,
                     id = typeObject.id;
+                /* istanbul ignore else */
                 if (typeObject['allowed_associations'].length > 0) {
                     typeObject['allowed_associations'].forEach(allowed_association => {
                         let relationParent = allowed_association.from;
@@ -263,21 +265,35 @@ let editorStore = {
         },
         allowedRelations: (state) => (options) => {
             let output = [];
-            state.relationsTypes[options.sourceType].forEach(relation => {
-                if ((options.target && options.prohibited) &&
-                    (relation.target === options.target.registry || relation.target === options.target.type) &&
-                    !options.prohibited.includes(relation.relation)){
-                    output.push(relation)
+            let seen = [];
+            [options.sourceType, options.sourceRegistry].forEach(type => {
+                // This undefined check prevents allowed relations from being pushed to the array twice,
+                // as we're checking for both registry and record type here.
+                /* istanbul ignore else */
+                if (state.relationsTypes[type] !== undefined) {
+                    state.relationsTypes[type].forEach(relation => {
+                        if ((options.target && options.prohibited) &&
+                            (relation.target === options.target.registry || relation.target === options.target.type) &&
+                            !options.prohibited.includes(relation.relation)) {
+                            if (!seen.includes(relation.id)) {
+                                output.push(relation)
+                                seen.push(relation.id);
+                            }
+                        }
+                        if (!options.target && !options.prohibited) {
+                            if (!seen.includes(relation.id)) {
+                                output.push(relation);
+                                seen.push(relation.id);
+                            }
+                        }
+                    });
                 }
-                if (!options.target && !options.prohibited){
-                    output.push(relation);
-                }
-            });
+            })
             return output;
         },
         allowedTargets: (state) => (source) => {
             let output = [];
-            let allowed = ["standard", "database", "policy", "collection"];
+            let allowed = ["standard", "database", "policy", "collection", "fairassist"];
             state.relationsTypes[source.toLowerCase()].forEach(relation => {
                 /* istanbul ignore else */
                 if (allowed.includes(relation.target)) output.push(relation.target);

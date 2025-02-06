@@ -422,7 +422,7 @@ export default {
         /* istanbul ignore if */
         if (this.currentRecord.fairsharingRecord.doi) {
           citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
-          describedByUrl = this.getHostname() + this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
+          describedByUrl = this.getHostname()  + this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
         }
         else {
           citeAsUrl = this.getHostname() + this.recordID;
@@ -537,7 +537,7 @@ export default {
       await this.getData();
       if (!this.error) {
         await this.canEditRecord();
-        await this.checkClaimStatus();
+        //await this.checkClaimStatus();
         await this.getMenuButtons();
       }
       await this.$nextTick();
@@ -545,7 +545,7 @@ export default {
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
-      await this.checkClaimStatus();
+      //await this.checkClaimStatus();
       await this.getMenuButtons();
       await this.checkAlerts();
     }
@@ -934,6 +934,7 @@ export default {
       let _module = this;
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
+        _module.canClaim = false;
         try {
           const claim = await client.canClaim(recordID, _module.user().credentials.token);
           if (claim.error) {

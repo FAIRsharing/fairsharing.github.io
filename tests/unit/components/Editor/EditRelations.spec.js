@@ -123,7 +123,11 @@ describe("EditRelationships.vue", function() {
     it("can open the overlay to add a new association", () => {
         let output = [
             {"relation":"deprecates","target":"collection","id":9,"relationId":9},
-            {"relation":"collects","target":"collection","id":10,"relationId":10}];
+            {"relation":"collects","target":"database","id":10,"relationId":10},
+            {"relation":"collects","target":"standard","id":10,"relationId":10},
+            {"relation":"collects","target":"policy","id":10,"relationId":10},
+            {"relation":"collects","target":"collection","id":10,"relationId":10}
+        ];
         wrapper.vm.showOverlay({
             name: "no",
             id: 123,

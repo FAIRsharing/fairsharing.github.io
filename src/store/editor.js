@@ -17,6 +17,31 @@ import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/
 const graphClient = new GraphClient();
 const restClient = new RESTClient();
 
+const recordTypes = [
+    'standard',
+    'database',
+    'policy',
+    'collection',
+    'fairassist',
+    "journal_publisher",
+    "repository",
+    "knowledgebase",
+    "model_and_format",
+    "terminology_artefact",
+    "reporting_guideline",
+    "identifier_schema",
+    "journal",
+    "collection",
+    "metric",
+    "knowledgebase_and_repository",
+    "project",
+    "funder",
+    "institution",
+    "society",
+    "benchmark",
+    "principle"
+];
+
 let editorStore = {
     namespaced: true,
     state: {
@@ -206,7 +231,6 @@ let editorStore = {
         async getAvailableRelationsTypes({commit}){
             let types = await restClient.getRelationsTypes();
             let allowed = {};
-            let relationTypes = ['standard', 'database', 'policy', 'collection', 'fairassist'];
             for (let typeObject of types) {
                 let relationName = typeObject.name,
                     id = typeObject.id;
@@ -227,11 +251,11 @@ let editorStore = {
                     })
                 }
                 else {
-                    relationTypes.forEach(relationParent => {
+                    recordTypes.forEach(relationParent => {
                         if (!Object.keys(allowed).includes(relationParent)) {
                             allowed[relationParent] = [];
                         }
-                        relationTypes.forEach(relationChild => {
+                        recordTypes.forEach(relationChild => {
                            allowed[relationParent].push({
                                relation: relationName,
                                target: relationChild,
@@ -266,12 +290,22 @@ let editorStore = {
         allowedRelations: (state) => (options) => {
             let output = [];
             let seen = [];
+            //console.log("SRT: " + JSON.stringify(state.relationsTypes, null, 2));
+            //console.log("OPTIONS: " + JSON.stringify(options, null, 2));
             [options.sourceType, options.sourceRegistry].forEach(type => {
                 // This undefined check prevents allowed relations from being pushed to the array twice,
                 // as we're checking for both registry and record type here.
                 /* istanbul ignore else */
                 if (state.relationsTypes[type] !== undefined) {
                     state.relationsTypes[type].forEach(relation => {
+                        //console.log("RELATION: " + JSON.stringify(relation, null, 2));
+                        //output.push(relation)
+                        let label = relation.relation + '.' + relation.target;
+                        if (!seen.includes(label)) {
+                            output.push(relation)
+                            seen.push(label);
+                        }
+                        /*
                         if ((options.target && options.prohibited) &&
                             (relation.target === options.target.registry || relation.target === options.target.type) &&
                             !options.prohibited.includes(relation.relation)) {
@@ -286,17 +320,18 @@ let editorStore = {
                                 seen.push(relation.id);
                             }
                         }
+                         */
                     });
                 }
             })
+            //console.log("AROP: " + JSON.stringify(output, null, 2));
             return output;
         },
         allowedTargets: (state) => (source) => {
             let output = [];
-            let allowed = ["standard", "database", "policy", "collection", "fairassist"];
             state.relationsTypes[source.toLowerCase()].forEach(relation => {
                 /* istanbul ignore else */
-                if (allowed.includes(relation.target)) output.push(relation.target);
+                if (recordTypes.includes(relation.target)) output.push(relation.target);
             });
             return [...new Set(output)];
         }

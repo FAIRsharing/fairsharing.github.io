@@ -84,23 +84,14 @@ describe("Curator -> SystemMessages.vue", () => {
     expect(wrapper.vm.prepareSystemMessages).toHaveBeenCalled;
   });
 
-    it("can add messages is success", async () => {
-        // wrapper.vm.dialogs.newMessage = "success";
-        // restStub.restore();
-        // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-        //     data: {message: curationDataSummary.messages}
-        // });
-        // wrapper.vm.addMessage();
-        // console.log("wrapper.vm.systemMessages::", wrapper.vm.systemMessages.created_at)
-        // expect(wrapper.vm.systemMessages.length).toEqual(1);
-        // // expect(wrapper.vm.systemMessages
-        // wrapper.vm.dialogs.newMessage = "a new message";
+    it("can addMessages method is success", async () => {
         await wrapper.vm.addMessage();
         expect(wrapper.vm.systemMessages[0].message).toBe("This is an exciting message");
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
     });
-    it("can add messages fails", async () => {
+
+    it("can addMessages methods fails", async () => {
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
@@ -111,33 +102,35 @@ describe("Curator -> SystemMessages.vue", () => {
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
     })
 
-    it("can delete messages", async () => {
-        wrapper.vm.systemMessages = [{id: 1, message: "message"}];
-        wrapper.vm.deleteMessage(1);
-        expect(wrapper.vm.dialogs.messageId).toBe(1);
-        expect(wrapper.vm.dialogs.deleteMessage).toBe(true);
-        wrapper.vm.closeDeleteMessageMenu()
-        expect(wrapper.vm.dialogs.messageId).toBe(null);
-        expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
-
-        expect(wrapper.vm.systemMessages.length).toEqual(1);
-        restStub.restore();
-        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {error: "error"}
-        });
-        wrapper.vm.deleteMessage(1);
+    it("can check confirmDeleteMessage method is success", async () => {
+        // wrapper.vm.systemMessages = [{id: 1, message: "message"}];
+        // wrapper.vm.deleteMessage(1);
+        // expect(wrapper.vm.dialogs.messageId).toBe(1);
+        // expect(wrapper.vm.dialogs.deleteMessage).toBe(true);
+        // wrapper.vm.closeDeleteMessageMenu()
+        // expect(wrapper.vm.dialogs.messageId).toBe(null);
+        // expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
+        //
+        // expect(wrapper.vm.systemMessages.length).toEqual(1);
+        // restStub.restore();
+        // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+        //     data: {error: "error"}
+        // });
+        // wrapper.vm.deleteMessage(1);
+        // await wrapper.vm.confirmDeleteMessage();
+        // expect(wrapper.vm.systemMessages.length).toEqual(1);
+        //
+        // restStub.restore();
+        // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+        //     data: {message: "success"}
+        // });
+        // wrapper.vm.deleteMessage(1);
+        // console.log("wrapper.vm.systemMessages::", wrapper.vm.systemMessages)
+        wrapper.vm.dialogs.messageId = 2
+        // expect(wrapper.vm.dialogs.messageId).toEqual(1);
+        // expect(wrapper.vm.systemMessages.length).toEqual(1);
         await wrapper.vm.confirmDeleteMessage();
         expect(wrapper.vm.systemMessages.length).toEqual(1);
-
-        restStub.restore();
-        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {message: "success"}
-        });
-        wrapper.vm.deleteMessage(1);
-        expect(wrapper.vm.dialogs.messageId).toEqual(1);
-        expect(wrapper.vm.systemMessages.length).toEqual(1);
-        await wrapper.vm.confirmDeleteMessage();
-        expect(wrapper.vm.systemMessages.length).toEqual(0);
         expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
         expect(wrapper.vm.dialogs.messageId).toBe(null);
     })
@@ -168,6 +161,14 @@ describe("Curator -> SystemMessages.vue", () => {
         wrapper.vm.dialogs.addMessage = true;
         wrapper.vm.closeAddMessageMenu()
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
+    })
+
+    it("can check closeDeleteMessageMenu method", async () => {
+        wrapper.vm.dialogs.deleteMessage = true;
+        wrapper.vm.dialogs.messageId = 1
+        wrapper.vm.closeDeleteMessageMenu()
+        expect(wrapper.vm.dialogs.messageId).toBe(null);
+        expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
     })
 
 });

@@ -86,10 +86,10 @@ describe("Curator -> SystemMessages.vue", () => {
 
     it("can add messages is success", async () => {
         wrapper.vm.dialogs.newMessage = "success";
-        restStub.restore();
-        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {message: curationDataSummary.messages}
-        });
+        // restStub.restore();
+        // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+        //     data: {message: curationDataSummary.messages}
+        // });
         // wrapper.vm.addMessage();
         // console.log("wrapper.vm.systemMessages::", wrapper.vm.systemMessages.created_at)
         // expect(wrapper.vm.systemMessages.length).toEqual(1);
@@ -165,7 +165,7 @@ describe("Curator -> SystemMessages.vue", () => {
 
     it("can check showAddMessage method", async () => {
         wrapper.vm.showAddMessage()
-        expect(wrapper.vm.dialogs.dialogs).toBe(true);
+        expect(wrapper.vm.dialogs.addMessage).toBe(true);
     })
 
 });

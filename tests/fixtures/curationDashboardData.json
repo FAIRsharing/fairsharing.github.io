@@ -217,8 +217,8 @@
         {
           "id": "1",
           "message": "This is an exciting message",
-          "createdAt": "1425-01-01T13:31:25Z",
-          "updatedAt": "1425-01-01T13:31:25Z"
+          "created_at": "1425-01-01T13:31:25Z",
+          "updated_at": "1425-01-01T13:31:25Z"
         }
       ]
   }

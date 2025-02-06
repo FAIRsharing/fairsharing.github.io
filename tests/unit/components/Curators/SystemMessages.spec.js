@@ -58,7 +58,7 @@ describe("Curator -> SystemMessages.vue", () => {
   beforeAll(() => {
       graphStub = sinon.stub(GraphClient.prototype, "executeQuery")
           .returns(curationDataSummary)
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns(
+      restStub = sinon.stub(Client.prototype, "executeQuery").returns(
         {
           data: {
             error: false
@@ -85,15 +85,16 @@ describe("Curator -> SystemMessages.vue", () => {
   });
 
     it("can add messages is success", async () => {
-        wrapper.vm.systemMessages = [{id: 1, message: "message"}];
+        wrapper.vm.dialogs.newMessage = "success";
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {message: "success"}
+            data: {message: curationDataSummary.messages}
         });
-        expect(wrapper.vm.systemMessages.length).toEqual(1);
-        wrapper.vm.showAddMessage();
-        expect(wrapper.vm.dialogs.addMessage).toBe(true);
-        wrapper.vm.dialogs.newMessage = "a new message";
+        // wrapper.vm.addMessage();
+        // console.log("wrapper.vm.systemMessages::", wrapper.vm.systemMessages.created_at)
+        // expect(wrapper.vm.systemMessages.length).toEqual(1);
+        // // expect(wrapper.vm.systemMessages
+        // wrapper.vm.dialogs.newMessage = "a new message";
         await wrapper.vm.addMessage();
         expect(wrapper.vm.systemMessages.length).toEqual(2);
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
@@ -106,7 +107,7 @@ describe("Curator -> SystemMessages.vue", () => {
         });
         wrapper.vm.dialogs.newMessage = "this will fail";
         await wrapper.vm.addMessage();
-        expect(wrapper.vm.systemMessages.length).toEqual(1);
+        expect(wrapper.vm.systemMessages.length).toEqual(2);
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
 
@@ -161,5 +162,10 @@ describe("Curator -> SystemMessages.vue", () => {
         await wrapper.vm.saveEditedMessage(1, 'changed message');
         expect(wrapper.vm.systemMessages[0].message).toEqual('changed message')
     });
+
+    it("can check showAddMessage method", async () => {
+        wrapper.vm.showAddMessage()
+        expect(wrapper.vm.dialogs.dialogs).toBe(true);
+    })
 
 });

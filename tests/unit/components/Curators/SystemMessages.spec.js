@@ -85,7 +85,7 @@ describe("Curator -> SystemMessages.vue", () => {
   });
 
     it("can add messages is success", async () => {
-        wrapper.vm.dialogs.newMessage = "success";
+        // wrapper.vm.dialogs.newMessage = "success";
         // restStub.restore();
         // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
         //     data: {message: curationDataSummary.messages}
@@ -96,7 +96,7 @@ describe("Curator -> SystemMessages.vue", () => {
         // // expect(wrapper.vm.systemMessages
         // wrapper.vm.dialogs.newMessage = "a new message";
         await wrapper.vm.addMessage();
-        expect(wrapper.vm.systemMessages.length).toEqual(2);
+        expect(wrapper.vm.systemMessages[0].message).toBe("This is an exciting message");
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
     });

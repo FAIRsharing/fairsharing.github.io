@@ -75,7 +75,7 @@ describe("Curator -> SystemMessages.vue", () => {
     });
   });
   afterEach( () => {
-      graphStub.restore();
+    graphStub.restore();
     restStub.restore();
   });
 
@@ -84,7 +84,7 @@ describe("Curator -> SystemMessages.vue", () => {
     expect(wrapper.vm.prepareSystemMessages).toHaveBeenCalled;
   });
 
-    it("can add messages", async () => {
+    it("can add messages is success", async () => {
         wrapper.vm.systemMessages = [{id: 1, message: "message"}];
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
@@ -98,22 +98,22 @@ describe("Curator -> SystemMessages.vue", () => {
         expect(wrapper.vm.systemMessages.length).toEqual(2);
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
-
+    });
+    it("can add messages fails", async () => {
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
         });
         wrapper.vm.dialogs.newMessage = "this will fail";
         await wrapper.vm.addMessage();
-        expect(wrapper.vm.systemMessages.length).toEqual(2);
+        expect(wrapper.vm.systemMessages.length).toEqual(1);
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
 
         wrapper.vm.dialogs.addMessage = true;
         wrapper.vm.closeAddMessageMenu();
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
-
-    });
+    })
 
     it("can delete messages", async () => {
         wrapper.vm.systemMessages = [{id: 1, message: "message"}];

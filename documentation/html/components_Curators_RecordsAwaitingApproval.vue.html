@@ -105,9 +105,11 @@
         &lt;v-text-field
           v-model="searches"
           label="Search"
-          color="white--text"
+          color="white"
           single-line
           hide-details
+          solo
+          class="searchField"
         />
       &lt;/v-card-title>
       &lt;v-card-text v-if="error.general">
@@ -167,7 +169,7 @@
                 &lt;/v-list>
               &lt;/v-menu>
             &lt;/td>
-            &lt;td>
+            &lt;td class="d-flex align-center">
               &lt;v-avatar
                 v-if="props.item.type"
                 class="mr-2"
@@ -681,6 +683,15 @@
   max-height: 100px;
   overflow-y: auto;
 }
+
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
+}
+
 &lt;/style>
 </pre>
     </article>

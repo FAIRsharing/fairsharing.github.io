@@ -107,7 +107,7 @@ export default {
     return {
       copyButtonStatus: false,
       finalImageWidth:'100px',
-      newImg:{src:''}
+      newImg: { src: '/' }
     }
   },
   computed: {
@@ -120,7 +120,9 @@ export default {
       newImg.addEventListener('load', (e) => {
         resolve(e.target)
       })
-      newImg.src = this.getAPIEndPoint() + this.currentRecord['fairsharingRecord'].urlForLogo;
+      if (this.currentRecord['fairsharingRecord'].urlForLogo) {
+        newImg.src = this.getAPIEndPoint() + '/' + this.currentRecord['fairsharingRecord'].urlForLogo;
+      }
     })
     let image = await promiseImageLoader()
     await this.setImageAfterLoading(image)
@@ -130,7 +132,7 @@ export default {
       if (image.width > image.height * 2) {
         this.finalImageWidth = '300px'
       }
-      this.newImg.src = image.src
+      this.newImg.src = image.src;
     },
     generateDoiLink(doi) {
       return `https://doi.org/${doi}`

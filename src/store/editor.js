@@ -290,41 +290,23 @@ let editorStore = {
         allowedRelations: (state) => (options) => {
             let output = [];
             let seen = [];
-            //console.log("SRT: " + JSON.stringify(state.relationsTypes, null, 2));
-            //console.log("OPTIONS: " + JSON.stringify(options, null, 2));
             [options.sourceType, options.sourceRegistry].forEach(type => {
                 // This undefined check prevents allowed relations from being pushed to the array twice,
                 // as we're checking for both registry and record type here.
                 /* istanbul ignore else */
                 if (state.relationsTypes[type] !== undefined) {
                     state.relationsTypes[type].forEach(relation => {
-                        //console.log("RELATION: " + JSON.stringify(relation, null, 2));
-                        //output.push(relation)
+                        // Somehow, duplicate relations were being pushed into this array.
+                        // I've created a text label as the ID of a relation may be duplicated, i.e.
+                        // db->related_to->std would be the same ID as db->related_to->db.
                         let label = relation.relation + '.' + relation.target;
                         if (!seen.includes(label)) {
                             output.push(relation)
                             seen.push(label);
                         }
-                        /*
-                        if ((options.target && options.prohibited) &&
-                            (relation.target === options.target.registry || relation.target === options.target.type) &&
-                            !options.prohibited.includes(relation.relation)) {
-                            if (!seen.includes(relation.id)) {
-                                output.push(relation)
-                                seen.push(relation.id);
-                            }
-                        }
-                        if (!options.target && !options.prohibited) {
-                            if (!seen.includes(relation.id)) {
-                                output.push(relation);
-                                seen.push(relation.id);
-                            }
-                        }
-                         */
                     });
                 }
             })
-            //console.log("AROP: " + JSON.stringify(output, null, 2));
             return output;
         },
         allowedTargets: (state) => (source) => {

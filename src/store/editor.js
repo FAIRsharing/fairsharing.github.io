@@ -301,8 +301,20 @@ let editorStore = {
                         // db->related_to->std would be the same ID as db->related_to->db.
                         let label = relation.relation + '.' + relation.target;
                         if (!seen.includes(label)) {
-                            output.push(relation)
-                            seen.push(label);
+                            // This appears to be called when loading the page, to determine which currently-linked
+                            // records to show.
+                            if (options.target === null) {
+                                output.push(relation);
+                                seen.push(label);
+                            }
+                            // Whereas this is what determines what available links can be shown when adding a new one.
+                            else {
+                                if (options.target.registry === relation.target ||
+                                    options.target.type === relation.target) {
+                                    output.push(relation);
+                                    seen.push(label);
+                                }
+                            }
                         }
                     });
                 }

@@ -91,7 +91,7 @@ describe("Curator -> SystemMessages.vue", () => {
         expect(wrapper.vm.dialogs.newMessage).toBe(null);
     });
 
-    it("can addMessages methods fails", async () => {
+    it("can addMessages method fails", async () => {
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
@@ -103,52 +103,37 @@ describe("Curator -> SystemMessages.vue", () => {
     })
 
     it("can check confirmDeleteMessage method is success", async () => {
-        // wrapper.vm.systemMessages = [{id: 1, message: "message"}];
-        // wrapper.vm.deleteMessage(1);
-        // expect(wrapper.vm.dialogs.messageId).toBe(1);
-        // expect(wrapper.vm.dialogs.deleteMessage).toBe(true);
-        // wrapper.vm.closeDeleteMessageMenu()
-        // expect(wrapper.vm.dialogs.messageId).toBe(null);
-        // expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
-        //
-        // expect(wrapper.vm.systemMessages.length).toEqual(1);
-        // restStub.restore();
-        // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-        //     data: {error: "error"}
-        // });
-        // wrapper.vm.deleteMessage(1);
-        // await wrapper.vm.confirmDeleteMessage();
-        // expect(wrapper.vm.systemMessages.length).toEqual(1);
-        //
-        // restStub.restore();
-        // restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-        //     data: {message: "success"}
-        // });
-        // wrapper.vm.deleteMessage(1);
-        // console.log("wrapper.vm.systemMessages::", wrapper.vm.systemMessages)
         wrapper.vm.dialogs.messageId = 2
-        // expect(wrapper.vm.dialogs.messageId).toEqual(1);
-        // expect(wrapper.vm.systemMessages.length).toEqual(1);
         await wrapper.vm.confirmDeleteMessage();
         expect(wrapper.vm.systemMessages.length).toEqual(1);
         expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
         expect(wrapper.vm.dialogs.messageId).toBe(null);
     })
 
-    it("can save edited messages", async() => {
-        wrapper.vm.systemMessages = [{id: 1, message: "message"}, {id: 2, message: "another message"}];
+    it("can confirmDeleteMessage method fails", async () => {
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {message: "success"}
+            data: {error: "error"}
         });
+        await wrapper.vm.confirmDeleteMessage();
+        expect(wrapper.vm.error.general).toBe("error");
+        expect(wrapper.vm.dialogs.addMessage).toBe(false);
+        expect(wrapper.vm.dialogs.newMessage).toBe(null);
+    })
+
+    it("can check saveEditedMessage method success", async() => {
+        wrapper.vm.systemMessages = [{id: 1, message: "changed message"}, {id: 2, message: "another message"}];
         await wrapper.vm.saveEditedMessage(1, 'changed message');
-        expect(wrapper.vm.systemMessages[0].message).toEqual('changed message')
+        expect(wrapper.vm.systemMessages[0].message).toBe('changed message')
+    });
+
+    it("can check saveEditedMessage method fails", async() => {
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
         });
         await wrapper.vm.saveEditedMessage(1, 'changed message');
-        expect(wrapper.vm.systemMessages[0].message).toEqual('changed message')
+        expect(wrapper.vm.error.general).toBe("error");
     });
 
     it("can check showAddMessage method", async () => {

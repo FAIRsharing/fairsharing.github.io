@@ -30,21 +30,23 @@
             #item="props"
           >
             <tr>
-              <td class="d-flex align-center">
-                <v-avatar
-                  v-if="props.item.type"
-                  class="mr-2"
-                  :height="40"
-                >
-                  <Icon
-                    :item="props.item.type"
+              <td>
+                <div class="d-flex align-center">
+                  <v-avatar
+                    v-if="props.item.type"
+                    class="mr-2"
                     :height="40"
-                    wrapper-class=""
-                  />
-                </v-avatar>
-                <a :href="'/' + props.item.id">
-                  {{ props.item.recordNameID }}
-                </a>
+                  >
+                    <Icon
+                      :item="props.item.type"
+                      :height="40"
+                      wrapper-class=""
+                    />
+                  </v-avatar>
+                  <a :href="'/' + props.item.id">
+                    {{ props.item.recordNameID }}
+                  </a>
+                </div>
               </td>
               <td>
                 {{ props.item.createdAt }}

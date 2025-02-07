@@ -155,5 +155,4 @@ describe("Curator -> SystemMessages.vue", () => {
         expect(wrapper.vm.dialogs.messageId).toBe(null);
         expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
     })
-
 });

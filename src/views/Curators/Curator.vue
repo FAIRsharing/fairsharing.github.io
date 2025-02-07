@@ -20,15 +20,15 @@
         </v-banner>
         <!-- least recently updated -->
         <v-card
-          v-if="leastRecentlyDeatils"
+          v-if="leastRecentlyDetails"
           class="mb-2"
         >
           <v-card-text>
             The record least recently updated is:
-            <a :href="getHostname() + leastRecentlyDeatils.id">
-              {{ leastRecentlyDeatils.name }}
+            <a :href="getHostname() + leastRecentlyDetails.id">
+              {{ leastRecentlyDetails.name }}
             </a>
-            ({{ leastRecentlyDeatils.updatedAt }})
+            ({{ leastRecentlyDetails.updatedAt }})
           </v-card-text>
         </v-card>
         <!--Tabs-->
@@ -104,7 +104,7 @@ export default {
   mixins: [getHostname],
   data: () => {
     return {
-      leastRecentlyDeatils: null,
+      leastRecentlyDetails: null,
       recordType: null,
       headers: headersTables,
       loading: false,
@@ -170,7 +170,7 @@ export default {
       }
       client.setHeader(this.user().credentials.token);
       let leastRecentlyUpdatedData = await client.executeQuery(getLeastRecentlyUpdated);
-      this.leastRecentlyDeatils = leastRecentlyUpdatedData["leastRecentlyUpdated"]
+      this.leastRecentlyDetails = leastRecentlyUpdatedData["leastRecentlyUpdated"]
       client.initalizeHeader();
       this.loading = false;
     });

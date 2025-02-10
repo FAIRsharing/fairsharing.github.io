@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Curators/CuratorRecordsAwaitingApproval.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Curators/CuratorRecordsAwaitingApproval.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-card
+    class="mb-2"
+  >
+    &lt;v-card-text v-if="approvalRequiredProcessed">
+      &lt;v-card-title
+        id="text-curator-search-0"
+        class="green white--text"
+      >
+        &lt;b> RECORDS/CURATOR EDITS AWAITING APPROVAL &lt;/b>
+        &lt;v-spacer />
+        &lt;v-text-field
+          v-model="searches"
+          label="Search"
+          color="white"
+          single-line
+          hide-details
+          solo
+          class="searchField"
+          clearable
+        />
+      &lt;/v-card-title>
+      &lt;v-card-text v-if="error.general">
+        &lt;v-alert type="error">
+          Problem saving/updating record with id: {{ error.recordID }}
+          {{ error.general }}
+        &lt;/v-alert>
+      &lt;/v-card-text>
+      &lt;v-data-table
+        :loading="loading"
+        :headers="headerItems"
+        :items="approvalRequiredProcessed"
+        :search="searches"
+        :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+        sort-by=""
+      >
+        &lt;template
+          v-if="recordType"
+          #item="props"
+        >
+          &lt;tr>
+            &lt;td>
+              {{ props.item.updatedAt }}
+            &lt;/td>
+            &lt;td>
+              &lt;div class="priorityTag">
+                {{ props.item.priority }}
+              &lt;/div>
+            &lt;/td>
+            &lt;td>
+              &lt;v-menu>
+                &lt;template #activator="{ on: menu, attrs }">
+                  &lt;v-tooltip bottom>
+                    &lt;template #activator="{ on: tooltip }">
+                      &lt;v-icon
+                        class="clickable"
+                        small
+                        color="nordnetBlue"
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                      >
+                        {{ props.item.curator }}
+                      &lt;/v-icon>
+                    &lt;/template>
+                    &lt;span>Assign a new curator&lt;/span>
+                  &lt;/v-tooltip>
+                &lt;/template>
+                &lt;v-list>
+                  &lt;v-list-item
+                    v-for="(item, index) in curatorList"
+                    :key="index"
+                    class="thelistCurators"
+                    @click="assignCurator(props.item.id,item.id,item.userName)"
+                  >
+                    &lt;v-list-item-title>{{ item.userName }}&lt;/v-list-item-title>
+                  &lt;/v-list-item>
+                &lt;/v-list>
+              &lt;/v-menu>
+            &lt;/td>
+            &lt;td>
+              &lt;div class="d-flex align-center">
+                &lt;v-avatar
+                  v-if="props.item.type"
+                  class="mr-2"
+                  :height="40"
+                >
+                  &lt;Icon
+                    :item="props.item.type"
+                    :height="40"
+                    wrapper-class=""
+                  />
+                &lt;/v-avatar>
+                &lt;a :href="'/' + props.item.id">
+                  {{ props.item.recordName }}
+                &lt;/a>
+              &lt;/div>
+            &lt;/td>
+            &lt;td>
+              &lt;div v-if="props.item.lastEditor === 'unknown'">
+                {{ props.item.lastEditor }}
+              &lt;/div>
+              &lt;div v-else>
+                &lt;a :href="'/users/' + props.item.idLastEditor">
+                  {{ props.item.lastEditor }}
+                &lt;/a>
+              &lt;/div>
+            &lt;/td>
+            &lt;td>
+              &lt;v-edit-dialog
+                :return-value.sync="props.item.processingNotes"
+                large
+                @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
+              >
+                {{ props.item.processingNotes }}
+                &lt;template #input>
+                  &lt;div class="dialogProcNotesEdit">
+                    &lt;div class="mt-4 title">
+                      Update Processing Notes
+                    &lt;/div>
+                    &lt;v-textarea
+                      v-model="props.item.processingNotes"
+                      width="1200px"
+                      label="Edit (not long words)"
+                      filled
+                    />
+                  &lt;/div>
+                &lt;/template>
+              &lt;/v-edit-dialog>
+            &lt;/td>
+            &lt;td>
+              &lt;v-icon
+                color="blue"
+                dark
+                left
+                @click.stop="approveChangesMenu(props.item.recordName,props.item.id,props.item.hidden)"
+              >
+                far fa-check-circle
+              &lt;/v-icon>
+              {{ props.item.actions }}
+              &lt;v-icon
+                color="red"
+                dark
+                right
+                small
+                @click="deleteRecordMenu(props.item.recordName,props.item.id)"
+              >
+                fas fa-trash
+              &lt;/v-icon>
+              &lt;v-tooltip bottom>
+                &lt;template #activator="{ on, attrs }">
+                  &lt;span
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    &lt;a
+                      :href="'/' + props.item.id+ '/edit'"
+                      style="padding-left: 12px;"
+                    >
+                      Edit
+                    &lt;/a>
+                  &lt;/span>
+                &lt;/template>
+                &lt;span>If edits are saved, record is approved.&lt;/span>
+              &lt;/v-tooltip>
+            &lt;/td>
+            &lt;td>
+              {{ props.item.createdAt }},
+              &lt;div v-if="props.item.creator === 'unknown'">
+                {{ props.item.creator }}
+              &lt;/div>
+              &lt;div v-else>
+                &lt;a :href="'/users/' + props.item.idCreator">
+                  {{ props.item.creator }}
+                &lt;/a>
+              &lt;/div>
+            &lt;/td>
+          &lt;/tr>
+        &lt;/template>
+      &lt;/v-data-table>
+    &lt;/v-card-text>
+    &lt;v-layout
+      row
+      justify-center
+    >
+      &lt;v-dialog
+        v-model="dialogs.approveChanges"
+        max-width="700px"
+      >
+        &lt;v-card>
+          &lt;v-card-title
+            class="headline"
+          >
+            Are you sure you want to
+            &lt;span style="color:blue; padding-left: 5px; padding-right: 1px;">
+              ACCEPT/APPROVE CHANGES
+            &lt;/span>
+            record?
+            &lt;ul style="list-style-type:none;">
+              &lt;li>
+                {{ dialogs.recordName }}
+              &lt;/li>
+            &lt;/ul>
+          &lt;/v-card-title>
+          &lt;v-card-actions>
+            &lt;v-spacer />
+            &lt;v-btn
+              :disabled="dialogs.disableButton === true"
+              color="blue darken-1"
+              text
+              @click="closeApproveChangesMenu()"
+            >
+              Cancel
+            &lt;/v-btn>
+            &lt;v-btn
+              color="blue darken-1"
+              text
+              @click="confirmApproval()"
+            >
+              OK
+            &lt;/v-btn>
+            &lt;v-spacer />
+            &lt;v-switch
+              v-model="dialogs.createReview"
+              color="green"
+              label="Create Review"
+              class="pr-3"
+            />
+            &lt;v-switch
+              v-model="dialogs.recordHidden"
+              color="purple"
+              label="Hide record"
+            />
+            &lt;v-spacer />
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-layout>
+    &lt;v-layout
+      row
+      justify-center
+    >
+      &lt;v-dialog
+        v-model="dialogs.deleteRecord"
+        max-width="700px"
+      >
+        &lt;v-card>
+          &lt;v-card-title
+            class="headline"
+          >
+            Are you sure you want to
+            &lt;span
+              style="color:red; padding-left: 5px; padding-right: 5px;"
+            >
+              DELETE
+            &lt;/span>
+            this record?
+            &lt;ul style="list-style-type:none;">
+              &lt;li>
+                {{ dialogs.recordName }}
+              &lt;/li>
+            &lt;/ul>
+          &lt;/v-card-title>
+          &lt;v-card-actions>
+            &lt;v-spacer />
+            &lt;v-btn
+              :disabled="dialogs.disableButton === true"
+              color="blue darken-1"
+              text
+              @click="closeDeleteMenu()"
+            >
+              Cancel
+            &lt;/v-btn>
+            &lt;v-btn
+              :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+              color="blue darken-1"
+              text
+              @click="confirmDelete()"
+            >
+              OK
+            &lt;/v-btn>
+            &lt;v-spacer />
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-layout>
+  &lt;/v-card>
+&lt;/template>
+
+
+&lt;script>
+    import { mapActions, mapState }  from "vuex"
+
+    import Icon from "@/components/Icon"
+    import RestClient from "@/lib/Client/RESTClient.js"
+    import GraphClient from "@/lib/GraphClient/GraphClient";
+    import getCuratorApprovalsRequired from "@/lib/GraphClient/queries/curators/getCuratorApprovalsRequired.json"
+    import getCuratorList from "@/lib/GraphClient/queries/curators/getCuratorList.json"
+    import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json"
+
+    const client = new GraphClient();
+    const restClient = new RestClient();
+
+    export default {
+        name: "CuratorRecordsAwaitingApproval",
+        components: {
+          Icon
+        },
+      props:{
+        headerItems: {
+          type: Array,
+          default: null
+        },
+      },
+        data: () => {
+            return {
+              dialogs: {
+                approveChanges: false,
+                recordName: "",
+                recordID: "",
+                recordHidden: false,
+                deleteRecord: false,
+                disableDelButton: true,
+                disableButton: false,
+                createReview: false
+              },
+              error: {
+                recordID: null,
+                general: null
+              },
+              searches: '',
+              approvalRequiredProcessed: [],
+              maintenanceRequests:[],
+              approvalRequired:[],
+              recordType:{},
+              loading: false,
+              curatorList: []
+            }
+        },
+        computed: {
+          ...mapState('users', ['user', "messages"]),
+          ...mapState("record", ["recordUpdate"])
+        },
+        watch: {
+          approvalRequired: function(){
+            this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
+          },
+          'dialogs.approveChanges' (val) {
+            val || this.closeApproveChangesMenu()
+          },
+          'dialogs.deleteRecord' (val) {
+            val || this.closeDeleteMenu()
+          },
+        },
+      async mounted () {
+          this.loading = true;
+          client.setHeader(this.user().credentials.token);
+          //Fetching records approval awaiting data
+          let data = await client.executeQuery(getCuratorApprovalsRequired);
+          let listOfCurators = await client.executeQuery(getCuratorList);
+          let hiddenRecords = await client.executeQuery(getHiddenRecords);
+          this.prepareApprovalRequired(data, listOfCurators, hiddenRecords)
+          this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
+          this.loading = false;
+        },
+        methods: {
+            ...mapActions("record", ["updateRecord"]),
+
+          /**
+           * Method to fetch records awaiting approval
+           * @param dataCuration
+           * @param listOfCurators
+           * @param hiddenRecords
+           */
+          prepareApprovalRequired(dataCuration, listOfCurators, hiddenRecords){
+            console.log("dataCuration::", dataCuration)
+            let userRecords = dataCuration.curatorApprovalsRequired;
+            userRecords.forEach(item => {
+              item.fairsharingRecords.forEach(rec => {
+                let object = {
+                  createdAt: rec.createdAt,
+                  updatedAt: rec.updatedAt,
+                  curator: item.username.substring(0,6),
+                  recordName: `${rec.name} (${rec.id})`,
+                  id: rec.id,
+                  type: rec.type,
+                  processingNotes: rec.processingNotes,
+                  hidden: false
+                }
+                if (rec.creator){
+                  object.creator = rec.creator.username.substring(0,10);
+                  object.idCreator = rec.creator.id;
+                }else{
+                  object.creator = "unknown"
+                }
+                if (rec.priority){
+                  object.priority = "Priority";
+                }else{
+                  object.priority = "";
+                }
+                const index = hiddenRecords.hiddenRecords.findIndex((element) => element.id === rec.id);
+                if (index>=0){
+                  object.hidden = true;
+                }
+                if (rec.lastEditor){
+                  object.lastEditor = rec.lastEditor.username;
+                  object.idLastEditor = rec.lastEditor.id;
+                }
+                else{
+                  object.lastEditor = "unknown"
+                }
+                this.approvalRequired.push(object);
+              });
+            });
+            this.approvalRequired.sort(this.compareRecordDescUpdate);
+            for (let i = 0; i &lt; this.approvalRequired.length; i++) {
+              this.approvalRequired[i].updatedAt = this.formatDate(this.approvalRequired[i].updatedAt);
+              this.approvalRequired[i].createdAt = this.formatDate(this.approvalRequired[i].createdAt);
+            }
+            let curators = listOfCurators.curatorList;
+            let listSuper = [];
+            let listCurator = [];
+            curators.forEach(item => {
+              let object = {
+                id: item.id,
+                userName: item.username
+              };
+              let role = item.role.name;
+              if (role === "super_curator") {
+                listSuper.push(object);
+              }
+              else if (role === "curator") {
+                listCurator.push(object);
+              }
+            });
+            this.curatorList = listSuper.concat(listCurator);
+            let object = {
+              id: -1,
+              userName: "none"
+            };
+            this.curatorList.push(object);
+          },
+
+            async saveProcessingNotes(idRecord,notesText){
+              const _module = this;
+              _module.error = {
+                recordID: null,
+                general: null
+              };
+              let preparedRecord = {
+                processing_notes: "",
+                skip_approval: true
+              };
+              preparedRecord.processing_notes = notesText;
+              let data = {
+                record: preparedRecord,
+                id: idRecord,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = idRecord;
+              }
+            },
+
+            async assignCurator(idRecord, idUser, nameUser){
+              const _module = this;
+              let preparedRecord = { };
+              if (nameUser === 'none'){
+                preparedRecord.curator_id = null;
+              }else{
+                preparedRecord.curator_id = idUser;
+              }
+              let data = {
+                record: preparedRecord,
+                id: idRecord,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = idRecord;
+              }
+              const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === idRecord);
+              _module.approvalRequiredProcessed[index].curator=nameUser.substring(0,6);
+            },
+
+            approveChangesMenu(recordName, recordID, recordHidden){
+              const _module = this;
+              _module.dialogs.disableButton = false;
+              _module.dialogs.recordName = recordName;
+              _module.dialogs.recordID = recordID;
+              _module.dialogs.recordHidden = recordHidden;
+              _module.dialogs.approveChanges = true;
+            },
+
+            closeApproveChangesMenu () {
+              this.dialogs.disableButton = true;
+              this.dialogs.approveChanges = false;
+            },
+
+            async confirmApproval () {
+              const _module = this;
+              _module.dialogs.disableButton = true;
+              let preparedRecord = {
+                processing_notes: undefined,
+                create_review: _module.dialogs.createReview,
+                hidden: _module.dialogs.recordHidden
+              };
+              let data = {
+                record: preparedRecord,
+                id: _module.dialogs.recordID,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = _module.dialogs.recordID;
+              }
+              else {
+                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequiredProcessed.splice(index, 1);
+              }
+              _module.dialogs.approveChanges = false;
+              _module.dialogs.createReview = false;
+            },
+
+            async confirmDelete(){
+              const _module = this;
+              _module.dialogs.disableButton = true;
+              let data = await restClient.deleteRecord(_module.dialogs.recordID,this.user().credentials.token);
+              if (data.error){
+                _module.error.general = "error deleting record";
+                _module.error.recordID = _module.dialogs.recordID;
+              }
+              else{
+                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequiredProcessed.splice(index, 1);
+              }
+              _module.dialogs.deleteRecord = false;
+            },
+
+            deleteRecordMenu(recordName, recordID){
+              const _module = this;
+              _module.dialogs.disableButton = false;
+              _module.dialogs.disableDelButton = true
+              _module.dialogs.recordName = recordName;
+              _module.dialogs.recordID = recordID;
+              _module.dialogs.deleteRecord = true;
+              setTimeout(function () {
+                _module.dialogs.disableDelButton = false;
+              }, 5000);
+            },
+
+            closeDeleteMenu () {
+              this.dialogs.disableButton = true;
+              this.dialogs.deleteRecord = false;
+            },
+
+           compareRecordDescUpdate(a, b) {
+      if (a.updatedAt > b.updatedAt) {
+        return -1;
+      }else{
+        return 1;
+      }
+  },
+
+           formatDate(d){
+      let date = new Date(d);
+      return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+    },
+
+        }
+    }
+
+&lt;/script>
+
+&lt;style scoped>
+#text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input {
+  color: #fff;
+}
+
+.dialogProcNotesEdit {
+  width: 450px !important;
+}
+
+.priorityTag {
+  background-color: red;
+  color: white;
+  font-size: 90%;
+}
+
+.thelistCurators {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
+}
+
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a>
+	
+		on Mon Feb 10th 2025
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

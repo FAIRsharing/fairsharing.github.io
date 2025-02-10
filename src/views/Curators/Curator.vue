@@ -742,7 +742,6 @@
               this.maintenanceRequests[i].createdAt = formatDate(this.maintenanceRequests[i].createdAt) ;
             }
           },
-
           prepareRecordsCuratorCreationsLastWeek(dataCuration){
             let records = dataCuration.recentCuratorCreations;
             records.forEach(item => {

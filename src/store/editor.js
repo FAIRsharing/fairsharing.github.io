@@ -17,6 +17,31 @@ import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/
 const graphClient = new GraphClient();
 const restClient = new RESTClient();
 
+const recordTypes = [
+    'standard',
+    'database',
+    'policy',
+    'collection',
+    'fairassist',
+    "journal_publisher",
+    "repository",
+    "knowledgebase",
+    "model_and_format",
+    "terminology_artefact",
+    "reporting_guideline",
+    "identifier_schema",
+    "journal",
+    "collection",
+    "metric",
+    "knowledgebase_and_repository",
+    "project",
+    "funder",
+    "institution",
+    "society",
+    "benchmark",
+    "principle"
+];
+
 let editorStore = {
     namespaced: true,
     state: {
@@ -206,7 +231,6 @@ let editorStore = {
         async getAvailableRelationsTypes({commit}){
             let types = await restClient.getRelationsTypes();
             let allowed = {};
-            let relationTypes = ['standard', 'database', 'policy', 'collection', 'fairassist'];
             for (let typeObject of types) {
                 let relationName = typeObject.name,
                     id = typeObject.id;
@@ -227,11 +251,11 @@ let editorStore = {
                     })
                 }
                 else {
-                    relationTypes.forEach(relationParent => {
+                    recordTypes.forEach(relationParent => {
                         if (!Object.keys(allowed).includes(relationParent)) {
                             allowed[relationParent] = [];
                         }
-                        relationTypes.forEach(relationChild => {
+                        recordTypes.forEach(relationChild => {
                            allowed[relationParent].push({
                                relation: relationName,
                                target: relationChild,
@@ -272,18 +296,24 @@ let editorStore = {
                 /* istanbul ignore else */
                 if (state.relationsTypes[type] !== undefined) {
                     state.relationsTypes[type].forEach(relation => {
-                        if ((options.target && options.prohibited) &&
-                            (relation.target === options.target.registry || relation.target === options.target.type) &&
-                            !options.prohibited.includes(relation.relation)) {
-                            if (!seen.includes(relation.id)) {
-                                output.push(relation)
-                                seen.push(relation.id);
-                            }
-                        }
-                        if (!options.target && !options.prohibited) {
-                            if (!seen.includes(relation.id)) {
+                        // Somehow, duplicate relations were being pushed into this array.
+                        // I've created a text label as the ID of a relation may be duplicated, i.e.
+                        // db->related_to->std would be the same ID as db->related_to->db.
+                        let label = relation.relation + '.' + relation.target;
+                        if (!seen.includes(label)) {
+                            // This appears to be called when loading the page, to determine which currently-linked
+                            // records to show.
+                            if (options.target === null) {
                                 output.push(relation);
-                                seen.push(relation.id);
+                                seen.push(label);
+                            }
+                            // Whereas this is what determines what available links can be shown when adding a new one.
+                            else {
+                                if (options.target.registry === relation.target ||
+                                    options.target.type === relation.target) {
+                                    output.push(relation);
+                                    seen.push(label);
+                                }
                             }
                         }
                     });
@@ -293,10 +323,9 @@ let editorStore = {
         },
         allowedTargets: (state) => (source) => {
             let output = [];
-            let allowed = ["standard", "database", "policy", "collection", "fairassist"];
             state.relationsTypes[source.toLowerCase()].forEach(relation => {
                 /* istanbul ignore else */
-                if (allowed.includes(relation.target)) output.push(relation.target);
+                if (recordTypes.includes(relation.target)) output.push(relation.target);
             });
             return [...new Set(output)];
         }

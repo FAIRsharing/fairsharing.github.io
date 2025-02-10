@@ -5,7 +5,7 @@
         id="text-curator-search-0"
         class="green white--text"
       >
-        <b> RECORDS/CURATOR EDITS AWAITING APPROVAL </b>
+        <b>CURATOR EDITS AWAITING APPROVAL</b>
         <v-spacer />
         <v-text-field
           v-model="searches"

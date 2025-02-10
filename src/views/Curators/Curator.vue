@@ -114,15 +114,15 @@ export default {
       selectedTab: null,
       tabs: [
         {
-          name: "RECORDS/CURATOR EDITS AWAITING APPROVAL",
-          target: "curatorrecordseditsawaitingapproval",
-          component: "CuratorRecordsAwaitingApproval",
-          headers: headersTables["approvalRequired"],
-        },
-        {
           name: "USER EDITS AWAITING APPROVAL",
           target: "userrecordseditsawaitingapproval",
           component: "UserRecordsAwaitingApproval",
+          headers: headersTables["approvalRequired"],
+        },
+        {
+          name: "CURATOR EDITS AWAITING APPROVAL",
+          target: "curatorrecordseditsawaitingapproval",
+          component: "CuratorRecordsAwaitingApproval",
           headers: headersTables["approvalRequired"],
         },
         {
@@ -138,16 +138,16 @@ export default {
           headers: headersTables["hiddenRecords"],
         },
         {
-          name: "SYSTEM MESSAGES",
-          target: "systemmessages",
-          component: "SystemMessages",
-          headers: headersTables["systemMessages"],
-        },
-        {
           name: "RECORDS CREATED BY CURATORS IN THE PAST WEEK",
           target: "recentcuatorcreation",
           component: "RecentCuratorCreation",
           headers: headersTables["recordsCreatedCuratorsLastWeek"],
+        },
+        {
+          name: "SYSTEM MESSAGES",
+          target: "systemmessages",
+          component: "SystemMessages",
+          headers: headersTables["systemMessages"],
         },
         {
           name: "DOWNLOAD RECORDS",

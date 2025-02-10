@@ -73,12 +73,13 @@
 import { mapActions, mapState } from "vuex";
 
 import {
+  CuratorRecordsAwaitingApproval,
   DownloadRecords,
   HiddenRecords,
   MaintenanceRequests,
   RecentCuratorCreation,
-  RecordsAwaitingApproval,
-  SystemMessages
+  SystemMessages,
+  UserRecordsAwaitingApproval
 } from "@/components/Curators"
 import Icon from "@/components/Icon";
 import headersTables from "@/data/headersCuratorDashboard.json";
@@ -93,12 +94,13 @@ export default {
   name: "Curator",
   components: {
     Unauthorized,
-    RecordsAwaitingApproval,
+    CuratorRecordsAwaitingApproval,
     MaintenanceRequests,
     HiddenRecords,
     RecentCuratorCreation,
     DownloadRecords,
     SystemMessages,
+    UserRecordsAwaitingApproval,
     Icon,
   },
   mixins: [getHostname],
@@ -111,9 +113,15 @@ export default {
       selectedTab: null,
       tabs: [
         {
-          name: "RECORDS/EDITS AWAITING APPROVAL",
-          target: "recordseditsawaitingapproval",
-          component: "RecordsAwaitingApproval",
+          name: "RECORDS/CURATOR EDITS AWAITING APPROVAL",
+          target: "curatorrecordseditsawaitingapproval",
+          component: "CuratorRecordsAwaitingApproval",
+          headers: headersTables["approvalRequired"],
+        },
+        {
+          name: "USER EDITS AWAITING APPROVAL",
+          target: "userrecordseditsawaitingapproval",
+          component: "UserRecordsAwaitingApproval",
           headers: headersTables["approvalRequired"],
         },
         {

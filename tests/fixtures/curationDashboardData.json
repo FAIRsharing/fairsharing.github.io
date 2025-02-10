@@ -1,6 +1,6 @@
 {
   "curationSummary": {
-      "approvalsRequired": [
+      "curatorApprovalsRequired": [
          {
               "username": "Terazus",
               "id": 12345,
@@ -43,6 +43,49 @@
               ]
           }
       ],
+      "userApprovalsRequired": [
+      {
+        "username": "Terazus",
+        "id": 12345,
+        "fairsharingRecords": [
+          {
+            "id": 1451,
+            "name": "Radiotherapy",
+            "type": "database",
+            "updatedAt": "2020-01-27",
+            "lastEditor": [
+              {
+                "id": "553",
+                "username": "Paolo Maldini"
+              }
+            ],
+            "creator":
+            {
+              "id": "553",
+              "username": "Marco Polo"
+            }
+
+          },
+          {
+            "id": 11,
+            "name": "Radi",
+            "updatedAt": "2020-09-27T09:34:54Z",
+            "creator":
+            {
+              "id": "442",
+              "username": "Maria Julia"
+            }
+          },
+          {
+            "id": 12345,
+            "name": "Radiotgherapy",
+            "updatedAt": "2020-05-27T09:34:54Z",
+            "priority": true
+          }
+
+        ]
+      }
+    ],
       "pendingMaintenanceRequests": [
           {
               "id": "3",

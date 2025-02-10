@@ -1,5 +1,5 @@
 {
-  "queryName": "approvalsRequired",
+  "queryName": "curatorApprovalsRequired",
   "queryParam": null,
   "fields": [
     "username",

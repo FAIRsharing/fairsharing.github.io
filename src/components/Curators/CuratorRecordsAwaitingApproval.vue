@@ -7,7 +7,7 @@
         id="text-curator-search-0"
         class="green white--text"
       >
-        <b> RECORDS/EDITS AWAITING APPROVAL </b>
+        <b> RECORDS/CURATOR EDITS AWAITING APPROVAL </b>
         <v-spacer />
         <v-text-field
           v-model="searches"
@@ -17,6 +17,7 @@
           hide-details
           solo
           class="searchField"
+          clearable
         />
       </v-card-title>
       <v-card-text v-if="error.general">
@@ -292,7 +293,7 @@
     import Icon from "@/components/Icon"
     import RestClient from "@/lib/Client/RESTClient.js"
     import GraphClient from "@/lib/GraphClient/GraphClient";
-    import getApprovalsRequired from "@/lib/GraphClient/queries/curators/getApprovalsRequired.json"
+    import getCuratorApprovalsRequired from "@/lib/GraphClient/queries/curators/getCuratorApprovalsRequired.json"
     import getCuratorList from "@/lib/GraphClient/queries/curators/getCuratorList.json"
     import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json"
 
@@ -300,7 +301,7 @@
     const restClient = new RestClient();
 
     export default {
-        name: "RecordsAwaitingApproval",
+        name: "CuratorRecordsAwaitingApproval",
         components: {
           Icon
         },
@@ -354,7 +355,7 @@
           this.loading = true;
           client.setHeader(this.user().credentials.token);
           //Fetching records approval awaiting data
-          let data = await client.executeQuery(getApprovalsRequired);
+          let data = await client.executeQuery(getCuratorApprovalsRequired);
           let listOfCurators = await client.executeQuery(getCuratorList);
           let hiddenRecords = await client.executeQuery(getHiddenRecords);
           this.prepareApprovalRequired(data, listOfCurators, hiddenRecords)
@@ -371,7 +372,8 @@
            * @param hiddenRecords
            */
           prepareApprovalRequired(dataCuration, listOfCurators, hiddenRecords){
-            let userRecords = dataCuration.approvalsRequired;
+            console.log("dataCuration::", dataCuration)
+            let userRecords = dataCuration.curatorApprovalsRequired;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
                 let object = {

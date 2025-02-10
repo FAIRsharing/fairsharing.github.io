@@ -3,7 +3,7 @@ import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
-import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue";
+import UserRecordsAwaitingApproval from "@/components/Curators/UserRecordsAwaitingApproval.vue";
 import Client from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import recordStore from "@/store/recordData.js";
@@ -85,7 +85,7 @@ const $store = new Vuex.Store({
 const router = new VueRouter();
 const $router = { push: jest.fn() };
 
-describe("Curator -> RecordsAwaitingApproval.vue", () => {
+describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   let restStub;
   let wrapper;
   let graphStub;
@@ -97,7 +97,7 @@ describe("Curator -> RecordsAwaitingApproval.vue", () => {
     restStub.returns({ data: { error: false } });
 
 
-    wrapper = await shallowMount(RecordsAwaitingApproval, {
+    wrapper = await shallowMount(UserRecordsAwaitingApproval, {
       localVue,
       router,
       mocks: { $store, $router },
@@ -113,7 +113,7 @@ describe("Curator -> RecordsAwaitingApproval.vue", () => {
   });
 
   it("can be mounted", () => {
-    expect(wrapper.vm.$options.name).toMatch("RecordsAwaitingApproval");
+    expect(wrapper.vm.$options.name).toMatch("UserRecordsAwaitingApproval");
     expect(wrapper.vm.prepareApprovalRequired).toHaveBeenCalled;
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(3);
     expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch(

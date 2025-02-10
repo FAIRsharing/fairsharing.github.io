@@ -16,6 +16,7 @@
             hide-details
             solo
             class="searchField"
+            clearable
           />
         </v-card-title>
         <v-data-table

@@ -169,21 +169,23 @@
                 &lt;/v-list>
               &lt;/v-menu>
             &lt;/td>
-            &lt;td class="d-flex align-center">
-              &lt;v-avatar
-                v-if="props.item.type"
-                class="mr-2"
-                :height="40"
-              >
-                &lt;Icon
-                  :item="props.item.type"
+            &lt;td>
+              &lt;div class="d-flex align-center">
+                &lt;v-avatar
+                  v-if="props.item.type"
+                  class="mr-2"
                   :height="40"
-                  wrapper-class=""
-                />
-              &lt;/v-avatar>
-              &lt;a :href="'/' + props.item.id">
-                {{ props.item.recordName }}
-              &lt;/a>
+                >
+                  &lt;Icon
+                    :item="props.item.type"
+                    :height="40"
+                    wrapper-class=""
+                  />
+                &lt;/v-avatar>
+                &lt;a :href="'/' + props.item.id">
+                  {{ props.item.recordName }}
+                &lt;/a>
+              &lt;/div>
             &lt;/td>
             &lt;td>
               &lt;div v-if="props.item.lastEditor === 'unknown'">

@@ -215,8 +215,6 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     await wrapper.vm.confirmApproval();
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
     expect(wrapper.vm.dialogs.approveChanges).toBe(false);
-
-    // TODO: Check that the DB is correctly updated
   });
 
   it("can delete a record", async () => {

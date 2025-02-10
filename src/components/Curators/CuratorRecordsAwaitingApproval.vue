@@ -372,7 +372,6 @@
            * @param hiddenRecords
            */
           prepareApprovalRequired(dataCuration, listOfCurators, hiddenRecords){
-            console.log("dataCuration::", dataCuration)
             let userRecords = dataCuration.curatorApprovalsRequired;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {

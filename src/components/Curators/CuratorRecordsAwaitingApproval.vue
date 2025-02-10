@@ -1,7 +1,5 @@
 <template>
-  <v-card
-    class="mb-2"
-  >
+  <v-card class="mb-2">
     <v-card-text v-if="approvalRequiredProcessed">
       <v-card-title
         id="text-curator-search-0"
@@ -31,7 +29,7 @@
         :headers="headerItems"
         :items="approvalRequiredProcessed"
         :search="searches"
-        :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
         <template
@@ -70,7 +68,9 @@
                     v-for="(item, index) in curatorList"
                     :key="index"
                     class="thelistCurators"
-                    @click="assignCurator(props.item.id,item.id,item.userName)"
+                    @click="
+                      assignCurator(props.item.id, item.id, item.userName)
+                    "
                   >
                     <v-list-item-title>{{ item.userName }}</v-list-item-title>
                   </v-list-item>
@@ -109,7 +109,9 @@
               <v-edit-dialog
                 :return-value.sync="props.item.processingNotes"
                 large
-                @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
+                @save="
+                  saveProcessingNotes(props.item.id, props.item.processingNotes)
+                "
               >
                 {{ props.item.processingNotes }}
                 <template #input>
@@ -132,7 +134,13 @@
                 color="blue"
                 dark
                 left
-                @click.stop="approveChangesMenu(props.item.recordName,props.item.id,props.item.hidden)"
+                @click.stop="
+                  approveChangesMenu(
+                    props.item.recordName,
+                    props.item.id,
+                    props.item.hidden
+                  )
+                "
               >
                 far fa-check-circle
               </v-icon>
@@ -142,7 +150,7 @@
                 dark
                 right
                 small
-                @click="deleteRecordMenu(props.item.recordName,props.item.id)"
+                @click="deleteRecordMenu(props.item.recordName, props.item.id)"
               >
                 fas fa-trash
               </v-icon>
@@ -153,8 +161,8 @@
                     v-on="on"
                   >
                     <a
-                      :href="'/' + props.item.id+ '/edit'"
-                      style="padding-left: 12px;"
+                      :href="'/' + props.item.id + '/edit'"
+                      style="padding-left: 12px"
                     >
                       Edit
                     </a>
@@ -187,15 +195,13 @@
         max-width="700px"
       >
         <v-card>
-          <v-card-title
-            class="headline"
-          >
+          <v-card-title class="headline">
             Are you sure you want to
-            <span style="color:blue; padding-left: 5px; padding-right: 1px;">
+            <span style="color: blue; padding-left: 5px; padding-right: 1px">
               ACCEPT/APPROVE CHANGES
             </span>
             record?
-            <ul style="list-style-type:none;">
+            <ul style="list-style-type: none">
               <li>
                 {{ dialogs.recordName }}
               </li>
@@ -244,17 +250,13 @@
         max-width="700px"
       >
         <v-card>
-          <v-card-title
-            class="headline"
-          >
+          <v-card-title class="headline">
             Are you sure you want to
-            <span
-              style="color:red; padding-left: 5px; padding-right: 5px;"
-            >
+            <span style="color: red; padding-left: 5px; padding-right: 5px">
               DELETE
             </span>
             this record?
-            <ul style="list-style-type:none;">
+            <ul style="list-style-type: none">
               <li>
                 {{ dialogs.recordName }}
               </li>
@@ -271,7 +273,10 @@
               Cancel
             </v-btn>
             <v-btn
-              :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+              :disabled="
+                dialogs.disableDelButton === true ||
+                  dialogs.disableButton === true
+              "
               color="blue darken-1"
               text
               @click="confirmDelete()"
@@ -286,296 +291,303 @@
   </v-card>
 </template>
 
-
 <script>
-    import { mapActions, mapState }  from "vuex"
+import { mapActions, mapState } from "vuex";
 
-    import Icon from "@/components/Icon"
-    import RestClient from "@/lib/Client/RESTClient.js"
-    import GraphClient from "@/lib/GraphClient/GraphClient";
-    import getCuratorApprovalsRequired from "@/lib/GraphClient/queries/curators/getCuratorApprovalsRequired.json"
-    import getCuratorList from "@/lib/GraphClient/queries/curators/getCuratorList.json"
-    import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json"
+import Icon from "@/components/Icon";
+import RestClient from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import getCuratorApprovalsRequired from "@/lib/GraphClient/queries/curators/getCuratorApprovalsRequired.json";
+import getCuratorList from "@/lib/GraphClient/queries/curators/getCuratorList.json";
+import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json";
+import formatDate from "@/utils/generalUtils";
+import compareRecordDescUpdate from "@/utils/generalUtils";
 
-    const client = new GraphClient();
-    const restClient = new RestClient();
+const client = new GraphClient();
+const restClient = new RestClient();
 
-    export default {
-        name: "CuratorRecordsAwaitingApproval",
-        components: {
-          Icon
-        },
-      props:{
-        headerItems: {
-          type: Array,
-          default: null
-        },
-      },
-        data: () => {
-            return {
-              dialogs: {
-                approveChanges: false,
-                recordName: "",
-                recordID: "",
-                recordHidden: false,
-                deleteRecord: false,
-                disableDelButton: true,
-                disableButton: false,
-                createReview: false
-              },
-              error: {
-                recordID: null,
-                general: null
-              },
-              searches: '',
-              approvalRequiredProcessed: [],
-              maintenanceRequests:[],
-              approvalRequired:[],
-              recordType:{},
-              loading: false,
-              curatorList: []
-            }
-        },
-        computed: {
-          ...mapState('users', ['user', "messages"]),
-          ...mapState("record", ["recordUpdate"])
-        },
-        watch: {
-          approvalRequired: function(){
-            this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
-          },
-          'dialogs.approveChanges' (val) {
-            val || this.closeApproveChangesMenu()
-          },
-          'dialogs.deleteRecord' (val) {
-            val || this.closeDeleteMenu()
-          },
-        },
-      async mounted () {
-          this.loading = true;
-          client.setHeader(this.user().credentials.token);
-          //Fetching records approval awaiting data
-          let data = await client.executeQuery(getCuratorApprovalsRequired);
-          let listOfCurators = await client.executeQuery(getCuratorList);
-          let hiddenRecords = await client.executeQuery(getHiddenRecords);
-          this.prepareApprovalRequired(data, listOfCurators, hiddenRecords)
-          this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
-          this.loading = false;
-        },
-        methods: {
-            ...mapActions("record", ["updateRecord"]),
-
-          /**
-           * Method to fetch records awaiting approval
-           * @param dataCuration
-           * @param listOfCurators
-           * @param hiddenRecords
-           */
-          prepareApprovalRequired(dataCuration, listOfCurators, hiddenRecords){
-            let userRecords = dataCuration.curatorApprovalsRequired;
-            userRecords.forEach(item => {
-              item.fairsharingRecords.forEach(rec => {
-                let object = {
-                  createdAt: rec.createdAt,
-                  updatedAt: rec.updatedAt,
-                  curator: item.username.substring(0,6),
-                  recordName: `${rec.name} (${rec.id})`,
-                  id: rec.id,
-                  type: rec.type,
-                  processingNotes: rec.processingNotes,
-                  hidden: false
-                }
-                if (rec.creator){
-                  object.creator = rec.creator.username.substring(0,10);
-                  object.idCreator = rec.creator.id;
-                }else{
-                  object.creator = "unknown"
-                }
-                if (rec.priority){
-                  object.priority = "Priority";
-                }else{
-                  object.priority = "";
-                }
-                const index = hiddenRecords.hiddenRecords.findIndex((element) => element.id === rec.id);
-                if (index>=0){
-                  object.hidden = true;
-                }
-                if (rec.lastEditor){
-                  object.lastEditor = rec.lastEditor.username;
-                  object.idLastEditor = rec.lastEditor.id;
-                }
-                else{
-                  object.lastEditor = "unknown"
-                }
-                this.approvalRequired.push(object);
-              });
-            });
-            this.approvalRequired.sort(this.compareRecordDescUpdate);
-            for (let i = 0; i < this.approvalRequired.length; i++) {
-              this.approvalRequired[i].updatedAt = this.formatDate(this.approvalRequired[i].updatedAt);
-              this.approvalRequired[i].createdAt = this.formatDate(this.approvalRequired[i].createdAt);
-            }
-            let curators = listOfCurators.curatorList;
-            let listSuper = [];
-            let listCurator = [];
-            curators.forEach(item => {
-              let object = {
-                id: item.id,
-                userName: item.username
-              };
-              let role = item.role.name;
-              if (role === "super_curator") {
-                listSuper.push(object);
-              }
-              else if (role === "curator") {
-                listCurator.push(object);
-              }
-            });
-            this.curatorList = listSuper.concat(listCurator);
-            let object = {
-              id: -1,
-              userName: "none"
-            };
-            this.curatorList.push(object);
-          },
-
-            async saveProcessingNotes(idRecord,notesText){
-              const _module = this;
-              _module.error = {
-                recordID: null,
-                general: null
-              };
-              let preparedRecord = {
-                processing_notes: "",
-                skip_approval: true
-              };
-              preparedRecord.processing_notes = notesText;
-              let data = {
-                record: preparedRecord,
-                id: idRecord,
-                token: _module.user().credentials.token
-              };
-              await _module.updateRecord(data);
-              if (_module.recordUpdate.error){
-                _module.error.general = _module.recordUpdate.message;
-                _module.error.recordID = idRecord;
-              }
-            },
-
-            async assignCurator(idRecord, idUser, nameUser){
-              const _module = this;
-              let preparedRecord = { };
-              if (nameUser === 'none'){
-                preparedRecord.curator_id = null;
-              }else{
-                preparedRecord.curator_id = idUser;
-              }
-              let data = {
-                record: preparedRecord,
-                id: idRecord,
-                token: _module.user().credentials.token
-              };
-              await _module.updateRecord(data);
-              if (_module.recordUpdate.error){
-                _module.error.general = _module.recordUpdate.message;
-                _module.error.recordID = idRecord;
-              }
-              const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === idRecord);
-              _module.approvalRequiredProcessed[index].curator=nameUser.substring(0,6);
-            },
-
-            approveChangesMenu(recordName, recordID, recordHidden){
-              const _module = this;
-              _module.dialogs.disableButton = false;
-              _module.dialogs.recordName = recordName;
-              _module.dialogs.recordID = recordID;
-              _module.dialogs.recordHidden = recordHidden;
-              _module.dialogs.approveChanges = true;
-            },
-
-            closeApproveChangesMenu () {
-              this.dialogs.disableButton = true;
-              this.dialogs.approveChanges = false;
-            },
-
-            async confirmApproval () {
-              const _module = this;
-              _module.dialogs.disableButton = true;
-              let preparedRecord = {
-                processing_notes: undefined,
-                create_review: _module.dialogs.createReview,
-                hidden: _module.dialogs.recordHidden
-              };
-              let data = {
-                record: preparedRecord,
-                id: _module.dialogs.recordID,
-                token: _module.user().credentials.token
-              };
-              await _module.updateRecord(data);
-              if (_module.recordUpdate.error){
-                _module.error.general = _module.recordUpdate.message;
-                _module.error.recordID = _module.dialogs.recordID;
-              }
-              else {
-                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
-                _module.approvalRequiredProcessed.splice(index, 1);
-              }
-              _module.dialogs.approveChanges = false;
-              _module.dialogs.createReview = false;
-            },
-
-            async confirmDelete(){
-              const _module = this;
-              _module.dialogs.disableButton = true;
-              let data = await restClient.deleteRecord(_module.dialogs.recordID,this.user().credentials.token);
-              if (data.error){
-                _module.error.general = "error deleting record";
-                _module.error.recordID = _module.dialogs.recordID;
-              }
-              else{
-                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
-                _module.approvalRequiredProcessed.splice(index, 1);
-              }
-              _module.dialogs.deleteRecord = false;
-            },
-
-            deleteRecordMenu(recordName, recordID){
-              const _module = this;
-              _module.dialogs.disableButton = false;
-              _module.dialogs.disableDelButton = true
-              _module.dialogs.recordName = recordName;
-              _module.dialogs.recordID = recordID;
-              _module.dialogs.deleteRecord = true;
-              setTimeout(function () {
-                _module.dialogs.disableDelButton = false;
-              }, 5000);
-            },
-
-            closeDeleteMenu () {
-              this.dialogs.disableButton = true;
-              this.dialogs.deleteRecord = false;
-            },
-
-           compareRecordDescUpdate(a, b) {
-      if (a.updatedAt > b.updatedAt) {
-        return -1;
-      }else{
-        return 1;
-      }
+export default {
+  name: "CuratorRecordsAwaitingApproval",
+  components: {
+    Icon,
   },
+  mixins: [formatDate, compareRecordDescUpdate],
+  props: {
+    headerItems: {
+      type: Array,
+      default: null,
+    },
+  },
+  data: () => {
+    return {
+      dialogs: {
+        approveChanges: false,
+        recordName: "",
+        recordID: "",
+        recordHidden: false,
+        deleteRecord: false,
+        disableDelButton: true,
+        disableButton: false,
+        createReview: false,
+      },
+      error: {
+        recordID: null,
+        general: null,
+      },
+      searches: "",
+      approvalRequiredProcessed: [],
+      maintenanceRequests: [],
+      approvalRequired: [],
+      recordType: {},
+      loading: false,
+      curatorList: [],
+    };
+  },
+  computed: {
+    ...mapState("users", ["user", "messages"]),
+    ...mapState("record", ["recordUpdate"]),
+  },
+  watch: {
+    approvalRequired: function () {
+      this.approvalRequiredProcessed = JSON.parse(
+        JSON.stringify(this.approvalRequired)
+      );
+    },
+    "dialogs.approveChanges"(val) {
+      val || this.closeApproveChangesMenu();
+    },
+    "dialogs.deleteRecord"(val) {
+      val || this.closeDeleteMenu();
+    },
+  },
+  async mounted() {
+    this.loading = true;
+    client.setHeader(this.user().credentials.token);
+    //Fetching records approval awaiting data
+    let data = await client.executeQuery(getCuratorApprovalsRequired);
+    let listOfCurators = await client.executeQuery(getCuratorList);
+    let hiddenRecords = await client.executeQuery(getHiddenRecords);
+    this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
+    this.approvalRequiredProcessed = JSON.parse(
+      JSON.stringify(this.approvalRequired)
+    );
+    this.loading = false;
+  },
+  methods: {
+    ...mapActions("record", ["updateRecord"]),
 
-           formatDate(d){
-      let date = new Date(d);
-      return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+    /**
+     * Method to fetch records awaiting approval
+     * @param dataCuration
+     * @param listOfCurators
+     * @param hiddenRecords
+     */
+    prepareApprovalRequired(dataCuration, listOfCurators, hiddenRecords) {
+      let userRecords = dataCuration.curatorApprovalsRequired;
+      userRecords.forEach((item) => {
+        item.fairsharingRecords.forEach((rec) => {
+          let object = {
+            createdAt: rec.createdAt,
+            updatedAt: rec.updatedAt,
+            curator: item.username.substring(0, 6),
+            recordName: `${rec.name} (${rec.id})`,
+            id: rec.id,
+            type: rec.type,
+            processingNotes: rec.processingNotes,
+            hidden: false,
+          };
+          if (rec.creator) {
+            object.creator = rec.creator.username.substring(0, 10);
+            object.idCreator = rec.creator.id;
+          } else {
+            object.creator = "unknown";
+          }
+          if (rec.priority) {
+            object.priority = "Priority";
+          } else {
+            object.priority = "";
+          }
+          const index = hiddenRecords.hiddenRecords.findIndex(
+            (element) => element.id === rec.id
+          );
+          if (index >= 0) {
+            object.hidden = true;
+          }
+          if (rec.lastEditor) {
+            object.lastEditor = rec.lastEditor.username;
+            object.idLastEditor = rec.lastEditor.id;
+          } else {
+            object.lastEditor = "unknown";
+          }
+          this.approvalRequired.push(object);
+        });
+      });
+      this.approvalRequired.sort(this.compareRecordDescUpdate);
+      for (let i = 0; i < this.approvalRequired.length; i++) {
+        this.approvalRequired[i].updatedAt = this.formatDate(
+          this.approvalRequired[i].updatedAt
+        );
+        this.approvalRequired[i].createdAt = this.formatDate(
+          this.approvalRequired[i].createdAt
+        );
+      }
+      let curators = listOfCurators.curatorList;
+      let listSuper = [];
+      let listCurator = [];
+      curators.forEach((item) => {
+        let object = {
+          id: item.id,
+          userName: item.username,
+        };
+        let role = item.role.name;
+        if (role === "super_curator") {
+          listSuper.push(object);
+        } else if (role === "curator") {
+          listCurator.push(object);
+        }
+      });
+      this.curatorList = listSuper.concat(listCurator);
+      let object = {
+        id: -1,
+        userName: "none",
+      };
+      this.curatorList.push(object);
     },
 
-        }
-    }
+    async saveProcessingNotes(idRecord, notesText) {
+      const _module = this;
+      _module.error = {
+        recordID: null,
+        general: null,
+      };
+      let preparedRecord = {
+        processing_notes: "",
+        skip_approval: true,
+      };
+      preparedRecord.processing_notes = notesText;
+      let data = {
+        record: preparedRecord,
+        id: idRecord,
+        token: _module.user().credentials.token,
+      };
+      await _module.updateRecord(data);
+      if (_module.recordUpdate.error) {
+        _module.error.general = _module.recordUpdate.message;
+        _module.error.recordID = idRecord;
+      }
+    },
 
+    async assignCurator(idRecord, idUser, nameUser) {
+      const _module = this;
+      let preparedRecord = {};
+      if (nameUser === "none") {
+        preparedRecord.curator_id = null;
+      } else {
+        preparedRecord.curator_id = idUser;
+      }
+      let data = {
+        record: preparedRecord,
+        id: idRecord,
+        token: _module.user().credentials.token,
+      };
+      await _module.updateRecord(data);
+      if (_module.recordUpdate.error) {
+        _module.error.general = _module.recordUpdate.message;
+        _module.error.recordID = idRecord;
+      }
+      const index = _module.approvalRequiredProcessed.findIndex(
+        (element) => element.id === idRecord
+      );
+      _module.approvalRequiredProcessed[index].curator = nameUser.substring(
+        0,
+        6
+      );
+    },
+
+    approveChangesMenu(recordName, recordID, recordHidden) {
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.recordHidden = recordHidden;
+      _module.dialogs.approveChanges = true;
+    },
+
+    closeApproveChangesMenu() {
+      this.dialogs.disableButton = true;
+      this.dialogs.approveChanges = false;
+    },
+
+    async confirmApproval() {
+      const _module = this;
+      _module.dialogs.disableButton = true;
+      let preparedRecord = {
+        processing_notes: undefined,
+        create_review: _module.dialogs.createReview,
+        hidden: _module.dialogs.recordHidden,
+      };
+      let data = {
+        record: preparedRecord,
+        id: _module.dialogs.recordID,
+        token: _module.user().credentials.token,
+      };
+      await _module.updateRecord(data);
+      if (_module.recordUpdate.error) {
+        _module.error.general = _module.recordUpdate.message;
+        _module.error.recordID = _module.dialogs.recordID;
+      } else {
+        const index = _module.approvalRequiredProcessed.findIndex(
+          (element) => element.id === _module.dialogs.recordID
+        );
+        _module.approvalRequiredProcessed.splice(index, 1);
+      }
+      _module.dialogs.approveChanges = false;
+      _module.dialogs.createReview = false;
+    },
+
+    async confirmDelete() {
+      const _module = this;
+      _module.dialogs.disableButton = true;
+      let data = await restClient.deleteRecord(
+        _module.dialogs.recordID,
+        this.user().credentials.token
+      );
+      if (data.error) {
+        _module.error.general = "error deleting record";
+        _module.error.recordID = _module.dialogs.recordID;
+      } else {
+        const index = _module.approvalRequiredProcessed.findIndex(
+          (element) => element.id === _module.dialogs.recordID
+        );
+        _module.approvalRequiredProcessed.splice(index, 1);
+      }
+      _module.dialogs.deleteRecord = false;
+    },
+
+    deleteRecordMenu(recordName, recordID) {
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true;
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.deleteRecord = true;
+      setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
+
+    closeDeleteMenu() {
+      this.dialogs.disableButton = true;
+      this.dialogs.deleteRecord = false;
+    },
+  },
+};
 </script>
 
 <style scoped>
-#text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input {
+#text-curator-search-0
+  div.theme--light.v-input:not(.v-input--is-disabled)
+  input {
   color: #fff;
 }
 
@@ -599,7 +611,6 @@
 }
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
-
 </style>

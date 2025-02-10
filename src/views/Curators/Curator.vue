@@ -28,7 +28,7 @@
             <a :href="getHostname() + leastRecentlyDetails.id">
               {{ leastRecentlyDetails.name }}
             </a>
-            ({{ leastRecentlyDetails.updatedAt }})
+            ({{ formatDate(leastRecentlyDetails.updatedAt) }})
           </v-card-text>
         </v-card>
         <!--Tabs-->
@@ -79,13 +79,14 @@ import {
   MaintenanceRequests,
   RecentCuratorCreation,
   SystemMessages,
-  UserRecordsAwaitingApproval
-} from "@/components/Curators"
+  UserRecordsAwaitingApproval,
+} from "@/components/Curators";
 import Icon from "@/components/Icon";
 import headersTables from "@/data/headersCuratorDashboard.json";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import getLeastRecentlyUpdated from "@/lib/GraphClient/queries/curators/getLeastRecentlyUpdated.json";
 import getHostname from "@/utils/generalUtils";
+import formatDate from "@/utils/generalUtils";
 import Unauthorized from "@/views/Errors/403.vue";
 
 const client = new GraphClient();
@@ -103,7 +104,7 @@ export default {
     UserRecordsAwaitingApproval,
     Icon,
   },
-  mixins: [getHostname],
+  mixins: [getHostname, formatDate],
   data: () => {
     return {
       leastRecentlyDetails: null,
@@ -177,8 +178,11 @@ export default {
         this.$router.push({ path: "/accounts/login" });
       }
       client.setHeader(this.user().credentials.token);
-      let leastRecentlyUpdatedData = await client.executeQuery(getLeastRecentlyUpdated);
-      this.leastRecentlyDetails = leastRecentlyUpdatedData["leastRecentlyUpdated"]
+      let leastRecentlyUpdatedData = await client.executeQuery(
+        getLeastRecentlyUpdated
+      );
+      this.leastRecentlyDetails =
+        leastRecentlyUpdatedData["leastRecentlyUpdated"];
       client.initalizeHeader();
       this.loading = false;
     });

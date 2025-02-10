@@ -21,7 +21,14 @@ const generalUtils = {
              ", " +
              date.getUTCFullYear()
            );
-         }
+         },
+        compareRecordDescUpdate(a, b) {
+            if (a.updatedAt > b.updatedAt) {
+                return -1;
+            } else {
+                return 1;
+            }
+        },
     }
 }
 

@@ -2,7 +2,9 @@
   "queryName": "messages",
   "queryParam": null,
   "fields": [
+    "id",
     "message",
-    "updatedAt"
+    "updatedAt",
+    "createdAt"
   ]
 }

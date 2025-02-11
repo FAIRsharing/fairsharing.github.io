@@ -3,14 +3,41 @@ import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
-import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json";
 import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue";
 import Client from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
+import dataDashboard from "../../../fixtures/curationDashboardData.json"
+
+let curationDataSummary =  dataDashboard.curationSummary;
 const localVue = createLocalVue();
 localVue.use(Vuex);
+let header = [
+      {
+        "text": "Date",
+        "value": "createdAt"
+      },
+      {
+        "text": "Record name (id)",
+        "value": "recordName"
+      },
+      {
+        "text": "User login",
+        "value": "userNameID"
+      },
+      {
+        "text": "Processing Notes",
+        "value": "processingNotes",
+        "sortable": false,
+        "width": 250
+      },
+      { "text": "Accept request?",
+        "value": "actions",
+        "sortable": false
+      }
+    ];
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -42,21 +69,45 @@ const $router = { push: jest.fn() };
 describe("Curator -> MaintenanceRequest.vue", () => {
   let restStub;
   let wrapper;
+  let graphStub;
   beforeAll(() => {
+    graphStub = sinon.stub(GraphClient.prototype, "executeQuery")
+        .returns(curationDataSummary)
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns(
+        {
+          data: {
+            error: false
+          }
+        }
+    );
     wrapper = shallowMount(MaintenanceRequest, {
       localVue,
       router,
       mocks: { $store, $router },
-      propsData: fakeData.propsData,
+      propsData: {
+        headerItems: header
+      }
     });
+  });
+  afterEach( () => {
+    graphStub.restore();
+    restStub.restore();
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("MaintenanceRequest");
+    expect(wrapper.vm.prepareMaintenanceRequests).toHaveBeenCalled;
     expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(4);
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
-      "Record1 (23)"
+      "Other thing (22)"
     );
+    expect(wrapper.vm.maintenanceRequests.length).toBe(4);
+    expect(wrapper.vm.maintenanceRequests[0].userName).toBe("Mariano");
+    let date = new Date("2020,8,27");
+    let auxString = date.toLocaleString('default', { month: 'short' }) + ' ' +
+        date.getDate() + ', ' + date.getFullYear();
+
+    expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(auxString);
   });
 
   it("can used methods that only change properties", () => {
@@ -81,7 +132,7 @@ describe("Curator -> MaintenanceRequest.vue", () => {
     await wrapper.vm.assignMaintenanceOwnConfirm("approved");
     expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(3);
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
-      "Record2 (24)"
+      "Other thing (22)"
     );
     //There is an error in the Client query
     restStub.restore();
@@ -120,7 +171,7 @@ describe("Curator -> MaintenanceRequest.vue", () => {
   it("can watch props data", () => {
     wrapper.vm.$options.watch.maintenanceRequests.call(wrapper.vm);
     expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch(
-      "Record1 (23)"
+      "Other thing (22)"
     );
   });
 });

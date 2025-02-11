@@ -1,5 +1,5 @@
 import recordsCardUtils from "@/utils/recordsCardUtils";
-import record from "@/views/Records/Record.vue";
+
 
 const utils = recordsCardUtils;
 

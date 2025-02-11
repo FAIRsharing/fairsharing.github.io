@@ -12,6 +12,25 @@ describe("generalUtils.js", function(){
         expect(generalUtils.methods.getAPIEndPoint()).toBe("https://dev-api.fairsharing.org");
     })
 
+    it("can check formatDate method", function () {
+        let dummyDate = "2020-09-27T09:34:54Z"
+        expect(generalUtils.methods.formatDate(dummyDate)).toBe("Sep 27, 2020");
+    })
+
+    it("can check compareRecordDescUpdate method", function () {
+        let a = {};
+        let b = {}
+        //When a > b
+        a.updatedAt = "2020-09-28T09:34:54Z"
+        b.updatedAt = "2020-09-27T09:34:54Z"
+        expect(generalUtils.methods.compareRecordDescUpdate(a, b)).toBe(-1);
+
+        //When a < b
+        a.updatedAt = "2020-09-27T09:34:54Z"
+        b.updatedAt = "2020-09-28T09:34:54Z"
+        expect(generalUtils.methods.compareRecordDescUpdate(a, b)).toBe(1);
+    })
+
     it("can check LightenDarkenColor function", function () {
         expect(LightenDarkenColor('#aaa222',50)).toBe("#fff333");
         expect(LightenDarkenColor('#ffffff',50)).toBe("#ffffff");

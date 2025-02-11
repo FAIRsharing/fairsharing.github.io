@@ -274,7 +274,7 @@
                 class="transparent scrollZone pr-3"
               >
                 <v-list-item>
-                  This record does not have any association.
+                  This record does not have any associations.
                 </v-list-item>
               </v-list>
             </v-card>

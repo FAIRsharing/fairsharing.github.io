@@ -13,6 +13,7 @@ module.exports = {
     "!views/Records/NetworkGraph.vue",
     "!src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
     "!src/components/Records/Search/SaveSearch/StepperComponents/index.js",
+    "!src/components/Curators/index.js",
   ],
   testMatch: [
     "**/**.spec.js",

@@ -11,7 +11,24 @@ const generalUtils = {
                 result[key] = obj[key];
                 return result;
             }, {});
-        }
+        },
+        formatDate(d){
+           let date = new Date(d);
+           return (
+             date.toLocaleString("default", { month: "short" }) +
+             " " +
+             date.getUTCDate() +
+             ", " +
+             date.getUTCFullYear()
+           );
+         },
+        compareRecordDescUpdate(a, b) {
+            if (a.updatedAt > b.updatedAt) {
+                return -1;
+            } else {
+                return 1;
+            }
+        },
     }
 }
 

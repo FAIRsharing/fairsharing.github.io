@@ -1,0 +1,34 @@
+{
+  "queryName": "curatorApprovalsRequired",
+  "queryParam": null,
+  "fields": [
+    "username",
+    "id",
+    {
+      "name": "fairsharingRecords",
+      "fields": [
+        "id",
+        "name",
+        "updatedAt",
+        "createdAt",
+        "type",
+        "processingNotes",
+        "priority",
+        {
+          "queryName": "lastEditor",
+          "fields": [
+            "id",
+            "username"
+          ]
+        },
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
+    }
+  ]
+}

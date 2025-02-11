@@ -175,11 +175,11 @@
           class="headline"
         >
           Are you sure you want to
-          <font
+          <span
             style="color:red; padding-left: 5px; padding-right: 5px;"
           >
             DELETE
-          </font>
+          </span>
           (without DOI) or tombstone (with DOI) this record?
           <ul style="list-style-type:none;">
             <li>

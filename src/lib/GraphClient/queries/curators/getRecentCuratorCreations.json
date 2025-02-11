@@ -1,0 +1,17 @@
+{
+  "queryName": "recentCuratorCreations",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "createdAt",
+    "type",
+    {
+      "name": "creator",
+      "fields": [
+        "id",
+        "username"
+      ]
+    }
+  ]
+}

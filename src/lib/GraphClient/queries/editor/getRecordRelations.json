@@ -8,7 +8,7 @@
       "fields": [
         {
           "queryName": "linkedRecord",
-          "fields": ["name", "id", "registry", "type"]
+          "fields": ["name", "id", "registry", "type", "status"]
         },
         "recordAssocLabel",
         "recordAssocLabelId",

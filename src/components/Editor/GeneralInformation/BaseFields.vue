@@ -474,7 +474,7 @@
 </template>
 
 <script>
-    import CountryFlag from 'vue-country-flag'
+    import CountryFlag from 'vue-country-flag-next'
     import { mapGetters,mapState } from "vuex"
 
     import Icon from "@/components/Icon"

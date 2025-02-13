@@ -463,7 +463,7 @@
 
 <script>
     import Vue from "vue"
-    import CountryFlag from "vue-country-flag";
+    import CountryFlag from "vue-country-flag-next";
     import {mapGetters, mapState} from "vuex"
 
     import PublicationClient from "@/lib/Client/ExternalClients.js"

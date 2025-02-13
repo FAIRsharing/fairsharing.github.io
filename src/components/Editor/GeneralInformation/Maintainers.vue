@@ -224,9 +224,7 @@ export default {
     removeMaintainer(maintainerIndex){
       let _module = this;
       let maintainerId = _module.maintainers[maintainerIndex].id;
-      let tempMaintainers = _module.maintainers.filter(item => item.id !== maintainerId);
-      _module.maintainers = tempMaintainers;
-      //_module.maintainers.splice(maintainerIndex, maintainerIndex+1)
+      _module.maintainers = _module.maintainers.filter(item => item.id !== maintainerId);
       if (_module.watchers.some(m => m.id === maintainerId)) {
         _module.watcherToRemove = maintainerId;
         _module.showRemoveWatcher = true;

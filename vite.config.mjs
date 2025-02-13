@@ -8,6 +8,7 @@ import path from 'path'
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import compress from 'vite-plugin-compress'
 dns.setDefaultResultOrder("verbatim");
+import autoprefixer from 'autoprefixer'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename);
@@ -55,13 +56,10 @@ export default defineConfig({
       },
     },
     postcss: {
-      plugins: {
-        autoprefixer: {}
-      },
+      plugins: [autoprefixer]
     },
   },
   build: {
-    // outDir: 'dist',
     assetsDir: 'assets',
     minify: 'esbuild',
     target: 'es2015',

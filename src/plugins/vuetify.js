@@ -1,19 +1,30 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import { createVuetify } from "vuetify";
+import customBreakPoints from "./breakPoints";
+import fairSharingTheme from "./theme";
+import { aliases, fa } from "vuetify/iconsets/fa";
+import "vuetify/styles";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
 
-import customBreakPoints from './breakPoints'
-import customIcons from './icons'
-import light from './theme'
-Vue.use(Vuetify);
-
-export default new Vuetify({
-    theme: {
-        themes: {light},
-        options: {
-            customProperties: true,
-        },
+export default createVuetify({
+  components,
+  directives,
+  theme: {
+    defaultTheme: "fairSharingTheme",
+    themes: {
+      fairSharingTheme,
     },
-    icons: customIcons,
-    breakpoint: customBreakPoints,
+    options: {
+      customProperties: true,
+    },
+  },
+  icons: {
+    defaultSet: "fa",
+    aliases,
+    sets: {
+      fa,
+    },
+  },
+  breakpoint: customBreakPoints,
 });
 

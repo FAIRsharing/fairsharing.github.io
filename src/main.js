@@ -3,9 +3,6 @@ import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-
-// import 'prism-es6/components/prism-ruby.min';
-// import 'prism-es6/components/prism-python.min';
 import Highcharts from "highcharts";
 import options3D from "highcharts/highcharts-3d";
 import More from "highcharts/highcharts-more";
@@ -28,18 +25,14 @@ import VueScrollTo from "vue-scrollto";
 import Particles from "@tsparticles/vue3";
 
 import App from "./App.vue";
-/* import router & store */
 import router from "./router";
 import { afterEach, beforeEach } from "./router";
 import store from "./store";
-// Vue.directive("linkified", linkify);
-
-// import '@babel/polyfill'
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "vue-json-pretty/lib/styles.css";
 import { createApp, configureCompat } from "vue";
-import createVuetify from "@/plugins/vuetify.js";
+import createVuetify from "../src/plugins/vuetify";
 import { loadFull } from "tsparticles";
 import { createHead } from "@unhead/vue";
 
@@ -50,23 +43,6 @@ Networkgraph(Highcharts);
 Drilldown(Highcharts);
 options3D(Highcharts);
 Sunburst(Highcharts);
-//
-// Vue.config.productionTip = false;
-// Vue.use(HighchartsVue);
-// Vue.use(VueScrollTo);
-// Vue.use(Clipboard);
-// Vue.use(VueMoment);
-// Vue.use(VueMeta, { refreshOnceOnNavigation: true });
-// Vue.use(VueCodeHighlight);
-// Vue.use(Particles);
-// Vue.use(Vue3Sanitize);
-// Vue.use(VueGtag, {
-//   config: { id: process.env.VUE_APP_ANALYTICS_ID },
-// });
-// Vue.use(VueHead);
-// Vue.use(SimpleAnalytics, {
-//   skip: process.env.NODE_ENV !== "production",
-// });
 
 router.beforeEach(
   async (to, from, next) => await beforeEach(to, from, next, store),
@@ -89,14 +65,6 @@ async function bootstrapApp() {
     }
   }
 }
-
-// bootstrapApp().then(() => {
-//   new Vue({
-//     render: (h) => h(App),
-//     router,
-//     store,
-//     vuetify,
-//   }).$mount("#app");
 
 configureCompat({
   MODE: 3,

@@ -30,7 +30,10 @@
       <!--Home Page-->
       <HomePage />
       <!--Reference URL-->
-      <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+      <ReferenceURL
+        v-if="currentRecord.fairsharingRecord.registry==='Collection' ||
+          currentRecord.fairsharingRecord.type==='principle'"
+      />
       <!--Year of Creation-->
       <YearOfCreation v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Maintainers-->

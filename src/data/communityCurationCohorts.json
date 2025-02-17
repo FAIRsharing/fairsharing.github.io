@@ -11,6 +11,7 @@
           }
         ],
         "scope": "Biodiversity",
+        "subject_area": "life_sciences",
         "orcid": "0000-0002-6590-599X",
         "early_adopter" : true,
         "show_more" : false,
@@ -32,6 +33,7 @@
           }
         ],
         "scope": "Biodiversity",
+        "subject_area": "",
         "orcid": "0000-0002-8326-5789",
         "early_adopter" : true,
         "show_more" : false,
@@ -53,6 +55,7 @@
           }
         ],
         "scope": "Biodiversity",
+        "subject_area": "",
         "orcid": "0000-0002-5788-9010",
         "early_adopter" : true,
         "show_more" : false,
@@ -74,6 +77,7 @@
           }
         ],
         "scope": "Omics",
+        "subject_area": "life_sciences",
         "orcid": "0000-0002-8741-7823",
         "early_adopter" : true,
         "show_more" : false,
@@ -96,6 +100,7 @@
           }
         ],
         "scope": "Neuroscience",
+        "subject_area": "",
         "orcid": "0000-0002-8464-2494",
         "early_adopter" : true,
         "show_more" : false,
@@ -127,6 +132,7 @@
           }
         ],
         "scope": "Neuroscience",
+        "subject_area": "",
         "orcid": "0000-0003-3257-0545",
         "early_adopter" : false,
         "show_more" : false,
@@ -148,6 +154,7 @@
           }
         ],
         "scope": "Catalysis",
+        "subject_area": "",
         "orcid": "0000-0001-7271-430X",
         "early_adopter" : false,
         "show_more" : false,
@@ -169,6 +176,7 @@
           }
         ],
         "scope": "Humanities",
+        "subject_area": "",
         "orcid": "0000-0002-2307-8770",
         "early_adopter" : false,
         "show_more" : false,
@@ -190,6 +198,7 @@
           }
         ],
         "scope": "Earth Sciences",
+        "subject_area": "",
         "orcid": "0000-0001-8104-6147",
         "early_adopter" : false,
         "show_more" : false,
@@ -220,6 +229,7 @@
           }
         ],
         "scope": "Humanities and Social Science",
+        "subject_area": "",
         "orcid": "0000-0001-9288-2888",
         "early_adopter" : false,
         "show_more" : false,
@@ -244,6 +254,7 @@
           }
         ],
         "scope": "Economics",
+        "subject_area": "",
         "orcid": "0000-0001-5733-8932",
         "early_adopter" : false,
         "show_more" : false,
@@ -269,6 +280,7 @@
           }
         ],
         "scope": "Microscopy",
+        "subject_area": "",
         "orcid": "0000-0002-5444-5246",
         "early_adopter" : false,
         "show_more" : false,
@@ -290,6 +302,7 @@
           }
         ],
         "scope": "Humanities and Social Science",
+        "subject_area": "",
         "orcid": "0000-0002-8307-6486",
         "early_adopter" : false,
         "show_more" : false,
@@ -311,6 +324,7 @@
           }
         ],
         "scope": "Humanities and Social Science",
+        "subject_area": "social_sciences_and_humanities",
         "orcid": "0000-0002-2411-1798",
         "early_adopter" : false,
         "show_more" : false,
@@ -332,6 +346,7 @@
           }
         ],
         "scope": "Material sciences and catalysis",
+        "subject_area": "",
         "orcid": "0000-0002-5902-650X",
         "early_adopter" : false,
         "show_more" : false,
@@ -358,6 +373,7 @@
           }
         ],
         "scope": "Physics",
+        "subject_area": "",
         "orcid": "0000-0002-0517-7943",
         "early_adopter" : false,
         "show_more" : false,
@@ -379,6 +395,7 @@
           }
         ],
         "scope": "Policies and Chemistry",
+        "subject_area": "chemistry",
         "orcid": "0000-0002-5485-6256",
         "early_adopter" : false,
         "show_more" : false,
@@ -400,6 +417,7 @@
           }
         ],
         "scope": "Ethics",
+        "subject_area": "social_sciences_and_humanities",
         "orcid": "0000-0002-6893-5916",
         "early_adopter" : false,
         "show_more" : false,
@@ -421,6 +439,7 @@
           }
         ],
         "scope": "Ecology and Agriculture",
+        "subject_area": "earth_sciences",
         "orcid": "0000-0003-4177-1322",
         "early_adopter" : false,
         "show_more" : false,
@@ -442,6 +461,7 @@
           }
         ],
         "scope": "Structural Biology, Biochemistry, Biophysics, Crystallography and Biocuration",
+        "subject_area": "life_sciences",
         "orcid": "0000-0002-0574-2041",
         "early_adopter" : false,
         "show_more" : false,
@@ -466,6 +486,7 @@
           }
         ],
         "scope": "Training, Policies and UKRN link",
+        "subject_area": "life_sciences",
         "orcid": "0000-0002-0133-4155",
         "early_adopter" : false,
         "show_more" : false,
@@ -486,6 +507,7 @@
           }
         ],
         "scope": "Open science and Medicine",
+        "subject_area": "",
         "orcid": "0000-0003-2797-1686",
         "early_adopter" : false,
         "show_more" : false,
@@ -506,6 +528,7 @@
           }
         ],
         "scope": "Knowledge graphs and Chemoinformatics",
+        "subject_area": "chemistry",
         "orcid": "0000-0002-7683-0452",
         "early_adopter" : false,
         "show_more" : false,
@@ -527,6 +550,7 @@
           }
         ],
         "scope": "Research Data Management",
+        "subject_area": "multi_disciplinary",
         "orcid": "0000-0003-3484-7675",
         "early_adopter" : false,
         "show_more" : false,
@@ -548,6 +572,7 @@
           }
         ],
         "scope": "Bioinformatics",
+        "subject_area": "",
         "orcid": "0000-0002-2574-9611",
         "early_adopter" : false,
         "show_more" : false,
@@ -568,6 +593,7 @@
           }
         ],
         "scope": "Research Data Management",
+        "subject_area": "social_sciences_and_humanities",
         "orcid": "0009-0000-4679-676X",
         "early_adopter" : false,
         "show_more" : false,
@@ -592,6 +618,7 @@
           }
         ],
         "scope": "Research Data Management and Omics",
+        "subject_area": "life_sciences",
         "orcid": "0000-0001-8862-1706",
         "early_adopter" : false,
         "show_more" : false,
@@ -612,6 +639,7 @@
           }
         ],
         "scope": "Chemistry",
+        "subject_area": "chemistry",
         "orcid": "0000-0001-7696-7662",
         "early_adopter" : false,
         "show_more" : false,
@@ -632,6 +660,7 @@
           }
         ],
         "scope": "Human genetics",
+        "subject_area": "",
         "orcid": "0000-0002-3528-7721",
         "early_adopter" : false,
         "show_more" : false,
@@ -652,6 +681,7 @@
         }
       ],
       "scope": "Developmental Cognitive Neruoscience and RDM",
+      "subject_area": "",
       "orcid": "0000-0001-8809-8572",
       "early_adopter" : false,
       "show_more" : false,
@@ -672,6 +702,7 @@
         }
       ],
       "scope": "Circadian Biology and RDM",
+      "subject_area": "life_sciences",
       "orcid": "0000-0001-8116-4100",
       "early_adopter" : false,
       "show_more" : false,
@@ -692,6 +723,7 @@
         }
       ],
       "scope": "Research Technology",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0000-0002-6610-0835",
       "early_adopter" : false,
       "show_more" : false,
@@ -712,6 +744,7 @@
         }
       ],
       "scope": "Computer Science",
+      "subject_area": "physics",
       "orcid": "0000-0003-1374-6015",
       "early_adopter" : false,
       "show_more" : false,
@@ -732,6 +765,7 @@
         }
       ],
       "scope": "Research Data Management and Open Research",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0000-0002-4837-6395",
       "early_adopter" : false,
       "show_more" : false,
@@ -752,6 +786,7 @@
         }
       ],
       "scope": "Data Science, Experimental Methods and Digital Health",
+      "subject_area": "life_sciences",
       "orcid": "0000-0002-0151-6397",
       "early_adopter" : false,
       "show_more" : false,
@@ -772,6 +807,7 @@
         }
       ],
       "scope": "Cultural Heritage",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0000-0002-0151-6397",
       "early_adopter" : false,
       "show_more" : false,
@@ -792,6 +828,7 @@
         }
       ],
       "scope": "Archeology and RDM",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0000-0002-0299-6687",
       "early_adopter" : false,
       "show_more" : false,
@@ -812,6 +849,7 @@
         }
       ],
       "scope": "Institutional repositories",
+      "subject_area": "multi_disciplinary",
       "orcid": "0000-0001-9819-9991",
       "early_adopter" : false,
       "show_more" : false,
@@ -832,6 +870,7 @@
         }
       ],
       "scope": "Planetary sciences and heliophysics",
+      "subject_area": "physics",
       "orcid": "0000-0001-7915-5571",
       "early_adopter" : false,
       "show_more" : false,
@@ -852,6 +891,7 @@
         }
       ],
       "scope": "Clinical Trials & Research Data Management",
+      "subject_area": "multi_disciplinary",
       "orcid": "0000-0003-4975-5773",
       "early_adopter" : false,
       "show_more" : false,
@@ -888,6 +928,7 @@
         }
       ],
       "scope": "Life sciences & Research Data Management",
+      "subject_area": "life_sciences",
       "orcid": "0000-0003-4073-7456",
       "early_adopter" : false,
       "show_more" : false,
@@ -903,6 +944,7 @@
       "id": 11091,
       "organisation": [],
       "scope": "Biodiversity, Genomics, ELIXIR Biodiversity Community",
+      "subject_area": "life_sciences",
       "orcid": "0000-0003-2569-0768",
       "early_adopter" : false,
       "show_more" : false,
@@ -918,6 +960,7 @@
       "id": 13165,
       "organisation": [],
       "scope": "Bioinformatics, ELIXIR Intrinsically Disordered Proteins Community",
+      "subject_area": "life_sciences",
       "orcid": "000-0001-6218-5192",
       "early_adopter" : false,
       "show_more" : false,
@@ -938,6 +981,7 @@
         }
       ],
       "scope": "ELIXIR Research Data Management Community",
+      "subject_area": "physics",
       "orcid": "0000-0002-9016-4820",
       "early_adopter" : false,
       "show_more" : false,

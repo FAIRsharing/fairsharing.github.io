@@ -283,7 +283,7 @@
 </template>
 
 <script>
-import CountryFlag from "vue-country-flag";
+import CountryFlag from "vue-country-flag-next";
 import { mapActions, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js"

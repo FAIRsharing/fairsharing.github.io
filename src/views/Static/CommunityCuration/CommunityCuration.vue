@@ -174,9 +174,7 @@ import cleanString from "@/utils/stringUtils"
         broadSubjects: {
           "title": "Champions' Broad Specialisms",
           "data": []
-        },
-        readonly: true,
-        panel: true
+        }
       }
     },
     mounted() {

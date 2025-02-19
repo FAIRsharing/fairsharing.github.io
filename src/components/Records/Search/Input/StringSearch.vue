@@ -10,12 +10,12 @@
     >
       <v-text-field
         v-model="searchTerm"
-        solo
+        variant="solo"
         single-line
         clearable
-        dense
+        density="compact"
         full-width
-        :class="$vuetify.breakpoint.lgAndDown ? 'v-input' : 'v-input-lg-up'"
+        :class="$vuetify.display.lgAndDown ? 'v-input' : 'v-input-lg-up'"
         :height="responsiveHeightTextBox"
         :placeholder="placeholder"
       />
@@ -23,16 +23,16 @@
       <!--  reusable search box  -->
       <v-btn
         v-if="!showHomeSearch"
-        small
+        size="small"
         color="primary"
-        outlined
+        variant="outlined"
         :class="responsiveHeight"
         class="mt-1 mt-lg-1 ml-2"
         type="submit"
         @click="searchString()"
       >
         <v-icon
-          x-small
+          size="x-small"
           class="mr-1"
         >
           fas fa-search
@@ -44,7 +44,7 @@
       <AdvancedSearch
         v-if="!showHomeSearch"
         :advanced-search-term="searchTerm"
-        @clearSearchField="clearSearchField"
+        @clear-search-field="clearSearchField"
       />
       <!--  home page search box  -->
       <v-btn
@@ -52,14 +52,14 @@
         color="primary"
         :class="[
           'mt-1 mt-lg-1 ml-2',
-          $vuetify.breakpoint.lgAndDown
+          $vuetify.display.lgAndDown
             ? 'home-search-bt'
             : 'home-search-bt-xl',
         ]"
         @click="searchStringHomePage()"
       >
         <v-icon
-          x-small
+          size="x-small"
           class="mr-1"
         >
           fas fa-search
@@ -120,15 +120,15 @@ export default {
   computed: {
     responsiveHeight: function () {
       return {
-        "style-sm-xs": this.$vuetify.breakpoint.mdAndDown,
-        "style-md": this.$vuetify.breakpoint.mdOnly,
-        "style-lg": this.$vuetify.breakpoint.lgOnly,
-        "style-xl": this.$vuetify.breakpoint.xlOnly,
+        "style-sm-xs": this.$vuetify.display.mdAndDown,
+        "style-md": this.$vuetify.display.mdOnly,
+        "style-lg": this.$vuetify.display.lgOnly,
+        "style-xl": this.$vuetify.display.xlOnly,
       };
     },
     responsiveHeightTextBox: function () {
       let boxHeight = 35;
-      if (this.$vuetify.breakpoint.xlOnly) {
+      if (this.$vuetify.display.xlOnly) {
         boxHeight = 50;
       }
       return boxHeight;
@@ -148,7 +148,8 @@ export default {
             ..._module.$route.query,
             q: _module.searchTerm,
           };
-        } else {
+        }
+        else {
           query = {
             // Changed due to: https://github.com/FAIRsharing/FAIRsharing-API/issues/625
             q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
@@ -174,7 +175,8 @@ export default {
           });
           _module.searchTerm = null;
           _module.$refs.form.resetValidation();
-        } else {
+        }
+        else {
           const selectedRegistriesValues = [];
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);

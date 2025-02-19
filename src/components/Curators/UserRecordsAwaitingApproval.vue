@@ -3,7 +3,7 @@
     <v-card-text v-if="approvalRequiredProcessed">
       <v-card-title
         id="text-curator-search-0"
-        class="green white--text"
+        class="bg-green text-white"
       >
         <b> USER EDITS AWAITING APPROVAL </b>
         <v-spacer />
@@ -13,7 +13,7 @@
           color="white"
           single-line
           hide-details
-          solo
+          variant="solo"
           class="searchField"
           clearable
         />
@@ -47,15 +47,15 @@
             </td>
             <td>
               <v-menu>
-                <template #activator="{ on: menu, attrs }">
-                  <v-tooltip bottom>
+                <template #activator="{ props }">
+                  <v-tooltip location="bottom">
                     <template #activator="{ on: tooltip }">
                       <v-icon
                         class="clickable"
-                        small
+                        size="small"
                         color="nordnetBlue"
-                        v-bind="attrs"
-                        v-on="{ ...tooltip, ...menu }"
+                       
+                        props""v-on="v-bind="
                       >
                         {{ props.item.curator }}
                       </v-icon>
@@ -107,7 +107,7 @@
             </td>
             <td>
               <v-edit-dialog
-                :return-value.sync="props.item.processingNotes"
+                v-model:return-value="props.item.processingNotes"
                 large
                 @save="
                   saveProcessingNotes(props.item.id, props.item.processingNotes)
@@ -116,14 +116,14 @@
                 {{ props.item.processingNotes }}
                 <template #input>
                   <div class="dialogProcNotesEdit">
-                    <div class="mt-4 title">
+                    <div class="mt-4 text-h6">
                       Update Processing Notes
                     </div>
                     <v-textarea
                       v-model="props.item.processingNotes"
                       width="1200px"
                       label="Edit (not long words)"
-                      filled
+                      variant="filled"
                     />
                   </div>
                 </template>
@@ -133,7 +133,7 @@
               <v-icon
                 color="blue"
                 dark
-                left
+                start
                 @click.stop="
                   approveChangesMenu(
                     props.item.recordName,
@@ -148,17 +148,17 @@
               <v-icon
                 color="red"
                 dark
-                right
-                small
+                end
+                size="small"
                 @click="deleteRecordMenu(props.item.recordName, props.item.id)"
               >
                 fas fa-trash
               </v-icon>
-              <v-tooltip bottom>
-                <template #activator="{ on, attrs }">
+              <v-tooltip location="bottom">
+                <template #activator="{ props }">
                   <span
-                    v-bind="attrs"
-                    v-on="on"
+                   
+                    v-bind="props"
                   >
                     <a
                       :href="'/' + props.item.id + '/edit'"
@@ -195,7 +195,7 @@
         max-width="700px"
       >
         <v-card>
-          <v-card-title class="headline">
+          <v-card-title class="text-h5">
             Are you sure you want to
             <span style="color: blue; padding-left: 5px; padding-right: 1px">
               ACCEPT/APPROVE CHANGES
@@ -211,15 +211,15 @@
             <v-spacer />
             <v-btn
               :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="closeApproveChangesMenu()"
             >
               Cancel
             </v-btn>
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="confirmApproval()"
             >
               OK
@@ -250,7 +250,7 @@
         max-width="700px"
       >
         <v-card>
-          <v-card-title class="headline">
+          <v-card-title class="text-h5">
             Are you sure you want to
             <span style="color: red; padding-left: 5px; padding-right: 5px">
               DELETE
@@ -266,8 +266,8 @@
             <v-spacer />
             <v-btn
               :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="closeDeleteMenu()"
             >
               Cancel
@@ -277,8 +277,8 @@
                 dialogs.disableDelButton === true ||
                   dialogs.disableButton === true
               "
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="confirmDelete()"
             >
               OK
@@ -399,12 +399,14 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          } else {
+          }
+          else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          } else {
+          }
+          else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
@@ -416,7 +418,8 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          } else {
+          }
+          else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -442,7 +445,8 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        } else if (role === "curator") {
+        }
+        else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -482,7 +486,8 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      } else {
+      }
+      else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -535,7 +540,8 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID
         );
@@ -555,7 +561,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID
         );
@@ -606,7 +613,7 @@ export default {
   overflow-y: auto;
 }
 
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
 .searchField {

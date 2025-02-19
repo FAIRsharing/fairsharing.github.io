@@ -11,7 +11,7 @@
         :item="item"
         :is-first-item="item_index === 0"
         :item-parent-index="buttonIndex"
-        :md-screens="$vuetify.breakpoint.mdAndDown"
+        :md-screens="$vuetify.display.mdAndDown"
         :multiple-items="buttonVal.data.length > 2"
         :double-items="buttonVal.data.length === 2"
       />
@@ -20,27 +20,27 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
+import {mapState} from "vuex";
 
-    import FilterButton from "./FilterButton";
+import FilterButton from "./FilterButton";
 
-    export default {
-        name: "FilterButtons",
-        components: {
-          FilterButton
-        },
-        computed: {
-            ...mapState("searchFilters", ["filterButtons"]),
-            ...mapState("searchFilters", ["isLoadingData"]),
-            ...mapState('users', ["user"]),
-            allowedFilterButtons() {
-              let _module = this;
-              let user = _module.user();
-              if (user.is_curator) {
-                return this.filterButtons;
-              }
-              return this.filterButtons.filter(function(el) { return el.curator_only === false; });
-            }
-        }
+export default {
+  name: "FilterButtons",
+  components: {
+    FilterButton
+  },
+  computed: {
+    ...mapState("searchFilters", ["filterButtons"]),
+    ...mapState("searchFilters", ["isLoadingData"]),
+    ...mapState('users', ["user"]),
+    allowedFilterButtons() {
+      let _module = this;
+      let user = _module.user();
+      if (user.is_curator) {
+        return this.filterButtons;
+      }
+      return this.filterButtons.filter(function(el) { return el.curator_only === false; });
     }
+  }
+}
 </script>

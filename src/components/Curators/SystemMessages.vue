@@ -8,11 +8,11 @@
         <v-card-text v-if="systemMessages">
           <v-card-title
             id="system-messages"
-            class="green white--text"
+            class="bg-green text-white"
           >
             SYSTEM MESSAGES
             <v-btn
-              class="info ml-5"
+              class="bg-info ml-5"
               @click.stop="showAddMessage()"
             >
               <v-icon
@@ -21,7 +21,7 @@
               >
                 fa fa-plus
               </v-icon>
-              <span class="white--text">Add message</span>
+              <span class="text-white">Add message</span>
             </v-btn>
             <v-spacer />
           </v-card-title>
@@ -41,7 +41,7 @@
                 </td>
                 <td>
                   <v-edit-dialog
-                    :return-value.sync="props.item.message"
+                    v-model:return-value="props.item.message"
                     large
                     @save="
                       saveEditedMessage(props.item.id, props.item.message)
@@ -50,14 +50,14 @@
                     {{ props.item.message }}
                     <template #input>
                       <div class="dialogMessageEdit">
-                        <div class="mt-4 title">
+                        <div class="mt-4 text-h6">
                           Update Message
                         </div>
                         <v-textarea
                           v-model="props.item.message"
                           width="1200px"
                           label="Edit away!"
-                          filled
+                          variant="filled"
                         />
                       </div>
                     </template>
@@ -73,8 +73,8 @@
                   <v-icon
                     color="red"
                     dark
-                    right
-                    small
+                    end
+                    size="small"
                     @click="deleteMessage(props.item.id)"
                   >
                     fas fa-trash
@@ -98,7 +98,7 @@
           max-width="700px"
         >
           <v-card>
-            <v-card-title class="headline">
+            <v-card-title class="text-h5">
               Add new message
             </v-card-title>
             <v-card-text>
@@ -114,15 +114,15 @@
             <v-card-actions>
               <v-spacer />
               <v-btn
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
+                variant="text"
                 @click="closeAddMessageMenu()"
               >
                 Cancel
               </v-btn>
               <v-btn
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
+                variant="text"
                 :disabled="!dialogs.newMessage"
                 @click="addMessage()"
               >
@@ -142,7 +142,7 @@
           max-width="700px"
         >
           <v-card>
-            <v-card-title class="headline">
+            <v-card-title class="text-h5">
               Are you sure you want to
               <span style="color: red; padding-left: 5px; padding-right: 5px">
                 DELETE
@@ -155,15 +155,15 @@
             <v-card-actions>
               <v-spacer />
               <v-btn
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
+                variant="text"
                 @click="closeDeleteMessageMenu()"
               >
                 Cancel
               </v-btn>
               <v-btn
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
+                variant="text"
                 @click="confirmDeleteMessage()"
               >
                 OK
@@ -258,12 +258,13 @@ export default {
         message: message,
       };
       let response = await restClient.updateMessage(
-          data,
-          this.user().credentials.token
+        data,
+        this.user().credentials.token
       );
       if (response.error) {
         _module.error.general = response.error;
-      } else {
+      }
+      else {
         _module.systemMessages.forEach(function (m) {
           if (m.id === id) {
             m.message = message;
@@ -290,12 +291,13 @@ export default {
         message: _module.dialogs.newMessage,
       };
       let response = await restClient.createMessage(
-          data,
-          this.user().credentials.token
+        data,
+        this.user().credentials.token
       );
       if (response.error) {
         _module.error.general = response.error;
-      } else {
+      }
+      else {
         _module.systemMessages.push({
           id: response.id,
           message: response.message,
@@ -317,12 +319,13 @@ export default {
     async confirmDeleteMessage() {
       const _module = this;
       let response = await restClient.deleteMessage(
-          _module.dialogs.messageId,
-          this.user().credentials.token
+        _module.dialogs.messageId,
+        this.user().credentials.token
       );
       if (response.error) {
         _module.error.general = response.error;
-      } else {
+      }
+      else {
         let filtered = _module.systemMessages.filter(function (f) {
           return f.id !== _module.dialogs.messageId;
         });
@@ -337,7 +340,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
 </style>

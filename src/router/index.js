@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 
 import { hackSearch } from "@/router/hackSearch";
 import store from "@/store";
@@ -52,13 +51,13 @@ import {
   Added to catch NavigationDuplicated router error
 */
 
-const originalPush = VueRouter.prototype.push;
-/* istanbul ignore next */
-VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch((err) => err);
-};
-
-Vue.use(VueRouter);
+// const originalPush = VueRouter.prototype.push;
+// /* istanbul ignore next */
+// VueRouter.prototype.push = function push(location) {
+//   return originalPush.call(this, location).catch((err) => err);
+// };
+//
+// Vue.use(VueRouter);
 
 let routes = [
   {
@@ -113,7 +112,8 @@ let routes = [
       let [query, modified] = hackSearch(to.query);
       if (modified) {
         next({ name: "search", query: query });
-      } else {
+      }
+      else {
         next();
       }
     },
@@ -143,7 +143,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_databases_in_policies") {
+      }
+      else if (to.params.name === "live_list_databases_in_policies") {
         return {
           name: "search",
           query: {
@@ -152,7 +153,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_journal_policies") {
+      }
+      else if (to.params.name === "live_list_journal_policies") {
         return {
           name: "search",
           query: {
@@ -161,7 +163,8 @@ let routes = [
             page: 1,
           },
         };
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -193,11 +196,13 @@ let routes = [
         window.location.assign(
           "https://github.com/FAIRsharing/subject-ontology"
         );
-      } else if (to.params.name.toLowerCase() === "drao") {
+      }
+      else if (to.params.name.toLowerCase() === "drao") {
         window.location.assign(
           "https://github.com/FAIRsharing/domain-ontology"
         );
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -521,10 +526,10 @@ let routes = [
     path: "/preservation_policy",
     redirect: () => {
       window.location.assign(
-          [
-            process.env.VUE_APP_API_HOSTNAME,
-            "/sustainability_and_preservation",
-          ].join("")
+        [
+          process.env.VUE_APP_API_HOSTNAME,
+          "/sustainability_and_preservation",
+        ].join("")
       );
     },
   },
@@ -712,7 +717,7 @@ let routes = [
   /* REDIRECTION */
   {
     name: "*",
-    path: "*/*",
+    path: "/*/*",
     component: NotFound,
   },
 ];
@@ -730,18 +735,23 @@ export async function afterEach(to) {
   }
 }
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes,
-  scrollBehavior,
-  mode: process.env.VUE_APP_MODE, // "history" or "hash"
+  scrollBehavior(to) {
+    if (to.hash) {
+      return { selector: to.hash };
+    }
+    return false;
+  },
 });
 
-export function scrollBehavior(to) {
-  if (to.hash) {
-    return { selector: to.hash };
-  }
-  return false;
-}
+// export function scrollBehavior(to) {
+//   if (to.hash) {
+//     return { selector: to.hash };
+//   }
+//   return false;
+// }
 
 export async function beforeEach(to, from, next, store) {
   if (to.path !== "/maintenance" && store.state.introspection.maintenanceMode) {
@@ -760,7 +770,8 @@ export async function beforeEach(to, from, next, store) {
 export function isLoggedIn(to, from, next, store) {
   if (store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //
@@ -772,7 +783,8 @@ export function isLoggedIn(to, from, next, store) {
 export function isNotLoggedIn(to, from, next, store) {
   if (!store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     next(from);
   }
 }
@@ -780,7 +792,8 @@ export function isNotLoggedIn(to, from, next, store) {
 export function isSuperCurator(to, from, next, store) {
   if (store.state.users.user().is_super_curator) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //

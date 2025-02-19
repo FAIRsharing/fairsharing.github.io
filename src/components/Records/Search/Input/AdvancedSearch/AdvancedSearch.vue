@@ -7,12 +7,12 @@
       class="mb-13"
       :class="[
         'mt-1',
-        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+        $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
       ]"
       @click="openAdvanceSearch()"
     >
       <v-icon
-        small
+        size="small"
         class="mr-1"
       >
         fab fa-searchengin
@@ -23,12 +23,12 @@
     <v-btn
       v-else
       color="primary"
-      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
+      :size="$vuetify.display.xlOnly ? true : false ? 'x-large' : undefined"
       class="mr-10"
       @click="openAdvanceSearch()"
     >
       <v-icon
-        small
+        size="small"
         class="mr-1"
       >
         fab fa-searchengin

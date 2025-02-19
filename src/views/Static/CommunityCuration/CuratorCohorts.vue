@@ -14,7 +14,7 @@
           >
             <h1
               class="header"
-              :class="{'smallerHeading' : $vuetify.breakpoint.xs}"
+              :class="{'smallerHeading' : $vuetify.display.xs}"
             >
               {{ alumniCurator ? "Alumni Community Champions": `Community Champions for ${ year }` }}
             </h1>
@@ -27,9 +27,9 @@
           >
             <v-btn
               elevation="2"
-              class="full-width white--text"
+              class="full-width text-white"
               height="40"
-              :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
+              :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.display.smAndDown}]"
               @click="listAlumni()"
             >
               {{ alumniCurator ? "View Current Champions": "View Alumni" }}
@@ -43,12 +43,12 @@
           >
             <v-select
               v-model="year"
-              solo
+              variant="solo"
               :items="yearList"
               label="Year"
-              outlined
-              dense
-              @change="selectYear()"
+              variant="outlined"
+              density="compact"
+              @update:model-value="selectYear()"
             />
           </v-col>
           <v-col
@@ -59,8 +59,8 @@
           >
             <v-btn
               elevation="2"
-              class="full-width white--text green text-md-caption text-lg-body-2 font-weight-medium"
-              :class="{'mt-n4 mb-4' : $vuetify.breakpoint.smAndDown}"
+              class="full-width text-white bg-green text-md-caption text-lg-body-2 font-weight-medium"
+              :class="{'mt-n4 mb-4' : $vuetify.display.smAndDown}"
               height="40"
               href="/community_champions"
             >
@@ -114,7 +114,7 @@
             >
               <v-img
                 :src="card.logo ? `/assets/Community/profiles/${card.logo}` : '/assets/Community/profiles/profileplaceholder.png'"
-                class="white--text align-end"
+                class="text-white align-end"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                 cover
                 aspect-ratio="1"
@@ -128,7 +128,7 @@
                     <v-icon
                       class="toggleIcon"
                       color="white"
-                      dense
+                      size="small"
                     />
                   </v-btn>
                 </v-card-actions>
@@ -137,7 +137,7 @@
                   :class="{'hide': !card.show_more}"
                 >
                   <v-list-item class="align-baseline">
-                    <v-list-item-content>
+                    
                       <v-list-item
                         v-if="card.orcid"
                         dark
@@ -148,7 +148,7 @@
                           class="d-flex align-center"
                         >
                           <v-icon
-                            left
+                            start
                             class="mr-2"
                           >
                             {{ 'fab fa-orcid' }}
@@ -163,7 +163,7 @@
                           target="_blank"
                           class="d-flex align-center"
                         ><v-icon
-                          left
+                          start
                           class="mr-2"
                         >
                           {{ 'fab fa-twitter' }}
@@ -178,7 +178,7 @@
                           target="_blank"
                           class="d-flex align-center"
                         ><v-icon
-                          left
+                          start
                           class="mr-2"
                         >
                           {{ 'fab fa-mastodon' }}
@@ -193,13 +193,13 @@
                           target="_blank"
                           class="d-flex align-center"
                         ><v-icon
-                          left
+                          start
                           class="mr-2"
                         >
                           {{ 'fab fa-linkedin' }}
                         </v-icon><span>{{ card.linkedin }}</span></a>
                       </v-list-item>
-                    </v-list-item-content>
+                    
                   </v-list-item>
                   <v-card-subtitle
                     v-for="skill in card.gained_skills"
@@ -211,7 +211,7 @@
                       color="pink"
                       label
                       text-color="white"
-                      small
+                      size="small"
                       :href="skill.url"
                       target="_blank"
                     >
@@ -235,7 +235,7 @@
                       color="pink"
                       label
                       text-color="white"
-                      small
+                      size="small"
                     >
                       Early Adopter
                     </v-chip>
@@ -245,7 +245,7 @@
                       color="pink"
                       label
                       text-color="white"
-                      small
+                      size="small"
                     >
                       Curation Expert
                     </v-chip>
@@ -256,7 +256,7 @@
               <v-card-text
                 class="text--primary"
                 style="height: 100%"
-                :style="$vuetify.breakpoint.xl ? 'height: 115px': $vuetify.breakpoint.mdAndUp ? 'height: 135px' : 'height: 100%'"
+                :style="$vuetify.display.xl ? 'height: 115px': $vuetify.display.mdAndUp ? 'height: 135px' : 'height: 100%'"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :
@@ -266,13 +266,13 @@
                   >
                     <v-tooltip
                       v-if="org.tooltip"
-                      bottom
+                      location="bottom"
                     >
-                      <template #activator="{ on }">
+                      <template #activator="{ props }">
                         <a
                           :href="`/organisations/${org.id}`"
                           class="d-inline-block"
-                          v-on="on"
+                          v-bind="props"
                         >{{ org.name }}
                         </a>
                       </template>
@@ -315,14 +315,14 @@
                   tile
                 >
                   <v-icon
-                    left
+                    start
                     class="mr-2"
                   >
                     {{ 'fa fa-user-circle' }}
                   </v-icon>
                   <span
                     class="text-truncate text-capitalize full-width"
-                    :style=" $vuetify.breakpoint.xs ? 'max-width: 166px': 'max-width: 236px'"
+                    :style=" $vuetify.display.xs ? 'max-width: 166px': 'max-width: 236px'"
                   > Meet {{ card.name }}</span>
                 </v-btn>
               </v-card-actions>
@@ -353,9 +353,9 @@ export default {
       curatorQuotes: communityCurationCohorts.quotes
     }
   },
-   mounted() {
-      this.error = !Object.keys(this.communityCurationCohorts).length
-      this.getCuratorsList(this.year)
+  mounted() {
+    this.error = !Object.keys(this.communityCurationCohorts).length
+    this.getCuratorsList(this.year)
   },
   methods: {
     getCuratorsList(yearSelected) {
@@ -394,7 +394,8 @@ export default {
           return curator.year_active.every(el => el < new Date().getFullYear()) || !curator.active
         })
         this.year = null;
-      } else {
+      }
+      else {
         this.year = new Date().getFullYear();
         this.getCuratorsList(new Date().getFullYear())
       }

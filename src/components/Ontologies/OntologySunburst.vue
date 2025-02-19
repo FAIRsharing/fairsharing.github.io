@@ -7,6 +7,10 @@
 
 <script>
 import { mapActions, mapGetters,mapState } from "vuex"
+import Sunburst from "highcharts/modules/sunburst";
+import Highcharts from "highcharts";
+
+Sunburst(Highcharts);
 
 export default {
   name: "OntologySunburst",
@@ -147,7 +151,7 @@ export default {
         }
       }
     },
-    getWidth() { return (this.$vuetify.breakpoint.xlOnly) ? "60%" : "100%" },
+    getWidth() { return (this.$vuetify.display.xlOnly) ? "60%" : "100%" },
     getTooltip(point) {
       return (point.name === "Subjects") ? false : '<div class="HC-tooltip">' + point.name  + '</div>'
     },

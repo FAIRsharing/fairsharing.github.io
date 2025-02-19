@@ -11,14 +11,14 @@
         class="pt-0 mt-2"
       >
         <v-card height="100%">
-          <v-card-title class="blue white--text">
+          <v-card-title class="bg-blue text-white">
             Legend and configuration
           </v-card-title>
           <v-card-text class="pt-3">
             <v-container fluid>
               <v-row no-gutters>
                 <v-col cols="12">
-                  The graph's centre is shown in <span class="red--text">red.</span>
+                  The graph's centre is shown in <span class="text-red">red.</span>
                 </v-col>
                 <v-col cols="12">
                   Click on any point to re-draw the graph with that point as the centre.
@@ -40,7 +40,7 @@
                   Relations between records are coloured as follows:
                 </v-col>
                 <v-col cols="12">
-                  <v-list dense>
+                  <v-list density="compact">
                     <v-list-item
                       v-for="legendItem in networkGraph['legend']"
                       :key="legendItem['name']"
@@ -65,7 +65,7 @@
                 </h3>
                 <v-row
                   no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                  :class="{'d-flex justify-space-around': $vuetify.display.smOnly}"
                 >
                   <v-col
                     cols="12"
@@ -76,7 +76,7 @@
                     xl="12"
                     fluid
                     class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                    :class="$vuetify.display.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
                   >
                     <v-btn
                       v-for="registryItem in networkGraph['registry']"
@@ -84,7 +84,7 @@
                       class="status_style mx-3 mb-2"
                       :color="registryItem['active'] ? registryItem['color'] : 'gray' "
                       :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
+                        $vuetify.display.xsOnly ? 'full-width' : 'button-filters',
                         registryItem['active'] ? 'white--text ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
@@ -103,7 +103,7 @@
                 </h3>
                 <v-row
                   no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                  :class="{'d-flex justify-space-around': $vuetify.display.smOnly}"
                 >
                   <v-col
                     cols="12"
@@ -114,7 +114,7 @@
                     xl="12"
                     fluid
                     class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                    :class="$vuetify.display.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
                   >
                     <v-btn
                       v-for="status in networkGraph['status']"
@@ -122,7 +122,7 @@
                       class="status_style mx-3 mb-2"
                       :color="status['active'] ? status['color'] : 'gray' "
                       :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
+                        $vuetify.display.xsOnly ? 'full-width' : 'button-filters',
                         status['active'] ? 'white--text ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
@@ -141,7 +141,7 @@
                 </h3>
                 <v-row
                   no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                  :class="{'d-flex justify-space-around': $vuetify.display.smOnly}"
                 >
                   <v-col
                     cols="12"
@@ -152,7 +152,7 @@
                     xl="12"
                     fluid
                     class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                    :class="$vuetify.display.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
                   >
                     <v-btn
                       v-for="distance in networkGraph['distance']"
@@ -161,7 +161,7 @@
                       class="status_style mx-3 mb-2"
                       :color="getLengthColour(distance['hops'])"
                       :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
+                        $vuetify.display.xsOnly ? 'full-width' : 'button-filters',
                         distance['active'] ? 'white--text ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
@@ -186,7 +186,7 @@
         class="pt-0 mt-2"
       >
         <v-btn
-          class="ml-2 my-2 white"
+          class="ml-2 my-2 bg-white"
           :to="`/${$route.params.id}`"
         >
           <v-icon :class="`primary--text`">
@@ -195,20 +195,20 @@
           <span :class="`primary--text ml-3`"> Go to Record </span>
         </v-btn>
         <div v-if="noData">
-          <v-card-title class="blue white--text">
+          <v-card-title class="bg-blue text-white">
             No graph found!
           </v-card-title>
         </div>
         <div v-else>
           <v-card-title
             v-if="!loading"
-            class="blue white--text"
+            class="bg-blue text-white"
           >
             {{ graphData.name }} ({{ graphData.id }})
           </v-card-title>
           <v-card-subtitle
             v-if="!loading"
-            class="blue white--text"
+            class="bg-blue text-white"
           >
             {{ registry }}/{{ type }}
           </v-card-subtitle>
@@ -436,14 +436,14 @@ export default {
 
       // eslint-disable-next-line no-unused-vars
       renderer = new Sigma(
-          graph,
-          container,
-          {
-            allowInvalidContainer: true,
-            nodeProgramClasses: {
-              image: getNodeProgramImage()
-            }
-          });
+        graph,
+        container,
+        {
+          allowInvalidContainer: true,
+          nodeProgramClasses: {
+            image: getNodeProgramImage()
+          }
+        });
       _module.fa2Layout.start();
 
       // Attempt to highlight nodes on hover...
@@ -462,7 +462,7 @@ export default {
 
         // This is for hiding everything except the node being hovered over.
         if (
-            _module.state.hoveredNeighbors &&
+          _module.state.hoveredNeighbors &&
             !_module.state.hoveredNeighbors.has(node) &&
             _module.state.hoveredNode !== node
         ) {
@@ -476,20 +476,17 @@ export default {
         }
 
         // Hide nodes which are further away than the path length.
-        if (_module.selectedLengths[res.length] === false)
-        {
+        if (_module.selectedLengths[res.length] === false) {
           res.hidden = true;
         }
 
         // Hide nodes when their registry is not selected
-        if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-        {
+        if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)) {
           res.hidden = true;
         }
 
         // Hide nodes when their status is not selected
-        if (!this.active[res.status] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-        {
+        if (!this.active[res.status] && parseInt(_module.$route.params.id) !== parseInt(node)) {
           res.hidden = true;
         }
 

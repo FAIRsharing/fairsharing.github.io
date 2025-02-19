@@ -43,7 +43,7 @@
             height="300"
             @click="jumpToAnchor(tab.name.toLowerCase())"
           >
-            <div class="white--text d-flex flex-column justify-center block-category__card__gradient">
+            <div class="text-white d-flex flex-column justify-center block-category__card__gradient">
               <div
                 style="height: 136px"
                 class="d-flex justify-center"
@@ -163,7 +163,7 @@
 
       <p
         id="funders"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         A selection of official reports from funders and other organisations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
       </p>
@@ -178,20 +178,20 @@
           cols="12"
           md="12"
           lg="4"
-          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.display.mdAndUp}]"
         >
           <a
             :href="item.titleLink"
             target="_blank"
           >
             <p
-              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.display.xlOnly }]"
             >
               {{ item.title }}
             </p>
           </a>
           <i
-            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
             v-html="$sanitize(item.text)"
           />
         </v-col>
@@ -203,7 +203,7 @@
 
       <p
         id="publishers"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         A selection of the publishers that use FAIRsharing to define and refine their data policies:
       </p>
@@ -218,7 +218,7 @@
           cols="12"
           md="12"
           lg="4"
-          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.display.mdAndUp}]"
         >
           <v-img
             v-if="item.image"
@@ -237,7 +237,7 @@
       </h4>
       <p
         id="organisations"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         Some other organisations using FAIRsharing.
       </p>
@@ -247,7 +247,7 @@
         <v-col
           v-for="(item,index) in tables.globalOrganisationTable.data"
           :key="`${item.adopter}_${index}`"
-          :class="['pa-5 links full-width',{'max-width-24-percent':$vuetify.breakpoint.mdAndUp}]"
+          :class="['pa-5 links full-width',{'max-width-24-percent':$vuetify.display.mdAndUp}]"
           cols="12"
           md="12"
           lg="4"
@@ -272,7 +272,7 @@
     <p
       v-if="tables.toolsTable.data.length"
       id="tools"
-      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use
       <a
@@ -301,7 +301,7 @@
         >
           <v-img
             :src="tool.logo ? `/assets/Community/tools/${tool.logo}` : '/assets/Community/tools/toolplaceholder.png'"
-            class="white--text align-end"
+            class="text-white align-end"
             gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
             cover
             aspect-ratio="1"
@@ -326,7 +326,7 @@
           <v-card-text
             class="text--primary"
             style="height: 100%"
-            :style="$vuetify.breakpoint.xl ? 'height: 320px': $vuetify.breakpoint.mdAndUp ? 'height: 350px' : 'height: 100%'"
+            :style="$vuetify.display.xl ? 'height: 320px': $vuetify.display.mdAndUp ? 'height: 350px' : 'height: 100%'"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
@@ -336,13 +336,13 @@
               >
                 <v-tooltip
                   v-if="org.tooltip"
-                  bottom
+                  location="bottom"
                 >
-                  <template #activator="{ on }">
+                  <template #activator="{ props }">
                     <a
                       :href="`/organisations/${org.id}`"
                       class="d-inline-block"
-                      v-on="on"
+                      v-bind="props"
                     >{{ org.name }}
                     </a>
                   </template>
@@ -368,7 +368,7 @@
               >
                 <v-chip
                   class="ma-2"
-                  x-small
+                  size="x-small"
                 >
                   <a :href="contact.url">{{ contact.name }}</a>
                 </v-chip>
@@ -382,7 +382,7 @@
               >
                 <v-chip
                   class="ma-2"
-                  x-small
+                  size="x-small"
                 >
                   {{ method }}
                 </v-chip>
@@ -396,7 +396,7 @@
               >
                 <v-chip
                   class="ma-2"
-                  x-small
+                  size="x-small"
                 >
                   {{ type }}
                 </v-chip>
@@ -415,17 +415,17 @@
         Activities
       </h3>
       <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
       </p>
       <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
       </p>
       <b
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
       </b>
@@ -445,14 +445,14 @@
         {{ meettheteam.title }}
       </h4>
       <p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
         v-html="$sanitize(meettheteam.description)"
       />
       <ul class="d-flex flex-wrap pl-0">
         <li
           v-for="(profileItem,index) in meettheteam.profiles"
           :key="`${profileItem}_${index}`"
-          :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
+          :class="['text-center width-250 height-400 mb-10',$vuetify.display.mdAndDown?'mx-auto':'']"
         >
           <v-avatar size="160">
             <v-img
@@ -461,7 +461,7 @@
             />
           </v-avatar>
           <p
-            class="text-center primary--text lato-font-bold mt-2 ma-0"
+            class="text-center text-primary lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />
@@ -515,11 +515,11 @@
             class="mt-5"
           >
             <div class="mb-5">
-              <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
+              <ul :class="['mt-2',{'column-count':$vuetify.display.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
                   :key="itemData+'_'+itemDataIndex"
-                  :class="['mb-1',{'d-flex':isArray(itemData)===true && $vuetify.breakpoint.lgAndUp}]"
+                  :class="['mb-1',{'d-flex':isArray(itemData)===true && $vuetify.display.lgAndUp}]"
                 >
                   <div
                     v-if="!isArray(itemData)"
@@ -580,7 +580,7 @@
         {{ rda.title }}
       </h4>
       <p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
         v-html="$sanitize(rda.description)"
       />
       <div
@@ -595,11 +595,11 @@
           <div
             v-if="isArray(item.data)"
           >
-            <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
+            <ul :class="['mt-2',{'column-count':$vuetify.display.mdAndUp}]">
               <li
                 v-for="(itemData,itemDataIndex) in item.data"
                 :key="itemData+'_'+itemDataIndex"
-                :class="['mb-1',{'d-flex': $vuetify.breakpoint.lgAndUp}]"
+                :class="['mb-1',{'d-flex': $vuetify.display.lgAndUp}]"
               >
                 <div
                   class="d-flex mb-2"
@@ -628,7 +628,7 @@
           </div>
           <div v-else>
             <p
-              :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
               v-html="$sanitize(item.data)"
             />
           </div>
@@ -636,7 +636,7 @@
       </div>
       <div>
         <p
-          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
         >
           <a
             href="https://zulip.com/"
@@ -680,51 +680,51 @@ import communityData from "@/data/communityPageData.json"
  * @instance
  * */
 export default {
-    name: "Community",
-    components: {Icon, ActivitiesStaticTable},
-    title: "This will be the community page",
-    data: () => {
-        return {
-            contentTabs:  communityData.contentTabs,
-            externalLinks:  communityData.externalLinks,
-            governance:  communityData.governance,
-            governance_text:  communityData.governance_text,
-            meettheteam:  communityData.meettheteam,
-            rda:  communityData.rda,
-            tables:  communityData.tables,
-            applyCss: false,
-            currentAnchor:'',
-            Icon
-        }
-    },
-    watch: {
-        $route: {
-            deep:true,
-            handler() {
-                this.applyCss = false
-                this.$nextTick(() => {
-                    this.applyCss = true
-                })
-            }
-        }
-    },
-    created() {
-        this.$nextTick(() => {
-            // update the UI padding and margin after DOM is fully loaded.
-            this.applyCss = true
-        })
-    },
-    methods: {
-        jumpToAnchor(selectedAnchor) {
-            if (selectedAnchor !== this.currentAnchor) {
-                this.$router.push({hash: `${selectedAnchor}`});
-                this.currentAnchor = selectedAnchor;
-            }
-        },
-        isArray(input){
-            return isArray(input)
-        }
+  name: "Community",
+  components: {Icon, ActivitiesStaticTable},
+  title: "This will be the community page",
+  data: () => {
+    return {
+      contentTabs:  communityData.contentTabs,
+      externalLinks:  communityData.externalLinks,
+      governance:  communityData.governance,
+      governance_text:  communityData.governance_text,
+      meettheteam:  communityData.meettheteam,
+      rda:  communityData.rda,
+      tables:  communityData.tables,
+      applyCss: false,
+      currentAnchor:'',
+      Icon
     }
+  },
+  watch: {
+    $route: {
+      deep:true,
+      handler() {
+        this.applyCss = false
+        this.$nextTick(() => {
+          this.applyCss = true
+        })
+      }
+    }
+  },
+  created() {
+    this.$nextTick(() => {
+      // update the UI padding and margin after DOM is fully loaded.
+      this.applyCss = true
+    })
+  },
+  methods: {
+    jumpToAnchor(selectedAnchor) {
+      if (selectedAnchor !== this.currentAnchor) {
+        this.$router.push({hash: `${selectedAnchor}`});
+        this.currentAnchor = selectedAnchor;
+      }
+    },
+    isArray(input){
+      return isArray(input)
+    }
+  }
 }
 </script>
 

@@ -4,7 +4,7 @@
       <v-card-text v-if="hiddenRecords">
         <v-card-title
           id="text-curator-search-2"
-          class="green white--text"
+          class="bg-green text-white"
         >
           <b> HIDDEN RECORDS </b>
           <v-spacer />
@@ -14,7 +14,7 @@
             color="white"
             single-line
             hide-details
-            solo
+            variant="solo"
             class="searchField"
             clearable
           />
@@ -132,13 +132,15 @@ export default {
         object.createdAt = this.formatDate(item.createdAt);
         if (item.curator) {
           object.curator = item.curator.username;
-        } else {
+        }
+        else {
           object.curator = "none";
         }
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        } else {
+        }
+        else {
           object.creator = "unknown";
         }
         this.hiddenRecords.push(object);
@@ -149,7 +151,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
 .searchField {

@@ -14,10 +14,10 @@
       :particles-init="particlesInit"
       :particles-loaded="particlesLoaded"
       :options="options"
-      :class="{'largeScreen': $vuetify.breakpoint.xlOnly}"
+      :class="{'largeScreen': $vuetify.display.xlOnly}"
     />
     <h1
-      class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium white--text"
+      class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
       style="z-index: 2"
     >
       {{ getJumbotronData.title }}
@@ -27,9 +27,9 @@
       :class="[
         'lato-font-medium my-4 primary--text px-1 text-center',
         {
-          'lato-text-md': $vuetify.breakpoint.mdOnly,
-          'lato-text-lg': $vuetify.breakpoint.lgAndUp,
-          'lato-text-sm': $vuetify.breakpoint.smAndDown
+          'lato-text-md': $vuetify.display.mdOnly,
+          'lato-text-lg': $vuetify.display.lgAndUp,
+          'lato-text-sm': $vuetify.display.smAndDown
         }
       ]"
       v-html="$sanitize(getJumbotronData.subtitle)"

@@ -19,7 +19,7 @@
               class="mr-8 mb-8"
               :class="[
                 'mt-1',
-                $vuetify.breakpoint.lgAndDown
+                $vuetify.display.lgAndDown
                   ? 'home-search-bt'
                   : 'home-search-bt-xl',
               ]"
@@ -27,13 +27,13 @@
               target="_blank"
             >
               <v-icon
-                x-small
+                size="x-small"
                 class="mr-1"
               >
                 fas fa-search fa-graduation-cap
               </v-icon>
               <v-icon
-                x-small
+                size="x-small"
                 class="mr-1"
               >
                 fas fa-graduation-cap
@@ -59,13 +59,13 @@
             class="d-flex align-center pa-0"
             :class="[
               {
-                'verticalDividerWrp mx-3': $vuetify.breakpoint.mdAndUp,
-                'horizontalDividerWrp my-3': $vuetify.breakpoint.smAndDown,
+                'verticalDividerWrp mx-3': $vuetify.display.mdAndUp,
+                'horizontalDividerWrp my-3': $vuetify.display.smAndDown,
               },
             ]"
           >
             <div
-              v-if="$vuetify.breakpoint.mdAndUp"
+              v-if="$vuetify.display.mdAndUp"
               class="vertical-divider"
             />
             <div
@@ -92,7 +92,7 @@
               show-home-search
               placeholder="search through all content"
               :is-advance-search-term="isAdvanceSearchTerm"
-              @advancedSearchTerm="advancedSearchTerm"
+              @advanced-search-term="advancedSearchTerm"
             />
           </v-col>
           <!--Divider -->
@@ -104,13 +104,13 @@
             class="d-flex align-center pa-0"
             :class="[
               {
-                'verticalDividerWrp mx-3': $vuetify.breakpoint.mdAndUp,
-                'horizontalDividerWrp my-3': $vuetify.breakpoint.smAndDown,
+                'verticalDividerWrp mx-3': $vuetify.display.mdAndUp,
+                'horizontalDividerWrp my-3': $vuetify.display.smAndDown,
               },
             ]"
           >
             <div
-              v-if="$vuetify.breakpoint.mdAndUp"
+              v-if="$vuetify.display.mdAndUp"
               class="vertical-divider"
             />
             <div
@@ -131,14 +131,14 @@
               class="mb-8"
               :class="[
                 'mt-1',
-                $vuetify.breakpoint.lgAndDown
+                $vuetify.display.lgAndDown
                   ? 'home-search-bt'
                   : 'home-search-bt-xl',
               ]"
               to="/browse/subject"
             >
               <v-icon
-                x-small
+                size="x-small"
                 class="mr-1"
               >
                 fas fa-search

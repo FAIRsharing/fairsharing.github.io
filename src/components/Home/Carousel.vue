@@ -1,11 +1,11 @@
 <template>
   <v-tabs
     v-model="tabsData.selectedTab"
-    :show-arrows="$vuetify.breakpoint.mdAndDown"
-    centered
+    :show-arrows="$vuetify.display.mdAndDown"
+    align-tabs="center"
     slider-size="5"
     class="height-430"
-    background-color="transparent"
+    bg-color="transparent"
     color="accent3"
     slider-color="accent3"
   >
@@ -36,7 +36,7 @@ import TabContent from "@/components/Home/CarouselContent";
 import homePageData from "@/data/homePageData.json";
 
 export default {
-name: "Carousel",
+  name: "Carousel",
   components: {TabContent},
   data: () => {
     return {

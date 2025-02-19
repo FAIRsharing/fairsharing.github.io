@@ -49,7 +49,7 @@
               max-width="350"
               height="100%"
             >
-              <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+              <div class="text-white d-flex flex-column justify-center block-category__card__gradiant">
                 <div
                   style="height: 136px"
                   class="d-flex justify-center"
@@ -154,11 +154,11 @@
                 <span>
                   If you would like to find a home for your data, try browsing our complete <a
                     href="https://fairsharing.org/browse/subject"
-                    class="underline-effect font-weight-black white--text"
+                    class="underline-effect font-weight-black text-white"
                     target="_blank"
                   >subject hierarchy</a> or searching our <a
                     href="https://fairsharing.org/databases"
-                    class="underline-effect font-weight-black white--text"
+                    class="underline-effect font-weight-black text-white"
                     target="_blank"
                   >database records</a> to find an appropriate database for your data type.
                 </span>
@@ -167,15 +167,15 @@
                 <span>
                   Alternatively, you could look at our collection of  <a
                     href="https://fairsharing.org/GeneralRepositoryComparison"
-                    class="underline-effect font-weight-black white--text"
+                    class="underline-effect font-weight-black text-white"
                     target="_blank"
                   >Generalist Repositories</a> or browse all <a
                     href="https://fairsharing.org/browse/subject?term=Subject%2520Agnostic"
-                    class="underline-effect font-weight-black white--text"
+                    class="underline-effect font-weight-black text-white"
                     target="_blank"
                   >subject-agnostic records</a>, which may provide you with a location to store data from a wider range of research areas. If you are submitting to a particular journal, you can also search for that journal or its publisher; if they are registered with us, then their <a
                     href="https://fairsharing.org/search?fairsharingRegistry=Policy"
-                    class="underline-effect font-weight-black white--text"
+                    class="underline-effect font-weight-black text-white"
                     target="_blank"
                   >FAIRsharing data policy record(s)</a> may contain a list of recommended databases and/or standards.
                 </span>
@@ -185,7 +185,7 @@
         </ul>
       </v-sheet>
       <v-sheet
-        :class="['mb-5 pa-6',{'mx-25-percent':$vuetify.breakpoint.mdAndUp}]"
+        :class="['mb-5 pa-6',{'mx-25-percent':$vuetify.display.mdAndUp}]"
         color="uncertain_color white--text"
         elevation="3"
       >
@@ -196,17 +196,17 @@
           If you have not already done so, you may wish to <a
             href="https://fairsharing.gitbook.io/fairsharing/"
             target="_blank"
-            class="underline-effect font-weight-black white--text"
+            class="underline-effect font-weight-black text-white"
           >create an account.</a>
         </p>
         <p style="font-size:1.2rem">
           Any questions? Don't hesitate to <a
             href="mailto:contact@fairsharing.org"
-            class="font-weight-black white--text underline-effect"
+            class="font-weight-black text-white underline-effect"
           >contact us</a> or to
           <a
             href="https://fairsharing.gitbook.io/fairsharing/"
-            class="font-weight-black white--text underline-effect"
+            class="font-weight-black text-white underline-effect"
           >
             consult our documentation.
           </a>
@@ -238,8 +238,8 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="showTranslation = false"
             >
               {{ closeButton }}

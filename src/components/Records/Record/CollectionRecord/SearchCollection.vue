@@ -3,7 +3,7 @@
     dense
   >
     <v-col
-      v-if="$vuetify.breakpoint.lgAndUp"
+      v-if="$vuetify.display.lgAndUp"
       class="pl-0 pa-4 pt-0"
       cols="12"
       sm="12"
@@ -36,19 +36,19 @@
       <ListController
         class="mt-2"
         :options="{hasPagination:true,hasSorting:false,hasListType:true}"
-        @ChangeListType="changeListType"
+        @change-list-type="changeListType"
       />
       <!--show filter button for tablet and below-->
       <div
-        v-if="$vuetify.breakpoint.mdAndDown"
+        v-if="$vuetify.display.mdAndDown"
         class="mb-2"
       >
         <v-btn
-          class="info"
+          class="bg-info"
           @click="showFiltersSM = true"
         >
           <span class="mr-2">Show filters</span>
-          <v-icon small>
+          <v-icon size="small">
             fa-filter
           </v-icon>
         </v-btn>
@@ -112,16 +112,16 @@
       <v-dialog
         v-model="showFiltersSM"
         fullscreen
-        hide-overlay
+        :scrim="false"
         scrollable
       >
         <v-card>
-          <v-card-title class="primary white--text pb-5">
+          <v-card-title class="bg-primary text-white pb-5">
             Add a filter
             <v-spacer />
             <v-btn
               fab
-              x-small
+              size="x-small"
               @click="showFiltersSM = false"
             >
               <v-icon>fa-times</v-icon>
@@ -209,7 +209,7 @@ export default {
       headerVisibilityState: false
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanRecordsStore();
   },
   methods: {
@@ -231,7 +231,7 @@ export default {
       try {
         if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
           const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
-              .filter(item => item.recordAssocLabel === 'collects')
+            .filter(item => item.recordAssocLabel === 'collects')
           collections.forEach(item => {
             this.collectionIDs.push(item.id);
           });

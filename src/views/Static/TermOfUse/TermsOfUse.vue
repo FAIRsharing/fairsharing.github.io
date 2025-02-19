@@ -6,7 +6,7 @@
     </h1>
     <!--  subtitle  -->
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       {{ TermsOfUse.subTitle }}
     </p>
@@ -25,7 +25,7 @@
     <!--  contact points  -->
     <div>
       <p
-        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         The administrative and security contact for this AUP is:
       </p><a :href="`mailto:${TermsOfUse.admin_contact}`">{{ TermsOfUse.admin_contact }}</a>.
@@ -33,7 +33,7 @@
 
     <div>
       <p
-        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         The privacy statements (e.g. Privacy Notices) are located at:
       </p><a
@@ -44,7 +44,7 @@
     </div>
     <div>
       <p
-        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
       >
         API use and data Licence statements are located at:
       </p><a

@@ -4,7 +4,7 @@
       v-if="infographics.length"
       dense
       class="mb-10"
-      :class="{'justify-center': $vuetify.breakpoint.xlOnly}"
+      :class="{'justify-center': $vuetify.display.xlOnly}"
     >
       <v-col
         v-for="infographic in infographics"
@@ -44,26 +44,26 @@
                   target="_blank"
                   class="underline-effect font-weight-medium "
                   :class="{
-                    'text-body-2 ': $vuetify.breakpoint.xs,
-                    'text-subtitle-1': $vuetify.breakpoint.smOnly,
-                    'text-body': $vuetify.breakpoint.mdOnly,
-                    'fontSize18': $vuetify.breakpoint.mdAndUp,
-                    'fontSize20': $vuetify.breakpoint.lg,
-                    'text-h6': $vuetify.breakpoint.xl,
+                    'text-body-2 ': $vuetify.display.xs,
+                    'text-subtitle-1': $vuetify.display.smOnly,
+                    'text-body': $vuetify.display.mdOnly,
+                    'fontSize18': $vuetify.display.mdAndUp,
+                    'fontSize20': $vuetify.display.lg,
+                    'text-h6': $vuetify.display.xl,
                   }"
                   style="word-break: initial;"
                 >
                   {{ infographic.doi }}
                 </a>
-                <v-tooltip top>
-                  <template #activator="{on, attrs }">
+                <v-tooltip location="top">
+                  <template #activator="{props }">
                     <span @click="copyURL(infographic)">
                       <v-icon
                         v-ripple
-                        v-bind="attrs"
-                        class="primary--text ml-2 cursor-pointer"
-                        small
-                        v-on="on"
+                       
+                        class="text-primary ml-2 cursor-pointer"
+                        size="small"
+                        v-bind="props"
                       >
                         fa fa-copy
                       </v-icon>
@@ -76,7 +76,7 @@
               <h3
                 v-else-if="infographic.text"
                 style="word-break: initial;"
-                class="grey--text text--darken-1"
+                class="text-grey-darken-1"
               >
                 {{ infographic.text }}
               </h3>
@@ -88,17 +88,17 @@
     <!-- hard-coded part -->
     <!--  subtitle  -->
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Across the research disciplines there are thousands of standards and several thousand databases, designed to assist the virtuous data cycle, from collection to annotation, through preservation and publication to subsequent sharing and reuse. As consumers of these standards and databases, it is often difficult to know which resources are the most relevant for your specific domain and needs. As producers, you want to be sure your standard or database is findable by prospective users, and recommended in data policies by funders, journals and other organisations.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       With our growing and interlinked content, functionalities and endorsements, FAIRsharing is the most comprehensive informative and educational resource of standards, databases and data policies and is here to help you!
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The FAIRsharing team works with and for the community to map the landscape of community-developed standards and to define the indicators necessary to monitor their:
     </p>
@@ -108,7 +108,7 @@
       <li>adoption in data policies by funders, journals and other organisations.</li>
     </ul>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Whether you are a researcher, standard/database developer, funder, journal editor, librarian or data manager, FAIRsharing can help you understand which standards are mature and appropriate to your use case. By mapping the relationships between standards and the databases that implement them, or the policies that recommend them, FAIRsharing enables you to make an informed decision as to which standard or database to use or endorse.
     </p>
@@ -116,11 +116,11 @@
       <img
         src="/assets/Educational/educational.svg"
         alt="educational"
-        :width="$vuetify.breakpoint.lgAndDown?'70%':'60%'"
+        :width="$vuetify.display.lgAndDown?'70%':'60%'"
       >
     </div>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       FAIRsharing is a web-based, searchable portal of three interlinked registries, containing both in-house and crowd-sourced manually curated descriptions of <router-link
         to="/standards"
@@ -145,7 +145,7 @@
       </router-link>. By registering your resource on FAIRsharing, you not only gain credit for your work, but you increase its visibility outside of your direct domain, so reducing the potential for unnecessary reinvention and proliferation of standards and databases.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       However, if you still cannot find what you are looking for, please <a
         href="mailto:contact@fairsharing.org"
@@ -158,7 +158,7 @@
         v-for="(educationItem,key,index) in education"
         :key="key+'_'+index"
       >
-        <h2 class="primary--text">
+        <h2 class="text-primary">
           {{ key }}
         </h2>
         <ul>
@@ -173,14 +173,14 @@
             <v-expansion-panels
               v-model="selectedExpansion[title_key]"
               hover
-              accordion
+              variant="accordion"
               class="my-5"
             >
               <v-expansion-panel
                 v-for="(child_item,child_index) in item"
                 :key="child_item.title+'_'+child_index"
               >
-                <v-expansion-panel-header>
+                <v-expansion-panel-title>
                   <!-- This html is from a safe source -->
                   <!-- eslint-disable vue/no-v-html -->
                   <a :href="`/educational#${child_item.anchorLink}`">
@@ -192,14 +192,14 @@
                   </a>
                   <!-- This html is from a safe source -->
                   <!-- eslint-disable vue/no-v-html -->
-                </v-expansion-panel-header>
-                <v-expansion-panel-content>
+                </v-expansion-panel-title>
+                <v-expansion-panel-text>
                   <p
                     class="ma-0"
-                    :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+                    :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
                     v-html="$sanitize(child_item.desc)"
                   />
-                </v-expansion-panel-content>
+                </v-expansion-panel-text>
               </v-expansion-panel>
             </v-expansion-panels>
           </li>
@@ -225,7 +225,7 @@
         >
           <v-card-actions class="justify-end closeInfoPopup">
             <v-btn
-              x-small
+              size="x-small"
               fab
               @click="closeDialog()"
             >
@@ -254,15 +254,15 @@
             >
               {{ infographicPopup.data.doi }}
             </a>
-            <v-tooltip top>
-              <template #activator="{on, attrs }">
+            <v-tooltip location="top">
+              <template #activator="{props }">
                 <span @click="copyURL(infographicPopup.data)">
                   <v-icon
                     v-ripple
-                    v-bind="attrs"
-                    class="primary--text ml-2 cursor-pointer"
-                    small
-                    v-on="on"
+                   
+                    class="text-primary ml-2 cursor-pointer"
+                    size="small"
+                    v-bind="props"
                   >
                     fa fa-copy
                   </v-icon>
@@ -275,7 +275,7 @@
           <h3
             v-else-if="infographicPopup.data.text"
             style="word-break: initial;"
-            class="grey--text text--darken-1"
+            class="text-grey-darken-1"
           >
             {{ infographicPopup.data.text }}
           </h3>
@@ -286,96 +286,96 @@
 </template>
 
 <script>
-  import Icon from "@/components/Icon";
-  import educationData from '@/data/EducationData.json'
-    export default {
-      name: "Educational",
-      components: {
-        Icon
-      },
-      data: () => {
-        return {
-          education: educationData.education,
-          infographics: educationData.infographics["data"],
-          applyCss: false,
-          selectedExpansion:{},
-          infographicPopup:{
-            data: {},
-            show: false,
-            loading: false
-          }
-        }
-      },
-      watch: {
-        $route: {
-          deep:true,
-          handler() {
-            this.applyCss = false
-            this.$nextTick(() => {
-              this.applyCss = true
-            })
-          }
-        }
-      },
-      async created() {
-        let _module = this;
-        await _module.$nextTick();
-        _module.applyCss = true
-        Object.keys(this.education).forEach(item => {
-          Object.keys(this.education[item]).forEach(obj => {
-            let foundHash = this.education[item][obj].find(it => `#${it.anchorLink}` === this.$route.hash)
-            if (foundHash) {
-              let arr = Object.keys(this.education[item]).map((ob, index) => {
-                return {
-                  'index': index,
-                  'value': ob.toString().split('.', 1).toString()
-                }
-              })
-              const faqNumber = this.$route.hash.split('-', 1).toString().substr(4, 2)
-              let key = Object.keys(this.education[item])[arr.find(item => item.value === faqNumber).index]
-              this.selectedExpansion[key] = foundHash.index * 1
-            }
-          })
-        })
-        // update the UI padding and margin after DOM is fully loaded.
-      },
-      mounted() {
-        this.generatePopup()
-      },
-      methods: {
-        generateDoiLink(doi) {
-          return `https://doi.org/${doi}`
-        },
-        copyURL(item) {
-          navigator.clipboard.writeText(this.generateDoiLink(item.doi));
-          this.infographics.forEach(e => e.copyButtonStatus = false)
-          const itemClicked = this.infographics.filter(e => e.id === item.id)
-          itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
-        },
-        generatePopup() {
-          let _module = this;
-          let hash = _module.$route.hash;
-          hash = hash.substring(1)
-          const hashArray = this.infographics.map(({hash}) => hash)
-          const isHash = hashArray.includes(hash)
-          if (isHash) {
-            const hashInfographic = this.infographics.filter(e => e.hash === hash)
-            _module.infographicPopup = {
-              data: hashInfographic[0],
-              show: true,
-              loading: true
-            };
-          }
-        },
-        closeDialog(){
-          let _module = this;
-          _module.infographicPopup.data = {};
-          _module.infographicPopup.show = false;
-          _module.infographicPopup.show = false;
-          _module.$router.replace({hash: ""});
-        }
+import Icon from "@/components/Icon";
+import educationData from '@/data/EducationData.json'
+export default {
+  name: "Educational",
+  components: {
+    Icon
+  },
+  data: () => {
+    return {
+      education: educationData.education,
+      infographics: educationData.infographics["data"],
+      applyCss: false,
+      selectedExpansion:{},
+      infographicPopup:{
+        data: {},
+        show: false,
+        loading: false
       }
     }
+  },
+  watch: {
+    $route: {
+      deep:true,
+      handler() {
+        this.applyCss = false
+        this.$nextTick(() => {
+          this.applyCss = true
+        })
+      }
+    }
+  },
+  async created() {
+    let _module = this;
+    await _module.$nextTick();
+    _module.applyCss = true
+    Object.keys(this.education).forEach(item => {
+      Object.keys(this.education[item]).forEach(obj => {
+        let foundHash = this.education[item][obj].find(it => `#${it.anchorLink}` === this.$route.hash)
+        if (foundHash) {
+          let arr = Object.keys(this.education[item]).map((ob, index) => {
+            return {
+              'index': index,
+              'value': ob.toString().split('.', 1).toString()
+            }
+          })
+          const faqNumber = this.$route.hash.split('-', 1).toString().substr(4, 2)
+          let key = Object.keys(this.education[item])[arr.find(item => item.value === faqNumber).index]
+          this.selectedExpansion[key] = foundHash.index * 1
+        }
+      })
+    })
+    // update the UI padding and margin after DOM is fully loaded.
+  },
+  mounted() {
+    this.generatePopup()
+  },
+  methods: {
+    generateDoiLink(doi) {
+      return `https://doi.org/${doi}`
+    },
+    copyURL(item) {
+      navigator.clipboard.writeText(this.generateDoiLink(item.doi));
+      this.infographics.forEach(e => e.copyButtonStatus = false)
+      const itemClicked = this.infographics.filter(e => e.id === item.id)
+      itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
+    },
+    generatePopup() {
+      let _module = this;
+      let hash = _module.$route.hash;
+      hash = hash.substring(1)
+      const hashArray = this.infographics.map(({hash}) => hash)
+      const isHash = hashArray.includes(hash)
+      if (isHash) {
+        const hashInfographic = this.infographics.filter(e => e.hash === hash)
+        _module.infographicPopup = {
+          data: hashInfographic[0],
+          show: true,
+          loading: true
+        };
+      }
+    },
+    closeDialog(){
+      let _module = this;
+      _module.infographicPopup.data = {};
+      _module.infographicPopup.show = false;
+      _module.infographicPopup.show = false;
+      _module.$router.replace({hash: ""});
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

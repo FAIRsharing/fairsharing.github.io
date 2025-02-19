@@ -2,7 +2,7 @@
   <v-card
     v-if="!tabsDataExist"
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -16,15 +16,15 @@
           v-model="selectedValues"
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
-          solo
+          variant="solo"
           :attach="true"
-          dense
+          density="compact"
           clearable
           prepend-inner-icon="fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-text="name"
+          item-title="name"
           item-value="name"
-          :filter="nameAbbrFilter"
+          :custom-filter="nameAbbrFilter"
         >
           <template #item="data">
             <span class="filterValueName">
@@ -37,8 +37,8 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.breakpoint.mdAndDown"
-        background-color="transparent"
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
         grow
         color="accent3"
         slider-color="accent3"
@@ -49,7 +49,7 @@
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
           :key="tabName+'_'+tabIndex"
           :disabled="tabsData.tabs[tabName].data.length===0"
-          @change="selectedValues=null"
+          @group:selected="selectedValues=null"
         >
           {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         </v-tab>
@@ -58,7 +58,7 @@
       <v-tabs-items
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        class="transparent height-430"
+        class="bg-transparent height-430"
       >
         <v-tab-item
           v-for="(tabItem,tabItemIndex) in filterList"
@@ -79,7 +79,7 @@
                   :key="item.id + '_' + index"
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  outlined
+                  border
                 >
                   <div class="d-flex align-center">
                     <record-status
@@ -90,15 +90,15 @@
                       {{ item.name }}
                     </div>
                   </div>
-                  <p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                  <p class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5">
                     {{ item.object }}
-                    <v-tooltip top>
-                      <template #activator="{ on }">
+                    <v-tooltip location="top">
+                      <template #activator="{ props }">
                         <span
                           v-for="(label, indexLabel) in item.recordAssocLabel"
                           :key="label+'_'+ indexLabel"
-                          class="red--text mouse-info"
-                          v-on="on"
+                          class="text-red mouse-info"
+                          v-bind="props"
                         >
                           {{ label }}
                           <span
@@ -187,8 +187,8 @@ export default {
           Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
-              _module.currentRecord['fairsharingRecord'].recordAssociations,
-              _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
+            _module.currentRecord['fairsharingRecord'].recordAssociations,
+            _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
           ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
@@ -196,7 +196,7 @@ export default {
           // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
           if (tabName === 'related_collections') {
             _module.tabsData.tabs['related_collections'].data =  _module.tabsData.tabs['related_collections'].data
-                .filter((item) => item.recordAssociationLabel === 'recommends');
+              .filter((item) => item.recordAssociationLabel === 'recommends');
           }
           // 1. Create a hash with keys for each linked record ID of all the relations, containing an
           // array of all relations.

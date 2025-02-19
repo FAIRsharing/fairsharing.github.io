@@ -2,7 +2,7 @@
   <v-card
     v-if="!tabsDataExist"
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -16,13 +16,13 @@
           v-model="selectedValues"
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
-          solo
+          variant="solo"
           :attach="true"
-          dense
+          density="compact"
           clearable
           prepend-inner-icon="fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-text="name"
+          item-title="name"
           item-value="name"
         >
           <template #item="data">
@@ -36,8 +36,8 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.breakpoint.mdAndDown"
-        background-color="transparent"
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
         grow
         color="accent3"
         slider-color="accent3"
@@ -48,7 +48,7 @@
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
           :key="tabName+'_'+tabIndex"
           :disabled="tabName === 'conforming_resources' ? !currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[tabName].data.length===0"
-          @change="selectedValues=null"
+          @group:selected="selectedValues=null"
         >
           {{ cleanString(tabName) }} ({{ tabName === 'conforming_resources' ? currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[tabName].count }})
         </v-tab>
@@ -83,7 +83,7 @@
                   :key="item.id + '_' + index"
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  outlined
+                  border
                 >
                   <div class="d-flex align-center">
                     <record-status
@@ -94,13 +94,13 @@
                       {{ item.name }}
                     </div>
                   </div>
-                  <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                  <p class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5">
                     {{ item.object }}
-                    <v-tooltip top>
-                      <template #activator="{ on }">
+                    <v-tooltip location="top">
+                      <template #activator="{ props }">
                         <span
-                          class="red--text mouse-info"
-                          v-on="on"
+                          class="text-red mouse-info"
+                          v-bind="props"
                         >
                           {{ item.recordAssociationLabel }}
                         </span>
@@ -223,12 +223,12 @@ export default {
             // All policy relations, incoming or outgoing.
             if (tabName === 'related_policies') {
               _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
-                  _module.currentRecord['fairsharingRecord'].recordAssociations,
-                  _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
+                _module.currentRecord['fairsharingRecord'].recordAssociations,
+                _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
               ).filter(
-                  item => _module.tabsData.tabs[tabName].registry.includes(item.registry)
+                item => _module.tabsData.tabs[tabName].registry.includes(item.registry)
               ).filter(
-                  item => item.recordAssociationLabel !== 'collects'
+                item => item.recordAssociationLabel !== 'collects'
               )
               _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
             }
@@ -242,8 +242,8 @@ export default {
             // All incoming collections.
             else {
               _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
-                  [],
-                  _module.currentRecord['fairsharingRecord']['reverseRecordAssociations']
+                [],
+                _module.currentRecord['fairsharingRecord']['reverseRecordAssociations']
               ).filter(item => item.recordAssociationLabel === _module.tabsData.tabs[tabName].relation);
               _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
             }
@@ -255,8 +255,8 @@ export default {
         else {
           Object.keys(_module.tabsData.tabs).forEach(tabName => {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
-                [],
-                _module.currentRecord['fairsharingRecord']['reverseRecordAssociations']
+              [],
+              _module.currentRecord['fairsharingRecord']['reverseRecordAssociations']
             ).filter(item => item.recordAssociationLabel === _module.tabsData.tabs[tabName].relation);
             _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
           })

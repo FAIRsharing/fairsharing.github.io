@@ -12,7 +12,7 @@
       <v-card
         v-ripple
         class="pa-6 d-flex flex-column"
-        outlined
+        border
         tile
         height="545px"
         :elevation="allowClicking?'5':'1'"
@@ -27,7 +27,7 @@
             class="mr-8"
           />
           <h3
-            :class="['mt-2 mb-4 text-sm-h5 text-md-h6 text-body-2 text-h6 text-lg-h6 text-xl-h5 primary--text height-90 text-ellipses-height-3lines',{'overflow-hidden':$vuetify.breakpoint.mdAndDown}]"
+            :class="['mt-2 mb-4 text-sm-h5 text-md-h6 text-body-2 text-h6 text-lg-h6 text-xl-h5 primary--text height-90 text-ellipses-height-3lines',{'overflow-hidden':$vuetify.display.mdAndDown}]"
             :style="record.status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
           >
             {{ record.name }}

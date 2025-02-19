@@ -4,7 +4,7 @@
       <v-card-text v-if="recordsCreatedCuratorsLastWeek">
         <v-card-title
           id="text-curator-search-3"
-          class="green white--text"
+          class="bg-green text-white"
         >
           <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
           <v-spacer />
@@ -14,7 +14,7 @@
             color="white"
             single-line
             hide-details
-            solo
+            variant="solo"
             class="searchField"
             clearable
           />
@@ -130,7 +130,8 @@ export default {
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        } else {
+        }
+        else {
           object.creator = "unknown";
         }
         this.recordsCreatedCuratorsLastWeek.push(object);
@@ -141,7 +142,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
 .searchField {

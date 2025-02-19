@@ -10,8 +10,8 @@
         <v-img
           contain
           :src="image"
-          :width="$vuetify.breakpoint.mdAndDown?'150':'300'"
-          :height="$vuetify.breakpoint.mdAndDown?'150':'300'"
+          :width="$vuetify.display.mdAndDown?'150':'300'"
+          :height="$vuetify.display.mdAndDown?'150':'300'"
         />
       </v-col>
       <v-col
@@ -20,10 +20,10 @@
         lg="7"
         class="d-flex flex-column justify-center"
       >
-        <h4 class="mb-2 text-left text-body-2 text-sm-h6 text-md-h5 font-weight-bold primary--text">
+        <h4 class="mb-2 text-left text-body-2 text-sm-h6 text-md-h5 font-weight-bold text-primary">
           {{ header }}
         </h4>
-        <p :class="['mb-1 lato-font-medium font-weight-thin text-justify lato-text-sm',{'lato-text-md':$vuetify.breakpoint.mdAndUp}]">
+        <p :class="['mb-1 lato-font-medium font-weight-thin text-justify lato-text-sm',{'lato-text-md':$vuetify.display.mdAndUp}]">
           {{ description }}
         </p>
         <router-link

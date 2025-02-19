@@ -9,8 +9,8 @@
       <div class="query-builder-group__group-selection">
         <div class="tooltip">
           <v-icon
-            small
-            class="mr-1 white--text tooltipIcon"
+            size="small"
+            class="mr-1 text-white tooltipIcon"
           >
             fa-question-circle
           </v-icon>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import QueryBuilder from "query-builder-vue";
+import QueryBuilder from "query-builder-vue-3";
 import { mapGetters } from "vuex";
 
 import advancedSearch from "@/store";
@@ -479,6 +479,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "~vuetify/src/styles/settings/_variables.scss";
-@import "@/styles/queryBuilderView";
+//@import "vuetify/src/styles/settings/_variables.scss";
+@use "@/styles/queryBuilderView";
 </style>

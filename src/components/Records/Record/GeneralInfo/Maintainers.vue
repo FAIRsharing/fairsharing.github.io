@@ -3,12 +3,12 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
             fa-question-circle
           </v-icon>
@@ -21,18 +21,18 @@
       <div
         v-if="getField('maintainers').length === 0"
         class="d-flex flex-wrap"
-        :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+        :class="{'justify-end' : $vuetify.display.smAndDown}"
       >
         <p
           class="ma-0 mr-1"
-          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+          :class="{'text-end' : $vuetify.display.smAndDown}"
         >
           This record is in need of a maintainer.
         </p>
         <p
           v-if="canClaim && user().isLoggedIn || !canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
-          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+          :class="{'text-end' : $vuetify.display.smAndDown}"
         >
           If you are affiliated with this project,
         </p>
@@ -47,14 +47,14 @@
         <p
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
-          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+          :class="{'text-end' : $vuetify.display.smAndDown}"
         >
           and claim it now!
         </p>
         <p
           v-if="canClaim"
-          class="underline-effect blue--text"
-          :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+          class="underline-effect text-blue"
+          :class="{'text-end' : $vuetify.display.smAndDown}"
           @click="()=>{$emit('requestOwnership')}"
         >
           claim it now!

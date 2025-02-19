@@ -13,22 +13,22 @@
   >
     <div
       :class="
-        $vuetify.breakpoint.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
+        $vuetify.display.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
       "
     >
       <v-btn
         class="mb-2"
         color="primary"
-        small
+        size="small"
         @click="downloadResults()"
       >
         Download Results
       </v-btn>
       <SaveSearchButton />
     </div>
-    <p class="body-2 mb-0 mt-4">
+    <p class="text-body-2 mb-0 mt-4">
       <v-icon
-        x-small
+        size="x-small"
         class="infoIcon"
       >
         {{ "fa fa-info" }}
@@ -37,15 +37,15 @@
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
         target="_blank"
         class="text-decoration-underline"
-      >gitbook documentation<v-icon x-small>
+      >gitbook documentation<v-icon size="x-small">
         {{ "fa fa-link" }}
       </v-icon>
       </a>
     </p>
     <v-data-iterator
+      v-model:items-per-page="itemsPerPage"
+      v-model:page="page"
       :items="getAdvancedSearchResponse"
-      :items-per-page.sync="itemsPerPage"
-      :page.sync="page"
       :search="search"
       :sort-by="sortBy.toLowerCase()"
       :sort-desc="sortDesc"
@@ -66,24 +66,24 @@
         />
         <v-toolbar
           dark
-          color="blue lighten-1"
+          color="blue-lighten-1"
           class="mb-5"
         >
           <v-text-field
             v-model="search"
             clearable
             flat
-            solo-inverted
+            variant="solo-inverted"
             hide-details
             prepend-inner-icon="mdi-filter"
             label="Filter these results"
           />
-          <template v-if="$vuetify.breakpoint.mdAndUp">
+          <template v-if="$vuetify.display.mdAndUp">
             <v-spacer />
             <v-select
               v-model="sortBy"
               flat
-              solo-inverted
+              variant="solo-inverted"
               hide-details
               :items="keys"
               prepend-inner-icon="mdi-sort"
@@ -95,16 +95,16 @@
               mandatory
             >
               <v-btn
-                large
-                depressed
+                size="large"
+                variant="flat"
                 color="blue"
                 :value="false"
               >
                 <v-icon>mdi-arrow-up</v-icon>
               </v-btn>
               <v-btn
-                large
-                depressed
+                size="large"
+                variant="flat"
                 color="blue"
                 :value="true"
               >
@@ -245,7 +245,8 @@ export default {
               const paramValues = subItem.split("=");
               if (paramValues[0] === "operator") {
                 searchObj["operatorIdentifier"] = paramValues[1];
-              } else {
+              }
+              else {
                 let advancedSearchParams = {
                   identifier: "",
                   value: [] || Boolean,

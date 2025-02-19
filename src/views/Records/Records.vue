@@ -10,7 +10,7 @@
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.display.lgAndUp"
           cols="12"
           lg="4"
           md="4"
@@ -21,12 +21,12 @@
             :class="[
               'search-input-mb',
               {
-                'left-panel-fixed-lg': stickToTop && $vuetify.breakpoint.xlOnly,
+                'left-panel-fixed-lg': stickToTop && $vuetify.display.xlOnly,
                 'left-panel-default-lg':
-                  !stickToTop && $vuetify.breakpoint.xlOnly,
+                  !stickToTop && $vuetify.display.xlOnly,
                 'left-panel-default':
-                  !stickToTop && !$vuetify.breakpoint.xlOnly,
-                'left-panel-fixed': stickToTop && !$vuetify.breakpoint.xlOnly,
+                  !stickToTop && !$vuetify.display.xlOnly,
+                'left-panel-fixed': stickToTop && !$vuetify.display.xlOnly,
               },
             ]"
           />
@@ -37,11 +37,11 @@
           class="ml-3 mt-2"
         >
           <v-btn
-            class="info"
+            class="bg-info"
             @click="showFiltersSM = true"
           >
             <span class="mr-2">Show filters</span>
-            <v-icon small>
+            <v-icon size="small">
               fa-filter
             </v-icon>
           </v-btn>
@@ -57,16 +57,16 @@
       <v-dialog
         v-model="showFiltersSM"
         fullscreen
-        hide-overlay
+        :scrim="false"
         scrollable
       >
         <v-card>
-          <v-card-title class="primary white--text pb-5">
+          <v-card-title class="bg-primary text-white pb-5">
             Add a filter
             <v-spacer />
             <v-btn
               fab
-              x-small
+              size="x-small"
               @click="showFiltersSM = false"
             >
               <v-icon>fa-times</v-icon>
@@ -159,7 +159,8 @@ export default {
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title =
           this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -168,7 +169,8 @@ export default {
       this.$scrollTo("body", 50, {});
       try {
         await this.tryRedirect();
-      } catch (e) {
+      }
+      catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
@@ -182,16 +184,17 @@ export default {
       try {
         await this.tryRedirect();
         this.$scrollTo("body", 50, {});
-      } catch (e) {
+      }
+      catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanRecordsStore();
   },
-  destroyed() {
+  unmounted() {
     this.$scrollTo("body", 50, {});
     window.removeEventListener("scroll", () => {
       this.onScroll(this.records);
@@ -224,7 +227,8 @@ export default {
               query: query,
             });
             return true;
-          } catch (e) {
+          }
+          catch (e) {
             return false;
           }
         }
@@ -250,7 +254,8 @@ export default {
           params: this.getParameters(),
           token: token,
         });
-      } catch (e) {
+      }
+      catch (e) {
         /* istanbul ignore next */
         this.errors = e.message;
       }

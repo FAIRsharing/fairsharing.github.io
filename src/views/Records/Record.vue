@@ -73,11 +73,11 @@
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           :back-color="getRecordCardBackground"
-          @requestOwnership="requestOwnership"
+          @request-ownership="requestOwnership"
         />
         <!-- Dynamic Block -->
         <v-row no-gutters>
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+          <v-col :cols="$vuetify.display.mdAndDown?'12':'6'">
             <!--Left Block-->
             <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
               <component
@@ -91,7 +91,7 @@
             </div>
           </v-col>
           <!--Right Block-->
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+          <v-col :cols="$vuetify.display.mdAndDown?'12':'6'">
             <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
               <component
                 :is="block"
@@ -142,13 +142,13 @@
     >
       <v-card>
         <v-card-title
-          class="blue white--text pb-4"
+          class="bg-blue text-white pb-4"
           style="border-radius: 0 !important;"
         >
           {{ getField("name") }} history logs
           <v-spacer />
           <v-btn
-            x-small
+            size="x-small"
             fab
             @click="closeHistory()"
           >
@@ -172,7 +172,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           Are you sure you want to
           <span
@@ -191,16 +191,16 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeDeleteMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
             :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="confirmDelete()"
           >
             DELETE
@@ -215,7 +215,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           <p class="claimtext">
             <b>Please confirm that you would like to request ownership of this record.</b>
@@ -235,16 +235,16 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeClaimMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
             :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="requestOwnership()"
           >
             OK
@@ -259,7 +259,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           <p class="claimtext">
             <b>Please confirm that you would like to stop maintaining this record:</b>
@@ -272,16 +272,16 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeMaintainMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
             :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="removeMaintainer()"
           >
             OK
@@ -457,34 +457,34 @@ export default {
     ...mapGetters("record", ["getField"]),
     ...mapState('introspection', ["readOnlyMode"]),
     recordHidden() {
-        let _module = this;
-        if (_module.currentRecord.fairsharingRecord.isHidden) {
-            if (!_module.user().isLoggedIn) {
-                return true;
-            }
-            else {
-                if (!_module.canEdit) {
-                    return true;
-                }
-            }
+      let _module = this;
+      if (_module.currentRecord.fairsharingRecord.isHidden) {
+        if (!_module.user().isLoggedIn) {
+          return true;
         }
-        return false;
+        else {
+          if (!_module.canEdit) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
     getRecordCardBackground() {
       let finalCardBackColor
       switch (this.currentRecord.fairsharingRecord.registry) {
-        case 'Standard':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
-          break;
-        case 'Database':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
-          break;
-        case 'Policy':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
-          break;
-        case 'Collection':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
-          break;
+      case 'Standard':
+        finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
+        break;
+      case 'Database':
+        finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
+        break;
+      case 'Policy':
+        finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
+        break;
+      case 'Collection':
+        finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
+        break;
       }
       return finalCardBackColor
     },
@@ -519,12 +519,13 @@ export default {
       return _module.currentRecord['fairsharingRecord']['maintainers'].some(({ id }) => id === _module.user().id);
     },
     currentDynamicBlock() {
-      if (this.$vuetify.breakpoint.name === 'md') {
+      if (this.$vuetify.display.name === 'md') {
         return {
           leftBlock: ["Collections", "RelatedContent", "Support"],
           rightBlock: ["DataProcessesAndConditions", "Tools", "Organisations"]
         }
-      } else {
+      }
+      else {
         return {
           leftBlock: ["Collections", "Support", "DataProcessesAndConditions"],
           rightBlock: ["RelatedContent", "Tools", "Organisations"]
@@ -550,23 +551,23 @@ export default {
       await this.checkAlerts();
     }
   },
-  destroyed() {
+  unmounted() {
     // minor change in the y axis can fix a serious bug after going back to records..
     this.$scrollTo('body',5,{})
   },
   async mounted() {
-      let _module = this;
-      _module.client = new Client();
-      await _module.getData();
-      _module.recordID = this.currentRecord.fairsharingRecord.id;
-      _module.$emit('updateHead');
-      if (!_module.error) {
-        await _module.canEditRecord();
-        await _module.checkClaimStatus();
-        await _module.getMenuButtons()
-      }
-      await _module.$nextTick();
-      await _module.checkAlerts();
+    let _module = this;
+    _module.client = new Client();
+    await _module.getData();
+    _module.recordID = this.currentRecord.fairsharingRecord.id;
+    _module.$emit('updateHead');
+    if (!_module.error) {
+      await _module.canEditRecord();
+      await _module.checkClaimStatus();
+      await _module.getMenuButtons()
+    }
+    await _module.$nextTick();
+    await _module.checkAlerts();
     try {
       await _module.$scrollTo(_module.$route.hash || 'body')
       // eslint-disable-next-line no-empty
@@ -602,13 +603,13 @@ export default {
       // and then curators alerts(auth-needed orange ones) so blue ones stack,
       // then orange and then red/green [approval/rejection] ones.
       let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
-          .isAwaitingApproval()
-          .isWatching(this.isWatching())
-          .isNeedingReview(this.needsReviewing(), this.error)
-          .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-          .isAlreadyClaimed(this.alreadyClaimed)
-          .isHidden()
-          .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
+        .isAwaitingApproval()
+        .isWatching(this.isWatching())
+        .isNeedingReview(this.needsReviewing(), this.error)
+        .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+        .isAlreadyClaimed(this.alreadyClaimed)
+        .isHidden()
+        .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
       _module.alerts = alertBuilder.getAlerts();
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -647,8 +648,8 @@ export default {
             }
             else {
               _module.claimRecordMenu(
-                  _module.currentRecord['fairsharingRecord'].name,
-                  _module.currentRecord['fairsharingRecord'].id,
+                _module.currentRecord['fairsharingRecord'].name,
+                _module.currentRecord['fairsharingRecord'].id,
               );
             }
           }
@@ -732,58 +733,58 @@ export default {
       ];
       if (_module.user().is_curator && _module.needsReviewing()) {
         initial_buttons.push(
-            {
-              name: function () {
-                return "Review this record"
-              },
-              isDisabled: function () {
-                // Only to be seen by logged-in curators.
-                // So, this line shouldn't really be encountered...
-                /* istanbul ignore if */
-                if (!_module.userIsLoggedIn) {
-                  return true;
-                }
-                return !_module.user().is_curator;
-              },
-              method: async function () {
-                await _module.reviewRecord();
+          {
+            name: function () {
+              return "Review this record"
+            },
+            isDisabled: function () {
+              // Only to be seen by logged-in curators.
+              // So, this line shouldn't really be encountered...
+              /* istanbul ignore if */
+              if (!_module.userIsLoggedIn) {
+                return true;
               }
+              return !_module.user().is_curator;
+            },
+            method: async function () {
+              await _module.reviewRecord();
             }
+          }
         )
       }
       if (_module.user().is_super_curator) {
         initial_buttons.push(
-            {
-              name: function () {
-                return "Delete this record"
-              },
-              isDisabled: function () {
-                return !_module.user().is_super_curator;
-              },
-              method: /* istanbul ignore next */ async function () {
-                _module.deleteRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
+          {
+            name: function () {
+              return "Delete this record"
+            },
+            isDisabled: function () {
+              return !_module.user().is_super_curator;
+            },
+            method: /* istanbul ignore next */ async function () {
+              _module.deleteRecordMenu(
+                _module.currentRecord['fairsharingRecord'].name,
+                _module.currentRecord['fairsharingRecord'].id,
+              );
             }
+          }
         )
       }
       if (_module.maintainsRecord) {
         let _module = this;
         initial_buttons.push(
-            {
-              name: function() { return "Stop maintaining"},
-              isDisabled: function() {
-                return false;
-              },
-              method: async function () {
-                _module.stopMaintainRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
+          {
+            name: function() { return "Stop maintaining"},
+            isDisabled: function() {
+              return false;
             },
+            method: async function () {
+              _module.stopMaintainRecordMenu(
+                _module.currentRecord['fairsharingRecord'].name,
+                _module.currentRecord['fairsharingRecord'].id,
+              );
+            }
+          },
         )
       }
       this.buttons = initial_buttons;
@@ -919,8 +920,8 @@ export default {
         _module.stopMaintainSuccess = true;
         // remove maintainer from local data
         let newMaintainers = _module.currentRecord['fairsharingRecord']['maintainers'].filter(maintainer => {
-            return maintainer.id !== _module.user().id
-          }
+          return maintainer.id !== _module.user().id
+        }
         )
         _module.currentRecord['fairsharingRecord']['maintainers'] = newMaintainers;
       }
@@ -1045,10 +1046,10 @@ export default {
         });
       }
       let response = await this.updateWatchedRecords(
-          {
-            recordID: _module.currentRecord['fairsharingRecord'].id,
-            operation: operation
-          }
+        {
+          recordID: _module.currentRecord['fairsharingRecord'].id,
+          operation: operation
+        }
       );
       // Refresh user data to reload followed record status.
       /* istanbul ignore else */
@@ -1181,7 +1182,8 @@ export default {
           ]
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       //error
     }
   }

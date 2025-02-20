@@ -9,9 +9,8 @@
     }]"
   >
     <!-- eslint-disable vue/no-v-html -->
-    <Particles
+    <vue-particles
       id="particles"
-      :particles-init="particlesInit"
       :particles-loaded="particlesLoaded"
       :options="options"
       :class="{'largeScreen': $vuetify.display.xlOnly}"
@@ -140,6 +139,7 @@ section {
     position: absolute;
     width: 100% !important;
     height: 250px !important;
+    max-height: 250px !important;
     z-index: 1;
     left:0;
     top:150px;

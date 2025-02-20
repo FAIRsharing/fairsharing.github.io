@@ -46,7 +46,6 @@
                       :key="legendItem['name']"
                     >
                       <v-list-item-icon>
-                        {{ legendItem['color'] }}
                         <v-icon :color="legendItem['color']">
                           fa fa-long-arrow-alt-right
                         </v-icon>
@@ -319,6 +318,7 @@ export default {
         collection: true,
         standard: true,
         policy: true,
+        fairassist: false,
         ready: true,
         in_development: true,
         uncertain: true,

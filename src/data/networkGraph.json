@@ -81,7 +81,7 @@
     {
       "name": "FAIRassist",
       "color": "orange",
-      "active": false
+      "active": true
     }
   ],
   "status":[

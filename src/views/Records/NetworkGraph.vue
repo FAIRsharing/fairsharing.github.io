@@ -46,6 +46,7 @@
                       :key="legendItem['name']"
                     >
                       <v-list-item-icon>
+                        {{ legendItem['color'] }}
                         <v-icon :color="legendItem['color']">
                           fa fa-long-arrow-alt-right
                         </v-icon>

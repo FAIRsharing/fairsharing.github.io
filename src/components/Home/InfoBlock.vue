@@ -141,9 +141,8 @@
             >
               <v-img
                 class="mt-5"
-                contain
                 height="100px"
-                :src="$vuetify.icons.values['home_policies'].icon"
+                :src="customIcons.values['home_policies'].icon"
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">

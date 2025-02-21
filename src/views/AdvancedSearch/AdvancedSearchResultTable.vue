@@ -185,7 +185,7 @@ export default {
       itemsPerPage: 5,
       sortBy: "name",
       keys: ["Name", "Registry", "Type", "Status", "Description"],
-      fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL,
+      fairSharingURL: import.meta.env.VITE_FAIRSHARING_URL,
     };
   },
   computed: {

@@ -14,7 +14,7 @@
           max-width="350"
           height="500"
         >
-          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+          <div class="text-white d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
@@ -23,7 +23,7 @@
                 class="mt-5"
                 contain
                 height="100px"
-                :src="$vuetify.icons.values['home_standard'].icon"
+                :src="customIcons.values['home_standard'].icon"
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
@@ -56,7 +56,7 @@
             <router-link to="/search?fairsharingRegistry=Standard">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 View All
               </v-btn>
@@ -75,7 +75,7 @@
           max-width="350"
           height="500"
         >
-          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+          <div class="text-white d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
@@ -84,7 +84,7 @@
                 class="mt-5"
                 contain
                 height="100px"
-                :src="$vuetify.icons.values['home_db'].icon"
+                :src="customIcons.values['home_db'].icon"
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
@@ -115,7 +115,7 @@
             <router-link to="/search?fairsharingRegistry=Database">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 View All
               </v-btn>
@@ -134,7 +134,7 @@
           max-width="350"
           height="500"
         >
-          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+          <div class="text-white d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
@@ -174,7 +174,7 @@
             <router-link to="/search?fairsharingRegistry=Policy">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 View All
               </v-btn>
@@ -191,12 +191,14 @@ import {mapGetters} from "vuex";
 
 import homePageData from "@/data/homePageData.json"
 import {truncate} from "@/utils/stringUtils";
+import customIcons from "@/plugins/icons";
 export default {
   name: "InfoBlock",
   mixins: [truncate],
   data: () => {
     return {
-      blockInfo: homePageData.blockInfo
+      blockInfo: homePageData.blockInfo,
+      customIcons: customIcons
     }
   },
   computed: {

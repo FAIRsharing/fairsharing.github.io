@@ -1160,7 +1160,7 @@ export default {
             },
             {
               name: 'link',
-              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              content: `${import.meta.env.VITE_HOSTNAME}${id}`,
               rel: 'canonical'
             }
           ]
@@ -1176,7 +1176,7 @@ export default {
             },
             {
               name: 'link',
-              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              content: `${import.meta.env.VITE_HOSTNAME}${id}`,
               rel: 'canonical'
             }
           ]

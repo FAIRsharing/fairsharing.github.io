@@ -199,7 +199,7 @@ export default {
         'Type',
         'Status'
       ],
-      fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL
+      fairSharingURL: import.meta.env.VITE_FAIRSHARING_URL
     }
   },
   computed: {

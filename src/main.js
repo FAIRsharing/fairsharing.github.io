@@ -92,10 +92,10 @@ const app = createApp(App)
   .use(VueCodeHighlight)
   .use(Vue3Sanitize)
   .use(VueGtag, {
-    config: { id: process.env.VUE_APP_ANALYTICS_ID },
+    config: { id: import.meta.env.VUE_APP_ANALYTICS_ID },
   })
   .use(SimpleAnalytics, {
-    skip: process.env.NODE_ENV !== "production",
+    skip: import.meta.env.NODE_ENV !== "production",
   });
 app.directive("linkified", linkify)
 app.mount("#app");

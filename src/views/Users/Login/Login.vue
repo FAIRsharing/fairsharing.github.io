@@ -35,7 +35,7 @@
                 class="d-flex flex-row justify-center"
               >
                 <v-btn
-                  class="text-center teal white--text px-2"
+                  class="text-center bg-teal text-white px-2"
                   href="/users/resendConfirmation"
                   @click="
                     () => {
@@ -66,7 +66,7 @@
                   >
                     <v-layout width="100%">
                       <v-icon
-                        left
+                        start
                         class="mr-5"
                       >
                         {{ "fab fa-" + provider.name.toLowerCase() }}
@@ -90,7 +90,7 @@
                   v-model="loginData.name"
                   label="Username or email"
                   required
-                  outlined
+                  variant="outlined"
                   :rules="[rules.isRequired()]"
                   @keyup.enter="logUser()"
                 />
@@ -103,7 +103,7 @@
                   label="Password"
                   counter
                   required
-                  outlined
+                  variant="outlined"
                   :rules="[rules.isRequired()]"
                   @click:append="show1 = !show1"
                   @keyup.enter="logUser()"
@@ -198,20 +198,20 @@ export default {
         {
           name: "ORCID",
           color: "green white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/orcid",
         },
         // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
         /*
         {
           name: "Twitter",
           color: "blue white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/twitter",
         },
          */
         {
           name: "GitHub",
           color: "black white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/github",
         },
       ],
       rules: {
@@ -250,7 +250,8 @@ export default {
             _module.$router.push({
               path: goTo,
             });
-          } else {
+          }
+          else {
             _module.$router.push({
               path: "/accounts/profile",
             });

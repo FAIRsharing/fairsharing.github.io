@@ -568,5 +568,4 @@ export default {
 .button-filters {
   width: 150px;
 }
-
 </style>

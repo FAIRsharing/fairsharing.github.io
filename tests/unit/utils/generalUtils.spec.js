@@ -14,13 +14,7 @@ describe("generalUtils.js", function(){
 
     it("can check formatDate method", function () {
         let dummyDate = "2020-09-27T09:34:54Z"
-        // Mysterious failure which sometimes gives the incorrect 'sept' result...
-        try {
-            expect(generalUtils.methods.formatDate(dummyDate)).toBe("Sep 27, 2020");
-        }
-        catch {
-            expect(generalUtils.methods.formatDate(dummyDate)).toBe("Sept 27, 2020");
-        }
+        expect(generalUtils.methods.formatDate(dummyDate)).toBe("Sep 27, 2020");
     })
 
     it("can check compareRecordDescUpdate method", function () {

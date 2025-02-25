@@ -113,7 +113,7 @@
               min-width="167px"
               max-width="184px"
             >
-              <span :class="['white--text',{'primary--text': !item.active}, {'accent3--text': item.primary && !item.active}]">{{ item.label }}</span>
+              <span :class="['white--text',{'text-primary': !item.active}, {'accent3--text': item.primary && !item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
         </ul>

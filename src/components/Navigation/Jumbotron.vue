@@ -24,7 +24,7 @@
     <p
       id="subtitle"
       :class="[
-        'lato-font-medium my-4 primary--text px-1 text-center',
+        'lato-font-medium my-4 text-primary px-1 text-center',
         {
           'lato-text-md': $vuetify.display.mdOnly,
           'lato-text-lg': $vuetify.display.lgAndUp,
@@ -43,17 +43,16 @@ import { loadFull } from "tsparticles";
 import jumbotronData from "@/data/jumbotronData.json";
 
 // These consts appear to be called by the tests but aren't shown as covered.
-/* istanbul ignore next */
+/* v8 ignore start */
 const particlesInit = async engine => {
   await loadFull(engine);
 };
 
-/* istanbul ignore next */
 // eslint-disable-next-line no-unused-vars
 const particlesLoaded = async container => {
   //console.log("Particles container loaded", container);
 };
-
+/* v8 ignore stop */
 export default {
   name: "Jumbotron",
   data:() => {
@@ -91,10 +90,10 @@ export default {
             straight: false
           },
           number: {
-            density: {
-              enable: true,
-              value_area: 300
-            },
+            // density: {
+            //   enable: true,
+            //   value_area: 300
+            // },
             value: 50
           },
           opacity: {
@@ -128,11 +127,11 @@ export default {
 }
 </script>
 
-<style scoped>
-section {
-  height: 250px;
-}
-</style>
+<!--<style scoped>-->
+<!--section {-->
+<!--  height: 250px;-->
+<!--}-->
+<!--</style>-->
 
 <style>
   #particles canvas{

@@ -77,12 +77,12 @@ const app = createApp(App)
   .use(createVuetify)
   .use(router)
   .use(store)
-  .use(bootstrapApp)
   .use(Particles, {
     init: async (engine) => {
       await loadFull(engine);
     },
   })
+  .use(bootstrapApp)
   .use(head)
   .use(HighchartsVue)
   .use(VueScrollTo)

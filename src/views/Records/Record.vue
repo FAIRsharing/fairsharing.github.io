@@ -321,6 +321,7 @@ import NotFound from "@/views/Errors/404"
 
 import Hidden from "../Errors/Hidden";
 import Tombstone from "../Errors/Tombstone";
+import { useTheme } from "vuetify";
 
 const client = new RestClient();
 export default {
@@ -349,6 +350,10 @@ export default {
   mixins: [stringUtils, getHostname],
   props: {
     target: {type: Number, default: null}
+  },
+  setup() {
+    const theme = useTheme();
+    return { theme };
   },
   data: () => {
     return {
@@ -474,16 +479,16 @@ export default {
       let finalCardBackColor
       switch (this.currentRecord.fairsharingRecord.registry) {
       case 'Standard':
-        finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.bg_standard_record_card;
         break;
       case 'Database':
-        finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.colors.bg_database_record_card;
         break;
       case 'Policy':
-        finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.colors.bg_policy_record_card;
         break;
       case 'Collection':
-        finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.colors.bg_collection_record_card;
         break;
       }
       return finalCardBackColor

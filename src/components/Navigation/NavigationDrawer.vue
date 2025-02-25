@@ -14,7 +14,7 @@
         :variant="!button.active ? 'outlined' : undefined"
         @click="goTo(button)"
       >
-        <span :class="['white--text',{'primary--text':!button.active}, {'accent3--text': button.primary && !button.active}]">{{ button.name }}</span>
+        <span :class="['white--text',{'text-primary':!button.active}, {'accent3--text': button.primary && !button.active}]">{{ button.name }}</span>
       </v-btn>
     </div>
     <div style="flex-grow: 1">

@@ -2,14 +2,14 @@
   <v-container
     id="userPage"
     fluid
-    class="standard grey lighten-3 pb-10"
+    class="standard bg-grey-lighten-3 pb-10"
   >
     <v-row v-if="messages()['getUser'].message">
       <v-col cols="12">
         <v-alert
           type="success"
           class="mb-0"
-          dismissible
+          closable
         >
           {{ messages()["getUser"].message }}
         </v-alert>
@@ -25,7 +25,7 @@
         >
           <v-toolbar-title>User Profile</v-toolbar-title>
           <v-spacer />
-          <user-profile-menu @showConfirmDelete="showDeleteDialog()" />
+          <user-profile-menu @show-confirm-delete="showDeleteDialog()" />
         </v-toolbar>
       </v-col>
       <v-col
@@ -50,7 +50,7 @@
                 class="d-flex flex-column rounded-0"
                 height="100%"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Personal Information
                 </v-card-title>
                 <v-card-text class="pt-3 pb-0">
@@ -58,13 +58,13 @@
                     <v-list-item
                       v-for="(field, fieldName, fieldKey) in getUserMeta"
                       :key="'userMeta' + fieldKey"
-                      class="body-1"
+                      class="text-body-1"
                     >
                       <v-list-item-content
                         v-if="fieldName !== 'preferences'"
                         class="py-0 d-block"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        <b class="text-blue">{{ fieldName | cleanString }}:
                         </b>
                         <span v-if="field"> {{ field }} </span>
                         <span v-else> None </span>
@@ -73,7 +73,7 @@
                         v-else
                         class="py-2"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        <b class="text-blue">{{ fieldName | cleanString }}:
                         </b>
                         <ul>
                           <li
@@ -95,15 +95,15 @@
                     >
                       {{ getHostname() + "users/" + user().id }}
                     </a>
-                    <v-tooltip top>
-                      <template #activator="{ on, attrs }">
+                    <v-tooltip location="top">
+                      <template #activator="{ props }">
                         <v-icon
                           v-ripple
                           v-clipboard="copyURL"
-                          v-bind="attrs"
-                          class="primary--text ml-2 cursor-pointer"
-                          small
-                          v-on="on"
+                         
+                          class="text-primary ml-2 cursor-pointer"
+                          size="small"
+                          v-bind="props"
                         >
                           fa fa-copy
                         </v-icon>
@@ -129,7 +129,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Most recent publications
                 </v-card-title>
                 <v-card-text
@@ -141,7 +141,7 @@
                       v-for="(pub, index) in publications"
                       :key="'pub_' + index"
                     >
-                      <v-list-item-content>
+                      
                         <v-list-item-title>
                           <a
                             v-if="pub.url"
@@ -152,7 +152,7 @@
                           <span v-else>
                             {{ pub.title }} (No available link)</span>
                         </v-list-item-title>
-                      </v-list-item-content>
+                      
                     </v-list-item>
                   </v-list>
                   <div v-if="publications.length === 0 && !loading">
@@ -185,7 +185,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Watched Records
                 </v-card-title>
                 <v-card-text
@@ -213,7 +213,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Record Edits
                 </v-card-title>
                 <v-card-text
@@ -238,7 +238,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Created Records
                 </v-card-title>
                 <v-card-text
@@ -266,7 +266,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Maintained Records
                 </v-card-title>
                 <v-card-text
@@ -294,7 +294,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Maintenance Requests
                 </v-card-title>
                 <v-card-text
@@ -322,7 +322,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Organisations
                 </v-card-title>
                 <v-card-text
@@ -349,7 +349,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Awards
                 </v-card-title>
                 <v-card-text
@@ -373,13 +373,13 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3 flex-column align-start">
+                <v-card-title class="bg-primary text-white py-3 flex-column align-start">
                   <span>Saved Searches</span>
                   <v-card-subtitle class="pa-0">
                     Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on Conforming Resources and Saved Searches can be found in our <a
                       href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                       target="_blank"
-                      class="white--text text-decoration-underline "
+                      class="text-white text-decoration-underline"
                     >Gitbook documentation</a>.
                   </v-card-subtitle>
                 </v-card-title>
@@ -427,14 +427,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="info"
+            class="bg-info"
             @click="confirmDelete = false"
           >
             Cancel
           </v-btn>
           <v-spacer />
           <v-btn
-            class="error"
+            class="bg-error"
             @click="deleteAccount()"
           >
             Delete
@@ -545,7 +545,7 @@ export default {
     this.publications = await this.getPublications();
     this.loading = false;
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanStore();
   },
   methods: {
@@ -560,7 +560,8 @@ export default {
         /* istanbul ignore if */
         if (publications.error) {
           return [];
-        } else {
+        }
+        else {
           output = publications["activities-summary"]["works"]["group"]
             .slice(0, 7)
             .map((obj) => {

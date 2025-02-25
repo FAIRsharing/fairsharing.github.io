@@ -189,10 +189,10 @@
           class="ml-2 my-2 bg-white"
           :to="`/${$route.params.id}`"
         >
-          <v-icon :class="`primary--text`">
+          <v-icon :class="`text-primary`">
             fa-arrow-left
           </v-icon>
-          <span :class="`primary--text ml-3`"> Go to Record </span>
+          <span :class="`text-primary ml-3`"> Go to Record </span>
         </v-btn>
         <div v-if="noData">
           <v-card-title class="bg-blue text-white">

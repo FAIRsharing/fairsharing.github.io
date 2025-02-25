@@ -130,7 +130,7 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import Login from "@/views/Users/Login/Login";
 
 export default {
-  name: "Header",
+  name: "HeaderComp",
   components: {StringSearch, Login},
   data: function () {
     return {

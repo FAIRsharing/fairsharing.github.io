@@ -14,7 +14,7 @@
     >
       <NavigationDrawer />
     </v-navigation-drawer>
-    <Header />
+    <HeaderComp />
     <v-alert
       v-if="readOnlyMode"
       class="mt-4 mx-4"
@@ -26,7 +26,7 @@
     <Jumbotron />
     <PublicMessages />
     <router-view class="min-height-70vh" />
-    <Footer />
+    <FooterComp />
   </v-app>
 </template>
 
@@ -34,14 +34,14 @@
 import {mapState} from 'vuex';
 
 import PublicMessages from "@/components/Global/PublicMessages";
-import Footer from "@/components/Navigation/Footer";
-import Header from "@/components/Navigation/Header";
+import FooterComp from "@/components/Navigation/Footer";
+import HeaderComp from "@/components/Navigation/Header";
 import Jumbotron from "@/components/Navigation/Jumbotron";
 import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
 
 export default {
   name: "App2",
-  components: {PublicMessages, NavigationDrawer, Footer, Header, Jumbotron},
+  components: {PublicMessages, NavigationDrawer, FooterComp, HeaderComp, Jumbotron},
   data() {
     return {
       title: null,

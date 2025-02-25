@@ -54,12 +54,12 @@
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
-      <v-tabs-items
+      <v-tabs-window
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
         :class="['transparent',tabsDataExist]"
       >
-        <v-tab-item
+        <v-tabs-window-item
           v-for="(tabItem,tabItemIndex) in filterList"
           :key="tabItem+'_'+tabItemIndex"
         >
@@ -113,8 +113,8 @@
               </router-link>
             </template>
           </v-virtual-scroll>
-        </v-tab-item>
-      </v-tabs-items>
+        </v-tabs-window-item>
+      </v-tabs-window>
     </div>
   </v-card>
 </template>

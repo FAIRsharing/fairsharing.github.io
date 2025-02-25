@@ -8,7 +8,7 @@
         class="d-flex justify-center"
       >
         <v-img
-          contain
+          class="contain"
           :src="image"
           :width="$vuetify.display.mdAndDown?'150':'300'"
           :height="$vuetify.display.mdAndDown?'150':'300'"

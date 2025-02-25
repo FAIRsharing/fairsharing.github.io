@@ -15,8 +15,8 @@
     >
       {{ tab.title }}
     </v-tab>
-    <v-tabs-items v-model="tabsData.selectedTab">
-      <v-tab-item
+    <v-tabs-window v-model="tabsData.selectedTab">
+      <v-tabs-window-item
         v-for="(tabItem,tabItemIndex) in tabsData.tabs"
         :key="tabItem + '_' + tabItemIndex"
       >
@@ -26,8 +26,8 @@
           :image="tabItem.image"
           :link="tabItem.link"
         />
-      </v-tab-item>
-    </v-tabs-items>
+      </v-tabs-window-item>
+    </v-tabs-window>
   </v-tabs>
 </template>
 

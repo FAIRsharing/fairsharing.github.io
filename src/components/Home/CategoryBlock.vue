@@ -14,7 +14,7 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%),url(' + 'assets/Home/BlockHero/pattern3-1.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradiant__2"
+            class="text-white d-flex flex-column justify-center block-category__card__gradiant__2"
           >
             <div
               style="height: 136px"
@@ -25,7 +25,7 @@
                 color="white"
                 style="opacity: .7"
               >
-                {{ $vuetify.icons.values[blockCategories.firstColumn.icon].icon }}
+                {{ customIcons.values[blockCategories.firstColumn.icon].icon }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -39,7 +39,7 @@
             <router-link :to="blockCategories.firstColumn.link">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 {{ blockCategories.firstColumn.buttonTitle }}
               </v-btn>
@@ -60,12 +60,12 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 150%),url(' + 'assets/Home/BlockHero/pattern3.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center  block-category__card__gradiant__1"
+            class="text-white d-flex flex-column justify-center block-category__card__gradiant__1"
           >
             <v-img
               width="400"
               height="100"
-              :src="$vuetify.icons.values[blockCategories.secondColumn.icon].icon"
+              :src="customIcons.values[blockCategories.secondColumn.icon].icon"
               contain
             />
             <v-card-title class="d-inline">
@@ -79,7 +79,7 @@
             <router-link :to="blockCategories.secondColumn.link">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 {{ blockCategories.secondColumn.buttonTitle }}
               </v-btn>
@@ -100,7 +100,7 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(180deg, rgb(50, 12, 12) 100%, rgb(107, 30, 30) 150%),url(' + 'assets/Home/BlockHero/pattern3-2.jpg',backgroundBlendMode:'lighten', backgroundSize:'cover'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradiant__3"
+            class="text-white d-flex flex-column justify-center block-category__card__gradiant__3"
           >
             <div
               style="height: 136px"
@@ -111,7 +111,7 @@
                 color="white"
                 style="opacity: .7"
               >
-                {{ $vuetify.icons.values[blockCategories.thirdColumn.icon].icon }}
+                {{ customIcons.values[blockCategories.thirdColumn.icon].icon }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -125,7 +125,7 @@
             <router-link :to="blockCategories.thirdColumn.link">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 {{ blockCategories.thirdColumn.buttonTitle }}
               </v-btn>
@@ -140,12 +140,14 @@
 <script>
 import homePageData from "@/data/homePageData.json"
 import {truncate} from "@/utils/stringUtils";
+import customIcons from "@/plugins/icons";
 export default {
   name: "CategoryBlock",
   mixins: [ truncate ],
   data: () => {
     return {
-      blockCategories: homePageData.blockCategories
+      blockCategories: homePageData.blockCategories,
+      customIcons: customIcons,
     }
   }
 }

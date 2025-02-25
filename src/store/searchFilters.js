@@ -100,7 +100,9 @@ export const getters = {
     return output
   },
   getFiltersStatisticCount: (state) => (option) => {
-    return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
+    if (state.filtersStatistic && state.filtersStatistic.length) {
+      return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
+    }
   }
 };
 

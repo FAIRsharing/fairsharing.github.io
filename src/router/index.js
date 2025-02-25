@@ -548,7 +548,7 @@ let routes = [
     path: "/community_curation",
     redirect: () => {
       window.location.assign(
-        [import.meta.env.VITE_HOSTNAME, "/community_champions"].join("")
+        [import.meta.env.VUE_APP_API_HOSTNAME, "/community_champions"].join("")
       );
     },
   },
@@ -558,7 +558,7 @@ let routes = [
     redirect: () => {
       window.location.assign(
         [
-          import.meta.env.VITE_HOSTNAME,
+          import.meta.env.VUE_APP_API_HOSTNAME,
           "/community_champions/our_champions",
         ].join("")
       );

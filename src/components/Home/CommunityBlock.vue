@@ -15,7 +15,7 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' + 'assets/Home/BlockHero/pattern-orange.png',backgroundSize:'100%',backgroundBlendMode:'color'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradient__2"
+            class="text-white d-flex flex-column justify-center block-category__card__gradient__2"
           >
             <div
               style="height: 136px"
@@ -26,7 +26,7 @@
                 color="white"
                 style="opacity: .7"
               >
-                {{ $vuetify.icons.values[communityBlock.firstColumn.icon].icon }}
+                {{ customIcons.values[communityBlock.firstColumn.icon].icon }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -40,7 +40,7 @@
             <router-link :to="communityBlock.firstColumn.link">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 {{ communityBlock.firstColumn.buttonTitle }}
               </v-btn>
@@ -62,7 +62,7 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(180deg, #7d7d7d, #868686, #8f8f8f, #989898, #a1a1a1, #aaaaaa, #b4b4b4, #bdbdbd),url(' + 'assets/Home/BlockHero/pattern-gray.png',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center  block-category__card__gradient__1"
+            class="text-white d-flex flex-column justify-center block-category__card__gradient__1"
           >
             <div
               style="height: 136px"
@@ -73,7 +73,7 @@
                 color="white"
                 style="opacity: .7"
               >
-                {{ $vuetify.icons.values[communityBlock.secondColumn.icon].icon }}
+                {{ customIcons.values[communityBlock.secondColumn.icon].icon }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -87,7 +87,7 @@
             <router-link :to="communityBlock.secondColumn.link">
               <v-btn
                 color="primary"
-                text
+                variant="text"
               >
                 {{ communityBlock.secondColumn.buttonTitle }}
               </v-btn>
@@ -102,12 +102,14 @@
 <script>
 import homePageData from "@/data/homePageData.json"
 import {truncate} from "@/utils/stringUtils";
+import customIcons from "@/plugins/icons";
 export default {
   name: "CommunityBlock",
   mixins: [ truncate ],
   data: () => {
     return {
-        communityBlock: homePageData.communityBlock
+      communityBlock: homePageData.communityBlock,
+      customIcons: customIcons,
     }
   }
 }

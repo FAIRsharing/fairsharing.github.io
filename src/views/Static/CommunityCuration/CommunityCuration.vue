@@ -44,6 +44,12 @@
     </v-card-actions>
     <br>
 
+    <!-- pie chart of broad subjects goes here -->
+    <PieChart
+      ref-name="championBroadSubjectAreas"
+      :fields-chart="broadSubjects"
+    />
+
     <v-expansion-panels
       v-model="panel"
       :readonly="readonly"
@@ -148,18 +154,59 @@
 </template>
 
 <script>
+import { capitalize } from "lodash"
+
+import PieChart from "@/components/Static/Statistics/PieChart.vue";
+import communityCurationCohorts from '@/data/communityCurationCohorts.json';
 import communityCurationData from '@/data/communityCurationData.json';
 import getHostname from "@/utils/generalUtils";
-    export default {
-      name: "CommunityCuration",
-      mixins: [ getHostname ],
-      data: () => {
-        return {
-          communityCurationData: communityCurationData.communityCuration,
-          communityCodeOfConductData: communityCurationData.communityCodeOfConductData
-        }
+import cleanString from "@/utils/stringUtils"
+
+  export default {
+    name: "CommunityCuration",
+    components: { PieChart },
+    mixins: [ getHostname, cleanString ],
+    data: () => {
+      return {
+        communityCurationData: communityCurationData.communityCuration,
+        communityCodeOfConductData: communityCurationData.communityCodeOfConductData,
+        communityCurationCohorts: communityCurationCohorts,
+        broadSubjects: {
+          "title": "Champions' Broad Specialisms",
+          "data": []
+        },
+        panel: [],
+        readonly: false
       }
+    },
+    mounted() {
+      // This creates pie chart data from the champions' file
+      let _module = this;
+      let tempSubjects = {}
+      _module.communityCurationCohorts.data.forEach((ch) => {
+        let subj = ch.subject_area;
+        if (!subj) {
+          return;
+        }
+        if (tempSubjects[subj]) {
+          tempSubjects[subj] = tempSubjects[subj] + 1;
+        }
+        else {
+          tempSubjects[subj] = 1;
+        }
+      })
+      for (let key in tempSubjects) {
+        _module.broadSubjects.data.push({
+          name: capitalize(_module.cleanString(key)),
+          y: tempSubjects[key],
+          //url: '' // TODO: Use later to link to tabs etc.
+        })
+      }
+    },
+    methods: {
+      capitalize
     }
+  }
 </script>
 <style scoped>
 p {

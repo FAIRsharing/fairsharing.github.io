@@ -77,8 +77,15 @@
                 cursor: 'pointer',
                 point: {
                   events: {
-                    click: /* istanbul ignore next */ function() {
-                      location.href = this.options.url;
+                    click:
+                    /* istanbul ignore next */
+                      function(e) {
+                        if (this.options.url) {
+                          location.href = this.options.url;
+                        }
+                        else {
+                          e.stopPropagation()
+                        }
                     }
                   }
                 }

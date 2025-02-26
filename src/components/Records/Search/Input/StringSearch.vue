@@ -14,7 +14,7 @@
         single-line
         clearable
         density="compact"
-        full-width
+        class="full-width"
         :class="$vuetify.display.lgAndDown ? 'v-input' : 'v-input-lg-up'"
         :height="responsiveHeightTextBox"
         :placeholder="placeholder"
@@ -90,6 +90,8 @@
 
 <script>
 import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
+import { useDisplay } from 'vuetify'
+
 export default {
   name: "StringSearch",
   components: { AdvancedSearch },
@@ -98,6 +100,10 @@ export default {
     showHomeSearch: { default: false, type: Boolean },
     addSearchTerms: { default: false, type: Boolean },
     searchPath: { default: "/search", type: String },
+  },
+  setup() {
+    const { mdAndDown, md, lg, xl, mobile } = useDisplay()
+    return {mdAndDown, md, lg, xl, mobile}
   },
   data() {
     return {
@@ -121,14 +127,14 @@ export default {
     responsiveHeight: function () {
       return {
         "style-sm-xs": this.$vuetify.display.mdAndDown,
-        "style-md": this.$vuetify.display.mdOnly,
-        "style-lg": this.$vuetify.display.lgOnly,
-        "style-xl": this.$vuetify.display.xlOnly,
+        "style-md": this.$vuetify.display.md,
+        "style-lg": this.$vuetify.display.lg,
+        "style-xl": this.$vuetify.display.xl,
       };
     },
     responsiveHeightTextBox: function () {
       let boxHeight = 35;
-      if (this.$vuetify.display.xlOnly) {
+      if (this.$vuetify.display.xl) {
         boxHeight = 50;
       }
       return boxHeight;

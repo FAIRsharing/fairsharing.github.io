@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-app-bar
     id="mainHeader"
     height="150px"
@@ -44,11 +44,10 @@
             >
               <template #activator="{ props }">
                 <v-btn
-                  :size="$vuetify.display.xlOnly ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
-                  color="accent3 white--text"
-                  class="mr-1 mt-sm-1"
-                  dark
+                  :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+                  class="mr-1 mt-sm-1 bg-accent3"
                   v-bind="props"
+                  elevation="3"
                   @click="closePopup(false)"
                 >
                   Login
@@ -250,6 +249,7 @@ header {
 .header-container {
   border-bottom: 3px dashed #253442;
   position: relative !important;
+  height:150px;
   max-height: 150px;
 }
 
@@ -257,6 +257,7 @@ header {
 .header-container:deep(.v-toolbar__content) {
   flex-direction: column;
   align-items: stretch;
+  padding: 4px 16px
 }
 
 .smallScreen {

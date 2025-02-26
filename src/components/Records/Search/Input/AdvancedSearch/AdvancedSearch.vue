@@ -22,9 +22,9 @@
     <!--  On Header Block  -->
     <v-btn
       v-else
-      color="primary"
-      :size="$vuetify.display.xlOnly ? true : false ? 'x-large' : undefined"
-      class="mr-10"
+      :size="$vuetify.display.xl ? true : false ? 'x-large' : undefined"
+      class="mr-10 bg-primary"
+      elevation="3"
       @click="openAdvanceSearch()"
     >
       <v-icon

@@ -1,9 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app-bar
     id="mainHeader"
-    short
-    height="150"
-    max-height="150"
+    height="150px"
     class="header-container"
     :class="[{'largeScreen': $vuetify.display.xlOnly}, {'smallScreen': $vuetify.display.mdAndDown}]"
   >
@@ -113,7 +111,7 @@
               min-width="167px"
               max-width="184px"
             >
-              <span :class="['white--text',{'text-primary': !item.active}, {'accent3--text': item.primary && !item.active}]">{{ item.label }}</span>
+              <span :class="['text-white',{'text-primary': !item.active}, {'text-accent3': item.primary && !item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
         </ul>
@@ -251,6 +249,8 @@ header {
 
 .header-container {
   border-bottom: 3px dashed #253442;
+  position: relative !important;
+  max-height: 150px;
 }
 
 

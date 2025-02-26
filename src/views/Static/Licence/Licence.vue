@@ -26,8 +26,7 @@
     <v-img
       src="assets/fairsharing-logo.svg"
       height="70"
-      contain
-      class="text-left pa-0 d-inline-block"
+      class="text-left pa-0 d-inline-block contain"
     />
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"

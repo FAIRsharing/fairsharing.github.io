@@ -219,8 +219,7 @@
       >
         <v-img
           :src="`/assets/Educational/Infographic/${infographicPopup.data.logo}`"
-          class="align-end infographicPopup"
-          contain
+          class="align-end infographicPopup contain"
           position="top center"
         >
           <v-card-actions class="justify-end closeInfoPopup">

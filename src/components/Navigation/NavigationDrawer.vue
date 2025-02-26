@@ -56,7 +56,7 @@
         <v-img
           src="/assets/fairsharing-logo.svg"
           height="70"
-          contain
+          class="contain"
         />
       </router-link>
     </div>

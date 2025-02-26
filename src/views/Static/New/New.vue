@@ -55,8 +55,7 @@
                   class="d-flex justify-center"
                 >
                   <v-img
-                    class="mt-5"
-                    contain
+                    class="mt-5 contain"
                     height="100px"
                     :src="$vuetify.icons.values[item.icon].icon"
                   />

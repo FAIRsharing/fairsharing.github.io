@@ -226,7 +226,7 @@
             max-height="250px"
             :src="item.image"
             height="120"
-            contain
+            class="contain"
             style="filter: grayscale(1);"
           />
         </v-col>
@@ -258,7 +258,7 @@
             max-height="250px"
             :src="item.image"
             height="120"
-            contain
+            class="contain"
             style="filter: grayscale(1);"
           />
         </v-col>

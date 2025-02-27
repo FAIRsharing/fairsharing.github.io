@@ -15,6 +15,7 @@
     >
       {{ tab.title }}
     </v-tab>
+  </v-tabs>
     <v-tabs-window v-model="tabsData.selectedTab">
       <v-tabs-window-item
         v-for="(tabItem,tabItemIndex) in tabsData.tabs"
@@ -28,7 +29,7 @@
         />
       </v-tabs-window-item>
     </v-tabs-window>
-  </v-tabs>
+
 </template>
 
 <script>

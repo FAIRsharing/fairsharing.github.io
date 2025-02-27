@@ -318,6 +318,7 @@ export default {
         collection: true,
         standard: true,
         policy: true,
+        fairassist: false,
         ready: true,
         in_development: true,
         uncertain: true,
@@ -567,5 +568,4 @@ export default {
 .button-filters {
   width: 150px;
 }
-
 </style>

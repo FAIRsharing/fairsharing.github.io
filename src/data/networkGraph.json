@@ -43,29 +43,46 @@
     {
       "name": "Related to",
       "color": "grey"
+    },
+    {
+      "name": "Part of",
+      "color": "brown"
+    },
+    {
+      "name": "Measures principle",
+      "color": "#e827a4"
+    },
+    {
+      "name": "Has associated metric",
+      "color": "#7ae827"
     }
   ],
   "registry":[
-      {
-        "name": "Collection",
-        "color": "#A37146",
-        "active": true
-      },
-      {
-        "name": "Database",
-        "color": "#4678A3",
-        "active": true
-      },
-      {
-        "name": "Standard",
-        "color": "#29AE9E",
-        "active": true
-      },
-      {
-        "name": "Policy",
-        "color": "#A046A3",
-        "active": true
-      }
+    {
+      "name": "Collection",
+      "color": "#A37146",
+      "active": true
+    },
+    {
+      "name": "Database",
+      "color": "#4678A3",
+      "active": true
+    },
+    {
+      "name": "Standard",
+      "color": "#29AE9E",
+      "active": true
+    },
+    {
+      "name": "Policy",
+      "color": "#A046A3",
+      "active": true
+    },
+    {
+      "name": "FAIRassist",
+      "color": "orange",
+      "active": true
+    }
   ],
   "status":[
     {

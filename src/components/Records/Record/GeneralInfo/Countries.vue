@@ -3,12 +3,12 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
             fa-question-circle
           </v-icon>
@@ -19,7 +19,7 @@
     </span>
     <div
       class="d-flex full-width flex-wrap ml-md-12 ml-13"
-      :class="{'justify-end' : $vuetify.breakpoint.smAndDown}"
+      :class="{'justify-end' : $vuetify.display.smAndDown}"
     >
       <NoneFound
         v-if="!getField('countries')"
@@ -45,7 +45,7 @@
         </p>
         <span
           v-else
-          class="warning"
+          class="bg-warning"
         >
           country code undefined!
         </span>

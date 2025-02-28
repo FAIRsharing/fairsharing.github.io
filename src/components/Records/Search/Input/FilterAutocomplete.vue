@@ -3,26 +3,26 @@
     v-if="filter.filterName"
     :id="filter.filterName + 'AutocompleteList' "
   >
-    <v-expansion-panel-header> {{ filter.filterLabel }}</v-expansion-panel-header>
-    <v-expansion-panel-content class="pl-5 pr-5">
-      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+    <v-expansion-panel-title> {{ filter.filterLabel }}</v-expansion-panel-title>
+    <v-expansion-panel-text class="pl-5 pr-5">
+      <div :class="['d-flex',{'flex-column':$vuetify.display.mdAndDown}]">
         <v-autocomplete
           v-model="selectedValues"
           :attach="true"
           :items="getValues"
-          solo
-          dense
+          variant="solo"
+          density="compact"
           clearable
           multiple
           prepend-inner-icon="fa-search"
           :placeholder="`Search`"
-          item-text="key"
+          item-title="key"
           item-value="key"
           @focus="scrollTo(filter.filterName)"
           @click:clear="reset(filter)"
         >
           <template #selection="data">
-            <v-chip class="blue white--text  mb-1 ">
+            <v-chip class="bg-blue text-white mb-1">
               <span class="chipsValueName">
                 {{ cleanString(data.item.key) }}
               </span>
@@ -43,7 +43,7 @@
           Apply
         </v-btn>
       </div>
-    </v-expansion-panel-content>
+    </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
 

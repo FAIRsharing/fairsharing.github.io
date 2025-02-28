@@ -9,7 +9,7 @@
       >
         <v-card
           class="pa-4 d-flex flex-column"
-          outlined
+          border
           color="white"
           tile
           elevation="3"
@@ -21,12 +21,12 @@
           <v-card-title
             class="pa-0 text--primary card-title-customize"
           >
-            <v-tooltip bottom>
-              <template #activator="{ on }">
+            <v-tooltip location="bottom">
+              <template #activator="{ props }">
                 <v-icon
                   class="mr-2"
                   size="15"
-                  v-on="on"
+                  v-bind="props"
                 >
                   fa-question-circle
                 </v-icon>
@@ -95,7 +95,7 @@
               getField('metadata')['citations'].length > 0
           "
           class="pa-4 d-flex flex-column"
-          outlined
+          border
           color="white"
           tile
           elevation="3"
@@ -105,12 +105,12 @@
             size="20"
           />
           <v-card-title class="pa-0 card-title-customize">
-            <v-tooltip bottom>
-              <template #activator="{ on }">
+            <v-tooltip location="bottom">
+              <template #activator="{ props }">
                 <v-icon
                   class="mr-2"
                   size="15"
-                  v-on="on"
+                  v-bind="props"
                 >
                   fa-question-circle
                 </v-icon>
@@ -135,7 +135,7 @@
                   <p class="ma-0 mr-2">
                     <b>{{ publication.title }}</b>:
                     {{
-                      $vuetify.breakpoint.lgAndUp
+                      $vuetify.display.lgAndUp
                         ? truncate(publication.authors, 600)
                         : truncate(publication.authors, 150)
                     }}

@@ -1,21 +1,20 @@
 <template>
   <v-app id="app">
-    <div
-      v-if="loading"
-      style="height:100vh; color: white"
-    >
-      loading-hidden
-    </div>
+<!--    <div-->
+<!--      v-if="loading"-->
+<!--      style="height:100vh; color: white"-->
+<!--    >-->
+<!--      loading-hidden-->
+<!--    </div>-->
     <v-navigation-drawer
-      v-if="$vuetify.breakpoint.mdAndDown"
+      v-if="$vuetify.display.mdAndDown"
       v-model="UIGeneralStatus.drawerVisibilityState"
-      app
       left
       width="70%"
     >
       <NavigationDrawer />
     </v-navigation-drawer>
-    <Header />
+    <HeaderComp />
     <v-alert
       v-if="readOnlyMode"
       class="mt-4 mx-4"
@@ -27,40 +26,40 @@
     <Jumbotron />
     <PublicMessages />
     <router-view class="min-height-70vh" />
-    <Footer />
+    <FooterComp />
   </v-app>
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+import {mapState} from 'vuex';
 
-    import PublicMessages from "@/components/Global/PublicMessages";
-    import Footer from "@/components/Navigation/Footer";
-    import Header from "@/components/Navigation/Header";
-    import Jumbotron from "@/components/Navigation/Jumbotron";
-    import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
+import PublicMessages from "@/components/Global/PublicMessages";
+import FooterComp from "@/components/Navigation/Footer";
+import HeaderComp from "@/components/Navigation/Header";
+import Jumbotron from "@/components/Navigation/Jumbotron";
+import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
 
-    export default {
-        name: "App2",
-        components: {PublicMessages, NavigationDrawer, Footer, Header, Jumbotron},
-        data() {
-          return {
-            title: null,
-            loading:true,
-            subtitle: null
-          }
-        },
-      computed: {
-        ...mapState('uiController', ["UIGeneralStatus"]),
-        ...mapState('introspection', ["readOnlyMode"]),
-      },
-      /* istanbul ignore next */
-      async updated() {
-        // very important line of code which prevents layout shifting which is considered as one negative point for SEO
-        await this.$nextTick()
-        this.loading = false;
-      }
+export default {
+  name: "App2",
+  components: {PublicMessages, NavigationDrawer, FooterComp, HeaderComp, Jumbotron},
+  data() {
+    return {
+      title: null,
+      // loading:true,
+      subtitle: null
     }
+  },
+  computed: {
+    ...mapState('uiController', ["UIGeneralStatus"]),
+    ...mapState('introspection', ["readOnlyMode"]),
+  },
+  /* istanbul ignore next */
+  async updated() {
+    // very important line of code which prevents layout shifting which is considered as one negative point for SEO
+    await this.$nextTick()
+    // this.loading = false;
+  }
+}
 </script>
 
 <style lang="scss">

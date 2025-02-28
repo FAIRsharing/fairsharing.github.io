@@ -2,7 +2,7 @@
   <v-card
     v-if="getField('publications').length!==0 && (getField('publications')!==undefined && getField('publications')!==null)"
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -24,7 +24,7 @@
       >
         <v-card
           class="pa-4 d-flex flex-column v-card-hover"
-          outlined
+          border
           color="white"
           tile
           elevation="1"
@@ -57,9 +57,9 @@
             <!-- pubmed -->
             <v-btn
               v-if="checkLinkValue(publication.pubmedId)"
-              text
-              outlined
-              small
+              variant="text"
+              variant="outlined"
+              size="small"
               class="mr-1"
             >
               <a
@@ -73,9 +73,9 @@
             <!-- doi -->
             <v-btn
               v-if="checkLinkValue(publication.doi)"
-              text
-              outlined
-              small
+              variant="text"
+              variant="outlined"
+              size="small"
               class="ma-1"
             >
               <a
@@ -87,10 +87,10 @@
             </v-btn>
             <v-btn
               v-if="checkLinkValue(publication.url)"
-              text
-              outlined
-              small
-              :class="{'mt-2':$vuetify.breakpoint.width<540}"
+              variant="text"
+              variant="outlined"
+              size="small"
+              :class="{'mt-2':$vuetify.display.width<540}"
             >
               <a
                 :href="publication.url"
@@ -107,35 +107,36 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
-    import SectionTitle from '@/components/Records/Record/SectionTitle';
-    import stringUtils from '@/utils/stringUtils';
+import SectionTitle from '@/components/Records/Record/SectionTitle';
+import stringUtils from '@/utils/stringUtils';
 
-    export default {
-        name: "Publications",
-        components: {
-            SectionTitle
-        },
-        mixins: [stringUtils],
-        props: {
-          backColor:{
-            default:null,
-            type: String,
-          }
-        },
-        computed: {
-            ...mapGetters("record", ["getField"])
-        },
-        methods: {
-          checkLinkValue: (link) => {
-            if (!link) {
-              return false;
-            } else if ((link.toLowerCase() === 'missing') || link === 0 || link === "0") {
-              return false;
-            }
-            return true;
-          }
-        }
+export default {
+  name: "Publications",
+  components: {
+    SectionTitle
+  },
+  mixins: [stringUtils],
+  props: {
+    backColor:{
+      default:null,
+      type: String,
     }
+  },
+  computed: {
+    ...mapGetters("record", ["getField"])
+  },
+  methods: {
+    checkLinkValue: (link) => {
+      if (!link) {
+        return false;
+      }
+      else if ((link.toLowerCase() === 'missing') || link === 0 || link === "0") {
+        return false;
+      }
+      return true;
+    }
+  }
+}
 </script>

@@ -2,7 +2,7 @@
   <v-container
     id="organisationPage"
     fluid
-    class="standard grey lighten-3 pb-10"
+    class="standard bg-grey-lighten-3 pb-10"
   >
     <Loaders
       v-if="loading"
@@ -14,7 +14,7 @@
       <!-- new stuff below here -->
       <v-card
         class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column"
-        outlined
+        border
         :color="$vuetify.theme.themes.bg_organisation_record_card"
         tile
         elevation="3"
@@ -153,14 +153,14 @@
               variant="elevated"
             >
               <a
-                class="black--text"
+                class="text-black"
                 :href="search.url"
               >
                 {{ search.name }}
               </a>
               <v-icon
                 v-if="user().is_super_curator? true:false"
-                right
+                end
                 class="ml-4"
                 size="20"
                 color="error"
@@ -195,13 +195,13 @@
           class="mt-4"
         >
           <v-btn
-            class="warning"
+            class="bg-warning"
             @click="startEditing"
           >
             Edit Organisation
           </v-btn>
           <v-btn
-            class="error ml-2"
+            class="bg-error ml-2"
             @click="confirmDeleteOrganisation"
           >
             Delete Organisation
@@ -258,7 +258,7 @@
                     <v-text-field
                       v-model="editedOrganisation.name"
                       label="Name"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired()]"
                     />
                   </v-col>
@@ -269,7 +269,7 @@
                     <v-text-field
                       v-model="editedOrganisation.homepage"
                       label="Homepage"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired(), rules.isURL()]"
                     />
                   </v-col>
@@ -280,7 +280,7 @@
                     <v-text-field
                       v-model="editedOrganisation.rorLink"
                       label="ROR Link"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isURL()]"
                     />
                   </v-col>
@@ -290,7 +290,7 @@
                   >
                     <v-text-field
                       v-model="editedOrganisation.alternativeNames"
-                      outlined
+                      variant="outlined"
                       item-text="name"
                       item-value="id"
                       return-object
@@ -307,8 +307,8 @@
                       v-model="editedOrganisation.types"
                       :items="organisationsTypes"
                       multiple
-                      outlined
-                      item-text="name"
+                      variant="outlined"
+                      item-title="name"
                       item-value="id"
                       return-object
                       label="Select an organisation type(s)"
@@ -317,8 +317,8 @@
                       <!-- autocomplete selected -->
                       <template #selection="data">
                         <v-chip
-                          class="blue white--text removeStyle"
-                          close
+                          class="bg-blue text-white removeStyle"
+                          closable
                           @click:close="removeType(data.item)"
                         >
                           {{ data.item.name }}
@@ -334,22 +334,22 @@
                       v-model="editedOrganisation.countries"
                       label="Countries"
                       :items="countries"
-                      item-text="name"
+                      item-title="name"
                       item-value="name"
                       multiple
-                      outlined
+                      variant="outlined"
                       return-object
                       :rules="[editedOrganisation.countries &&
                         !(editedOrganisation.countries === 0)]"
                     >
                       <template #prepend>
                         <v-tooltip
-                          bottom
+                          location="bottom"
                           max-width="300px"
                           class="text-justify"
                         >
-                          <template #activator="{ on }">
-                            <v-icon v-on="on">
+                          <template #activator="{ props }">
+                            <v-icon v-bind="props">
                               fa-question-circle
                             </v-icon>
                           </template>
@@ -360,8 +360,8 @@
                       <!-- autocomplete selected -->
                       <template #selection="data">
                         <v-chip
-                          class="blue white--text removeStyle"
-                          close
+                          class="bg-blue text-white removeStyle"
+                          closable
                           @click:close="removeCountry( data.item )"
                         >
                           {{ data.item.name }}
@@ -416,13 +416,13 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="error"
+                class="bg-error"
                 @click="showEditDialog = false"
               >
                 Cancel
               </v-btn>
               <v-btn
-                class="success"
+                class="bg-success"
                 :disabled="!editFormValid || imageTooBig"
                 @click="editOrganisation()"
               >
@@ -442,7 +442,7 @@
       <!-- Delete organisation -->
       <v-card v-if="deleteOrganisationCard">
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           Deleting organisation!
         </v-card-title>
@@ -454,13 +454,13 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="info"
+            class="bg-info"
             @click="deleteOrganisation(false)"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="error"
+            class="bg-error"
             @click="deleteOrganisation(true)"
           >
             Delete
@@ -477,14 +477,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="deleteLoader"
             @click="unlinkSavedSearch(true)"
@@ -587,7 +587,7 @@ export default {
     },
     logoUrl() {
       if (this.organisation.urlForLogo) {
-        return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
+        return import.meta.env.VITE_API_ENDPOINT + this.organisation.urlForLogo;
       }
       return null;
     }
@@ -619,7 +619,8 @@ export default {
           this.error = false;
         }
         this.loading = false;
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
     },
@@ -715,19 +716,19 @@ export default {
       }
     },
     getUserLink() {
-      return process.env.VUE_APP_HOSTNAME + 'users/'
+      return import.meta.env.VITE_HOSTNAME + 'users/'
     },
     orgUrl() {
-      return process.env.VUE_APP_HOSTNAME + 'organisations/'
+      return import.meta.env.VITE_HOSTNAME + 'organisations/'
     },
     removeType(type) {
       this.editedOrganisation.types = this.editedOrganisation.types.filter(obj =>
-          obj.label !== type.name && obj.id !== type.id
+        obj.label !== type.name && obj.id !== type.id
       );
     },
     removeCountry(country) {
       this.editedOrganisation.countries = this.editedOrganisation.countries.filter(obj =>
-          obj.label !== country.name && obj.id !== country.id
+        obj.label !== country.name && obj.id !== country.id
       );
     },
     async startEditing() {
@@ -735,7 +736,7 @@ export default {
       this.showEditDialog = true;
       await this.getOrganisationsTypes();
       this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
-          this.organisation.types.indexOf(obj.name) > -1
+        this.organisation.types.indexOf(obj.name) > -1
       );
       await this.getCountries();
       this.loading = false;
@@ -786,7 +787,7 @@ export default {
         this.deleteLoader = true;
         //Filter the currentOrganisation to unlink
         let linkOrganisation = this.selectedItem.organisations
-            .filter(({id}) => id !== this.organisation.id);
+          .filter(({id}) => id !== this.organisation.id);
 
         //Array of id of the remaining organisation
         linkOrganisation = linkOrganisation.map(({id}) => id)
@@ -795,13 +796,13 @@ export default {
         };
 
         let updatedSearchResult = await restClient.updateSaveSearch(
-            this.selectedItem["id"],
-            saveSearchObj,
-            this.user().credentials.token
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token
         );
         //Commit the updated result to store
         saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
-          await this.getOrganisation();
+        await this.getOrganisation();
       }
       this.deleteLoader = false;
       this.unlinkSavedSearchCard = false;

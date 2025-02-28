@@ -3,7 +3,7 @@
     elevation="3"
     :class="[
       'mx-2 full-width d-flex flex-column',
-      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
+      $vuetify.display.mdAndUp ? responsiveClassObject : 'fullHeight',
     ]"
   >
     <AdvancedSearchButtons />
@@ -34,7 +34,7 @@
           class="individualChips d-flex flex-column align-center"
         >
           <div
-            class="my-2 mx-1 text-capitalize primary px-3 py-1 white--text rounded d-flex"
+            class="my-2 mx-1 text-capitalize bg-primary px-3 py-1 text-white rounded d-flex"
             style="font-size: 14px"
           >
             <span>{{ printSelectionKeys(key) }} </span>
@@ -48,8 +48,8 @@
             class="operatorChip"
             color="accent"
             text-color="accent"
-            outlined
-            small
+            variant="outlined"
+            size="small"
           >
             {{ printSelectedOperator(item) }}
           </v-chip>

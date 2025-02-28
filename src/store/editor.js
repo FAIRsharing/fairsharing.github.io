@@ -310,7 +310,8 @@ let editorStore = {
                             // Whereas this is what determines what available links can be shown when adding a new one.
                             else {
                                 if (options.target.registry === relation.target ||
-                                    options.target.type === relation.target) {
+                                    options.target.type === relation.target ||
+                                    relation.relation === 'related_to') {
                                     output.push(relation);
                                     seen.push(label);
                                 }

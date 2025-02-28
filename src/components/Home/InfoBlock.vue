@@ -20,8 +20,7 @@
               class="d-flex justify-center"
             >
               <v-img
-                class="mt-5"
-                contain
+                class="mt-5 contain"
                 height="100px"
                 :src="customIcons.values['home_standard'].icon"
               />
@@ -49,7 +48,7 @@
                 <strong class="flex-grow-1">{{ item.title }}</strong>
                 <span>{{ item.count }}</span>
               </div>
-              <v-divider />
+              <v-divider opacity="0.9"/>
             </router-link>
           </v-card-text>
           <v-card-actions class="text-center d-block viewAll">
@@ -81,8 +80,7 @@
               class="d-flex justify-center"
             >
               <v-img
-                class="mt-5"
-                contain
+                class="mt-5 contain"
                 height="100px"
                 :src="customIcons.values['home_db'].icon"
               />
@@ -108,7 +106,7 @@
                 <strong class="flex-grow-1">{{ item.title }}</strong>
                 <span>{{ item.count }}</span>
               </div>
-              <v-divider />
+              <v-divider opacity="0.9"/>
             </router-link>
           </v-card-text>
           <v-card-actions class="text-center d-block viewAll">
@@ -166,7 +164,7 @@
                 <strong class="flex-grow-1">{{ item.title }}</strong>
                 <span>{{ item.count }}</span>
               </div>
-              <v-divider />
+              <v-divider opacity="0.9"/>
             </router-link>
           </v-card-text>
           <v-card-actions class="text-center d-block viewAll">

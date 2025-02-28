@@ -44,7 +44,7 @@
             >
               <template #activator="{ props }">
                 <v-btn
-                  :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+                  :size="$vuetify.display.xlOnly ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
                   class="mr-1 mt-sm-1 bg-accent3"
                   v-bind="props"
                   elevation="3"

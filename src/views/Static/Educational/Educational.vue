@@ -49,7 +49,7 @@
                     'text-body': $vuetify.display.mdOnly,
                     'fontSize18': $vuetify.display.mdAndUp,
                     'fontSize20': $vuetify.display.lg,
-                    'text-h6': $vuetify.display.xl,
+                    'text-h6': $vuetify.display.xlOnly,
                   }"
                   style="word-break: initial;"
                 >

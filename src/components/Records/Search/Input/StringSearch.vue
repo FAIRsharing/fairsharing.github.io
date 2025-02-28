@@ -3,7 +3,7 @@
     <v-form
       ref="form"
       v-model="formValid"
-      lazy-validation
+      validate-on="submit lazy"
       class="d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
       style="position: relative"
       @submit.prevent="searchString()"
@@ -79,6 +79,7 @@
         class="d-inline-block mr-2"
         :label="checkbox.label"
         :value="checkbox"
+        color="primary"
       >
         <template #label>
           <span class="v-label-white">{{ checkbox.label }}</span>
@@ -207,16 +208,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-input {
   box-shadow: 0 0 0 0;
-  height: 35px !important;
+  height: 35px;
   margin-bottom: 7px;
 }
 .v-input-lg-up {
   box-shadow: 0 0 0 0;
   height: 48px;
   margin-bottom: 15px;
+    :deep(input) {
+      height: 50px;
+    }
 }
 
 .button-text-size {

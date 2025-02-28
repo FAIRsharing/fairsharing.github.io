@@ -256,7 +256,7 @@
               <v-card-text
                 class="text--primary"
                 style="height: 100%"
-                :style="$vuetify.display.xl ? 'height: 115px': $vuetify.display.mdAndUp ? 'height: 135px' : 'height: 100%'"
+                :style="$vuetify.display.xlOnly ? 'height: 115px': $vuetify.display.mdAndUp ? 'height: 135px' : 'height: 100%'"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :

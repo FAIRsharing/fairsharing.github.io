@@ -30,7 +30,7 @@
                 size="x-small"
                 class="mr-1"
               >
-                fas fa-search fa-graduation-cap
+                fas fa-search
               </v-icon>
               <v-icon
                 size="x-small"
@@ -151,8 +151,8 @@
               width="90%"
               max-height="340"
               max-width="340"
-              contain
               alt="browse by subject"
+              class="contain"
             />
           </v-col>
         </v-row>
@@ -181,7 +181,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #container-back {
   background: rgb(37, 52, 66);
 }

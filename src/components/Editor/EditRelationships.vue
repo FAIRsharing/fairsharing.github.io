@@ -437,7 +437,7 @@
 
 <script>
     import { capitalize,isEqual } from "lodash"
-    import { mapActions, mapGetters,mapState } from "vuex"
+    import { mapActions, mapGetters, mapState } from "vuex"
 
     import Icon from "@/components/Icon";
     import RecordStatus from "@/components/Records/Shared/RecordStatus";

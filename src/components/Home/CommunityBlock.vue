@@ -19,12 +19,13 @@
           >
             <div
               style="height: 136px"
-              class="d-flex justify-center"
+              class="d-flex justify-center align-center"
             >
               <v-icon
                 size="80"
                 color="white"
                 style="opacity: .7"
+                class="d-inline-flex"
               >
                 {{ customIcons.values[communityBlock.firstColumn.icon].icon }}
               </v-icon>
@@ -66,12 +67,13 @@
           >
             <div
               style="height: 136px"
-              class="d-flex justify-center"
+              class="d-flex justify-center align-center"
             >
               <v-icon
                 size="80"
                 color="white"
                 style="opacity: .7"
+                class="d-inline-flex"
               >
                 {{ customIcons.values[communityBlock.secondColumn.icon].icon }}
               </v-icon>

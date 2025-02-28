@@ -18,10 +18,10 @@
           >
             <div
               style="height: 136px"
-              class="d-flex justify-center"
+              class="d-flex justify-center pt-4"
             >
               <v-icon
-                size="80"
+                size="90"
                 color="white"
                 style="opacity: .7"
               >
@@ -66,7 +66,6 @@
               width="400"
               height="100"
               :src="customIcons.values[blockCategories.secondColumn.icon].icon"
-              contain
             />
             <v-card-title class="d-inline">
               {{ blockCategories.secondColumn.title }}
@@ -104,7 +103,7 @@
           >
             <div
               style="height: 136px"
-              class="d-flex justify-center"
+              class="d-flex justify-center pt-4"
             >
               <v-icon
                 size="90"

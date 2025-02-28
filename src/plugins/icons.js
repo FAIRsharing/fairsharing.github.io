@@ -50,7 +50,7 @@ const customIcons = {
     },
     arrowUp: {
       type: "icon",
-      icon: "fa-chevron-up",
+      icon: "fas fa-chevron-up",
     },
     data_access: {
       type: "icon",
@@ -227,7 +227,7 @@ const customIcons = {
     },
     recommended: {
       type: "icon",
-      icon: "fa-thumbs-up",
+      icon: "fas fa-thumbs-up",
     },
     video: {
       type: "icon",
@@ -239,7 +239,7 @@ const customIcons = {
     },
     educational: {
       type: "icon",
-      icon: "fa-graduation-cap",
+      icon: "fas fa-graduation-cap",
     },
     api: {
       type: "icon",
@@ -287,11 +287,11 @@ const customIcons = {
     },
     users: {
       type: "icon",
-      icon: "fa-users",
+      icon: "fas fa-users",
     },
     collaborators: {
       type: "icon",
-      icon: "fa-users-cog",
+      icon: "fas fa-users-cog",
     },
     info: {
       type: "icon",

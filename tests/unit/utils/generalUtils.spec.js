@@ -13,8 +13,8 @@ describe("generalUtils.js", function(){
     })
 
     it("can check formatDate method", function () {
-        let dummyDate = "2020-09-27T09:34:54Z"
-        expect(generalUtils.methods.formatDate(dummyDate)).toBe("Sep 27, 2020");
+        let dummyDate = "2020-05-27T09:34:54Z"
+        expect(generalUtils.methods.formatDate(dummyDate)).toBe("May 27, 2020");
     })
 
     it("can check compareRecordDescUpdate method", function () {

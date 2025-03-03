@@ -46,14 +46,14 @@
             <div class="text-white d-flex flex-column justify-center block-category__card__gradient">
               <div
                 style="height: 136px"
-                class="d-flex justify-center"
+                class="d-flex justify-center align-center"
               >
                 <v-icon
                   size="80"
                   color="white"
                   style="opacity: .7"
                 >
-                  {{ $vuetify.icons.values[tab.icon].icon }}
+                  {{ customIcons.values[tab.icon].icon }}
                 </v-icon>
               </div>
               <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
@@ -163,7 +163,7 @@
 
       <p
         id="funders"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
       >
         A selection of official reports from funders and other organisations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
       </p>
@@ -185,13 +185,13 @@
             target="_blank"
           >
             <p
-              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.display.xlOnly }]"
+              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.display.xl}]"
             >
               {{ item.title }}
             </p>
           </a>
           <i
-            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
             v-html="$sanitize(item.text)"
           />
         </v-col>
@@ -203,7 +203,7 @@
 
       <p
         id="publishers"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
       >
         A selection of the publishers that use FAIRsharing to define and refine their data policies:
       </p>
@@ -237,7 +237,7 @@
       </h4>
       <p
         id="organisations"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
       >
         Some other organisations using FAIRsharing.
       </p>
@@ -272,7 +272,7 @@
     <p
       v-if="tables.toolsTable.data.length"
       id="tools"
-      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
     >
       Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use
       <a
@@ -415,17 +415,17 @@
         Activities
       </h3>
       <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
       >
         FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
       </p>
       <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
       >
         Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
       </p>
       <b
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
       >
         Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
       </b>
@@ -445,7 +445,7 @@
         {{ meettheteam.title }}
       </h4>
       <p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
         v-html="$sanitize(meettheteam.description)"
       />
       <ul class="d-flex flex-wrap pl-0">
@@ -580,7 +580,7 @@
         {{ rda.title }}
       </h4>
       <p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
         v-html="$sanitize(rda.description)"
       />
       <div
@@ -628,7 +628,7 @@
           </div>
           <div v-else>
             <p
-              :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+              :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
               v-html="$sanitize(item.data)"
             />
           </div>
@@ -636,7 +636,7 @@
       </div>
       <div>
         <p
-          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xl }]"
         >
           <a
             href="https://zulip.com/"
@@ -673,6 +673,7 @@ import {isArray} from "lodash";
 import Icon from "@/components/Icon";
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json"
+import customIcons from "@/plugins/icons";
 /** This component handles the sign-up/register page
  * @memberOf Static
  * @name Community
@@ -694,7 +695,8 @@ export default {
       tables:  communityData.tables,
       applyCss: false,
       currentAnchor:'',
-      Icon
+      Icon,
+      customIcons: customIcons
     }
   },
   watch: {

@@ -26,7 +26,7 @@ const customIcons = {
     },
     contacts: {
       type: "icon",
-      icon: "fa-envelope",
+      icon: "fas fa-envelope",
     },
     maintains: {
       type: "icon",
@@ -122,7 +122,7 @@ const customIcons = {
     },
     support_email: {
       type: "icon",
-      icon: "fa-headset",
+      icon: "fas fa-headset",
     },
     collection: {
       type: "img",
@@ -219,7 +219,7 @@ const customIcons = {
     },
     mailing_list: {
       type: "icon",
-      icon: "fa-address-book",
+      icon: "fas fa-address-book",
     },
     contact_form: {
       type: "icon",
@@ -263,15 +263,15 @@ const customIcons = {
     },
     adopters: {
       type: "icon",
-      icon: "fa-file-alt",
+      icon: "fas fa-file-alt",
     },
     activities: {
       type: "icon",
-      icon: "fa-chart-line",
+      icon: "fas fa-chart-line",
     },
     governance: {
       type: "icon",
-      icon: "fa-university",
+      icon: "fas fa-university",
     },
     linkedin: {
       type: "icon",
@@ -279,7 +279,7 @@ const customIcons = {
     },
     home: {
       type: "icon",
-      icon: "fa-home",
+      icon: "fas fa-home",
     },
     user: {
       type: "icon",

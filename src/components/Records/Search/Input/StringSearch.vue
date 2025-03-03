@@ -211,7 +211,7 @@ export default {
 <style lang="scss" scoped>
 .v-input {
   box-shadow: 0 0 0 0;
-  height: 35px;
+  height: 35px !important;
   margin-bottom: 7px;
 }
 .v-input-lg-up {

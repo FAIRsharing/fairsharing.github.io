@@ -3,7 +3,7 @@
     id="mainHeader"
     height="150px"
     class="header-container"
-    :class="[{'largeScreen': $vuetify.display.xlOnly}, {'smallScreen': $vuetify.display.mdAndDown}]"
+    :class="[{'largeScreen': $vuetify.display.xl}, {'smallScreen': $vuetify.display.mdAndDown}]"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mdAndDown"
@@ -44,7 +44,7 @@
             >
               <template #activator="{ props }">
                 <v-btn
-                  :size="$vuetify.display.xlOnly ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+                  :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
                   class="mr-1 mt-sm-1 bg-accent3"
                   v-bind="props"
                   elevation="3"
@@ -67,13 +67,12 @@
             </v-menu>
             <v-btn
               v-else
-              :size="$vuetify.display.xlOnly ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+              :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
               class="mr-1 mt-sm-1 bg-green"
               to="/accounts/profile"
             >
               <v-avatar>
                 <v-icon
-                  dark
                   color="white"
                 >
                   fa-user-circle
@@ -100,7 +99,7 @@
             :key="'navBarTopMenuItem_' + itemIndex"
           >
             <v-btn
-                :size="$vuetify.display.xlOnly ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+                :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
               class="mr-1 mt-sm-1 menuLinks"
               :class="{'px-2': $vuetify.display.lgAndDown}"
               :color="item.color"

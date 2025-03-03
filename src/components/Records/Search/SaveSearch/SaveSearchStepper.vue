@@ -1,14 +1,14 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      :value="stepperDialog"
+      :model-value="stepperDialog"
       width="900"
       persistent
       :retain-focus="false"
       @keydown.esc="closeStepperDialog()"
     >
       <!--Dialog Header -->
-      <StepperDialogHeader @restartStepper="restartStepper" />
+      <StepperDialogHeader @restart-stepper="restartStepper" />
       <!--Stepper Form -->
       <div v-if="getShowStepper">
         <v-stepper
@@ -69,7 +69,7 @@
               <PolicyStepper />
               <v-btn
                 class="float-md-right my-3"
-                :class="{ 'full-width': $vuetify.breakpoint.smAndDown }"
+                :class="{ 'full-width': $vuetify.display.smAndDown }"
                 color="primary"
                 @click="steps = 2"
               >
@@ -90,7 +90,7 @@
                 <v-btn
                   class="order-md-2"
                   :class="{
-                    'mb-3': $vuetify.breakpoint.smAndDown,
+                    'mb-3': $vuetify.display.smAndDown,
                   }"
                   color="primary"
                   @click="steps = 3"
@@ -98,7 +98,7 @@
                   Continue
                 </v-btn>
                 <v-btn
-                  class="white--text order-md-1"
+                  class="text-white order-md-1"
                   color="accent3"
                   @click="steps = 1"
                 >
@@ -120,7 +120,7 @@
                 <v-btn
                   class="order-md-2"
                   :class="{
-                    'mb-3': $vuetify.breakpoint.smAndDown,
+                    'mb-3': $vuetify.display.smAndDown,
                   }"
                   color="primary"
                   @click="steps = 4"
@@ -128,7 +128,7 @@
                   Continue
                 </v-btn>
                 <v-btn
-                  class="white--text order-md-1"
+                  class="text-white order-md-1"
                   color="accent3"
                   @click="steps = 2"
                 >
@@ -161,7 +161,7 @@
                 <v-btn
                   class="order-md-2"
                   :class="{
-                    'mb-3': $vuetify.breakpoint.smAndDown,
+                    'mb-3': $vuetify.display.smAndDown,
                   }"
                   color="success order-md-1"
                   :disabled="!searchForm"
@@ -171,7 +171,7 @@
                   Save
                 </v-btn>
                 <v-btn
-                  class="white--text"
+                  class="text-white"
                   color="accent3"
                   @click="steps = user().is_super_curator ? 3 : 1"
                 >
@@ -184,7 +184,7 @@
       </div>
       <ResultCard
         v-else
-        @restartStepper="restartStepper"
+        @restart-stepper="restartStepper"
       />
     </v-dialog>
   </v-row>
@@ -296,7 +296,8 @@ export default {
       //Check the success or error response
       if (searchResult?.error) {
         saveSearch.commit("saveSearch/setSaveSearchStatus", false);
-      } else {
+      }
+      else {
         saveSearch.commit("saveSearch/setSaveSearchStatus", true);
       }
 

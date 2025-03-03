@@ -3,7 +3,7 @@
     id="loginPage"
     ref="loginPage"
     v-model="formValid"
-    class="login mb-9"
+    class="login mb-9 elevation-10 rounded"
     style="background: white"
   >
     <v-container>
@@ -21,7 +21,7 @@
               :class="{ 'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp }"
             >
               <h2 class="ma-0">
-                {{ currentPanel | capitalize }}
+                {{ currentPanel }}
               </h2>
             </v-card-title>
 
@@ -49,6 +49,7 @@
               <v-divider
                 v-if="resendButton"
                 class="pb-0 mb-0"
+                opacity="0.9"
               />
 
               <!-- OAUTH -->
@@ -63,6 +64,7 @@
                     :class="provider.color"
                     class="text-left"
                     :href="provider.callback + getCurrentLocation()"
+                    elevation="3"
                   >
                     <v-layout width="100%">
                       <v-icon
@@ -79,7 +81,7 @@
             </v-card-text>
 
             <!-- card content // Form -->
-            <v-card-text v-if="currentPanel === 'login'">
+            <v-card-text v-if="currentPanel === 'Login'">
               <v-form
                 id="loginForm"
                 ref="loginForm"
@@ -98,14 +100,14 @@
                 <!-- password -->
                 <v-text-field
                   v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
+                  :append-inner-icon="show1 ? 'fas fa-eye' : 'fas fa-eye-slash'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
                   counter
                   required
                   variant="outlined"
                   :rules="[rules.isRequired()]"
-                  @click:append="show1 = !show1"
+                  @click:append-inner="show1 = !show1"
                   @keyup.enter="logUser()"
                 />
 
@@ -119,7 +121,7 @@
                       "
                     >Forgotten your password?</span>
                   </router-link>
-                  <v-divider />
+                  <v-divider opacity="0.9"/>
                   <router-link to="/accounts/signup">
                     <span
                       @click="
@@ -129,7 +131,7 @@
                       "
                     >Need to create a new account?</span>
                   </router-link>
-                  <v-divider />
+                  <v-divider opacity="0.9"/>
                   <a
                     href="https://fairsharing.gitbook.io/fairsharing/#accessing-fairsharing-through-3rd-party-accounts"
                     target="_blank"
@@ -146,9 +148,7 @@
 
                 <v-card-actions class="mt-2 justify-center">
                   <v-btn
-                    class="px-4"
-                    light
-                    color="primary"
+                    class="px-4 bg-primary"
                     :disabled="!formValid"
                     @click="logUser()"
                   >
@@ -192,12 +192,12 @@ export default {
     return {
       show1: false,
       resendButton: false,
-      currentPanel: "login",
+      currentPanel: "Login",
       loginData: {},
       oauthLogin: [
         {
           name: "ORCID",
-          color: "green white--text",
+          color: "bg-green white--text",
           callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/orcid",
         },
         // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
@@ -210,7 +210,7 @@ export default {
          */
         {
           name: "GitHub",
-          color: "black white--text",
+          color: "bg-black white--text",
           callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/github",
         },
       ],
@@ -284,7 +284,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #loginPage a {
   text-decoration: none !important;
 }

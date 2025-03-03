@@ -36,7 +36,6 @@
             <!-- LOGIN -->
             <v-menu
               v-if="!user().isLoggedIn"
-              offset-y
               transition="slide-y-transition"
               :close-on-content-click="closeMenuStatus"
               class="mt-5"

@@ -6,14 +6,14 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
         </template>
         {{ recordTooltips['contacts'] }}
@@ -60,14 +60,14 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
         </template>
         {{ recordTooltips['contacts'] }}

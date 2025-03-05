@@ -101,14 +101,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="closeDialog"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="loading"
             @click="deleteItemConfirm()"
@@ -126,14 +126,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="closeDialog"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="loading"
             @click="unlinkItemConfirm()"
@@ -303,9 +303,9 @@ export default {
       };
 
       let updatedSearchResult = await restClient.updateSaveSearch(
-          this.selectedItem["id"],
-          saveSearchObj,
-          this.user().credentials.token
+        this.selectedItem["id"],
+        saveSearchObj,
+        this.user().credentials.token
       );
 
       //Commit the updated result to store
@@ -341,7 +341,7 @@ export default {
      */
     additionalUsers(item) {
       let additionalUsersList =  item["users"].filter((e) => {
-         return e['id'] !== item.creator['id']
+        return e['id'] !== item.creator['id']
       })
       return additionalUsersList;
     },
@@ -352,7 +352,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~vuetify/src/styles/settings/_variables.scss';
-.userProfileSavedSearches::v-deep {
+.userProfileSavedSearches:deep(*) {
   table {
     tbody {
       tr {

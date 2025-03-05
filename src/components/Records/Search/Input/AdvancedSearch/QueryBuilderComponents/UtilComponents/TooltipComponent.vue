@@ -1,17 +1,16 @@
 <template>
   <v-tooltip
-    bottom
+    location="bottom"
     class="mr-2"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <v-icon
-        v-bind="attrs"
-        small
+        size="x-small"
         :class="textColour"
         class="mr-1"
-        v-on="on"
+        v-bind="props"
       >
-        fa-question-circle
+        fas fa-question-circle
       </v-icon>
     </template>
     <span> {{ toolTipText }} </span>

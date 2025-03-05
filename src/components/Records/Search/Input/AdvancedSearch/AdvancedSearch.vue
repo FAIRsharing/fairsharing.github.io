@@ -4,15 +4,15 @@
     <v-btn
       v-if="showHomeSearch"
       color="primary"
-      class="mb-13"
+      class="mb-13 px-6"
       :class="[
         'mt-1',
-        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+        $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
       ]"
       @click="openAdvanceSearch()"
     >
       <v-icon
-        small
+        size="small"
         class="mr-1"
       >
         fab fa-searchengin
@@ -22,13 +22,14 @@
     <!--  On Header Block  -->
     <v-btn
       v-else
-      color="primary"
-      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
-      class="mr-10"
+      :size="$vuetify.display.xl ? 'x-large' : undefined"
+      class="mr-10 bg-primary"
+      elevation="3"
+      button-size
       @click="openAdvanceSearch()"
     >
       <v-icon
-        small
+        size="small"
         class="mr-1"
       >
         fab fa-searchengin
@@ -69,7 +70,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home-search-bt {
   height: 40px !important;
   right: 0;

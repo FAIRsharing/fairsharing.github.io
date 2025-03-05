@@ -350,7 +350,7 @@
                         >
                           <template #activator="{ props }">
                             <v-icon v-bind="props">
-                              fa-question-circle
+                              fas fa-question-circle
                             </v-icon>
                           </template>
                           {{ tooltips['countries'] }}

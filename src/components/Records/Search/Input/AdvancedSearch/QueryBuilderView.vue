@@ -12,7 +12,7 @@
             size="small"
             class="mr-1 text-white tooltipIcon"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
         </div>

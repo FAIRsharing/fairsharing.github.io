@@ -1,27 +1,23 @@
 <template>
   <v-app id="app">
-<!--    <div-->
-<!--      v-if="loading"-->
-<!--      style="height:100vh; color: white"-->
-<!--    >-->
-<!--      loading-hidden-->
-<!--    </div>-->
+    <!--    <div-->
+    <!--      v-if="loading"-->
+    <!--      style="height:100vh; color: white"-->
+    <!--    >-->
+    <!--      loading-hidden-->
+    <!--    </div>-->
     <v-navigation-drawer
       v-if="$vuetify.display.mdAndDown"
       v-model="UIGeneralStatus.drawerVisibilityState"
-      left
-      width="70%"
+      location="left"
     >
       <NavigationDrawer />
     </v-navigation-drawer>
     <HeaderComp />
-    <v-alert
-      v-if="readOnlyMode"
-      class="mt-4 mx-4"
-      type="info"
-    >
-      The site currently only allows viewing of records and editing is disabled. We hope to restore normal service
-      as soon as possible. Please accept our apologies for any inconvenience
+    <v-alert v-if="readOnlyMode" class="mt-4 mx-4" type="info">
+      The site currently only allows viewing of records and editing is disabled.
+      We hope to restore normal service as soon as possible. Please accept our
+      apologies for any inconvenience
     </v-alert>
     <Jumbotron />
     <PublicMessages />
@@ -69,7 +65,8 @@ export default {
   min-height: 99vh;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 </style>

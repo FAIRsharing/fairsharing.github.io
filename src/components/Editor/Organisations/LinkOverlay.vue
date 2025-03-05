@@ -13,12 +13,12 @@
       >
         <v-card
           key="edit"
-          class="flexCard grey black--text"
+          class="flexCard bg-grey text-black"
           height="100%"
           width="1000px"
           :class="{'lighten-0': menus.show, 'lighten-3': !menus.show}"
         >
-          <v-card-title class="green white--text">
+          <v-card-title class="bg-green text-white">
             <span v-if="editOrganisationLink.id > -1">
               Edit relationship
             </span>
@@ -30,22 +30,22 @@
             <!-- ORGANISATIONS -->
             <div>
               <v-card
-                class="d-flex flex-row transparent elevation-0"
+                class="d-flex flex-row bg-transparent elevation-0"
                 :disabled="!!menus.show"
               >
                 <v-autocomplete
                   v-model="editOrganisationLink.data.organisation"
                   :items="organisations"
-                  :filter="customFilter"
-                  item-text="name"
+                  :custom-filter="customFilter"
+                  item-title="name"
                   item-value="id"
-                  outlined
+                  variant="outlined"
                   return-object
                   label="Select an organisation"
                   :rules="[rules.isRequired()]"
                 >
                   <template #selection="data">
-                    <v-chip class="blue white--text px-3 py-1">
+                    <v-chip class="bg-blue text-white px-3 py-1">
                       {{ data.item.name }}
                     </v-chip>
                   </template>
@@ -73,10 +73,10 @@
                 </v-autocomplete>
                 <div class="mt-2 ml-2">
                   <v-btn
-                    class="green white--text"
+                    class="bg-green text-white"
                     @click="addNewOrganisation"
                   >
-                    <v-icon small>
+                    <v-icon size="small">
                       fa-plus
                     </v-icon>
                     <span class="ml-1">Add New</span>
@@ -85,7 +85,7 @@
               </v-card>
               <v-card
                 v-if="menus.show === 'organisation'"
-                class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+                class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
                 style="border: 2px dashed grey !important; border-radius:5px;"
               >
                 <v-card-title>Create a new organisation</v-card-title>
@@ -140,7 +140,7 @@
                             v-if="enterName"
                             v-model="menus.newOrganisation.data.name"
                             label="Organisation Name"
-                            outlined
+                            variant="outlined"
                             :rules="[rules.isRequired()]"
                             @keydown="validName = true"
                           />
@@ -148,13 +148,13 @@
                             v-else
                             v-model="menus.newOrganisation.selectOrganisation"
                             :items="organisationsList"
-                            outlined
-                            item-text="name"
+                            variant="outlined"
+                            item-title="name"
                             item-value="id"
                             return-object
                             label="Select an organisation"
                             :rules="[rules.isRequired()]"
-                            @change="selectOrganisationFromList()"
+                            @update:model-value="selectOrganisationFromList()"
                           />
                         </v-col>
                         <v-col
@@ -164,7 +164,7 @@
                           <v-text-field
                             v-model="menus.newOrganisation.data.homepage"
                             label="Organisation Homepage"
-                            outlined
+                            variant="outlined"
                             :rules="[rules.isRequired(), rules.isURL()]"
                           />
                         </v-col>
@@ -176,8 +176,8 @@
                             v-model="menus.newOrganisation.data.organisation_type_ids"
                             :items="organisationsTypes"
                             multiple
-                            outlined
-                            item-text="name"
+                            variant="outlined"
+                            item-title="name"
                             item-value="id"
                             return-object
                             label="Select an organisation type(s)"
@@ -186,8 +186,8 @@
                             <!-- autocomplete selected -->
                             <template #selection="data">
                               <v-chip
-                                class="blue white--text removeStyle"
-                                close
+                                class="bg-blue text-white removeStyle"
+                                closable
                                 @click:close="removeType(data.item)"
                               >
                                 {{ data.item.name }}
@@ -216,23 +216,23 @@
                             v-model="menus.newOrganisation.data.country_ids"
                             label="Countries"
                             :items="countries"
-                            item-text="name"
+                            item-title="name"
                             item-value="name"
                             multiple
-                            outlined
+                            variant="outlined"
                             return-object
                             :rules="[menus.newOrganisation.data.country_ids &&
                               !(menus.newOrganisation.data.country_ids.length === 0)]"
                           >
                             <template #prepend>
                               <v-tooltip
-                                bottom
+                                location="bottom"
                                 max-width="300px"
                                 class="text-justify"
                               >
-                                <template #activator="{ on }">
-                                  <v-icon v-on="on">
-                                    fa-question-circle
+                                <template #activator="{ props }">
+                                  <v-icon v-bind="props">
+                                    fas fa-question-circle
                                   </v-icon>
                                 </template>
                                 {{ tooltips['countries'] }}
@@ -242,8 +242,8 @@
                             <!-- autocomplete selected -->
                             <template #selection="data">
                               <v-chip
-                                class="blue white--text removeStyle"
-                                close
+                                class="bg-blue text-white removeStyle"
+                                closable
                                 @click:close="removeCountry( data.item )"
                               >
                                 {{ data.item.name }}
@@ -271,13 +271,13 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-tooltip bottom>
-                    <template #activator="{ on }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props }">
                       <v-btn
-                        class="success"
+                        class="bg-success"
                         :disabled="importROR"
                         :loading="menus.newOrganisation.loading"
-                        v-on="on"
+                        v-bind="props"
                         @click="getOrganisations()"
                       >
                         Import from ROR
@@ -288,13 +288,13 @@
                   <v-spacer />
                   <v-btn
                     color="warning"
-                    class="success"
+                    class="bg-success"
                     @click="clearForm()"
                   >
                     Clear Form
                   </v-btn>
                   <v-btn
-                    class="success"
+                    class="bg-success"
                     :disabled="!menus.newOrganisation.formValid"
                     :loading="menus.newOrganisation.loading"
                     @click="createNewOrganisation()"
@@ -302,7 +302,7 @@
                     Save new organisation
                   </v-btn>
                   <v-btn
-                    class="error"
+                    class="bg-error"
                     @click="menus.show = false"
                   >
                     Cancel
@@ -314,20 +314,20 @@
             <!-- RELATIONSHIP -->
             <div class="mb-3">
               <v-card
-                class="d-flex flex-row transparent elevation-0"
+                class="d-flex flex-row bg-transparent elevation-0"
                 :disabled="!!menus.show"
               >
                 <v-autocomplete
                   v-model="editOrganisationLink.data.relation"
                   :items="organisationsRelations"
-                  outlined
+                  variant="outlined"
                   label="Select a type of relationship"
                   :disabled="!!menus.show"
                   class="mt-4"
                   :rules="[rules.isRequired()]"
                 >
                   <template #selection="data">
-                    <v-chip class="blue white--text px-3 py-1">
+                    <v-chip class="bg-blue text-white px-3 py-1">
                       {{ data.item }}
                     </v-chip>
                   </template>
@@ -342,20 +342,20 @@
             <!-- GRANT -->
             <div v-if="editOrganisationLink.data.relation === 'funds'">
               <v-card
-                class="d-flex flex-row transparent elevation-0"
+                class="d-flex flex-row bg-transparent elevation-0"
                 :disabled="!!menus.show"
               >
                 <v-autocomplete
                   v-model="editOrganisationLink.data.grant"
                   :items="grants"
-                  item-text="name"
+                  item-title="name"
                   item-value="id"
-                  outlined
+                  variant="outlined"
                   return-object
                   label="Select an optional grant for funding organisations"
                 >
                   <template #selection="data">
-                    <v-chip class="blue white--text px-3 py-1">
+                    <v-chip class="bg-blue text-white px-3 py-1">
                       {{ data.item.name }}
                     </v-chip>
                   </template>
@@ -374,18 +374,18 @@
                 </v-autocomplete>
                 <v-btn
                   fab
-                  small
-                  class="green white--text mt-2 ml-2"
+                  size="small"
+                  class="bg-green text-white mt-2 ml-2"
                   @click="menus.show = 'grant'"
                 >
-                  <v-icon small>
+                  <v-icon size="small">
                     fa-plus
                   </v-icon>
                 </v-btn>
               </v-card>
               <v-card
                 v-if="menus.show === 'grant'"
-                class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+                class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
                 style="border: 2px dashed grey !important; border-radius:5px;"
               >
                 <v-card-title>Create a new grant</v-card-title>
@@ -409,20 +409,20 @@
                     <v-text-field
                       v-model="menus.newGrant.data.name"
                       label="Grant Name"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired()]"
                     />
                     <v-text-field
                       v-model="menus.newGrant.data.description"
                       label="Grant Description"
-                      outlined
+                      variant="outlined"
                     />
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer />
                   <v-btn
-                    class="success"
+                    class="bg-success"
                     :disabled="!menus.newGrant.formValid"
                     :loading="menus.newGrant.loading"
                     @click="createNewGrant()"
@@ -430,7 +430,7 @@
                     Save new grant
                   </v-btn>
                   <v-btn
-                    class="error"
+                    class="bg-error"
                     @click="menus.show = false"
                   >
                     Cancel
@@ -442,14 +442,14 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              class="success"
+              class="bg-success"
               :disabled="!!menus.show || !formValid"
               @click="confirmModifications()"
             >
               Confirm
             </v-btn>
             <v-btn
-              class="error"
+              class="bg-error"
               @click="hideMenu()"
             >
               Cancel
@@ -462,328 +462,335 @@
 </template>
 
 <script>
-    import Vue from "vue"
-    import CountryFlag from "vue-country-flag-next";
-    import {mapGetters, mapState} from "vuex"
+import Vue from "vue"
+import CountryFlag from "vue-country-flag-next";
+import {mapGetters, mapState} from "vuex"
 
-    import PublicationClient from "@/lib/Client/ExternalClients.js"
-    import RestClient from "@/lib/Client/RESTClient.js"
-    import {toBase64} from "@/utils/generalUtils";
-    import { isImage, isRequired, isUrl } from "@/utils/rules.js"
-    const restClient = new RestClient();
-    const pubClient = new PublicationClient();
+import PublicationClient from "@/lib/Client/ExternalClients.js"
+import RestClient from "@/lib/Client/RESTClient.js"
+import {toBase64} from "@/utils/generalUtils";
+import { isImage, isRequired, isUrl } from "@/utils/rules.js"
+const restClient = new RestClient();
+const pubClient = new PublicationClient();
 
-    export default {
-      name: "LinkOverlay",
-      components: {CountryFlag},
-      data(){
-        return {
+export default {
+  name: "LinkOverlay",
+  components: {CountryFlag},
+  data(){
+    return {
+      formValid: false,
+      allowedFileSize: 3145728,
+      imageTooBig: false,
+      logoLoading: false,
+      menus: {
+        show: false,
+        newOrganisation: {
+          data: {
+            organisation_type_ids: [],
+            country_ids: [],
+            parent_ror_links: [],
+            child_ror_links: [],
+            logo: null
+          },
+          loading: false,
           formValid: false,
-          allowedFileSize: 3145728,
-          imageTooBig: false,
-          logoLoading: false,
-          menus: {
-            show: false,
-            newOrganisation: {
-              data: {
-                organisation_type_ids: [],
-                country_ids: [],
-                parent_ror_links: [],
-                child_ror_links: [],
-                logo: null
-              },
-              loading: false,
-              formValid: false,
-              logoData: null,
-              error: false,
-              selectOrganisation:{}
-            },
-            newGrant: {
-              data: {},
-              formValid: false,
-              loading: false,
-              error: false
-            },
-          },
-          rules: {
-            isRequired: function(){return isRequired() },
-            isURL: function(){ return isUrl() },
-            isImage: function(){ return isImage() }
-          },
-          organisationsList:[],
-          organisationsNameList: [],
-          enterName: true,
-          importROR: false,
-          validName: true
-        }
+          logoData: null,
+          error: false,
+          selectOrganisation:{}
+        },
+        newGrant: {
+          data: {},
+          formValid: false,
+          loading: false,
+          error: false
+        },
       },
-      computed: {
-        ...mapState("users", ["user"]),
-        ...mapState("record", ["editOrganisationLink", "sections"]),
-        ...mapState("editor", ["organisations", "organisationsTypes", "grants", "organisationsRelations"]),
-        ...mapState("editor", [
-          "countries",
-          "years",
-          "tooltips",
-          "recordTypes",
-          "status"
-        ]),
-        ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
-        organisationLinks() {
-          return this.sections["organisations"].data;
-        }
+      rules: {
+        isRequired: function(){return isRequired() },
+        isURL: function(){ return isUrl() },
+        isImage: function(){ return isImage() }
       },
-      watch: {
-        'menus.newOrganisation.data.logo': {
-          async handler(logo) {
-            let _module = this;
-            // this.menus.newOrganisation.logoData
-            if (logo === null || logo === undefined) {
-              // This is to prevent a logo being deleted if a user fiddles about with the form and then
-              // submits with no image uploaded.
-              if (_module.organisation.urlForLogo) {
-                _module.menus.newOrganisation.delete('logoData');
-              }
-              else {
-                _module.menus.newOrganisation.logoData = {}
-              }
-              return;
+      organisationsList:[],
+      organisationsNameList: [],
+      enterName: true,
+      importROR: false,
+      validName: true
+    }
+  },
+  computed: {
+    ...mapState("users", ["user"]),
+    ...mapState("record", ["editOrganisationLink", "sections"]),
+    ...mapState("editor", ["organisations", "organisationsTypes", "grants", "organisationsRelations"]),
+    ...mapState("editor", [
+      "countries",
+      "years",
+      "tooltips",
+      "recordTypes",
+      "status"
+    ]),
+    ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
+    organisationLinks() {
+      return this.sections["organisations"].data;
+    }
+  },
+  watch: {
+    'menus.newOrganisation.data.logo': {
+      async handler(logo) {
+        let _module = this;
+        // this.menus.newOrganisation.logoData
+        if (logo === null || logo === undefined) {
+          // This is to prevent a logo being deleted if a user fiddles about with the form and then
+          // submits with no image uploaded.
+          if (_module.organisation.urlForLogo) {
+            _module.menus.newOrganisation.delete('logoData');
+          }
+          else {
+            _module.menus.newOrganisation.logoData = {}
+          }
+          return;
+        }
+        _module.logoLoading = true;
+        let convertedFile = await toBase64(logo);
+        _module.menus.newOrganisation.logoData = {
+          filename: logo.name,
+          content_type: logo.type,
+          data: convertedFile
+        };
+        _module.logoLoading = false;
+      }
+    },
+    'editOrganisationLink.showOverlay': function() {
+      this.$nextTick(() => {
+        /* istanbul ignore next */
+        if (this.$refs['editOrganisationLink']) this.$refs['editOrganisationLink'].validate()
+      })
+    },
+    'menus.show': function(val){
+      /* istanbul ignore next */
+      if (val === 'grant') this.$nextTick(() => {
+        if (this.$refs['createNewGrant']) this.$refs['createNewGrant'].validate();
+      });
+      /* istanbul ignore next */
+      if (val === 'organisation') this.$nextTick(() => {
+        if (this.$refs['createNewOrganisation']) this.$refs['createNewOrganisation'].validate();
+      });
+    }
+  },
+  methods: {
+    removeCountry(country) {
+      this.menus.newOrganisation.data.country_ids = this.menus.newOrganisation.data.country_ids.filter(obj =>
+        obj.label !== country.name && obj.id !== country.id
+      );
+    },
+    removeType(type) {
+      this.menus.newOrganisation.data.organisation_type_ids = this.menus.newOrganisation.data.organisation_type_ids.filter(obj =>
+        obj.label !== type.name && obj.id !== type.id
+      );
+    },
+    hideMenu() {
+      this.menus.show = false;
+      this.editOrganisationLink.data = {};
+      this.editOrganisationLink.id = null;
+      this.editOrganisationLink.showOverlay = false;
+    },
+    createNewOrganisation: async function () {
+      this.menus.newOrganisation.loading = true;
+      this.menus.newOrganisation.error = false;
+      let organisationInput = JSON.parse(JSON.stringify(this.menus.newOrganisation.data));
+      if (this.menus.newOrganisation.logoData) {
+        organisationInput.logo = this.menus.newOrganisation.logoData;
+        organisationInput.logo.data = organisationInput.logo.data.replace("data:image/png;base64,", "");
+      }
+      let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
+      organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
+      /* istanbul ignore next */
+      if (organisationInput.country_ids) {
+        organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
+      }
+      if (organisationInput.parent_ror_links) {
+        organisationInput.parent_ror_links = organisationInput.parent_ror_links.map(obj => obj.id);
+      }
+      if (organisationInput.child_ror_links) {
+        organisationInput.child_ror_links = organisationInput.child_ror_links.map(obj => obj.id);
+      }
+      let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
+      if (!data.error) {
+        let newOrganisation = {
+          id: data.data.id,
+          name: data.data.attributes.name,
+          homepage: data.data.attributes.homepage,
+          types: organisation_type_ids.map(obj => obj.name),
+          urlForLogo: data.data.attributes.url_for_logo
+        };
+        this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
+        Vue.set(this.organisations, this.organisations.length, newOrganisation);
+        this.menus.show = null;
+        this.menus.newOrganisation.data = {
+          organisation_type_ids: [],
+          country_ids: []
+        };
+      }
+      else {
+        this.menus.newOrganisation.error = data.error;
+      }
+      this.menus.newOrganisation.loading = false;
+    },
+    async createNewGrant() {
+      this.menus.newGrant.loading = true;
+      this.menus.newGrant.error = false;
+      let data = await restClient.createGrant(this.menus.newGrant.data, this.user().credentials.token);
+      if (!data.error) {
+        let newGrant = {
+          name: data.name,
+          description: data.description,
+          id: data.id
+        };
+        this.$store.commit('record/setEditOrganisationLinkGrant', newGrant);
+        Vue.set(this.grants, this.grants.length, newGrant);
+        this.menus.show = null;
+        this.menus.newGrant.data = {};
+      }
+      else {
+        this.menus.newGrant.error = data.error;
+      }
+      this.menus.newGrant.loading = false;
+    },
+    confirmModifications() {
+      let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
+      if (this.editOrganisationLink.id > -1) {
+        Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
+      }
+      else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
+      this.editOrganisationLink.showOverlay = false;
+    },
+    customFilter(item, queryText) {
+      let textToSearch = item.name;
+      // A newly-created organisation in memory may have no alternativeNames.
+      // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1799
+      /* istanbul ignore else */
+      if (item.alternativeNames) {
+        textToSearch = textToSearch + " " + item.alternativeNames.join(" ");
+      }
+      const searchText = queryText.toLowerCase();
+
+      return textToSearch.toLowerCase().indexOf(searchText) > -1
+    },
+
+    addNewOrganisation() {
+      this.menus.show = 'organisation'
+      this.enterName = true
+      this.importROR = false
+    },
+
+    async getOrganisations() {
+      this.menus.newOrganisation.loading = true;
+      let orgName = (' ' + this.menus.newOrganisation.data.name).slice(1).trim()// make a copy of the string and trim it
+      let data = await pubClient.getROROrganisation(orgName);
+      if (data.items && data.items.length) {
+        this.enterName = false
+        this.importROR = true
+        this.validName = true
+        data.items.forEach(it => {
+          it.names.every(e => {
+            if (e.types.includes('ror_display')){
+              it.name = e.value
+              return false
             }
-            _module.logoLoading = true;
-            let convertedFile = await toBase64(logo);
-            _module.menus.newOrganisation.logoData = {
-              filename: logo.name,
-              content_type: logo.type,
-              data: convertedFile
-            };
-            _module.logoLoading = false;
-          }
-        },
-        'editOrganisationLink.showOverlay': function() {
-            this.$nextTick(() => {
-              /* istanbul ignore next */
-              if (this.$refs['editOrganisationLink']) this.$refs['editOrganisationLink'].validate()
-            })
-        },
-        'menus.show': function(val){
-          /* istanbul ignore next */
-          if (val === 'grant') this.$nextTick(() => {
-            if (this.$refs['createNewGrant']) this.$refs['createNewGrant'].validate();
-          });
-          /* istanbul ignore next */
-          if (val === 'organisation') this.$nextTick(() => {
-            if (this.$refs['createNewOrganisation']) this.$refs['createNewOrganisation'].validate();
-          });
-        }
-      },
-      methods: {
-        removeCountry(country) {
-          this.menus.newOrganisation.data.country_ids = this.menus.newOrganisation.data.country_ids.filter(obj =>
-              obj.label !== country.name && obj.id !== country.id
-          );
-        },
-        removeType(type) {
-          this.menus.newOrganisation.data.organisation_type_ids = this.menus.newOrganisation.data.organisation_type_ids.filter(obj =>
-              obj.label !== type.name && obj.id !== type.id
-          );
-        },
-        hideMenu() {
-          this.menus.show = false;
-          this.editOrganisationLink.data = {};
-          this.editOrganisationLink.id = null;
-          this.editOrganisationLink.showOverlay = false;
-        },
-        createNewOrganisation: async function () {
-          this.menus.newOrganisation.loading = true;
-          this.menus.newOrganisation.error = false;
-          let organisationInput = JSON.parse(JSON.stringify(this.menus.newOrganisation.data));
-          if (this.menus.newOrganisation.logoData) {
-            organisationInput.logo = this.menus.newOrganisation.logoData;
-            organisationInput.logo.data = organisationInput.logo.data.replace("data:image/png;base64,", "");
-          }
-          let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
-          organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
-          /* istanbul ignore next */
-          if (organisationInput.country_ids) {
-            organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
-          }
-          if (organisationInput.parent_ror_links) {
-            organisationInput.parent_ror_links = organisationInput.parent_ror_links.map(obj => obj.id);
-          }
-          if (organisationInput.child_ror_links) {
-            organisationInput.child_ror_links = organisationInput.child_ror_links.map(obj => obj.id);
-          }
-          let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
-          if (!data.error) {
-            let newOrganisation = {
-              id: data.data.id,
-              name: data.data.attributes.name,
-              homepage: data.data.attributes.homepage,
-              types: organisation_type_ids.map(obj => obj.name),
-              urlForLogo: data.data.attributes.url_for_logo
-            };
-            this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
-            Vue.set(this.organisations, this.organisations.length, newOrganisation);
-            this.menus.show = null;
-            this.menus.newOrganisation.data = {
-              organisation_type_ids: [],
-              country_ids: []
-            };
-          } else {
-            this.menus.newOrganisation.error = data.error;
-          }
-          this.menus.newOrganisation.loading = false;
-        },
-        async createNewGrant() {
-          this.menus.newGrant.loading = true;
-          this.menus.newGrant.error = false;
-          let data = await restClient.createGrant(this.menus.newGrant.data, this.user().credentials.token);
-          if (!data.error) {
-            let newGrant = {
-              name: data.name,
-              description: data.description,
-              id: data.id
-            };
-            this.$store.commit('record/setEditOrganisationLinkGrant', newGrant);
-            Vue.set(this.grants, this.grants.length, newGrant);
-            this.menus.show = null;
-            this.menus.newGrant.data = {};
-          } else {
-            this.menus.newGrant.error = data.error;
-          }
-          this.menus.newGrant.loading = false;
-        },
-        confirmModifications() {
-          let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
-          if (this.editOrganisationLink.id > -1) {
-            Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
-          } else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
-          this.editOrganisationLink.showOverlay = false;
-        },
-        customFilter(item, queryText) {
-          let textToSearch = item.name;
-          // A newly-created organisation in memory may have no alternativeNames.
-          // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1799
-          /* istanbul ignore else */
-          if (item.alternativeNames) {
-           textToSearch = textToSearch + " " + item.alternativeNames.join(" ");
-          }
-          const searchText = queryText.toLowerCase();
-
-          return textToSearch.toLowerCase().indexOf(searchText) > -1
-        },
-
-        addNewOrganisation() {
-          this.menus.show = 'organisation'
-          this.enterName = true
-          this.importROR = false
-        },
-
-        async getOrganisations() {
-          this.menus.newOrganisation.loading = true;
-          let orgName = (' ' + this.menus.newOrganisation.data.name).slice(1).trim()// make a copy of the string and trim it
-          let data = await pubClient.getROROrganisation(orgName);
-          if (data.items && data.items.length) {
-            this.enterName = false
-            this.importROR = true
-            this.validName = true
-            data.items.forEach( it => {
-              it.names.every(e => {
-                if (e.types.includes('ror_display')){
-                  it.name = e.value
-                  return false
-                } else {
-                  return true
-                }})
-            })
-            this.organisationsList = data.items
-            this.organisationsNameList = data.items.map(item => item.name)
-          } else {
-            this.enterName = true
-            this.importROR = false
-            this.validName = false
-          }
-          this.menus.newOrganisation.loading = false;
-        },
-
-        selectOrganisationFromList() {
-          if (this.menus.newOrganisation.selectOrganisation && Object.keys(this.menus.newOrganisation.selectOrganisation).length) {
-            /************  Organisation Name ************/
-            this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name
-            /**************  Homepage Link **************/
-            this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links.filter(link => link.type ===  'website')[0].value
-            /***************  ROR Link ***************/
-            this.menus.newOrganisation.data.ror_link = this.menus.newOrganisation.selectOrganisation.id
-            /***************  Alternative Names ***************/
-            this.menus.newOrganisation.data.alternative_names = []
-            this.menus.newOrganisation.selectOrganisation.names.forEach( it =>{
-              if (!it.types.includes('ror_display')){
-                this.menus.newOrganisation.data.alternative_names.push(it.value)
-              }
-            })
-            /***************  Type Select ***************/
-            this.selectTypes()
-            /*************  Country Select *************/
-            this.menus.newOrganisation.data.country_ids = this.countries.filter(country => country.name === this.menus.newOrganisation.selectOrganisation.locations[0].geonames_details["country_name"])
-            /*************  Parent ror relationship *************/
-            this.menus.newOrganisation.data.parent_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "parent")
-            this.menus.newOrganisation.data.child_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "child")
-          }
-        },
-
-        selectTypes() {
-          const selectedType = this.menus.newOrganisation.selectOrganisation.types[0]
-          const matchedType = this.organisationsTypes.filter(type => type.name === this.menus.newOrganisation.selectOrganisation.types[0])
-          if (matchedType && matchedType.length) {
-            this.menus.newOrganisation.data.organisation_type_ids = matchedType
-          } else{
-            switch (selectedType.toLowerCase()) {
-              case 'government':
-                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[0]]
-                break
-              case 'nonprofit':
-                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[1]]
-                break
-              case 'education':
-                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[2]]
-                break
-              case 'company':
-                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[5]]
-                break
-              case 'healthcare':
-              case 'archive':
-              case 'facility':
-              case 'other':
-              default:
-                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[8]]
+            else {
+              return true
             }
-          }
-        },
+          })
+        })
+        this.organisationsList = data.items
+        this.organisationsNameList = data.items.map(item => item.name)
+      }
+      else {
+        this.enterName = true
+        this.importROR = false
+        this.validName = false
+      }
+      this.menus.newOrganisation.loading = false;
+    },
 
-        clearForm() {
-          this.enterName = true
-          this.importROR = false
-          this.validName = true
-          this.menus.newOrganisation.data.name = ''
-          this.menus.newOrganisation.data.ror_link = null
-          this.menus.newOrganisation.data.parent_ror_links = []
-          this.menus.newOrganisation.data.child_ror_links = []
-          this.$refs.createNewOrganisation.reset()
-        },
-        imageSizeCorrect() {
-          if (!this.menus.newOrganisation.logo) {
-            this.imageTooBig = false;
-            return true;
+    selectOrganisationFromList() {
+      if (this.menus.newOrganisation.selectOrganisation && Object.keys(this.menus.newOrganisation.selectOrganisation).length) {
+        /************  Organisation Name ************/
+        this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name
+        /**************  Homepage Link **************/
+        this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links.filter(link => link.type ===  'website')[0].value
+        /***************  ROR Link ***************/
+        this.menus.newOrganisation.data.ror_link = this.menus.newOrganisation.selectOrganisation.id
+        /***************  Alternative Names ***************/
+        this.menus.newOrganisation.data.alternative_names = []
+        this.menus.newOrganisation.selectOrganisation.names.forEach(it =>{
+          if (!it.types.includes('ror_display')){
+            this.menus.newOrganisation.data.alternative_names.push(it.value)
           }
-          if (this.menus.newOrganisation.logo.size < this.allowedFileSize) {
-            this.$emit('imageTooBig', false);
-            this.imageTooBig = false;
-            return true;
-          }
-          this.$emit('imageTooBig', true);
-          this.imageTooBig = true;
-          return false;
+        })
+        /***************  Type Select ***************/
+        this.selectTypes()
+        /*************  Country Select *************/
+        this.menus.newOrganisation.data.country_ids = this.countries.filter(country => country.name === this.menus.newOrganisation.selectOrganisation.locations[0].geonames_details["country_name"])
+        /*************  Parent ror relationship *************/
+        this.menus.newOrganisation.data.parent_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "parent")
+        this.menus.newOrganisation.data.child_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "child")
+      }
+    },
+
+    selectTypes() {
+      const selectedType = this.menus.newOrganisation.selectOrganisation.types[0]
+      const matchedType = this.organisationsTypes.filter(type => type.name === this.menus.newOrganisation.selectOrganisation.types[0])
+      if (matchedType && matchedType.length) {
+        this.menus.newOrganisation.data.organisation_type_ids = matchedType
+      }
+      else{
+        switch (selectedType.toLowerCase()) {
+        case 'government':
+          this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[0]]
+          break
+        case 'nonprofit':
+          this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[1]]
+          break
+        case 'education':
+          this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[2]]
+          break
+        case 'company':
+          this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[5]]
+          break
+        case 'healthcare':
+        case 'archive':
+        case 'facility':
+        case 'other':
+        default:
+          this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[8]]
         }
       }
+    },
+
+    clearForm() {
+      this.enterName = true
+      this.importROR = false
+      this.validName = true
+      this.menus.newOrganisation.data.name = ''
+      this.menus.newOrganisation.data.ror_link = null
+      this.menus.newOrganisation.data.parent_ror_links = []
+      this.menus.newOrganisation.data.child_ror_links = []
+      this.$refs.createNewOrganisation.reset()
+    },
+    imageSizeCorrect() {
+      if (!this.menus.newOrganisation.logo) {
+        this.imageTooBig = false;
+        return true;
+      }
+      if (this.menus.newOrganisation.logo.size < this.allowedFileSize) {
+        this.$emit('imageTooBig', false);
+        this.imageTooBig = false;
+        return true;
+      }
+      this.$emit('imageTooBig', true);
+      this.imageTooBig = true;
+      return false;
     }
+  }
+}
 </script>

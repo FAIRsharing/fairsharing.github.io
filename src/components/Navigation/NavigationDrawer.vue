@@ -14,7 +14,7 @@
         :variant="!button.active ? 'outlined' : undefined"
         @click="goTo(button)"
       >
-        <span :class="['white--text',{'text-primary':!button.active}, {'accent3--text': button.primary && !button.active}]">{{ button.name }}</span>
+        <span :class="['text-white',{'text-primary':!button.active}, {'text-accent3': button.primary && !button.active}]">{{ button.name }}</span>
       </v-btn>
     </div>
     <div style="flex-grow: 1">
@@ -22,7 +22,6 @@
         v-if="!user().isLoggedIn"
         color="accent3 white--text"
         class="mr-1 mt-10"
-        dark
         width="100%"
         @click="goToLogin()"
       >

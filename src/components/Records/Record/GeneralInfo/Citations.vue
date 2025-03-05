@@ -28,7 +28,7 @@
                   size="15"
                   v-bind="props"
                 >
-                  fa-question-circle
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ recordTooltips['how_to_cite'] }}
@@ -112,7 +112,7 @@
                   size="15"
                   v-bind="props"
                 >
-                  fa-question-circle
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ recordTooltips['publication_for_citation'] }}

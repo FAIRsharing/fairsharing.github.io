@@ -5,16 +5,16 @@
   >
     <v-tooltip
       v-if="getDescription('head')"
-      bottom
+      location="bottom"
       class="d-inline-block mr-2"
     >
-      <template #activator="{ on }">
+      <template #activator="{ props }">
         <v-icon
           size="15"
           class="mb-1"
-          v-on="on"
+          v-bind="props"
         >
-          fa-question-circle
+          fas fa-question-circle
         </v-icon>
       </template>
       {{ getDescription('head') }}
@@ -35,12 +35,12 @@
         >
           <v-tooltip
             v-if="getDescription(item[key])"
-            bottom
+            location="bottom"
             class="d-inline-block mr-2"
           >
-            <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
+            <template #activator="{ props }">
+              <v-icon v-bind="props">
+                fas fa-question-circle
               </v-icon>
             </template>
             {{ getDescription(item[key]) }}
@@ -65,12 +65,12 @@
         >
           <v-tooltip
             v-if="getDescription(item[key])"
-            bottom
+            location="bottom"
             class="d-inline-block mr-2"
           >
-            <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
+            <template #activator="{ props }">
+              <v-icon v-bind="props">
+                fas fa-question-circle
               </v-icon>
             </template>
             {{ getDescription(item[key]) }}
@@ -122,20 +122,20 @@ export default {
     },
     getUpdatedTypeTitle() {
       switch (this.getCurrentKey) {
-        case "data_curation":
-          return "Steps"
-        case "data_deposition_condition":
-          return "Restrictions"
-        default:
-          return "Type"
+      case "data_curation":
+        return "Steps"
+      case "data_deposition_condition":
+        return "Restrictions"
+      default:
+        return "Type"
       }
     },
     getUpdatedNameTitle(){
       switch (this.getCurrentKey) {
-        case "resource_sustainability":
-          return "Plan"
-        default:
-          return "Name"
+      case "resource_sustainability":
+        return "Plan"
+      default:
+        return "Name"
       }
     },
     getDescription(field) {

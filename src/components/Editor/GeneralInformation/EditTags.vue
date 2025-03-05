@@ -15,18 +15,18 @@
               @click="showMenu()"
             >
               <td
-                class="white--text py-2 px-4 titleCell"
+                class="text-white py-2 px-4 titleCell"
                 :class="section.color"
               >
-                <v-tooltip right>
-                  <template #activator="{ on, attrs }">
+                <v-tooltip location="right">
+                  <template #activator="{ props }">
                     <v-icon
-                      v-bind="attrs"
-                      small
-                      class="white--text mr-1"
-                      v-on="on"
+                     
+                      size="small"
+                      class="text-white mr-1"
+                      v-bind="props"
                     >
-                      fa-question-circle
+                      fas fa-question-circle
                     </v-icon>
                   </template>
                   <span> {{ section.tooltip }} </span>
@@ -47,14 +47,14 @@
                     <KeywordTooltip
                       :keyword="tag"
                     />
-                    <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
+                    <v-tooltip location="bottom">
+                      <template #activator="{ props }">
                         <v-icon
-                          v-bind="attrs"
-                          small
+                         
+                          size="small"
                           class="ml-1"
                           :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' white--text']"
-                          v-on="on"
+                          v-bind="props"
                           @click="removeTag(section.items, tagIndex)"
                           @click.stop
                         >
@@ -73,13 +73,13 @@
       <v-row class="pr-5">
         <v-spacer />
         <v-chip
-          class="white--text green pr-5 ml-3 mb-3 shadowChip"
+          class="text-white bg-green pr-5 ml-3 mb-3 shadowChip"
           :disabled="loading"
           @click="showMenu()"
         >
           <v-icon
-            small
-            class="mr-3 white--text"
+            size="small"
+            class="mr-3 text-white"
           >
             {{ buttonIcon }}
           </v-icon>
@@ -104,7 +104,7 @@
               v-model="searchString"
               append-icon="fa-search"
               label="Search names and synonyms"
-              outlined
+              variant="outlined"
               hide-details
             >
               <template #prepend>
@@ -112,11 +112,11 @@
                   offset-y
                   :close-on-content-click="false"
                 >
-                  <template #activator="{ on, attrs }">
+                  <template #activator="{ props }">
                     <v-icon
-                      v-bind="attrs"
-                      class="blue--text ml-3 mr-1"
-                      v-on="on"
+                     
+                      class="text-blue ml-3 mr-1"
+                      v-bind="props"
                     >
                       fa-cog
                     </v-icon>
@@ -173,6 +173,7 @@
               v-model="recordTags"
               :headers="headers"
               :items="tags"
+              v-model:search-input="searchString"
               :items-per-page="10"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
               item-key="label"
@@ -182,7 +183,6 @@
               mobile-breakpoint="900"
               :loading="loading"
               loading-text="Please wait, tags are loading"
-              :search-input.sync="searchString"
             >
               <template #[`item.model`]="{ item }">
                 <div
@@ -195,7 +195,7 @@
               <template #[`item.label`]="{ item }">
                 <v-chip
                   :class="colors[item.model]"
-                  class="white--text noBreak"
+                  class="text-white noBreak"
                 >
                   {{ capitaliseText(item.label, item.model) }}
                 </v-chip>
@@ -220,203 +220,203 @@
 </template>
 
 <script>
-    import { mapActions,mapGetters, mapState } from "vuex"
+import { mapActions,mapGetters, mapState } from "vuex"
 
-    import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
-    import recordsCardUtils from "@/utils/recordsCardUtils";
+import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
-    import NewTags from "./NewTags";
+import NewTags from "./NewTags";
 
-    export default {
-        name: "EditTags",
-        components: {NewTags, KeywordTooltip},
-        mixins: [recordsCardUtils],
-        data(){
-            return {
-                formValid: false,
-                menu: {
-                  content: null,
-                  show: false,
-                  label: "Edit record's tags"
-                },
-                headers: [
-                  {
-                    text: "Type of keyword",
-                    sortable: false,
-                    value: "model"
-                  },
-                  {
-                    text: "Name",
-                    sortable: false,
-                    value: "label"
-                  },
-                  {
-                    text: "Definition",
-                    sortable: false,
-                    value: "definitions",
-                    filterable: false
-                  },
-                  {
-                  text: "Alternative names",
-                  sortable: false,
-                  value: "synonyms"
-                }
-                ],
-                searchString: null,
-                initialized: false,
-                showTypes: {
-                  domain: true,
-                  taxonomy: true,
-                  subject: true,
-                  user_defined_tag: true
-                },
-                tags: [],
-                loading: false,
-                showAddTagOverlay: false,
-                lastQuery: null
-            }
+export default {
+  name: "EditTags",
+  components: {NewTags, KeywordTooltip},
+  mixins: [recordsCardUtils],
+  data(){
+    return {
+      formValid: false,
+      menu: {
+        content: null,
+        show: false,
+        label: "Edit record's tags"
+      },
+      headers: [
+        {
+          text: "Type of keyword",
+          sortable: false,
+          value: "model"
         },
-        computed: {
-            ...mapGetters("record", ["getSection"]),
-            ...mapState("editor", ["tooltips", "colors"]),
-            ...mapGetters("editor", ["getPartialTags"]),
-            ...mapState("record", ["sections"]),
-            sections() {
-                return {
-                    "taxonomic range": {
-                        items:this.getSection("generalInformation").data.taxonomies,
-                        color: this.colors["taxonomy"],
-                        tooltip: this.tooltips.species
-                    },
-                    subjects: {
-                        items: this.getSection("generalInformation").data.subjects,
-                        color: this.colors["subject"],
-                        tooltip: this.tooltips.subjects
-                    },
-                    domains: {
-                      items: this.getSection("generalInformation").data.domains,
-                      color: this.colors["domain"],
-                      tooltip: this.tooltips.domains
-                    },
-                    "user defined tags": {
-                        items: this.getSection("generalInformation").data.userDefinedTags,
-                        color: this.colors["user_defined_tag"],
-                        tooltip: this.tooltips.userDefinedTags
-                    }
-                }
-            },
-            buttonLabel(){
-              if (this.menu.show) return "Hide table";
-              return "Add/edit tags";
-            },
-            buttonIcon(){
-              if (this.menu.show) return "fa-minus-circle";
-              return "fa-plus-circle";
-            },
-            recordTags: {
-              get() {
-                return this.getSection("generalInformation").data.taxonomies.map(term => {
-                  term.model = 'taxonomy';
-                  return term;
-                }).concat(this.getSection("generalInformation").data.domains.map(term => {
-                  term.model = 'domain';
-                  return term;
-                })).concat(this.getSection("generalInformation").data.subjects.map(term => {
-                  term.model = 'subject';
-                  return term;
-                })).concat(this.getSection("generalInformation").data.userDefinedTags.map(term => {
-                  term.model = 'user_defined_tag';
-                  return term;
-                }));
-              },
-              set(val) {
-                if (this.initialized) {
-                  let tags = {
-                    domain: [],
-                    taxonomy: [],
-                    subject: [],
-                    user_defined_tag: []
-                  };
-                  for (let selectedTag of val) tags[selectedTag.model].push(selectedTag);
-                  this.$store.commit("record/setTags", {
-                    value: tags.domain,
-                    target: "domains"
-                  });
-                  this.$store.commit("record/setTags", {
-                    value: tags.taxonomy,
-                    target: "taxonomies"
-                  });
-                  this.$store.commit("record/setTags", {
-                    value: tags.subject,
-                    target: "subjects"
-                  });
-                  this.$store.commit("record/setTags", {
-                    value: tags.user_defined_tag,
-                    target: "userDefinedTags"
-                  })
-                }
-              }
-            },
-            initialSections() {
-              return {
-                "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
-                "subjects": this.getSection("generalInformation").initialData.subjects,
-                "domains": this.getSection("generalInformation").initialData.domains,
-                "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags
-              };
-            }
+        {
+          text: "Name",
+          sortable: false,
+          value: "label"
         },
-        watch: {
-          async searchString(val){
-            this.loading = true;
-            this.tags = [];
-            val = val.trim();
-            this.lastQuery = val;
-            await this.getTags(val);
-            /* istanbul ignore else */
-            if (val === this.lastQuery) {
-              this.partialTags();
-              this.loading = false;
-              this.$scrollTo("#editTags");
-            }
-          },
-          showTypes: {
-            deep: true,
-            handler(){
-              this.partialTags();
-            }
-          }
+        {
+          text: "Definition",
+          sortable: false,
+          value: "definitions",
+          filterable: false
         },
-        mounted(){
-          this.$nextTick(async function () {
-            this.loading = true;
-            this.initialized = false;
-            this.partialTags();
-            this.loading = false;
-            this.initialized = true;
-          })
-        },
-        methods: {
-          ...mapActions('editor', ["getTags"]),
-          showMenu(){
-            if (!this.menu.show) { this.$scrollTo("#editTags") }
-            this.menu.show = !this.menu.show;
-          },
-          removeTag(sectionItems, termIndex){
-            sectionItems.splice(termIndex, 1)
-          },
-          partialTags(){
-            let sections = [];
-            Object.keys(this.showTypes).forEach(type => {
-              if (this.showTypes[type]) sections.push(type);
-            });
-            this.tags = this.getPartialTags(sections);
-          },
-          isNew(term, section){
-            return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
-          }
-        },
+        {
+          text: "Alternative names",
+          sortable: false,
+          value: "synonyms"
+        }
+      ],
+      searchString: null,
+      initialized: false,
+      showTypes: {
+        domain: true,
+        taxonomy: true,
+        subject: true,
+        user_defined_tag: true
+      },
+      tags: [],
+      loading: false,
+      showAddTagOverlay: false,
+      lastQuery: null
     }
+  },
+  computed: {
+    ...mapGetters("record", ["getSection"]),
+    ...mapState("editor", ["tooltips", "colors"]),
+    ...mapGetters("editor", ["getPartialTags"]),
+    ...mapState("record", ["sections"]),
+    sections() {
+      return {
+        "taxonomic range": {
+          items:this.getSection("generalInformation").data.taxonomies,
+          color: this.colors["taxonomy"],
+          tooltip: this.tooltips.species
+        },
+        subjects: {
+          items: this.getSection("generalInformation").data.subjects,
+          color: this.colors["subject"],
+          tooltip: this.tooltips.subjects
+        },
+        domains: {
+          items: this.getSection("generalInformation").data.domains,
+          color: this.colors["domain"],
+          tooltip: this.tooltips.domains
+        },
+        "user defined tags": {
+          items: this.getSection("generalInformation").data.userDefinedTags,
+          color: this.colors["user_defined_tag"],
+          tooltip: this.tooltips.userDefinedTags
+        }
+      }
+    },
+    buttonLabel(){
+      if (this.menu.show) return "Hide table";
+      return "Add/edit tags";
+    },
+    buttonIcon(){
+      if (this.menu.show) return "fa-minus-circle";
+      return "fa-plus-circle";
+    },
+    recordTags: {
+      get() {
+        return this.getSection("generalInformation").data.taxonomies.map(term => {
+          term.model = 'taxonomy';
+          return term;
+        }).concat(this.getSection("generalInformation").data.domains.map(term => {
+          term.model = 'domain';
+          return term;
+        })).concat(this.getSection("generalInformation").data.subjects.map(term => {
+          term.model = 'subject';
+          return term;
+        })).concat(this.getSection("generalInformation").data.userDefinedTags.map(term => {
+          term.model = 'user_defined_tag';
+          return term;
+        }));
+      },
+      set(val) {
+        if (this.initialized) {
+          let tags = {
+            domain: [],
+            taxonomy: [],
+            subject: [],
+            user_defined_tag: []
+          };
+          for (let selectedTag of val) tags[selectedTag.model].push(selectedTag);
+          this.$store.commit("record/setTags", {
+            value: tags.domain,
+            target: "domains"
+          });
+          this.$store.commit("record/setTags", {
+            value: tags.taxonomy,
+            target: "taxonomies"
+          });
+          this.$store.commit("record/setTags", {
+            value: tags.subject,
+            target: "subjects"
+          });
+          this.$store.commit("record/setTags", {
+            value: tags.user_defined_tag,
+            target: "userDefinedTags"
+          })
+        }
+      }
+    },
+    initialSections() {
+      return {
+        "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
+        "subjects": this.getSection("generalInformation").initialData.subjects,
+        "domains": this.getSection("generalInformation").initialData.domains,
+        "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags
+      };
+    }
+  },
+  watch: {
+    async searchString(val){
+      this.loading = true;
+      this.tags = [];
+      val = val.trim();
+      this.lastQuery = val;
+      await this.getTags(val);
+      /* istanbul ignore else */
+      if (val === this.lastQuery) {
+        this.partialTags();
+        this.loading = false;
+        this.$scrollTo("#editTags");
+      }
+    },
+    showTypes: {
+      deep: true,
+      handler(){
+        this.partialTags();
+      }
+    }
+  },
+  mounted(){
+    this.$nextTick(async function () {
+      this.loading = true;
+      this.initialized = false;
+      this.partialTags();
+      this.loading = false;
+      this.initialized = true;
+    })
+  },
+  methods: {
+    ...mapActions('editor', ["getTags"]),
+    showMenu(){
+      if (!this.menu.show) { this.$scrollTo("#editTags") }
+      this.menu.show = !this.menu.show;
+    },
+    removeTag(sectionItems, termIndex){
+      sectionItems.splice(termIndex, 1)
+    },
+    partialTags(){
+      let sections = [];
+      Object.keys(this.showTypes).forEach(type => {
+        if (this.showTypes[type]) sections.push(type);
+      });
+      this.tags = this.getPartialTags(sections);
+    },
+    isNew(term, section){
+      return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
+    }
+  },
+}
 </script>
 
 <style scoped>

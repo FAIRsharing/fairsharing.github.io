@@ -13,7 +13,7 @@
             size="15"
             v-bind="props"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
         </template>
         {{ recordTooltips['homepage'] }}

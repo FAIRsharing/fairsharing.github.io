@@ -21,15 +21,9 @@
           >
             <v-btn
               icon
-              dark
               @click="closeDialog()"
             >
-              <v-icon
-                color="black"
-                size="40px"
-              >
-                mdi-close
-              </v-icon>
+              <v-icon icon="fa fa-xmark fa-solid" size="40" />
             </v-btn>
           </div>
           <!--FAIRsharing Logo -->
@@ -75,17 +69,16 @@
           <!--            </span>-->
           <!--          </div>-->
 
-          <div class="d-flex full-width">
+          <div class="d-flex full-width align-center">
             <TooltipComponent
               :tool-tip-text="toolTipText"
-              text-colour="black--text"
+              text-colour="text-black"
             />
             <v-text-field
               v-if="!getEditDialogStatus"
               ref="inputRef"
-              class="text-h5"
+              class="text-h5 full-width"
               clearable
-              full-width
               variant="outlined"
               hide-details
               label="Add Search text"

@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <v-combobox
     v-model="model"
     chips
     :items="itemList"
@@ -10,41 +10,45 @@
     min-height="36px"
     class="text-capitalize"
     density="compact"
+    flat
+    hide-details="auto"
   >
-    <template #chip="data">
+    <template #chip="{ props, item }">
       <v-chip
-        v-bind="data.attrs"
-        :model-value="data.selected"
+        class="advancedSearchChip"
+        v-bind="props"
+        :model-value="item.selected"
         closable
-        @click="data.select"
-        @click:close="remove(data.item)"
-      >
-        {{ cleanString(data.item) }}
-      </v-chip>
+        :text="cleanString(item.title)"
+        size="large"
+        border="sm"
+        @click="item.select"
+        @click:close="remove(item.title)"
+      />
     </template>
-    <template #item="{ item, on, attrs }">
-      <v-list-item
-        v-bind="attrs"
-        v-on="on"
-      >
-        <v-list-item-icon>
-          <v-icon>
-            {{
-              model.includes(item)
-                ? "mdi-checkbox-marked"
-                : "mdi-checkbox-blank-outline"
-            }}
-          </v-icon>
-        </v-list-item-icon>
-        
-          <v-list-item-title
-            class="text-left text-capitalize"
-            v-text="cleanString(item)"
-          />
-        
-      </v-list-item>
-    </template>
-  </v-select>
+<!--    <template #item="{ item, on, attrs }">-->
+<!--      <v-list-item-->
+<!--        v-bind="attrs"-->
+<!--        v-on="on"-->
+<!--      >-->
+<!--        <v-list-item-icon>-->
+<!--          <v-icon>-->
+<!--            {{-->
+<!--              model.includes(item)-->
+<!--                ? "mdi-checkbox-marked"-->
+<!--                : "mdi-checkbox-blank-outline"-->
+<!--            }}-->
+<!--          </v-icon>-->
+<!--        </v-list-item-icon>-->
+
+<!--          <v-list-item-title-->
+<!--            class="text-left text-capitalize"-->
+<!--            v-text="cleanString(item)"-->
+<!--          />-->
+
+<!--      </v-list-item>-->
+<!--    </template>-->
+  </v-combobox>
 </template>
 
 <script>

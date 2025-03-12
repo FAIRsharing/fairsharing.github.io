@@ -1,7 +1,6 @@
 .v-text-field {
   width: 90%;
   .v-input__control {
-    min-height: 36px;
     .v-text-field__details {
       display: none;
     }
@@ -11,6 +10,9 @@
     }
     .v-select__selections {
       min-height: 36px;
+    }
+    .advancedSearchChip {
+      height: 32px
     }
   }
 }

@@ -152,6 +152,7 @@
         font-size: 14px;
         color: white;
         font-weight: 500;
+        margin-right: 16px;
         @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
           margin-bottom: 10px;
         }
@@ -297,6 +298,10 @@
     border-left-style: solid;
     .query-builder-rule__component-container {
       flex: 1;
+    }
+    .query-builder-child__delete-child {
+      top: 25px;
+      right: 8px;
     }
   }
 }

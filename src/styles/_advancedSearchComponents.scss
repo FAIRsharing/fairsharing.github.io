@@ -1,4 +1,4 @@
-.v-text-field:deep(*) {
+.v-text-field {
   width: 90%;
   .v-input__control {
     min-height: 36px;
@@ -16,7 +16,7 @@
 }
 
 // Styling for checkbox
-.v-input--checkbox:deep(*) {
+.v-input--checkbox {
   .v-input--selection-controls__input {
     margin-right: 0;
   }
@@ -26,7 +26,7 @@
 }
 
 //Styling for radio
-.v-input--radio-group:deep(*) {
+.v-input--radio-group {
   .v-icon {
     background-color: white;
     border-radius: 50%

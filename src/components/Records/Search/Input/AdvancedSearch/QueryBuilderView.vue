@@ -19,7 +19,6 @@
         <span class="query-builder-group__group-operator">
           Select an Operator to apply across all groups
         </span>
-
         <select
           class="operatorSelect"
           :value="props.currentOperator"
@@ -97,7 +96,9 @@ import {
   UpdatingOfDmp,
   UserDefinedTag,
   UsesPersistentIdentifier
-} from "./QueryBuilderComponents";
+} from "./QueryBuilderComponents"
+
+// import GroupCtrlSlot from "./QueryBuilderComponents/GroupCtrlSlot/GroupCtrlSlot.vue"
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder, GroupCtrlSlot },
@@ -479,6 +480,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-//@import "vuetify/src/styles/settings/_variables.scss";
-@use "@/styles/queryBuilderView";
+@use "vuetify/settings";
+//@use "@/styles/queryBuilderView";
+//@use "../../../styles/queryBuilderView.scss";
 </style>

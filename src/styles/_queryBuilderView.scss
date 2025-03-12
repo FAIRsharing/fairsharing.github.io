@@ -1,4 +1,6 @@
-.query-builder-group:deep(*) {
+@use "sass:map";
+@use "vuetify/settings" as v;
+.query-builder-group{
   color: black;
 
   select {
@@ -28,18 +30,23 @@
     color: white;
     background-color: #6b1e1e;
     font-size: 25px;
+    font-weight: bold;
     border-radius: 50%;
     width: 30px;
     height: 30px;
     margin-left: 8px !important;
     vertical-align: middle;
+    position: absolute;
+    top: 3px;
+    right: 0;
+    z-index: 3;
+    line-height: 1.3;
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    //@media #{map-get($display-breakpoints, 'sm-and-down')} {
-    //  position: absolute;
-    //  right: 0;
-    //  top: -5px;
-    //}
+    @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
+      right: 0;
+      top: -5px;
+    }
   }
   .query-builder-group__rule-adding-button,
   .query-builder-group__group-adding-button,
@@ -55,6 +62,8 @@
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     border-radius: 4px;
     font-weight: 500;
+    font-size: 14px;
+    line-height: 16.1px
   }
 
   button:disabled,
@@ -92,14 +101,15 @@
     .query-builder-group__group-operator {
       color: white;
       font-weight: 500;
+      margin-right: 16px;
     }
     select.operatorSelect {
       max-width: 80px !important;
       width: 100%;
-      //@media #{map-get($display-breakpoints, 'sm-and-down')} {
-      //  max-width: 90% !important;
-      //  margin-top: 10px;
-      //}
+      @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
+        max-width: 90% !important;
+        margin-top: 10px;
+      }
     }
   }
   input[type="text"] {
@@ -108,9 +118,9 @@
     min-height: 36px;
     width: 90%;
     border-radius: 4px;
-    //@media #{map-get($display-breakpoints, 'sm-and-down')} {
-    //  max-width: 100%;
-    //}
+    @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
+      max-width: 100%;
+    }
   }
 
   .query-builder-child {
@@ -118,6 +128,8 @@
     align-items: center;
     flex-direction: row;
     padding: 0;
+    position: relative;
+    z-index: 1;
     .query-builder-rule {
       background-color: #27aae1;
       border-color: #27aae1;
@@ -129,38 +141,40 @@
       border-radius: 0 4px 4px 0;
       box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
       0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-      //@media #{map-get($display-breakpoints, 'sm-and-down')} {
-      //  flex-direction: column;
-      //  align-items: unset;
-      //  position: relative;
-      //  width: 100%;
-      //}
+      width: 100%;
+      @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
+        flex-direction: column;
+        align-items: unset;
+        position: relative;
+        width: 100%;
+      }
       .query-builder-rule__name {
         font-size: 14px;
         color: white;
         font-weight: 500;
-        //@media #{map-get($display-breakpoints, 'sm-and-down')} {
-        //  margin-bottom: 10px;
-        //}
+        @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
+          margin-bottom: 10px;
+        }
       }
       select {
         max-width: 350px;
         width: 100%;
         color: black;
-        //@media #{map-get($display-breakpoints, 'sm-and-down')} {
-        //  max-width: 100%;
-        //  margin-bottom: 10px;
-        //}
+        @media #{map.get(v.$display-breakpoints, 'sm-and-down')} {
+          max-width: 100%;
+          margin-bottom: 10px;
+        }
       }
       .query-builder-group__group-control {
         select {
-          //@media #{map-get($display-breakpoints, 'md-and-up')} {
-          //  max-width: 320px;
-          //}
+          @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
+            max-width: 320px;
+          }
         }
       }
     }
   }
+
   & > .query-builder-group__control {
     position: sticky;
     top: 0;
@@ -168,7 +182,7 @@
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     border-radius: 4px;
-    z-index: 1;
+    z-index: 3;
     .query-builder-group__group-selection {
       margin: 0 0 15px 0;
       border-radius: 4px 4px 0 0;
@@ -181,33 +195,45 @@
   }
 
   .query-builder-group__group-children--depth-1 {
-    .query-builder-group__group-operator {
-      visibility: hidden;
-      position: relative;
-      &:after {
-        visibility: visible;
-        position: absolute;
-        top: -2px;
-        left: 0;
-        width: 240px;
-        content: "Select an Operator for this group";
+    margin: 8px 0 0 16px;
+    border-left-width: 2px;
+    border-left-style: solid;
+
+    .query-builder-group__control {
+      box-shadow: none;
+      .query-builder-group__group-operator {
+        visibility: hidden;
+        position: relative;
+
+        &:after {
+          visibility: visible;
+          position: absolute;
+          top: -2px;
+          left: 0;
+          width: 260px;
+          content: "Select an Operator for this group";
+        }
       }
-    }
-    .tooltiptext {
-      &:after {
-        content: "Connect the rules inside this group with either 'AND' or 'OR'";
+
+      .tooltiptext {
+        &:after {
+          content: "Connect the rules inside this group with either 'AND' or 'OR'";
+        }
       }
-    }
-    .operatorSelect {
-      //@media #{map-get($display-breakpoints, 'md-and-up')} {
-      //  margin-left: -80px;
-      //}
-    }
-    .query-builder-group-slot__group-adding-button {
-      display: none;
-    }
-    .query-builder-group-slot__rule-selection, .query-builder-group-slot__rule-adding-button {
-      display: inline-block;
+
+      .operatorSelect {
+        @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
+          margin-left: -80px;
+        }
+      }
+
+      .query-builder-group-slot__group-adding-button {
+        display: none;
+      }
+
+      .query-builder-group-slot__rule-selection, .query-builder-group-slot__rule-adding-button {
+        display: inline-block;
+      }
     }
   }
 
@@ -262,6 +288,15 @@
         margin-right: 12px;
         border-left: 1px solid hsl(0, 0%, 75%);
       }
+    }
+  }
+
+  .query-builder-group__group-children--depth-2 {
+    margin: 8px 0 0 16px;
+    border-left-width: 2px;
+    border-left-style: solid;
+    .query-builder-rule__component-container {
+      flex: 1;
     }
   }
 }

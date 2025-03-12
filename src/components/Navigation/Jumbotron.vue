@@ -1,7 +1,7 @@
 <template>
   <section
     v-if="getJumbotronData"
-    class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock"
+    class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
     :style="['z-index: 2', {
       backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%),url(' + '/assets/Home/BlockHero/pattern3.jpg',
       backgroundRepeat: 'repeat',
@@ -141,11 +141,7 @@ export default {
     max-height: 250px !important;
     z-index: 1;
     left:0;
-    top:150px;
-  }
-
-  #particles.largeScreen canvas{
-    top:170px;
+    top:0;
   }
 
   #subtitle a {

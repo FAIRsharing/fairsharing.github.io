@@ -8,7 +8,7 @@
   <!--  />-->
   <v-radio-group
     v-model="model"
-    row
+    inline
     class="mt-0 ml-1"
   >
     <v-radio
@@ -17,7 +17,7 @@
       class="mr-6"
     >
       <template #label>
-        <div class="white--text">
+        <div class="text-white">
           Yes
         </div>
       </template>
@@ -27,7 +27,7 @@
       value="false"
     >
       <template #label>
-        <div class="white--text">
+        <div class="text-white">
           No
         </div>
       </template>
@@ -58,6 +58,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

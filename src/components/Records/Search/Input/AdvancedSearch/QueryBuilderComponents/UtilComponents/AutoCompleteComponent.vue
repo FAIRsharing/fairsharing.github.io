@@ -1,8 +1,8 @@
 <template>
   <v-autocomplete
     v-model="model"
+    v-model:search-input="search"
     :items="itemList"
-    :search-input.sync="search"
     cache-items
     hide-no-data
     hide-details
@@ -10,18 +10,18 @@
     chips
     multiple
     closable-chips
-    solo
+    variant="solo"
     min-height="36px"
     class="text-capitalize"
     :loading="loading"
     loader-height="3"
     color="accent3"
   >
-    <template #selection="data">
+    <template #chip="data">
       <v-chip
         v-bind="data.attrs"
-        :input-value="data.selected"
-        close
+        :model-value="data.selected"
+        closable
         @click="data.select"
         @click:close="remove(data.item)"
       >
@@ -80,6 +80,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

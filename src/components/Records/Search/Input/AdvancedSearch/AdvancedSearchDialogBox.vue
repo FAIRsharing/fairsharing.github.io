@@ -86,9 +86,8 @@
             />
             <v-text-field
               v-else
-              class="text-h5"
+              class="text-h5 full-width"
               clearable
-              full-width
               variant="outlined"
               hide-details
               label="Add Search text"

@@ -4,17 +4,18 @@
     chips
     :items="itemList"
     multiple
-    solo
+    variant="solo"
     clearable
     closable-chips
     min-height="36px"
     class="text-capitalize"
+    density="compact"
   >
-    <template #selection="data">
+    <template #chip="data">
       <v-chip
         v-bind="data.attrs"
-        :input-value="data.selected"
-        close
+        :model-value="data.selected"
+        closable
         @click="data.select"
         @click:close="remove(data.item)"
       >
@@ -35,12 +36,12 @@
             }}
           </v-icon>
         </v-list-item-icon>
-        <v-list-item-content>
+        
           <v-list-item-title
             class="text-left text-capitalize"
             v-text="cleanString(item)"
           />
-        </v-list-item-content>
+        
       </v-list-item>
     </template>
   </v-select>
@@ -82,6 +83,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

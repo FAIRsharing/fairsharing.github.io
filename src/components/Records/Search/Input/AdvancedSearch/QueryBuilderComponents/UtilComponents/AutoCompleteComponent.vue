@@ -1,32 +1,33 @@
 <template>
   <v-autocomplete
     v-model="model"
-    v-model:search-input="search"
+    v-model:search="search"
     :items="itemList"
-    cache-items
     hide-no-data
-    hide-details
+    hide-details="auto"
     flat
     chips
     multiple
     closable-chips
     variant="solo"
     min-height="36px"
-    class="text-capitalize"
+    class="text-capitalize advancedSearchAutocomplete"
+    density="compact"
     :loading="loading"
-    loader-height="3"
     color="accent3"
   >
-    <template #chip="data">
+    <template #chip="{ props, item }">
       <v-chip
-        v-bind="data.attrs"
-        :model-value="data.selected"
+        class="advancedSearchChip"
+        v-bind="props"
+        :model-value="item.selected"
         closable
-        @click="data.select"
-        @click:close="remove(data.item)"
-      >
-        {{ data.item }}
-      </v-chip>
+        :text="item.title"
+        size="large"
+        border="sm"
+        @click="item.select"
+        @click:close="remove(item.title)"
+      />
     </template>
   </v-autocomplete>
 </template>
@@ -49,6 +50,7 @@ export default {
       default: false,
     },
   },
+  emits: ["input", "fetchData"],
   data: () => {
     return {
       search: null,

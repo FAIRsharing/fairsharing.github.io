@@ -28,12 +28,20 @@
 }
 
 //Styling for radio
-.v-input--radio-group {
+.advancedSearchRadio {
   .v-icon {
     background-color: white;
-    border-radius: 50%
+    border-radius: 50%;
+    opacity: 1
   }
   .v-messages {
     display: none
+  }
+}
+
+//Styling for textfield
+.advancedSearchSelect, .advancedSearchAutocomplete {
+  .v-field__input {
+    padding: 0 12px;
   }
 }

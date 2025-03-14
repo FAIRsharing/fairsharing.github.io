@@ -28,6 +28,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],
@@ -70,7 +71,7 @@ export default {
   },
   mounted() {
     //Pre-fill selected values on edit advanced search is clicked and open
-    this.itemValue = this.value;
+    this.selectedItemValue = this.value;
   },
 
   methods: {

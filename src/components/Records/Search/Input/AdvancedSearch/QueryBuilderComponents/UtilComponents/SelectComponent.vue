@@ -2,13 +2,13 @@
   <v-combobox
     v-model="model"
     chips
-    :items="itemList"
+    :items="cleanTextList"
     multiple
     variant="solo"
     clearable
     closable-chips
     min-height="36px"
-    class="text-capitalize"
+    class="text-capitalize advancedSearchSelect"
     density="compact"
     flat
     hide-details="auto"
@@ -26,34 +26,33 @@
         @click:close="remove(item.title)"
       />
     </template>
-<!--    <template #item="{ item, on, attrs }">-->
-<!--      <v-list-item-->
-<!--        v-bind="attrs"-->
-<!--        v-on="on"-->
-<!--      >-->
-<!--        <v-list-item-icon>-->
-<!--          <v-icon>-->
-<!--            {{-->
-<!--              model.includes(item)-->
-<!--                ? "mdi-checkbox-marked"-->
-<!--                : "mdi-checkbox-blank-outline"-->
-<!--            }}-->
-<!--          </v-icon>-->
-<!--        </v-list-item-icon>-->
+<!--        <template #item="{ item }">-->
+<!--          <v-list-item-->
+<!--            v-bind="item"-->
+<!--          >-->
+<!--            <v-list-item-icon>-->
+<!--              <v-icon>-->
+<!--                {{-->
+<!--                  model.includes(item.title)-->
+<!--                    ? "mdi-checkbox-marked"-->
+<!--                    : "mdi-checkbox-blank-outline"-->
+<!--                }}-->
+<!--              </v-icon>-->
+<!--            </v-list-item-icon>-->
 
-<!--          <v-list-item-title-->
-<!--            class="text-left text-capitalize"-->
-<!--            v-text="cleanString(item)"-->
-<!--          />-->
+<!--              <v-list-item-title-->
+<!--                class="text-left text-capitalize"-->
+<!--              >{{ cleanString(item.title)}}</v-list-item-title>-->
 
-<!--      </v-list-item>-->
-<!--    </template>-->
+<!--          </v-list-item>-->
+<!--        </template>-->
   </v-combobox>
 </template>
 
 <script>
 import { removeItem } from "@/utils/advancedSearchUtils";
 import stringUtils from "@/utils/stringUtils";
+import { capitalize } from "lodash"
 
 export default {
   name: "SelectComponent",
@@ -78,12 +77,16 @@ export default {
         this.$emit("input", value);
       },
     },
+    cleanTextList() {
+      return this.itemList.map((item) => capitalize(this.cleanString(item)))
+    }
   },
 
   methods: {
     remove(item) {
       return removeItem(item, this.model);
     },
+    capitalize
   },
 };
 </script>

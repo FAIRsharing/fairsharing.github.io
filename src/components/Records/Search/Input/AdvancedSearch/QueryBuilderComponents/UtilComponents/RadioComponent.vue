@@ -6,10 +6,11 @@
   <!--    color="success"-->
   <!--    class="mt-0"-->
   <!--  />-->
+  <div>
   <v-radio-group
-    v-model="model"
     inline
-    class="mt-0 ml-1"
+    class="mt-0 ml-1 advancedSearchRadio"
+    hide-details="auto"
   >
     <v-radio
       color="success"
@@ -33,10 +34,11 @@
       </template>
     </v-radio>
   </v-radio-group>
+  </div>
 </template>
 
 <script>
-
+import { ref } from 'vue'
 export default {
   name: "RadioComponent",
   props: {
@@ -45,16 +47,20 @@ export default {
       default: null,
     }
   },
-
-  computed: {
-    model: {
-      get() {
-        return this.itemValue;
-      },
-      set(itemValue) {
-        this.$emit("input", itemValue);
-      },
-    },
+  emits: ["input"],
+  setup() {
+    const model = ref(null)
+    return { model };
   },
+  // computed: {
+  //   model: {
+  //     get() {
+  //       return this.itemValue;
+  //     },
+  //     set(itemValue) {
+  //       this.$emit("input", itemValue);
+  //     },
+  //   },
+  // },
 };
 </script>

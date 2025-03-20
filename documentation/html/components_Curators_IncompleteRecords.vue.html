@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue</title>
+	<title>FAIRsharing.org Source: components/Curators/IncompleteRecords.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,155 +86,162 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue</h1>
+		<h1 class="page-title">Source: components/Curators/IncompleteRecords.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div>
-    &lt;template v-if="user().is_super_curator">
-      &lt;v-autocomplete
-        v-model="policySelected"
-        :items="getPolicyRecords"
-        :search-input.sync="searchPolicy"
-        class="mb-7"
-        :loading="getLoadingStatus"
-        hide-details
-        multiple
-        cache-items
-        chips
-        deletable-chips
-        item-value="id"
-        item-text="name"
-        label="Enter text to search for policy record(s) to associate with this saved search"
-      >
-        &lt;template #selection="data">
-          &lt;v-chip
-            v-bind="data.attrs"
-            :input-value="data.item['id']"
-            close
-            @click="data.select"
-            @click:close="remove(data.item['id'])"
+  &lt;v-col cols12>
+    &lt;v-card class="mb-2">
+      &lt;v-card-text v-if="incompleteRecords">
+        &lt;v-card-title
+          id="text-curator-search-2"
+          class="green white--text"
+        >
+          &lt;b> INCOMPLETE RECORDS &lt;/b>
+          &lt;v-spacer />
+          &lt;v-text-field
+            v-model="searches"
+            label="Search"
+            color="white"
+            single-line
+            hide-details
+            solo
+            class="searchField"
+            clearable
+          />
+        &lt;/v-card-title>
+        &lt;v-data-table
+          :loading="loading"
+          :headers="headerItems"
+          :items="incompleteRecords"
+          :search="searches"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
+        >
+          &lt;template
+            v-if="recordType"
+            #item="props"
           >
-            {{ data.item["name"] }}
-          &lt;/v-chip>
-        &lt;/template>
-        &lt;template #no-data>
-          &lt;div
-            v-show="!getLoadingStatus"
-            class="py-3 px-4"
-          >
-            No Policy found
-          &lt;/div>
-          &lt;div
-            v-show="getLoadingStatus"
-            class="py-3 px-4"
-          >
-            Loading...
-          &lt;/div>
-        &lt;/template>
-      &lt;/v-autocomplete>
-    &lt;/template>
-    &lt;template v-else>
-      &lt;v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        height="6"
-        rounded
-        color="primary"
-      />
-      &lt;template v-if="policyList &amp;&amp; policyList.length">
-        &lt;v-checkbox
-          v-for="({ id, name }, index) in policyList"
-          :key="index"
-          v-model="policySelected"
-          :label="name"
-          :value="id"
-        />
-      &lt;/template>
-      &lt;template v-else>
-        &lt;p v-if="!loading">
-          No policy found
-        &lt;/p>
-      &lt;/template>
-    &lt;/template>
-  &lt;/div>
+            &lt;tr>
+              &lt;td>
+                &lt;div class="d-flex align-center">
+                  &lt;v-avatar
+                    v-if="props.item.type"
+                    class="mr-2"
+                    :height="40"
+                  >
+                    &lt;Icon
+                      :item="props.item.type"
+                      :height="40"
+                      wrapper-class=""
+                    />
+                  &lt;/v-avatar>
+                  &lt;a :href="'/' + props.item.id">
+                    {{ props.item.recordNameID }}
+                  &lt;/a>
+                &lt;/div>
+              &lt;/td>
+              &lt;td>
+                {{ props.item.createdAt }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.required }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.recommended }}
+              &lt;/td>
+            &lt;/tr>
+          &lt;/template>
+        &lt;/v-data-table>
+      &lt;/v-card-text>
+    &lt;/v-card>
+  &lt;/v-col>
 &lt;/template>
 
 &lt;script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 
-import saveSearch from "@/store";
-import { removeItem } from "@/utils/advancedSearchUtils";
+import Icon from "@/components/Icon";
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
+import formatDate from "@/utils/generalUtils";
+
+const client = new GraphClient();
 
 export default {
-  name: "PolicyStepper",
-  data() {
+  name: "IncompleteRecords",
+  components: {
+    Icon,
+  },
+  mixins: [formatDate],
+  props:{
+    headerItems: {
+      type: Array,
+      default: null
+    },
+  },
+  data: () => {
     return {
-      policySelected: [],
-      policyList: [],
-      searchPolicy: null,
+      incompleteRecords:[],
+      searches: "",
+      recordType: {},
       loading: false,
     };
   },
   computed: {
     ...mapState("users", ["user"]),
-    ...mapGetters("users", ["getUserRecords"]),
-    ...mapGetters("saveSearch", ["getPolicyRecords", "getLoadingStatus"]),
   },
-  watch: {
-    searchPolicy(val) {
-      if (!val || val.length &lt; 3) return;
-      this.fetchPolicyRecords();
-    },
 
-    policySelected(val) {
-      saveSearch.commit("saveSearch/setPolicySelected", val);
-    },
-  },
   async mounted() {
-    if (!this.user().is_super_curator) {
-      this.loading = true;
-      this.policyList = await this.fetchUserPolicyRecordData();
-      this.loading = false;
-    }
+    this.loading = true;
+    client.setHeader(this.user().credentials.token);
+    //Fetching incomplete records
+    let records = await client.executeQuery(getIncompleteRecords);
+    this.prepareIncompleteRecords(records)
+    this.loading = false;
   },
-
   methods: {
-    ...mapActions("users", ["getUser"]),
-    ...mapActions("saveSearch", ["fetchPolicyRecords"]),
 
     /**
-     * Return FairSharing Records of the Policy records maintained
-     * by the user
-     * @return {Array} - Policy record name used in the stepper
+     * Method to fetch incomplete records
+     * @param dataCuration
      */
-    async fetchUserPolicyRecordData() {
-      await this.getUser();
-      let maintainedRecordsArr = await this.getUserRecords.user[
-        "maintainedRecords"
-      ];
-      if (maintainedRecordsArr &amp;&amp; maintainedRecordsArr.length) {
-        return maintainedRecordsArr.filter(
-          (record) => record["registry"] === "Policy"
-        );
-      }
-      return [];
-    },
-
-    /**
-     * Remove the selected item from selection
-     * @param item
-     * @return {Array}
-     */
-    remove(item) {
-      return removeItem(item, this.policySelected);
+    prepareIncompleteRecords(dataCuration) {
+      let records = dataCuration.incompleteRecords;
+      records.forEach((item) => {
+        let recommended = [];
+        item.incomplete.recommended.forEach(rec => {
+          recommended.push(rec.field)
+        });
+        let required = [];
+        item.incomplete.required.forEach(req => {
+          required.push(req.field)
+        });
+        let object = {
+          recordNameID: `${item.name} (${item.id})`,
+          type: item.type,
+          id: item.id,
+          recommended: recommended.sort().join(', '),
+          required: required.sort().join(', '),
+        };
+        object.createdAt = this.formatDate(item.createdAt);
+        this.incompleteRecords.push(object);
+      });
     },
   },
 };
 &lt;/script>
-</pre>
+
+&lt;style scoped>
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
+}
+&lt;/style></pre>
     </article>
 </section>
 

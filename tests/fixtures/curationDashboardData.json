@@ -230,6 +230,26 @@
              "createdAt": "1425-01-01T13:31:25Z"
         }
       ],
+      "incompleteRecords": [
+        {
+          "id": "2669f95",
+          "name": "ShareSfhare",
+          "createdAt": "1425-01-01T13:31:25Z",
+          "incomplete": {
+            "required": [{"field": "name"}],
+            "recommended": [{"field": "data_sharing"}]
+          }
+        },
+        {
+          "id": "12345",
+          "name": "ShareSfhare",
+          "createdAt": "1425-01-01T13:31:25Z",
+          "incomplete": {
+            "required": [{"field": "name"}, {"field": "abbreviation"}],
+            "recommended": [{"field": "data_sharing"}, {"field": "data_provenance"}]
+          }
+        }
+      ],
       "curatorList":[
         {
               "id": "22",

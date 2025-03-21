@@ -7,7 +7,7 @@
         class="pa-6 d-flex flex-column"
         outlined
         tile
-        :height="$vuetify.breakpoint.smAndDown?'500px':'400px'"
+        :height="$vuetify.breakpoint.smAndDown?'540px':'440px'"
         :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"

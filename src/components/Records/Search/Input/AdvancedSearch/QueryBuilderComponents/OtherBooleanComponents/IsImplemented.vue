@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex width-90">
+  <div class="d-flex width-90 align-center">
     <TooltipComponent :tool-tip-text="toolTipText" />
     <RadioComponent
       v-model="model"
@@ -22,6 +22,7 @@ export default {
       default: "",
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemValue:"",

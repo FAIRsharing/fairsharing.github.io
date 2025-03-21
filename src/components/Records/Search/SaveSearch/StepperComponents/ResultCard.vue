@@ -5,7 +5,7 @@
     class="mx-auto rounded-t-0 pb-2"
   >
     <v-card-title
-      class="justify-center white--text mb-4"
+      class="justify-center text-white mb-4"
       style="background-color: green"
     >
       Success !!
@@ -20,9 +20,9 @@
       class="flex-column flex-md-row justify-md-space-between my-3"
     >
       <v-btn
-        class="white--text order-md-2"
+        class="text-white order-md-2"
         :class="{
-          'mb-3': $vuetify.breakpoint.smAndDown,
+          'mb-3': $vuetify.display.smAndDown,
         }"
         color="accent2"
         to="/accounts/profile"
@@ -31,7 +31,7 @@
         Goto Profile page
       </v-btn>
       <v-btn
-        class="white--text order-md-1"
+        class="text-white order-md-1"
         color="accent3"
         @click="closeStepperDialog"
       >
@@ -46,7 +46,7 @@
     class="mx-auto pb-2"
   >
     <v-card-title
-      class="justify-center white--text mb-4"
+      class="justify-center text-white mb-4"
       style="background-color: darkred"
     >
       Error
@@ -60,9 +60,9 @@
       class="flex-column flex-md-row justify-md-space-between my-3"
     >
       <v-btn
-        class="white--text order-md-2"
+        class="text-white order-md-2"
         :class="{
-          'mb-3': $vuetify.breakpoint.smAndDown,
+          'mb-3': $vuetify.display.smAndDown,
         }"
         color="accent2"
         @click="restartStepper"
@@ -70,7 +70,7 @@
         Start Again
       </v-btn>
       <v-btn
-        class="white--text order-md-1"
+        class="text-white order-md-1"
         color="secondary"
         @click="closeStepperDialog"
       >

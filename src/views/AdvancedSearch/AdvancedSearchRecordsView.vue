@@ -19,7 +19,7 @@
       fluid
       class="pa-0"
     >
-      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+      <v-row v-if="$vuetify.display.mdAndDown">
         <v-col>
           <AdvancedSearchButtons />
         </v-col>
@@ -27,7 +27,7 @@
       <v-row no-gutters>
         <!-- Advanced search selection left column-->
         <v-col
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.display.lgAndUp"
           cols="12"
           lg="4"
           md="4"
@@ -90,7 +90,7 @@ export default {
       this.onScroll(this.getAdvancedSearchResponse);
     });
   },
-  destroyed() {
+  unmounted() {
     this.resetAdvancedSearchResponse();
     window.removeEventListener("scroll", () => {
       this.onScroll(this.getAdvancedSearchResponse);

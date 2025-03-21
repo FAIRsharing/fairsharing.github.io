@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex width-90">
+  <div class="d-flex width-90 align-center">
     <TooltipComponent :tool-tip-text="toolTipText" />
     <AutoCompleteComponent
       v-model="model"
@@ -7,7 +7,7 @@
       :item-list="getSearchCountries"
       :loading="getLoadingStatus"
       @input="selectedValue"
-      @fetchData="getResults"
+      @fetch-data="getResults"
     />
   </div>
 </template>

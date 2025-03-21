@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex width-90">
+  <div class="d-flex width-90 align-center">
     <TooltipComponent :tool-tip-text="toolTipText" />
     <SelectComponent
       v-model="model"

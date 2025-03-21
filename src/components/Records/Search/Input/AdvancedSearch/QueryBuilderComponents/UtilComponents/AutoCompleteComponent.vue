@@ -1,32 +1,51 @@
 <template>
   <v-autocomplete
     v-model="model"
+    v-model:search="search"
     :items="itemList"
-    :search-input.sync="search"
-    cache-items
     hide-no-data
-    hide-details
+    hide-details="auto"
     flat
     chips
     multiple
     closable-chips
-    solo
+    variant="solo"
     min-height="36px"
-    class="text-capitalize"
+    class="text-capitalize advancedSearchAutocomplete"
+    density="compact"
     :loading="loading"
-    loader-height="3"
     color="accent3"
   >
-    <template #selection="data">
+    <template #chip="{ props, item }">
       <v-chip
-        v-bind="data.attrs"
-        :input-value="data.selected"
-        close
-        @click="data.select"
-        @click:close="remove(data.item)"
+        class="advancedSearchChip"
+        v-bind="props"
+        :model-value="item.selected"
+        closable
+        :text="item.title"
+        size="large"
+        border="sm"
+        @click="item.select"
+        @click:close="remove(item.title)"
+      />
+    </template>
+    <!-- Tooltip for the field -->
+    <template #prepend>
+      <v-tooltip
+          location="bottom"
+          class="mr-2"
       >
-        {{ data.item }}
-      </v-chip>
+        <template #activator="{ props }">
+          <v-icon
+              size="x-small"
+              class="mr-1 iconStyle text-white opacity-100"
+              v-bind="props"
+          >
+            fas fa-question-circle
+          </v-icon>
+        </template>
+        <span> {{ toolTipText }} </span>
+      </v-tooltip>
     </template>
   </v-autocomplete>
 </template>
@@ -48,7 +67,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    toolTipText: {
+      type: String,
+      default: null,
+    },
   },
+  emits: ["input", "fetchData"],
   data: () => {
     return {
       search: null,
@@ -80,6 +104,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

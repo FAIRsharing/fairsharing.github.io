@@ -26,7 +26,7 @@ const customIcons = {
     },
     contacts: {
       type: "icon",
-      icon: "fa-envelope",
+      icon: "fas fa-envelope",
     },
     maintains: {
       type: "icon",
@@ -50,7 +50,7 @@ const customIcons = {
     },
     arrowUp: {
       type: "icon",
-      icon: "fa-chevron-up",
+      icon: "fas fa-chevron-up",
     },
     data_access: {
       type: "icon",
@@ -122,7 +122,7 @@ const customIcons = {
     },
     support_email: {
       type: "icon",
-      icon: "fa-headset",
+      icon: "fas fa-headset",
     },
     collection: {
       type: "img",
@@ -219,7 +219,7 @@ const customIcons = {
     },
     mailing_list: {
       type: "icon",
-      icon: "fa-address-book",
+      icon: "fas fa-address-book",
     },
     contact_form: {
       type: "icon",
@@ -227,7 +227,7 @@ const customIcons = {
     },
     recommended: {
       type: "icon",
-      icon: "fa-thumbs-up",
+      icon: "fas fa-thumbs-up",
     },
     video: {
       type: "icon",
@@ -239,7 +239,7 @@ const customIcons = {
     },
     educational: {
       type: "icon",
-      icon: "fa-graduation-cap",
+      icon: "fas fa-graduation-cap",
     },
     api: {
       type: "icon",
@@ -263,15 +263,15 @@ const customIcons = {
     },
     adopters: {
       type: "icon",
-      icon: "fa-file-alt",
+      icon: "fas fa-file-alt",
     },
     activities: {
       type: "icon",
-      icon: "fa-chart-line",
+      icon: "fas fa-chart-line",
     },
     governance: {
       type: "icon",
-      icon: "fa-university",
+      icon: "fas fa-university",
     },
     linkedin: {
       type: "icon",
@@ -279,7 +279,7 @@ const customIcons = {
     },
     home: {
       type: "icon",
-      icon: "fa-home",
+      icon: "fas fa-home",
     },
     user: {
       type: "icon",
@@ -287,11 +287,11 @@ const customIcons = {
     },
     users: {
       type: "icon",
-      icon: "fa-users",
+      icon: "fas fa-users",
     },
     collaborators: {
       type: "icon",
-      icon: "fa-users-cog",
+      icon: "fas fa-users-cog",
     },
     info: {
       type: "icon",

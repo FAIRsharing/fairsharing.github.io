@@ -14,7 +14,7 @@
         class="pa-6 d-flex flex-column"
         border
         tile
-        height="545px"
+        height="600px"
         :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"

@@ -42,6 +42,8 @@ export default {
           return 'Linked Policies';
         case 'collection':
           return 'Linked Collections';
+        case 'fairassist':
+          return 'Linked FAIRassist';
       }
     }
   }

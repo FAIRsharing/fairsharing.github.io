@@ -1,30 +1,27 @@
 <template>
-  <div class="d-flex width-90 align-center">
-    <TooltipComponent :tool-tip-text="toolTipText" />
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
       :item-list="registryTypes"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
-  </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Registry",
-  components: { SelectComponent, TooltipComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],
@@ -42,10 +39,10 @@ export default {
     },
     model: {
       get() {
-        return this.itemSelected;
+        return  this.itemSelected;
       },
       set(value) {
-        this.$emit("input", value);
+        this.$emit("input",  value);
       },
     },
   },

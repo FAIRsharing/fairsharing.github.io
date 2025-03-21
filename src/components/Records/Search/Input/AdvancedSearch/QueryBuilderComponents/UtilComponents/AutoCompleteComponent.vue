@@ -29,6 +29,24 @@
         @click:close="remove(item.title)"
       />
     </template>
+    <!-- Tooltip for the field -->
+    <template #prepend>
+      <v-tooltip
+          location="bottom"
+          class="mr-2"
+      >
+        <template #activator="{ props }">
+          <v-icon
+              size="x-small"
+              class="mr-1 iconStyle text-white opacity-100"
+              v-bind="props"
+          >
+            fas fa-question-circle
+          </v-icon>
+        </template>
+        <span> {{ toolTipText }} </span>
+      </v-tooltip>
+    </template>
   </v-autocomplete>
 </template>
 <script>
@@ -48,6 +66,10 @@ export default {
     loading: {
       type: Boolean,
       default: false,
+    },
+    toolTipText: {
+      type: String,
+      default: null,
     },
   },
   emits: ["input", "fetchData"],

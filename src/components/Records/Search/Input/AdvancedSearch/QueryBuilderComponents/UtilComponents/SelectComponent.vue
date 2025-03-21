@@ -13,39 +13,37 @@
     flat
     hide-details="auto"
   >
-    <template #chip="{ props, item }">
+    <template #chip="data">
       <v-chip
         class="advancedSearchChip"
-        v-bind="props"
-        :model-value="item.selected"
+        v-bind="data.attrs"
+        :model-value="data.selected"
         closable
-        :text="cleanString(item.title)"
+        :text="cleanString(data.item.title)"
         size="large"
         border="sm"
-        @click="item.select"
-        @click:close="remove(item.title)"
+        @click="data.select"
+        @click:close="remove(data.item.title)"
       />
     </template>
-<!--        <template #item="{ item }">-->
-<!--          <v-list-item-->
-<!--            v-bind="item"-->
-<!--          >-->
-<!--            <v-list-item-icon>-->
-<!--              <v-icon>-->
-<!--                {{-->
-<!--                  model.includes(item.title)-->
-<!--                    ? "mdi-checkbox-marked"-->
-<!--                    : "mdi-checkbox-blank-outline"-->
-<!--                }}-->
-<!--              </v-icon>-->
-<!--            </v-list-item-icon>-->
-
-<!--              <v-list-item-title-->
-<!--                class="text-left text-capitalize"-->
-<!--              >{{ cleanString(item.title)}}</v-list-item-title>-->
-
-<!--          </v-list-item>-->
-<!--        </template>-->
+    <!-- Tooltip for the field -->
+    <template #prepend>
+      <v-tooltip
+          location="bottom"
+          class="mr-2"
+      >
+        <template #activator="{ props }">
+          <v-icon
+              size="x-small"
+              class="mr-1 iconStyle text-white opacity-100"
+              v-bind="props"
+          >
+            fas fa-question-circle
+          </v-icon>
+        </template>
+        <span> {{ toolTipText }} </span>
+      </v-tooltip>
+    </template>
   </v-combobox>
 </template>
 
@@ -66,15 +64,19 @@ export default {
       type: Array,
       default: () => [],
     },
+    toolTipText: {
+      type: String,
+      default: null,
+    },
   },
-
+  emits: ["input"],
   computed: {
     model: {
       get() {
         return this.itemValue;
       },
       set(value) {
-        this.$emit("input", value);
+        this.$emit("input",  value);
       },
     },
     cleanTextList() {

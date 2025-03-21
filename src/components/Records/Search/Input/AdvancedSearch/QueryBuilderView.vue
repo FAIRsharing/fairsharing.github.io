@@ -98,7 +98,6 @@ import {
   UsesPersistentIdentifier
 } from "./QueryBuilderComponents"
 
-// import GroupCtrlSlot from "./QueryBuilderComponents/GroupCtrlSlot/GroupCtrlSlot.vue"
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder, GroupCtrlSlot },
@@ -427,6 +426,8 @@ export default {
 
   watch: {
     query(newValue) {
+      newValue = JSON.parse(JSON.stringify(newValue))
+      console.log("newValue::", newValue)
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       //Updating edit advanced search only if newValue has some data
       if (newValue["children"] && newValue["children"].length) {

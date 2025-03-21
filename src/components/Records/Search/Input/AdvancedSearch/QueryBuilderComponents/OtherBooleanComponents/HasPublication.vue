@@ -1,21 +1,18 @@
 <template>
-  <div class="d-flex width-90 align-center">
-    <TooltipComponent :tool-tip-text="toolTipText" />
     <RadioComponent
       v-model="model"
       :item-value="itemValue"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
-  </div>
 </template>
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "HasPublication",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,
@@ -26,7 +23,6 @@ export default {
     return {
       itemValue:"",
       toolTipText: "Does it have a publication? ",
-
     };
   },
   computed: {

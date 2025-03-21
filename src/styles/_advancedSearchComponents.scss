@@ -29,10 +29,12 @@
 
 //Styling for radio
 .advancedSearchRadio {
-  .v-icon {
-    background-color: white;
-    border-radius: 50%;
-    opacity: 1
+  .radioButtons {
+    .v-icon {
+      background-color: white;
+      border-radius: 50%;
+      opacity: 1
+    }
   }
   .v-messages {
     display: none

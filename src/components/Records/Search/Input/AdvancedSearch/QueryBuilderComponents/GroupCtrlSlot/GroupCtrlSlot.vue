@@ -3,6 +3,7 @@
     class="query-builder-group-slot__group-control pa-4 d-flex"
     :class="{'flex-column': $vuetify.display.smAndDown}"
   >
+
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />
     <div class="slotSpacer" />

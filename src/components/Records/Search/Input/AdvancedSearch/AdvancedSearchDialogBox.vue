@@ -107,9 +107,8 @@
           }"
         >
           <v-btn
-            color="green"
             variant="text"
-            class="text-white order-md-2"
+            class="text-white order-md-2 bg-green"
             :class="{
               'mb-3': $vuetify.display.smAndDown,
             }"
@@ -120,9 +119,8 @@
             Proceed
           </v-btn>
           <v-btn
-            color="accent3"
             variant="text"
-            class="text-white order-md-1 ml-0"
+            class="order-md-1 ml-0 bg-accent3"
             :width="$vuetify.display.smAndDown ? '100%' : '250'"
             @click="closeDialog()"
           >
@@ -152,6 +150,7 @@ export default {
       type: String,
     },
   },
+  emits: ["clearSearchField"],
   data: () => {
     return {
       dialog: false,

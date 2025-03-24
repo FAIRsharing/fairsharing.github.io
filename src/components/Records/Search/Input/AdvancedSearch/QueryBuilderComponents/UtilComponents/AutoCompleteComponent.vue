@@ -16,19 +16,20 @@
     :loading="loading"
     color="accent3"
   >
-    <template #chip="{ props, item }">
-      <v-chip
-        class="advancedSearchChip"
-        v-bind="props"
-        :model-value="item.selected"
-        closable
-        :text="item.title"
-        size="large"
-        border="sm"
-        @click="item.select"
-        @click:close="remove(item.title)"
-      />
-    </template>
+    <!--Chip slot is not required anymore-->
+<!--    <template #chip="{ props, item }">-->
+<!--      <v-chip-->
+<!--        class="advancedSearchChip"-->
+<!--        v-bind="props"-->
+<!--        :model-value="item.selected"-->
+<!--        closable-->
+<!--        :text="item.title"-->
+<!--        size="large"-->
+<!--        border="sm"-->
+<!--        @click="item.select"-->
+<!--        @click:close="remove(item.title)"-->
+<!--      />-->
+<!--    </template>-->
     <!-- Tooltip for the field -->
     <template #prepend>
       <v-tooltip
@@ -50,7 +51,7 @@
   </v-autocomplete>
 </template>
 <script>
-import { removeItem } from "@/utils/advancedSearchUtils";
+// import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "AutoCompleteComponent",
@@ -97,10 +98,10 @@ export default {
     },
   },
 
-  methods: {
-    remove(item) {
-      return removeItem(item, this.model);
-    },
-  },
+  // methods: {
+  //   remove(item) {
+  //     return removeItem(item, this.model);
+  //   },
+  // },
 };
 </script>

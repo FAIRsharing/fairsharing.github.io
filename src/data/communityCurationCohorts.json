@@ -882,7 +882,7 @@
       "active": true
     },
     {
-      "name": "Alexandra Rooney",
+      "name": "c",
       "id": 13063,
       "organisation": [
         {
@@ -890,8 +890,8 @@
           "name": "Bodleian Library"
         }
       ],
-      "scope": "Digital Humanities and Research Data Management",
-      "subject_area": "social_sciences_and_humanities",
+      "scope": "Research Data Managementt",
+      "subject_area": "multi_disciplinary",
       "orcid": "0000-0003-4975-5773",
       "early_adopter" : false,
       "show_more" : false,

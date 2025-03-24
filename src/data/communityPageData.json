@@ -1,623 +1,1029 @@
 {
-  "externalLinks": [
-    {
-      "title": "“Horizon Europe Programme Guide\" 2021",
-      "titleLink": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/guidance/programme-guide_horizon_en.pdf",
-      "text": " Funder: EU Horizon Europe - Funding Programme\nDiscipline: All "
-    },
-    {
-      "title": "“EOSC Strategic Research and Innovation Agenda\" 2021",
-      "titleLink": "https://www.eosc.eu/sites/default/files/EOSC-SRIA-V1.0_15Feb2021.pdf",
-      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
-    },
-    {
-      "title": "“Recommendations on certifying services required to enable FAIR within EOSC” 2021",
-      "titleLink": "https://doi.org/10.2777/127253",
-      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
-    },
-    {
-      "title": "“FAIR Metrics for EOSC” 2021",
-      "titleLink": "https://doi.org/10.2777/70791",
-      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
-    },
-    {
-      "title": "“Six Recommendations for implementation of FAIR practice” 2020",
-      "titleLink": "https://doi.org/10.2777/986252",
-      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
-    },
-    {
-      "title": "“Horizon 2020 projects working on COVID-19, SARS-CoV-2 and related topics” 2020",
-      "titleLink": "https://ec.europa.eu/research/participants/data/ref/h2020/other/hi/oa-pilot/h2020-guidelines-oa-covid-19_en.pdf",
-      "text": " Funder: EU H2020\nDiscipline: Coronavirus research "
-    },
-    {
-      "title": "“Horizon 2020 Annotated Grant Agreement” 2019",
-      "titleLink": "https://ec.europa.eu/research/participants/data/ref/h2020/grants_manual/amga/h2020-amga_en.pdf",
-      "text": " Funder: EU H2020\nDiscipline: All "
-    },
-    {
-      "title": "“Sustainable and FAIR Data Sharing in the Humanities” 2020",
-      "titleLink": "https://doi.org/10.7486/DRI.tq582c863",
-      "text": " Federation: Academies of Sciences and Humanities - ALLEA\nDiscipline: Humanities "
-    },
-    {
-      "title": "“Open Research Data and Data Management Plans” 2019",
-      "titleLink": "https://erc.europa.eu/sites/default/files/document/file/ERC_info_document-Open_Research_Data_and_Data_Management_Plans.pdf",
-      "text": " Funder: European Research Council - ERC\nDiscipline: All "
-    },
-    {
-      "title": "“Turning FAIR into Reality” 2018",
-      "titleLink": "https://doi.org/10.2777/1524",
-      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
-    },
-    {
-      "title": "“Open Research Data Task Force Case Study” 2018",
-      "titleLink": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/775379/Case-studies-ORDTF-July-2018.pdf",
-      "text": " Governamental: UK Open Research Data Task Force\nDiscipline: All "
-    },
-    {
-      "title": "“Framework for Discipline-specific Research Data Management” 2018",
-      "titleLink": "https://www.scienceeurope.org/wp-content/uploads/2018/01/SE_Guidance_Document_RDMPs.pdf",
-      "text": " Funders Association: Science Europe\nDiscipline: All "
-    }
-  ],
-  "contentTabs": [
-    {
-      "name": "Adopters",
-      "icon": "adopters",
-      "description": "Lighthouse stakeholders from our user base."
-    },
-    {
-      "name": "Activities",
-      "icon": "activities",
-      "description": "Guidance and tools we lead on or contribute to."
-    },
-    {
-      "name": "Governance",
-      "icon": "governance",
-      "description": "Our international Advisory Board and Team."
-    }
-  ],
-  "tables": {
-    "adopterTable": {
-      "tabs": [
-        "Logo",
-        "adopter",
-        "Associated FAIRsharing Record"
-      ],
-      "data": [
-        {
-          "image": "assets/Community/elife.jpg",
-          "adopter": "eLIFE",
-          "associated": "Policy",
-          "associatedLink": "/FAIRsharing.F0QmCP"
-        },
-        {
-          "image": "assets/Community/elsevier.png",
-          "adopter": "Elsevier",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000041"
-        },
-        {
-          "image": "assets/Community/embo_logo.png",
-          "adopter": "EMBO Press",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000014"
-        },
-        {
-          "image": "assets/Community/logo_faculty_1000.png",
-          "adopter": "Faculty of 1000",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000010"
-        },
-        {
-          "image": "assets/Community/logo_giga_science.png",
-          "adopter": "GigaScience",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000036"
-        },
-        {
-          "image": "assets/Community/PLOS_LOGO_black.png",
-          "adopter": "Public Library of Science (PLOS)",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000009"
-        },
-        {
-          "image": "assets/Community/taylor_francis.png",
-          "adopter": "Taylor and Francis",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000059"
-        },
-        {
-          "image": "assets/Community/wellcome_bw.png",
-          "adopter": "Wellcome Open Research",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000031"
-        },
-        {
-          "image": "assets/Community/wiley.jpg",
-          "adopter": "Wiley",
-          "associated": "Policy",
-          "associatedLink": "/FAIRsharing.xwnZRC"
-        },
-        {
-          "image": "assets/Community/biomed.png",
-          "adopter": "Springer Nature BioMed Central",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000007"
-        },
-        {
-          "image": "assets/Community/peerj.png",
-          "adopter": "PeerJ",
-          "associated": "Policy",
-          "associatedLink": "/FAIRsharing.GWDS6L"
-        },
-        {
-          "image": "assets/Community/hindawi.png",
-          "adopter": "Hindawi",
-          "associated": "Policy",
-          "associatedLink": "/FAIRsharing.6kP2Dv"
-        },
-        {
-          "image": "assets/Community/cambridge_university_press.png",
-          "adopter": "Cambridge University Press"
-        },
-        {
-          "image": "assets/Community/oxford_university_press.png",
-          "adopter": "Oxford University Press"
-        },
-        {
-          "image": "assets/community/royal_society.png",
-          "adopter": "The Royal Society Publishing"
-        }
-      ]
-    },
-    "globalOrganisationTable": {
-      "tabs": [
-        "Logo",
-        "Name"
-      ],
-      "data": [
-        {
-          "image": "assets/Community/RDA_logo_cbIKmKK.png",
-          "associated": "RDA",
-          "externalLink": "https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html"
-        },
-        {
-          "image": "assets/Community/logo_go-fair.png",
-          "associated": "GO-FAIR",
-          "externalLink": "https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
-        },
-        {
-          "image": "assets/Community/logo_force11.png",
-          "associated": "FORCE11",
-          "externalLink": "https://www.force11.org/group/biosharingwg"
-        },
-        {
-          "image": "assets/Community/elixir.jpg",
-          "associated": "ELIXIR",
-          "externalLink": "https://elixir-europe.org/"
-        }
-      ]
-    },
-    "toolsTable": {
-      "data": [
-        {
-          "organisations": [
-            {
-              "name": "INDRA Labs",
-              "url": "https://indralab.github.io/",
-              "id": 3851
-            },
-            {
-              "name": "Harvard Medical School",
-              "url": "https://hms.harvard.edu",
-              "id": 1213
-            }
-          ],
-          "contacts": [
-            {
-              "name": "Charles Tapley Hoyt",
-              "url": "mailto:cthoyt@gmail.com",
-              "id": "cthoyt"
-            }
-          ],
-          "methods": [
-            "FAIRsharing API",
-            "Cross-referencing FAIRsharing content"
-          ],
-          "name": "The Bioregistry",
-          "types": ["(Meta)data retrieval/integration"],
-          "logo": "bioregistry.png",
-          "status": "Completed",
-          "description": "The Bioregistry aligns, harmonizes, and improves upon 20+ registries describing ontologies, databases, and other terminology artifacts in the life and natural sciences, including FAIRsharing.",
-          "homepage": "https://bioregistry.io",
-          "usage_image": "",
-          "id": "bioregistry"
-        },
-        {
-          "organisations": [
-            {
-              "name": "Elixir UK",
-              "url": "https://elixiruknode.org/",
-              "id": 843
-            },
-            {
-              "name": "Oxford e-Research Centre",
-              "url": "https://oerc.ox.ac.uk",
-              "id": 2281
-            }
-          ],
-          "contacts": [
-            {
-              "name": "FAIR Cookbook",
-              "url": "mailto:fairplus-cookbook@elixir-europe.org",
-              "id": "fair_cookbook"
-            }
-          ],
-          "methods": [
-            "Cross-referencing FAIRsharing content"
-          ],
-          "name": "FAIR Cookbook",
-          "types": ["Training Material / documentation"],
-          "logo": "faircookbook.png",
-          "status": "In progress",
-          "description": "Identification of data standards, semantic models, MI guidelines.",
-          "homepage": "https://faircookbook.elixir-europe.org/content/home.html",
-          "usage_image": "",
-          "id": "faircookbook"
-        },
-        {
-          "organisations": [
-            {
-              "name": "FAIR Data Systems",
-              "url": "https://fairdata.systems",
-              "id": 3899
-            }
-          ],
-          "contacts": [
-            {
-              "name": "Mark Wilkinson",
-              "url": "mailto:mark.wilkinson@upm.es",
-              "id": "866"
-            }
-          ],
-          "methods": [
-            "FAIRsharing API"
-          ],
-          "name": "The FAIR Maturity Evaluation Service",
-          "types": ["FAIR evaluation/assessment"],
-          "logo": "metrics.png",
-          "status": "Planned",
-          "description": "Lookups of standards after metric test failure",
-          "homepage": "https://w3id.org/AmIFAIR",
-          "usage_image": "",
-          "id": "AmIFAIR"
-        },
-
-        {
-          "organisations": [
-            {
-              "name": "ELIXIR Europe",
-              "url": "https://elixir-europe.org",
-              "id": 841
-            }
-          ],
-          "contacts": [
-            {
-              "name": "RDMkit editorial team",
-              "url": "mailto:rdm-editors@elixir-europe.org",
-              "id": "rdm-editors"
-            }
-          ],
-          "methods": [
-            "FAIRsharing API",
-            "Cross-referencing FAIRsharing content within your resource"
-          ],
-          "name": "RDMkit: The Research Data Management toolkit for Life Sciences",
-          "types": ["Data Management Plan (DMP) development/lifecycle"],
-          "logo": "RDMkit.png",
-          "status": "Completed",
-          "description": "RDMkit mainly links out to FAIRsharing from the tools and resources section in the page. Contributors of these tools and resources can give up a FAIRsharing ID when a standard, policy or database is given. When this is not given, RDMkit will do an automatic lookup using the FAIRsharing API to identify if the resource given could be matched with a FAIRsharing ID. These IDs are used to visually link out to FAIRsharing using a badge. ",
-          "homepage": "https://rdmkit.elixir-europe.org/",
-          "usage_image": "",
-          "id": "RDMkit"
-        },
-        {
-          "organisations": [
-            {
-              "name": "Faculty of Information Technology, Czech Technical University in Prague",
-              "url": "https://fit.cvut.cz/cs",
-              "id": 3900
-            }
-          ],
-          "contacts": [
-            {
-              "name": "Info DSW",
-              "url": "mailto:info@ds-wizard.org",
-              "id": "info-dsw"
-            }
-          ],
-          "methods": [
-            "FAIRsharing API",
-            "Cross-referencing FAIRsharing content within your resource"
-          ],
-          "name": "Data Stewardship Wizard",
-          "types": ["Data Management Plan (DMP) development/lifecycle"],
-          "logo": "dsw.png",
-          "status": "Completed",
-          "description": "When users fill questionnaires to go through data stewardship knowledge model (and create DMP), they encounter questions where type hints are provided via FAIRsharing API (e.g. for reused reference datasets, metadata standards, file formats, and others). Moreover, some questions have reference to URL to guide users to use it directly to search for a certain types of resources.",
-          "homepage": "https://ds-wizard.org",
-          "usage_image": "",
-          "id": "dsw"
-        },
-
-        {
-          "organisations": [
-            {
-              "name": "GO FAIR Foundation",
-              "url": "https://www.gofair.foundation/",
-              "id": 3901
-            },
-            {
-              "name": "Codevence",
-              "url": "https://codevence.com",
-              "id": 3902
-            }
-          ],
-          "contacts": [
-            {
-              "name": "FIP Team",
-              "url": "mailto:barbara@gofair.foundation",
-              "id": "FIP_team"
-            }
-          ],
-          "methods": [
-            "FAIRsharing API",
-            "Cross-referencing FAIRsharing content within your resource"
-          ],
-          "name": "FIP Wizard",
-          "types": ["(Meta)data retrieval/integration"],
-          "logo": "fipWizard.png",
-          "status": "In progress",
-          "description": "We use FAIRsharing metadata in the description and provenance fields of FAIR Enabling Resource (FER) nanopublications when available in FAIRsharing and use SKOS relations to specify how FERs relate to FAIRsharing resources.",
-          "homepage": "https://fip-wizard.ds-wizard.org/",
-          "usage_image": "",
-          "id": "fip_wizard"
-        },
-        {
-          "organisations": [
-            {
-              "name": "OpenAIRE",
-              "url": "https://www.openaire.eu",
-              "id": 2252
-            }
-          ],
-          "contacts": [
-            {
-              "name": "Elli P.",
-              "url": "mailto:elli.p@athenarc.gr",
-              "id": "Elli_p"
-            }
-          ],
-          "methods": [
-            "FAIRsharing API"
-          ],
-          "name": "ARGOS and OpenDMP",
-          "types": [
-            "Data Management Plan (DMP) development/lifecycle",
-            "(Meta)data retrieval/integration"
-          ],
-          "logo": "argos.png",
-          "status": "Completed",
-          "description": "Available as a standalone service (OpenDMP) and via the OpenAIRE catalogue and EOSC Portal (ARGOS), this service simplifies the management, validation, monitoring and maintenance of Data Management Plans (DMPs). The FAIRsharing component within ARGOS/OpenDMP templates allows researchers to select information from a trusted resource when creating DMPs.",
-          "homepage": "https://argos.openaire.eu/splash/",
-          "usage_image": "argos_usage.png",
-          "id": "argos"
-        },
-        {
-          "organisations": [
-            {
-              "name": "Center for Marine Environmental Sciences (MARUM)",
-              "url": "https://www.marum.de",
-              "id": 427
-            }
-          ],
-          "contacts": [
-            {
-              "name": "R. Huber",
-              "url": "mailto:rhuber@uni-bremen.de",
-              "id": "r_huber"
-            }
-          ],
-          "methods": [
-            "Cross-referencing FAIRsharing content within your resource"
-          ],
-          "name": "F-UJI",
-          "types": [
-            "Data Management Plan (DMP) development/lifecycle",
-            "(Meta)data retrieval/integration"
-          ],
-          "logo": "fuji.png",
-          "status": "In progress",
-          "description": "FAIRsharing URLs/DOIs are used to reference metadata standards, ontologies and other FAIR enabling resources identified by F-UJI.",
-          "homepage": "https://www.f-uji.net",
-          "usage_image": "",
-          "id": "f-uji"
-        }
-      ]
-    }
-  },
-  "governance": {
-    "Stakeholder Advisory Board": [
+  "data": [
       {
-        "title":"Stakeholder Advisors",
-        "data": [
-          {"link": "https://orcid.org/0000-0002-9147-8397", "text": "<b>Adam Leary, </b>Oxford University Press"},
-          {"link": "https://orcid.org/0000-0001-9623-2225", "text": "<b>Catriona MacCallum, </b>Wiley"},
-          {"link": "https://orcid.org/0000-0002-2094-0230", "text": "<b>Dagmar Meyer, </b>European Research Council, Executive Agency"},
-          {"link": "https://orcid.org/0000-0003-1435-307X", "text": "<b>David Carr, </b>Global Biodata Coalition"},
-          {"link": "https://orcid.org/0000-0002-2557-6204", "text": "<b>Emma Ganley, </b>Protocols.io"},
-          {"link": "https://orcid.org/0000-0001-9305-7230", "text": "<b>Geraldine Clement-Stoneham, </b>Medical Research Council"},
-          {"link": "https://orcid.org/0000-0001-9520-0109","text": "<b>Graham Smith, </b>Springer Nature"},
-          {"link": "https://orcid.org/0000-0001-9697-9599","text": "<b>Ishwar Chandramouliswaran, </b>National Institutes of Health"},
-          {"link": "https://orcid.org/0000-0003-2839-4067", "text": "<b>Kiera McNiece, </b>Cambridge University Press"},
-          {"link": "https://orcid.org/0000-0002-7571-3502", "text": "<b>Lauren Cadwallader, </b>PLoS"},
-          {"link": "https://orcid.org/0000-0001-8520-5598", "text": "<b>Marta Teperek, </b>Open Science NL"},
-          {"link": "https://orcid.org/0000-0003-4139-0802", "text": "<b>Michael Ball, </b>Medical Research Council"},
-          {"link": "https://orcid.org/0000-0002-1496-8392", "text": "<b>Matthew Cannon, </b>Taylor and Francis"},
-          {"link": "https://orcid.org/0000-0001-8343-8910", "text": "<b>Nick Everitt,</b> Taylor and Francis</b>"},
-          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>(FAIRsharing Founding Member), GSK"},
-          {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>Taylor and Francis"},
-          {"text": "<b>Richard Brown, </b> BBSRC UKRI"},
-          {"link": "https://orcid.org/0000-0002-6853-4602", "text": "<b>Robert Hanisch, </b>National Institute of Standards and Technology"},
-          {"link": "https://orcid.org/0000-0002-0517-1031", "text": "<b>Sarah Callaghan, </b>Research Strategy & Policy Unit, University of Oxford"},
-          {"link": "https://orcid.org/0000-0002-9465-4042", "text": "<b>Sarah Stewart, </b>St. George's, University of London; Oxford Internet Institute"},
-          {"link": "https://orcid.org/0000-0001-6444-1436", "text": "<b>Scott Edmunds, </b>GigaScience, Oxford University Press"},
-          {"link": "https://orcid.org/0000-0003-3179-7270", "text": "<b>Simon Hodson, </b>CODATA"},
-          {"link": "https://orcid.org/000-0002-0222-4177", "text": "<b>Theo Bloom, </b>British Medical Journal"},
-          {"link": "https://orcid.org/0000-0002-2499-4025", "text": "<b>Thomas Lemberger, </b>EMBO Press"},
-          {"link": "https://orcid.org/0000-0002-2743-6918", "text": "<b>Varsha Khodiyar, </b>Independent Expert"},
-          {"link": "https://orcid.org/0000-0002-0285-4910", "text": "<b>Wei-Mun Chan, </b>eLife"}
-        ]
-      }
-    ]
-  },
-  "governance_text":[
-    {
-      "text": "The FAIRsharing Stakeholder Advisory Board is composed of international experts across many disciplines, representing diverse groups and organisations, including researchers, developers and curators, publishers, librarians and trainers, funders, societies and alliances. Advisors provide <b>advice</b> on specific community needs, <b>feedback</b> on new features, <b>connection</b> with other activities, and FAIRsharing <b>advocacy</b>. Membership is regularly reviewed to ensure coverage and engagement remains high and active."
-    },
-    {
-      "text": "As representatives of diverse groups and organisations, Advisors participate in and influence the development of FAIRsharing in a low-volume, high-impact way. The FAIRsharing Operational Team engages with its Advisors primarily through an annual webinar that highlights recent activities and describes how FAIRsharing can better support their communities. Advisors are also contacted for their opinions and suggestions on specific areas of work according to their community needs. All Advisors receive quarterly emails providing tailored updates on FAIRsharing news, events and achievements."
-    }
-  ],
-  "meettheteam": {
-    "title": "Meet The Team",
-  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at the University of Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",
-    "profiles": [
-      {
-        "name": "Allyson Lister",
-        "role": "Content and Community Coordinator",
-        "profileImg": "assets/Community/profiles/allyson.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-7702-4495", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/allysonlister/","icon": "linkedin"},
-          {"link": "https://github.com/allysonlister","icon": "github"},
-          {"link": "allyson.lister@oerc.ox.ac.uk","icon": "contacts"}
-        ]
+        "name": "Kyle Copas",
+        "id": 5832,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
+        "scope": "Biodiversity",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-6590-599X",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "kylecopas",
+        "linkedin" : "kylecopas",
+        "mastodon" : "scicomm.xyz/@kylecopas",
+        "logo": "kyle_copas.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
       },
       {
-        "name": "Milo Thurston",
-        "role": "Technical Coordinator",
-        "profileImg": "assets/Community/profiles/milo.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-6468-9260", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/milo-thurston-86557510/","icon": "linkedin"},
-          {"link": "https://github.com/knirirr","icon": "github"},
-          {"link": "milo.thurston@oerc.ox.ac.uk","icon": "contacts"}
-        ]
+        "name": "Annie Elkjær Ørum-Kristensen",
+        "id": 6182,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
+        "scope": "Biodiversity",
+        "subject_area": "",
+        "orcid": "0000-0002-8326-5789",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "anniekristensen",
+        "mastodon" : "",
+        "logo": "annie_kristensen.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
       },
       {
-        "name": "Susanna-Assunta Sansone",
-        "role": "Principal Investigator and Founder",
-        "profileImg": "assets/Community/profiles/susanna.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0001-5306-5690", "icon": "Orcid"},
-          {"link": "http://uk.linkedin.com/in/sasansone", "icon": "linkedin"},
-          {"link": "http://www.twitter.com/SusannaASansone", "icon": "twitter"},
-          {"link": "susanna-assunta.sansone@oerc.ox.ac.uk", "icon": "contacts"}
-        ]
+        "name": "Joe Miller",
+        "id": 6118,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
+        "scope": "Biodiversity",
+        "subject_area": "",
+        "orcid": "0000-0002-5788-9010",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "acaciaJoe",
+        "linkedin" : "joe-miller-biodiversity",
+        "mastodon" : "",
+        "logo": "joe_miller.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
       },
       {
-        "name": "Philippe Rocca-Serra",
-        "role": "Co-Founder",
-        "profileImg": "assets/Community/profiles/philippe.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0001-9853-5668", "icon": "Orcid"},
-          {"link": "http://uk.linkedin.com/in/philipperoccaserra", "icon": "linkedin"},
-          {"link": "http://www.twitter.com/Phil_at_OeRC", "icon": "twitter"},
-          {"link": "http://github.com/proccaserra", "icon": "github"},
-          {"link": "philippe.rocca-serra@oerc.ox.ac.uk", "icon": "contacts"}
-        ]
+        "name": "Lindsey Anderson",
+        "id": 5015,
+        "organisation": [
+          {
+            "id": 2284,
+            "name": "PNNL",
+            "tooltip": "Pacific Northwest National Laboratory"
+          }
+        ],
+        "scope": "Omics",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-8741-7823",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "lnanderscience",
+        "linkedin" : "lnanderscience",
+        "mastodon" : "fediscience.org/@lnanderscience",
+        "logo": "lindseyanderson.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true,
+        "curator_expert" : true
       },
       {
-        "name": "Ramon Granell",
-        "role": "Data Manager and Research Software Engineer",
-        "profileImg": "assets/Community/profiles/ramon.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0001-9572-0972", "icon": "Orcid"},
-          {"link": "https://github.com/ramGranell", "icon": "github"},
-          {"link": "ramon.granell@oerc.ox.ac.uk", "icon": "contacts"}
-        ]
+        "name": "Malin Sandström",
+        "id": 464,
+        "organisation": [
+          {
+            "id": 2675,
+            "name": "Swedish Research Council",
+            "tooltip": "Swedish Research Council"
+          }
+        ],
+        "scope": "Neuroscience",
+        "subject_area": "",
+        "orcid": "0000-0002-8464-2494",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "msandstr",
+        "linkedin" : "malinsandstrom",
+        "mastodon" : "fediscience.org/@msandstr",
+        "logo": "malin.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
       },
       {
-        "name": "Delphine Dauga",
-        "role": "Curation Manager",
-        "profileImg": "assets/Community/profiles/delphine.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0003-3152-1194", "icon": "Orcid"}
-        ]
+        "name": "Gabriel Pelletier",
+        "id": 7670,
+        "organisation": [
+          {
+            "id": 1802,
+            "name": "McGill",
+            "tooltip": "McGill University"
+          },
+          {
+            "id": 2840,
+            "name": "TOSI",
+            "tooltip": "Tanenbaum Open Science Institute (TOSI)"
+          },
+          {
+            "id": 1896,
+            "name": "The Neuro",
+            "tooltip": "The Montreal Neurological Institute and Hospital (The Neuro)"
+          }
+        ],
+        "scope": "Neuroscience",
+        "subject_area": "",
+        "orcid": "0000-0003-3257-0545",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "neuropelletier",
+        "linkedin" : "gabrielpelletier",
+        "mastodon" : "mastodon.online/@neuropelletier",
+        "logo": "gabriel_pelletier.jpg",
+        "year_active": ["2022", "2023", "2024"],
+        "active": false
       },
       {
-        "name": "Prakhyat Gailani",
-        "role": "Web Developer",
-        "profileImg": "assets/Community/profiles/prakhyat.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-9109-9266", "icon": "Orcid"},
-          {"link": "https://github.com/prakhyatox", "icon": "github"},
-          {"link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts"}
-        ]
+        "name": "Daniel Pereira Costa",
+        "id": 7754 ,
+        "organisation": [
+          {
+            "id": 3699,
+            "name": "CQE",
+            "tooltip": "Centro de Química Estrutural"
+          }
+        ],
+        "scope": "Catalysis",
+        "subject_area": "",
+        "orcid": "0000-0001-7271-430X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "daniel-costa-64a54a1a3",
+        "mastodon" : "",
+        "logo": "danielpereiracosta.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
       },
       {
-        "name": "Léa Girard",
-        "role": "Curator",
-        "profileImg": "assets/Community/profiles/Lea.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-2163-5924", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/", "icon": "linkedin"}
-
-        ]
+        "name": "Deborah Thorpe",
+        "id": 7663 ,
+        "organisation": [
+          {
+            "id": 3677,
+            "name": "UCC",
+            "tooltip": "University College Cork"
+          }
+        ],
+        "scope": "Humanities",
+        "subject_area": "",
+        "orcid": "0000-0002-2307-8770",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "DebsEThorpe",
+        "linkedin" : "deborah-thorpe-0245a392",
+        "mastodon" : "hcommons.social/@debsethorpe",
+        "logo": "deborah_thorpe.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Enrique Wulff",
+        "id": 7667 ,
+        "organisation": [
+          {
+            "id": 3708,
+            "name": "ICM",
+            "tooltip": "Institute of Marine Sciences"
+          }
+        ],
+        "scope": "Earth Sciences",
+        "subject_area": "",
+        "orcid": "0000-0001-8104-6147",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "enrique-wulff-01814398",
+        "mastodon" : "",
+        "logo": "enrique_wulff.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Geneviève Michaud",
+        "id": 2439 ,
+        "organisation": [
+          {
+            "id": 2521,
+            "name": "Sciences Po"
+          },
+          {
+            "id": 1974,
+            "name": "CNRS",
+            "tooltip": "The CNRS (National Center for Scientific Research)"
+          },
+          {
+            "id": 3831,
+            "name": "SSHOC",
+            "tooltip": "Social Sciences and Humanities Open Cloud"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "subject_area": "",
+        "orcid": "0000-0001-9288-2888",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "GenevievMichaud",
+        "linkedin" : "geneviève-michaud-12223746",
+        "mastodon" : "mastodon.zaclys.com/@GenevievMichaud",
+        "logo": "genevievemichaud.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Lars Vilhuber",
+        "id": 5216 ,
+        "organisation": [
+          {
+            "id": 614,
+            "name": "Cornell University"
+          },
+          {
+            "id": 3682,
+            "name": "American Economic Association"
+          }
+        ],
+        "scope": "Economics",
+        "subject_area": "",
+        "orcid": "0000-0001-5733-8932",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "lars-vilhuber",
+        "mastodon" : "",
+        "logo": "lars_vilhuber.jpg",
+        "year_active": ["2022"],
+        "active": false
+      },
+      {
+        "name": "Guillaume Gay",
+        "id": 7729 ,
+        "organisation": [
+          {
+            "id": 3101,
+            "name": "University of Montpellier"
+          },
+          {
+            "id": 873,
+            "name": "EOSC-Life",
+            "tooltip": "EOSC-Life"
+          }
+        ],
+        "scope": "Microscopy",
+        "subject_area": "",
+        "orcid": "0000-0002-5444-5246",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "MorphoLg",
+        "linkedin" : "guillaume-gay-492a2227",
+        "mastodon" : "biologists.social/@glyg",
+        "logo": "guillaumegay.jpg",
+        "year_active": ["2022"],
+        "active": false
+      },
+      {
+        "name": "Maja Dolinar",
+        "id": 7669 ,
+        "organisation": [
+          {
+            "id": 3710,
+            "name": "SSRI",
+            "tooltip": "Social Sciences Research Institute"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "subject_area": "",
+        "orcid": "0000-0002-8307-6486",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "majadolinar",
+        "mastodon" : "",
+        "logo": "maja_dolinar.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Mitrea Geta",
+        "id": 7660 ,
+        "organisation": [
+          {
+            "id": 3676,
+            "name": "USV",
+            "tooltip": "University Stefan cel Mare of Suceava"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "subject_area": "social_sciences_and_humanities",
+        "orcid": "0000-0002-2411-1798",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "GetaMitreaRo",
+        "linkedin" : "geta-mitrea",
+        "mastodon" : "",
+        "logo": "getamitrea.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Sara Espinoza",
+        "id": 7751 ,
+        "organisation": [
+          {
+            "id": 3711,
+            "name": "DECHEMA",
+            "tooltip": "Society for Chemical Engineering and Biotechnology"
+          }
+        ],
+        "scope": "Material sciences and catalysis",
+        "subject_area": "",
+        "orcid": "0000-0002-5902-650X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "sara-espinoza",
+        "mastodon" : "",
+        "logo": "sara_espinoza.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Stephen Serjeant",
+        "id": 7735,
+        "organisation": [
+          {
+            "id": 2816,
+            "name": "OU",
+            "tooltip": "The Open University"
+          },
+          {
+            "id": 3829,
+            "name": "ESCAPE",
+            "tooltip": "European Science Cluster of Astronomy & Particle physics ESFRI research infrastructures"
+          }
+        ],
+        "scope": "Physics",
+        "subject_area": "",
+        "orcid": "0000-0002-0517-7943",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "StephenSerjeant",
+        "linkedin" : "stephenserjeant",
+        "mastodon" : "mas.to/@stephenserjeant",
+        "logo": "stephen_serjeant.jpg",
+        "year_active": ["2022", "2023", "2024"],
+        "active": false
+      },
+      {
+        "name": "Kay Burrows",
+        "id": 8056,
+        "organisation": [
+          {
+            "id": 2467,
+            "name": "RSC",
+            "tooltip": "Royal Society of Chemistry, UK"
+          }
+        ],
+        "scope": "Policies and Chemistry",
+        "subject_area": "chemistry",
+        "orcid": "0000-0002-5485-6256",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "PotassiumBee",
+        "linkedin" : "kayeburrows",
+        "mastodon" : "",
+        "logo": "kay_burrows.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Francis P. Crawley",
+        "id": 8318,
+        "organisation": [
+          {
+            "id": 3835,
+            "name": "GCPA",
+            "tooltip": "Good Clinical Practice Alliance - Europe (GCPA)"
+          }
+        ],
+        "scope": "Ethics",
+        "subject_area": "social_sciences_and_humanities",
+        "orcid": "0000-0002-6893-5916",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "francispcrawley",
+        "mastodon" : "",
+        "logo": "francis_crawley.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Debora Drucker",
+        "id": 7877,
+        "organisation": [
+          {
+            "id": 3883,
+            "name": "Embrapa",
+            "tooltip": "Brazilian Agricultural Research Corporation"
+          }
+        ],
+        "scope": "Ecology and Agriculture",
+        "subject_area": "earth_sciences",
+        "orcid": "0000-0003-4177-1322",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "deboradrucker",
+        "linkedin" : "debora-drucker",
+        "mastodon" : "",
+        "logo": "debora_druker.jpeg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Yuhe Liang",
+        "id": 8448,
+        "organisation": [
+          {
+            "id": 2423,
+            "name": "RCSB",
+            "tooltip": "Research Collaboratory for Structural Bioinformatics"
+          }
+        ],
+        "scope": "Structural Biology, Biochemistry, Biophysics, Crystallography and Biocuration",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-0574-2041",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "yu-he-liang-66650033",
+        "mastodon" : "",
+        "logo": "yuhen.jpg",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Adam Partridge",
+        "id": 9376,
+        "organisation": [
+          {
+            "id": 4066,
+            "name": "University of Sheffield"
+          },
+          {
+            "id": 4234,
+            "name": "UK Reproducibility Network"
+          }
+        ],
+        "scope": "Training, Policies and UKRN link",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-0133-4155",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "dampartridge",
+        "linkedin" : "",
+        "mastodon" : "",
+        "logo": "adam_partridge.jpg",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Kelly Cobey",
+        "id": 9389,
+        "organisation": [
+          {
+            "id": 4067,
+            "name": "University of Ottawa Heart Institute"
+          }
+        ],
+        "scope": "Open science and Medicine",
+        "subject_area": "",
+        "orcid": "0000-0003-2797-1686",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "kdcobey",
+        "linkedin" : "kelly-cobey-b0a83b55",
+        "mastodon" : "",
+        "logo": "k_cobey.jpg",
+        "year_active": ["2023", "2024"],
+        "active": false
+      },
+      {
+        "name": "Yojana Gadiya",
+        "id": 9417,
+        "organisation": [
+          {
+            "id": 4072,
+            "name": "Fraunhofer ITMP"
+          }
+        ],
+        "scope": "Knowledge graphs and Chemoinformatics",
+        "subject_area": "chemistry",
+        "orcid": "0000-0002-7683-0452",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "YojanaGadiya",
+        "linkedin" : "yojana-gadiya-477739113",
+        "mastodon" : "",
+        "logo": "y_gadiya.jpg",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Joy Davidson",
+        "id": 2428,
+        "organisation": [
+          {
+            "id": 4074,
+            "name": "DCC",
+            "tooltip": "Digital Curation Centre"
+          }
+        ],
+        "scope": "Research Data Management",
+        "subject_area": "multi_disciplinary",
+        "orcid": "0000-0003-3484-7675",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "jd162a",
+        "linkedin" : "joy-davidson",
+        "mastodon" : "",
+        "logo": "Joy-Davidson.jpg",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Richard Acton",
+        "id": 9832,
+        "organisation": [
+          {
+            "id": 183,
+            "name": "Babraham Institute",
+            "tooltip": "BBSRC Babraham Institute, Cambridge"
+          }
+        ],
+        "scope": "Bioinformatics",
+        "subject_area": "",
+        "orcid": "0000-0002-2574-9611",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "mastodon" : "fosstodon.org/@RichardJActon",
+        "logo": "r_acton.png",
+        "year_active": ["2023", "2024"],
+        "active": false
       },
       {
         "name": "David Tomkins",
-        "role": "Curator",
-        "profileImg": "assets/Community/profiles/d_tomkins.jpeg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0009-0000-4679-676X", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/david-tomkins-83b92534/", "icon": "linkedin"}
-        ]
-      }
-    ]
-  },
-  "rda": {
-    "title": "RDA FAIRsharing WG",
-    "description": "The Research Data Alliance <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' target='_blank'>FAIRsharing Registry: Connecting data policies, standards and databases</a> Working Group (WG) was created to promote further adoption and drive improvement of the FAIRsharing registry. The WG contributes to a number of activities with other RDA groups; these activities reflect the requests and needs of the community, and are open and inclusive for all stakeholders. The WG community network encompasses repository mantainers and developers, standard-developing organizations, journals and journal publishers, funders, librarians, data stewards, and other scholarly organizations and alliances.\n",
-    "subsections": [
-      {
-        "title": "Chairs",
-        "data": [
-          {"link": "https://orcid.org/0000-0001-9520-0109","text": "<b>Graham Smith, </b>Springer Nature"},
-          {"link": "https://orcid.org/0000-0002-8243-2493", "text": "<b>Holly Murray, </b>Health Data Research UK"},
-          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>GSK"},
-          {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>F1000"},
-          {"link": "https://orcid.org/0000-0003-3179-7270", "text": "<b>Simon Hodson, </b>CODATA"},
-          {"link": "https://orcid.org/0000-0002-7702-4495", "text": "<b>Allyson Lister, </b>University of Oxford"},
-          {"link": "https://orcid.org/0000-0001-5306-5690", "text": "<b>Susanna-Assunta Sansone, </b>University of Oxford"}
-        ]
+        "id": 5491,
+        "organisation": [
+          {
+            "id": 2281,
+            "name": "Oxford e-Research Centre"
+          }
+        ],
+        "scope": "Research Data Management",
+        "subject_area": "social_sciences_and_humanities",
+        "orcid": "0009-0000-4679-676X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "david-tomkins-83b92534",
+        "mastodon" : "",
+        "logo": "d_tomkins.jpeg",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
       },
       {
-        "title": "Members",
-        "data": "View our members on the <a href='https://www.rd-alliance.org/node/44787/members' target='_blank'>RDA FAIRsharing WG members' pages</a>."
+        "name": "Lyndon Zass",
+        "id": 9946,
+        "organisation": [
+          {
+            "id": 3039,
+            "name": "University of Cape Town"
+          },
+          {
+            "id": 1207,
+            "name": "H3ABioNet"
+          }
+        ],
+        "scope": "Research Data Management and Omics",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0001-8862-1706",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "lj_zass",
+        "linkedin" : "lyndon-zass-10b731145",
+        "mastodon" : "",
+        "logo": "l_zass.png",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Christian Bonatto Minella",
+        "id": 9795,
+        "organisation": [
+          {
+            "id": 1020,
+            "name": "FIZ Karlsruhe"
+          }
+        ],
+        "scope": "Chemistry",
+        "subject_area": "chemistry",
+        "orcid": "0000-0001-7696-7662",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "christian-bonatto-minella-780b7710",
+        "mastodon" : "",
+        "logo": "christian_bonatto.jpg",
+        "year_active": ["2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Priyadarshini Thirunavukkarasu",
+        "id": 10145,
+        "organisation": [
+          {
+            "id": 3573,
+            "name": "University of Basel "
+          }
+        ],
+        "scope": "Human genetics",
+        "subject_area": "",
+        "orcid": "0000-0002-3528-7721",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "priya__arasu",
+        "linkedin" : "priyadarshini-thirunavukkarasu-53107a25",
+        "mastodon" : "",
+        "logo": "priyadarshini_large.jpg",
+        "year_active": ["2024"],
+        "active": false
+      },
+    {
+      "name": "Alex Fraser",
+      "id": 10490,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Developmental Cognitive Neruoscience and RDM",
+      "subject_area": "",
+      "orcid": "0000-0001-8809-8572",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "alex_fraser.jpg",
+      "year_active": ["2024"],
+      "active": false
+    },
+    {
+      "name": "Laurence Brown",
+      "id": 11053,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Circadian Biology and RDM",
+      "subject_area": "life_sciences",
+      "orcid": "0000-0001-8116-4100",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "LozRiviera",
+      "linkedin" : "laurence-a-brown",
+      "mastodon" : "",
+      "logo": "laurence_brown.jpg",
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Tim Gamble-Turner",
+      "id": 10608,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Research Technology",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-6610-0835",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "tim_gamble_turner.jpg",
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Hugh Shanahan",
+      "id": 1100,
+      "organisation": [
+        {
+          "id": 4403,
+          "name": "Royal Holloway"
+        }
+      ],
+      "scope": "Computer Science",
+      "subject_area": "physics",
+      "orcid": "0000-0003-1374-6015",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "hugh-shanahan-340b343/",
+      "mastodon" : "mastodon.ie/@HughShanahan",
+      "logo": "hugh_shanahan.jpeg",
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Clara Boavida",
+      "id": 11048,
+      "organisation": [
+        {
+          "id": 4361,
+          "name": "Iscte-Instituto Universitário de Lisboa"
+        }
+      ],
+      "scope": "Research Data Management and Open Research",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-4837-6395",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "claraparenteboavida",
+      "mastodon" : "",
+      "logo": "clara_boavida.jpg",
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Timothée Aubourg",
+      "id": 11305,
+      "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        }
+      ],
+      "scope": "Data Science, Experimental Methods and Digital Health",
+      "subject_area": "life_sciences",
+      "orcid": "0000-0002-0151-6397",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "timothee-aubourg",
+      "mastodon" : "",
+      "logo": "timothee-aubourg.jpeg",
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Beth Knazook",
+      "id": 7666,
+      "organisation": [
+        {
+          "id": 4666,
+          "name": "Digital Repository of Ireland"
+        }
+      ],
+      "scope": "Cultural Heritage",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-0151-6397",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "bethknazook",
+      "linkedin" : "",
+      "mastodon" : "digipres.club/bethknazook",
+      "logo": "beth_knazook.jpg",
+      "year_active": ["2024", "2025"],
+      "active": true
+    },
+    {
+      "name": "Mark McKerracher",
+      "id": 12756,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "Archeology and RDM",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-0299-6687",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "mark_mckerracher.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Jason Partridge",
+      "id": 10061,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "Institutional repositories",
+      "subject_area": "multi_disciplinary",
+      "orcid": "0000-0001-9819-9991",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "jason_partridge.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Baptiste Cecconi",
+      "id": 10988,
+      "organisation": [
+        {
+          "id": 4385,
+          "name": "Observatoire de Paris"
+        }
+      ],
+      "scope": "Planetary sciences and heliophysics",
+      "subject_area": "physics",
+      "orcid": "0000-0001-7915-5571",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "baptiste_cecconi.png",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Alexandra Rooney",
+      "id": 13063,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "Research Data Management",
+      "subject_area": "multi_disciplinary",
+      "orcid": "0000-0003-4975-5773",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "alexandra_rooney.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "David Romain",
+      "id": 8258,
+      "organisation": [
+        {
+          "id": 3440,
+          "name": "European Research Infrastructure on Highly Pathogenic Agents"
+        },
+        {
+          "id": 873,
+          "name": "EOSC Life"
+        },
+        {
+          "id": 3886,
+          "name": "BY-COVID (BeYond COVID) Project"
+        },
+        {
+          "id": 2426,
+          "name": "Research Data Alliance"
+        },
+        {
+          "id": 3768,
+          "name": "European Open Science Cloud (EOSC)"
+        }
+      ],
+      "scope": "Life sciences & Research Data Management",
+      "subject_area": "life_sciences",
+      "orcid": "0000-0003-4073-7456",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "https://x.com/romain_david_13",
+      "linkedin" : "https://www.linkedin.com/in/romain-david-ph-d-77181b32/",
+      "mastodon" : "https://mastouille.fr/@RomainD",
+      "logo": "david_romain.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Joana Paupério",
+      "id": 11091,
+      "organisation": [],
+      "scope": "Biodiversity, Genomics, ELIXIR Biodiversity Community",
+      "subject_area": "life_sciences",
+      "orcid": "0000-0003-2569-0768",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "joana_pauperio.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Gábor Erdős",
+      "id": 13165,
+      "organisation": [],
+      "scope": "Bioinformatics, ELIXIR Intrinsically Disordered Proteins Community",
+      "subject_area": "life_sciences",
+      "orcid": "000-0001-6218-5192",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "gabor_erdos.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Federico Bianchini",
+      "id": 10527,
+      "organisation": [
+        {
+          "id": 3674,
+          "name": "University of Oslo"
+        }
+      ],
+      "scope": "ELIXIR Research Data Management Community",
+      "subject_area": "physics",
+      "orcid": "0000-0002-9016-4820",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "federico_bianchini.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Catherine Conisbee",
+      "id": 13519,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "/Digital Humanities and Research Data Management",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0009-0005-1881-5392",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "catherine_conisbee.jpg",
+      "year_active": ["2025"],
+      "active": true
+    }
+  ],
+    "quotes": [
+      {
+        "text": "The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.",
+        "author": "Lindsey Anderson",
+        "scope": "Life Science and Omics"
+      },
+      {
+        "text": "I find myself dedicating more and more time on curating. In doing so, I experienced how much standards are key, but also that these curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share.",
+        "author": "Geneviève Michaud",
+        "scope": "Humanities and Social Science"
       }
     ]
-  }
 }

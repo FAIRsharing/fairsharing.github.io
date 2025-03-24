@@ -890,8 +890,8 @@
           "name": "Bodleian Library"
         }
       ],
-      "scope": "Research Data Management",
-      "subject_area": "multi_disciplinary",
+      "scope": "Digital Humanities and Research Data Management",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0000-0003-4975-5773",
       "early_adopter" : false,
       "show_more" : false,
@@ -989,6 +989,27 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "federico_bianchini.jpg",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Catherine Conisbee",
+      "id": 13519,
+      "organisation": [
+        {
+          "id": 291,
+          "name": "Bodleian Library"
+        }
+      ],
+      "scope": "ELIXIR Research Data Management Community",
+      "subject_area": "physics",
+      "orcid": "0009-0005-1881-5392",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "catherine_conisbee.jpg",
       "year_active": ["2025"],
       "active": true
     }

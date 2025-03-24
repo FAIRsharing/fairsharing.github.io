@@ -25,7 +25,6 @@ const state = {
 
 const actions = {
   async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
-    state.advancedSearchQuery["fields"] = [];
     commit("setLoadingStatus", true);
     state.advancedSearchQuery["operator"] =
       state.advancedSearch["operatorIdentifier"];

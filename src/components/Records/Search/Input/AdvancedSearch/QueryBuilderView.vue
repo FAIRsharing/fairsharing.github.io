@@ -427,7 +427,6 @@ export default {
   watch: {
     query(newValue) {
       newValue = JSON.parse(JSON.stringify(newValue))
-      console.log("newValue::", newValue)
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       //Updating edit advanced search only if newValue has some data
       if (newValue["children"] && newValue["children"].length) {

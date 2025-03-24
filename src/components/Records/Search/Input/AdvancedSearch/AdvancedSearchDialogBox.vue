@@ -132,7 +132,7 @@
   </v-row>
 </template>
 
-<script>
+<script >
 import { isBoolean } from "lodash";
 import { mapActions, mapGetters } from "vuex";
 
@@ -200,7 +200,7 @@ export default {
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;
       //Reset searchText field
-      if (newValue && this.$refs.inputRef !== undefined) {
+      if (newValue && this.$refs.inputRef !== undefined &&  this.$refs.inputRef !== null) {
         this.$refs.inputRef.reset();
       }
     },

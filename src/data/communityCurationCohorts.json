@@ -1012,6 +1012,55 @@
       "logo": "catherine_conisbee.jpg",
       "year_active": ["2025"],
       "active": true
+    },
+    {
+      "name": "Renaud Duyme",
+      "id": 11020,
+      "organisation": [
+      ],
+      "scope": "Repository for Digital Objects",
+      "subject_area": "physics",
+      "orcid": "0000-0002-9909-1074",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "rduyme.png",
+      "year_active": ["2025"],
+      "active": true
+    },
+    {
+      "name": "Mijke Jetten",
+      "organisation": [
+        {
+          "id": 3628,
+          "name": "Health-RI"
+        },
+        {
+          "id": 4820,
+          "name": "RDA Prof. Data Stewardship IG"
+        },
+        {
+          "id": 4821,
+          "name": "ELIXIR-NL"
+        },
+        {
+          "id": 4822,
+          "name": "ELIXIR RDM Community"
+        }
+      ],
+      "scope": "Data Stewardship",
+      "subject_area": "multi_disciplinary",
+      "orcid": "0000-0001-9114-2896",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "in/mijke-jetten-21336917",
+      "mastodon" : "",
+      "logo": "mijke.jetten.png",
+      "year_active": ["2025"],
+      "active": true
     }
   ],
     "quotes": [

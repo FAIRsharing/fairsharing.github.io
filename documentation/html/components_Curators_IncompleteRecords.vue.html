@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/AdvancedSearch/AdvancedSearchSelection.vue</title>
+	<title>FAIRsharing.org Source: components/Curators/IncompleteRecords.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,252 +86,162 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/AdvancedSearch/AdvancedSearchSelection.vue</h1>
+		<h1 class="page-title">Source: components/Curators/IncompleteRecords.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-card
-    elevation="3"
-    :class="[
-      'mx-2 full-width d-flex flex-column',
-      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
-    ]"
-  >
-    &lt;AdvancedSearchButtons />
-    &lt;div
-      v-if="getAdvancedSearchText"
-      class="searchText chips-holder ma-2"
-    >
-      &lt;v-chip
-        class="ma-2 mt-2 text-capitalize"
-        color="accent3"
-        text-color="white"
-        label
-      >
-        Search Text : {{ getAdvancedSearchText }}
-      &lt;/v-chip>
-    &lt;/div>
-
-    &lt;div
-      v-for="(item, index) in getAdvancedSearchQuery['fields']"
-      :key="index"
-      class="ma-2 selectionWrapper d-flex flex-column"
-    >
-      &lt;div class="chips-holder mb-2">
-        &lt;div
-          v-for="([key, value], idx) in Object.entries(item)"
-          id="individualChips"
-          :key="idx"
-          class="individualChips d-flex flex-column align-center"
+  &lt;v-col cols12>
+    &lt;v-card class="mb-2">
+      &lt;v-card-text v-if="incompleteRecords">
+        &lt;v-card-title
+          id="text-curator-search-2"
+          class="green white--text"
         >
-          &lt;div
-            class="my-2 mx-1 text-capitalize primary px-3 py-1 white--text rounded d-flex"
-            style="font-size: 14px"
+          &lt;b> INCOMPLETE RECORDS &lt;/b>
+          &lt;v-spacer />
+          &lt;v-text-field
+            v-model="searches"
+            label="Search"
+            color="white"
+            single-line
+            hide-details
+            solo
+            class="searchField"
+            clearable
+          />
+        &lt;/v-card-title>
+        &lt;v-data-table
+          :loading="loading"
+          :headers="headerItems"
+          :items="incompleteRecords"
+          :search="searches"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
+        >
+          &lt;template
+            v-if="recordType"
+            #item="props"
           >
-            &lt;span>{{ printSelectionKeys(key) }} &lt;/span>
-            &lt;span>&lt;strong>&amp;nbsp;:&amp;nbsp;&lt;/strong>&lt;/span>
-            &lt;!-- eslint-disable vue/no-v-html -->
-            &lt;span v-html="printSelectionValues(key, value)" />
-            &lt;!-- eslint-enable vue/no-v-html -->
-          &lt;/div>
-
-          &lt;v-chip
-            class="operatorChip"
-            color="accent"
-            text-color="accent"
-            outlined
-            small
-          >
-            {{ printSelectedOperator(item) }}
-          &lt;/v-chip>
-        &lt;/div>
-      &lt;/div>
-      &lt;v-chip
-        color="accent2"
-        class="parentOperatorChip text-uppercase font-weight-medium"
-        text-color="white"
-      >
-        {{ printOperator(getAdvancedSearchQuery["operator"]) }}
-      &lt;/v-chip>
-    &lt;/div>
-  &lt;/v-card>
+            &lt;tr>
+              &lt;td>
+                &lt;div class="d-flex align-center">
+                  &lt;v-avatar
+                    v-if="props.item.type"
+                    class="mr-2"
+                    :height="40"
+                  >
+                    &lt;Icon
+                      :item="props.item.type"
+                      :height="40"
+                      wrapper-class=""
+                    />
+                  &lt;/v-avatar>
+                  &lt;a :href="'/' + props.item.id">
+                    {{ props.item.recordNameID }}
+                  &lt;/a>
+                &lt;/div>
+              &lt;/td>
+              &lt;td>
+                {{ props.item.createdAt }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.required }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.recommended }}
+              &lt;/td>
+            &lt;/tr>
+          &lt;/template>
+        &lt;/v-data-table>
+      &lt;/v-card-text>
+    &lt;/v-card>
+  &lt;/v-col>
 &lt;/template>
-&lt;script>
-import { mapGetters, mapState } from "vuex";
 
-import extraFilterChips from "@/data/extraFilterChips.json";
-import stringUtils from "@/utils/stringUtils";
-import AdvancedSearchButtons from "@/views/AdvancedSearch/AdvancedSearchButtons.vue";
+&lt;script>
+import { mapState } from "vuex";
+
+import Icon from "@/components/Icon";
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
+import formatDate from "@/utils/generalUtils";
+
+const client = new GraphClient();
 
 export default {
-  name: "AdvancedSearchSelection",
-  components: { AdvancedSearchButtons },
-  mixins: [stringUtils],
-  data() {
+  name: "IncompleteRecords",
+  components: {
+    Icon,
+  },
+  mixins: [formatDate],
+  props:{
+    headerItems: {
+      type: Array,
+      default: null
+    },
+  },
+  data: () => {
     return {
-      operatorArr: [],
+      incompleteRecords:[],
+      searches: "",
+      recordType: {},
+      loading: false,
     };
   },
   computed: {
-    ...mapState("uiController", ["UIGeneralStatus"]),
-    ...mapGetters("advancedSearch", [
-      "getAdvancedSearchQuery",
-      "getAdvancedSearch",
-      "getAdvancedSearchText",
-    ]),
-    responsiveClassObject() {
-      return {
-        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
-        "filters-holder-after-scroll":
-          !this.UIGeneralStatus.headerVisibilityState,
-      };
-    },
+    ...mapState("users", ["user"]),
   },
 
+  async mounted() {
+    this.loading = true;
+    client.setHeader(this.user().credentials.token);
+    //Fetching incomplete records
+    let records = await client.executeQuery(getIncompleteRecords);
+    this.prepareIncompleteRecords(records)
+    this.loading = false;
+  },
   methods: {
-    /**
-     * Print the within selection operator (_and/_or)
-     * @param {Object} item - Selection object
-     * @returns {String} operator - Operator _and/_or formatted as and/or
-     */
-    printSelectedOperator(item) {
-      let operatorValue;
-      for (let i = 0; i &lt; Object.entries(item).length; i++) {
-        operatorValue = Object.entries(item)[0][1];
-      }
-      return this.printOperator(operatorValue);
-    },
 
     /**
-     * Print the values with OR operator if multiple selection is done
-     * @param {Object} key,value - Selection key value pair
-     * @returns {String} value - Selection
+     * Method to fetch incomplete records
+     * @param dataCuration
      */
-    printSelectionValues(key, value) {
-      let refinedValues = "";
-      if (key !== "operator") {
-        if ((value === true) || (value[0] === "true"))  {
-          return "true"
-        }
-        if ((value === false) || (value[0] === "false"))  {
-          return "false"
-        }
-        else {
-          refinedValues = value
-            .map((item) => this.cleanString(item))
-            .join(" OR ");
-
-          if (refinedValues !== " ") {
-            refinedValues = this.boldString(refinedValues, "OR");
-            return refinedValues;
-          }
-        }
-      }
-    },
-    /**
-     * Print the keys and update the text transform if the key within the
-     * extraFilterChips
-     * @param {string } key - Selected key
-     * @returns {string} key - Updated key
-     */
-    printSelectionKeys(key) {
-      let refinedKeys = key;
-      extraFilterChips.forEach((item) => {
-        let itemKey = Object.keys(item)[0];
-        let itemValue = Object.values(item)[0];
-        if (itemKey === key) refinedKeys = itemValue;
+    prepareIncompleteRecords(dataCuration) {
+      let records = dataCuration.incompleteRecords;
+      records.forEach((item) => {
+        let recommended = [];
+        item.incomplete.recommended.forEach(rec => {
+          recommended.push(rec.field)
+        });
+        let required = [];
+        item.incomplete.required.forEach(req => {
+          required.push(req.field)
+        });
+        let object = {
+          recordNameID: `${item.name} (${item.id})`,
+          type: item.type,
+          id: item.id,
+          recommended: recommended.sort().join(', '),
+          required: required.sort().join(', '),
+        };
+        object.createdAt = this.formatDate(item.createdAt);
+        this.incompleteRecords.push(object);
       });
-      return refinedKeys;
-    },
-
-    printOperator(value) {
-      if (value === "_and") return "And";
-      else if (value === "_or") return "Or";
-    },
-
-    /**
-     * @param {String} str - String
-     * @param {String} find - Find text to make it bold
-     * @returns {String} - String with bold text
-     */
-    boldString(str, find) {
-      const re = new RegExp(find, "g");
-      return str.replace(
-        re,
-        "&lt;span class='font-weight-medium'>" + find + "&lt;/span>"
-      );
     },
   },
 };
 &lt;/script>
 
-&lt;style scoped lang="scss">
-.fullHeight {
-  height: 90vh;
-  overflow: scroll;
+&lt;style scoped>
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
 }
-.filters-holder-default {
-  overflow-x: hidden;
-  height: calc(100vh - 355px);
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
+.searchField {
+  width: 100%;
+  max-width: 400px
 }
-.filters-holder-after-scroll {
-  overflow-x: hidden;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  margin-bottom: 94px;
-}
-.chips-holder {
-  background: #f5f5f5;
-  border: 2px dotted #dbdbdb;
-  border-radius: 10px !important;
-}
-.selectionWrapper {
-  .parentOperatorChip {
-    width: 50%;
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    //font-weight: 500;
-  }
-  &amp;:last-child {
-    .parentOperatorChip {
-      display: none;
-    }
-  }
-  .chips-holder {
-    .individualChips {
-      width: 98%;
-      margin: 0 auto;
-      .chipText {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-      }
-      &amp;:first-child {
-        display: none !important;
-      }
-
-      &amp;:last-child {
-        .operatorChip {
-          display: none !important;
-        }
-      }
-    }
-  }
-}
-&lt;/style>
-</pre>
+&lt;/style></pre>
     </article>
 </section>
 

@@ -63,11 +63,18 @@
           class="headline"
         >
           <p>
-            <b>Success!</b>
+            <b>Draft submission saved!</b>
           </p>
         </v-card-title>
         <v-card-text>
-          Draft submission saved. Next, please complete curation on your record.
+          <p>
+            We'll email you confirmation, including  details of the
+            remaining fields you'll need to add for your record. Our curators
+            won't check your record until it is complete. 
+          </p>
+          <p>
+            Click the button below to carry on adding information to your record.
+          </p>
         </v-card-text>
         <v-card-actions>
           <v-spacer />

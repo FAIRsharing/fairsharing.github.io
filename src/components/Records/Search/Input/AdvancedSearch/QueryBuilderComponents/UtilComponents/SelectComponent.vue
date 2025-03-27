@@ -8,7 +8,7 @@
     clearable
     closable-chips
     min-height="36px"
-    class="text-capitalize advancedSearchSelect"
+    class="text-capitalize advancedSearchSelect advancedSearchDialogBoxContent"
     density="compact"
     flat
     hide-details="auto"

@@ -5,8 +5,7 @@
       :class="showStatus?'circle-container':'circle-container-dashed'"
     >
       <v-tooltip
-        location="right"
-        nudge-right="15"
+          location="end" offset="25"
       >
         <template #activator="{ props }">
           <v-avatar
@@ -67,6 +66,7 @@ import Icon from "@/components/Icon"
 import { useTheme } from "vuetify";
 // Lighten or darken the color using javascript
 import { LightenDarkenColor } from '@/utils/generalUtils';
+import customIcons from "@/plugins/icons";
 
 export default {
   name: "RecordStatus",
@@ -125,7 +125,7 @@ export default {
   },
   created() {
     this.$nextTick(function () {
-      this.recordType = this.$vuetify.icons.values;
+      this.recordType = customIcons.values;
     });
   }
 }

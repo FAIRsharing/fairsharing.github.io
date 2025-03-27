@@ -1,4 +1,5 @@
-.v-text-field {
+
+.advancedSearchDialogBoxContent {
   width: 90%;
   .v-input__control {
     .v-text-field__details {
@@ -45,5 +46,26 @@
 .advancedSearchSelect, .advancedSearchAutocomplete {
   .v-field__input {
     padding: 0 12px;
+  }
+}
+
+//Styling for chips in stepper form
+.stepperField {
+  .v-field__input {
+    padding-top: 25px;
+    padding-bottom: 10px;
+  }
+}
+
+.v-field {
+  .v-autocomplete__selection {
+    height: 1.9rem;
+    .v-chip {
+      flex: 0 1 auto;
+      margin: 4px;
+      border-radius: 16px;
+      font-size: 14px;
+      height: 32px;
+    }
   }
 }

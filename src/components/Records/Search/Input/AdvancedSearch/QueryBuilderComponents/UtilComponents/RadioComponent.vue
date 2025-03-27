@@ -8,7 +8,7 @@
   <!--  />-->
   <v-radio-group
     inline
-    class="mt-0 ml-1 advancedSearchRadio"
+    class="mt-0 ml-1 advancedSearchRadio advancedSearchDialogBoxContent"
     hide-details="auto"
     :model-value="model"
     @update:model-value="$emit('update:modelValue', $event)"

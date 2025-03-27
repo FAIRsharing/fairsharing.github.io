@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-0 white py-3"
+    class="rounded-0 bg-white py-3"
     style="position: relative"
   >
     <h2 class="text-center">
@@ -9,17 +9,13 @@
 
     <v-btn
       icon
-      dark
       style="position: absolute; top: 10px; right: 15px"
     >
       <v-icon
-        color="
-          black"
+        icon="fa fa-xmark fa-solid"
         size="40px"
         @click="closeStepperDialog()"
-      >
-        mdi-close
-      </v-icon>
+      />
     </v-btn>
   </div>
 </template>

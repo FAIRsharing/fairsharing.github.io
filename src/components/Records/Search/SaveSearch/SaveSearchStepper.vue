@@ -19,53 +19,53 @@
           <!--Stepper Header -->
           <v-stepper-header class="rounded-0">
             <!--Header 1 -->
-            <v-stepper-step
+            <v-stepper-item
               editable
               :complete="steps > 1"
-              step="1"
+              value="1"
+              title="Create Policy Link"
+              subtitle="Optional"
             >
-              Create Policy Link
-              <small>Optional</small>
-            </v-stepper-step>
+            </v-stepper-item>
 
             <v-divider />
             <!--Header 2 -->
-            <v-stepper-step
+            <v-stepper-item
               v-if="user().is_super_curator"
               editable
               :complete="steps > 2"
-              step="2"
+              value="2"
+              title="Create Organisation Link"
+              subtitle="Optional"
             >
-              Create Organisation Link
-              <small>Optional</small>
-            </v-stepper-step>
+            </v-stepper-item>
 
             <v-divider v-if="user().is_super_curator" />
             <!--Header 3 -->
-            <v-stepper-step
+            <v-stepper-item
               v-if="user().is_super_curator"
               editable
               :complete="steps > 3"
-              step="3"
+              value="3"
+              title="Create User Link"
+              subtitle="Optional"
             >
-              Create User Link
-              <small>Optional</small>
-            </v-stepper-step>
+            </v-stepper-item>
 
             <v-divider v-if="user().is_super_curator" />
             <!--Header 4 -->
-            <v-stepper-step
+            <v-stepper-item
               editable
-              :step="user().is_super_curator ? 4 : 2"
+              :value="user().is_super_curator ? 4 : 2"
             >
               Save Search
-            </v-stepper-step>
+            </v-stepper-item>
           </v-stepper-header>
 
           <!--Stepper Body -->
-          <v-stepper-items>
+          <v-stepper-window>
             <!--Stepper Content 1 Policy List-->
-            <v-stepper-content step="1">
+            <v-stepper-window-item step="1">
               <PolicyStepper />
               <v-btn
                 class="float-md-right my-3"
@@ -75,10 +75,10 @@
               >
                 Continue
               </v-btn>
-            </v-stepper-content>
+            </v-stepper-window-item>
 
             <!--Stepper Content 2 Organisation List-->
-            <v-stepper-content
+            <v-stepper-window-item
               v-if="user().is_super_curator"
               step="2"
             >
@@ -105,10 +105,10 @@
                   Back
                 </v-btn>
               </div>
-            </v-stepper-content>
+            </v-stepper-window-item>
 
             <!--Stepper Content 3 Save Search Form-->
-            <v-stepper-content
+            <v-stepper-window-item
               v-if="user().is_super_curator"
               step="3"
             >
@@ -135,10 +135,10 @@
                   Back
                 </v-btn>
               </div>
-            </v-stepper-content>
+            </v-stepper-window-item>
 
             <!--Stepper Content 4 Save Search Form-->
-            <v-stepper-content :step="user().is_super_curator ? 4 : 2">
+            <v-stepper-window-item :step="user().is_super_curator ? 4 : 2">
               <v-form
                 ref="searchFormRef"
                 v-model="searchForm"
@@ -178,8 +178,8 @@
                   Back
                 </v-btn>
               </div>
-            </v-stepper-content>
-          </v-stepper-items>
+            </v-stepper-window-item>
+          </v-stepper-window>
         </v-stepper>
       </div>
       <ResultCard

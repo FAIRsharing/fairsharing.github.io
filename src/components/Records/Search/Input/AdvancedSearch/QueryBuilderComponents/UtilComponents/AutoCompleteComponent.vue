@@ -11,7 +11,7 @@
     closable-chips
     variant="solo"
     min-height="36px"
-    class="text-capitalize advancedSearchAutocomplete"
+    class="text-capitalize advancedSearchAutocomplete advancedSearchDialogBoxContent"
     density="compact"
     :loading="loading"
     color="accent3"

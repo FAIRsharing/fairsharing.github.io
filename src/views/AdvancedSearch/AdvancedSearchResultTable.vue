@@ -8,7 +8,6 @@
   </div>
   <div
     v-else
-    fluid
     class="pa-5 mb-15"
   >
     <div
@@ -17,7 +16,7 @@
       "
     >
       <v-btn
-        class="mb-2"
+        class="mb-2 font-12"
         color="primary"
         size="small"
         @click="downloadResults()"
@@ -28,10 +27,10 @@
     </div>
     <p class="text-body-2 mb-0 mt-4">
       <v-icon
-        size="x-small"
-        class="infoIcon"
+        size="small"
+        class="mr-1"
       >
-        {{ "fa fa-info" }}
+        fa fa-info-circle
       </v-icon>Find out more about our Advanced Search in our
       <a
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
@@ -43,12 +42,12 @@
       </a>
     </p>
     <v-data-iterator
-      v-model:items-per-page="itemsPerPage"
-      v-model:page="page"
+      :items-per-page="itemsPerPage"
+      :page="page"
       :items="getAdvancedSearchResponse"
       :search="search"
-      :sort-by="sortBy.toLowerCase()"
-      :sort-desc="sortDesc"
+      :sort-by="sortData"
+      multi-sort
       :hide-default-footer="noFooter"
       :loading="getLoadingStatus"
       :footer-props="{
@@ -57,106 +56,105 @@
       }"
     >
       <!-- headers start -->
-      <template #header="{ pagination, options, updateOptions }">
-        <v-data-footer
-          :pagination="pagination"
-          :options="options"
-          items-per-page-text="Records per page:"
-          @update:options="updateOptions"
-        />
-        <v-toolbar
-          dark
-          color="blue-lighten-1"
-          class="mb-5"
-        >
+      <template #header>
+        <v-toolbar dark color="blue-lighten-1" class="mb-5 px-4 py-1">
           <v-text-field
-            v-model="search"
-            clearable
-            flat
-            variant="solo-inverted"
-            hide-details
-            prepend-inner-icon="mdi-filter"
-            label="Filter these results"
+              :model-value="search"
+              clearable
+              flat
+              variant="solo"
+              hide-details
+              prepend-inner-icon="fa fa-solid fa-filter"
+              label="Filter these results"
+              width="125"
+              @update:model-value="search = $event"
           />
           <template v-if="$vuetify.display.mdAndUp">
             <v-spacer />
             <v-select
-              v-model="sortBy"
-              flat
-              variant="solo-inverted"
-              hide-details
-              :items="keys"
-              prepend-inner-icon="mdi-sort"
-              label="Sort by"
+                v-model="sortBy"
+                flat
+                variant="solo"
+                hide-details
+                :items="keys"
+                prepend-inner-icon="fa fa-solid fa-arrow-up-short-wide"
+                label="Sort by"
+                width="125"
             />
             <v-spacer />
             <v-btn-toggle
-              v-model="sortDesc"
-              mandatory
+                :model-value="sortDesc"
+                mandatory
+                @update:model-value="sortDesc = $event"
             >
-              <v-btn
-                size="large"
-                variant="flat"
-                color="blue"
-                :value="false"
-              >
-                <v-icon>mdi-arrow-up</v-icon>
+              <v-btn size="large" variant="flat" color="blue" :value="false">
+                <v-icon icon="fa fa-solid fa-arrow-up" />
               </v-btn>
-              <v-btn
-                size="large"
-                variant="flat"
-                color="blue"
-                :value="true"
-              >
-                <v-icon>mdi-arrow-down</v-icon>
+              <v-btn size="large" variant="flat" color="blue" :value="true">
+                <v-icon icon="fa fa-solid fa-arrow-down" />
               </v-btn>
-            </v-btn-toggle>
+            </v-btn-toggle >
           </template>
         </v-toolbar>
       </template>
       <!-- headers stop -->
       <!-- data section begins -->
-      <template #default="props">
+      <template #default="{items}">
         <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-          >
+          <v-col v-for="item in items" :key="item.raw.name" cols="12">
             <v-card>
-              <v-card-title class="subheading font-weight-bold">
-                <RecordStatus :record="item" />
+              <v-card-title
+                  class="subheading font-weight-bold d-flex align-center"
+              >
+                <RecordStatus :record="item.raw" />
                 <a
-                  :href="'/' + item.id"
-                  target="_blank"
-                  class="ml-10"
-                  :class="
-                    item['status'] === 'deprecated'
-                      ? 'text-decoration-line-through'
-                      : null
-                  "
+                    :href="fairSharingURL + getRecordLink(item.raw)"
+                    target="_blank"
+                    class="ml-10"
+                    style="white-space: normal"
                 >
-                  {{ item.name }}
+                  {{ item.raw.name }}
                 </a>
               </v-card-title>
 
               <p
                 class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
               >
-                {{ item.description }}
+                {{ item.raw.description }}
               </p>
 
-              <TagChips
-                :record="item"
-                class="ml-10"
-              />
+              <TagChips :record="item.raw" class="ml-10" />
               <p class="pb-5" />
             </v-card>
           </v-col>
         </v-row>
       </template>
       <!-- data section ends -->
+      <!-- footer start -->
+      <template #footer="{ page, pageCount, prevPage, nextPage }">
+        <v-footer class="d-flex justify-center mt-1">
+          <div class="me-6">Page {{ page }} of {{ pageCount }}</div>
+          <div class="d-inline-flex">
+            <v-btn
+                :disabled="page === 1"
+                class="me-2"
+                icon="fa fa-arrow-left"
+                size="small"
+                variant="tonal"
+                @click="prevPage"
+            />
 
+            <v-btn
+                :disabled="page === pageCount"
+                icon="fa fa-arrow-right"
+                size="small"
+                variant="tonal"
+                @click="nextPage"
+            />
+          </div>
+        </v-footer>
+      </template>
+      <!-- footer ends -->
       <template #loading>
         Loading...
       </template>
@@ -174,7 +172,7 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
 export default {
   name: "AdvancedSearchResultTable",
-  components: { RecordStatus, TagChips, ErrorPage, SaveSearchButton },
+  components: { RecordStatus, ErrorPage, TagChips, SaveSearchButton },
   mixins: [recordsCardUtils],
   data() {
     return {
@@ -200,6 +198,24 @@ export default {
         Array.isArray(this.getAdvancedSearchResponse) &&
         !this.getAdvancedSearchResponse.length
       );
+    },
+    sortData() {
+      switch (this.sortBy) {
+      case "Name":
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Registry":
+        return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
+      case "Type":
+        return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
+      case "Status":
+        return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
+      case "Description":
+        return [
+          { key: "description", order: this.sortDesc ? "desc" : "asc" },
+        ];
+      default:
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      }
     },
   },
   mounted() {
@@ -318,12 +334,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.infoIcon {
-  border: 1px solid;
-  border-radius: 50%;
-  padding: 3px 6px;
-  margin: -2px 2px 0 0;
-}
 .buttonWrapper {
   position: relative;
   .saveSearchResults {

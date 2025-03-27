@@ -1017,6 +1017,10 @@
       "name": "Renaud Duyme",
       "id": 11020,
       "organisation": [
+        {
+          "id": 959,
+          "name": "ESRF"
+        }
       ],
       "scope": "Repository for Digital Objects",
       "subject_area": "physics",

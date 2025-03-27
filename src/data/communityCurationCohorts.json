@@ -1043,15 +1043,11 @@
         },
         {
           "id": 4820,
-          "name": "RDA Prof. Data Stewardship IG"
+          "name": "RDA Prof. Data Stew. IG"
         },
         {
           "id": 4821,
           "name": "ELIXIR-NL"
-        },
-        {
-          "id": 4822,
-          "name": "ELIXIR RDM Community"
         }
       ],
       "scope": "Data Stewardship",

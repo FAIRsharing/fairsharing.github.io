@@ -313,7 +313,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash"
+//import { isEqual } from "lodash"
 import Vue from "vue"
 import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
 
@@ -390,13 +390,19 @@ export default {
             output[fieldName] = this.allowedFields.properties[fieldName]
           }
           else if (type === 'string' && this.allowedFields.properties[fieldName].enum){
+            // Previous TODO message:
             // TODO: These types must be checked, or perhaps this check removed, if the schema is modified
             // TODO: to add additional properties.
-            let expected = new Set(["yes", "no", "not found"]);
-            let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
-            if (isEqual(expected, fieldEnum)) {
+            // New TODO message:
+            // TODO: These parts have been commented out as part of:
+            // TODO: https://github.com/FAIRsharing/fairsharing.github.io/issues/2526
+            // TODO: Due to the presence of an enum field that isn't yes/no etc.
+            // TODO: Further changes may be required for new fields.
+            //let expected = new Set(["yes", "no", "not found"]);
+            //let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
+            //if (isEqual(expected, fieldEnum)) {
               output[fieldName] = this.allowedFields.properties[fieldName]
-            }
+            //}
           }
         });
       }

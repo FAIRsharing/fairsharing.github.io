@@ -14,7 +14,6 @@
       <v-chip
         class="ma-2 mt-2 text-capitalize"
         color="accent3"
-        text-color="white"
         label
       >
         Search Text : {{ getAdvancedSearchText }}
@@ -47,7 +46,6 @@
           <v-chip
             class="operatorChip"
             color="accent"
-            text-color="accent"
             variant="outlined"
             size="small"
           >
@@ -57,8 +55,8 @@
       </div>
       <v-chip
         color="accent2"
+        variant="flat"
         class="parentOperatorChip text-uppercase font-weight-medium"
-        text-color="white"
       >
         {{ printOperator(getAdvancedSearchQuery["operator"]) }}
       </v-chip>
@@ -205,13 +203,14 @@ export default {
 }
 .selectionWrapper {
   .parentOperatorChip {
-    width: 50%;
-    display: block;
+    //width: 50%;
+    //display: block;
+    padding: 0 22%;
     margin: 0 auto;
     text-align: center;
     //font-weight: 500;
   }
-  &:last-child {
+  &:last-of-type {
     .parentOperatorChip {
       display: none;
     }

@@ -36,10 +36,10 @@
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
         target="_blank"
         class="text-decoration-underline"
-      >gitbook documentation<v-icon size="x-small">
-        {{ "fa fa-link" }}
+      >gitbook documentation</a>
+      <v-icon size="x-small">
+        fa fa-link
       </v-icon>
-      </a>
     </p>
     <v-data-iterator
       :items-per-page="itemsPerPage"
@@ -50,13 +50,15 @@
       multi-sort
       :hide-default-footer="noFooter"
       :loading="getLoadingStatus"
-      :footer-props="{
-        'items-per-page-text': 'Records per page:',
-        'items-per-page-options': [5, 10, 25, 50, 100],
-      }"
     >
       <!-- headers start -->
-      <template #header>
+      <template #header="{ pagination, options, updateOptions }">
+        <v-data-table-footer
+            :pagination="pagination"
+            :options="options"
+            items-per-page-text="Records per page:"
+            @update:options="updateOptions"
+        />
         <v-toolbar dark color="blue-lighten-1" class="mb-5 px-4 py-1">
           <v-text-field
               :model-value="search"
@@ -131,28 +133,13 @@
       </template>
       <!-- data section ends -->
       <!-- footer start -->
-      <template #footer="{ page, pageCount, prevPage, nextPage }">
-        <v-footer class="d-flex justify-center mt-1">
-          <div class="me-6">Page {{ page }} of {{ pageCount }}</div>
-          <div class="d-inline-flex">
-            <v-btn
-                :disabled="page === 1"
-                class="me-2"
-                icon="fa fa-arrow-left"
-                size="small"
-                variant="tonal"
-                @click="prevPage"
-            />
-
-            <v-btn
-                :disabled="page === pageCount"
-                icon="fa fa-arrow-right"
-                size="small"
-                variant="tonal"
-                @click="nextPage"
-            />
-          </div>
-        </v-footer>
+      <template #footer="{ pagination, options, updateOptions }">
+        <v-data-table-footer
+            :pagination="pagination"
+            :options="options"
+            items-per-page-text="Records per page:"
+            @update:options="updateOptions"
+        />
       </template>
       <!-- footer ends -->
       <template #loading>

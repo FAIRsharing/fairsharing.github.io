@@ -1,5 +1,5 @@
 <template>
-  <v-row class="white--text pt-5 footer-container justify-center">
+  <v-row class="text-white pt-5 footer-container justify-center">
     <!--  Footer Blocks  -->
     <v-col
       v-for="(block,index) in footerData"
@@ -54,7 +54,7 @@
         <Icon
           class="pt-2"
           item="arrowUp"
-          size="small"
+          size="x-small"
           wrapper-class=""
           color="white"
         />
@@ -91,7 +91,7 @@ import Icon from "@/components/Icon"
 import footerData from '@/data/footerData.json'
 
 export default {
-  name: "Footer",
+  name: "FooterComp",
   components: { Icon },
   data: () => {
     return {
@@ -125,7 +125,8 @@ li {
   border-bottom: 30px solid #27aae1;
   position: absolute;
   top: -59px;
-  left: 48%;
+  left: auto;
+  right: auto;
   #arrow-up {
     position: absolute;
     left: -7px;

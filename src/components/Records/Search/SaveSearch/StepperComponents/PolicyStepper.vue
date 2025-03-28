@@ -3,30 +3,33 @@
     <template v-if="user().is_super_curator">
       <v-autocomplete
         v-model="policySelected"
+        v-model:search="searchPolicy"
         :items="getPolicyRecords"
-        :search-input.sync="searchPolicy"
-        class="mb-7"
+        class="mb-7 full-width stepperField"
         :loading="getLoadingStatus"
         hide-details
+        flat
         multiple
-        cache-items
         chips
-        deletable-chips
+        closable-chips
         item-value="id"
-        item-text="name"
+        item-title="name"
+        color="primary"
+        variant="underlined"
         label="Enter text to search for policy record(s) to associate with this saved search"
       >
-        <template #selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.item['id']"
-            close
-            @click="data.select"
-            @click:close="remove(data.item['id'])"
-          >
-            {{ data.item["name"] }}
-          </v-chip>
-        </template>
+        <!--Chip slot is not required anymore-->
+<!--        <template #chip="data">-->
+<!--          <v-chip-->
+<!--            v-bind="data.attrs"-->
+<!--            :model-value="data.item['id']"-->
+<!--            closable-->
+<!--            @click="data.select"-->
+<!--            @click:close="remove(data.item['id'])"-->
+<!--          >-->
+<!--            {{ data.item["title"] }}-->
+<!--          </v-chip>-->
+<!--        </template>-->
         <template #no-data>
           <div
             v-show="!getLoadingStatus"

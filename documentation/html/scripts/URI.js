@@ -1058,7 +1058,7 @@
       } else if (v || (typeof v === "string" && v.length)) {
         if (segments[segments.length - 1] === "") {
           // empty trailing elements have to be overwritten
-          // to prefent results such as /foo//bar
+          // to prevent results such as /foo//bar
           segments[segments.length - 1] = v;
         } else {
           segments.push(v);

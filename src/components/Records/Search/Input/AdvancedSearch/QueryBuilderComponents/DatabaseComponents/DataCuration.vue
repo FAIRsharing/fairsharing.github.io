@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex width-90 align-center">
-    <TooltipComponent :tool-tip-text="toolTipText" />
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
@@ -12,11 +11,10 @@
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataCuration",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,

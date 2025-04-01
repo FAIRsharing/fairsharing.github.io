@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex width-90 align-center">
-    <TooltipComponent :tool-tip-text="toolTipText" />
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchDomains"
       :loading="getLoadingStatus"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
       @fetch-data="getResults"
     />
@@ -17,11 +17,10 @@ import { mapActions, mapGetters } from "vuex";
 import domainsSearch from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Domains",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,

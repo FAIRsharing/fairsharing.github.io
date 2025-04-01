@@ -82,7 +82,7 @@
               variant="outlined"
               hide-details
               label="Add Search text"
-              @change="updateSearchText($event)"
+              @update:model-value="updateSearchText($event)"
             />
             <v-text-field
               v-else
@@ -93,7 +93,6 @@
               label="Add Search text"
               :model-value="getAdvancedSearchText"
               @update:model-value="updateSearchText($event)"
-              @change="updateSearchText($event)"
             />
           </div>
         </v-card-title>
@@ -335,7 +334,7 @@ export default {
      * Method to fetch/update the searchTerm
      * @param {String} -- item
      */
-    updateSearchText(item) {
+    updateSearchText(item){
       this.updatedAdvancedSearchText = item;
     },
   },

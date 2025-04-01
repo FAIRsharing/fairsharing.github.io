@@ -351,14 +351,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/settings/_variables.scss';
+@use "sass:map";
+@use "vuetify/settings" as v;
 .userProfileSavedSearches:deep(*) {
   table {
     tbody {
       tr {
           td {
             word-break: break-all;
-            @media #{map-get($display-breakpoints, 'md-and-up')} {
+            @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
               width: 100px;
               min-width: 100px;
               max-width: 100px;

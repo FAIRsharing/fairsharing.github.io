@@ -3,6 +3,7 @@
     <RadioComponent
       v-model="model"
       :item-value="itemValue"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
   </div>

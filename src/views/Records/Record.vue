@@ -128,10 +128,13 @@
     </v-container>
     <!-- This html is from a safe source -->
     <!-- eslint-disable vue/no-v-html -->
-    <script
-      type="application/ld+json"
-      v-html="JSONLD"
-    />
+<!--    <script-->
+<!--      type="application/ld+json"-->
+<!--      v-html="JSONLD"-->
+<!--    />-->
+    <component :is="'script'" type="application/ld+json">
+      <span v-html="JSONLD" />
+    </component>
     <!-- eslint-enable vue/no-v-html -->
     <v-dialog
       v-model="history.show"

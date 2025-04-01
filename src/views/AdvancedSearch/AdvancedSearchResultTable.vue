@@ -48,12 +48,12 @@
       :search="search"
       :sort-by="sortData"
       multi-sort
-      :hide-default-footer="noFooter"
       :loading="getLoadingStatus"
     >
       <!-- headers start -->
       <template #header="{ pagination, options, updateOptions }">
         <v-data-table-footer
+            v-if="!noPagination"
             :pagination="pagination"
             :options="options"
             items-per-page-text="Records per page:"
@@ -133,7 +133,7 @@
       </template>
       <!-- data section ends -->
       <!-- footer start -->
-      <template #footer="{ pagination, options, updateOptions }">
+      <template v-if="!noPagination" #footer="{ pagination, options, updateOptions }">
         <v-data-table-footer
             :pagination="pagination"
             :options="options"
@@ -142,8 +142,8 @@
         />
       </template>
       <!-- footer ends -->
-      <template #loading>
-        Loading...
+      <template #no-data>
+        No results found.
       </template>
     </v-data-iterator>
   </div>
@@ -180,7 +180,8 @@ export default {
       "getErrorStatus",
       "getAdvancedSearchQuery",
     ]),
-    noFooter() {
+    // When there is no data in the table, hide pagination
+    noPagination() {
       return (
         Array.isArray(this.getAdvancedSearchResponse) &&
         !this.getAdvancedSearchResponse.length

@@ -245,11 +245,37 @@ export default {
       }
       else {
         const goTo = _module.$route.query.goTo;
+        let target = {};
         if (_module.redirect) {
           if (goTo) {
-            _module.$router.push({
-              path: goTo,
-            });
+            //Added if condition as path was trimming query params in path in vue-router 4
+            if(goTo.includes("?")){
+              const url = goTo.split("?")
+              const queryURLArr = url[1].split("&")
+              queryURLArr.forEach((pair) => {
+                if(pair !== '') {
+                  let splitpair = pair.split('=');
+                  let key = splitpair[0];
+                  target[key] = splitpair[1];
+
+                  //For advancedSearch only
+                  if(url[0] === "/advancedsearch" && pair.includes("fields")) {
+                    const [key, ...rest] = pair.split('=')
+                    const value = rest.join('=')
+                    target[key] = decodeURIComponent(value);
+                  }
+                }
+              })
+              _module.$router.push({
+                path: url[0],
+                query: target
+              });
+            }
+            else {
+              _module.$router.push({
+                path: goTo,
+              });
+            }
           }
           else {
             _module.$router.push({

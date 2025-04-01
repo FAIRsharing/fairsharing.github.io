@@ -4,6 +4,7 @@
       v-model="model"
       :item-value="itemValue"
       :item-list="itemList"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
   </div>

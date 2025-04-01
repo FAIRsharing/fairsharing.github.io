@@ -14,6 +14,7 @@
       <v-chip
         class="ma-2 mt-2 text-capitalize"
         color="accent3"
+        variant="flat"
         label
       >
         Search Text : {{ getAdvancedSearchText }}

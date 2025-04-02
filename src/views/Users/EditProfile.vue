@@ -217,8 +217,7 @@
                 chips
                 deletable-chips
               />
-
-              <v-col cols="12">
+              <div>
                 <v-file-input
                   v-model="newOrganisation.data.logo"
                   :rules="[rules.isImage(), imageSizeCorrect]"
@@ -227,9 +226,11 @@
                   accept="image/png,image/jpeg"
                   label="Organisation Logo"
                   prepend-icon="fa-image"
+                  show-size
+                  counter
                 />
-                <span>JPEG or PNG, max. file size 3MB.</span>
-              </v-col>
+                <div class="mt-n3 mb-3">JPEG or PNG, max. file size 3MB.</div>
+              </div>
 
               <v-autocomplete
                 v-model="newOrganisation.data.country_ids"
@@ -481,7 +482,8 @@ export default {
           data: convertedFile
         };
         _module.logoLoading = false;
-      }
+      },
+      deep: true
     },
   },
   async created() {

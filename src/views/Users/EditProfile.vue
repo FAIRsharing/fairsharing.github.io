@@ -217,6 +217,20 @@
                 chips
                 deletable-chips
               />
+              <div>
+                <v-file-input
+                  v-model="newOrganisation.data.logo"
+                  :rules="[rules.isImage(), imageSizeCorrect]"
+                  clearable
+                  :loading="logoLoading"
+                  accept="image/png,image/jpeg"
+                  label="Organisation Logo"
+                  prepend-icon="fa-image"
+                  show-size
+                  counter
+                />
+                <div class="mt-n3 mb-3">JPEG or PNG, max. file size 3MB.</div>
+              </div>
 
               <v-autocomplete
                 v-model="newOrganisation.data.country_ids"
@@ -287,7 +301,8 @@ import CountryFlag from "vue-country-flag";
 import { mapActions, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js"
-import {isEmail, isLongEnough, isMastodon, isRequired, isUrl} from "@/utils/rules.js"
+import {toBase64} from "@/utils/generalUtils";
+import {isEmail, isImage,isLongEnough, isMastodon, isRequired, isUrl} from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 
@@ -300,6 +315,9 @@ export default {
         profileTypes: [],
         organisations: [],
       },
+      imageTooBig: false,
+      allowedFileSize: 3145728,
+      logoLoading: false,
       selectedProfileType: null,
       message: null,
       error: null,
@@ -404,6 +422,8 @@ export default {
           homepage: null,
           organisation_type_ids: [],
           country_ids: [],
+          logo: {},
+          logoData: {}
         },
         formValid: true,
         show: false,
@@ -413,6 +433,7 @@ export default {
       rules: {
         isRequired: ()=> isRequired(),
         isURL: ()=> isUrl(),
+        isImage: ()=> isImage(),
         isLongEnough: (val)=> isLongEnough(val),
       },
     };
@@ -440,6 +461,29 @@ export default {
         }
       }
       return null;
+    },
+  },
+  watch: {
+    'newOrganisation.data.logo': {
+      async handler(logo) {
+        let _module = this;
+        // this.menus.newOrganisation.logoData
+        if (logo === null || logo === undefined) {
+          // This is to prevent a logo being deleted if a user fiddles about with the form and then
+          // submits with no image uploaded.
+          _module.newOrganisation.data.logoData = {}
+          return;
+        }
+        _module.logoLoading = true;
+        let convertedFile = await toBase64(logo);
+        _module.newOrganisation.data.logoData = {
+          filename: logo.name,
+          content_type: logo.type,
+          data: convertedFile
+        };
+        _module.logoLoading = false;
+      },
+      deep: true
     },
   },
   async created() {
@@ -501,6 +545,9 @@ export default {
       let organisationInput = JSON.parse(
         JSON.stringify(this.newOrganisation.data)
       );
+      organisationInput.logo = organisationInput.logoData;
+      delete organisationInput.logoData;
+
       /* istanbul ignore else */
       if (organisationInput.country_ids) {
         organisationInput.country_ids = organisationInput.country_ids.map(
@@ -541,6 +588,20 @@ export default {
           (obj) => obj.label !== country.name && obj.id !== country.id
         );
     },
+    imageSizeCorrect() {
+      if (!this.newOrganisation.data.logo) {
+        this.imageTooBig = false;
+        return true;
+      }
+      if (this.newOrganisation.data.logo.size < this.allowedFileSize) {
+        this.$emit('imageTooBig', false);
+        this.imageTooBig = false;
+        return true;
+      }
+      this.$emit('imageTooBig', true);
+      this.imageTooBig = true;
+      return false;
+    }
   },
 };
 </script>

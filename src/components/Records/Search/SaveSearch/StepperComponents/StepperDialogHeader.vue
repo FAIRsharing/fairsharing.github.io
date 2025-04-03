@@ -10,6 +10,7 @@
     <v-btn
       icon
       style="position: absolute; top: 10px; right: 15px"
+      elevation="0"
     >
       <v-icon
         icon="fa fa-xmark fa-solid"
@@ -27,6 +28,7 @@ import saveSearch from "@/store";
 
 export default {
   name: "StepperDialogHeader",
+  emits: ["restartStepper"],
 
   computed: {
     ...mapGetters("saveSearch", ["getSaveSearchStatus"]),
@@ -40,7 +42,7 @@ export default {
     closeStepperDialog() {
       if (this.getSaveSearchStatus) {
         this.resetSaveSearchDialog();
-        this.$emit("restartStepper", 1);
+        this.$emit("restartStepper", 0);
       }
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
     },

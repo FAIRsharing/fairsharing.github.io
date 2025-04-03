@@ -75,6 +75,7 @@
                   class="float-md-right my-3"
                   :class="{ 'full-width': $vuetify.display.smAndDown }"
                   color="primary"
+                  variant="elevated"
                   @click="steps = 1"
               >
                 Continue
@@ -97,6 +98,7 @@
                     'mb-3': $vuetify.display.smAndDown,
                   }"
                     color="primary"
+                    variant="elevated"
                     @click="steps = 2"
                 >
                   Continue
@@ -104,6 +106,7 @@
                 <v-btn
                     class="text-white order-md-1"
                     color="accent3"
+                    variant="elevated"
                     @click="steps = 0"
                 >
                   Back
@@ -127,6 +130,7 @@
                     'mb-3': $vuetify.display.smAndDown,
                   }"
                     color="primary"
+                    variant="elevated"
                     @click="steps = 3"
                 >
                   Continue
@@ -134,6 +138,7 @@
                 <v-btn
                     class="text-white order-md-1"
                     color="accent3"
+                    variant="elevated"
                     @click="steps = 1"
                 >
                   Back
@@ -170,6 +175,7 @@
                     color="success order-md-1"
                     :disabled="!searchForm"
                     :loading="loading"
+                    variant="elevated"
                     @click="saveSearch"
                 >
                   Save
@@ -177,6 +183,7 @@
                 <v-btn
                     class="text-white"
                     color="accent3"
+                    variant="elevated"
                     @click="steps = user().is_super_curator ? 2 : 0"
                 >
                   Back
@@ -329,7 +336,7 @@ export default {
 
     /**
      * Restart the Save Search from step 1
-     * @param value - Step number 1
+     * @param value - Value number 1
      */
     restartStepper(value) {
       this.steps = value;

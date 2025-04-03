@@ -32,7 +32,7 @@
             <Icon
               v-if="getField('registry')!=='Collection'"
               item="DOI"
-              heigh="30"
+              height="30"
               wrapper-class=""
               class="mr-2"
             />

@@ -229,7 +229,9 @@
                   show-size
                   counter
                 />
-                <div class="mt-n3 mb-3">JPEG or PNG, max. file size 3MB.</div>
+                <div class="mt-n3 mb-3">
+                  JPEG or PNG, max. file size 3MB.
+                </div>
               </div>
 
               <v-autocomplete

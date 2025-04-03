@@ -1,10 +1,10 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
+  <div class="d-flex width-90 align-center">
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
       :item-list="filteredRecordTypes('Policy')"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
   </div>
@@ -15,11 +15,10 @@ import { mapActions } from "vuex";
 import { recordTypes } from "@/utils/advancedSearchUtils";
 
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "PolicyRecordType",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   mixins: [recordTypes],
   props: {
     value: {

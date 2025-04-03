@@ -1,6 +1,5 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
+  <div class="d-flex width-90 align-center">
     <RadioComponent
       v-model="model"
       :item-value="itemValue"
@@ -11,11 +10,10 @@
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataCitation",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,

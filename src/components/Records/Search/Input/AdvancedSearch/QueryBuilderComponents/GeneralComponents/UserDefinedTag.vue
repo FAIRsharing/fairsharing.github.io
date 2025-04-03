@@ -1,13 +1,13 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
+  <div class="d-flex width-90 align-center">
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
       :item-list="getSearchUserDefinedTags"
       :loading="getLoadingStatus"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
-      @fetchData="getResults"
+      @fetch-data="getResults"
     />
   </div>
 </template>
@@ -17,11 +17,10 @@ import { mapActions, mapGetters } from "vuex";
 import userDefinedTagsSearch from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "UserDefinedTag",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,

@@ -81,7 +81,8 @@ export const mutations = {
           twitter: user.twitter,
         };
       };
-    } else {
+    }
+    else {
       state.user = function () {
         return {
           id: null,
@@ -219,17 +220,20 @@ export const actions = {
         if (!response.error) {
           this.commit("users/clearMessages");
           this.commit("users/login", response);
-        } else {
+        }
+        else {
           this.commit("users/clearUserData");
           this.commit("users/setError", {
             field: "login",
             message: response.error.response.data.error,
           });
         }
-      } catch (e) {
+      }
+      catch (e) {
         this.commit("users/setError", { field: "login", message: e.message });
       }
-    } else {
+    }
+    else {
       let user = localStorage.getItem("user");
       if (user) {
         let userData = JSON.parse(user);
@@ -245,7 +249,8 @@ export const actions = {
         }
         if (validateToken(expiry)) {
           this.commit("users/autoLogin");
-        } else {
+        }
+        else {
           this.commit("users/setError", {
             field: "login",
             message: "You session has expired. Please log in again.",
@@ -274,7 +279,8 @@ export const actions = {
     try {
       await client.logout(state.state.user().credentials.token);
       this.commit("users/logout");
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", { field: "logout", message: e.message });
     }
   },
@@ -292,7 +298,8 @@ export const actions = {
           message: userMetadata.error.response.data.error,
         });
         this.commit("users/clearUserData");
-      } else {
+      }
+      else {
         getUserQuery.queryParam.id = userMetadata.id;
         graphClient.setHeader(state.state.user().credentials.token);
 
@@ -305,7 +312,8 @@ export const actions = {
             message: userRecords.error.response.data.error,
           });
           this.commit("users/clearUserData");
-        } else {
+        }
+        else {
           this.commit("users/setUser", {
             metadata: userMetadata,
             records: userRecords,
@@ -313,7 +321,8 @@ export const actions = {
           this.commit("users/setUserRecords", userRecords);
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "getUser",
         message: e.message,
@@ -341,12 +350,14 @@ export const actions = {
       /* istanbul ignore else */
       if (query) {
         getAllUsersQuery.queryParam.q = query;
-      } else {
+      }
+      else {
         getAllUsersQuery.queryParam.q = "*";
       }
       let usersListData = await graphClient.executeQuery(getAllUsersQuery);
       this.commit("users/setUsersList", usersListData["allUsers"]);
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "getUsersList",
         message: e.message,
@@ -360,7 +371,8 @@ export const actions = {
         id
       );
       this.commit("users/setCurrentPublicUser", user);
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "getPublicUser",
         message: e.message,
@@ -374,7 +386,8 @@ export const actions = {
         field: "updateProfile",
         message: "Update successful !",
       });
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "updateProfile",
         message: e.message,
@@ -391,7 +404,8 @@ export const actions = {
         field: "deletePublicUser",
         message: "Delete successful !",
       });
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "updateProfile",
         message: e.message,
@@ -406,10 +420,12 @@ export const actions = {
           field: "getUser",
           message: metadata.error,
         });
-      } else {
+      }
+      else {
         this.commit("users/setUserMeta", metadata);
       }
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "getUser",
         message: e.message,
@@ -427,13 +443,15 @@ export const actions = {
           field: "updateProfile",
           message: response.error.response.data.errors,
         });
-      } else {
+      }
+      else {
         this.commit("users/setMessage", {
           field: "updateProfile",
           message: "Update successful !",
         });
       }
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "updateProfile",
         message: e.message,
@@ -456,7 +474,8 @@ export const actions = {
           field: "resetPassword",
           message: resetPwd.error.response.data.errors,
         });
-      } else {
+      }
+      else {
         this.commit("users/setMessage", {
           field: "resetPassword",
           message: resetPwd,
@@ -466,7 +485,8 @@ export const actions = {
           message: "Password change successful. Please log back in.",
         });
       }
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "resetPassword",
         message: e.message,
@@ -484,14 +504,16 @@ export const actions = {
           field: "resetPassword",
           message: response.error.response.data.errors,
         });
-      } else {
+      }
+      else {
         this.commit("users/logout");
         this.commit("users/setMessage", {
           field: "login",
           message: "Password change successful. Please log back in.",
         });
       }
-    } catch (e) {
+    }
+    catch (e) {
       this.commit("users/setError", {
         field: "resetPassword",
         message: e.message,

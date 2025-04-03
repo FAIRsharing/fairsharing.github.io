@@ -91,7 +91,7 @@
               variant="outlined"
               hide-details
               label="Add Search text"
-              :model-value="getAdvancedSearchText"
+              :model-value="updatedAdvancedSearchText"
               @update:model-value="updateSearchText($event)"
             />
           </div>
@@ -195,6 +195,7 @@ export default {
   watch: {
     getEditDialogStatus(newValue) {
       this.dialog = newValue;
+      this.updatedAdvancedSearchText = this.getAdvancedSearchText
     },
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;

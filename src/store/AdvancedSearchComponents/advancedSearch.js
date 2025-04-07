@@ -101,9 +101,8 @@ const actions = {
     let graphqlQuery = jsonToGraphQLQuery(parentQuery, {
       pretty: true,
     });
-
-    graphqlQuery = graphqlQuery.match(/\(([^)]+)\)/)[1];
-
+    graphqlQuery = graphqlQuery.replace("query", "").trim()
+    graphqlQuery = graphqlQuery.match(/^\((.*)\)$/)[1];
     let whereObj = graphqlQuery.replace("where:", "");
 
     if (advancedSearchTerm) {

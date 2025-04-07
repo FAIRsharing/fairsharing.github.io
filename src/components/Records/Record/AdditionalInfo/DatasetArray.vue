@@ -30,37 +30,6 @@
         :key="key+'_'+keyindex"
       >
         <div
-          v-if="key === 'url' || key === 'documentation_url' || key === 'example_url'"
-          class="d-flex flex-row align-center min-height-40"
-        >
-          <v-tooltip
-            v-if="getDescription(item[key])"
-            location="bottom"
-            class="d-inline-block mr-2"
-          >
-            <template #activator="{ props }">
-              <v-icon v-bind="props">
-                fas fa-question-circle
-              </v-icon>
-            </template>
-            {{ getDescription(item[key]) }}
-          </v-tooltip>
-          <b class="width-200">{{ setTitle(cleanString(key)) }}</b>
-          <div class="d-flex full-width ml-md-12 ml-13">
-            <!-- See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2021 -->
-            <a
-              class="underline-effect"
-              :href="item[key]"
-              target="_blank"
-            >
-              {{ item[key] }}
-            </a>
-          </div>
-        </div>
-
-        <!-- placeholder for whatever else might be used as the key -->
-        <div
-          v-else
           class="d-flex flex-row align-center min-height-40"
         >
           <v-tooltip
@@ -76,7 +45,23 @@
             {{ getDescription(item[key]) }}
           </v-tooltip>
           <b class="width-200 text-capitalize">{{ setTitle(cleanString(key)) }}</b>
-          <div class="d-flex full-width ml-md-12 ml-13">
+          <div
+            v-if="checkRegex(item[key])"
+            class="d-flex full-width ml-md-12 ml-13"
+          >
+            <!-- See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2021 -->
+            <a
+              class="underline-effect"
+              :href="item[key]"
+              target="_blank"
+            >
+              {{ item[key] }}
+            </a>
+          </div>
+          <div
+            v-else
+            class="d-flex full-width ml-md-12 ml-13"
+          >
             {{ item[key] }}
           </div>
         </div>
@@ -90,6 +75,7 @@
 
 <script>
 import stringUtils from '@/utils/stringUtils'
+
 
 export default {
   name: "DatasetArray",
@@ -151,6 +137,13 @@ export default {
         }
       }
       return false;
+    },
+    // This is to see if the string is a URL, for the purpose of hyperlinking any which are found
+    // in the record's metadata.
+    checkRegex(string) {
+      const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+      const regex = new RegExp(expression);
+      return string.match(regex);
     }
   }
 }

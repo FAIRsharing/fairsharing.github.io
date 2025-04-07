@@ -7,7 +7,7 @@
         :items="getPolicyRecords"
         class="mb-7 full-width stepperField"
         :loading="getLoadingStatus"
-        hide-details
+        hide-details="auto"
         flat
         multiple
         chips

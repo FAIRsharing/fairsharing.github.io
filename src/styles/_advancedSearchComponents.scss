@@ -58,14 +58,11 @@
 }
 
 .v-field {
-  .v-autocomplete__selection {
-    height: 1.9rem;
-    .v-chip {
-      flex: 0 1 auto;
-      margin: 4px;
-      border-radius: 16px;
-      font-size: 14px;
-      height: 32px;
-    }
+  .v-chip {
+    flex: 0 1 auto;
+    margin: 4px;
+    border-radius: 16px;
+    font-size: 14px;
+    height: 32px;
   }
 }

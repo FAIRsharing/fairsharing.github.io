@@ -1,11 +1,9 @@
 <template>
-  <div class="d-flex width-90 align-center">
     <RadioComponent
       v-model="model"
       :item-value="itemValue"
       @input="selectedValue"
     />
-  </div>
 </template>
 
 <script>

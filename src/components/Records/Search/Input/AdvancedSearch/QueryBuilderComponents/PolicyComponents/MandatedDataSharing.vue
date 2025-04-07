@@ -1,12 +1,11 @@
 <template>
-  <div class="d-flex width-90 align-center">
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
       :item-list="itemList"
+      :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
-  </div>
 </template>
 
 <script>

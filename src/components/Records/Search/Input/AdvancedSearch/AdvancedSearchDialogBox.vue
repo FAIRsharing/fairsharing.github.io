@@ -113,6 +113,7 @@
             }"
             :disabled="isContinue"
             :width="$vuetify.display.smAndDown ? '100%' : '250'"
+            elevation="2"
             @click="goToAdvancedSearch()"
           >
             Proceed
@@ -121,6 +122,7 @@
             variant="text"
             class="order-md-1 ml-0 bg-accent3"
             :width="$vuetify.display.smAndDown ? '100%' : '250'"
+            elevation="2"
             @click="closeDialog()"
           >
             Close

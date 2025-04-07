@@ -186,6 +186,7 @@ export default {
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+  overflow-y:scroll;
 }
 .filters-holder-after-scroll {
   overflow-x: hidden;

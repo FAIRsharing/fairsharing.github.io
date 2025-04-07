@@ -14,7 +14,7 @@
     class="text-capitalize advancedSearchAutocomplete advancedSearchDialogBoxContent"
     density="compact"
     :loading="loading"
-    color="accent3"
+    color="primary"
   >
     <!--Chip slot is not required anymore-->
 <!--    <template #chip="{ props, item }">-->

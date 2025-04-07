@@ -12,6 +12,7 @@
     density="compact"
     flat
     hide-details="auto"
+    color="primary"
   >
     <!--Chip slot is not required anymore-->
 <!--    <template #chip="data">-->

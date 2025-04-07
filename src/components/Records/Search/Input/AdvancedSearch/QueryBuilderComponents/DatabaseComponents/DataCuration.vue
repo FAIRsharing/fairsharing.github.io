@@ -1,12 +1,11 @@
 <template>
-  <div class="d-flex width-90 align-center">
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -32,7 +31,8 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, automated, or manual curation). Multiple selections will be joined with OR.",
+      toolTipText:
+        "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, automated, or manual curation). Multiple selections will be joined with OR.",
     };
   },
   computed: {

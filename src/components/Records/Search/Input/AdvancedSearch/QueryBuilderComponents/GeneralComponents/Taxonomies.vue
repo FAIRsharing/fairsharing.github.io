@@ -1,5 +1,4 @@
 <template>
-  <div class="d-flex width-90 align-center">
     <AutoCompleteComponent
       v-model="model"
       :item-value="itemValue"
@@ -9,7 +8,6 @@
       @input="selectedValue"
       @fetch-data="getResults"
     />
-  </div>
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";

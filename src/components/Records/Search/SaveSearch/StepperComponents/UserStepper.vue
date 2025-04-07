@@ -7,7 +7,7 @@
         :items="usersList"
         class="mb-7 full-width stepperField"
         :loading="loading"
-        hide-
+        hide-details="auto"
         flat
         multiple
         chips

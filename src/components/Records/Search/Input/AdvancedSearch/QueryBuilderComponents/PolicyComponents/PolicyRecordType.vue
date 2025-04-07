@@ -1,5 +1,4 @@
 <template>
-  <div class="d-flex width-90 align-center">
     <SelectComponent
       v-model="model"
       :item-value="itemValue"
@@ -7,7 +6,6 @@
       :tool-tip-text="toolTipText"
       @input="selectedValue"
     />
-  </div>
 </template>
 <script>
 import { mapActions } from "vuex";

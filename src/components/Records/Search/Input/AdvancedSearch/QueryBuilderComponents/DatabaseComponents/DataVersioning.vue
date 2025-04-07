@@ -1,12 +1,11 @@
 <template>
-  <div class="d-flex width-90 align-center">
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -23,14 +22,11 @@ export default {
   },
   data: () => {
     return {
-      itemList: [
-        "yes",
-        "no",
-        "not found"
-      ],
+      itemList: ["yes", "no", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Does the resource enable modifications to published data (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all public versions of the data? Multiple selections will be joined with OR.",
+      toolTipText:
+        "Does the resource enable modifications to published data (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all public versions of the data? Multiple selections will be joined with OR.",
     };
   },
   computed: {

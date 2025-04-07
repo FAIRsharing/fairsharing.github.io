@@ -1,12 +1,11 @@
 <template>
-  <div class="d-flex width-90 align-center">
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -23,14 +22,11 @@ export default {
   },
   data: () => {
     return {
-      itemList: [
-        "yes",
-        "no",
-        "not found"
-      ],
+      itemList: ["yes", "no", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Does the repository show data depositor contact information on dataset landing pages? Multiple selections will be joined with OR.",
+      toolTipText:
+        "Does the repository show data depositor contact information on dataset landing pages? Multiple selections will be joined with OR.",
     };
   },
   computed: {

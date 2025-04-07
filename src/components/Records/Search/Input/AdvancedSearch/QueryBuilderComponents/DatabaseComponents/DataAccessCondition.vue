@@ -1,12 +1,11 @@
 <template>
-  <div class="d-flex width-90 align-center">
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -26,7 +25,8 @@ export default {
       itemList: ["open", "partially open", "controlled", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Data access mechanisms and terms to define access at repository and/or dataset level; what is the process through which access can be requested (and granted)? For example, if the data is freely available or subject to a request and approval process. Multiple selections will be joined with OR.",
+      toolTipText:
+        "Data access mechanisms and terms to define access at repository and/or dataset level; what is the process through which access can be requested (and granted)? For example, if the data is freely available or subject to a request and approval process. Multiple selections will be joined with OR.",
     };
   },
   computed: {

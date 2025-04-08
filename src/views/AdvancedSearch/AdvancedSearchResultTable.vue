@@ -234,11 +234,8 @@ export default {
 
           //Destructuring the fields string into valid setAdvancedSearch format to execute the query
           const searchFieldsArr = routeQuery["fields"]
-            .split("(")
-            .join("")
-            .split(")")
+            .split(/^\((.*)\)$/) //removes only first and last parenthesis
             .filter((item) => item); //Filter is used to remove empty string
-
           searchFieldsArr.forEach((item) => {
             const itemArr = item.split("&");
             let searchObj = {

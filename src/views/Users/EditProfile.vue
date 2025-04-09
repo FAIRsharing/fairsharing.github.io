@@ -527,7 +527,6 @@ export default {
     async updateProfile() {
       this.loading = true;
       let data = JSON.parse(JSON.stringify(this.formData));
-      console.log(JSON.stringify(data, null, 2));
       data.preferences = {
         hide_email: this.formData.preferences_hide,
         email_updates: this.formData.preferences_send,

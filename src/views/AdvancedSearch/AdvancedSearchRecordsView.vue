@@ -3,9 +3,7 @@
     <!--Jump to top arrow button -->
     <v-fade-transition v-if="getLoadingStatus">
       <JumpToTop v-if="scrollStatus" />
-    </v-fade-transition>
     <!--Loader-->
-    <v-fade-transition v-if="getLoadingStatus">
       <div>
         <v-overlay
           :model-value="getLoadingStatus"

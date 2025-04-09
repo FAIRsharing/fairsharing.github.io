@@ -60,7 +60,7 @@
             <!--Header 4 -->
             <v-stepper-item
                 editable
-                :value="user().is_super_curator ? 3 : 1"
+                :value="user().is_super_curator ? 4 : 2"
             >
               Save Search
             </v-stepper-item>

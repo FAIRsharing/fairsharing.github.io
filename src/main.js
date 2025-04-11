@@ -13,7 +13,6 @@ import "regenerator-runtime/runtime";
 // import Variablepie from "highcharts/modules/variable-pie";
 import HighchartsVue from "highcharts-vue";
 import SimpleAnalytics from "simple-analytics-vue";
-import Clipboard from "vue3-clipboard";
 import VueCodeHighlight from "vue-code-highlight";
 import VueGtag from "vue-gtag";
 /* import linkify to turn url within text into an actual url link */
@@ -86,7 +85,6 @@ const app = createApp(App)
   .use(head)
   .use(HighchartsVue)
   .use(VueScrollTo)
-  .use(Clipboard)
   // .use(VueMoment)
   .use(createMetaManager())
   .use(VueCodeHighlight)
@@ -99,3 +97,13 @@ const app = createApp(App)
   });
 app.directive("linkified", linkify)
 app.mount("#app");
+app.config.globalProperties.$filters = {
+  cleanString (str) {
+    return str
+      .replace(/_/g, " ")
+      .replace(/([A-Z])/g, "$1")
+      .replace(/^./, function (str) {
+        return str.toUpperCase();
+      });
+  },
+}

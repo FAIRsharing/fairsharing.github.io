@@ -18,12 +18,12 @@
             />
           </v-avatar>
           <div class="mt-1 ml-3 alignLeft">
-            {{ item.name | cleanString }}
+            {{ $filters.cleanString(item.name) }}
           </div>
         </div>
       </template>
       <template #[`item.type`]="{ item }">
-        {{ item.type | cleanString }}
+        {{ $filters.cleanString(item.type) }}
       </template>
       <template #[`item.isApproved`]="{ item }">
         <StatusPills
@@ -40,35 +40,34 @@
         />
       </template>
       <template #[`item.actions`]="{ item }">
-        <v-menu offset-x>
-          <template #activator="{ on, attrs }">
+        <v-menu>
+          <template #activator="{ props }">
             <v-icon
-              v-bind="attrs"
-              v-on="on"
+              v-bind="props"
             >
               fas fa-ellipsis-v
             </v-icon>
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.id)">
-              <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
+              <v-avatar><v-icon>fas fa-eye</v-icon></v-avatar>
+              <v-list-item-title> Preview record </v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.id)">
-              <v-list-item-avatar><v-icon>fas fa-newspaper</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Go to record </v-list-item-title></v-list-item-content>
+              <v-avatar><v-icon>fas fa-newspaper</v-icon></v-avatar>
+              <v-list-item-title> Go to record </v-list-item-title>
             </v-list-item>
             <v-list-item
               v-if="(source !== 'maintenanceRequests' && source !== 'watchedRecords') || (source === 'watchedRecords' && user().is_curator)"
               @click="goToEdit(item.id)"
             >
-              <v-list-item-avatar><v-icon>fas fa-pen</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Edit record </v-list-item-title></v-list-item-content>
+              <v-avatar><v-icon>fas fa-pen</v-icon></v-avatar>
+              <v-list-item-title> Edit record </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </template>
-      <template slot="no-data">
+      <template #no-data>
         <div>
           {{ noData }}
           <router-link
@@ -84,9 +83,8 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
-        fab
-        small
-        class="grey--text absolute"
+        size="small"
+        class="text-grey absolute"
         @click="hideOverlay()"
       >
         <v-icon>fa-times</v-icon>
@@ -100,79 +98,77 @@
 </template>
 
 <script>
-    import { mapState } from "vuex"
+import { mapState } from "vuex"
 
-    import Icon from "@/components/Icon";
-    import { cleanString } from "@/utils/stringUtils"
-    import Record from "@/views/Records/Record";
+import Icon from "@/components/Icon";
+import Record from "@/views/Records/Record";
 
-    import StatusPills from "./StatusPills";
+import StatusPills from "./StatusPills";
 
-    export default {
-        name: "RecordsTable",
-        components: {Icon, Record, StatusPills},
-        mixins: [cleanString],
-        props: {
-            records: {type: Array, default: () => []},
-            source: { type: String, default: null }
-        },
-        data: () => {
-            return {
-                showOverlay: false,
-                targetID: null
-            }
-        },
-        computed: {
-            ...mapState('users', ['user']),
-            headers(){
-                let headers = [
-                    {text: 'Name', value: 'name', align: 'center'},
-                    {text: 'Registry', value: 'type', align: 'center'}
-                ];
-                if (this.source !== 'maintenanceRequests' && this.source !== 'watchedRecords'){
-                  headers.push({text: 'Approved', value: 'isApproved', align: 'center'});
-                }
-                else if (this.source === 'maintenanceRequests') {
-                  headers.push({text: 'Status', value: 'status', align: 'center'});
-                }
-                headers.push({text: 'Actions', value: 'actions', align: 'center', sortable: false});
-                return headers;
-            },
-            noData(){
-                return {
-                    maintenanceRequests: "You do not have any maintenance requests.",
-                    createdRecords: "You did not create any record yet. Start creating one ",
-                    maintainedRecords: "You do not maintain any records.",
-                    publicMaintainedRecords: "This user does not maintain any records.",
-                    watchedRecords: "You are not watching any record."
-                }[this.source];
-            },
-            perPage(){
-              if (this.source === 'watchedRecords') return 7;
-              return 5
-            },
-            footer(){
-              if (this.source === 'watchedRecords') return {'items-per-page-options': [7]};
-              return {'items-per-page-options': [5]}
-            }
-        },
-        methods: {
-            goToEdit(id){
-                this.$router.push({path: `/${id}/edit`})
-            },
-            previewRecord(id) {
-                this.targetID = id;
-                this.showOverlay = true;
-            },
-            goToRecord(id) {
-              window.open("/" + id, '_blank');
-            },
-            hideOverlay(){
-                this.showOverlay = false;
-                this.targetID = null;
-            }
-        }
+export default {
+  name: "RecordsTable",
+  components: {Icon, Record, StatusPills},
+  props: {
+    records: {type: Array, default: () => []},
+    source: { type: String, default: null }
+  },
+  data: () => {
+    return {
+      showOverlay: false,
+      targetID: null
     }
+  },
+  computed: {
+    ...mapState('users', ['user']),
+    headers(){
+      let headers = [
+        {title: 'Name', value: 'name', align: 'center'},
+        {title: 'Registry', value: 'type', align: 'center'}
+      ];
+      if (this.source !== 'maintenanceRequests' && this.source !== 'watchedRecords'){
+        headers.push({title: 'Approved', value: 'isApproved', align: 'center'});
+      }
+      else if (this.source === 'maintenanceRequests') {
+        headers.push({title: 'Status', value: 'status', align: 'center'});
+      }
+      headers.push({title: 'Actions', value: 'actions', align: 'center', sortable: false});
+      return headers;
+    },
+    noData(){
+      return {
+        maintenanceRequests: "You do not have any maintenance requests.",
+        createdRecords: "You did not create any record yet. Start creating one ",
+        maintainedRecords: "You do not maintain any records.",
+        publicMaintainedRecords: "This user does not maintain any records.",
+        watchedRecords: "You are not watching any record."
+      }[this.source];
+    },
+    perPage(){
+      if (this.source === 'watchedRecords') return 7;
+      return 5
+    },
+    footer(){
+      if (this.source === 'watchedRecords') return {'items-per-page-options': [7]};
+      return {'items-per-page-options': [5]}
+    }
+  },
+  methods: {
+    goToEdit(id){
+      this.$router.push({path: `/${id}/edit`})
+    },
+    previewRecord(id) {
+      this.targetID = id;
+      this.showOverlay = true;
+    },
+    goToRecord(id) {
+      window.open("/" + id, '_blank');
+    },
+    hideOverlay(){
+      this.showOverlay = false;
+      this.targetID = null;
+    }
+  }
+}
 </script>
 
 <style scoped>

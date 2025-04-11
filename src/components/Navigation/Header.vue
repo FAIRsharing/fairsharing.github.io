@@ -69,12 +69,13 @@
               :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
               class="mr-1 mt-sm-1 bg-green"
               to="/accounts/profile"
+              elevation="2"
             >
               <v-avatar>
                 <v-icon
                   color="white"
                 >
-                  fa-user-circle
+                  fas fa-user-circle
                 </v-icon>
               </v-avatar>
               <span class="text-white ellipse-150">{{ user().credentials.username }}</span>

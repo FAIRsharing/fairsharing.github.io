@@ -58,7 +58,6 @@
             <v-btn
               v-if="checkLinkValue(publication.pubmedId)"
               variant="text"
-              variant="outlined"
               size="small"
               class="mr-1"
             >
@@ -74,7 +73,6 @@
             <v-btn
               v-if="checkLinkValue(publication.doi)"
               variant="text"
-              variant="outlined"
               size="small"
               class="ma-1"
             >
@@ -88,7 +86,6 @@
             <v-btn
               v-if="checkLinkValue(publication.url)"
               variant="text"
-              variant="outlined"
               size="small"
               :class="{'mt-2':$vuetify.display.width<540}"
             >

@@ -113,7 +113,7 @@ describe("Routes", () => {
         expect(scrollBehavior({})).toBe(false)
     })
 
-    it("performs harcoded record redirections correctly", async () => {
+    it("performs hardcoded record redirections correctly", async () => {
         // Records for articles
         let article = router.options.routes.find((obj) => {
             return obj.name === 'article'
@@ -153,7 +153,7 @@ describe("Routes", () => {
         expect(licence_with_s.redirect).toEqual( "/licence");
     });
 
-    it("performs harcoded ontology redirections correctly", async () => {
+    it("performs hardcoded ontology redirections correctly", async () => {
         let assignMock = jest.fn();
         delete window.location;
         window.location = { assign: assignMock };

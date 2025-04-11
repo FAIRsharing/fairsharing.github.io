@@ -112,6 +112,8 @@ export const mutations = {
       last_name: user.last_name,
       homepage: user.homepage,
       twitter: user.twitter,
+      mastodon: user.mastodon,
+      bluesky: user.bluesky,
       orcid: user.orcid,
       profile_type: user.profile_type,
       preferences: user.preferences,

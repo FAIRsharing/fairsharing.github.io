@@ -11,6 +11,8 @@
     "orcid",
     "username",
     "twitter",
+    "mastodon",
+    "bluesky",
     "thirdParty",
     "awards",
     "role",

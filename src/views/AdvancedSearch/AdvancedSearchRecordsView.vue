@@ -1,25 +1,26 @@
 <template>
   <v-main>
     <!--Jump to top arrow button -->
-    <v-fade-transition>
+    <v-fade-transition v-if="getLoadingStatus">
       <JumpToTop v-if="scrollStatus" />
-    </v-fade-transition>
     <!--Loader-->
-    <v-fade-transition>
-      <v-overlay
-        v-if="getLoadingStatus"
-        :absolute="false"
-        opacity="0.8"
-      >
-        <Loaders />
-      </v-overlay>
+      <div>
+        <v-overlay
+          :model-value="getLoadingStatus"
+          class="align-center justify-center"
+          :absolute="false"
+          opacity="0.8"
+        >
+          <Loaders />
+        </v-overlay>
+      </div>
     </v-fade-transition>
     <!--Search result -->
     <v-container
       fluid
       class="pa-0"
     >
-      <v-row v-if="$vuetify.breakpoint.mdAndDown">
+      <v-row v-if="$vuetify.display.mdAndDown">
         <v-col>
           <AdvancedSearchButtons />
         </v-col>
@@ -27,17 +28,16 @@
       <v-row no-gutters>
         <!-- Advanced search selection left column-->
         <v-col
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.display.lgAndUp"
           cols="12"
           lg="4"
-          md="4"
           xl="3"
           class="d-flex mt-2 ml-2"
         >
-          <AdvancedSearchSelection />
+          <AdvancedSearchSelection/>
         </v-col>
         <!-- Advanced search result right column-->
-        <v-col>
+        <v-col style="width: 66%">
           <AdvancedSearchResultTable />
         </v-col>
       </v-row>
@@ -90,7 +90,7 @@ export default {
       this.onScroll(this.getAdvancedSearchResponse);
     });
   },
-  destroyed() {
+  unmounted() {
     this.resetAdvancedSearchResponse();
     window.removeEventListener("scroll", () => {
       this.onScroll(this.getAdvancedSearchResponse);

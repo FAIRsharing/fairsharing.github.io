@@ -18,7 +18,7 @@
             />
           </v-avatar>
           <div class="mt-1 ml-3 alignLeft">
-            {{ item.fairsharingRecord.name | cleanString }}
+            {{ $filters.cleanString(item.fairsharingRecord.name) }}
           </div>
         </div>
       </template>
@@ -48,23 +48,27 @@
       </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-menu offset-x>
-          <template #activator="{ on, attrs }">
+        <v-menu>
+          <template #activator="{ props }">
             <v-icon
-              v-bind="attrs"
-              v-on="on"
+             
+              v-bind="props"
             >
               fas fa-ellipsis-v
             </v-icon>
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.fairsharingRecord.id)">
-              <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
+              <template #prepend>
+                <v-icon>fas fa-eye</v-icon>
+              </template>
+              <v-list-item-title> Preview record </v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
-              <v-list-item-avatar><v-icon>fas fa-newspaper</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Go to record </v-list-item-title></v-list-item-content>
+              <template #prepend>
+                <v-icon>fas fa-newspaper</v-icon>
+              </template>
+              <v-list-item-title> Go to record </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -72,7 +76,7 @@
 
       <template #no-data>
         <v-btn
-          class="ma-1 white--text"
+          class="ma-1 text-white"
           color="orange"
           :disabled="loading"
           @click="loadEditEvents"
@@ -95,12 +99,11 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
-        fab
-        small
-        class="grey--text absolute"
+        size="small"
+        class="text-grey absolute"
         @click="hideOverlay()"
       >
-        <v-icon>fa-times</v-icon>
+        <v-icon>fas fa-times</v-icon>
       </v-btn>
 
       <v-card>
@@ -115,7 +118,6 @@ import moment from "moment";
 import {mapActions, mapState} from "vuex"
 
 import Icon from "@/components/Icon";
-import { cleanString } from "@/utils/stringUtils"
 //import StatusPills from "./StatusPills";
 import Record from "@/views/Records/Record";
 
@@ -123,7 +125,6 @@ export default {
   name: "EditsTable",
   //components: {Icon, Record, StatusPills},
   components: {Icon, Record},
-  mixins: [cleanString],
   data: () => {
     return {
       showOverlay: false,
@@ -136,11 +137,11 @@ export default {
     ...mapState('users', ['user']),
     headers() {
       let headers = [
-        {text: 'Record', value: 'fairsharingRecord.name', align: 'center'},
-        {text: 'Event', value: 'editEvent', align: 'center'},
-        {text: 'Type', value: 'editType', align: 'center'},
-        {text: 'Date', value: 'createdAt', align: 'center'},
-        {text: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
+        {title: 'Record', value: 'fairsharingRecord.name', align: 'center'},
+        {title: 'Event', value: 'editEvent', align: 'center'},
+        {title: 'Type', value: 'editType', align: 'center'},
+        {title: 'Date', value: 'createdAt', align: 'center'},
+        {title: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
       ];
       return headers;
     },

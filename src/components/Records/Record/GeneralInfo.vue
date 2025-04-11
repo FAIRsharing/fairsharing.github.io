@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -39,7 +39,7 @@
       <!--Maintainers-->
       <Maintainers
         :can-claim="canClaim"
-        @requestOwnership="callRequestOwnership"
+        @request-ownership="callRequestOwnership"
       />
       <!--ContactsData-->
       <ContactsData v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
@@ -55,14 +55,14 @@
       <span
         class="d-flex align-baseline width-15-percent-flex"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
             <v-icon
               class="mr-2"
               size="15"
-              v-on="on"
+              v-bind="props"
             >
-              fa-question-circle
+              fas fa-question-circle
             </v-icon>
           </template>
           {{ recordTooltips['graph_button'] }}
@@ -70,14 +70,14 @@
         <v-btn
           class="my-5"
           color="primary"
-          outlined
+          variant="outlined"
           style="max-width: 250px"
           :disabled="graphButtonDisabled()"
           @click="loadGraph"
         >
           <v-icon
-            small
-            left
+            size="small"
+            start
           >
             fa-project-diagram
           </v-icon>

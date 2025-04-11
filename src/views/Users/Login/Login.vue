@@ -3,7 +3,7 @@
     id="loginPage"
     ref="loginPage"
     v-model="formValid"
-    class="login mb-9"
+    class="login mb-9 elevation-10 rounded"
     style="background: white"
   >
     <v-container>
@@ -21,7 +21,7 @@
               :class="{ 'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp }"
             >
               <h2 class="ma-0">
-                {{ currentPanel | capitalize }}
+                {{ currentPanel }}
               </h2>
             </v-card-title>
 
@@ -35,7 +35,7 @@
                 class="d-flex flex-row justify-center"
               >
                 <v-btn
-                  class="text-center teal white--text px-2"
+                  class="text-center bg-teal text-white px-2"
                   href="/users/resendConfirmation"
                   @click="
                     () => {
@@ -49,6 +49,7 @@
               <v-divider
                 v-if="resendButton"
                 class="pb-0 mb-0"
+                opacity="0.9"
               />
 
               <!-- OAUTH -->
@@ -63,10 +64,11 @@
                     :class="provider.color"
                     class="text-left"
                     :href="provider.callback + getCurrentLocation()"
+                    elevation="3"
                   >
                     <v-layout width="100%">
                       <v-icon
-                        left
+                        start
                         class="mr-5"
                       >
                         {{ "fab fa-" + provider.name.toLowerCase() }}
@@ -79,7 +81,7 @@
             </v-card-text>
 
             <!-- card content // Form -->
-            <v-card-text v-if="currentPanel === 'login'">
+            <v-card-text v-if="currentPanel === 'Login'">
               <v-form
                 id="loginForm"
                 ref="loginForm"
@@ -90,7 +92,7 @@
                   v-model="loginData.name"
                   label="Username or email"
                   required
-                  outlined
+                  variant="outlined"
                   :rules="[rules.isRequired()]"
                   @keyup.enter="logUser()"
                 />
@@ -98,14 +100,14 @@
                 <!-- password -->
                 <v-text-field
                   v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
+                  :append-inner-icon="show1 ? 'fas fa-eye' : 'fas fa-eye-slash'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
                   counter
                   required
-                  outlined
+                  variant="outlined"
                   :rules="[rules.isRequired()]"
-                  @click:append="show1 = !show1"
+                  @click:append-inner="show1 = !show1"
                   @keyup.enter="logUser()"
                 />
 
@@ -119,7 +121,7 @@
                       "
                     >Forgotten your password?</span>
                   </router-link>
-                  <v-divider />
+                  <v-divider opacity="0.9"/>
                   <router-link to="/accounts/signup">
                     <span
                       @click="
@@ -129,7 +131,7 @@
                       "
                     >Need to create a new account?</span>
                   </router-link>
-                  <v-divider />
+                  <v-divider opacity="0.9"/>
                   <a
                     href="https://fairsharing.gitbook.io/fairsharing/#accessing-fairsharing-through-3rd-party-accounts"
                     target="_blank"
@@ -146,9 +148,7 @@
 
                 <v-card-actions class="mt-2 justify-center">
                   <v-btn
-                    class="px-4"
-                    light
-                    color="primary"
+                    class="px-4 bg-primary"
                     :disabled="!formValid"
                     @click="logUser()"
                   >
@@ -192,26 +192,26 @@ export default {
     return {
       show1: false,
       resendButton: false,
-      currentPanel: "login",
+      currentPanel: "Login",
       loginData: {},
       oauthLogin: [
         {
           name: "ORCID",
-          color: "green white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
+          color: "bg-green white--text",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/orcid",
         },
         // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
         /*
         {
           name: "Twitter",
           color: "blue white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/twitter",
         },
          */
         {
           name: "GitHub",
-          color: "black white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
+          color: "bg-black white--text",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/github",
         },
       ],
       rules: {
@@ -245,12 +245,39 @@ export default {
       }
       else {
         const goTo = _module.$route.query.goTo;
+        let target = {};
         if (_module.redirect) {
           if (goTo) {
-            _module.$router.push({
-              path: goTo,
-            });
-          } else {
+            //Added if condition as path was trimming query params in path in vue-router 4
+            if(goTo.includes("?")){
+              const url = goTo.split("?")
+              const queryURLArr = url[1].split("&")
+              queryURLArr.forEach((pair) => {
+                if(pair !== '') {
+                  let splitpair = pair.split('=');
+                  let key = splitpair[0];
+                  target[key] = splitpair[1];
+
+                  //For advancedSearch only
+                  if(url[0] === "/advancedsearch" && pair.includes("fields")) {
+                    const [key, ...rest] = pair.split('=')
+                    const value = rest.join('=')
+                    target[key] = decodeURIComponent(value);
+                  }
+                }
+              })
+              _module.$router.push({
+                path: url[0],
+                query: target
+              });
+            }
+            else {
+              _module.$router.push({
+                path: goTo,
+              });
+            }
+          }
+          else {
             _module.$router.push({
               path: "/accounts/profile",
             });
@@ -283,7 +310,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #loginPage a {
   text-decoration: none !important;
 }

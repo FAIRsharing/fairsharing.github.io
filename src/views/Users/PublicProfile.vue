@@ -2,14 +2,14 @@
   <v-container
     id="userPage"
     fluid
-    class="standard grey lighten-3 pb-10"
+    class="standard bg-grey-lighten-3 pb-10"
   >
     <v-row v-if="messages()['getPublicUser'].message">
       <v-col cols="12">
         <v-alert
           type="success"
           class="mb-0"
-          dismissible
+          closable
         >
           {{ messages()["getPublicUser"].message }}
         </v-alert>
@@ -57,7 +57,7 @@
                 class="d-flex flex-column rounded-0"
                 height="100%"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Personal Information
                 </v-card-title>
                 <v-card-text class="pt-3 pb-0">
@@ -65,7 +65,7 @@
                     <v-list-item
                       v-for="(field, fieldName, fieldKey) in getPublicUserMeta"
                       :key="'userMeta' + fieldKey"
-                      class="body-1"
+                      class="text-body-1"
                     >
                       <v-list-item-content
                         v-if="
@@ -73,7 +73,7 @@
                         "
                         class="py-0 d-block"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        <b class="text-blue">{{ $filters.cleanString(fieldName) }}:
                         </b>
                         <span v-if="field && fieldName !== 'orcid'">
                           {{ field }}
@@ -84,14 +84,14 @@
                         v-else-if="fieldName === 'preferences'"
                         class="py-2"
                       >
-                        <b class="blue--text">{{ fieldName | cleanString }}:
+                        <b class="text-blue">{{ $filters.cleanString(fieldName) }}:
                         </b>
                         <ul>
                           <li
                             v-for="(pref, prefName, prefKey) in field"
                             :key="'pref_' + prefKey"
                           >
-                            {{ prefName | cleanString }}:
+                            {{  $filters.cleanString(prefName) }}:
                             {{ booleanToString(pref) }}
                           </li>
                         </ul>
@@ -102,9 +102,9 @@
                       >
                         <div class="d-flex align-center">
                           <b
-                            class="blue--text"
+                            class="text-blue"
                             style="margin-right: 0.2rem"
-                          >{{ fieldName | cleanString }}:
+                          >{{ $filters.cleanString(fieldName) }}:
                           </b>
                           <a
                             v-if="field"
@@ -140,7 +140,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Most recent publications
                 </v-card-title>
                 <v-card-text
@@ -152,7 +152,7 @@
                       v-for="(pub, index) in publications"
                       :key="'pub_' + index"
                     >
-                      <v-list-item-content>
+                      
                         <v-list-item-title>
                           <a
                             v-if="pub.url"
@@ -163,7 +163,7 @@
                           <span v-else>
                             {{ pub.title }} (No available link)</span>
                         </v-list-item-title>
-                      </v-list-item-content>
+                      
                     </v-list-item>
                   </v-list>
                   <div v-if="publications.length === 0 && !loading">
@@ -196,7 +196,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Maintained Records
                 </v-card-title>
                 <v-card-text
@@ -224,7 +224,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Record Edits
                 </v-card-title>
                 <v-card-text
@@ -249,7 +249,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Organisations
                 </v-card-title>
                 <v-card-text
@@ -276,7 +276,7 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3">
+                <v-card-title class="bg-primary text-white py-3">
                   Awards
                 </v-card-title>
                 <v-card-text
@@ -301,13 +301,13 @@
                 height="100%"
                 class="d-flex flex-column rounded-0"
               >
-                <v-card-title class="primary white--text py-3 flex-column align-start">
+                <v-card-title class="bg-primary text-white py-3 flex-column align-start">
                   <span>Saved Searches</span>
                   <v-card-subtitle class="pa-0">
                     Clicking on the name of a saved search will take you to its search results. From the results page, if you are logged in you may further refine the search and/or save the search yourself. More information on Conforming Resources and Saved Searches can be found in our <a
                       href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                       target="_blank"
-                      class="white--text text-decoration-underline "
+                      class="text-white text-decoration-underline"
                     >Gitbook documentation</a>.
                   </v-card-subtitle>
                 </v-card-title>
@@ -348,7 +348,6 @@ import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisat
 import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSavedSearchesTable.vue";
 import UserProfileMenu from "@/components/Users/UserProfileMenu";
 import ExternalClient from "@/lib/Client/ExternalClients.js";
-import { cleanString } from "@/utils/stringUtils";
 import NotFound from "@/views/Errors/404";
 
 import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
@@ -369,7 +368,6 @@ export default {
     Icon,
     ViewAwards,
   },
-  mixins: [cleanString],
   data: () => {
     return {
       panel: 0,
@@ -409,7 +407,8 @@ export default {
       // No userdata, so don't look for publications.
       this.publications = [];
       this.error = true;
-    } else {
+    }
+    else {
       // Get user's publications.
       this.userData = data;
       this.publications = await this.getPublications();
@@ -425,7 +424,8 @@ export default {
         /* istanbul ignore if */
         if (publications.error) {
           return [];
-        } else {
+        }
+        else {
           output = publications["activities-summary"]["works"]["group"]
             .slice(0, 7)
             .map((obj) => {
@@ -443,7 +443,8 @@ export default {
                 if (DOI) {
                   if (DOI["external-id-url"]) {
                     url = DOI["external-id-url"].value;
-                  } else if (DOI["external-id-value"]) {
+                  }
+                  else if (DOI["external-id-value"]) {
                     url = "https://doi.org/" + DOI["external-id-value"];
                   }
                 }

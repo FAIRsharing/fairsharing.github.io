@@ -59,11 +59,15 @@
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.fairsharingRecord.id)">
-              <v-avatar><v-icon>fas fa-eye</v-icon></v-avatar>
+              <template #prepend>
+                <v-icon>fas fa-eye</v-icon>
+              </template>
               <v-list-item-title> Preview record </v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
-              <v-avatar><v-icon>fas fa-newspaper</v-icon></v-avatar>
+              <template #prepend>
+                <v-icon>fas fa-newspaper</v-icon>
+              </template>
               <v-list-item-title> Go to record </v-list-item-title>
             </v-list-item>
           </v-list>
@@ -133,11 +137,11 @@ export default {
     ...mapState('users', ['user']),
     headers() {
       let headers = [
-        {text: 'Record', value: 'fairsharingRecord.name', align: 'center'},
-        {text: 'Event', value: 'editEvent', align: 'center'},
-        {text: 'Type', value: 'editType', align: 'center'},
-        {text: 'Date', value: 'createdAt', align: 'center'},
-        {text: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
+        {title: 'Record', value: 'fairsharingRecord.name', align: 'center'},
+        {title: 'Event', value: 'editEvent', align: 'center'},
+        {title: 'Type', value: 'editType', align: 'center'},
+        {title: 'Date', value: 'createdAt', align: 'center'},
+        {title: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
       ];
       return headers;
     },

@@ -183,12 +183,12 @@ export default {
     ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
-        { text: "Creator", value: "creator", align: "center", sortable: false },
-        { text: "Date", value: "date", align: "center", sortable: false },
-        { text: "Name", value: "name", align: "center", sortable: false },
-        { text: "Comments", value: "comments", align: "center", sortable: false },
-        { text: "Record", value: "record", align: "center", sortable: false },
-        { text: "Organisation", value: "organisation", align: "center", sortable: false },
+        { title: "Creator", value: "creator", align: "center", sortable: false },
+        { title: "Date", value: "date", align: "center", sortable: false },
+        { title: "Name", value: "name", align: "center", sortable: false },
+        { title: "Comments", value: "comments", align: "center", sortable: false },
+        { title: "Record", value: "record", align: "center", sortable: false },
+        { title: "Organisation", value: "organisation", align: "center", sortable: false },
       ];
       if (this.user().isLoggedIn) {
         headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)

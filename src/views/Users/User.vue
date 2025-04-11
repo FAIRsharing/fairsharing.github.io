@@ -114,6 +114,8 @@
                     rel="external"
                     target="_blank"
                     variant="elevated"
+                    color="orcid_green"
+                    style="color:white !important"
                   >
                     View ORCID profile
                   </v-btn>
@@ -135,7 +137,7 @@
               </v-card>
             </v-col>
 
-            <v-col cols="12" xl="4" lg="6" md="6" sm="12" xs="12" class="pt-0">
+            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
               <v-card height="100%" class="d-flex flex-column rounded-0">
                 <v-card-title class="bg-primary text-white py-3">
                   Record Edits
@@ -225,7 +227,7 @@
                   class="bg-primary text-white py-3 flex-column align-start"
                 >
                   <span>Saved Searches</span>
-                  <v-card-subtitle class="pa-0">
+                  <v-card-subtitle class="pa-0 opacity-100" style="white-space: normal">
                     Clicking on the name of a saved search will take you to its
                     search results. From the results page, if you are logged in
                     you may further refine the search and/or save the search

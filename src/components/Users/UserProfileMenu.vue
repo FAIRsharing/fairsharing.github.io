@@ -11,7 +11,7 @@
           icon
           v-bind="props"
         >
-          <v-icon>
+          <v-icon class="text-white">
             fa fa-bars
           </v-icon>
         </v-btn>

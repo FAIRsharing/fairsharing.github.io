@@ -29,7 +29,7 @@
         {{ objToList(item.organisationTypes) }}
       </template>
 
-      <template slot="no-data">
+      <template #no-data>
         <div>
           You are not a member of any organisations.
         </div>
@@ -50,9 +50,9 @@ export default {
     ...mapState('users', ['user']),
     headers() {
       let headers = [
-        {text: 'Name', value: 'name', align: 'center'},
-        {text: 'Types', value: 'organisationTypes', align: 'center'},
-        {text: 'Homepage', value: 'homepage', align: 'center'},
+        {title: 'Name', value: 'name', align: 'center'},
+        {title: 'Types', value: 'organisationTypes', align: 'center'},
+        {title: 'Homepage', value: 'homepage', align: 'center'},
       ];
       return headers;
     },

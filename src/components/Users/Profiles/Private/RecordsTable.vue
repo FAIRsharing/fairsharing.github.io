@@ -50,18 +50,24 @@
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.id)">
-              <v-avatar><v-icon>fas fa-eye</v-icon></v-avatar>
+              <template #prepend>
+                <v-icon>fas fa-eye</v-icon>
+              </template>
               <v-list-item-title> Preview record </v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.id)">
-              <v-avatar><v-icon>fas fa-newspaper</v-icon></v-avatar>
+              <template #prepend>
+                <v-icon>fas fa-newspaper</v-icon>
+              </template>
               <v-list-item-title> Go to record </v-list-item-title>
             </v-list-item>
             <v-list-item
               v-if="(source !== 'maintenanceRequests' && source !== 'watchedRecords') || (source === 'watchedRecords' && user().is_curator)"
               @click="goToEdit(item.id)"
             >
-              <v-avatar><v-icon>fas fa-pen</v-icon></v-avatar>
+                <template #prepend>
+                <v-icon>fas fa-pen</v-icon>
+              </template>
               <v-list-item-title> Edit record </v-list-item-title>
             </v-list-item>
           </v-list>

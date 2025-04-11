@@ -6,12 +6,12 @@
     >
       <div
         class="led d-inline-block"
-        :class="{'green': status === 'approved', 'red': status === 'rejected', 'orange': status === 'pending', 'small': small}"
+        :class="{'bg-green': status === 'approved', 'bg-red': status === 'rejected', 'bg-orange': status === 'pending', 'small': small}"
       />
       <b
         v-if="!small"
         class="ml-2"
-        :class="{'green--text': status === 'approved', 'red--text': status === 'rejected', 'orange--text': status === 'pending'}"
+        :class="{'text-green': status === 'approved', 'text-red': status === 'rejected', 'text-orange': status === 'pending'}"
       >{{ status.toUpperCase() }}</b>
     </div>
 
@@ -21,9 +21,9 @@
     >
       <div
         class="led mr-0"
-        :class="{'green': recommended, 'grey': !recommended, 'small': small}"
+        :class="{'bg-green': recommended, 'bg-grey': !recommended, 'small': small}"
       />
-      <b :class="recommended ? 'green--text' : 'grey--text'">
+      <b :class="recommended ? 'text-green' : 'text-grey'">
         <span v-if="recommended">Yes</span>
         <span v-else>No</span>
       </b>
@@ -36,20 +36,20 @@
       <div
         class="led d-inline-block mr-0"
         :class="{
-          'green': recordStatus === 'ready',
-          'red': recordStatus === 'deprecated',
-          'orange': recordStatus === 'in_development',
-          'grey': recordStatus === 'uncertain',
+          'bg-green': recordStatus === 'ready',
+          'bg-red': recordStatus === 'deprecated',
+          'bg-orange': recordStatus === 'in_development',
+          'bg-grey': recordStatus === 'uncertain',
           'small': small
         }"
       />
       <b
         v-if="!small"
         :class="{
-          'green--text': recordStatus === 'ready',
-          'red--text': recordStatus === 'deprecated',
-          'orange--text': recordStatus === 'in_development',
-          'grey--text': recordStatus === 'uncertain',
+          'text-green': recordStatus === 'ready',
+          'text-red': recordStatus === 'deprecated',
+          'text-orange': recordStatus === 'in_development',
+          'text-grey': recordStatus === 'uncertain',
         }"
         class="text-center"
       >
@@ -63,18 +63,18 @@
     >
       <div
         class="led d-inline-block"
-        :class="{'green': approved, 'red': !approved, 'small': small}"
+        :class="{'bg-green': approved, 'bg-red': !approved, 'small': small}"
       />
       <div v-if="!small">
         <b
           v-if="approved"
-          class="ml-2 green--text"
+          class="ml-2 text-green"
         >
           APPROVED
         </b>
         <b
           v-if="!approved"
-          class="ml-2 red--text"
+          class="ml-2 text-red"
         >
           NOT APPROVED
         </b>
@@ -86,15 +86,15 @@
 <script>
 import stringUtils from "@/utils/stringUtils";
 export default {
-    name: "StatusPills",
-    mixins: [stringUtils],
-    props: {
-        status: {type: String, default: null},
-        approved: {type: Boolean, default: null},
-        small: {type: Boolean, default: false},
-        recommended: {type: Boolean, default: null},
-        recordStatus: {type: String, default: null}
-    }
+  name: "StatusPills",
+  mixins: [stringUtils],
+  props: {
+    status: {type: String, default: null},
+    approved: {type: Boolean, default: null},
+    small: {type: Boolean, default: false},
+    recommended: {type: Boolean, default: null},
+    recordStatus: {type: String, default: null}
+  }
 }
 </script>
 

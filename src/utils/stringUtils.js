@@ -16,10 +16,6 @@ const stringUtils = {
     },
   },
   filters: {
-    capitalize(str) {
-      if (!str) return "";
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    },
     pretty(val) {
       return JSON.stringify(val)
         .replace(/,/g, "<br/>") // commas -> newlines

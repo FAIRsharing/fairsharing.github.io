@@ -1,6 +1,6 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-card
-    class="pa-4 d-flex flex-column"
+    class="pa-4 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -79,7 +79,7 @@
             size="small"
             start
           >
-            fa-project-diagram
+            fas fa-project-diagram
           </v-icon>
           <span
             v-if="currentRecord.fairsharingRecord.hasGraph"

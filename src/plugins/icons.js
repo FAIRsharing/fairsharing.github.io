@@ -6,11 +6,11 @@ const customIcons = {
     },
     howToCite: {
       type: "icon",
-      icon: "fa-link",
+      icon: "fas fa-link",
     },
     PublicationCitation: {
       type: "icon",
-      icon: "fa-book-open",
+      icon: "fas fa-book-open",
     },
     createdAt: {
       type: "icon",

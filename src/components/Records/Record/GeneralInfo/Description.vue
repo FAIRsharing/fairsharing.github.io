@@ -21,18 +21,15 @@
       class="ma-0 full-width ml-md-12 ml-8"
       :class="{'text-end' : $vuetify.display.smAndDown}"
     >
-      {{ getField('description') | capitalize }}
+      {{ $filters.capitalize(getField('description')) }}
     </p>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapState} from "vuex";
-
-import stringUtils from "@/utils/stringUtils";
 export default {
   name: "Description",
-  mixins: [stringUtils],
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("editor", ["recordTooltips"]),

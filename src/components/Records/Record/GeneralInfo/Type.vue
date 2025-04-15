@@ -21,7 +21,7 @@
       class="ma-0 full-width ml-md-12 ml-8"
       :class="{'text-end' : $vuetify.display.smAndDown}"
     >
-      {{ cleanString(getField('type')) | capitalize }}
+      {{ $filters.capitalize(cleanString(getField('type'))) }}
     </p>
   </div>
 </template>

@@ -30,7 +30,7 @@
           :key="item.label"
           class="mr-2 mb-2"
           :color="getChipColor(item)"
-          text-color="white"
+          variant="flat"
           @click="returnToSearch('subjects', item.label)"
         >
           <KeywordTooltip
@@ -70,7 +70,7 @@
           :key="item.label"
           class="mr-2 mb-2"
           :color="getChipColor(item)"
-          text-color="white"
+          variant="flat"
           @click="returnToSearch('domains', item.label)"
         >
           <KeywordTooltip
@@ -109,7 +109,7 @@
           v-for="item in getField('taxonomies')"
           :key="item.label"
           class="mr-2 mb-2"
-          text-color="white"
+          variant="flat"
           :color="getChipColor(item)"
           @click="returnToSearch('taxonomies', item.label)"
         >
@@ -149,7 +149,7 @@
           v-for="item in getField('userDefinedTags')"
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
-          text-color="white"
+          variant="flat"
           :color="getChipColor(item)"
           @click="returnToSearch('userDefinedTags', item.label)"
         >

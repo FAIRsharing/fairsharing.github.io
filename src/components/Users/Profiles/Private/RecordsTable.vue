@@ -89,11 +89,11 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
-        size="small"
-        class="text-grey absolute"
+        class="text-black absolute"
+        icon="fa fa-xmark fa-solid"
         @click="hideOverlay()"
       >
-        <v-icon>fa-times</v-icon>
+        <v-icon icon="fa fa-xmark fa-solid" size="30" />
       </v-btn>
 
       <v-card>
@@ -189,6 +189,7 @@ export default {
   .absolute {
       position: absolute !important;
       z-index: 1;
-      right: 13px;
+      right: -13px;
+      top: -10px
   }
 </style>

@@ -177,11 +177,11 @@ export default {
       const _module = this;
       // A policy may recommend collections; other records may be collected.
       if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
-        _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
+        _module.tabsData.tabs['related_collections'] = {registry: ["Collection"], data: [], count:0}
       }
       if (_module.currentRecord['fairsharingRecord'].registry === 'FAIRassist' ||
           _module.currentRecord['fairsharingRecord'].registry === 'Standard') {
-        _module.$set(_module.tabsData.tabs, 'related_fairassist_components', {registry: ["FAIRassist"], data: [], count:0});
+        _module.tabsData.tabs['related_fairassist_components'] = {registry: ["FAIRassist"], data: [], count:0}
       }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
           Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {

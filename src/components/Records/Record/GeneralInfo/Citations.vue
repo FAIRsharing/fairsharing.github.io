@@ -8,7 +8,7 @@
         md="6"
       >
         <v-card
-          class="pa-4 d-flex flex-column"
+          class="pa-4 d-flex flex-column overflow-initial"
           border
           color="white"
           tile

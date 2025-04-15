@@ -19,7 +19,7 @@
           getField('metadata')['certifications_and_community_badges'].length)
     "
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -44,7 +44,7 @@
           v-for="(item, key, index) in generateDataConditions()"
           :key="key + '_' + index"
           class="pa-4 mt-15 d-flex flex-column"
-          outlined
+          border
           color="white"
           tile
           elevation="3"
@@ -54,7 +54,7 @@
             size="20"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ cleanString(key) | capitalize }}
+            {{ $filters.capitalize(cleanString(key)) }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <div v-if="key === 'licences'">
@@ -74,7 +74,7 @@
               :key="subItem.name + '_' + subIndex"
               class="pa-4 mt-2 d-flex flex-column v-card-hover"
               flat
-              outlined
+              border
             >
               <a
                 v-if="subItem.url"

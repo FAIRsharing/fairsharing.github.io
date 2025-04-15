@@ -2,7 +2,7 @@
   <v-card
     v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)"
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -14,7 +14,7 @@
           v-for="(item,key,index) in generateSupport()"
           :key="key+'_'+index"
           class="pa-4 mt-15 d-flex flex-column"
-          outlined
+          border
           color="white"
           tile
           elevation="3"
@@ -24,7 +24,7 @@
             size="20"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ key | capitalize }}
+            {{ $filters.capitalize(key) }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card
@@ -32,7 +32,7 @@
               :key="subItem.name+'_'+subIndex"
               class="pa-4 mt-2 d-flex flex-column v-card-hover"
               flat
-              outlined
+              border
             >
               <a
                 v-if="subItem.name && subItem.url"

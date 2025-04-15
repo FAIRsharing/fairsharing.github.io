@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <main>
     <v-container
       v-if="queryTriggered"
@@ -17,7 +17,7 @@
         <v-col
           cols="12"
         >
-          <!-- alerts         -->
+          <!-- alerts -->
           <record-alert
             v-for="(alert,key,index) in alerts"
             :key="key+'_'+alert.message+'_'+index"
@@ -25,7 +25,7 @@
             :message="alert.message"
           />
 
-          <!--  snackbars        -->
+          <!-- snackbars -->
           <record-snackbar
             v-for="(snackbar,index) in snackbars"
             :key="snackbar.message+'_'+index"
@@ -43,7 +43,7 @@
         </v-col>
       </v-row>
 
-      <!--  CuratorsNotes   -->
+      <!-- CuratorsNotes -->
       <CuratorNotes
         id="curatorNotes"
         class="ma-4 mb-7"
@@ -152,10 +152,9 @@
           <v-spacer />
           <v-btn
             size="x-small"
-            fab
             @click="closeHistory()"
           >
-            <v-icon> fa-times </v-icon>
+            <v-icon> fas fa-times </v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text class="pt-2">
@@ -501,7 +500,7 @@ export default {
     },
     currentRoute() {
       let id = this.$route.params['id'];
-      if (id.includes("FAIRsharing.")) {
+      if (id !== undefined && id.includes("FAIRsharing.")) {
         return "10.25504/" + id;
       }
       return this.target || this.$route.params['id'];

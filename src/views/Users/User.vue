@@ -255,9 +255,16 @@
       </v-col>
     </v-row>
     <v-fade-transition>
-      <v-overlay v-if="loading" :absolute="false" opacity="0.8">
-        <loaders />
-      </v-overlay>
+      <div>
+        <v-overlay
+          v-model="loading"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          <loaders />
+        </v-overlay>
+      </div>
     </v-fade-transition>
     <v-dialog v-model="confirmDelete" max-width="700px" persistent>
       <v-card>

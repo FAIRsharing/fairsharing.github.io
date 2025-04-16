@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="getField('publications').length!==0 && (getField('publications')!==undefined && getField('publications')!==null)"
-    class="pa-4 d-flex flex-column"
+    class="pa-4 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -72,7 +72,8 @@
             <!-- doi -->
             <v-btn
               v-if="checkLinkValue(publication.doi)"
-              variant="text"
+              variant="outlined"
+              color="primary"
               size="small"
               class="ma-1"
             >
@@ -85,7 +86,8 @@
             </v-btn>
             <v-btn
               v-if="checkLinkValue(publication.url)"
-              variant="text"
+              variant="outlined"
+              color="primary"
               size="small"
               :class="{'mt-2':$vuetify.display.width<540}"
             >

@@ -18,7 +18,7 @@
         (getField('metadata')['certifications_and_community_badges'] &&
           getField('metadata')['certifications_and_community_badges'].length)
     "
-    class="pa-4 d-flex flex-column"
+    class="pa-4 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -43,7 +43,7 @@
         <v-card
           v-for="(item, key, index) in generateDataConditions()"
           :key="key + '_' + index"
-          class="pa-4 mt-15 d-flex flex-column"
+          class="pa-4 mt-15 d-flex flex-column overflow-initial"
           border
           color="white"
           tile
@@ -52,6 +52,7 @@
           <Icon
             :item="item.icon"
             size="20"
+            class="pt-2"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ $filters.capitalize(cleanString(key)) }}

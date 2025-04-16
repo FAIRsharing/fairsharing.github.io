@@ -99,15 +99,16 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
-        size="small"
-        class="text-grey absolute"
+          v-if="closeButton"
+        class="text-black absolute"
+        icon="fa fa-xmark fa-solid"
         @click="hideOverlay()"
       >
-        <v-icon>fas fa-times</v-icon>
+        <v-icon size="30" />
       </v-btn>
 
       <v-card>
-        <Record :target="targetID" />
+        <Record :target="targetID" @show-dialog="showDialog"/>
       </v-card>
     </v-dialog>
   </div>
@@ -130,7 +131,8 @@ export default {
       showOverlay: false,
       targetID: null,
       edits: [],
-      loading: false
+      loading: false,
+      closeButton: false
     }
   },
   computed: {
@@ -170,12 +172,16 @@ export default {
     hideOverlay(){
       this.showOverlay = false;
       this.targetID = null;
+      this.closeButton = false
+    },
+    showDialog(value) {
+      this.closeButton = value
     },
     async loadEditEvents() {
       this.loading = true;
       // The means of getting a user's ID differs depending on whether this component is active in the
       // public or private profile. I'm checking the route to see which it is.
-      let loc = this.$router.currentRoute.path;
+      let loc = this.$router.currentRoute.value.path;
       let data;
       let userId;
       if (loc === '/accounts/profile') {
@@ -207,6 +213,7 @@ export default {
 .absolute {
   position: absolute !important;
   z-index: 1;
-  right: 13px;
+  right: -13px;
+  top: -10px
 }
 </style>

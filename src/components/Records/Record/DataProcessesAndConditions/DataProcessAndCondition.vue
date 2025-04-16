@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="Object.keys(getField('metadata')).includes('data_processes_and_conditions') && (getField('metadata').data_processes_and_conditions.length)"
-    class="pa-4 mt-15 d-flex flex-column"
+    class="pa-4 mt-15 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -10,6 +10,7 @@
     <Icon
       item="maintains"
       size="20"
+      class="pt-2"
     />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Processes

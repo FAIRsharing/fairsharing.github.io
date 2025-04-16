@@ -13,7 +13,7 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <v-card
         v-if="getField('metadata')['associated_tools']"
-        class="pa-4 mt-15 d-flex flex-column"
+        class="pa-4 mt-15 d-flex flex-column overflow-initial"
         border
         color="white"
         tile
@@ -22,6 +22,7 @@
         <Icon
           item="tools"
           size="20"
+          class="pt-2"
         />
 
         <v-card-title class="pa-0 text--primary card-title-customize">

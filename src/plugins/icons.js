@@ -74,7 +74,7 @@ const customIcons = {
     },
     licences: {
       type: "icon",
-      icon: "fa-certificate",
+      icon: "fas fa-certificate",
     },
     certificate: {
       type: "img",
@@ -283,7 +283,7 @@ const customIcons = {
     },
     user: {
       type: "icon",
-      icon: "fa-user",
+      icon: "fas fa-user",
     },
     users: {
       type: "icon",

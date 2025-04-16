@@ -95,7 +95,7 @@
             getField('metadata')['citations'] &&
               getField('metadata')['citations'].length > 0
           "
-          class="pa-4 d-flex flex-column"
+          class="pa-4 d-flex flex-column overflow-initial"
           border
           color="white"
           tile
@@ -104,6 +104,7 @@
           <Icon
             item="PublicationCitation"
             size="20"
+            class="pt-2"
           />
           <v-card-title class="pa-0 card-title-customize">
             <v-tooltip location="bottom">

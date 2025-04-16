@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-if="!inlineStyle && getField('organisations').length!==0 && (getField('organisations')!==undefined && getField('organisations')!==null)"
-    class="pa-4 d-flex flex-column"
+    class="pa-4 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -15,7 +15,7 @@
       >
         <v-card
           v-if="getRelations(key).length"
-          class="pa-4 mt-15 d-flex flex-column min-height-100"
+          class="pa-4 mt-15 d-flex flex-column min-height-100 overflow-initial"
           border
           color="white"
           tile
@@ -25,6 +25,8 @@
             :item="key"
             fallback="other_involvement"
             size="20"
+            class="pt-2"
+            :height=25
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ value }}
@@ -57,9 +59,9 @@
                         label
                         size="x-small"
                         v-bind="props"
+                        variant="flat"
                       >
                         Lead
-
                       </v-chip>
                     </template>
                     <span>This is a leading organisation in relation to this resource</span>

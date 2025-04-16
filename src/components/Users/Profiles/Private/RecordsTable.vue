@@ -89,15 +89,15 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
+        v-if="closeButton"
         class="text-black absolute"
         icon="fa fa-xmark fa-solid"
         @click="hideOverlay()"
       >
-        <v-icon icon="fa fa-xmark fa-solid" size="30" />
+        <v-icon size="30" />
       </v-btn>
-
       <v-card>
-        <Record :target="targetID" />
+        <Record :target="targetID" @show-dialog="showDialog" />
       </v-card>
     </v-dialog>
   </div>
@@ -121,7 +121,8 @@ export default {
   data: () => {
     return {
       showOverlay: false,
-      targetID: null
+      targetID: null,
+      closeButton: false
     }
   },
   computed: {
@@ -172,6 +173,10 @@ export default {
     hideOverlay(){
       this.showOverlay = false;
       this.targetID = null;
+      this.closeButton = false
+    },
+    showDialog(value) {
+      this.closeButton = value
     }
   }
 }

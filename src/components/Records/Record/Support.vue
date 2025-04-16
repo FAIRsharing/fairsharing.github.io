@@ -1,7 +1,7 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-card
     v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)"
-    class="pa-4 d-flex flex-column"
+    class="pa-4 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -13,7 +13,7 @@
         <v-card
           v-for="(item,key,index) in generateSupport()"
           :key="key+'_'+index"
-          class="pa-4 mt-15 d-flex flex-column"
+          class="pa-4 mt-15 d-flex flex-column overflow-initial"
           border
           color="white"
           tile
@@ -22,6 +22,7 @@
           <Icon
             :item="item.icon"
             size="20"
+            class="pt-2"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ $filters.capitalize(key) }}

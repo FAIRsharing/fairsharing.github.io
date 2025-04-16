@@ -17,6 +17,7 @@
           <Icon
             size="20"
             item="howToCite"
+            class="pt-2"
           />
           <v-card-title
             class="pa-0 text--primary card-title-customize"

@@ -2,7 +2,7 @@ const customIcons = {
   values: {
     search: {
       type: "icon",
-      icon: "fa-search",
+      icon: "fas fa-search",
     },
     howToCite: {
       type: "icon",
@@ -14,15 +14,15 @@ const customIcons = {
     },
     createdAt: {
       type: "icon",
-      icon: "fa-folder-plus",
+      icon: "fas fa-folder-plus",
     },
     updatedAt: {
       type: "icon",
-      icon: "fa-sync",
+      icon: "fas fa-sync",
     },
     tools: {
       type: "icon",
-      icon: "fa-tools",
+      icon: "fas fa-tools",
     },
     contacts: {
       type: "icon",
@@ -30,7 +30,7 @@ const customIcons = {
     },
     maintains: {
       type: "icon",
-      icon: "fa-sitemap",
+      icon: "fas fa-sitemap",
     },
     funds: {
       type: "img",
@@ -38,15 +38,15 @@ const customIcons = {
     },
     collaborates_on: {
       type: "icon",
-      icon: "fa-handshake",
+      icon: "fas fa-handshake",
     },
     other_involvement: {
       type: "icon",
-      icon: "fa-building",
+      icon: "fas fa-building",
     },
     undefined: {
       type: "icon",
-      icon: "fa-question",
+      icon: "fas fa-question",
     },
     arrowUp: {
       type: "icon",
@@ -54,19 +54,19 @@ const customIcons = {
     },
     data_access: {
       type: "icon",
-      icon: "fa-key",
+      icon: "fas fa-key",
     },
     data_curation: {
       type: "icon",
-      icon: "fa-database",
+      icon: "fas fa-database",
     },
     data_release: {
       type: "icon",
-      icon: "fa-recycle",
+      icon: "fas fa-recycle",
     },
     data_versioning: {
       type: "icon",
-      icon: "fa-sync",
+      icon: "fas fa-sync",
     },
     nodes: {
       type: "img",
@@ -82,19 +82,19 @@ const customIcons = {
     },
     frequently_asked_questions_faqs: {
       type: "icon",
-      icon: "fa-question-circle",
+      icon: "fas fa-question-circle",
     },
     forum: {
       type: "icon",
-      icon: "fa-comment",
+      icon: "fas fa-comment",
     },
     help_documentation: {
       type: "icon",
-      icon: "fa-book",
+      icon: "fas fas fa-book",
     },
     blog_news: {
       type: "icon",
-      icon: "fa-newspaper",
+      icon: "fas fa-newspaper",
     },
     twitter: {
       type: "icon",
@@ -114,7 +114,7 @@ const customIcons = {
     },
     training_documentation: {
       type: "icon",
-      icon: "fa-funnel-dollar",
+      icon: "fas fa-funnel-dollar",
     },
     tess_links_to_training_materials: {
       type: "img",
@@ -223,7 +223,7 @@ const customIcons = {
     },
     contact_form: {
       type: "icon",
-      icon: "fa-address-card",
+      icon: "fas fa-address-card",
     },
     recommended: {
       type: "icon",
@@ -231,7 +231,7 @@ const customIcons = {
     },
     video: {
       type: "icon",
-      icon: "fa-video",
+      icon: "fas fa-video",
     },
     collections: {
       type: "img",
@@ -243,7 +243,7 @@ const customIcons = {
     },
     api: {
       type: "icon",
-      icon: "fa-laptop-code",
+      icon: "fas fa-laptop-code",
     },
     home_standard: {
       type: "img",
@@ -259,7 +259,7 @@ const customIcons = {
     },
     other: {
       type: "icon",
-      icon: "fa-ellipsis-h",
+      icon: "fas fa-ellipsis-h",
     },
     adopters: {
       type: "icon",
@@ -295,7 +295,7 @@ const customIcons = {
     },
     info: {
       type: "icon",
-      icon: "fa-info",
+      icon: "fas fa-info",
     },
   },
   iconfont: "fa",

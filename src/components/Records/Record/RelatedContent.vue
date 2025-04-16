@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
     v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column"
+    class="pa-4 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
@@ -17,10 +17,10 @@
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
           variant="solo"
-          :attach="true"
+          :menu-props="{ attach: true }"
           density="compact"
           clearable
-          prepend-inner-icon="fa-search"
+          prepend-inner-icon="fas fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
           item-title="name"
           item-value="name"

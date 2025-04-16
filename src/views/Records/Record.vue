@@ -1,5 +1,17 @@
 <template>
   <main>
+    <v-fade-transition>
+      <div>
+        <v-overlay
+            v-model="loading"
+            :absolute="false"
+            opacity="0.8"
+            class="align-center justify-center"
+        >
+          <Loaders />
+        </v-overlay>
+      </div>
+    </v-fade-transition>
     <v-container
       v-if="queryTriggered"
       fluid
@@ -353,6 +365,7 @@ export default {
   props: {
     target: {type: Number, default: null}
   },
+  emits:['updateHead', 'showDialog'],
   setup() {
     const theme = useTheme();
     return { theme };
@@ -417,6 +430,7 @@ export default {
         claimRecord: false,
         stopMaintainRecord: false
       },
+      loading: false
     }
   },
   head: {
@@ -564,6 +578,7 @@ export default {
   },
   async mounted() {
     let _module = this;
+    _module.loading = true;
     _module.client = new Client();
     await _module.getData();
     _module.recordID = this.currentRecord.fairsharingRecord.id;
@@ -598,6 +613,8 @@ export default {
         _module.history.loading = false;
       }
     }
+    _module.loading = false;
+    _module.$emit('showDialog', !_module.loading)
   },
   methods: {
     closeHistory() {

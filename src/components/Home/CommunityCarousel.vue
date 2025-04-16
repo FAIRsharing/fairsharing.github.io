@@ -54,7 +54,7 @@ export default {
   }),
   computed: {
     responsiveSlideData() {
-      if (this.$vuetify.breakpoint.smAndUp) {
+      if (this.$vuetify.display.smAndUp) {
         return this.logos.multipleImageSlider
       }
       else {

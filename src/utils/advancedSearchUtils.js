@@ -31,7 +31,7 @@ const uniqueValues = (item) => {
  */
 const removeItem = (item, arrayList) => {
   const index = arrayList.indexOf(item);
-  if (index >= 0) arrayList.splice(index, 1);
+  if (index > -1) arrayList.splice(index, 1);
 };
 
 /**

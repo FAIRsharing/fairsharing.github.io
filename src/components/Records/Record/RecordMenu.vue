@@ -1,20 +1,18 @@
 <template>
   <div class="text-right">
     <v-menu
-      offset-y
       :disabled="readOnlyMode"
     >
-      <template #activator="{ on, attrs }">
+      <template #activator="{ props }">
         <v-btn
           class="mt-1"
           color="primary"
-          v-bind="attrs"
-          v-on="on"
+          v-bind="props"
         >
           Actions
           <v-icon
-            small
-            right
+            size="small"
+            end
           >
             fa-chevron-down
           </v-icon>

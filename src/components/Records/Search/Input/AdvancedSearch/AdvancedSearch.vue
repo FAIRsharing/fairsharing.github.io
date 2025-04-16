@@ -24,7 +24,7 @@
       v-else
       :size="$vuetify.display.xl ? 'x-large' : undefined"
       class="mr-10 bg-primary"
-      elevation="3"
+      elevation="2"
       button-size
       @click="openAdvanceSearch()"
     >

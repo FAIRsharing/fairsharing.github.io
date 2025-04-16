@@ -563,7 +563,7 @@ export default {
         await this.getMenuButtons();
       }
       await this.$nextTick();
-      await this.$scrollTo(this.$route.hash || 'body')
+      // await this.$scrollTo(this.$route.hash || 'body')
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
@@ -572,10 +572,10 @@ export default {
       await this.checkAlerts();
     }
   },
-  unmounted() {
-    // minor change in the y axis can fix a serious bug after going back to records..
-    this.$scrollTo('body',5,{})
-  },
+  // unmounted() {
+  //   // minor change in the y axis can fix a serious bug after going back to records..
+  //   this.$scrollTo('body',5,{})
+  // },
   async mounted() {
     let _module = this;
     _module.loading = true;

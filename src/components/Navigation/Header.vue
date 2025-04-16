@@ -71,13 +71,14 @@
               to="/accounts/profile"
               elevation="2"
             >
-              <v-avatar>
+
                 <v-icon
                   color="white"
+                  class="mr-1"
                 >
                   fas fa-user-circle
                 </v-icon>
-              </v-avatar>
+
               <span class="text-white ellipse-150">{{ user().credentials.username }}</span>
             </v-btn>
           </ul>

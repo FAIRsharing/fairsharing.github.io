@@ -651,7 +651,11 @@ let routes = [
     path: "/profiles/usersList",
     component: UsersList,
     beforeEnter(to, from, next) {
-      isLoggedIn(to, from, next, store);
+      /**
+       * Commenting below method in order to avoid duplicacy of next() which is called in
+       * both methods
+       */
+      // isLoggedIn(to, from, next, store);  Only superCurators can access users list
       isSuperCurator(to, from, next, store);
     },
   },

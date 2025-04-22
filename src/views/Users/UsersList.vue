@@ -1,15 +1,17 @@
 <template>
   <v-container class="my-10">
     <v-card>
-      <v-card-title>
+      <v-card-title class="d-flex">
         Users List
         <v-spacer />
         <v-text-field
           id="searchString"
           v-model="searchString"
           label="Search"
-          single-line
           clearable
+          append-inner-icon="fas fa-search"
+          variant="outlined"
+          color="primary"
         />
       </v-card-title>
       <v-data-table
@@ -41,13 +43,13 @@ export default {
       searchString: '',
       headers: [
         {
-          text: 'username',
+          title: 'Username',
           align: 'start',
           sortable: false,
           value: 'username',
         },
-        {text: 'email', value: 'email',sortable: false},
-        {text: 'Public Profile', value: 'id',sortable: false}
+        {title: 'Email', value: 'email',sortable: false},
+        {title: 'Public Profile', value: 'id',sortable: false}
       ],
       loading:false
     }
@@ -66,7 +68,7 @@ export default {
       this.loading = false;
     },
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanStore();
   },
   methods: {

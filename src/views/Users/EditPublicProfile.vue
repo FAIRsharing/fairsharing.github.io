@@ -191,7 +191,7 @@ import {mapActions, mapMutations, mapState} from "vuex";
 
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RESTClient from "@/lib/Client/RESTClient";
-import { isEmail, isMastodon, isRequired, isUrl } from "@/utils/rules.js"
+import { isBluesky, isEmail, isMastodon, isRequired, isUrl } from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 
@@ -264,6 +264,15 @@ export default {
           ]
         },
         {
+          name: "bluesky",
+          label: "Bluesky",
+          hint: null,
+          type: "input",
+          rules: [
+            isBluesky()
+          ]
+        },
+        {
           name: "orcid",
           label: "Orcid ID",
           hint: "To change this field log in with ORCID",
@@ -321,6 +330,7 @@ export default {
         orcid: null,
         twitter: null,
         mastodon: null,
+        bluesky: null,
         deactivated:null,
         role: null
       }
@@ -348,6 +358,7 @@ export default {
       this.formData.orcid = this.currentPublicUser.orcid;
       this.formData.twitter = this.currentPublicUser.twitter;
       this.formData.mastodon = this.currentPublicUser.mastodon;
+      this.formData.bluesky = this.currentPublicUser.bluesky;
       this.formData.deactivated = !this.currentPublicUser.deactivated;
     }
     this.pageLoad = false;

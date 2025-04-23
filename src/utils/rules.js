@@ -30,6 +30,18 @@ export function isMastodon(){
     }
 }
 
+/**
+ * Assess bluesjy username @user@server.
+ * @returns {function(*): (boolean|string)}
+ */
+export function isBluesky(){
+    return value => {
+        if (!value) return true;
+        const pattern = /^@[A-Za-z]+[A-Za-z\\.]+$/
+        return pattern.test(value) || 'Invalid Bluesky handle: Use @username.domain.name'
+    }
+}
+
 
 /**
  * Assess the presence of the field

@@ -6,6 +6,7 @@ import {
     isImage,
     isLongEnough,
     isMastodon,
+    isBluesky,
     isOrcid,
     isRequired,
     isUrl} from "@/utils/rules.js"
@@ -88,6 +89,16 @@ describe('Form validation rules', () => {
         expect(tester('@ftang@wibble.com')).toBe(true);
         expect(tester('')).toBe(true);
         expect(tester("hardcore.science")).toEqual(fail);
+    });
+
+    it("can check if it's a Bluesky handle", () => {
+        let fail = 'Invalid Bluesky handle: Use @username.domain.name'
+        let tester = isBluesky();
+        expect(tester('a string')).toEqual(fail);
+        expect(tester('@ftang@wibble.com')).toEqual(fail);
+        expect(tester('')).toBe(true);
+        expect(tester("hardcore.science")).toEqual(fail);
+        expect(tester('@goatse.bsky.social')).toBe(true);
     });
 
 });

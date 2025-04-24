@@ -18,7 +18,7 @@
         >
           <v-card :flat="popUp">
             <v-card-title
-              :class="{ 'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp }"
+              :class="{ 'bg-blue text-white mb-5 text-center': !popUp, 'py-0 mb-5': popUp }"
             >
               <h2 class="ma-0">
                 {{ currentPanel }}
@@ -53,11 +53,10 @@
               />
 
               <!-- OAUTH -->
-              <v-list>
+              <v-list class="d-flex flex-column align-center">
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
                   :key="'provider_' + providerIndex"
-                  style="justify-content: center"
                 >
                   <v-btn
                     width="250px"
@@ -150,6 +149,7 @@
                   <v-btn
                     class="px-4 bg-primary"
                     :disabled="!formValid"
+                    elevation="2"
                     @click="logUser()"
                   >
                     LOGIN

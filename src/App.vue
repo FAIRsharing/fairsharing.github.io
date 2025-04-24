@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
 import PublicMessages from "@/components/Global/PublicMessages";
 import FooterComp from "@/components/Navigation/Footer";
@@ -37,25 +37,31 @@ import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
 
 export default {
   name: "App2",
-  components: {PublicMessages, NavigationDrawer, FooterComp, HeaderComp, Jumbotron},
+  components: {
+    PublicMessages,
+    NavigationDrawer,
+    FooterComp,
+    HeaderComp,
+    Jumbotron,
+  },
   data() {
     return {
       title: null,
       // loading:true,
-      subtitle: null
-    }
+      subtitle: null,
+    };
   },
   computed: {
-    ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('introspection', ["readOnlyMode"]),
+    ...mapState("uiController", ["UIGeneralStatus"]),
+    ...mapState("introspection", ["readOnlyMode"]),
   },
   /* istanbul ignore next */
   async updated() {
     // very important line of code which prevents layout shifting which is considered as one negative point for SEO
-    await this.$nextTick()
+    await this.$nextTick();
     // this.loading = false;
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

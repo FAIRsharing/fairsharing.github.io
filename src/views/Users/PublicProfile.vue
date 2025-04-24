@@ -67,7 +67,7 @@
                       :key="'userMeta' + fieldKey"
                       class="text-body-1"
                     >
-                      <v-list-item-content
+                      <div
                         v-if="
                           fieldName !== 'preferences' && fieldName !== 'orcid'
                         "
@@ -79,8 +79,8 @@
                           {{ field }}
                         </span>
                         <span v-else> None </span>
-                      </v-list-item-content>
-                      <v-list-item-content
+                      </div>
+                      <div
                         v-else-if="fieldName === 'preferences'"
                         class="py-2"
                       >
@@ -95,8 +95,8 @@
                             {{ booleanToString(pref) }}
                           </li>
                         </ul>
-                      </v-list-item-content>
-                      <v-list-item-content
+                      </div>
+                      <div
                         v-else-if="fieldName === 'orcid'"
                         class="d-block py-0"
                       >
@@ -120,7 +120,7 @@
                             <span class="ml-1">{{ field }}</span>
                           </a>
                         </div>
-                      </v-list-item-content>
+                      </div>
                     </v-list-item>
                   </v-list>
                 </v-card-text>
@@ -327,13 +327,16 @@
       </v-col>
     </v-row>
     <v-fade-transition>
-      <v-overlay
-        v-if="loading"
-        :absolute="false"
-        opacity="0.8"
-      >
-        <loaders />
-      </v-overlay>
+      <div>
+        <v-overlay
+          v-model="loading"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          <loaders />
+        </v-overlay>
+      </div>
     </v-fade-transition>
   </v-container>
 </template>

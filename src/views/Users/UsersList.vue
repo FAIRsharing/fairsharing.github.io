@@ -25,7 +25,7 @@
             class="underline-effect"
             :to="`/users/${item.id}`"
           >
-            {{ `https://fairsharing.org/users/${item.id}` }}
+            {{ getHostname()+"users/"+item.id }}
           </router-link>
         </template>
       </v-data-table>
@@ -35,9 +35,11 @@
 
 <script>
 import {mapActions, mapMutations, mapState} from "vuex"
+import getHostname from "@/utils/generalUtils";
 
 export default {
   name: "UsersList",
+  mixins: [getHostname],
   data() {
     return {
       searchString: '',

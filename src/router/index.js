@@ -655,7 +655,7 @@ let routes = [
        * Commenting below method in order to avoid duplicacy of next() which is called in
        * both methods
        */
-      // isLoggedIn(to, from, next, store);  Only superCurators can access users list
+      //isLoggedIn(to, from, next, store); Only superCurators can access users list
       isSuperCurator(to, from, next, store);
     },
   },
@@ -744,7 +744,10 @@ const router = createRouter({
   routes,
   scrollBehavior(to) {
     if (to.hash) {
-      return { selector: to.hash };
+      return {
+        selector: to.hash,
+        behavior: 'smooth',
+      };
     }
     return false;
   },

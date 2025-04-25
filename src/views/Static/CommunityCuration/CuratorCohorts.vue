@@ -29,7 +29,7 @@
               elevation="2"
               class="full-width text-white"
               height="40"
-              :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.display.smAndDown}]"
+              :class="[alumniCurator ? 'bg-green': 'bg-accent3',{'mb-2': $vuetify.display.smAndDown}]"
               @click="listAlumni()"
             >
               {{ alumniCurator ? "View Current Champions": "View Alumni" }}
@@ -46,7 +46,6 @@
               variant="solo"
               :items="yearList"
               label="Year"
-              variant="outlined"
               density="compact"
               @update:model-value="selectYear()"
             />
@@ -59,10 +58,11 @@
           >
             <v-btn
               elevation="2"
-              class="full-width text-white bg-green text-md-caption text-lg-body-2 font-weight-medium"
+              class="full-width text-white bg-green text-md-caption text-lg-body-1 font-weight-medium"
               :class="{'mt-n4 mb-4' : $vuetify.display.smAndDown}"
               height="40"
               href="/community_champions"
+              style="text-transform: uppercase !important;"
             >
               Community champions
             </v-btn>
@@ -126,7 +126,7 @@
                     @click="card.show_more = !card.show_more"
                   >
                     <v-icon
-                      class="toggleIcon"
+                      class="toggleIcon "
                       color="white"
                       size="small"
                     />
@@ -136,7 +136,7 @@
                   class="socialLinks"
                   :class="{'hide': !card.show_more}"
                 >
-                  <v-list-item class="align-baseline">
+                  <v-list class="align-baseline bg-transparent">
                     
                       <v-list-item
                         v-if="card.orcid"
@@ -200,17 +200,16 @@
                         </v-icon><span>{{ card.linkedin }}</span></a>
                       </v-list-item>
                     
-                  </v-list-item>
+                  </v-list>
                   <v-card-subtitle
                     v-for="skill in card.gained_skills"
                     :key="skill.name"
                     class="mb-n5 mt-n4"
                   >
                     <v-chip
-                      class="pa-1"
+                      class="pa-1 text-white bg-pink"
                       color="pink"
                       label
-                      text-color="white"
                       size="small"
                       :href="skill.url"
                       target="_blank"
@@ -227,24 +226,21 @@
                 </v-card-title>
                 <v-card-subtitle
                   v-if="card.early_adopter || card.curator_expert"
+                  class="opacity-100 overflow-initial mb-4"
                 >
                   <v-row>
                     <v-chip
                       v-if="card.early_adopter"
-                      class="ml-2"
-                      color="pink"
+                      class="ml-2 text-white bg-pink"
                       label
-                      text-color="white"
                       size="small"
                     >
                       Early Adopter
                     </v-chip>
                     <v-chip
                       v-if="card.curator_expert"
-                      class="ml-2"
-                      color="pink"
+                      class="ml-2 text-white bg-pink"
                       label
-                      text-color="white"
                       size="small"
                     >
                       Curation Expert
@@ -304,21 +300,20 @@
 
               <v-card-actions
                 v-if="card.id"
-                class="pa-0 full-width"
+                class="pa-0 full-width mb-n1"
               >
                 <v-btn
-                  elevation="2"
-                  dark
                   color="primary"
                   :href="`/users/${card.id}`"
-                  class="full-width py-6"
-                  tile
+                  class="full-width"
+                  variant="flat"
+                  height="48px"
                 >
                   <v-icon
                     start
                     class="mr-2"
                   >
-                    {{ 'fa fa-user-circle' }}
+                    {{ 'fas fa-user-circle' }}
                   </v-icon>
                   <span
                     class="text-truncate text-capitalize full-width"
@@ -413,8 +408,8 @@ export default {
     right: 0;
     top: 0;
     border: 27px solid transparent;
-    border-top: 27px solid var(--v-primary-base);
-    border-right: 27px solid var(--v-primary-base);
+    border-top: 27px solid rgb(var(--v-theme-primary));
+    border-right: 27px solid rgb(var(--v-theme-primary));
   }
 }
 
@@ -428,7 +423,7 @@ export default {
   height:18px !important;
   &:before {
     content: "";
-    width: 100%;
+    width: 90%;
     height: 2px;
     position: absolute;
     top: 50%;
@@ -453,7 +448,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--v-primary-base);
+  background-color: rgb(var(--v-theme-primary));
   width: 100%;
   height: 100%;
   z-index: 1;

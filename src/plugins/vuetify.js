@@ -1,5 +1,4 @@
 import { createVuetify } from "vuetify";
-import customBreakPoints from "./breakPoints";
 import fairSharingTheme from "./theme";
 import { aliases, fa } from "vuetify/iconsets/fa";
 import "vuetify/styles";
@@ -25,6 +24,5 @@ export default createVuetify({
       fa,
     },
   },
-  breakpoint: customBreakPoints,
 });
 

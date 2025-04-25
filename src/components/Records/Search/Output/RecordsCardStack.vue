@@ -5,9 +5,9 @@
       <v-card
         v-ripple
         class="pa-6 d-flex flex-column"
-        outlined
+        border
         tile
-        :height="$vuetify.breakpoint.smAndDown?'540px':'440px'"
+        :height="$vuetify.display.smAndDown?'540px':'440px'"
         :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
@@ -47,7 +47,7 @@
             xl="11"
           >
             <h3
-              :class="['mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-90',{'overflow-hidden':$vuetify.breakpoint.mdAndDown}]"
+              :class="['mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-90',{'overflow-hidden':$vuetify.display.mdAndDown}]"
               :style="record.status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
             >
               {{ record.name }}
@@ -100,13 +100,13 @@ export default {
   computed:{
     getMaxItemShown() {
       let maxItemShown;
-      if (this.$vuetify.breakpoint.mdAndDown) {
+      if (this.$vuetify.display.mdAndDown) {
         maxItemShown = 1;
       }
-      else if (this.$vuetify.breakpoint.lgOnly) {
+      else if (this.$vuetify.display.lgOnly) {
         maxItemShown = 2;
       }
-      else if (this.$vuetify.breakpoint.xlOnly) {
+      else if (this.$vuetify.display.xlOnly) {
         maxItemShown = 3;
       }
       return maxItemShown

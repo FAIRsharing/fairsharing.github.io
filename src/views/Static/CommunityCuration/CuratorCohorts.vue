@@ -27,9 +27,10 @@
           >
             <v-btn
               elevation="2"
-              class="full-width text-white"
+              class="full-width text-white text-md-caption text-lg-body-1 font-weight-medium"
               height="40"
               :class="[alumniCurator ? 'bg-green': 'bg-accent3',{'mb-2': $vuetify.display.smAndDown}]"
+              style="text-transform: uppercase !important;"
               @click="listAlumni()"
             >
               {{ alumniCurator ? "View Current Champions": "View Alumni" }}
@@ -119,18 +120,15 @@
                 cover
                 aspect-ratio="1"
               >
-                <v-card-actions style="position: absolute; top: 0; right: 0">
-                  <v-btn
-                    icon
+                <v-card-actions style="position: absolute; top: 0; right: 7px">
+                  <div
                     :class="card.show_more ? 'showMore' : 'showLess'"
-                    @click="card.show_more = !card.show_more"
                   >
-                    <v-icon
-                      class="toggleIcon "
-                      color="white"
-                      size="small"
+                    <div
+                      class="toggleIcon"
+                      @click="card.show_more = !card.show_more"
                     />
-                  </v-btn>
+                  </div>
                 </v-card-actions>
                 <div
                   class="socialLinks"
@@ -406,7 +404,9 @@ export default {
     content: '';
     position: absolute;
     right: 0;
-    top: 0;
+    top: 8px;
+    opacity: 1;
+    border-radius: unset;
     border: 27px solid transparent;
     border-top: 27px solid rgb(var(--v-theme-primary));
     border-right: 27px solid rgb(var(--v-theme-primary));
@@ -414,16 +414,21 @@ export default {
 }
 
 .toggleIcon {
+  position: absolute;
+  top: 15px;
+  right: 7px;
+  cursor: pointer;
   .showMore & {
     transform: rotate(45deg);
   }
+  transition: .3s cubic-bezier(.25,.8,.5,1), visibility 0s;
   z-index: 2;
   opacity: 0.9;
   width:18px !important;
   height:18px !important;
   &:before {
     content: "";
-    width: 90%;
+    width: 100%;
     height: 2px;
     position: absolute;
     top: 50%;

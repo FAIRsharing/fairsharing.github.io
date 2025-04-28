@@ -229,7 +229,9 @@
                   show-size
                   counter
                 />
-                <div class="mt-n3 mb-3">JPEG or PNG, max. file size 3MB.</div>
+                <div class="mt-n3 mb-3">
+                  JPEG or PNG, max. file size 3MB.
+                </div>
               </div>
 
               <v-autocomplete
@@ -302,7 +304,7 @@ import { mapActions, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js"
 import {toBase64} from "@/utils/generalUtils";
-import {isEmail, isImage,isLongEnough, isMastodon, isRequired, isUrl} from "@/utils/rules.js"
+import {isBluesky, isEmail, isImage,isLongEnough, isMastodon, isRequired, isUrl} from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 
@@ -371,6 +373,15 @@ export default {
           type: "input",
           rules: [
               isMastodon()
+          ]
+        },
+        {
+          name: "bluesky",
+          label: "Bluesky",
+          hint: null,
+          type: "input",
+          rules: [
+            isBluesky()
           ]
         },
         {
@@ -458,6 +469,7 @@ export default {
           orcid: this.user().metadata.orcid,
           twitter: this.user().metadata.twitter,
           mastodon: this.user().metadata.mastodon,
+          bluesky: this.user().metadata.bluesky
         }
       }
       return null;

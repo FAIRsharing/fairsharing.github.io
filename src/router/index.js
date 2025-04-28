@@ -131,6 +131,18 @@ let routes = [
 
   /* VARIOUS REDIRECTIONS */
   {
+    name: "fairassist",
+    path: "/fairassist",
+    redirect: () => {
+      window.location.assign(
+        [
+          process.env.VUE_APP_API_HOSTNAME,
+          "/search?fairsharingRegistry=FAIRassist",
+        ].join("")
+      );
+    },
+  },
+  {
     name: "article",
     path: "/article/:name",
     redirect: (to) => {

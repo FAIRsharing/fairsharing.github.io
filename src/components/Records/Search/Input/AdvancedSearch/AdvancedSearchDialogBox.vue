@@ -205,6 +205,7 @@ export default {
   watch: {
     getEditDialogStatus(newValue) {
       this.dialog = newValue;
+      this.updatedAdvancedSearchText = this.getAdvancedSearchText
     },
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;

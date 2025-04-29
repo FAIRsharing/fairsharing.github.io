@@ -18,7 +18,7 @@
           size="small"
           color="primary"
         >
-          {{ $vuetify.icons.values.loading }}
+          {{ customIcons.values.loading }}
         </v-icon>
       </v-btn>
     </template>
@@ -29,6 +29,7 @@
 <script>
 import { isEqual } from "lodash";
 import { mapActions } from 'vuex'
+import customIcons from "@/plugins/icons";
 
 import currentParameter from "@/utils/currentParameterMixin.js"
 
@@ -45,7 +46,8 @@ export default {
   },
   data: () => {
     return {
-      itemModified: {default: null, type: Object}
+      itemModified: {default: null, type: Object},
+      customIcons: customIcons,
     }
   },
   watch: {

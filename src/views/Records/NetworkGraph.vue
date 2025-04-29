@@ -245,13 +245,16 @@
 
 
         <v-fade-transition>
+          <div>
           <v-overlay
-            v-if="layoutRendering"
+            v-model="layoutRendering"
             :absolute="false"
             opacity="0.8"
+            class="align-center justify-center"
           >
             <Loaders />
           </v-overlay>
+          </div>
         </v-fade-transition>
       </v-col>
     </v-row>

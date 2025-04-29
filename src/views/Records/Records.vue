@@ -78,13 +78,16 @@
     </v-fade-transition>
 
     <v-fade-transition>
+      <div>
       <v-overlay
-        v-if="isLoading"
+        v-model="isLoading"
         :absolute="false"
         opacity="0.8"
+        class="align-center justify-center"
       >
         <Loaders />
       </v-overlay>
+      </div>
     </v-fade-transition>
   </v-main>
 </template>

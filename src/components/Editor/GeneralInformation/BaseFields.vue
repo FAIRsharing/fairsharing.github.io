@@ -4,13 +4,17 @@
     v-model="formValid"
     lazy-validation
   >
-    <v-fade-transition v-if="logoLoading">
+    <v-fade-transition>
+      <div>
       <v-overlay
+        v-model="logoLoading"
         :absolute="false"
         opacity="0.8"
+        class="align-center justify-center"
       >
         <Loaders />
       </v-overlay>
+      </div>
     </v-fade-transition>
 
     <v-row>

@@ -9,20 +9,18 @@
         type="avatar"
       >
         <v-menu
-          offset-y
-          bottom
           fixed
         >
-          <template #activator="{ on }">
-            <div v-on="on">
-              <v-tooltip top>
+          <template #activator="{ props }">
+            <div v-bind="props">
+              <v-tooltip location="top">
                 <!-- eslint-disable-next-line  vue/no-template-shadow -->
-                <template #activator="{ on }">
+                <template #activator="{ props }">
                   <v-icon
-                    large
+                    size="large"
                     class="mouse-cursor"
                     :class="{'active':!isSortHovered}"
-                    v-on="on"
+                    v-bind="props"
                     @mouseenter="isSortHovered=true"
                     @mouseleave="isSortHovered=false"
                   >
@@ -71,12 +69,12 @@
               :loading="loading"
               type="avatar"
             >
-              <v-tooltip top>
-                <template #activator="{ on }">
+              <v-tooltip location="top">
+                <template #activator="{ props }">
                   <v-icon
-                    large
+                    size="large"
                     :class="[{'active':isColumnList},'mr-2']"
-                    v-on="on"
+                    v-bind="props"
                     @click="changeListType('stackList')"
                   >
                     fa-list
@@ -89,12 +87,12 @@
               :loading="loading"
               type="avatar"
             >
-              <v-tooltip top>
-                <template #activator="{ on }">
+              <v-tooltip location="top">
+                <template #activator="{ props }">
                   <v-icon
-                    large
+                    size="large"
                     :class="{'active':!isColumnList}"
-                    v-on="on"
+                    v-bind="props"
                     @click="changeListType('columnList')"
                   >
                     fa-th
@@ -117,42 +115,43 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
+import {mapState} from "vuex";
 
-    import listControllerData from "@/data/ListControllerData.json";
+import listControllerData from "@/data/ListControllerData.json";
 
-    import HitCount from "./HitCount";
-    import Pagination from "./Pagination";
-    import Sorting from "./Sorting";
-    import SummaryDownload from "./SummaryDownload";
+import HitCount from "./HitCount";
+import Pagination from "./Pagination";
+import Sorting from "./Sorting";
+import SummaryDownload from "./SummaryDownload";
 
-    export default {
-        name: "ListController",
-        components: {HitCount, SummaryDownload, Pagination, Sorting},
-        props:{
-          options:{
-            type:Object,
-            default:null
-          }
-        },
-        data() {
-            return {
-              showMenu:false,
-              listControllerData: listControllerData,
-              isSortHovered: false,
-                isColumnList: false // need to go to store to have them synced in everywhere.
-            }
-        },
-        computed: {
-            ...mapState('records', ["totalPages", "loading", "currentPage"]),
-        },
-        methods: {
-            changeListType: function (listType) {
-                listType === 'stackList' ? this.isColumnList = false : this.isColumnList = true;
-                this.$emit('ChangeListType', this.isColumnList)
-            }
-        }
+export default {
+  name: "ListController",
+  components: {HitCount, SummaryDownload, Pagination, Sorting},
+  props:{
+    options:{
+      type:Object,
+      default:null
     }
+  },
+  emits:["ChangeListType"],
+  data() {
+    return {
+      showMenu:false,
+      listControllerData: listControllerData,
+      isSortHovered: false,
+      isColumnList: false // need to go to store to have them synced in everywhere.
+    }
+  },
+  computed: {
+    ...mapState('records', ["totalPages", "loading", "currentPage"]),
+  },
+  methods: {
+    changeListType: function (listType) {
+      listType === 'stackList' ? this.isColumnList = false : this.isColumnList = true;
+      this.$emit('ChangeListType', this.isColumnList)
+    }
+  }
+}
 </script>
 
 <style scoped>

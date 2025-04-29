@@ -2,6 +2,8 @@
   <v-pagination
     v-model="page"
     :length="totalPages"
+    active-color="primary"
+    variant="elevated"
     :total-visible="($vuetify.display.mdAndUp) ? 7 : 3"
   />
 </template>

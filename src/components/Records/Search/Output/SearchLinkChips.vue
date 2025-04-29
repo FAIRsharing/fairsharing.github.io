@@ -1,13 +1,13 @@
 <template>
   <section :class="['mb-1 overflow-hidden',{'chips-container-fixed-height':!isColumn}]">
-    <v-chip-group
-      column
+    <div
     >
       <v-chip
         v-for="(chip,index) in chips"
         :key="chip.label+'_'+index"
-        text-color="white"
         :color="getChipColor(chip)"
+        variant="flat"
+        class="mr-2 my-1"
         @click.prevent="updateSearchQuery(chip)"
       >
         <KeywordTooltip
@@ -24,7 +24,7 @@
       <v-chip
         v-if="remainTagCount!==0 && remainTagCount!==1"
         disabled
-        outlined
+        variant="outlined"
         label
       >
         {{ `+${remainTagCount} more tags` }}
@@ -32,12 +32,12 @@
       <v-chip
         v-else-if="remainTagCount===1"
         disabled
-        outlined
+        variant="outlined"
         label
       >
         {{ `one more tag` }}
       </v-chip>
-    </v-chip-group>
+    </div>
   </section>
 </template>
 

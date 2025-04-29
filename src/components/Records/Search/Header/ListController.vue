@@ -24,7 +24,7 @@
                     @mouseenter="isSortHovered=true"
                     @mouseleave="isSortHovered=false"
                   >
-                    fa-sort-amount-up-alt
+                    fas fa-sort-amount-up-alt
                   </v-icon>
                 </template>
                 <span>{{ listControllerData.sort }}</span>
@@ -77,7 +77,7 @@
                     v-bind="props"
                     @click="changeListType('stackList')"
                   >
-                    fa-list
+                    fas fa-list
                   </v-icon>
                 </template>
                 <span>{{ listControllerData.stackList }}</span>
@@ -95,7 +95,7 @@
                     v-bind="props"
                     @click="changeListType('columnList')"
                   >
-                    fa-th
+                    fas fa-th
                   </v-icon>
                 </template>
                 <span>{{ listControllerData.gridList }}</span>

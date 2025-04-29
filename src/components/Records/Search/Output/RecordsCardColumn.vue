@@ -27,7 +27,7 @@
             class="mr-8"
           />
           <h3
-            :class="['mt-2 mb-4 text-sm-h5 text-md-h6 text-body-2 text-h6 text-lg-h6 text-xl-h5 text-primary height-90 text-ellipses-height-3lines',{'overflow-hidden':$vuetify.display.mdAndDown}]"
+            :class="['mt-2 mb-4 text-sm-h5 text-md-h6 text-body-2 text-h6 text-lg-h6 text-xl-h5 text-primary text-ellipses-height-3lines',{'overflow-hidden':$vuetify.display.mdAndDown}]"
             :style="record.status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
           >
             {{ record.name }}

@@ -14,7 +14,7 @@
             size="small"
             end
           >
-            fa-chevron-down
+            fas fa-chevron-down
           </v-icon>
         </v-btn>
       </template>
@@ -48,7 +48,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>

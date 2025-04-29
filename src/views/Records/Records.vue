@@ -1,12 +1,6 @@
 <template>
   <v-main>
-    <transition name="fade">
-      <jump-to-top v-if="scrollStatus" />
-    </transition>
-    <v-container
-      fluid
-      class="pa-0"
-    >
+    <v-container fluid class="pa-0">
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
@@ -22,28 +16,17 @@
               'search-input-mb',
               {
                 'left-panel-fixed-lg': stickToTop && $vuetify.display.xlOnly,
-                'left-panel-default-lg':
-                  !stickToTop && $vuetify.display.xlOnly,
-                'left-panel-default':
-                  !stickToTop && !$vuetify.display.xlOnly,
+                'left-panel-default-lg': !stickToTop && $vuetify.display.xlOnly,
+                'left-panel-default': !stickToTop && !$vuetify.display.xlOnly,
                 'left-panel-fixed': stickToTop && !$vuetify.display.xlOnly,
               },
             ]"
           />
         </v-col>
-        <v-col
-          v-else
-          cols="12"
-          class="ml-3 mt-2"
-        >
-          <v-btn
-            class="bg-info"
-            @click="showFiltersSM = true"
-          >
+        <v-col v-else cols="12" class="ml-3 mt-2">
+          <v-btn class="bg-info" @click="showFiltersSM = true">
             <span class="mr-2">Show filters</span>
-            <v-icon size="small">
-              fa-filter
-            </v-icon>
+            <v-icon size="small"> fas fa-filter </v-icon>
           </v-btn>
         </v-col>
 
@@ -54,39 +37,32 @@
     </v-container>
 
     <v-fade-transition>
-      <v-dialog
-        v-model="showFiltersSM"
-        fullscreen
-        :scrim="false"
-        scrollable
-      >
+      <div>
+      <v-dialog v-model="showFiltersSM" fullscreen :scrim="false" scrollable>
         <v-card>
           <v-card-title class="bg-primary text-white pb-5">
             Add a filter
             <v-spacer />
-            <v-btn
-              fab
-              size="x-small"
-              @click="showFiltersSM = false"
-            >
-              <v-icon>fa-times</v-icon>
+            <v-btn size="x-small" @click="showFiltersSM = false">
+              <v-icon>fas fa-times</v-icon>
             </v-btn>
           </v-card-title>
           <SearchInput class="pa-5" />
         </v-card>
       </v-dialog>
+      </div>
     </v-fade-transition>
 
     <v-fade-transition>
       <div>
-      <v-overlay
-        v-model="isLoading"
-        :absolute="false"
-        opacity="0.8"
-        class="align-center justify-center"
-      >
-        <Loaders />
-      </v-overlay>
+        <v-overlay
+          v-model="isLoading"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          <Loaders />
+        </v-overlay>
       </div>
     </v-fade-transition>
   </v-main>
@@ -95,7 +71,6 @@
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 
-import JumpToTop from "@/components/Navigation/jumpToTop";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
@@ -105,7 +80,7 @@ import onScrollUtil from "@/utils/onScrollUtil";
 
 export default {
   name: "Records",
-  components: { Loaders, JumpToTop, SearchOutput, SearchInput },
+  components: { Loaders, SearchOutput, SearchInput },
   mixins: [filterChipsUtils, onScrollUtil],
   data: () => ({
     searchTerm: "",
@@ -128,20 +103,20 @@ export default {
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
         (obj, [key, value]) => ({ ...obj, [value]: key }),
-        {}
+        {},
       );
       let title = "Search";
       /* istanbul ignore else */
       if (
         Object.prototype.hasOwnProperty.call(
           this.$route.query,
-          "fairsharingRegistry"
+          "fairsharingRegistry",
         )
       ) {
         if (
           Object.prototype.hasOwnProperty.call(
             flipRecordTypes,
-            this.$route.query.fairsharingRegistry
+            this.$route.query.fairsharingRegistry,
           )
         ) {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
@@ -221,8 +196,9 @@ export default {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.query;
+
         /* istanbul ignore else */
-        if (query && query !== {}) {
+        if (query && typeof query !== "object") {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
             await this.$router.push({
@@ -249,7 +225,7 @@ export default {
       // To make sure that any lingering values from having viewed a collection are cleared out.
       // See SummaryDownload.vue for the code which looks for collection IDs when downloading a
       // summary of search results.
-      this.$store.commit('records/setCollectionIdsParam', []);
+      this.$store.commit("records/setCollectionIdsParam", []);
       try {
         this.showFiltersSM = false;
         let token = this.user().credentials.token;
@@ -270,7 +246,7 @@ export default {
      */
     getParameters: function () {
       return this.$store.getters["introspection/buildQueryParameters"](
-        this.currentPath
+        this.currentPath,
       );
     },
   },

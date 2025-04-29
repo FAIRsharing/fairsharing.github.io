@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="py-10 px-5 d-flex flex-column"
-    style="height:100%"
-  >
+  <div class="py-10 px-5 d-flex flex-column" style="height: 100%">
     <div
       v-for="(button, index) in buttons"
       :key="'button_' + index"
@@ -14,7 +11,14 @@
         :variant="!button.active ? 'outlined' : undefined"
         @click="goTo(button)"
       >
-        <span :class="['text-white',{'text-primary':!button.active}, {'text-accent3': button.primary && !button.active}]">{{ button.name }}</span>
+        <span
+          :class="[
+            'text-white',
+            { 'text-primary': !button.active },
+            { 'text-accent3': button.primary && !button.active },
+          ]"
+          >{{ button.name }}</span
+        >
       </v-btn>
     </div>
     <div style="flex-grow: 1">
@@ -26,12 +30,7 @@
         @click="goToLogin()"
       >
         Login
-        <v-icon
-          class="ml-1"
-          size="small"
-        >
-          fa fa-sign-in-alt
-        </v-icon>
+        <v-icon class="ml-1" size="small"> fa fa-sign-in-alt </v-icon>
       </v-btn>
       <v-btn
         v-else
@@ -40,74 +39,67 @@
         width="100%"
       >
         <v-avatar>
-          <v-icon
-            dark
-            color="white"
-          >
-            fa-user-circle
-          </v-icon>
+          <v-icon color="white"> fas fa-user-circle </v-icon>
         </v-avatar>
-        <span class="text-white ellipse-150">{{ user().credentials.username }}</span>
+        <span class="text-white ellipse-150">{{
+          user().credentials.username
+        }}</span>
       </v-btn>
     </div>
     <div>
       <router-link to="/">
-        <v-img
-          src="/assets/fairsharing-logo.svg"
-          height="70"
-          class="contain"
-        />
+        <v-img src="/assets/fairsharing-logo.svg" height="70" class="contain" />
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
   name: "NavigationDrawer",
-  data(){
+  data() {
     return {
       buttons: [
         {
           name: "Standards",
-          query: {"fairsharingRegistry": "Standard"},
+          query: { fairsharingRegistry: "Standard" },
           path: "search",
           color: "accent3",
           active: false,
-          primary: true
+          primary: true,
         },
         {
           name: "Databases",
-          query: {"fairsharingRegistry": "Database"},
+          query: { fairsharingRegistry: "Database" },
           path: "search",
           color: "accent3",
           active: false,
-          primary: true
+          primary: true,
         },
         {
           name: "Policies",
-          query: {"fairsharingRegistry": "Policy"},
+          query: { fairsharingRegistry: "Policy" },
           path: "search",
           color: "accent3",
           active: false,
-          primary: true
+          primary: true,
         },
         {
           name: "Collections",
-          query: {"fairsharingRegistry": "Collection"},
+          query: { fairsharingRegistry: "Collection" },
           path: "search",
           color: "primary",
           active: false,
-          primary: false
+          primary: false,
         },
         {
           name: "Organisations",
           path: "organisations",
-          query: {"fairsharingRegistry": undefined},
+          query: { fairsharingRegistry: undefined },
           color: "primary",
-          active:false,
-          primary: false
+          active: false,
+          primary: false,
         },
         {
           name: "Add content",
@@ -115,7 +107,7 @@ export default {
           query: undefined,
           color: "primary",
           active: false,
-          primary: false
+          primary: false,
         },
         {
           name: "Stats",
@@ -123,66 +115,66 @@ export default {
           query: undefined,
           color: "primary",
           active: false,
-          primary: false
-        }
-      ]
-    }
+          primary: false,
+        },
+      ],
+    };
   },
   computed: {
-    ...mapState('users', ["user"]),
-    route(){
+    ...mapState("users", ["user"]),
+    route() {
       return {
         path: this.$route.path,
-        query: this.$route.query
-      }
-    }
+        query: this.$route.query,
+      };
+    },
   },
   watch: {
     route: {
       deep: true,
-      handler(val){
-        this.makeActiveButton(val)
-      }
-    }
+      handler(val) {
+        this.makeActiveButton(val);
+      },
+    },
   },
-  mounted(){
-    this.makeActiveButton(this.$route)
+  mounted() {
+    this.makeActiveButton(this.$route);
   },
   methods: {
-    async goTo(button){
-      if (this.route.path.replace("/", "") !== button.path
-                    || this.route.query['fairsharingRegistry'] !== button.query['fairsharingRegistry']) {
-        this.buttons.forEach(button => {
-          button.active = false
+    async goTo(button) {
+      if (
+        this.route.path.replace("/", "") !== button.path ||
+        this.route.query["fairsharingRegistry"] !==
+          button.query["fairsharingRegistry"]
+      ) {
+        this.buttons.forEach((button) => {
+          button.active = false;
         });
         button.active = true;
         await this.$router.push({
           path: "/" + button.path,
-          query: button.query
-        })
+          query: button.query,
+        });
       }
     },
-    async goToLogin(){
-      if (this.$route.path !== '/accounts/login') {
+    async goToLogin() {
+      if (this.$route.path !== "/accounts/login") {
         await this.$router.push({
           path: "/accounts/login",
           query: {
-            goTo: this.$route.fullPath
-          }
-        })
+            goTo: this.$route.fullPath,
+          },
+        });
       }
     },
-    makeActiveButton(val){
-      this.buttons.forEach(button => {
+    makeActiveButton(val) {
+      this.buttons.forEach((button) => {
         button.active =
-                        button.path === val.path.replace("/", "")
-                        && button.query['fairsharingRegistry'] === val.query['fairsharingRegistry'];
+          button.path === val.path.replace("/", "") &&
+          button.query["fairsharingRegistry"] ===
+            val.query["fairsharingRegistry"];
       });
     },
-  }
-}
+  },
+};
 </script>
-
-<style scoped>
-
-</style>

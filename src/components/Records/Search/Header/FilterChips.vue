@@ -2,9 +2,7 @@
   <v-row class="mr-2 ml-2 pb-3">
     <v-chip
       v-if="getChips.length"
-      class="ma-2 mt-5"
-      color="red"
-      text-color="white"
+      class="ma-2 mt-5 bg-red text-white"
       @click="removeAllParams"
     >
       Clear All
@@ -14,10 +12,8 @@
       :key="'Chips_' + index"
     >
       <v-chip
-        class="ma-2 mt-5"
-        close
-        color="white"
-        text-color="secondary"
+        class="ma-2 mt-5 bg-white text-secondary"
+        closable
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
         {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>

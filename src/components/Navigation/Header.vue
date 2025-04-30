@@ -104,7 +104,7 @@
               class="mr-1 mt-sm-1 menuLinks"
               :class="{'px-2': $vuetify.display.lgAndDown}"
               :color="item.color"
-              :variant="!item.active ? 'outlined' : undefined"
+              :variant="!item.active ? 'outlined' : 'elevated'"
               :to="item.link"
               width="100%"
               min-width="167px"

@@ -60,8 +60,7 @@
             <!-- chips container -->
             <SearchLinkChips
               :chips="chips"
-              class="ml-10"
-              :remain-tag-count="remainTagCount"
+              class="ml-10" :remain-tag-count="remainTagCount"
             />
           </v-col>
         </v-row>
@@ -103,10 +102,10 @@ export default {
       if (this.$vuetify.display.mdAndDown) {
         maxItemShown = 1;
       }
-      else if (this.$vuetify.display.lgOnly) {
+      else if (this.$vuetify.display.lg) {
         maxItemShown = 2;
       }
-      else if (this.$vuetify.display.xlOnly) {
+      else if (this.$vuetify.display.xl) {
         maxItemShown = 3;
       }
       return maxItemShown

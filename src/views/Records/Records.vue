@@ -198,7 +198,7 @@ export default {
         let query = this.$route.query;
 
         /* istanbul ignore else */
-        if (query && typeof query !== "object") {
+        if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
             await this.$router.push({

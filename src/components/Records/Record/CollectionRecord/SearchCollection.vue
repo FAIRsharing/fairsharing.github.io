@@ -49,14 +49,14 @@
         >
           <span class="mr-2">Show filters</span>
           <v-icon size="small">
-            fa-filter
+            fas fa-filter
           </v-icon>
         </v-btn>
       </div>
       <!-- Alert -->
       <v-alert
         v-if="getRecordsLength <1 && !loading"
-        colored-border
+        border-color
         type="info"
       >
         No records match your search!
@@ -120,11 +120,10 @@
             Add a filter
             <v-spacer />
             <v-btn
-              fab
               size="x-small"
               @click="showFiltersSM = false"
             >
-              <v-icon>fa-times</v-icon>
+              <v-icon>fas fa-times</v-icon>
             </v-btn>
           </v-card-title>
           <SearchInput class="pa-5" />

@@ -42,8 +42,7 @@
           <div class="height-75">
             <SearchLinkChips
               :is-column="true"
-              :chips="chips"
-              :remain-tag-count="remainTagCount"
+              :chips="chips" :remain-tag-count="remainTagCount"
             />
           </div>
           <v-divider class="dashed-line" />

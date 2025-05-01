@@ -263,8 +263,6 @@ describe("Routes", () => {
         // eslint-enable no-promise-executor-return
     });
 
-
-
     it("gets sitemap from the api", async () => {
         process.env.VUE_APP_API_ENDPOINT = 'https://api.fairsharing.org'
         let assignMock = jest.fn();

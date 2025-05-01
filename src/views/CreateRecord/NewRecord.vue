@@ -12,7 +12,15 @@
         <v-col cols="12">
           <v-card v-if="loaded">
             <v-card-title class="primary white--text">
-              <h3 class="white--text">
+              <h3
+                v-if="fairassistOnly"
+                class="white--text"
+              >
+                Creating a new FAIRassist record
+              </h3>
+              <h3
+                v-else
+              >
                 Creating a new FAIRsharing record
               </h3>
             </v-card-title>
@@ -102,6 +110,9 @@
     export default {
       name: "NewRecordPage",
       components: {Loaders, BaseFields},
+      props: {
+        fairassistOnly: { type: Boolean, default: false }
+      },
       data(){
           return {
             record: {},
@@ -147,7 +158,7 @@
           ...mapActions("record", ["resetRecord"]),
           async getData(){
             await this.getCountries();
-            await this.getRecordTypes();
+            await this.getRecordTypes(this.fairassistOnly);
             await this.getTags();
           },
           async createRecord(){

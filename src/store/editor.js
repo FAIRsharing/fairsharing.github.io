@@ -151,25 +151,28 @@ let editorStore = {
             let countries = await graphClient.executeQuery(countriesQuery);
             state.commit("setCountries", countries['searchCountries'])
         },
-        async getRecordTypes(state){
+        async getRecordTypes(state, fairassistOnly=false){
             let recordTypes = [];
             let data = await graphClient.executeQuery(typesQuery);
             const size = data['fairsharingRegistries'].records.length;
             let currentItem = 0;
             data['fairsharingRegistries'].records.forEach(function(type){
-                currentItem += 1;
-                recordTypes.push({
-                    header: type.name
-                });
-                type.recordTypes.forEach(function(subType){
-                    recordTypes.push({
-                        name: subType.name,
-                        group: type.name,
-                        id: subType.id,
-                        description: subType.description
-                    })
-                });
-                if (currentItem < size) recordTypes.push({ divider: true });
+              if (fairassistOnly){
+                if (type.name.toLowerCase() !== 'fairassist') return;
+              }
+              currentItem += 1;
+              recordTypes.push({
+                  header: type.name
+              });
+              type.recordTypes.forEach(function(subType){
+                  recordTypes.push({
+                      name: subType.name,
+                      group: type.name,
+                      id: subType.id,
+                      description: subType.description
+                  })
+              });
+              if (currentItem < size) recordTypes.push({ divider: true });
             });
             state.commit("setRecordTypes", recordTypes);
         },

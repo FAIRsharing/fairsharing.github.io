@@ -205,7 +205,8 @@ describe("Routes", () => {
             old_policies_institution: '/search?fairsharingRegistry=Policy&recordType=institution&page=1',
             old_policies_society: '/search?fairsharingRegistry=Policy&recordType=society&page=1',
             old_policies_journal_publisher: '/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1',
-            old_policies_funder: '/search?fairsharingRegistry=Policy&recordType=funder&page=1'
+            old_policies_funder: '/search?fairsharingRegistry=Policy&recordType=funder&page=1',
+            fairassist: '/search?fairsharingRegistry=FAIRassist'
         }
 
         // eslint-disable no-promise-executor-return
@@ -261,8 +262,6 @@ describe("Routes", () => {
         });
         // eslint-enable no-promise-executor-return
     });
-
-
 
     it("gets sitemap from the api", async () => {
         process.env.VUE_APP_API_ENDPOINT = 'https://api.fairsharing.org'

@@ -355,7 +355,7 @@
         generatePopup() {
           let _module = this;
           let hash = _module.$route.hash;
-          hash = hash.substring(1)
+          hash = hash.substring(1).toLowerCase();
           const hashArray = this.infographics.map(({hash}) => hash)
           const isHash = hashArray.includes(hash)
           if (isHash) {

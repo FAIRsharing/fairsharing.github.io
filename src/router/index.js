@@ -462,11 +462,21 @@ let routes = [
     name: "New_content",
     path: "/create",
     component: NewRecord,
+    props: { fairassistOnly: false },
     beforeEnter(to, from, next) {
       isLoggedIn(to, from, next, store);
     },
   },
-
+  {
+    name: "New_FAIRassist_content",
+    path: "/create-fairassist",
+    component: NewRecord,
+    props: { fairassistOnly: true },
+    /* istanbul ignore next */
+    beforeEnter(to, from, next) {
+      isLoggedIn(to, from, next, store);
+    },
+  },
   /* Static pages */
   {
     name: "New",

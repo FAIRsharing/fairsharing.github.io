@@ -60,7 +60,7 @@
                     <span @click="copyURL(infographic)">
                       <v-icon
                         v-ripple
-                       
+
                         class="text-primary ml-2 cursor-pointer"
                         size="small"
                         v-bind="props"
@@ -258,7 +258,7 @@
                 <span @click="copyURL(infographicPopup.data)">
                   <v-icon
                     v-ripple
-                   
+
                     class="text-primary ml-2 cursor-pointer"
                     size="small"
                     v-bind="props"
@@ -285,96 +285,96 @@
 </template>
 
 <script>
-import Icon from "@/components/Icon";
-import educationData from '@/data/EducationData.json'
-export default {
-  name: "Educational",
-  components: {
-    Icon
-  },
-  data: () => {
-    return {
-      education: educationData.education,
-      infographics: educationData.infographics["data"],
-      applyCss: false,
-      selectedExpansion:{},
-      infographicPopup:{
-        data: {},
-        show: false,
-        loading: false
-      }
-    }
-  },
-  watch: {
-    $route: {
-      deep:true,
-      handler() {
-        this.applyCss = false
-        this.$nextTick(() => {
-          this.applyCss = true
-        })
-      }
-    }
-  },
-  async created() {
-    let _module = this;
-    await _module.$nextTick();
-    _module.applyCss = true
-    Object.keys(this.education).forEach(item => {
-      Object.keys(this.education[item]).forEach(obj => {
-        let foundHash = this.education[item][obj].find(it => `#${it.anchorLink}` === this.$route.hash)
-        if (foundHash) {
-          let arr = Object.keys(this.education[item]).map((ob, index) => {
-            return {
-              'index': index,
-              'value': ob.toString().split('.', 1).toString()
+  import Icon from "@/components/Icon";
+  import educationData from '@/data/EducationData.json'
+    export default {
+      name: "Educational",
+      components: {
+        Icon
+      },
+      data: () => {
+        return {
+          education: educationData.education,
+          infographics: educationData.infographics["data"],
+          applyCss: false,
+          selectedExpansion:{},
+          infographicPopup:{
+            data: {},
+            show: false,
+            loading: false
+          }
+        }
+      },
+      watch: {
+        $route: {
+          deep:true,
+          handler() {
+            this.applyCss = false
+            this.$nextTick(() => {
+              this.applyCss = true
+            })
+          }
+        }
+      },
+      async created() {
+        let _module = this;
+        await _module.$nextTick();
+        _module.applyCss = true
+        Object.keys(this.education).forEach(item => {
+          Object.keys(this.education[item]).forEach(obj => {
+            let foundHash = this.education[item][obj].find(it => `#${it.anchorLink}` === this.$route.hash)
+            if (foundHash) {
+              let arr = Object.keys(this.education[item]).map((ob, index) => {
+                return {
+                  'index': index,
+                  'value': ob.toString().split('.', 1).toString()
+                }
+              })
+              const faqNumber = this.$route.hash.split('-', 1).toString().substr(4, 2)
+              let key = Object.keys(this.education[item])[arr.find(item => item.value === faqNumber).index]
+              this.selectedExpansion[key] = foundHash.index * 1
             }
           })
-          const faqNumber = this.$route.hash.split('-', 1).toString().substr(4, 2)
-          let key = Object.keys(this.education[item])[arr.find(item => item.value === faqNumber).index]
-          this.selectedExpansion[key] = foundHash.index * 1
+        })
+        // update the UI padding and margin after DOM is fully loaded.
+      },
+      mounted() {
+        this.generatePopup()
+      },
+      methods: {
+        generateDoiLink(doi) {
+          return `https://doi.org/${doi}`
+        },
+        copyURL(item) {
+          navigator.clipboard.writeText(this.generateDoiLink(item.doi));
+          this.infographics.forEach(e => e.copyButtonStatus = false)
+          const itemClicked = this.infographics.filter(e => e.id === item.id)
+          itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
+        },
+        generatePopup() {
+          let _module = this;
+          let hash = _module.$route.hash;
+          hash = hash.substring(1).toLowerCase();
+          const hashArray = this.infographics.map(({hash}) => hash)
+          const isHash = hashArray.includes(hash)
+          if (isHash) {
+            const hashInfographic = this.infographics.filter(e => e.hash === hash)
+            _module.infographicPopup = {
+              data: hashInfographic[0],
+              show: true,
+              loading: true
+            };
+          }
+        },
+        closeDialog(){
+          let _module = this;
+          _module.infographicPopup.data = {};
+          _module.infographicPopup.show = false;
+          _module.infographicPopup.show = false;
+          _module.$router.replace({hash: ""});
         }
-      })
-    })
-    // update the UI padding and margin after DOM is fully loaded.
-  },
-  mounted() {
-    this.generatePopup()
-  },
-  methods: {
-    generateDoiLink(doi) {
-      return `https://doi.org/${doi}`
-    },
-    copyURL(item) {
-      navigator.clipboard.writeText(this.generateDoiLink(item.doi));
-      this.infographics.forEach(e => e.copyButtonStatus = false)
-      const itemClicked = this.infographics.filter(e => e.id === item.id)
-      itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
-    },
-    generatePopup() {
-      let _module = this;
-      let hash = _module.$route.hash;
-      hash = hash.substring(1)
-      const hashArray = this.infographics.map(({hash}) => hash)
-      const isHash = hashArray.includes(hash)
-      if (isHash) {
-        const hashInfographic = this.infographics.filter(e => e.hash === hash)
-        _module.infographicPopup = {
-          data: hashInfographic[0],
-          show: true,
-          loading: true
-        };
       }
-    },
-    closeDialog(){
-      let _module = this;
-      _module.infographicPopup.data = {};
-      _module.infographicPopup.show = false;
-      _module.infographicPopup.show = false;
-      _module.$router.replace({hash: ""});
     }
-  }
-}
 </script>
 
 <style scoped lang="scss">

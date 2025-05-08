@@ -13,6 +13,16 @@
           <v-card v-if="loaded">
             <v-card-title class="bg-primary text-white">
               <h3 class="text-white">
+            <v-card-title class="primary white--text">
+              <h3
+                v-if="fairassistOnly"
+                class="white--text"
+              >
+                Creating a new FAIRassist record
+              </h3>
+              <h3
+                v-else
+              >
                 Creating a new FAIRsharing record
               </h3>
             </v-card-title>
@@ -102,62 +112,65 @@ let restClient = new RESTClient();
 /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
      *
      */
-export default {
-  name: "NewRecordPage",
-  components: {Loaders, BaseFields},
-  data(){
-    return {
-      record: {},
-      newRecord: {},
-      recordsTypes: [],
-      formValid: false,
-      loaded: false,
-      message: {
-        error: false,
-        value: null
+    export default {
+      name: "NewRecordPage",
+      components: {Loaders, BaseFields},
+      props: {
+        fairassistOnly: { type: Boolean, default: false }
       },
-      rules: {
-        isUrl: function(){return isUrl()}
-      },
-      submitAnyway: false,
-      recordCreated: false,
-      loading: false,
-    }
-  },
-  computed: {
-    ...mapState('users', ["user"]),
-    ...mapState('editor', ['possibleDuplicates']),
-    ...mapGetters('record', ['getSection'])
-  },
-  async mounted(){
-    this.$nextTick(async function () {
-      this.loaded = false;
-      this.resetRecord();
-      await this.getData();
-      this.loaded = true;
-      this.$store.commit("editor/clearPossibleDuplicates");
-      this.$store.commit("record/setCreatingNewRecord");
-    });
-  },
-  methods: {
-    ...mapActions("editor",
-      ["getCountries",
-        "getRecordTypes",
-        "getTags",
-        "getPossibleDuplicates",
-        "cleanEditorStore"
-      ]),
-    ...mapActions("record", ["resetRecord"]),
-    async getData(){
-      await this.getCountries();
-      await this.getRecordTypes();
-      await this.getTags();
-    },
-    async createRecord(){
-      this.message = {
-        error: false,
-        value: null
-      };
+      data(){
+          return {
+            record: {},
+            newRecord: {},
+            recordsTypes: [],
+            formValid: false,
+            loaded: false,
+            message: {
+              error: false,
+              value: null
+            },
+            rules: {
+              isUrl: function(){return isUrl()}
+            },
+            submitAnyway: false,
+            recordCreated: false,
+            loading: false,
+          }
+        },
+        computed: {
+            ...mapState('users', ["user"]),
+            ...mapState('editor', ['possibleDuplicates']),
+            ...mapGetters('record', ['getSection'])
+        },
+        async mounted(){
+          this.$nextTick(async function () {
+            this.loaded = false;
+            this.resetRecord();
+            await this.getData();
+            this.loaded = true;
+            this.$store.commit("editor/clearPossibleDuplicates");
+            this.$store.commit("record/setCreatingNewRecord");
+          });
+        },
+        methods: {
+          ...mapActions("editor",
+              ["getCountries",
+               "getRecordTypes",
+               "getTags",
+               "getPossibleDuplicates",
+               "cleanEditorStore"
+              ]),
+          ...mapActions("record", ["resetRecord"]),
+          async getData(){
+            await this.getCountries();
+            await this.getRecordTypes(this.fairassistOnly);
+            await this.getTags();
+          },
+          async createRecord(){
+            this.message = {
+              error: false,
+              value: null
+            };
 
       let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
       // The user has not specified to ignore the warning of duplicate records.

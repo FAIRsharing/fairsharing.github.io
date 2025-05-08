@@ -4,37 +4,43 @@
     :id="filter.filterName + 'AutocompleteList' "
   >
     <v-expansion-panel-title> {{ filter.filterLabel }}</v-expansion-panel-title>
+
     <v-expansion-panel-text class="pl-5 pr-5">
+      <v-row no-gutters>
+        <v-col cols="12">
       <div :class="['d-flex',{'flex-column':$vuetify.display.mdAndDown}]">
-        <v-autocomplete
+        <v-combobox
           v-model="selectedValues"
-          :attach="true"
           :items="getValues"
+          :item-props="itemProps"
+          hide-no-data
+          hide-details="auto"
+          chips
+          multiple
+          closable-chips
           variant="solo"
           density="compact"
-          clearable
-          multiple
-          prepend-inner-icon="fa-search"
+          color="primary"
+          class="text-capitalize"
+          prepend-inner-icon="fas fa-search"
           :placeholder="`Search`"
-          item-title="key"
-          item-value="key"
           @focus="scrollTo(filter.filterName)"
           @click:clear="reset(filter)"
         >
-          <template #selection="data">
-            <v-chip class="bg-blue text-white mb-1">
-              <span class="chipsValueName">
-                {{ cleanString(data.item.key) }}
-              </span>
-            </v-chip>
-          </template>
-          <template #item="data">
-            <div class="d-flex full-width">
-              <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
-              <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>
-            </div>
-          </template>
-        </v-autocomplete>
+<!--          <template #selection="data">-->
+<!--            <v-chip class="bg-blue text-white mb-1">-->
+<!--              <span class="chipsValueName">-->
+<!--                {{ cleanString(data.item.raw.key) }}-->
+<!--              </span>-->
+<!--            </v-chip>-->
+<!--          </template>-->
+<!--          <template #item="data">-->
+<!--            <div class="d-flex full-width">-->
+<!--              <span class="filterValueName"> {{ cleanString(data.item.raw.key) }}</span>-->
+<!--              <span class="filterValueCount"> {{ data.item.raw['doc_count'] }}</span>-->
+<!--            </div>-->
+<!--          </template>-->
+        </v-combobox>
         <v-btn
           color="primary"
           class="ml-lg-2 custom-btn"
@@ -43,7 +49,10 @@
           Apply
         </v-btn>
       </div>
+        </v-col>
+    </v-row>
     </v-expansion-panel-text>
+
   </v-expansion-panel>
 </template>
 
@@ -51,6 +60,7 @@
 import {mapGetters, mapState} from 'vuex'
 
 import clearString from '@/utils/stringUtils'
+import {capitalize} from "lodash";
 
 export default {
   name: "FilterAutocomplete",
@@ -85,8 +95,10 @@ export default {
       let filterName = _module.filter.filterName;
       let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
 
+      _module.selectedValues = _module.selectedValues.map(({key}) => key)
       if (Object.keys(currentParams).indexOf(filterName) === -1) {
         if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
+
           if (_module.selectedValues.length === 1) {
             currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
           }
@@ -147,7 +159,15 @@ export default {
         container: '#scrollable-holder',
         easing: 'ease-in',
       })
-    }
+    },
+
+    itemProps(item) {
+      return {
+        key: item.key,
+        title: capitalize(this.cleanString(item.key)),
+        subtitle: item.doc_count,
+      }
+    },
   }
 }
 </script>

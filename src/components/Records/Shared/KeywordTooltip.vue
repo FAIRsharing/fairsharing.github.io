@@ -11,7 +11,7 @@
         </div>
       </template>
       <div class="tooltip">
-        <div :class="getChipColor(keyword)">
+        <div :class="'bg-'+getChipColor(keyword)">
           <b v-if="keyword.type" class="mr-1">Type:</b> {{ keyword.type }}
         </div>
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>

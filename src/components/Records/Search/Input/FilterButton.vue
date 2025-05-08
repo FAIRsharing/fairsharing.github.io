@@ -7,7 +7,7 @@
       <v-btn
         color="primary"
         class="mr-1 mr-lg-2"
-        :variant="!itemModified.active ? 'outlined' : undefined"
+        :variant="!itemModified.active ? 'outlined' : 'flat'"
         :class="[isFirstItem && !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems && !isFirstItem}]"
         v-bind="props"
         @click="selectFilter(itemModified)"
@@ -15,10 +15,10 @@
         <span v-if="itemModified.title!=='ALL'">{{ itemModified.title }}</span>
         <v-icon
           v-else
-          size="small"
+          size="large"
           color="primary"
         >
-          {{ customIcons.values.loading }}
+          fas fa-sync
         </v-icon>
       </v-btn>
     </template>
@@ -100,7 +100,7 @@ export default {
       });
 
       Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
-        : delete currentQuery[selectedItem.filterName];
+        : delete currentQuery[selectedItem.filrName];
       if (!isEqual(currentQuery, oldQuery)) {
         currentQuery['page'] = 1;
         this.$router.push({

@@ -7,9 +7,9 @@
     >
       Clear All
     </v-chip>
-    <div
-      v-for="(chip, index) in getChips"
-      :key="'Chips_' + index"
+    <v-chip-group
+      v-for="(chip) in getChips"
+      :key="'Chips_' + chip.paramVal"
     >
       <v-chip
         class="ma-2 mt-5 bg-white text-secondary"
@@ -18,7 +18,7 @@
       >
         {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
       </v-chip>
-    </div>
+    </v-chip-group>
   </v-row>
 </template>
 

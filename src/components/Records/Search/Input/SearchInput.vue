@@ -1,7 +1,7 @@
 <template>
   <v-card
     id="scrollable-holder"
-    :class="['pa-2', ($vuetify.display.mdAndUp) ? responsiveClassObject : 'fullHeight']"
+    :class="['pa-2 overflow-auto', ($vuetify.display.mdAndUp) ? responsiveClassObject : 'fullHeight']"
     border
     tile
     elevation="3"
@@ -29,7 +29,6 @@
       v-model="panel"
       multiple
       flat
-      hover
       variant="accordion"
     >
       <filter-autocomplete

@@ -1,0 +1,11 @@
+{
+  "queryName": "incompleteRecords",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "createdAt",
+    "type",
+    "incomplete"
+  ]
+}

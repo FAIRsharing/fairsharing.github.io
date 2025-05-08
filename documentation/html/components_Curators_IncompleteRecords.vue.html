@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Signup</title>
+	<title>FAIRsharing.org Source: components/Curators/IncompleteRecords.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,170 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Signup</h1>
+		<h1 class="page-title">Source: components/Curators/IncompleteRecords.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-col cols12>
+    &lt;v-card class="mb-2">
+      &lt;v-card-text v-if="incompleteRecords">
+        &lt;v-card-title
+          id="text-curator-search-2"
+          class="green white--text"
+        >
+          &lt;b> INCOMPLETE RECORDS &lt;/b>
+          &lt;v-spacer />
+          &lt;v-text-field
+            v-model="searches"
+            label="Search"
+            color="white"
+            single-line
+            hide-details
+            solo
+            class="searchField"
+            clearable
+          />
+        &lt;/v-card-title>
+        &lt;v-data-table
+          :loading="loading"
+          :headers="headerItems"
+          :items="incompleteRecords"
+          :search="searches"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
+        >
+          &lt;template
+            v-if="recordType"
+            #item="props"
+          >
+            &lt;tr>
+              &lt;td>
+                &lt;div class="d-flex align-center">
+                  &lt;v-avatar
+                    v-if="props.item.type"
+                    class="mr-2"
+                    :height="40"
+                  >
+                    &lt;Icon
+                      :item="props.item.type"
+                      :height="40"
+                      wrapper-class=""
+                    />
+                  &lt;/v-avatar>
+                  &lt;a :href="'/' + props.item.id">
+                    {{ props.item.recordNameID }}
+                  &lt;/a>
+                &lt;/div>
+              &lt;/td>
+              &lt;td>
+                {{ props.item.createdAt }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.required }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.recommended }}
+              &lt;/td>
+            &lt;/tr>
+          &lt;/template>
+        &lt;/v-data-table>
+      &lt;/v-card-text>
+    &lt;/v-card>
+  &lt;/v-col>
+&lt;/template>
 
-<header>
-    
-</header>
+&lt;script>
+import { mapState } from "vuex";
 
+import Icon from "@/components/Icon";
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
+import formatDate from "@/utils/generalUtils";
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>This component handles the sign-up/register page</p></div>
-        
+const client = new GraphClient();
 
-        
-<dl class="details">
-    
+export default {
+  name: "IncompleteRecords",
+  components: {
+    Icon,
+  },
+  mixins: [formatDate],
+  props:{
+    headerItems: {
+      type: Array,
+      default: null
+    },
+  },
+  data: () => {
+    return {
+      incompleteRecords:[],
+      searches: "",
+      recordType: {},
+      loading: false,
+    };
+  },
+  computed: {
+    ...mapState("users", ["user"]),
+  },
 
-	
+  async mounted() {
+    this.loading = true;
+    client.setHeader(this.user().credentials.token);
+    //Fetching incomplete records
+    let records = await client.executeQuery(getIncompleteRecords);
+    this.prepareIncompleteRecords(records)
+    this.loading = false;
+  },
+  methods: {
 
-	
+    /**
+     * Method to fetch incomplete records
+     * @param dataCuration
+     */
+    prepareIncompleteRecords(dataCuration) {
+      let records = dataCuration.incompleteRecords;
+      records.forEach((item) => {
+        let recommended = [];
+        item.incomplete.recommended.forEach(rec => {
+          recommended.push(rec.field)
+        });
+        let required = [];
+        item.incomplete.required.forEach(req => {
+          required.push(req.field)
+        });
+        let object = {
+          recordNameID: `${item.name} (${item.id})`,
+          type: item.type,
+          id: item.id,
+          recommended: recommended.sort().join(', '),
+          required: required.sort().join(', '),
+        };
+        object.createdAt = this.formatDate(item.createdAt);
+        this.incompleteRecords.push(object);
+      });
+    },
+  },
+};
+&lt;/script>
 
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Users_Signup.vue.html">views/Users/Signup.vue</a>,
-				 <a href="views_Users_Signup.vue.html#sunlight-1-line-6">line 6</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+&lt;style scoped>
+::v-deep .v-data-table-header tr th {
+  white-space: nowrap;
+}
+.searchField {
+  width: 100%;
+  max-width: 400px
+}
+&lt;/style></pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +254,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

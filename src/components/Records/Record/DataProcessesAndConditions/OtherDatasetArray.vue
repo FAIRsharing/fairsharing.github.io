@@ -2,7 +2,7 @@
   <div
     v-if="currentItem"
     class="pa-4 mt-4 data-holder d-flex flex-row align-content-start justify-start"
-    :class="{'flex-column': $vuetify.breakpoint.xsOnly}"
+    :class="{'flex-column': $vuetify.display.xsOnly}"
   >
     <b class="full-width min-width-200 max-width-200 text-capitalize">{{ cleanString(title) }}</b>
     <!--  Name    -->

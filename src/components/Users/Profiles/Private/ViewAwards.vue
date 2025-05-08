@@ -31,9 +31,9 @@ export default {
   computed: {
     headers() {
       let headers = [
-        {text: 'Role', value: 'role', align: 'center'},
-        {text: 'Start Date', value: 'start_date', align: 'center'},
-        {text: 'End Date', value: 'end_date', align: 'center'},
+        {title: 'Role', value: 'role', align: 'center'},
+        {title: 'Start Date', value: 'start_date', align: 'center'},
+        {title: 'End Date', value: 'end_date', align: 'center'},
       ];
       return headers;
     },

@@ -511,7 +511,7 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
 import saveSearch from "@/store";
 import { isImage, isRequired, isUrl } from "@/utils/rules.js"
-import { cleanString } from "@/utils/stringUtils"
+import stringUtils from "@/utils/stringUtils"
 import NotFound from "@/views/Errors/404"
 
 let graphClient = new GraphClient();
@@ -523,7 +523,7 @@ const restClient = new RestClient();
 export default {
   name: "Organisation",
   components: {SearchOrganisationRecords, SectionTitle, NotFound, Loaders},
-  mixins: [cleanString],
+  mixins: [stringUtils],
   data: () => {
     return {
       error: true,

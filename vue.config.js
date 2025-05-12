@@ -8,18 +8,18 @@ module.exports = defineConfig({
     config.plugin("CompressionPlugin").use(CompressionPlugin);
     config.resolve.alias.set("vue", "@vue/compat");
     config.module
-        .rule("vue")
-        .use("vue-loader")
-        .tap((options) => {
-          return {
-            ...options,
-            compilerOptions: {
-              compatConfig: {
-                MODE: 2,
-              },
+      .rule("vue")
+      .use("vue-loader")
+      .tap((options) => {
+        return {
+          ...options,
+          compilerOptions: {
+            compatConfig: {
+              MODE: 2,
             },
-          };
-        });
+          },
+        };
+      });
     config.plugin("define").tap((definitions) => {
       Object.assign(definitions[0], {
         __VUE_OPTIONS_API__: "true",

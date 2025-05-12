@@ -33,7 +33,6 @@ import "vue-json-pretty/lib/styles.css";
 import { createApp } from "vue";
 import createVuetify from "../src/plugins/vuetify";
 import { loadFull } from "tsparticles";
-import { createHead } from "@unhead/vue";
 
 // Variablepie(Highcharts);
 // More(Highcharts);
@@ -70,7 +69,6 @@ async function bootstrapApp() {
 //   MODE: 3,
 // });
 
-const head = createHead();
 
 const app = createApp(App)
   .use(createVuetify)
@@ -82,7 +80,6 @@ const app = createApp(App)
     },
   })
   .use(bootstrapApp)
-  .use(head)
   .use(HighchartsVue)
   .use(VueScrollTo)
   // .use(VueMoment)

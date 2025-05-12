@@ -125,6 +125,7 @@ export default {
       return title;
     },
     currentPath: function () {
+      document.title = "FAIRsharing | " + this.getTitle // Setting up the metaInfo of the page
       let title = this.$route.path.replace("/", "");
       const client = this;
       let queryParams = {};
@@ -249,15 +250,6 @@ export default {
         this.currentPath,
       );
     },
-  },
-  /**
-   * Setting up the metaInfo of the page
-   * @returns {{title: String}}
-   * */
-  metaInfo() {
-    return {
-      title: "FAIRsharing | " + this.getTitle,
-    };
   },
 };
 </script>

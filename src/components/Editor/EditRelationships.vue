@@ -323,6 +323,7 @@
               v-if="addingRelation"
               class="flexCard"
               width="100%"
+              min-height="450px"
             >
               <v-card-title class="green white--text">
                 Add a new relationship
@@ -592,7 +593,7 @@
               let parts_of = _module.sections.relations.data.recordAssociations.filter((item) => {
                 return item.recordAssocLabel === 'part_of';
               })
-              if (parts_of.length > 0) {
+              if (parts_of.length > 0 && _module.addingRelation.recordAssocLabel.relation === 'part_of') {
                 _module.multipleRelationship = true;
                 _module.multipleRelationshipMessage = "A principle or metric can be part of no more than 1 other of the same type.";
                 return;
@@ -602,7 +603,7 @@
               let measures = _module.sections.relations.data.recordAssociations.filter((item) => {
                 return item.recordAssocLabel === 'measures_principle';
               })
-              if (measures.length > 0) {
+              if (measures.length > 0 && _module.addingRelation.recordAssocLabel.relation === 'measures_principle') {
                 _module.multipleRelationship = true;
                 _module.multipleRelationshipMessage = "A metric can only measure one principle.";
                 return;

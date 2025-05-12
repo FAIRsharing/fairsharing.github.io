@@ -499,7 +499,8 @@
               // If it is null, compare the search string only against the name...
               if (obj.linkedRecord.abbreviation == null) {
                 if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                    && (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true ||
+                        this.labelsFilter[obj.linkedRecord.type.toLowerCase()] === true )){
                   return obj;
                 }
               }

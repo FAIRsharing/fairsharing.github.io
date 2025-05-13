@@ -599,16 +599,6 @@
                 return;
               }
             }
-            if (_module.currentRecord.fairsharingRecord.type === "metric") {
-              let measures = _module.sections.relations.data.recordAssociations.filter((item) => {
-                return item.recordAssocLabel === 'measures_principle';
-              })
-              if (measures.length > 0 && _module.addingRelation.recordAssocLabel.relation === 'measures_principle') {
-                _module.multipleRelationship = true;
-                _module.multipleRelationshipMessage = "A metric can only measure one principle.";
-                return;
-              }
-            }
             // Finally get to add the new relation.
             let newRelation = {
               linkedRecord: _module.addingRelation.linkedRecord,

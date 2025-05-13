@@ -1,15 +1,22 @@
 // base class
 a {
   text-decoration: none;
+  color: #27aae1;
 }
 
 ul {
   list-style: none;
+  padding-left: 24px;
+}
+
+ol {
+  padding-left: 24px;
 }
 
 p {
   line-height: 1.6;
   text-align: justify;
+  margin-bottom: 16px;
 }
 
 pre {

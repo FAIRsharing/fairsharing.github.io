@@ -9,7 +9,7 @@
       Introduction
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The new FAIRsharing application has a REST API which offers the opportunity to both query and modify data. It's accessible to any user with an account on the system for showing basic information and for modifying any record you've created or maintain. To query more detailed information from it, please email
       <a
@@ -23,7 +23,7 @@
       Creating an account
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       You can create an account by going to the <a
         :href="getHostname()"
@@ -36,7 +36,7 @@
       Using the API
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The base URL of the API is <mark>https://api.fairsharing.org</mark>; paths below may only give the route rather than the full URL, e.g. <mark>/fairsharing_records/123</mark>.
     </p>
@@ -45,7 +45,7 @@
       Logging in
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       You will need to POST the following to <mark>https://api.fairsharing.org/users/sign_in</mark>:
     </p>
@@ -66,7 +66,7 @@
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       A successful response will return something like the following:
     </p>
@@ -95,7 +95,7 @@
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       In addition to the general information about your account there's a "jwt" field. This is a JSON web token which is valid until the expiry time given, and you'll need this for any further interactions with the API. The way it should be used is to send headers with each request, as follows:
     </p>
@@ -112,12 +112,12 @@
  </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Here are some examples of both logging in and quering a record. Each of these queries is for a single FAIRsharing Record with ID of 1.
     </p>
     <p
-      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       cURL
     </p>
@@ -139,7 +139,7 @@ curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Python
     </p>
@@ -180,7 +180,7 @@ print(response.text)
  </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Ruby
     </p>
@@ -223,7 +223,7 @@ puts response.read_body
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       R (user contributed)
     </p>
@@ -273,7 +273,7 @@ data&lt;-query_con$data
       Available queries
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       These are summarised in the table below.
     </p>
@@ -296,7 +296,7 @@ data&lt;-query_con$data
       Modifying your records
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       We expect that most users will wish to use the API for querying the data we hold. However, some who maintain records may like to keep them updated in an automated way and so could write scripts which would do this. Some may wish to create records, for example if they would like to have their data replicated in FAIRsharing; pushing data to FAIRsharing would allow such collaborators to update our records immediately to ensure that they always reflect the current information in their own portal.
     </p>
@@ -304,7 +304,7 @@ data&lt;-query_con$data
       Basic parameters
     </h3>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       To create or modify records you will need to post a FAIRsharing record object. For creation, all the terms necessary must be included, but to modify a record you need only include the changed terms. Please note, though, that the "metadata" field must always be included in its entirety. For example, if you changed only the record's name in its metadata then you'd still need to include all the other parts of this field.
       <br>
@@ -348,7 +348,7 @@ data&lt;-query_con$data
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The metadata section contains information about the record itself, such as its name, contact details for resource maintainers etc. The full specifications for the metadata field, in the form of the JSON schemas used to validate it, can be found the following URLs:
     </p>
@@ -515,7 +515,7 @@ data&lt;-query_con$data
     </ul>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       A record's metadata will be validated against the following, in order:
     </p>
@@ -534,7 +534,7 @@ data&lt;-query_con$data
 
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       So, the metadata field may contain anything in any of the above three, and nothing else.
     </p>
@@ -543,7 +543,7 @@ data&lt;-query_con$data
 
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The other fields contain references to other objects in our system, such as publications or various other tags. To modify these an array of the IDs of the relevant objects must be sent to the server. For example, a PUT of the following data would remove subject 3 from the record created in the previous step (by sending only 1 and 2).
     </p>
@@ -562,7 +562,7 @@ data&lt;-query_con$data
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       In order to determine the IDs of these objects you can POST to the following URLs:
     </p>
@@ -583,12 +583,12 @@ data&lt;-query_con$data
       </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       N.B. "taxonomies" is referred to as "species" on the FAIRsharing website's pages.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Each query has an optional parameter of <mark>q:</mark> if omitted then all records will be returned. Otherwise, a search will be performed as with <mark>/search/fairsharing_records</mark> (this latter is paginated - see earlier for pagination parameters).
     </p>
@@ -597,7 +597,7 @@ data&lt;-query_con$data
       fairsharing_record search fields
     </h3>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The following fields may be used when performing a POST to /search/fairsharing_records
     </p>
@@ -617,14 +617,14 @@ data&lt;-query_con$data
       <li>is_maintained*</li>
     </ul>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       "q" is a general search term and will be used to search across all records. The other terms will be used to restrict
       results to those with an exact match. Anything marked with "*" takes either "true" or "false".
     </p>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Example:
     </p>
@@ -646,7 +646,7 @@ data&lt;-query_con$data
       Complex parameters
     </h3>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Some other objects are not added directly to a FAIRsharing record as above; an additional step is necessary to modify them. These are:
     </p>
@@ -657,7 +657,7 @@ data&lt;-query_con$data
       <li>Other FAIRsharing records (e.g. related standards).</li>
     </ul>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The IDs for these may be found as above:
     </p>
@@ -677,7 +677,7 @@ data&lt;-query_con$data
       Licences:
     </h3>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       POST the following to <mark>/licence_links</mark>
     </p>
@@ -698,12 +698,12 @@ data&lt;-query_con$data
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The IDs for licence links can be seen in the licence_link field of your record, which you can get according to the initial example given earlier, e.g. a GET to <mark>/fairsharing_records/1</mark> (using your record's ID). This field will contain both the ID of the licence and the ID of the link (only the latter is needed).
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       This will add the licence with ID of 1 to the FAIRsharing record with the ID of 1. The "relation" field is optional; you may supply any of the following values:
     </p>
@@ -713,12 +713,12 @@ data&lt;-query_con$data
       <li>undefined</li>
     </ul>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       To modify a licence_link, PUT to /licence_links/1, using the ID of the licence link.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       To delete one, use <mark>DELETE /licence_links/1</mark>, again with the ID of your link.
     </p>
@@ -726,7 +726,7 @@ data&lt;-query_con$data
       Organisations and grants:
     </h3>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Organisations are linked to FAIRsharing records by means of an organisation_link, created similarly to licence_links, above. A grant belongs to the relationship between and organisation and FAIRsharing record, if the organisation funds the resource to which the record refers. So, creation is as follows:
     </p>
@@ -746,7 +746,7 @@ data&lt;-query_con$data
       </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The "relation" field can be any of the following:
     </p>
@@ -757,12 +757,12 @@ data&lt;-query_con$data
       <li>undefined</li>
     </ul>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       If the relationship is "funds" then you will need to create a grant. This is done at the same time as creating the organisation_link:
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       <mark>POST /grants</mark> with these data:
     </p>
@@ -787,12 +787,12 @@ data&lt;-query_con$data
       </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Creating an organisation is simpler:
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       <mark>POST /organisations</mark>
     </p>
@@ -822,7 +822,7 @@ data&lt;-query_con$data
     </vue-code-highlight>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       In this case file_data should be the <a
         href="https://www.base64encode.org/"
@@ -831,7 +831,7 @@ data&lt;-query_con$data
       >base64 encoded</a> file data. The logo is optional, however.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Organisation types can be found via a GET to <mark>/organisation_types.</mark>
     </p>
@@ -839,7 +839,7 @@ data&lt;-query_con$data
       Related FAIRsharing records:
     </h3>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       FAIRsharing records can be related to others in a variety of ways. This is represented by creating a record_association which describes the linking record, the record to which it links and what the relationship between them is. These can be created as follows:
     </p>
@@ -858,22 +858,22 @@ data&lt;-query_con$data
       </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       This will create a link from the FAIRsharing record with ID of 1 to that with ID of 2, and apply the label with id 3 to this relationship.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       A link can be deleted by means of <mark>DELETE /record_associations/1</mark>, supplying the correct ID for the record association.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The IDs for record associations can be found in the <mark>linked_records</mark> field of the data returned from the API for your record. Information on labels can be found via a GET to <mark>/record_association_labels</mark>.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       As an alternative, you can use <mark>PUT /fairsharing_records/1</mark> with the following data structure:
     </p>
@@ -897,12 +897,12 @@ data&lt;-query_con$data
       </pre>
     </vue-code-highlight>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The above data will create a new record association between your record and the record with ID of 2, assigning the label with ID of 5 to it. Also, it will delete the existing record_association with ID of 5.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Certain relationships are only permitted between certain types or registries of records. This is summarised below. If a relationship isn't listed then it can be applied between any two records.
     </p>
@@ -926,7 +926,7 @@ data&lt;-query_con$data
       JSON+LD
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Are you looking for structured data within an individual record's page? The FAIRsharing site implements content
       negotiation, so if you make a request for a record, specifying JSON or JSON+LD headers, some basic JSON data
@@ -947,7 +947,7 @@ data&lt;-query_con$data
       Contact
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       If you are using this API to update your records you are probably already in contact with us. Otherwise, any queries can be directed to <a href="mailto:contact@fairsharing.org">contact@fairsharing.org</a>.
     </p>

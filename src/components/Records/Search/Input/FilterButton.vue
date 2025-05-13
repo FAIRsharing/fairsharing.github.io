@@ -1,25 +1,27 @@
 <template>
   <v-tooltip
     location="bottom"
-    :disabled="itemModified.tooltip===undefined || $vuetify.display.smAndDown"
+    :disabled="itemModified.tooltip === undefined || $vuetify.display.smAndDown"
   >
     <template #activator="{ props }">
       <v-btn
         color="primary"
         class="mr-1 mr-lg-2"
         :variant="!itemModified.active ? 'outlined' : 'flat'"
-        :class="[isFirstItem && !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems && !isFirstItem}]"
+        :class="[
+          isFirstItem && !doubleItems ? 'first-child' : 'flex-1',
+          {
+            'button-style-md-screens': mdScreens,
+            'buttons-md-style': multipleItems && !isFirstItem,
+          },
+        ]"
         v-bind="props"
         @click="selectFilter(itemModified)"
       >
-        <span v-if="itemModified.title!=='ALL'">{{ itemModified.title }}</span>
-        <v-icon
-          v-else
-          size="large"
-          color="primary"
-        >
-          fas fa-sync
-        </v-icon>
+        <span v-if="itemModified.title !== 'ALL'">{{
+          itemModified.title
+        }}</span>
+        <v-icon v-else size="large" color="primary"> fas fa-sync </v-icon>
       </v-btn>
     </template>
     <span>{{ itemModified.tooltip }}</span>
@@ -28,27 +30,27 @@
 
 <script>
 import { isEqual } from "lodash";
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 import customIcons from "@/plugins/icons";
 
-import currentParameter from "@/utils/currentParameterMixin.js"
+import currentParameter from "@/utils/currentParameterMixin.js";
 
 export default {
   name: "FilterButton",
   mixins: [currentParameter],
   props: {
-    item: {default: null, type: Object},
-    isFirstItem: {default: false, type: Boolean},
-    mdScreens: {default: null, type: Boolean},
-    itemParentIndex: {default: 0, type: Number},
-    multipleItems: {default: false, type: Boolean},
-    doubleItems: {default: false, type: Boolean},
+    item: { default: null, type: Object },
+    isFirstItem: { default: false, type: Boolean },
+    mdScreens: { default: null, type: Boolean },
+    itemParentIndex: { default: 0, type: Number },
+    multipleItems: { default: false, type: Boolean },
+    doubleItems: { default: false, type: Boolean },
   },
   data: () => {
     return {
-      itemModified: {default: null, type: Object},
+      itemModified: { default: null, type: Object },
       customIcons: customIcons,
-    }
+    };
   },
   watch: {
     currentParameter: {
@@ -60,10 +62,10 @@ export default {
         const title = _module.itemModified.title;
         _module.checkCurrentParameters(title, fieldValue, currentValue);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
-  mounted(){
+  mounted() {
     this.$nextTick(function () {
       const _module = this;
       _module.itemModified = JSON.parse(JSON.stringify(this.item));
@@ -74,9 +76,11 @@ export default {
     });
   },
   methods: {
-    checkCurrentParameters: function(title, fieldValue, currentValue) {
+    ...mapActions("searchFilters", ["resetFilterButtons", "activateButton"]),
+    checkCurrentParameters: function (title, fieldValue, currentValue) {
       if (fieldValue === null) {
-        this.itemModified.active = title === 'all' || title === 'match all terms';
+        this.itemModified.active =
+          title === "all" || title === "match all terms";
       }
       else {
         if (currentValue === undefined) {
@@ -88,24 +92,27 @@ export default {
       }
     },
     /**
-             * Apply the filters by building the new query parameters using the form data.
-             */
+     * Apply the filters by building the new query parameters using the form data.
+     */
     applyFilters: function (selectedItem) {
       const _module = this;
       let currentQuery = {};
       let oldQuery = {};
+
       Object.keys(_module.$route.query).forEach(function (param) {
         currentQuery[param] = _module.$route.query[param];
-        oldQuery[param] = _module.$route.query[param]
+        oldQuery[param] = _module.$route.query[param];
       });
-
-      Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
-        : delete currentQuery[selectedItem.filrName];
+      Object.prototype.hasOwnProperty.call(selectedItem, "value")
+        ? (currentQuery[selectedItem.filterName] = encodeURIComponent(
+          selectedItem.value,
+        ))
+        : delete currentQuery[selectedItem.filterName];
       if (!isEqual(currentQuery, oldQuery)) {
-        currentQuery['page'] = 1;
+        currentQuery["page"] = 1;
         this.$router.push({
           name: _module.$route.name,
-          query: currentQuery
+          query: currentQuery,
         });
       }
     },
@@ -113,33 +120,31 @@ export default {
       let _module = this;
       _module.resetFilterButtons(_module.itemParentIndex);
       _module.activateButton({
-        'activeItem': selectedItem,
-        'itemParentIndex': _module.itemParentIndex
+        activeItem: selectedItem,
+        itemParentIndex: _module.itemParentIndex,
       });
       this.applyFilters(selectedItem);
     },
-    ...mapActions("searchFilters", ["resetFilterButtons", "activateButton"])
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-    .button-style-md-screens {
-        font-size: 9px !important;
-    }
+.button-style-md-screens {
+  font-size: 9px !important;
+}
 
-    .first-child {
-        font-size: 11px;
-        width: 16.5%;
-    }
+.first-child {
+  font-size: 11px;
+  width: 16.5%;
+}
 
-    .flex-1 {
-        font-size: 11px;
-        flex: 1;
-    }
+.flex-1 {
+  font-size: 11px;
+  flex: 1;
+}
 
-    .buttons-md-style {
-        min-width: 32px !important;
-    }
-
+.buttons-md-style {
+  min-width: 32px !important;
+}
 </style>

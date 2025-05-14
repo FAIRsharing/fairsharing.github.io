@@ -30,7 +30,6 @@
         <div class="d-flex align-center mt-2">
           <div class="width-35">
             <Icon
-              v-if="getField('registry')!=='Collection'"
               item="DOI"
               heigh="30"
               wrapper-class=""
@@ -38,7 +37,7 @@
             />
           </div>
           <div
-            v-if="getField('doi') && getField('registry')!=='Collection'"
+            v-if="getField('doi')"
             class="d-flex flex-row"
           >
             <a
@@ -65,7 +64,7 @@
               <span v-else> URL copied </span>
             </v-tooltip>
           </div>
-          <span v-else-if="getField('registry')!=='Collection'">
+          <span v-else>
             <a
               href="https://fairsharing.gitbook.io/fairsharing/#getting-a-record-doi"
               target="_blank"

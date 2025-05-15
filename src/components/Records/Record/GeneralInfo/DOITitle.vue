@@ -70,7 +70,7 @@
               target="_blank"
               class="underline-effect"
             >
-              Awaiting DOI
+              {{ awaitingDoi() }}
             </a>
           </span>
         </div>
@@ -139,6 +139,19 @@ export default {
     copyURL() {
       this.copyButtonStatus = true;
       return this.generateDoiLink(this.currentRecord['fairsharingRecord'].doi)
+    },
+    awaitingDoi() {
+      if (this.currentRecord['fairsharingRecord'].status.toLowerCase() === 'ready') {
+        return "Awaiting DOI";
+      }
+      else if (this.currentRecord['fairsharingRecord'].status.toLowerCase() === 'uncertain' ||
+          this.currentRecord['fairsharingRecord'].status.toLowerCase() === 'deprecated'
+      ) {
+        return "DOI will not be issued";
+      }
+      else {
+        return "DOIs are only issued to records with 'Ready' status";
+      }
     }
   }
 }

@@ -382,7 +382,6 @@
                 }
               }
             },
-          // TODO: Check why object types doesn't respond correctly.
             initialSections() {
               return {
                 "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
@@ -440,8 +439,6 @@
             this.tags = this.getPartialTags(sections);
           },
           isNew(term, section){
-            //console.log(JSON.stringify(this.getSection("generalInformation").initialData, null, 2));
-            //console.log(JSON.stringify(this.initialSections, null, 2));
             return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
           }
         },

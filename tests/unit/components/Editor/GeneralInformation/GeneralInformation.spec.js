@@ -185,6 +185,9 @@ describe("Edit -> GeneralInformation.vue", function() {
             {label: "newUserDefinedTag"},
             {label: "existingUserDefinedTag", id:555}
         ];
+        wrapper.vm.currentFields.objectTypes = [
+          {label: "a type", id:1}
+        ];
         let tagStub = sinon.stub(RestClient.prototype, "createNewUserDefinedTag");
         tagStub.returns({
             id: 666,

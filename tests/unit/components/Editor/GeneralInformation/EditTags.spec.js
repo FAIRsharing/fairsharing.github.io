@@ -116,7 +116,10 @@ describe('Editor -> EditTags.vue', () => {
         expect(wrapper.vm.getSection("generalInformation").data.domains).toStrictEqual([newTag]);
         expect(wrapper.vm.getSection("generalInformation").data.subjects).toStrictEqual([]);
         wrapper.vm.initialized = false;
-        wrapper.vm.recordTags = [{id: 3, label: "test3", model: 'domain'}];
+        wrapper.vm.recordTags = [
+          {id: 3, label: "test3", model: 'domain'},
+          {id: 4, label: "test4", model: 'object_type'},
+        ];
         expect(wrapper.vm.getSection("generalInformation").data.domains).toStrictEqual([newTag]);
     });
 

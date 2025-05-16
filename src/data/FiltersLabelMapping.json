@@ -35,6 +35,11 @@
             "filterLabel": "User defined tags",
             "type": "String"
         },
+        "object_types": {
+            "filterName": "objectTypes",
+            "filterLabel": "Object types",
+            "type": "String"
+        },
         "fairsharing_registry": {
             "filterName": "fairsharingRegistry",
             "filterLabel": "Registry",
@@ -64,6 +69,7 @@
     "sort_order": [
         "fairsharingRegistry",
         "recordType",
+        "object_types",
         "subjects",
         "domains",
         "user_defined_tags",

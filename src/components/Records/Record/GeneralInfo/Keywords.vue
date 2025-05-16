@@ -1,5 +1,45 @@
 <template>
   <div>
+    <!--Object Types-->
+    <div class="d-flex flex-row mt-4 min-height-40">
+      <span
+        class="d-flex align-baseline width-15-percent-flex"
+      >
+        <v-tooltip bottom>
+          <template #activator="{ on }">
+            <v-icon
+              class="mr-2"
+              size="15"
+              v-on="on"
+            >
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ recordTooltips['object_types'] }}
+        </v-tooltip>
+        <b>Object Types</b>
+      </span>
+      <div
+        class="d-flex full-width flex-wrap ml-md-12 ml-13"
+      >
+        <span v-if="!getField('objectTypes').length">
+          N/A
+        </span>
+        <v-chip
+          v-for="item in getField('objectTypes')"
+          :key="item.label"
+          class="mr-2 mb-2 text-capitalize"
+          :color="getChipColor(item)"
+          text-color="white"
+          @click="returnToSearch('objectTypes', item.label)"
+        >
+          <KeywordTooltip
+            :keyword="item"
+            :full-width="true"
+          />
+        </v-chip>
+      </div>
+    </div>
     <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <span
@@ -28,7 +68,7 @@
         <v-chip
           v-for="item in getField('subjects')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
           @click="returnToSearch('subjects', item.label)"
@@ -68,7 +108,7 @@
         <v-chip
           v-for="item in getField('domains')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
           @click="returnToSearch('domains', item.label)"
@@ -108,7 +148,7 @@
         <v-chip
           v-for="item in getField('taxonomies')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
           @click="returnToSearch('taxonomies', item.label)"

@@ -48,7 +48,7 @@ let recordStore = {
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
-            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags'];
+            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags', 'objectTypes'];
             tags.forEach(tag => {
                 if (state.currentRecord['fairsharingRecord'][tag].length && state.currentRecord['fairsharingRecord'][tag] ) {
                     state.currentRecord['fairsharingRecord'][tag].forEach(item => {
@@ -276,7 +276,7 @@ let recordStore = {
         async updateGeneralInformation({ state, commit}, options) {
             commit("resetMessage", "generalInformation");
             let {
-                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,
+                type, countries, userDefinedTags, objectTypes, domains, subjects, taxonomies, status, curator_notes, isHidden,
                     logo, maintainers, watchers,
                 ...record
             } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
@@ -313,6 +313,7 @@ let recordStore = {
             record.metadata.status = status;
             record.curator_notes = curator_notes;
             record.hidden = isHidden;
+            record.object_type_ids = objectTypes.map(obj => obj.id);
             record.domain_ids = domains.map(obj => obj.id);
             record.subject_ids = subjects.map(obj => obj.id);
             record.taxonomy_ids = taxonomies.map(obj => obj.id);

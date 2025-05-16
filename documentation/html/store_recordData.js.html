@@ -367,8 +367,6 @@ let recordStore = {
             state.commit('setRecordHistory', data["fairsharingRecord"]);
         },
         async updateGeneralInformation({ state, commit}, options) {
-          // TODO: Needs ObjectTypes here somewhere....
-            //console.log("RD: " + JSON.stringify(state.sections.generalInformation.data.keys(), null, 2));
             commit("resetMessage", "generalInformation");
             let {
                 type, countries, userDefinedTags, objectTypes, domains, subjects, taxonomies, status, curator_notes, isHidden,

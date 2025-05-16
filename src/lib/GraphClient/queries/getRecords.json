@@ -43,6 +43,12 @@
             "label"
           ]
         },
+        {
+          "queryName": "objectTypes",
+          "fields": [
+            "label"
+          ]
+        },
         "relatedRecordsCount",
         "status",
         "isRecommended"

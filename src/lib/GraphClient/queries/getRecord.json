@@ -70,6 +70,13 @@
       ]
     },
     {
+      "name": "objectTypes",
+      "fields": [
+        "label",
+        "id"
+      ]
+    },
+    {
       "name": "grants",
       "fields": [
         "name",

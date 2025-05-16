@@ -64,7 +64,8 @@ let editorStore = {
             domain: "domain_color",
             taxonomy: "taxonomic_color",
             subject: "subject_color",
-            user_defined_tag: "tags_color"
+            user_defined_tag: "tags_color",
+            object_type: "object_type_color",
         },
         allTags: false,
         organisations: null,

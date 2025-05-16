@@ -22,6 +22,9 @@ const recordsCardUtils = {
             else if(chip.type==='userDefinedTags') {
                 return 'tags_color';
             }
+            else if(chip.type==='objectTypes') {
+              return 'object_type_color';
+            }
         },
         capitaliseText(text, type) {
             if (type === 'taxonomy') {

@@ -165,6 +165,17 @@
                       </v-list-item-action>
                       <v-list-item-title>Show user defined tags</v-list-item-title>
                     </v-list-item>
+                    <v-divider class="my-1" />
+                    <v-list-item>
+                      <v-list-item-action>
+                        <v-switch
+                          v-model="showTypes.object_type"
+                          inset
+                          :color="colors.object_type"
+                        />
+                      </v-list-item-action>
+                      <v-list-item-title>Show object types</v-list-item-title>
+                    </v-list-item>
                   </v-list>
                 </v-menu>
               </template>
@@ -268,7 +279,8 @@
                   domain: true,
                   taxonomy: true,
                   subject: true,
-                  user_defined_tag: true
+                  user_defined_tag: true,
+                  object_type: true
                 },
                 tags: [],
                 loading: false,
@@ -302,6 +314,11 @@
                         items: this.getSection("generalInformation").data.userDefinedTags,
                         color: this.colors["user_defined_tag"],
                         tooltip: this.tooltips.userDefinedTags
+                    },
+                    "object types": {
+                      items: this.getSection("generalInformation").data.objectTypes,
+                      color: this.colors["object_type"],
+                      tooltip: this.tooltips.objectTypes
                     }
                 }
             },
@@ -324,6 +341,9 @@
                 })).concat(this.getSection("generalInformation").data.subjects.map(term => {
                   term.model = 'subject';
                   return term;
+                })).concat(this.getSection("generalInformation").data.objectTypes.map(term => {
+                  term.model = 'object_type';
+                  return term;
                 })).concat(this.getSection("generalInformation").data.userDefinedTags.map(term => {
                   term.model = 'user_defined_tag';
                   return term;
@@ -335,7 +355,8 @@
                     domain: [],
                     taxonomy: [],
                     subject: [],
-                    user_defined_tag: []
+                    user_defined_tag: [],
+                    object_type: []
                   };
                   for (let selectedTag of val) tags[selectedTag.model].push(selectedTag);
                   this.$store.commit("record/setTags", {
@@ -354,15 +375,21 @@
                     value: tags.user_defined_tag,
                     target: "userDefinedTags"
                   })
+                  this.$store.commit("record/setTags", {
+                    value: tags.object_type,
+                    target: "objectTypes"
+                  })
                 }
               }
             },
+          // TODO: Check why object types doesn't respond correctly.
             initialSections() {
               return {
                 "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
                 "subjects": this.getSection("generalInformation").initialData.subjects,
                 "domains": this.getSection("generalInformation").initialData.domains,
-                "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags
+                "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags,
+                "object types": this.getSection("generalInformation").initialData.objectTypes,
               };
             }
         },
@@ -413,6 +440,8 @@
             this.tags = this.getPartialTags(sections);
           },
           isNew(term, section){
+            //console.log(JSON.stringify(this.getSection("generalInformation").initialData, null, 2));
+            //console.log(JSON.stringify(this.initialSections, null, 2));
             return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
           }
         },

@@ -28,6 +28,9 @@ recordStore.state.sections = {
             ],
             userDefinedTags: [
                 {id: 1, label: "test"}
+            ],
+            objectTypes: [
+              {id: 1, label: "test"}
             ]
         },
         initialData: {
@@ -36,7 +39,8 @@ recordStore.state.sections = {
             ],
             domains: [],
             userDefinedTags: [],
-            subjects: []
+            subjects: [],
+            objectTypes: []
         }
     }
 };
@@ -46,7 +50,8 @@ editorStore.state.tags = [
     {id: 2, label: "test2", model: 'domain'},
     {id: 1, label: "test", model: "subject"},
     {id: 1, label: "test", model: "taxonomy"},
-    {id: 1, label: "test", model: "user_defined_tag"}
+    {id: 1, label: "test", model: "user_defined_tag"},
+    {id: 1, label: "test", model: "object_type"}
 ];
 
 const $store = new Vuex.Store({
@@ -70,7 +75,7 @@ describe('Editor -> EditTags.vue', () => {
 
     it("can be mounted", () => {
         expect(wrapper.vm.$options.name).toMatch("EditTags");
-        expect(wrapper.vm.recordTags.length).toBe(4);
+        expect(wrapper.vm.recordTags.length).toBe(5);
         expect(wrapper.vm.buttonIcon).toBe("fa-plus-circle");
         expect(wrapper.vm.buttonLabel).toBe("Add/edit tags");
         wrapper.vm.menu.show = true;
@@ -79,7 +84,7 @@ describe('Editor -> EditTags.vue', () => {
     });
 
     it('can react to showTypes', () => {
-        expect(wrapper.vm.tags.length).toBe(5);
+        expect(wrapper.vm.tags.length).toBe(6);
         wrapper.vm.showTypes = {
             domain: false,
             taxonomy: true,

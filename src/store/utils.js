@@ -87,6 +87,10 @@ export function initEditorSections(data, sectionsNames){
                     obj.label = obj.label.toLowerCase();
                     return obj;
                 }),
+                objectTypes: data.objectTypes.map((obj) => {
+                  obj.label = obj.label.toLowerCase();
+                  return obj;
+                }),
                 is_dataset: false,
                 logo:{}
             },

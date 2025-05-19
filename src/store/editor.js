@@ -9,6 +9,7 @@ import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import getDuplicates from "@/lib/GraphClient/queries/getDuplicates.json"
 import getLicencesQuery from "@/lib/GraphClient/queries/getLicences.json"
+import objectTypesQuery from "@/lib/GraphClient/queries/getObjectTypes.json"
 import getPublicationsQuery from "@/lib/GraphClient/queries/getPublications.json"
 import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
 import getGrantsQuery from "@/lib/GraphClient/queries/Organisations/getGrants.json"
@@ -51,6 +52,7 @@ let editorStore = {
         tooltips: descriptionData.descriptions,
         recordTooltips: recordTooltipData.descriptions,
         tags: [],
+        objectTypes: [],
         years(){
             let years = [];
             let d = new Date();
@@ -99,6 +101,9 @@ let editorStore = {
         setRecordTypes(state, recordTypes){
             state.recordTypes = recordTypes;
         },
+        setObjectTypes(state, objectTypes) {
+            state.objectTypes = objectTypes;
+        },
         setTags(state, tags){
             state.tags = tags.data;
             if (tags.firstTime){
@@ -125,6 +130,7 @@ let editorStore = {
             state.recordTypes = null;
             state.allTags = [];
             state.tags = [];
+            state.objectTypes = [];
             state.organisations = null;
             state.organisationsTypes = null;
             state.grants = null;
@@ -176,6 +182,14 @@ let editorStore = {
               if (currentItem < size) recordTypes.push({ divider: true });
             });
             state.commit("setRecordTypes", recordTypes);
+        },
+        async getObjectTypes(state){
+          let objectTypes = [];
+          let data = await graphClient.executeQuery(objectTypesQuery);
+          data.objectTypes.records.forEach(function(type){
+            objectTypes.push(type);
+          })
+          state.commit("setObjectTypes", objectTypes);
         },
         async getTags(state, queryString){
             let tagQueryCopy = JSON.parse(JSON.stringify(tagsQuery));

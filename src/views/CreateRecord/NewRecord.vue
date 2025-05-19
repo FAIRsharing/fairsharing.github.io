@@ -134,7 +134,7 @@
         },
         computed: {
             ...mapState('users', ["user"]),
-            ...mapState('editor', ['possibleDuplicates']),
+            ...mapState('editor', ['possibleDuplicates', 'objectTypes']),
             ...mapGetters('record', ['getSection'])
         },
         async mounted(){
@@ -152,6 +152,7 @@
               ["getCountries",
                "getRecordTypes",
                "getTags",
+               "getObjectTypes",
                "getPossibleDuplicates",
                "cleanEditorStore"
               ]),
@@ -160,6 +161,7 @@
             await this.getCountries();
             await this.getRecordTypes(this.fairassistOnly);
             await this.getTags();
+            await this.getObjectTypes();
           },
           async createRecord(){
             this.message = {
@@ -194,6 +196,12 @@
             record.metadata.status = status;
             record.country_ids = record.countries.map(obj => obj.id);
             record.metadata.status = record.status;
+
+            this.objectTypes.forEach(type => {
+              if (type.label === 'object type not found') {
+                record.object_type_ids = [type.id];
+              }
+            })
 
             delete record.status;
             delete record.countries;

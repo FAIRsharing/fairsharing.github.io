@@ -38,7 +38,7 @@ let record = {
     maintainers: [{username: 'bod', id: 100, orcid: 'abc-123'}],
     watchers: [{username: 'bod', id: 100, orcid: 'abc-123'}],
     userDefinedTags: [],
-    objectTypes: [],
+    objectTypes: [{id: 1, label: 'object type not found'}],
     type: 'abc',
     status: "ready",
     name: "ok",

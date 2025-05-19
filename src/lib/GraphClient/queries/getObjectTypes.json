@@ -1,0 +1,12 @@
+{
+  "queryName": "objectTypes",
+  "fields": [
+    {
+      "name": "records",
+      "fields": [
+        "id",
+        "label"
+      ]
+    }
+  ]
+}

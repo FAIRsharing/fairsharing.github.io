@@ -176,9 +176,7 @@ export default {
       this.itemSelected = item;
     },
     getResults(queryParams) {
-      console.log("Fetching!");
       if (queryParams) this.fetchObjectTypes(queryParams);
-      console.log("Fetched: ");
       console.log(JSON.stringify(queryParams, null, 2));
     },
     typeList() {

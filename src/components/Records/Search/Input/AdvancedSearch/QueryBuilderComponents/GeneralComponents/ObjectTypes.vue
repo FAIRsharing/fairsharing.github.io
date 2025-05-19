@@ -84,7 +84,6 @@ export default {
     },
     getResults(queryParams) {
       if (queryParams) this.fetchObjectTypes(queryParams);
-      console.log(JSON.stringify(queryParams, null, 2));
     },
     typeList() {
       let items = [];

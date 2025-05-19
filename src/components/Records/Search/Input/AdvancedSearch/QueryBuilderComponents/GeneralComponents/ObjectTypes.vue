@@ -91,7 +91,7 @@ export default {
     typeList() {
       let items = [];
       this.getObjectTypes.forEach((item) => {
-        items.push(item.label.toLowerCase());
+        items.push(item.label);
       })
       return items;
     }

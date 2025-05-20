@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import countriesSearch from "@/store/AdvancedSearchComponents/countriesSearch";
@@ -22,9 +21,8 @@ import searchFilters from "./searchFilters.js";
 import uiController from "./uiController";
 import users from "./users.js";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+// Create a new store instance.
+const store = createStore({
   namespaced: true,
   modules: {
     searchFilters,
@@ -48,3 +46,5 @@ export default new Vuex.Store({
     saveSearch
   },
 });
+
+export default store;

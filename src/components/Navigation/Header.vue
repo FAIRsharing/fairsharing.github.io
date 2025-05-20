@@ -1,20 +1,18 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-app-bar
     id="mainHeader"
-    short
-    height="150"
-    max-height="150"
+    height="150px"
     class="header-container"
-    :class="[{'largeScreen': $vuetify.breakpoint.xlOnly}, {'smallScreen': $vuetify.breakpoint.mdAndDown}]"
+    :class="[{'largeScreen': $vuetify.display.xl}, {'smallScreen': $vuetify.display.mdAndDown}]"
   >
     <v-app-bar-nav-icon
-      v-if="$vuetify.breakpoint.mdAndDown"
+      v-if="$vuetify.display.mdAndDown"
       @click.stop="toggleDrawerLeft"
     />
     <!-- First Level Menu -->
     <div
       class="navFirst d-flex"
-      :class="{'full-width': $vuetify.breakpoint.mdAndDown}"
+      :class="{'full-width': $vuetify.display.mdAndDown}"
     >
       <router-link to="/">
         <img
@@ -26,38 +24,35 @@
         class="d-flex justify-start align-center custom-width"
       >
         <string-search
-          v-if="$vuetify.breakpoint.sm || $vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.display.sm || $vuetify.display.mdAndUp"
           placeholder="search through all content"
-          :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'full-width'"
+          :class="$vuetify.display.lgAndDown?'flex-grow-1':'full-width'"
         />
         <nav>
           <ul
-            v-if="$vuetify.breakpoint.lgAndUp"
+            v-if="$vuetify.display.lgAndUp"
             class="d-flex flex-row align-center flex-wrap px-0"
           >
             <!-- LOGIN -->
             <v-menu
               v-if="!user().isLoggedIn"
-              offset-y
               transition="slide-y-transition"
               :close-on-content-click="closeMenuStatus"
               class="mt-5"
               max-height="90vh"
             >
-              <template #activator="{ on }">
+              <template #activator="{ props }">
                 <v-btn
-                  :small="$vuetify.breakpoint.mdAndDown"
-                  :x-large="$vuetify.breakpoint.xlOnly"
-                  color="accent3 white--text"
-                  class="mr-1 mt-sm-1"
-                  dark
-                  v-on="on"
+                  :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+                  class="mr-1 mt-sm-1 bg-accent3"
+                  v-bind="props"
+                  elevation="3"
                   @click="closePopup(false)"
                 >
                   Login
                   <v-icon
                     class="ml-1"
-                    small
+                    size="small"
                   >
                     fa fa-sign-in-alt
                   </v-icon>
@@ -66,25 +61,25 @@
               <Login
                 :redirect="false"
                 :pop-up="true"
-                @ClosePopup="closePopup"
+                @close-popup="closePopup"
               />
             </v-menu>
             <v-btn
               v-else
-              :small="$vuetify.breakpoint.mdAndDown"
-              :x-large="$vuetify.breakpoint.xlOnly"
-              class="mr-1 mt-sm-1 green"
+              :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+              class="mr-1 mt-sm-1 bg-green"
               to="/accounts/profile"
+              elevation="2"
             >
-              <v-avatar>
+
                 <v-icon
-                  dark
                   color="white"
+                  class="mr-1"
                 >
-                  fa-user-circle
+                  fas fa-user-circle
                 </v-icon>
-              </v-avatar>
-              <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
+
+              <span class="text-white ellipse-150">{{ user().credentials.username }}</span>
             </v-btn>
           </ul>
         </nav>
@@ -92,12 +87,12 @@
     </div>
     <!-- Second Level Menu -->
     <div
-      v-if="$vuetify.breakpoint.lgAndUp"
+      v-if="$vuetify.display.lgAndUp"
       class="navSecond d-flex justify-space-around align-center full-width"
     >
       <nav class="full-width">
         <ul
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.display.lgAndUp"
           class="d-flex flex-row align-center px-0 justify-space-around"
         >
           <li
@@ -105,18 +100,17 @@
             :key="'navBarTopMenuItem_' + itemIndex"
           >
             <v-btn
-              :small="$vuetify.breakpoint.mdAndDown"
-              :x-large="$vuetify.breakpoint.xlOnly"
+                :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
               class="mr-1 mt-sm-1 menuLinks"
-              :class="{'px-2': $vuetify.breakpoint.lgAndDown}"
+              :class="{'px-2': $vuetify.display.lgAndDown}"
               :color="item.color"
-              :outlined="!item.active"
+              :variant="!item.active ? 'outlined' : 'elevated'"
               :to="item.link"
               width="100%"
               min-width="167px"
               max-width="184px"
             >
-              <span :class="['white--text',{'primary--text': !item.active}, {'accent3--text': item.primary && !item.active}]">{{ item.label }}</span>
+              <span :class="['text-white',{'text-primary': !item.active}, {'text-accent3': item.primary && !item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
         </ul>
@@ -133,7 +127,7 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import Login from "@/views/Users/Login/Login";
 
 export default {
-  name: "Header",
+  name: "HeaderComp",
   components: {StringSearch, Login},
   data: function () {
     return {
@@ -254,12 +248,16 @@ header {
 
 .header-container {
   border-bottom: 3px dashed #253442;
+  position: relative !important;
+  height:150px;
+  max-height: 150px;
 }
 
 
-.header-container::v-deep .v-toolbar__content {
+.header-container:deep(.v-toolbar__content) {
   flex-direction: column;
   align-items: stretch;
+  padding: 4px 16px
 }
 
 .smallScreen {
@@ -267,7 +265,7 @@ header {
   max-height: 100px !important;
 }
 
-.smallScreen::v-deep .v-toolbar__content {
+.smallScreen:deep(.v-toolbar__content) {
   height: 100px !important;
   flex-direction: row;
   align-items: center;
@@ -278,7 +276,7 @@ header {
   max-height: 170px !important;
 }
 
-.largeScreen::v-deep .menuLinks {
+.largeScreen:deep(.menuLinks) {
   min-width: 260px !important
 }
 

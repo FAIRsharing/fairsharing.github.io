@@ -2,7 +2,7 @@
   <v-card
     v-if="showTools()"
     class="pa-4 d-flex flex-column"
-    outlined
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -13,8 +13,8 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <v-card
         v-if="getField('metadata')['associated_tools']"
-        class="pa-4 mt-15 d-flex flex-column"
-        outlined
+        class="pa-4 mt-15 d-flex flex-column overflow-initial"
+        border
         color="white"
         tile
         elevation="3"
@@ -22,17 +22,18 @@
         <Icon
           item="tools"
           size="20"
+          class="pt-2"
         />
 
         <v-card-title class="pa-0 text--primary card-title-customize">
-          <v-tooltip bottom>
-            <template #activator="{ on }">
+          <v-tooltip location="bottom">
+            <template #activator="{ props }">
               <v-icon
                 class="mr-2"
                 size="15"
-                v-on="on"
+                v-bind="props"
               >
-                fa-question-circle
+                fas fa-question-circle
               </v-icon>
             </template>
             {{ recordTooltips['tools'] }}
@@ -45,7 +46,7 @@
             :key="item.name+'_'+index"
             class="pa-4 mt-2 d-flex flex-column v-card-hover"
             flat
-            outlined
+            border
           >
             <a
               :href="item.url"

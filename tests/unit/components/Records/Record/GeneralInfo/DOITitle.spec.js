@@ -11,6 +11,7 @@ const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
     doi: 'FAIRsharing.wibble',
+    status: 'Ready',
     subjects:[],
     domains:[],
     taxonomies:[],
@@ -57,6 +58,10 @@ describe("DOITitle.vue", function(){
         const fakeImage = {width: '300', height: '100'}
         await wrapper.vm.setImageAfterLoading(fakeImage)
         expect(wrapper.vm.finalImageWidth).toBe('300px');
+    });
+
+    it("can set DOI message", () => {
+      expect(wrapper.vm.awaitingDoi()).toBe('Awaiting DOI');
     });
 
 });

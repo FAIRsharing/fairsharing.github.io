@@ -2,6 +2,8 @@ export const DownloadRecords = () =>
     import("@/components/Curators/DownloadRecords.vue");
 export const HiddenRecords = () =>
     import("@/components/Curators/HiddenRecords.vue");
+export const IncompleteRecords = () =>
+    import("@/components/Curators/IncompleteRecords.vue");
 export const MaintenanceRequests = () =>
     import("@/components/Curators/MaintenanceRequests.vue");
 export const RecentCuratorCreation = () =>

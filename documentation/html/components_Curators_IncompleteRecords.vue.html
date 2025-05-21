@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Curators/RecentCuratorCreation.vue</title>
+	<title>FAIRsharing.org Source: components/Curators/IncompleteRecords.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,7 +86,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Curators/RecentCuratorCreation.vue</h1>
+		<h1 class="page-title">Source: components/Curators/IncompleteRecords.vue</h1>
     
 <section>
     <article>
@@ -94,12 +94,12 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-col cols12>
     &lt;v-card class="mb-2">
-      &lt;v-card-text v-if="recordsCreatedCuratorsLastWeek">
+      &lt;v-card-text v-if="incompleteRecords">
         &lt;v-card-title
-          id="text-curator-search-3"
+          id="text-curator-search-2"
           class="green white--text"
         >
-          &lt;b> RECORDS CREATED BY CURATORS IN THE PAST WEEK &lt;/b>
+          &lt;b> INCOMPLETE RECORDS &lt;/b>
           &lt;v-spacer />
           &lt;v-text-field
             v-model="searches"
@@ -115,7 +115,7 @@
         &lt;v-data-table
           :loading="loading"
           :headers="headerItems"
-          :items="recordsCreatedCuratorsLastWeek"
+          :items="incompleteRecords"
           :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
@@ -146,14 +146,10 @@
                 {{ props.item.createdAt }}
               &lt;/td>
               &lt;td>
-                &lt;div v-if="props.item.creator === 'unknown'">
-                  {{ props.item.creator }}
-                &lt;/div>
-                &lt;div v-else>
-                  &lt;a :href="'/users/' + props.item.idCreator">
-                    {{ props.item.creator }}
-                  &lt;/a>
-                &lt;/div>
+                {{ props.item.required }}
+              &lt;/td>
+              &lt;td>
+                {{ props.item.recommended }}
               &lt;/td>
             &lt;/tr>
           &lt;/template>
@@ -168,13 +164,13 @@ import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json"
+import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
 import formatDate from "@/utils/generalUtils";
 
 const client = new GraphClient();
 
 export default {
-  name: "RecentCuratorCreation",
+  name: "IncompleteRecords",
   components: {
     Icon,
   },
@@ -187,7 +183,7 @@ export default {
   },
   data: () => {
     return {
-      recordsCreatedCuratorsLastWeek:[],
+      incompleteRecords:[],
       searches: "",
       recordType: {},
       loading: false,
@@ -200,33 +196,37 @@ export default {
   async mounted() {
     this.loading = true;
     client.setHeader(this.user().credentials.token);
-    //Fetching hidden records
-    let recentCuratorCreations = await client.executeQuery(getRecentCuratorCreations);
-    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations)
+    //Fetching incomplete records
+    let records = await client.executeQuery(getIncompleteRecords);
+    this.prepareIncompleteRecords(records)
     this.loading = false;
   },
   methods: {
 
     /**
-     * Method to fetch recent curator creation records
+     * Method to fetch incomplete records
      * @param dataCuration
      */
-    prepareRecordsCuratorCreationsLastWeek(dataCuration) {
-      let records = dataCuration.recentCuratorCreations;
+    prepareIncompleteRecords(dataCuration) {
+      let records = dataCuration.incompleteRecords;
       records.forEach((item) => {
+        let recommended = [];
+        item.incomplete.recommended.forEach(rec => {
+          recommended.push(rec.field)
+        });
+        let required = [];
+        item.incomplete.required.forEach(req => {
+          required.push(req.field)
+        });
         let object = {
           recordNameID: `${item.name} (${item.id})`,
           type: item.type,
           id: item.id,
+          recommended: recommended.sort().join(', '),
+          required: required.sort().join(', '),
         };
         object.createdAt = this.formatDate(item.createdAt);
-        if (item.creator) {
-          object.creator = item.creator.username;
-          object.idCreator = item.creator.id;
-        } else {
-          object.creator = "unknown";
-        }
-        this.recordsCreatedCuratorsLastWeek.push(object);
+        this.incompleteRecords.push(object);
       });
     },
   },
@@ -241,8 +241,7 @@ export default {
   width: 100%;
   max-width: 400px
 }
-&lt;/style>
-</pre>
+&lt;/style></pre>
     </article>
 </section>
 

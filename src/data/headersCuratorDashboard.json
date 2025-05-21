@@ -133,6 +133,24 @@
       "value": "creator"
     }
   ],
+  "incompleteRecords": [
+    {
+      "text": "Record name (id)",
+      "value": "recordNameID"
+    },
+    {
+      "text": "Date created",
+      "value": "createdAt"
+    },
+    {
+      "text": "Missing required",
+      "value": "required"
+    },
+    {
+      "text": "Missing recommended",
+      "value": "recommended"
+    }
+  ],
   "systemMessages": [
     {
       "text": "ID",

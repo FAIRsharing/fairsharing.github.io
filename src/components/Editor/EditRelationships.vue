@@ -323,6 +323,7 @@
               v-if="addingRelation"
               class="flexCard"
               width="100%"
+              min-height="450px"
             >
               <v-card-title class="green white--text">
                 Add a new relationship
@@ -499,7 +500,8 @@
               // If it is null, compare the search string only against the name...
               if (obj.linkedRecord.abbreviation == null) {
                 if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                    && (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true ||
+                        this.labelsFilter[obj.linkedRecord.type.toLowerCase()] === true )){
                   return obj;
                 }
               }
@@ -591,19 +593,9 @@
               let parts_of = _module.sections.relations.data.recordAssociations.filter((item) => {
                 return item.recordAssocLabel === 'part_of';
               })
-              if (parts_of.length > 0) {
+              if (parts_of.length > 0 && _module.addingRelation.recordAssocLabel.relation === 'part_of') {
                 _module.multipleRelationship = true;
                 _module.multipleRelationshipMessage = "A principle or metric can be part of no more than 1 other of the same type.";
-                return;
-              }
-            }
-            if (_module.currentRecord.fairsharingRecord.type === "metric") {
-              let measures = _module.sections.relations.data.recordAssociations.filter((item) => {
-                return item.recordAssocLabel === 'measures_principle';
-              })
-              if (measures.length > 0) {
-                _module.multipleRelationship = true;
-                _module.multipleRelationshipMessage = "A metric can only measure one principle.";
                 return;
               }
             }

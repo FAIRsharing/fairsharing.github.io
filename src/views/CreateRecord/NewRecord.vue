@@ -204,12 +204,6 @@
             record.country_ids = record.countries.map(obj => obj.id);
             record.metadata.status = record.status;
 
-            this.objectTypes.forEach(type => {
-              if (type.label === 'object type not found') {
-                record.object_type_ids = [type.id];
-              }
-            })
-
             delete record.status;
             delete record.countries;
             delete record.type;

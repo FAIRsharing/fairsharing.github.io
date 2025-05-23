@@ -149,7 +149,7 @@ describe("Organisation", () => {
         });
     });
 
-    it("doesn't display if the organistion is not set in the response", async () => {
+    it("doesn't display if the organisation is not set in the response", async () => {
         graphStub.restore();
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
             error: "error"

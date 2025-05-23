@@ -597,7 +597,7 @@ describe("Record.vue", function () {
     expect(wrapper.vm.getRecordCardBackground).toBe("#f0f5f9");
   });
 
-  it("returns state of record maintenance corectly", async () => {
+  it("returns state of record maintenance correctly", async () => {
     record.state.currentRecord.fairsharingRecord = {
       metadata: {},
       registry: "Policy",

@@ -1,0 +1,7 @@
+[codespell]
+# Ref: https://github.com/codespell-project/codespell#using-a-config-file
+skip = .git*,*.svg,*.css,*.min.*,.codespellrc
+check-hidden = true
+# case sensitive etc, also assume very long lines manufactured
+ignore-regex = \b(afterAll|userR|Leary|thirdParty)\b|.{300,}|keywords: ".*
+# ignore-words-list = 

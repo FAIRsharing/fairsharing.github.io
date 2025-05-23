@@ -20,7 +20,7 @@ let $route = {
     name: "OAuth Failure",
     path: "/login_failure",
     query: {
-        errors:  '{ "message": {"user":{"email":["cant be blank","is invalid"],"username":["cant be blank"]},"login":{}}, "error": true }'
+        errors:  '{ "message": {"user":{"email":["can\'t be blank","is invalid"],"username":["can\'t be blank"]},"login":{}}, "error": true }'
     }
 
 };

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: lib/Client/ExternalClients.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,103 +86,108 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: lib/Client/ExternalClients.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import axios from "axios"
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div class="d-flex width-90">
+    &lt;TooltipComponent :tool-tip-text="toolTipText" />
+    &lt;AutoCompleteComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="typeList()"
+      :loading="getLoadingData"
+      @input="selectedValue"
+      @fetchData="getResults"
+    />
+  &lt;/div>
+&lt;/template>
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
 
-class ExternalRESTClients {
+import objectTypes from "@/store";
 
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
+
+export default {
+  name: "ObjectTypes",
+  components: { TooltipComponent, AutoCompleteComponent },
+  props: {
+    value: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data: () => {
+    return {
+      itemSelected: [],
+      itemValue: [],
+      toolTipText:
+        "Object types applicable to this resource or its data. Multiple selections will be joined with OR. Start typing to see available types.",
+    };
+  },
+
+  computed: {
+    ...mapGetters("objectTypes", ["getObjectTypes", "getLoadingData"]),
+    ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+
+    model: {
+      get() {
+        return this.itemSelected;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
+    },
+  },
+  watch: {
+    itemSelected(newValue) {
+      this.itemValue = newValue;
+    },
     /**
-     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
-     * REST API.
+     * Item list for the autocomplete should not be empty
+     * It is assigned with selected values when edit field is opened
      */
-    constructor() {
-        if (ExternalRESTClients._instance) {
-            return ExternalRESTClients._instance
+    getEditDialogStatus: {
+      handler(open) {
+        if (open) {
+          if (this.value &amp;&amp; this.value.length) {
+            objectTypes.commit(
+              "objectTypes/setObjectTypes",
+              this.value
+            );
+          }
         }
-        ExternalRESTClients._instance = this;
-        this.doiBaseURL = 'https://dx.doi.org/';
-        this.headers = {
-            'Accept': 'application/x-bibtex',
-        };
-        this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;id=";
-        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
-        this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
-        this.rorOrganisationsBaseURL = "https://api.ror.org/v2/organizations?query=";
-    }
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    //Pre-fill selected values on edit advanced search is clicked and open
+    this.itemValue = this.value;
+  },
+  methods: {
+    ...mapActions("objectTypes", ["fetchObjectTypes"]),
 
-    async getDOI(doi){
-        let localHeaders = this.headers;
-        localHeaders['Accept'] = 'application/json';
-        const request = {
-            url: this.doiBaseURL + doi,
-            headers: localHeaders
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    selectedValue(item) {
+      this.itemSelected = item;
+    },
+    getResults(queryParams) {
+      if (queryParams) this.fetchObjectTypes(queryParams);
+    },
+    typeList() {
+      let items = [];
+      this.getObjectTypes.forEach((item) => {
+        items.push(item.label);
+      })
+      return items;
     }
-
-    async getPMID(id){
-        const request = {
-            url: this.pmidBaseURL + id,
-            headers: {
-                'Accept': 'application/json',
-            }
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    async getTessRecords(string){
-        const request = {
-            url: this.tessBaseURL + string,
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    async getOrcidUser(user){
-        this.headers['Accept'] = "application/orcid+json";
-        const request = {
-            url: this.orcidBaseURL + user,
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        this.headers['Accept'] = 'application/x-bibtex';
-        return response.data;
-    }
-
-    async getROROrganisation(organisation){
-        let localHeaders = this.headers;
-        localHeaders['Accept'] = 'application/json';
-        const request = {
-            url: this.rorOrganisationsBaseURL + organisation,
-            headers: localHeaders
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    /**
-     * Trigger the given query with Axios
-     * @param query
-     * @returns {Promise&lt;*>}
-     */
-    async executeQuery(query) {
-        try {
-            return await axios.get(query.url, {headers: query.headers});
-        }
-        catch(e){
-            return({data: {error: e}});
-        }
-    }
-}
-
-export default ExternalRESTClients;
+  },
+};
+&lt;/script>
 </pre>
     </article>
 </section>

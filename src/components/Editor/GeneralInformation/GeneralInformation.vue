@@ -259,8 +259,19 @@
               if (this.currentFields.status !== 'deprecated') {
                 this.currentFields.metadata.deprecation_reason = null;
               }
+              // Ensure that at least one object type is provided.
               // Ensure that taxonomic range is specified.
+              let taxReady = false;
+              let typesReady = false;
               if (this.currentFields.taxonomies.length > 0) {
+                taxReady = true;
+              }
+              if (this.currentFields.objectTypes.length > 0 ||
+                this.currentRecord.fairsharingRecord.recordType.toLowerCase() === 'collection'
+              ) {
+                typesReady = true;
+              }
+              if (taxReady && typesReady) {
                 await this.updateGeneralInformation({
                   token: this.user().credentials.token,
                   id: this.$route.params.id,
@@ -268,11 +279,18 @@
                 });
               }
               else {
+                let data = ''
+                if (!taxReady) {
+                 data += "Taxonomic range is required. Please use 'Not Applicable' if your record isn't related to a species. "
+                }
+                if (!typesReady) {
+                  data += "Object type is required. Please select at least one object type. "
+                }
                 this.setSectionError({
                   section: "generalInformation",
                   value: {
                     response: {
-                      data: "Taxonomic range is required. Please use 'Not Applicable' if your record isn't related to a species."
+                      data: data
                     }
                   }
                 });

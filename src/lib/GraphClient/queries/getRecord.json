@@ -73,7 +73,8 @@
       "name": "objectTypes",
       "fields": [
         "label",
-        "id"
+        "id",
+        "iri"
       ]
     },
     {

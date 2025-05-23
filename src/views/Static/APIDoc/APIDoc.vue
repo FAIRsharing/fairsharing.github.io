@@ -114,7 +114,7 @@
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      Here are some examples of both logging in and quering a record. Each of these queries is for a single FAIRsharing Record with ID of 1.
+      Here are some examples of both logging in and querying a record. Each of these queries is for a single FAIRsharing Record with ID of 1.
     </p>
     <p
       :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -452,7 +452,7 @@ data&lt;-query_con$data
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_reporting_schema.json"
             target="_blank"
           >
-            Reporting guidline schema
+            Reporting guideline schema
           </a>
         </li>
         <li>

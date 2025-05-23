@@ -1058,7 +1058,7 @@
       } else if (v || (typeof v === "string" && v.length)) {
         if (segments[segments.length - 1] === "") {
           // empty trailing elements have to be overwritten
-          // to prefent results such as /foo//bar
+          // to prevent results such as /foo//bar
           segments[segments.length - 1] = v;
         } else {
           segments.push(v);
@@ -1281,7 +1281,7 @@
     var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
     var basedir, i, p;
     if (this._parts.urn) {
-      throw new Error('URNs do not have any generally defined hierachical components');
+      throw new Error('URNs do not have any generally defined hierarchical components');
     }
     if (this._parts.hostname) {
       return resolved;
@@ -1311,7 +1311,7 @@
     var properties = ['protocol', 'username', 'password', 'hostname', 'port'];
     var common, _base, _this, _base_diff, _this_diff;
     if (this._parts.urn) {
-      throw new Error('URNs do not have any generally defined hierachical components');
+      throw new Error('URNs do not have any generally defined hierarchical components');
     }
     if (!(base instanceof URI)) {
       base = new URI(base);

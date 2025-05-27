@@ -197,7 +197,7 @@
                   {
                       "id": "12345",
                       "name": "Frog French databases",
-                      "status": "aproved",
+                      "status": "approved",
                       "maintainers": [
                          {
                              "id": "23",

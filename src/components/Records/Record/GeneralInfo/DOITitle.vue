@@ -47,15 +47,15 @@
             >
               {{ getField('doi') }}
             </a>
-            <v-tooltip top>
-              <template #activator="{ on, attrs }">
+            <v-tooltip location="top">
+              <template #activator="{ props }">
                 <v-icon
                   v-ripple
-                  v-clipboard="copyURL"
-                  v-bind="attrs"
-                  class="primary--text ml-2 cursor-pointer"
-                  small
-                  v-on="on"
+                  class="text-primary ml-2 cursor-pointer"
+
+                  size="small"
+                  v-bind="props"
+                  @click="copyURL"
                 >
                   fa fa-copy
                 </v-icon>
@@ -136,7 +136,7 @@ export default {
     generateDoiLink(doi) {
       return `https://doi.org/${doi}`
     },
-    copyURL() {
+    async copyURL() {
       this.copyButtonStatus = true;
       return this.generateDoiLink(this.currentRecord['fairsharingRecord'].doi)
     },

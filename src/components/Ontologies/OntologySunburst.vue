@@ -7,9 +7,18 @@
 
 <script>
 import { mapActions, mapGetters,mapState } from "vuex"
+import { useTheme } from "vuetify";
+import Sunburst from "highcharts/modules/sunburst";
+import Highcharts from "highcharts";
+
+Sunburst(Highcharts);
 
 export default {
   name: "OntologySunburst",
+  setup() {
+    const theme = useTheme();
+    return { theme };
+  },
   data() {
     return {
       options: {
@@ -34,11 +43,11 @@ export default {
             turboThreshold: 2000,
             colors: [
               "white",
-              this.$vuetify.theme.themes.light.subject_topLevel_3, // here
+              this.theme.computedThemes.value.fairSharingTheme.colors.subject_topLevel_3, // here
               "white", "white",
-              this.$vuetify.theme.themes.light.subject_topLevel_1, // here
+              this.theme.computedThemes.value.fairSharingTheme.colors.subject_topLevel_1, // here
               "white", "white", "white",
-              this.$vuetify.theme.themes.light.subject_topLevel_2 // here
+              this.theme.computedThemes.value.fairSharingTheme.colors.subject_topLevel_2 // here
             ],
             type: 'sunburst',
             allowDrillToNode: true,
@@ -147,7 +156,7 @@ export default {
         }
       }
     },
-    getWidth() { return (this.$vuetify.breakpoint.xlOnly) ? "60%" : "100%" },
+    getWidth() { return (this.$vuetify.display.xlOnly) ? "60%" : "100%" },
     getTooltip(point) {
       return (point.name === "Subjects") ? false : '<div class="HC-tooltip">' + point.name  + '</div>'
     },

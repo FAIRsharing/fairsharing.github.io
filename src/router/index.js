@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 
 import { hackSearch } from "@/router/hackSearch";
 import store from "@/store";
@@ -52,20 +51,20 @@ import {
   Added to catch NavigationDuplicated router error
 */
 
-const originalPush = VueRouter.prototype.push;
-/* istanbul ignore next */
-VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch((err) => err);
-};
-
-Vue.use(VueRouter);
+// const originalPush = VueRouter.prototype.push;
+// /* istanbul ignore next */
+// VueRouter.prototype.push = function push(location) {
+//   return originalPush.call(this, location).catch((err) => err);
+// };
+//
+// Vue.use(VueRouter);
 
 let routes = [
   {
     name: "sitemap",
     path: "/sitemap.xml",
     redirect: () => {
-      window.location.assign(process.env.VUE_APP_API_ENDPOINT + "/sitemap.xml");
+      window.location.assign(import.meta.env.VITE_API_ENDPOINT + "/sitemap.xml");
     },
   },
   {
@@ -113,7 +112,8 @@ let routes = [
       let [query, modified] = hackSearch(to.query);
       if (modified) {
         next({ name: "search", query: query });
-      } else {
+      }
+      else {
         next();
       }
     },
@@ -155,7 +155,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_databases_in_policies") {
+      }
+      else if (to.params.name === "live_list_databases_in_policies") {
         return {
           name: "search",
           query: {
@@ -164,7 +165,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_journal_policies") {
+      }
+      else if (to.params.name === "live_list_journal_policies") {
         return {
           name: "search",
           query: {
@@ -173,7 +175,8 @@ let routes = [
             page: 1,
           },
         };
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -205,11 +208,13 @@ let routes = [
         window.location.assign(
           "https://github.com/FAIRsharing/subject-ontology"
         );
-      } else if (to.params.name.toLowerCase() === "drao") {
+      }
+      else if (to.params.name.toLowerCase() === "drao") {
         window.location.assign(
           "https://github.com/FAIRsharing/domain-ontology"
         );
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -257,7 +262,7 @@ let routes = [
                    */
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard",
         ].join("")
       );
@@ -271,7 +276,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Database&recordType=repository&page=1",
         ].join("")
       );
@@ -284,7 +289,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Database&recordType=knowledgebase&page=1",
         ].join("")
       );
@@ -297,7 +302,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Database&recordType=knowledgebase_and_repository&page=1",
         ].join("")
       );
@@ -310,7 +315,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=model_and_format&page=1",
         ].join("")
       );
@@ -323,7 +328,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=metric&page=1",
         ].join("")
       );
@@ -336,7 +341,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=terminology_artefact&page=1",
         ].join("")
       );
@@ -349,7 +354,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=reporting_guideline&page=1",
         ].join("")
       );
@@ -362,7 +367,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=identifier_schema&page=1",
         ].join("")
       );
@@ -375,7 +380,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=project&page=1",
         ].join("")
       );
@@ -388,7 +393,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=journal&page=1",
         ].join("")
       );
@@ -401,7 +406,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=institution&page=1",
         ].join("")
       );
@@ -414,7 +419,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=society&page=1",
         ].join("")
       );
@@ -427,7 +432,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1",
         ].join("")
       );
@@ -440,7 +445,7 @@ let routes = [
       // See recommendations hack...
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=funder&page=1",
         ].join("")
       );
@@ -543,10 +548,10 @@ let routes = [
     path: "/preservation_policy",
     redirect: () => {
       window.location.assign(
-          [
-            process.env.VUE_APP_API_HOSTNAME,
-            "/sustainability_and_preservation",
-          ].join("")
+        [
+          import.meta.env.VITE_HOSTNAME,
+          "/sustainability_and_preservation",
+        ].join("")
       );
     },
   },
@@ -565,7 +570,7 @@ let routes = [
     path: "/community_curation",
     redirect: () => {
       window.location.assign(
-        [process.env.VUE_APP_API_HOSTNAME, "/community_champions"].join("")
+        [import.meta.env.VUE_APP_API_HOSTNAME, "/community_champions"].join("")
       );
     },
   },
@@ -575,7 +580,7 @@ let routes = [
     redirect: () => {
       window.location.assign(
         [
-          process.env.VUE_APP_API_HOSTNAME,
+          import.meta.env.VUE_APP_API_HOSTNAME,
           "/community_champions/our_champions",
         ].join("")
       );
@@ -668,7 +673,11 @@ let routes = [
     path: "/profiles/usersList",
     component: UsersList,
     beforeEnter(to, from, next) {
-      isLoggedIn(to, from, next, store);
+      /**
+       * Commenting below method in order to avoid duplicacy of next() which is called in
+       * both methods
+       */
+      //isLoggedIn(to, from, next, store); Only superCurators can access users list
       isSuperCurator(to, from, next, store);
     },
   },
@@ -693,7 +702,7 @@ let routes = [
 
   /*
     Careful, this has to be the very last base path  !!!!
-    This component"s page title is handled in the component itself as it needs the :id param
+    This component's page title is handled in the component itself as it needs the :id param
     */
   {
     name: "Edit Content",
@@ -734,7 +743,7 @@ let routes = [
   /* REDIRECTION */
   {
     name: "*",
-    path: "*/*",
+    path: "/*/*",
     component: NotFound,
   },
 ];
@@ -752,18 +761,26 @@ export async function afterEach(to) {
   }
 }
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes,
-  scrollBehavior,
-  mode: process.env.VUE_APP_MODE, // "history" or "hash"
+  scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+        behavior: 'smooth',
+      };
+    }
+    return false;
+  },
 });
 
-export function scrollBehavior(to) {
-  if (to.hash) {
-    return { selector: to.hash };
-  }
-  return false;
-}
+// export function scrollBehavior(to) {
+//   if (to.hash) {
+//     return { selector: to.hash };
+//   }
+//   return false;
+// }
 
 export async function beforeEach(to, from, next, store) {
   if (to.path !== "/maintenance" && store.state.introspection.maintenanceMode) {
@@ -782,7 +799,8 @@ export async function beforeEach(to, from, next, store) {
 export function isLoggedIn(to, from, next, store) {
   if (store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //
@@ -794,7 +812,8 @@ export function isLoggedIn(to, from, next, store) {
 export function isNotLoggedIn(to, from, next, store) {
   if (!store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     next(from);
   }
 }
@@ -802,7 +821,8 @@ export function isNotLoggedIn(to, from, next, store) {
 export function isSuperCurator(to, from, next, store) {
   if (store.state.users.user().is_super_curator) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //

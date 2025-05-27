@@ -361,6 +361,38 @@
         </v-autocomplete>
       </v-col>
 
+      <!-- does this database only implement internal identifiers -->
+      <v-col cols="12">
+        <v-checkbox
+          v-if="fields.type.name === 'repository' ||
+            fields.type.name === 'knowledgebase' ||
+            fields.type.name === 'knowledgebase_and_repository' ||
+            fields.type === 'repository' ||
+            fields.type === 'knowledgebase' ||
+            fields.type === 'knowledgebase_and_repository'"
+          v-model="fields.metadata['internal_identifiers']"
+          class="d-inline-block mr-2 "
+        >
+          <template #prepend>
+            <v-tooltip
+              bottom
+              max-width="300px"
+              class="text-justify"
+            >
+              <template #activator="{ on }">
+                <v-icon v-on="on">
+                  fa-question-circle
+                </v-icon>
+              </template>
+              {{ tooltips['internal_identifiers'] }}
+            </v-tooltip>
+          </template>
+          <template #label>
+            <span class="v-label-white">Database uses only internal identifiers.</span>
+          </template>
+        </v-checkbox>
+      </v-col>
+
       <!-- deprecation reasons -->
       <v-col
         v-if="fields.status === 'deprecated'"

@@ -151,27 +151,27 @@ describe("Organisation", () => {
     });
   });
 
-  it("doesn't display if the organistion is not set in the response", async () => {
-    graphStub.restore();
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      error: "error"
+    it("doesn't display if the organisation is not set in the response", async () => {
+        graphStub.restore();
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+            error: "error"
+        });
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            vuetify,
+            router,
+            mocks: {$route, $router, $store},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        expect(wrapper.vm.organisation).toStrictEqual({
+            alternativeNames: [],
+            types: [],
+            users: [],
+            parentOrganisations: [],
+            childOrganisations: [],
+            countries: []
+        });
     });
-    wrapper = await shallowMount(Organisation, {
-      localVue,
-      vuetify,
-      router,
-      mocks: {$route, $router, $store},
-      stubs: {RouterLink: RouterLinkStub}
-    });
-    expect(wrapper.vm.organisation).toStrictEqual({
-      alternativeNames: [],
-      types: [],
-      users: [],
-      parentOrganisations: [],
-      childOrganisations: [],
-      countries: []
-    });
-  });
 
   it("can generate the correct URL for the logo", async () => {
     graphStub.restore();

@@ -35,7 +35,7 @@
               >
                 <Icon
                   item="DOI"
-                  heigh="30"
+                  height="30"
                   wrapper-class=""
                   class="mr-2 width-35"
                 />
@@ -241,7 +241,7 @@
           >
             <Icon
               item="DOI"
-              heigh="30"
+              height="30"
               wrapper-class=""
               class="mr-2 width-35"
             />

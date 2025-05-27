@@ -76,6 +76,7 @@ import {
   CuratorRecordsAwaitingApproval,
   DownloadRecords,
   HiddenRecords,
+  IncompleteRecords,
   MaintenanceRequests,
   RecentCuratorCreation,
   SystemMessages,
@@ -98,6 +99,7 @@ export default {
     CuratorRecordsAwaitingApproval,
     MaintenanceRequests,
     HiddenRecords,
+    IncompleteRecords,
     RecentCuratorCreation,
     DownloadRecords,
     SystemMessages,
@@ -136,6 +138,12 @@ export default {
           target: "hiddenrecords",
           component: "HiddenRecords",
           headers: headersTables["hiddenRecords"],
+        },
+        {
+          name: "INCOMPLETE RECORDS",
+          target: "incompleterecords",
+          component: "IncompleteRecords",
+          headers: headersTables["incompleteRecords"],
         },
         {
           name: "RECORDS CREATED BY CURATORS IN THE PAST WEEK",

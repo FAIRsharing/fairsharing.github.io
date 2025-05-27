@@ -113,77 +113,77 @@ describe("Routes", () => {
     expect(scrollBehavior({})).toBe(false)
   })
 
-  it("performs harcoded record redirections correctly", async () => {
-    // Records for articles
-    let article = router.options.routes.find((obj) => {
-      return obj.name === 'article'
+    it("performs hardcoded record redirections correctly", async () => {
+        // Records for articles
+        let article = router.options.routes.find((obj) => {
+            return obj.name === 'article'
+        });
+        expect(article.redirect(
+            {params: {name: 'live_list_standards_in_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Standard", "isRecommended": true, "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'live_list_databases_in_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Database", "isRecommended": true, "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'live_list_journal_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Policy", "recordType": "journal", "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path": "/"}
+        );
+        // Those below are from #1865
+        let hupopsi = router.options.routes.find((obj) => {
+            return obj.name === 'hupopsi'
+        });
+        expect(hupopsi.redirect).toEqual( "/HUPO-PSI");
+        let communities_activities = router.options.routes.find((obj) => {
+            return obj.name === 'communities_activities'
+        });
+        expect(communities_activities.redirect).toEqual( "/communities#activities");
+        let licence_with_s = router.options.routes.find((obj) => {
+            return obj.name === 'licence_with_s'
+        });
+        expect(licence_with_s.redirect).toEqual( "/licence");
     });
-    expect(article.redirect(
-      {params: {name: 'live_list_standards_in_policies'}})
-    ).toStrictEqual(
-      {"name": "search", "query": {"fairsharingRegistry": "Standard", "isRecommended": true, "page": 1}}
-    );
-    expect(article.redirect(
-      {params: {name: 'live_list_databases_in_policies'}})
-    ).toStrictEqual(
-      {"name": "search", "query": {"fairsharingRegistry": "Database", "isRecommended": true, "page": 1}}
-    );
-    expect(article.redirect(
-      {params: {name: 'live_list_journal_policies'}})
-    ).toStrictEqual(
-      {"name": "search", "query": {"fairsharingRegistry": "Policy", "recordType": "journal", "page": 1}}
-    );
-    expect(article.redirect(
-      {params: {name: 'dingdong'}})
-    ).toStrictEqual(
-      {"path": "/"}
-    );
-    // Those below are from #1865
-    let hupopsi = router.options.routes.find((obj) => {
-      return obj.name === 'hupopsi'
-    });
-    expect(hupopsi.redirect).toEqual("/HUPO-PSI");
-    let communities_activities = router.options.routes.find((obj) => {
-      return obj.name === 'communities_activities'
-    });
-    expect(communities_activities.redirect).toEqual("/communities#activities");
-    let licence_with_s = router.options.routes.find((obj) => {
-      return obj.name === 'licence_with_s'
-    });
-    expect(licence_with_s.redirect).toEqual("/licence");
-  });
 
-  it("performs harcoded ontology redirections correctly", async () => {
-    let assignMock = jest.fn();
-    delete window.location;
-    window.location = { assign: assignMock };
-    let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'});
-    await ontology.redirect({params: {name: 'SRAO'}});
-    expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
-    await ontology.redirect({params: {name: 'DRAO'}});
-    expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
-    expect(ontology.redirect(
-      {params: {name: 'dingdong'}})
-    ).toStrictEqual(
-      {"path":"/"}
-    );
-    let raw_srao_file = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file'});
-    await raw_srao_file.redirect();
-    expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl');
-    let raw_srao_file_by_version = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file_by_version'});
-    await raw_srao_file_by_version.redirect();
-    expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
-    let srao_term = router.options.routes.find((obj) => { return obj.name === 'srao_term'});
-    await srao_term.redirect({params: {id: 'SRAO_0000307'}});
-    expect(window.location.assign).toHaveBeenCalledWith('https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/SRAO_0000307');
-    let old_recommendations = router.options.routes.find((obj) => {
-      return obj.name === 'old_recommendations'
+    it("performs hardcoded ontology redirections correctly", async () => {
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = { assign: assignMock };
+        let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
+        await ontology.redirect({params: {name: 'SRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
+        await ontology.redirect({params: {name: 'DRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
+        expect(ontology.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path":"/"}
+        );
+        let raw_srao_file = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file'} );
+        await raw_srao_file.redirect();
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl');
+        let raw_srao_file_by_version = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file_by_version'} );
+        await raw_srao_file_by_version.redirect();
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
+        let srao_term = router.options.routes.find((obj) => { return obj.name === 'srao_term'} );
+        await srao_term.redirect({params: {id: 'SRAO_0000307'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/SRAO_0000307');
+        let old_recommendations = router.options.routes.find((obj) => {
+            return obj.name === 'old_recommendations'
+        });
+        await old_recommendations.redirect();
+        expect(window.location.assign).toHaveBeenCalledWith(
+            '/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard'
+        );
     });
-    await old_recommendations.redirect();
-    expect(window.location.assign).toHaveBeenCalledWith(
-      '/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard'
-    );
-  });
 
     // See #1865.
     it("performs hardcoded registry/type redirections correctly", async () => {

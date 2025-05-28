@@ -113,7 +113,7 @@ describe("Routes", () => {
         expect(scrollBehavior({})).toBe(false)
     })
 
-    it("performs harcoded record redirections correctly", async () => {
+    it("performs hardcoded record redirections correctly", async () => {
         // Records for articles
         let article = router.options.routes.find((obj) => {
             return obj.name === 'article'

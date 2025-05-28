@@ -34,6 +34,10 @@ describe("recordsCardsUtils.js", function () {
             type: 'userDefinedTags'
         }
         expect(utils.methods.getChipColor(chip)).toEqual('tags_color')
+        chip = {
+          type: 'objectTypes'
+        }
+        expect(utils.methods.getChipColor(chip)).toEqual('object_type_color')
     })
 
     it("capitalizes text", () => {

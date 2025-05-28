@@ -81,6 +81,7 @@ import {
   MandatedDataSharing,
   MandatedDmpCreation,
   MonitoringOfCompliance,
+  ObjectTypes,
   Organisations,
   PolicyRecordType,
   RecommendsDatabase,
@@ -191,6 +192,12 @@ export default {
             identifier: "countries",
             name: "Countries",
             component: Countries,
+            initialValue: () => [],
+          },
+          {
+            identifier: "objectTypes",
+            name: "Object Types",
+            component: ObjectTypes,
             initialValue: () => [],
           },
           {

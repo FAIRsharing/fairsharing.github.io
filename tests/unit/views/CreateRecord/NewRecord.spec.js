@@ -9,6 +9,7 @@ import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import getDuplicates from "@/lib/GraphClient/queries/getDuplicates.json"
 import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
+import objectTypesQuery from "@/lib/GraphClient/queries/getObjectTypes.json"
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users.js";
@@ -66,6 +67,17 @@ describe("CreateRecord.vue", function() {
                 {label: 'tag1'}
             ]
         });
+        graphStub.withArgs(objectTypesQuery).returns({
+          objectTypes: {
+            records: [
+              {
+                id: 13,
+                label: "object type not found"
+              }
+            ]
+          }
+        })
+
     });
 
     afterAll(() => {

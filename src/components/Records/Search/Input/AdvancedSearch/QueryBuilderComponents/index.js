@@ -68,3 +68,5 @@ export const GuidanceToHelpEnableCompliance = () =>
   import("./OtherBooleanComponents/GuidanceToHelpEnableCompliance.vue");
 export const MonitoringOfCompliance = () =>
   import("./OtherBooleanComponents/MonitoringOfCompliance.vue");
+export const ObjectTypes = () =>
+  import("./GeneralComponents/ObjectTypes.vue");

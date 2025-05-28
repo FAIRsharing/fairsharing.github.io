@@ -26,7 +26,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
     domains: [
         {label: "Deneb"},
     ],
-    userDefinedTags: [{label: 'a'}]
+    userDefinedTags: [{label: 'a'}],
+    objectTypes: [{label: 'b'}]
 };
 const $store = new Vuex.Store({
     modules: {
@@ -69,7 +70,8 @@ describe("DataProcessesAndConditions.vue", function () {
                 domains: [
                     {label: "asasd"},
                 ],
-                userDefinedTags: [{label: 'b'}]
+                userDefinedTags: [{label: 'b'}],
+                objectTypes: [{label: 'b'}]
             }
         }
         $store.commit("record/setCurrentRecord", mockData)
@@ -88,7 +90,8 @@ describe("DataProcessesAndConditions.vue", function () {
                 domains: [
                     {label: "asasd"},
                 ],
-                userDefinedTags: [{label: 'b'}]
+                userDefinedTags: [{label: 'b'}],
+                objectTypes: [{label: 'c'}]
             }
         }
         $store.commit("record/setCurrentRecord", mockData)

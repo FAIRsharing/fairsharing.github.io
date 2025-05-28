@@ -31,8 +31,10 @@
 <script>
 import {
   Countries,
-  Domain, HasPublication,
+  Domain,
+  HasPublication,
   Licences,
+  ObjectTypes,
   Organisations,
   RecordStatus,
   Registry,
@@ -116,6 +118,12 @@ export default {
           name: "Has Publication",
           component: HasPublication,
           initialValue: "",
+        },
+        {
+          identifier: "objectTypes",
+          name: "Object Types",
+          component: ObjectTypes,
+          initialValue: () => [],
         },
       ]
     },

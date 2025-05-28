@@ -70,6 +70,14 @@
       ]
     },
     {
+      "name": "objectTypes",
+      "fields": [
+        "label",
+        "id",
+        "iri"
+      ]
+    },
+    {
       "name": "grants",
       "fields": [
         "name",

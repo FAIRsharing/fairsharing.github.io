@@ -149,6 +149,10 @@
     {
       "text": "Missing recommended",
       "value": "recommended"
+    },
+    {
+      "text": "Missing optional",
+      "value": "optional"
     }
   ],
   "systemMessages": [

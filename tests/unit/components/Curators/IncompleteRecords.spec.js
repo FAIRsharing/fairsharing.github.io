@@ -29,6 +29,10 @@ let header = [
     {
         "text": "Missing recommended",
         "value": "recommended"
+    },
+    {
+      "text": "Missing optional",
+      "value": "optional"
     }
 ];
 usersStore.state.user = function () {
@@ -91,7 +95,8 @@ describe("Curator -> IncompleteRecords.vue", () => {
             "recordNameID": "ShareSfhare (2669f95)",
             "type": undefined,
             "recommended": "data_sharing",
-            "required": "name"
+            "required": "name",
+            "optional": ""
         }
         expect(wrapper.vm.incompleteRecords[0]).toStrictEqual(output);
     });

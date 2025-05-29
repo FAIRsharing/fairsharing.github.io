@@ -237,7 +237,8 @@
           "createdAt": "1425-01-01T13:31:25Z",
           "incomplete": {
             "required": [{"field": "name"}],
-            "recommended": [{"field": "data_sharing"}]
+            "recommended": [{"field": "data_sharing"}],
+            "optional": []
           }
         },
         {
@@ -246,7 +247,8 @@
           "createdAt": "1425-01-01T13:31:25Z",
           "incomplete": {
             "required": [{"field": "name"}, {"field": "abbreviation"}],
-            "recommended": [{"field": "data_sharing"}, {"field": "data_provenance"}]
+            "recommended": [{"field": "data_sharing"}, {"field": "data_provenance"}],
+            "optional": []
           }
         }
       ],

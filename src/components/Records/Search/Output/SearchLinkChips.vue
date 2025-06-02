@@ -65,9 +65,6 @@ export default {
       type: Boolean
     }
   },
-  mounted() {
-    console.log(JSON.stringify(this.chips, null, 2));
-  },
   methods: {
     /*
      * TODO: Contains some code similar to that in FilterButton.vue

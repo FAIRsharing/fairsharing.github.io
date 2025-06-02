@@ -46,7 +46,8 @@
         {
           "queryName": "objectTypes",
           "fields": [
-            "label"
+            "label",
+            "definitions"
           ]
         },
         "relatedRecordsCount",

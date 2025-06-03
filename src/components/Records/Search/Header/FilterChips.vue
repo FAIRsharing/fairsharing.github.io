@@ -38,7 +38,7 @@ export default {
   mixins: [filterChipsUtils],
   computed: {
     /**
-     * get the Filtered label that correponds to the name using the map FilterLabel
+     * get the Filtered label that corresponds to the name using the map FilterLabel
      * @returns {Object} - object with the mapping names and labels
      */
     getFilteredLabel: function () {

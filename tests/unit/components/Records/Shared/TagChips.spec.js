@@ -24,6 +24,12 @@ describe("TagChips.vue", function () {
       propsData: {
         record: {
           name: 'test record',
+          objectTypes: [
+            {
+              label: 'first type',
+              active: false
+            }
+          ],
           subjects: [
             {
               label: 'first chip',

@@ -11,7 +11,7 @@
         @click.prevent="updateSearchQuery(chip)"
       >
         <KeywordTooltip
-          v-if="chip.type === 'subjects' || chip.type === 'domains' "
+          v-if="chip.type === 'subjects' || chip.type === 'domains' || chip.type === 'objectTypes' "
           :keyword="chip"
         />
         <div

@@ -113,7 +113,7 @@ describe("Routes", () => {
         expect(scrollBehavior({})).toBe(false)
     })
 
-    it("performs harcoded record redirections correctly", async () => {
+    it("performs hardcoded record redirections correctly", async () => {
         // Records for articles
         let article = router.options.routes.find((obj) => {
             return obj.name === 'article'
@@ -153,36 +153,51 @@ describe("Routes", () => {
         expect(licence_with_s.redirect).toEqual( "/licence");
     });
 
-    it("performs harcoded ontology redirections correctly", async () => {
-        let assignMock = jest.fn();
-        delete window.location;
-        window.location = { assign: assignMock };
-        let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
-        await ontology.redirect({params: {name: 'SRAO'}});
-        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
-        await ontology.redirect({params: {name: 'DRAO'}});
-        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
-        expect(ontology.redirect(
-            {params: {name: 'dingdong'}})
-        ).toStrictEqual(
-            {"path":"/"}
-        );
-        let raw_srao_file = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file'} );
-        await raw_srao_file.redirect();
-        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl');
-        let raw_srao_file_by_version = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file_by_version'} );
-        await raw_srao_file_by_version.redirect();
-        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
-        let srao_term = router.options.routes.find((obj) => { return obj.name === 'srao_term'} );
-        await srao_term.redirect({params: {id: 'SRAO_0000307'}});
-        expect(window.location.assign).toHaveBeenCalledWith('https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/SRAO_0000307');
-        let old_recommendations = router.options.routes.find((obj) => {
-            return obj.name === 'old_recommendations'
-        });
-        await old_recommendations.redirect();
-        expect(window.location.assign).toHaveBeenCalledWith(
-            '/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard'
-        );
+    it("performs hardcoded ontology redirections correctly", async () => {
+      let assignMock = jest.fn();
+      delete window.location;
+      window.location = { assign: assignMock };
+      let ontology = router.options.routes.find((obj) => {
+        return obj.name === 'ontology'
+      });
+      await ontology.redirect({ params: { name: 'SRAO' } });
+      expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
+      await ontology.redirect({ params: { name: 'DRAO' } });
+      expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
+      expect(ontology.redirect(
+        { params: { name: 'dingdong' } })
+      ).toStrictEqual(
+        { "path": "/" }
+      );
+      let raw_srao_file = router.options.routes.find((obj) => {
+        return obj.name === 'raw_srao_file'
+      });
+      await raw_srao_file.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl');
+      let raw_srao_file_by_version = router.options.routes.find((obj) => {
+        return obj.name === 'raw_srao_file_by_version'
+      });
+      await raw_srao_file_by_version.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
+      let srao_term = router.options.routes.find((obj) => {
+        return obj.name === 'srao_term'
+      });
+      await srao_term.redirect({ params: { id: 'SRAO_0000307' } });
+      expect(window.location.assign).toHaveBeenCalledWith('https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/SRAO_0000307');
+      let old_recommendations = router.options.routes.find((obj) => {
+        return obj.name === 'old_recommendations'
+      });
+      await old_recommendations.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith(
+        '/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard'
+      );
+      let object_not_found_doi = router.options.routes.find((obj) => {
+        return obj.name === 'object_not_found_doi'
+      });
+      await object_not_found_doi.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith(
+        "https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/object-types"
+      );
     });
 
     // See #1865.

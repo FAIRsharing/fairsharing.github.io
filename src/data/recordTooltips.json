@@ -20,7 +20,7 @@
     "subjects": "The broad subject area / academic disciplines for this record.",
     "tools": "The tools associated with or maintained by this resource.",
     "user_defined_tags": "The user-defined tags relevant to this resource; such tags are created by our users but are not yet incorporated into the FAIRsharing vocabularies.",
-    "object_types": "The curators will provide some text to go here.",
+    "object_types": "Object types define the type of digital research object that is in scope for the resource.",
     "year": "The year in which the resource was created."
   }
 }

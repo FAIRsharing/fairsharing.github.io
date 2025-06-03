@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/StepperDialogHeader.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,61 +86,105 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/StepperDialogHeader.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    class="rounded-0 white py-3"
-    style="position: relative"
-  >
-    &lt;h2 class="text-center">
-      Save Your Search
-    &lt;/h2>
-
-    &lt;v-btn
-      icon
-      dark
-      style="position: absolute; top: 10px; right: 15px"
-    >
-      &lt;v-icon
-        color="
-          black"
-        size="40px"
-        @click="closeStepperDialog()"
-      >
-        mdi-close
-      &lt;/v-icon>
-    &lt;/v-btn>
+  &lt;div class="d-flex width-90">
+    &lt;TooltipComponent :tool-tip-text="toolTipText" />
+    &lt;AutoCompleteComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="typeList()"
+      :loading="getLoadingData"
+      @input="selectedValue"
+      @fetchData="getResults"
+    />
   &lt;/div>
 &lt;/template>
-
 &lt;script>
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
-import saveSearch from "@/store";
+import objectTypes from "@/store";
+
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
-  name: "StepperDialogHeader",
-
-  computed: {
-    ...mapGetters("saveSearch", ["getSaveSearchStatus"]),
+  name: "ObjectTypes",
+  components: { TooltipComponent, AutoCompleteComponent },
+  props: {
+    value: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data: () => {
+    return {
+      itemSelected: [],
+      itemValue: [],
+      toolTipText:
+        "Object types applicable to this resource or its data. Multiple selections will be joined with OR. Start typing to see available types.",
+    };
   },
 
-  methods: {
-    ...mapActions("saveSearch", ["resetSaveSearchDialog"]),
-    /**
-     * Close Stepper Dialog Box method
-     */
-    closeStepperDialog() {
-      if (this.getSaveSearchStatus) {
-        this.resetSaveSearchDialog();
-        this.$emit("restartStepper", 1);
-      }
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
+  computed: {
+    ...mapGetters("objectTypes", ["getObjectTypes", "getLoadingData"]),
+    ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
+
+    model: {
+      get() {
+        return this.itemSelected;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
     },
+  },
+  watch: {
+    itemSelected(newValue) {
+      this.itemValue = newValue;
+    },
+    /**
+     * Item list for the autocomplete should not be empty
+     * It is assigned with selected values when edit field is opened
+     */
+    getEditDialogStatus: {
+      handler(open) {
+        if (open) {
+          if (this.value &amp;&amp; this.value.length) {
+            objectTypes.commit(
+              "objectTypes/setObjectTypes",
+              this.value
+            );
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    //Pre-fill selected values on edit advanced search is clicked and open
+    this.itemValue = this.value;
+  },
+  methods: {
+    ...mapActions("objectTypes", ["fetchObjectTypes"]),
+
+    selectedValue(item) {
+      this.itemSelected = item;
+    },
+    getResults(queryParams) {
+      if (queryParams) this.fetchObjectTypes(queryParams);
+    },
+    typeList() {
+      let items = [];
+      this.getObjectTypes.forEach((item) => {
+        items.push(item.label);
+      })
+      return items;
+    }
   },
 };
 &lt;/script>

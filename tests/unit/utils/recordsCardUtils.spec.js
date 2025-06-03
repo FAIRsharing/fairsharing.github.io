@@ -34,6 +34,10 @@ describe("recordsCardsUtils.js", function () {
             type: 'userDefinedTags'
         }
         expect(utils.methods.getChipColor(chip)).toEqual('tags_color')
+        chip = {
+          type: 'objectTypes'
+        }
+        expect(utils.methods.getChipColor(chip)).toEqual('object_type_color')
     })
 
     it("capitalizes text", () => {
@@ -81,6 +85,12 @@ describe("recordsCardsUtils.js", function () {
     it("sets and organises chips", () => {
         utils.methods.getMaxItemShown = 2;
         const record = {
+            objectTypes: [
+              {
+                id: 1,
+                label: "one"
+              }
+            ],
             subjects: [
                 {
                     id: 1,
@@ -103,7 +113,7 @@ describe("recordsCardsUtils.js", function () {
         }
         expect(utils.methods.chips).toBe(undefined);
         utils.methods.setChips(record);
-        let result = [{"id":1,"label":"one","type":"subjects"},{"id":2,"label":"two","type":"domains"},{"id":3,"label":"three","type":"domains"}]
+        let result = [{"id":1,"label":"one","type":"objectTypes"},{"id":1,"label":"one","type":"subjects"},{"id":2,"label":"two","type":"domains"},{"id":3,"label":"three","type":"domains"}]
         expect(utils.methods.chips).toStrictEqual(result);
     })
 

@@ -38,6 +38,7 @@ let record = {
     maintainers: [{username: 'bod', id: 100, orcid: 'abc-123'}],
     watchers: [{username: 'bod', id: 100, orcid: 'abc-123'}],
     userDefinedTags: [],
+    objectTypes: [{id: 1, label: 'object type not found'}],
     type: 'abc',
     status: "ready",
     name: "ok",
@@ -183,6 +184,9 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.userDefinedTags = [
             {label: "newUserDefinedTag"},
             {label: "existingUserDefinedTag", id:555}
+        ];
+        wrapper.vm.currentFields.objectTypes = [
+          {label: "a type", id:1}
         ];
         let tagStub = sinon.stub(RestClient.prototype, "createNewUserDefinedTag");
         tagStub.returns({

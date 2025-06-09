@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Login</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,117 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Login</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div class="d-flex width-90">
+    &lt;TooltipComponent :tool-tip-text="toolTipText" />
+    &lt;AutoCompleteComponent
+      v-model="model"
+      :item-value="itemValue"
+      :item-list="typeList()"
+      :loading="getLoadingData"
+      @input="selectedValue"
+      @fetchData="getResults"
+    />
+  &lt;/div>
+&lt;/template>
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
 
-<header>
-    
-</header>
+import objectTypes from "@/store";
 
+import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
+import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>This component handles the login page</p></div>
-        
+export default {
+  name: "ObjectTypes",
+  components: { TooltipComponent, AutoCompleteComponent },
+  props: {
+    value: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data: () => {
+    return {
+      itemSelected: [],
+      itemValue: [],
+      toolTipText:
+        "Object types applicable to this resource or its data. Multiple selections will be joined with OR. Start typing to see available types.",
+    };
+  },
 
-        
-<dl class="details">
-    
+  computed: {
+    ...mapGetters("objectTypes", ["getObjectTypes", "getLoadingData"]),
+    ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
-	
+    model: {
+      get() {
+        return this.itemSelected;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
+    },
+  },
+  watch: {
+    itemSelected(newValue) {
+      this.itemValue = newValue;
+    },
+    /**
+     * Item list for the autocomplete should not be empty
+     * It is assigned with selected values when edit field is opened
+     */
+    getEditDialogStatus: {
+      handler(open) {
+        if (open) {
+          if (this.value &amp;&amp; this.value.length) {
+            objectTypes.commit(
+              "objectTypes/setObjectTypes",
+              this.value
+            );
+          }
+        }
+      },
+      immediate: true,
+    },
+  },
+  mounted() {
+    //Pre-fill selected values on edit advanced search is clicked and open
+    this.itemValue = this.value;
+  },
+  methods: {
+    ...mapActions("objectTypes", ["fetchObjectTypes"]),
 
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Users_Login_Login.vue.html">views/Users/Login/Login.vue</a>,
-				 <a href="views_Users_Login_Login.vue.html#sunlight-1-line-11">line 11</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+    selectedValue(item) {
+      this.itemSelected = item;
+    },
+    getResults(queryParams) {
+      if (queryParams) this.fetchObjectTypes(queryParams);
+    },
+    typeList() {
+      let items = [];
+      this.getObjectTypes.forEach((item) => {
+        items.push(item.label);
+      })
+      return items;
+    }
+  },
+};
+&lt;/script>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +201,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

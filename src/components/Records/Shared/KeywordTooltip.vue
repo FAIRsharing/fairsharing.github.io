@@ -30,6 +30,29 @@
         </div>
       </div>
     </v-tooltip>
+    <v-tooltip
+      v-else-if="keyword.iri"
+      bottom
+    >
+      <template #activator="{ on, attrs }">
+        <div
+          v-bind="attrs"
+          :class="['text-center',{'ellipse-width-80':!fullWidth}]"
+          v-on="on"
+        >
+          {{ capitaliseText(keyword.label, 'other') }}
+        </div>
+      </template>
+      <div class="tooltip">
+        <div>
+          <b class="mr-1">Type:</b> Research Object Type
+        </div>
+        <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
+        <div>
+          <b class="mr-1">URL:</b> {{ keyword['iri'] }}
+        </div>
+      </div>
+    </v-tooltip>
     <div v-else>
       {{ capitaliseText(keyword.label, "taxonomy") }}
     </div>

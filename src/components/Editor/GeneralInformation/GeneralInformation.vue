@@ -245,52 +245,61 @@ export default {
         _module.redirect = redirect;
       }
 
-    },
-    closeTypeChanged() {
-      this.showTypeChanged = false;
-    },
-    async submitWithChangedType() {
-      this.showTypeChanged = false;
-      await this.saveRecord(this.redirect, true);
-    },
-    formatType(type) {
-      if (type.name === undefined) {
-        return type;
-      }
-      return type.name;
-    },
-    async saveRecord(redirect, change){
-      this.loading = true;
-      // Non-deprecated records will need their deprecation reason to be cleared.
-      if (this.currentFields.status !== 'deprecated') {
-        this.currentFields.metadata.deprecation_reason = null;
-      }
-      // Ensure that taxonomic range is specified.
-      if (this.currentFields.taxonomies.length > 0) {
-        await this.updateGeneralInformation({
-          token: this.user().credentials.token,
-          id: this.$route.params.id,
-          change: change
-        });
-      }
-      else {
-        this.setSectionError({
-          section: "generalInformation",
-          value: {
-            response: {
-              data: "Taxonomic range is required. Please use 'Not Applicable' if your record isn't related to a species."
+            },
+            closeTypeChanged() {
+              this.showTypeChanged = false;
+            },
+            async submitWithChangedType() {
+              this.showTypeChanged = false;
+              await this.saveRecord(this.redirect, true);
+            },
+            formatType(type) {
+              if (type.name === undefined) {
+                return type;
+              }
+              return type.name;
+            },
+            async saveRecord(redirect, change){
+              this.loading = true;
+              // Non-deprecated records will need their deprecation reason to be cleared.
+              if (this.currentFields.status !== 'deprecated') {
+                this.currentFields.metadata.deprecation_reason = null;
+              }
+              // Ensure that at least one object type is provided.
+              // Ensure that taxonomic range is specified.
+              let taxReady = false;
+              if (this.currentFields.taxonomies.length > 0) {
+                taxReady = true;
+              }
+              if (taxReady) {
+                await this.updateGeneralInformation({
+                  token: this.user().credentials.token,
+                  id: this.$route.params.id,
+                  change: change
+                });
+              }
+              else {
+                let data = ''
+                if (!taxReady) {
+                 data += "Taxonomic range is required. Please use 'Not Applicable' if your record isn't related to a species. "
+                }
+                this.setSectionError({
+                  section: "generalInformation",
+                  value: {
+                    response: {
+                      data: data
+                    }
+                  }
+                });
+              }
+              this.loading = false;
+              if (!redirect) this.$scrollTo("#mainHeader");
+              if (redirect && !this.message.error) {
+                await this.$router.push({path: '/' + this.$route.params.id})
+              }
             }
-          }
-        });
-      }
-      this.loading = false;
-      if (!redirect) this.$scrollTo("#mainHeader");
-      if (redirect && !this.message.error) {
-        await this.$router.push({path: '/' + this.$route.params.id})
-      }
+        }
     }
-  }
-}
 </script>
 
 <style scoped>

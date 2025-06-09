@@ -146,7 +146,7 @@ let restClient = new RESTClient();
         },
         computed: {
             ...mapState('users', ["user"]),
-            ...mapState('editor', ['possibleDuplicates']),
+            ...mapState('editor', ['possibleDuplicates', 'objectTypes']),
             ...mapGetters('record', ['getSection'])
         },
         async mounted(){
@@ -164,6 +164,7 @@ let restClient = new RESTClient();
               ["getCountries",
                "getRecordTypes",
                "getTags",
+               "getObjectTypes",
                "getPossibleDuplicates",
                "cleanEditorStore"
               ]),
@@ -172,6 +173,7 @@ let restClient = new RESTClient();
             await this.getCountries();
             await this.getRecordTypes(this.fairassistOnly);
             await this.getTags();
+            await this.getObjectTypes();
           },
           async createRecord(){
             this.message = {

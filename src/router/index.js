@@ -181,6 +181,16 @@ let routes = [
       }
     },
   },
+  // A special DOI to designate an object type which isn't found.
+  {
+    name: "object_not_found_doi",
+    path: "/FAIRsharing.NFOBJT",
+    redirect: () => {
+      window.location.assign(
+        "https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/object-types"
+      );
+    },
+  },
   // Another redirection, from: https://github.com/FAIRsharing/fairsharing.github.io/issues/1741
   {
     name: "raw_srao_file",

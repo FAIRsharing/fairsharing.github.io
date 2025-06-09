@@ -1,0 +1,13 @@
+{
+  "objectTypes": [
+    {
+      "id": 1,
+      "label": "first type"
+    },
+    {
+      "id": 2,
+      "label": "second type"
+    }
+
+  ]
+}

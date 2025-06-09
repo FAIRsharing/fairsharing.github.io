@@ -20,10 +20,11 @@ const fairSharingTheme = {
     deprecated_color: "#8a3737",
 
     //-- subjects domains tax tags color
-    subject_color: "#E67E22",
-    domain_color: "#6b1e1e",
-    taxonomic_color: "#006055",
-    tags_color: "#ADA3A3",
+    subject_color: '#E67E22',
+    domain_color: '#6B1E1E',
+    taxonomic_color: '#006055',
+    tags_color: '#ADA3A3',
+    object_type_color: '#2172ac',
 
     //-- browse subject color level:
     subject_topLevel_1: "#a04545",

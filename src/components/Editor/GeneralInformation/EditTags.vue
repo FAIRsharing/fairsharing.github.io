@@ -21,7 +21,7 @@
                 <v-tooltip location="right">
                   <template #activator="{ props }">
                     <v-icon
-                     
+
                       size="small"
                       class="text-white mr-1"
                       v-bind="props"
@@ -50,7 +50,7 @@
                     <v-tooltip location="bottom">
                       <template #activator="{ props }">
                         <v-icon
-                         
+
                           size="small"
                           class="ml-1"
                           :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' white--text']"
@@ -114,7 +114,7 @@
                 >
                   <template #activator="{ props }">
                     <v-icon
-                     
+
                       class="text-blue ml-3 mr-1"
                       v-bind="props"
                     >
@@ -164,6 +164,17 @@
                         />
                       </v-list-item-action>
                       <v-list-item-title>Show user defined tags</v-list-item-title>
+                    </v-list-item>
+                    <v-divider class="my-1" />
+                    <v-list-item>
+                      <v-list-item-action>
+                        <v-switch
+                          v-model="showTypes.object_type"
+                          inset
+                          :color="colors.object_type"
+                        />
+                      </v-list-item-action>
+                      <v-list-item-title>Show object types</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -227,196 +238,211 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 
 import NewTags from "./NewTags";
 
-export default {
-  name: "EditTags",
-  components: {NewTags, KeywordTooltip},
-  mixins: [recordsCardUtils],
-  data(){
-    return {
-      formValid: false,
-      menu: {
-        content: null,
-        show: false,
-        label: "Edit record's tags"
-      },
-      headers: [
-        {
-          text: "Type of keyword",
-          sortable: false,
-          value: "model"
+    export default {
+        name: "EditTags",
+        components: {NewTags, KeywordTooltip},
+        mixins: [recordsCardUtils],
+        data(){
+            return {
+                formValid: false,
+                menu: {
+                  content: null,
+                  show: false,
+                  label: "Edit record's tags"
+                },
+                headers: [
+                  {
+                    text: "Type of keyword",
+                    sortable: false,
+                    value: "model"
+                  },
+                  {
+                    text: "Name",
+                    sortable: false,
+                    value: "label"
+                  },
+                  {
+                    text: "Definition",
+                    sortable: false,
+                    value: "definitions",
+                    filterable: false
+                  },
+                  {
+                  text: "Alternative names",
+                  sortable: false,
+                  value: "synonyms"
+                }
+                ],
+                searchString: null,
+                initialized: false,
+                showTypes: {
+                  domain: true,
+                  taxonomy: true,
+                  subject: true,
+                  user_defined_tag: true,
+                  object_type: true
+                },
+                tags: [],
+                loading: false,
+                showAddTagOverlay: false,
+                lastQuery: null
+            }
         },
-        {
-          text: "Name",
-          sortable: false,
-          value: "label"
+        computed: {
+            ...mapGetters("record", ["getSection"]),
+            ...mapState("editor", ["tooltips", "colors"]),
+            ...mapGetters("editor", ["getPartialTags"]),
+            ...mapState("record", ["sections"]),
+            sections() {
+                return {
+                    "taxonomic range": {
+                        items:this.getSection("generalInformation").data.taxonomies,
+                        color: this.colors["taxonomy"],
+                        tooltip: this.tooltips.species
+                    },
+                    subjects: {
+                        items: this.getSection("generalInformation").data.subjects,
+                        color: this.colors["subject"],
+                        tooltip: this.tooltips.subjects
+                    },
+                    domains: {
+                      items: this.getSection("generalInformation").data.domains,
+                      color: this.colors["domain"],
+                      tooltip: this.tooltips.domains
+                    },
+                    "user defined tags": {
+                        items: this.getSection("generalInformation").data.userDefinedTags,
+                        color: this.colors["user_defined_tag"],
+                        tooltip: this.tooltips.userDefinedTags
+                    },
+                    "object types": {
+                      items: this.getSection("generalInformation").data.objectTypes,
+                      color: this.colors["object_type"],
+                      tooltip: this.tooltips.objectTypes
+                    }
+                }
+            },
+            buttonLabel(){
+              if (this.menu.show) return "Hide table";
+              return "Add/edit tags";
+            },
+            buttonIcon(){
+              if (this.menu.show) return "fa-minus-circle";
+              return "fa-plus-circle";
+            },
+            recordTags: {
+              get() {
+                return this.getSection("generalInformation").data.taxonomies.map(term => {
+                  term.model = 'taxonomy';
+                  return term;
+                }).concat(this.getSection("generalInformation").data.domains.map(term => {
+                  term.model = 'domain';
+                  return term;
+                })).concat(this.getSection("generalInformation").data.subjects.map(term => {
+                  term.model = 'subject';
+                  return term;
+                })).concat(this.getSection("generalInformation").data.objectTypes.map(term => {
+                  term.model = 'object_type';
+                  return term;
+                })).concat(this.getSection("generalInformation").data.userDefinedTags.map(term => {
+                  term.model = 'user_defined_tag';
+                  return term;
+                }));
+              },
+              set(val) {
+                if (this.initialized) {
+                  let tags = {
+                    domain: [],
+                    taxonomy: [],
+                    subject: [],
+                    user_defined_tag: [],
+                    object_type: []
+                  };
+                  for (let selectedTag of val) tags[selectedTag.model].push(selectedTag);
+                  this.$store.commit("record/setTags", {
+                    value: tags.domain,
+                    target: "domains"
+                  });
+                  this.$store.commit("record/setTags", {
+                    value: tags.taxonomy,
+                    target: "taxonomies"
+                  });
+                  this.$store.commit("record/setTags", {
+                    value: tags.subject,
+                    target: "subjects"
+                  });
+                  this.$store.commit("record/setTags", {
+                    value: tags.user_defined_tag,
+                    target: "userDefinedTags"
+                  })
+                  this.$store.commit("record/setTags", {
+                    value: tags.object_type,
+                    target: "objectTypes"
+                  })
+                }
+              }
+            },
+            initialSections() {
+              return {
+                "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
+                "subjects": this.getSection("generalInformation").initialData.subjects,
+                "domains": this.getSection("generalInformation").initialData.domains,
+                "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags,
+                "object types": this.getSection("generalInformation").initialData.objectTypes,
+              };
+            }
         },
-        {
-          text: "Definition",
-          sortable: false,
-          value: "definitions",
-          filterable: false
+        watch: {
+          async searchString(val){
+            this.loading = true;
+            this.tags = [];
+            val = val.trim();
+            this.lastQuery = val;
+            await this.getTags(val);
+            /* istanbul ignore else */
+            if (val === this.lastQuery) {
+              this.partialTags();
+              this.loading = false;
+              this.$scrollTo("#editTags");
+            }
+          },
+          showTypes: {
+            deep: true,
+            handler(){
+              this.partialTags();
+            }
+          }
         },
-        {
-          text: "Alternative names",
-          sortable: false,
-          value: "synonyms"
-        }
-      ],
-      searchString: null,
-      initialized: false,
-      showTypes: {
-        domain: true,
-        taxonomy: true,
-        subject: true,
-        user_defined_tag: true
-      },
-      tags: [],
-      loading: false,
-      showAddTagOverlay: false,
-      lastQuery: null
-    }
-  },
-  computed: {
-    ...mapGetters("record", ["getSection"]),
-    ...mapState("editor", ["tooltips", "colors"]),
-    ...mapGetters("editor", ["getPartialTags"]),
-    ...mapState("record", ["sections"]),
-    sections() {
-      return {
-        "taxonomic range": {
-          items:this.getSection("generalInformation").data.taxonomies,
-          color: this.colors["taxonomy"],
-          tooltip: this.tooltips.species
-        },
-        subjects: {
-          items: this.getSection("generalInformation").data.subjects,
-          color: this.colors["subject"],
-          tooltip: this.tooltips.subjects
-        },
-        domains: {
-          items: this.getSection("generalInformation").data.domains,
-          color: this.colors["domain"],
-          tooltip: this.tooltips.domains
-        },
-        "user defined tags": {
-          items: this.getSection("generalInformation").data.userDefinedTags,
-          color: this.colors["user_defined_tag"],
-          tooltip: this.tooltips.userDefinedTags
-        }
-      }
-    },
-    buttonLabel(){
-      if (this.menu.show) return "Hide table";
-      return "Add/edit tags";
-    },
-    buttonIcon(){
-      if (this.menu.show) return "fa-minus-circle";
-      return "fa-plus-circle";
-    },
-    recordTags: {
-      get() {
-        return this.getSection("generalInformation").data.taxonomies.map(term => {
-          term.model = 'taxonomy';
-          return term;
-        }).concat(this.getSection("generalInformation").data.domains.map(term => {
-          term.model = 'domain';
-          return term;
-        })).concat(this.getSection("generalInformation").data.subjects.map(term => {
-          term.model = 'subject';
-          return term;
-        })).concat(this.getSection("generalInformation").data.userDefinedTags.map(term => {
-          term.model = 'user_defined_tag';
-          return term;
-        }));
-      },
-      set(val) {
-        if (this.initialized) {
-          let tags = {
-            domain: [],
-            taxonomy: [],
-            subject: [],
-            user_defined_tag: []
-          };
-          for (let selectedTag of val) tags[selectedTag.model].push(selectedTag);
-          this.$store.commit("record/setTags", {
-            value: tags.domain,
-            target: "domains"
-          });
-          this.$store.commit("record/setTags", {
-            value: tags.taxonomy,
-            target: "taxonomies"
-          });
-          this.$store.commit("record/setTags", {
-            value: tags.subject,
-            target: "subjects"
-          });
-          this.$store.commit("record/setTags", {
-            value: tags.user_defined_tag,
-            target: "userDefinedTags"
+        mounted(){
+          this.$nextTick(async function () {
+            this.loading = true;
+            this.initialized = false;
+            this.partialTags();
+            this.loading = false;
+            this.initialized = true;
           })
-        }
-      }
-    },
-    initialSections() {
-      return {
-        "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
-        "subjects": this.getSection("generalInformation").initialData.subjects,
-        "domains": this.getSection("generalInformation").initialData.domains,
-        "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags
-      };
+        },
+        methods: {
+          ...mapActions('editor', ["getTags"]),
+          showMenu(){
+            if (!this.menu.show) { this.$scrollTo("#editTags") }
+            this.menu.show = !this.menu.show;
+          },
+          removeTag(sectionItems, termIndex){
+            sectionItems.splice(termIndex, 1)
+          },
+          partialTags(){
+            let sections = [];
+            Object.keys(this.showTypes).forEach(type => {
+              if (this.showTypes[type]) sections.push(type);
+            });
+            this.tags = this.getPartialTags(sections);
+          },
+          isNew(term, section){
+            return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
+          }
+        },
     }
-  },
-  watch: {
-    async searchString(val){
-      this.loading = true;
-      this.tags = [];
-      val = val.trim();
-      this.lastQuery = val;
-      await this.getTags(val);
-      /* istanbul ignore else */
-      if (val === this.lastQuery) {
-        this.partialTags();
-        this.loading = false;
-        this.$scrollTo("#editTags");
-      }
-    },
-    showTypes: {
-      deep: true,
-      handler(){
-        this.partialTags();
-      }
-    }
-  },
-  mounted(){
-    this.$nextTick(async function () {
-      this.loading = true;
-      this.initialized = false;
-      this.partialTags();
-      this.loading = false;
-      this.initialized = true;
-    })
-  },
-  methods: {
-    ...mapActions('editor', ["getTags"]),
-    showMenu(){
-      if (!this.menu.show) { this.$scrollTo("#editTags") }
-      this.menu.show = !this.menu.show;
-    },
-    removeTag(sectionItems, termIndex){
-      sectionItems.splice(termIndex, 1)
-    },
-    partialTags(){
-      let sections = [];
-      Object.keys(this.showTypes).forEach(type => {
-        if (this.showTypes[type]) sections.push(type);
-      });
-      this.tags = this.getPartialTags(sections);
-    },
-    isNew(term, section){
-      return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
-    }
-  },
-}
 </script>
 
 <style scoped>

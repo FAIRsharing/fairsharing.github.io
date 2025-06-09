@@ -5,6 +5,7 @@ import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import countriesSearch from "@/store/AdvancedSearchComponents/countriesSearch";
 import domainsSearch from "@/store/AdvancedSearchComponents/domainsSearch";
 import licencesSearch from "@/store/AdvancedSearchComponents/licencesSearch";
+import objectTypes from "@/store/AdvancedSearchComponents/objectTypes";
 import organisationSearch from "@/store/AdvancedSearchComponents/organisationSearch";
 import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
 import subjectSearch from "@/store/AdvancedSearchComponents/subjectSearch";
@@ -40,6 +41,7 @@ export default new Vuex.Store({
     subjectSearch,
     recordTypes,
     organisationSearch,
+    objectTypes,
     userDefinedTagsSearch,
     domainsSearch,
     taxonomiesSearch,

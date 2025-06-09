@@ -22,6 +22,9 @@ const recordsCardUtils = {
             else if(chip.type==='userDefinedTags') {
                 return 'tags_color';
             }
+            else if(chip.type==='objectTypes') {
+              return 'object_type_color';
+            }
         },
         capitaliseText(text, type) {
             if (type === 'taxonomy') {
@@ -84,7 +87,7 @@ const recordsCardUtils = {
         },
         setChips(record) {
             const _module = this;
-            const order = ['subjects', 'domains', 'taxonomies']
+            const order = ['objectTypes', 'subjects', 'domains', 'taxonomies']
             _module.remainTagCount = 0
             _module.chips = [];
             order.forEach(node => {

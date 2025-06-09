@@ -388,7 +388,7 @@
             </v-tooltip>
           </template>
           <template #label>
-            <span class="v-label-white">Database uses only internal identifiers.</span>
+            <span class="v-label-white">This database uses internal identifiers rather than a community-standard identifier schema.</span>
           </template>
         </v-checkbox>
       </v-col>

@@ -58,6 +58,9 @@
               <td>
                 {{ props.item.recommended }}
               </td>
+              <td>
+                {{ props.item.optional }}
+              </td>
             </tr>
           </template>
         </v-data-table>
@@ -125,12 +128,17 @@ export default {
         item.incomplete.required.forEach(req => {
           required.push(req.field)
         });
+        let optional = [];
+        item.incomplete.optional.forEach(req => {
+          optional.push(req.field)
+        });
         let object = {
           recordNameID: `${item.name} (${item.id})`,
           type: item.type,
           id: item.id,
           recommended: recommended.sort().join(', '),
           required: required.sort().join(', '),
+          optional: optional.sort().join(', ')
         };
         object.createdAt = this.formatDate(item.createdAt);
         this.incompleteRecords.push(object);

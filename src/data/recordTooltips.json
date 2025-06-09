@@ -21,6 +21,7 @@
     "tools": "The tools associated with or maintained by this resource.",
     "user_defined_tags": "The user-defined tags relevant to this resource; such tags are created by our users but are not yet incorporated into the FAIRsharing vocabularies.",
     "year": "The year in which the resource was created.",
-    "internal_identifiers": "Does this record only implement internal identifiers, instead of linking to any identifier schema?"
+    "internal_identifiers": "Does this record only implement internal identifiers, instead of linking to any identifier schema?",
+    "object_types": "Object types define the type of digital research object that is in scope for the resource."
   }
 }

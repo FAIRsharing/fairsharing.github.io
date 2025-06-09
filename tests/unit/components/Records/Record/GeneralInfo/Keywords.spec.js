@@ -19,7 +19,8 @@ let editor = {
             subjects: "subject tooltip.",
             domains: "domain tooltip.",
             taxonomies: "taxonomy tooltip",
-            user_defined_tags: "user_defined tooltip"
+            user_defined_tags: "user_defined tooltip",
+            object_types: "object_types_tooltip",
         }
     }
 }
@@ -35,6 +36,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
         {label: "Deneb"},
     ],
     userDefinedTags:[{label:'a'}],
+    objectTypes: [{label:'an object type'}]
 };
 const $store = new Vuex.Store({
     modules: {
@@ -59,6 +61,7 @@ describe("Keywords.vue", function(){
         expect(wrapper.vm.getField('subjects')[0].label).toMatch("Javascript Fun");
         expect(wrapper.vm.getField('domains')[0].label).toMatch("Deneb");
         expect(wrapper.vm.getField('userDefinedTags').length).toEqual(1);
+        expect(wrapper.vm.getField('objectTypes').length).toEqual(1);
     });
 
     it("returns to the search page when a chip is clicked", () => {

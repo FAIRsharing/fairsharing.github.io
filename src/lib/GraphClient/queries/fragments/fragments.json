@@ -6,6 +6,16 @@
     "iri",
     "synonyms"
   ],
+  "objectTypes": [
+    {
+      "queryName": "objectTypes",
+      "fields": [
+        {
+          "$ref": "keywords"
+        }
+      ]
+    }
+  ],
   "domains": [
     {
       "queryName": "domains",

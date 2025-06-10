@@ -384,7 +384,7 @@
             fields.type === 'knowledgebase' ||
             fields.type === 'knowledgebase_and_repository'"
           v-model="fields.metadata['internal_identifiers']"
-          class="d-inline-block mr-2 "
+          class="mr-2 "
         >
           <template #prepend>
             <v-tooltip

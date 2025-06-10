@@ -363,6 +363,19 @@
 
       <!-- does this database only implement internal identifiers -->
       <v-col cols="12">
+        <p>
+          FAIRsharing requires that each database record provide the type of identifier(s) used. Either add the
+          persistent identifier schema to your record using the implements relationship type, or tick the box below
+          that confirms that the database instead uses an internal identifier schema.
+          More information is available in our
+          <a
+            href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/identifier-type"
+            target="_blank"
+          >
+            identifier type
+          </a>
+          documentation.
+        </p>
         <v-checkbox
           v-if="fields.type.name === 'repository' ||
             fields.type.name === 'knowledgebase' ||

@@ -361,6 +361,51 @@
         </v-autocomplete>
       </v-col>
 
+      <!-- does this database only implement internal identifiers -->
+      <v-col cols="12">
+        <p>
+          FAIRsharing requires that each database record provide the type of identifier(s) used. Either add the
+          persistent identifier schema to your record using the implements relationship type, or tick the box below
+          that confirms that the database instead uses an internal identifier schema.
+          More information is available in our
+          <a
+            href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/identifier-type"
+            target="_blank"
+          >
+            identifier type
+          </a>
+          documentation.
+        </p>
+        <v-checkbox
+          v-if="fields.type.name === 'repository' ||
+            fields.type.name === 'knowledgebase' ||
+            fields.type.name === 'knowledgebase_and_repository' ||
+            fields.type === 'repository' ||
+            fields.type === 'knowledgebase' ||
+            fields.type === 'knowledgebase_and_repository'"
+          v-model="fields.metadata['internal_identifiers']"
+          class="d-inline-block mr-2 "
+        >
+          <template #prepend>
+            <v-tooltip
+              bottom
+              max-width="300px"
+              class="text-justify"
+            >
+              <template #activator="{ on }">
+                <v-icon v-on="on">
+                  fa-question-circle
+                </v-icon>
+              </template>
+              {{ tooltips['internal_identifiers'] }}
+            </v-tooltip>
+          </template>
+          <template #label>
+            <span class="v-label-white">This database uses internal identifiers rather than a community-standard identifier schema.</span>
+          </template>
+        </v-checkbox>
+      </v-col>
+
       <!-- deprecation reasons -->
       <v-col
         v-if="fields.status === 'deprecated'"

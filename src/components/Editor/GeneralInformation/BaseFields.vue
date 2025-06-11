@@ -363,7 +363,9 @@
 
       <!-- does this database only implement internal identifiers -->
       <v-col cols="12">
-        <p>
+        <p
+          v-if="isDatabase()"
+        >
           FAIRsharing requires that each database record provide the type of identifier(s) used. Either add the
           persistent identifier schema to your record using the implements relationship type, or tick the box below
           that confirms that the database instead uses an internal identifier schema.
@@ -377,12 +379,7 @@
           documentation.
         </p>
         <v-checkbox
-          v-if="fields.type.name === 'repository' ||
-            fields.type.name === 'knowledgebase' ||
-            fields.type.name === 'knowledgebase_and_repository' ||
-            fields.type === 'repository' ||
-            fields.type === 'knowledgebase' ||
-            fields.type === 'knowledgebase_and_repository'"
+          v-if="isDatabase()"
           v-model="fields.metadata['internal_identifiers']"
           class="mr-2 "
         >
@@ -669,6 +666,17 @@
         },
         createNewRecord(){
           this.$emit('createnewrecord');
+        },
+        isDatabase() {
+          if (this.fields.type.name === 'repository' ||
+              this.fields.type.name === 'knowledgebase' ||
+              this.fields.type.name === 'knowledgebase_and_repository' ||
+              this.fields.type === 'repository' ||
+              this.fields.type === 'knowledgebase' ||
+              this.fields.type === 'knowledgebase_and_repository') {
+            return true;
+          }
+          return false;
         }
       }
     }

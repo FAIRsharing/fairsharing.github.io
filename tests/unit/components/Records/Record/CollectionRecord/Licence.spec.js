@@ -10,44 +10,44 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    doi: 'FAIRsharing.wibble',
-    metadata: {
-        year_creation: 1912,
-    },
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    countries: [],
-    userDefinedTags:[{label:'a'}],
-    licences: [
-        {
-            "id": 167,
-            "name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
-            "url": "https://creativecommons.org/licenses/by/4.0/"
-        }
-    ]
+  doi: 'FAIRsharing.wibble',
+  metadata: {
+    year_creation: 1912,
+  },
+  subjects:[],
+  domains:[],
+  taxonomies:[],
+  countries: [],
+  userDefinedTags:[{label:'a'}],
+  licences: [
+    {
+      "id": 167,
+      "name": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ]
 };
 const $store = new Vuex.Store({
-    modules: {
-        record:Record
-    }});
+  modules: {
+    record:Record
+  }});
 
 describe("Licence.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    // TODO: Mock properties in options {}.
-    beforeEach(() => {
-        wrapper = shallowMount(Licence, {
-            localVue,
-            vuetify,
-            mocks: {$store},
-            stubs: ['router-link']
-        })
-    });
+  // TODO: Mock properties in options {}.
+  beforeEach(() => {
+    wrapper = shallowMount(Licence, {
+      localVue,
+      vuetify,
+      mocks: {$store},
+      stubs: ['router-link']
+    })
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("Licence");
-    });
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("Licence");
+  });
 
 });
 

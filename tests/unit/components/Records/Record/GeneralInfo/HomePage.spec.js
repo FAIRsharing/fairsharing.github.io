@@ -10,45 +10,45 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 let editor = {
-    namespaced: true,
-    state: {
-        recordTooltips: {
-            homepage: "homepage tooltip.",
-        }
+  namespaced: true,
+  state: {
+    recordTooltips: {
+      homepage: "homepage tooltip.",
     }
+  }
 }
 
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    doi: 'FAIRsharing.wibble',
-    metadata: {
-        year_creation: 1912,
-    },
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[{label:'a'}],
+  doi: 'FAIRsharing.wibble',
+  metadata: {
+    year_creation: 1912,
+  },
+  subjects:[],
+  domains:[],
+  taxonomies:[],
+  userDefinedTags:[{label:'a'}],
 };
 const $store = new Vuex.Store({
-    modules: {
-        record: Record,
-        editor
-    }});
+  modules: {
+    record: Record,
+    editor
+  }});
 
 describe("HomePage.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    // TODO: Mock properties in options {}.
-    beforeEach(() => {
-        wrapper = shallowMount(HomePage, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        })
-    });
+  // TODO: Mock properties in options {}.
+  beforeEach(() => {
+    wrapper = shallowMount(HomePage, {
+      localVue,
+      vuetify,
+      mocks: {$store}
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("HomePage");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("HomePage");
+  });
 
 });

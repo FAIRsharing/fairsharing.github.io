@@ -11,43 +11,43 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 let editor = {
-    namespaced: true,
-    state: {
-        recordTooltips: {
-            maintainers: "maintainer tooltip.",
-        }
+  namespaced: true,
+  state: {
+    recordTooltips: {
+      maintainers: "maintainer tooltip.",
     }
+  }
 }
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    doi: 'FAIRsharing.wibble',
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[{label:'a'}],
-    maintainers:[]
+  doi: 'FAIRsharing.wibble',
+  subjects:[],
+  domains:[],
+  taxonomies:[],
+  userDefinedTags:[{label:'a'}],
+  maintainers:[]
 };
 const $store = new Vuex.Store({
-    modules: {
-        record: Record,
-        users,
-        editor: editor
-    }});
+  modules: {
+    record: Record,
+    users,
+    editor: editor
+  }});
 
 describe("Maintainers.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    // TODO: Mock properties in options {}.
-    beforeEach(() => {
-        wrapper = shallowMount(Maintainers, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        })
-    });
+  // TODO: Mock properties in options {}.
+  beforeEach(() => {
+    wrapper = shallowMount(Maintainers, {
+      localVue,
+      vuetify,
+      mocks: {$store}
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("Maintainers");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("Maintainers");
+  });
 
 });

@@ -11,24 +11,24 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
-    modules: {
-        record:Record,
-        editor:Editor
-    }});
+  modules: {
+    record:Record,
+    editor:Editor
+  }});
 
 describe("Citations.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(DatasetBoolean, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        })
-    });
+  beforeEach(() => {
+    wrapper = shallowMount(DatasetBoolean, {
+      localVue,
+      vuetify,
+      mocks: {$store}
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("DatasetBoolean");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("DatasetBoolean");
+  });
 
 });

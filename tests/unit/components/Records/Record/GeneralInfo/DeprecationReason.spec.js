@@ -13,33 +13,33 @@ const vuetify = new Vuetify();
 
 
 Record.state.currentRecord.fairsharingRecord.metadata = {
-    deprecationReason:"some deprecation reason...",
-    deprecationDate: "1912-04-15"
+  deprecationReason:"some deprecation reason...",
+  deprecationDate: "1912-04-15"
 };
 const $store = new Vuex.Store({
-    modules: {
-        record:Record
-    }});
+  modules: {
+    record:Record
+  }});
 
 describe("Citations.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(DeprecationReason, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        })
-    });
+  beforeEach(() => {
+    wrapper = shallowMount(DeprecationReason, {
+      localVue,
+      vuetify,
+      mocks: {$store}
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("DeprecationReason");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("DeprecationReason");
+  });
 
-    it("shows deprecation reason", () => {
-        let reason = wrapper.vm.currentRecord.fairsharingRecord.metadata['deprecation_reason'];
-        let date = wrapper.vm.currentRecord.fairsharingRecord.metadata['deprecation_date'];
-        expect(wrapper.vm.getReason()).toEqual("This record was deprecated on " + date + " for the following reason(s): " + reason)
-    });
+  it("shows deprecation reason", () => {
+    let reason = wrapper.vm.currentRecord.fairsharingRecord.metadata['deprecation_reason'];
+    let date = wrapper.vm.currentRecord.fairsharingRecord.metadata['deprecation_date'];
+    expect(wrapper.vm.getReason()).toEqual("This record was deprecated on " + date + " for the following reason(s): " + reason)
+  });
 
 });

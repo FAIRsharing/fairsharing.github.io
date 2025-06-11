@@ -15,75 +15,75 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
-    modules: {
-        record:Record,
-        editor: editorStore
-    }});
+  modules: {
+    record:Record,
+    editor: editorStore
+  }});
 
 record.state.currentRecord.fairsharingRecord.metadata = {
-    dataset_deposition: {},
+  dataset_deposition: {},
 };
 $store.state.editor.allowedFields.properties = {dataset_deposition: {}}
 let restStub;
 
 describe("OtherDataProcesses.vue", function () {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(OtherDataProcesses, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        });
+  beforeEach(() => {
+    wrapper = shallowMount(OtherDataProcesses, {
+      localVue,
+      vuetify,
+      mocks: {$store}
     });
+  });
 
-    beforeAll(() => {
-        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
-        restStub.withArgs(sinon.match.any).returns({
-            data: {properties: {
-                    dataset_deposition: {item:[1.2]},
-                    emptyKey:{}
-                }}
-        });
+  beforeAll(() => {
+    restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+    restStub.withArgs(sinon.match.any).returns({
+      data: {properties: {
+        dataset_deposition: {item:[1.2]},
+        emptyKey:{}
+      }}
     });
+  });
 
-    afterAll(() => {
-        restStub.restore();
-    });
+  afterAll(() => {
+    restStub.restore();
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("OtherDataProcesses");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("OtherDataProcesses");
+  });
 
-    it("can check if data is available", async () => {
-        await wrapper.vm.setAvailableData({a:''},'a')
-        expect(wrapper.vm.otherDataConditions).toStrictEqual({
-            "a": {
-            "a": ""
-            },
-        });
-        let selectedNode = [{'a': 1}, {'b': 2}]
-        await wrapper.vm.setAvailableData(selectedNode,'a')
-        selectedNode = [{a:[]}]
-        await wrapper.vm.setAvailableData(selectedNode,'n')
-        selectedNode = [{}]
-        await wrapper.vm.setAvailableData(selectedNode,'a')
-        expect(wrapper.vm.otherDataConditions).toStrictEqual({
-            "a": {
-                "0": {
-                    "a": 1
-                },
-                "1": {
-                    "b": 2
-                },
-                "a": ""
-            },
-            "n": {
-                "0": {
-                    "a": []
-                }
-            }
-        });
+  it("can check if data is available", async () => {
+    await wrapper.vm.setAvailableData({a:''},'a')
+    expect(wrapper.vm.otherDataConditions).toStrictEqual({
+      "a": {
+        "a": ""
+      },
     });
+    let selectedNode = [{'a': 1}, {'b': 2}]
+    await wrapper.vm.setAvailableData(selectedNode,'a')
+    selectedNode = [{a:[]}]
+    await wrapper.vm.setAvailableData(selectedNode,'n')
+    selectedNode = [{}]
+    await wrapper.vm.setAvailableData(selectedNode,'a')
+    expect(wrapper.vm.otherDataConditions).toStrictEqual({
+      "a": {
+        "0": {
+          "a": 1
+        },
+        "1": {
+          "b": 2
+        },
+        "a": ""
+      },
+      "n": {
+        "0": {
+          "a": []
+        }
+      }
+    });
+  });
 
 });

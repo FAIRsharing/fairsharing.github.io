@@ -10,33 +10,33 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    reverseRecordAssociations:[{id:3,recordAssocLabel:'deprecates',fairsharingRecord:{name:'na',id:1254}}],
-    recordAssociations:[{id:4,recordAssocLabel:'deprecates',linkedRecord:{name:'asd',id:1255}}]
+  reverseRecordAssociations:[{id:3,recordAssocLabel:'deprecates',fairsharingRecord:{name:'na',id:1254}}],
+  recordAssociations:[{id:4,recordAssocLabel:'deprecates',linkedRecord:{name:'asd',id:1255}}]
 };
 const $store = new Vuex.Store({
-    modules: {
-        record:Record
-    }});
+  modules: {
+    record:Record
+  }});
 
 describe("ReplacedByRecord.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(ReplacedByRecord, {
-            localVue,
-            vuetify,
-            mocks: {$store},
-            stubs: ['router-link']
-        })
-    });
+  beforeEach(() => {
+    wrapper = shallowMount(ReplacedByRecord, {
+      localVue,
+      vuetify,
+      mocks: {$store},
+      stubs: ['router-link']
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("ReplacedByRecord");
-        Record.state.currentRecord["fairsharingRecord"] = {
-            reverseRecordAssociations:[{id:3,recordAssocLabel:'re',fairsharingRecord:{name:'na',id:1254}}],
-            recordAssociations:[{id:4,recordAssocLabel:'deprecates',linkedRecord:{name:'asd',id:1255}}]
-        };
-        expect(wrapper.vm.anyAssociationExist).toBe(true);
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("ReplacedByRecord");
+    Record.state.currentRecord["fairsharingRecord"] = {
+      reverseRecordAssociations:[{id:3,recordAssocLabel:'re',fairsharingRecord:{name:'na',id:1254}}],
+      recordAssociations:[{id:4,recordAssocLabel:'deprecates',linkedRecord:{name:'asd',id:1255}}]
+    };
+    expect(wrapper.vm.anyAssociationExist).toBe(true);
+  });
 
 });

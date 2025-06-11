@@ -300,7 +300,7 @@
               <template #activator="{ props }">
                 <v-list-item
                   class="registryList"
-                 
+
                   v-bind="props"
                 >
                   <v-list-item-avatar>
@@ -347,16 +347,16 @@
               <template #activator="{ props }">
                 <v-list-item
                   class="registryList"
-                 
+
                   v-bind="props"
                 >
                   <v-list-item-avatar>
                     <status-pills :status="data.item.name" />
                   </v-list-item-avatar>
-                  
+
                     <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
                     <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                  
+
                 </v-list-item>
               </template>
               <span> {{ data.item.description }} </span>
@@ -367,7 +367,9 @@
 
       <!-- does this database only implement internal identifiers -->
       <v-col cols="12">
-        <p>
+        <p
+          v-if="isDatabase()"
+        >
           FAIRsharing requires that each database record provide the type of identifier(s) used. Either add the
           persistent identifier schema to your record using the implements relationship type, or tick the box below
           that confirms that the database instead uses an internal identifier schema.
@@ -381,14 +383,9 @@
           documentation.
         </p>
         <v-checkbox
-          v-if="fields.type.name === 'repository' ||
-            fields.type.name === 'knowledgebase' ||
-            fields.type.name === 'knowledgebase_and_repository' ||
-            fields.type === 'repository' ||
-            fields.type === 'knowledgebase' ||
-            fields.type === 'knowledgebase_and_repository'"
+          v-if="isDatabase()"
           v-model="fields.metadata['internal_identifiers']"
-          class="d-inline-block mr-2 "
+          class="mr-2 "
         >
           <template #prepend>
             <v-tooltip
@@ -537,144 +534,156 @@ import DatabaseWarning from "./DatabaseWarning";
 
 let restClient = new RESTClient();
 
-export default {
-  name: "BaseFields",
-  components: {DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders},
-  mixins: [getAPIEndPoint],
-  props:{
-    createMode: {type: Boolean, default: false},
-    submitRecord: {type: Boolean, default: false},
-    loading: {type: Boolean, default: false}
-  },
-  data(){
-    return {
-      rules: {
-        isRequired: function(){return isRequired()},
-        isUrl: function(){return isUrl()},
-        isLongEnough: function(val){return isLongEnough(val)},
-        isImage: function(val){return isImage(val)}
+    export default {
+      name: "BaseFields",
+      components: {DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders},
+      mixins: [getAPIEndPoint],
+      props:{
+        createMode: {type: Boolean, default: false},
+        submitRecord: {type: Boolean, default: false},
+        loading: {type: Boolean, default: false}
       },
-      submitAnywayDisabled: false,
-      formValid: false,
-      initialType: '',
-      allowedFileSize: 1048576,
-      recordLogo: null,
-      logoLoading: false,
-      currentLogo: null
-    }
-  },
-  computed: {
-    ...mapGetters("record", ["getSection", "getCreatingNewRecord","getField"]),
-    ...mapState("editor", [
-      "countries",
-      "years",
-      "tooltips",
-      "recordTypes",
-      "status",
-      "possibleDuplicates"
-    ]),
-    ...mapState('users', ['user']),
-    ...mapState("record", ["currentRecord"]),
-    fields(){
-      return this.getSection("generalInformation").data;
-    },
-    imageSizeCorrect() {
-      if (!this.recordLogo) {
-        this.$emit('imageTooBig', false);
-        return true;
-      }
-      if (this.recordLogo.size < this.allowedFileSize) {
-        this.$emit('imageTooBig', false);
-        return true;
-      }
-      this.$emit('imageTooBig', true);
-      return false;
-    }
-  },
-  watch: {
-    recordLogo: {
-      async handler(logo) {
-        let _module = this;
-        if (logo === null || logo === undefined) {
-          // This is to prevent a logo being deleted if a user fiddles about with the form and then
-          // submits with no image uploaded.
-          if (_module.currentRecord.fairsharingRecord.urlForLogo) {
-            _module.fields.delete('logo');
+      data(){
+          return {
+              rules: {
+                  isRequired: function(){return isRequired()},
+                  isUrl: function(){return isUrl()},
+                  isLongEnough: function(val){return isLongEnough(val)},
+                  isImage: function(val){return isImage(val)}
+              },
+              submitAnywayDisabled: false,
+              formValid: false,
+              initialType: '',
+              allowedFileSize: 1048576,
+              recordLogo: null,
+              logoLoading: false,
+              currentLogo: null
           }
-          else {
-            _module.fields.logo = {}
+      },
+      computed: {
+          ...mapGetters("record", ["getSection", "getCreatingNewRecord","getField"]),
+          ...mapState("editor", [
+              "countries",
+              "years",
+              "tooltips",
+              "recordTypes",
+              "status",
+              "possibleDuplicates"
+          ]),
+          ...mapState('users', ['user']),
+          ...mapState("record", ["currentRecord"]),
+          fields(){
+            return this.getSection("generalInformation").data;
+          },
+          imageSizeCorrect() {
+            if (!this.recordLogo) {
+              this.$emit('imageTooBig', false);
+              return true;
+            }
+            if (this.recordLogo.size < this.allowedFileSize) {
+              this.$emit('imageTooBig', false);
+              return true;
+            }
+            this.$emit('imageTooBig', true);
+            return false;
           }
-          return;
+      },
+      watch: {
+        recordLogo: {
+          async handler(logo) {
+            let _module = this;
+            if (logo === null || logo === undefined) {
+              // This is to prevent a logo being deleted if a user fiddles about with the form and then
+              // submits with no image uploaded.
+              if (_module.currentRecord.fairsharingRecord.urlForLogo) {
+                _module.fields.delete('logo');
+              }
+              else {
+                _module.fields.logo = {}
+              }
+              return;
+            }
+            _module.logoLoading = true;
+            let convertedFile = await toBase64(logo);
+            _module.fields.logo = {
+              filename: logo.name,
+              content_type: logo.type,
+              data: convertedFile
+            };
+            _module.logoLoading = false;
+          }
         }
-        _module.logoLoading = true;
-        let convertedFile = await toBase64(logo);
-        _module.fields.logo = {
-          filename: logo.name,
-          content_type: logo.type,
-          data: convertedFile
-        };
-        _module.logoLoading = false;
-      }
-    }
-  },
-  mounted() {
-    this.$refs.form.validate();
-    if (this.$router.currentRoute.path !== '/create' && this.currentRecord.fairsharingRecord.urlForLogo) {
-      this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
-    }
-  },
-  methods: {
-    async deleteLogo() {
-      this.logoLoading = true;
-      let response;
-      response = await restClient.clearLogo(this.currentRecord.fairsharingRecord.id, this.user().credentials.token);
-      if (!response.error) {
-        this.currentLogo = null;
-      }
-      this.logoLoading = false;
-    },
-    removeCountry(country){
-      this.fields.countries = this.fields.countries.filter(obj =>
-        obj.label !== country.name && obj.id !== country.id
-      );
-    },
-    typeChangeDisabled(){
-      let _module = this;
-      if (_module.getCreatingNewRecord) {
-        return false;
-      }
-      return !_module.user().is_curator;
-    },
-    submitAnyway() {
-      this.submitAnywayDisabled = true;
-      this.$emit('submission');
-    },
-    tryAgain() {
-      this.fields.metadata.homepage = null;
-      this.fields.metadata.name = null;
-      this.fields.metadata.abbreviation = null;
-      this.$emit('clearing');
-    },
-    disableSubmit() {
-      let _module = this;
-      if (!_module.formValid) {
-        return true;
-      }
-      if (_module.possibleDuplicates.length > 0) {
-        if (_module.submitRecord) {
+      },
+      mounted() {
+        this.$refs.form.validate();
+        if (this.$router.currentRoute.path !== '/create' && this.currentRecord.fairsharingRecord.urlForLogo)
+        {
+          this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
+        }
+      },
+      methods: {
+        async deleteLogo() {
+          this.logoLoading = true;
+          let response;
+          response = await restClient.clearLogo(this.currentRecord.fairsharingRecord.id, this.user().credentials.token);
+          if (!response.error) {
+            this.currentLogo = null;
+          }
+          this.logoLoading = false;
+        },
+        removeCountry(country){
+            this.fields.countries = this.fields.countries.filter(obj =>
+                obj.label !== country.name && obj.id !== country.id
+            );
+        },
+        typeChangeDisabled(){
+          let _module = this;
+          if (_module.getCreatingNewRecord) {
+            return false;
+          }
+          return !_module.user().is_curator;
+        },
+        submitAnyway() {
+          this.submitAnywayDisabled = true;
+          this.$emit('submission');
+        },
+        tryAgain() {
+          this.fields.metadata.homepage = null;
+          this.fields.metadata.name = null;
+          this.fields.metadata.abbreviation = null;
+          this.$emit('clearing');
+        },
+        disableSubmit() {
+          let _module = this;
+          if (!_module.formValid) {
+            return true;
+          }
+          if (_module.possibleDuplicates.length > 0) {
+            if (_module.submitRecord) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
+        },
+        createNewRecord(){
+          this.$emit('createnewrecord');
+        },
+        isDatabase() {
+          if (this.fields.type.name === 'repository' ||
+              this.fields.type.name === 'knowledgebase' ||
+              this.fields.type.name === 'knowledgebase_and_repository' ||
+              this.fields.type === 'repository' ||
+              this.fields.type === 'knowledgebase' ||
+              this.fields.type === 'knowledgebase_and_repository') {
+            return true;
+          }
           return false;
         }
-        else {
-          return true;
-        }
       }
-      return false;
-    },
-    createNewRecord(){
-      this.$emit('createnewrecord');
     }
-  }
-}
 </script>
 
 <style>

@@ -10,56 +10,56 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 let editor = {
-    namespaced: true,
-    state: {
-        recordTooltips: {
-            tools: "tools tooltip.",
-        }
+  namespaced: true,
+  state: {
+    recordTooltips: {
+      tools: "tools tooltip.",
     }
+  }
 }
 
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    metadata: {
-        associated_tools: [{url: 'http://url.com', name: 'name'}]
-    },
-    taxonomies: [
-        {label: "Turdus turdus"},
-    ],
-    subjects: [
-        {label: "Javascript Fun"},
-    ],
-    domains: [
-        {label: "Deneb"},
-    ],
-    userDefinedTags: [{label: 'a'}],
+  metadata: {
+    associated_tools: [{url: 'http://url.com', name: 'name'}]
+  },
+  taxonomies: [
+    {label: "Turdus turdus"},
+  ],
+  subjects: [
+    {label: "Javascript Fun"},
+  ],
+  domains: [
+    {label: "Deneb"},
+  ],
+  userDefinedTags: [{label: 'a'}],
 };
 const $store = new Vuex.Store({
-    modules: {
-        record: Record,
-        editor: editor
-    }
+  modules: {
+    record: Record,
+    editor: editor
+  }
 });
 
 describe("Tools.vue", function () {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Tools, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        });
+  beforeEach(() => {
+    wrapper = shallowMount(Tools, {
+      localVue,
+      vuetify,
+      mocks: {$store}
     });
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("Tools");
-    });
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("Tools");
+  });
 
-    it("doesn't display if there are no tools to display", () => {
-        expect(wrapper.vm.showTools()).toBe(true);
-        Record.state.currentRecord.fairsharingRecord.metadata.associated_tools = [];
-        expect(wrapper.vm.showTools()).toBe(false);
-    });
+  it("doesn't display if there are no tools to display", () => {
+    expect(wrapper.vm.showTools()).toBe(true);
+    Record.state.currentRecord.fairsharingRecord.metadata.associated_tools = [];
+    expect(wrapper.vm.showTools()).toBe(false);
+  });
 
 });

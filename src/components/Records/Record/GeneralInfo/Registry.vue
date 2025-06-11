@@ -3,14 +3,14 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
         </template>
         {{ recordTooltips['fairsharing_registry'] }}
@@ -19,20 +19,17 @@
     </span>
     <p
       class="ma-0 full-width ml-md-12 ml-8"
-      :class="{'text-end' : $vuetify.breakpoint.smAndDown}"
+      :class="{'text-end' : $vuetify.display.smAndDown}"
     >
-      {{ getField('registry') | capitalize }}
+      {{ $filters.capitalize(getField('registry')) }}
     </p>
   </div>
 </template>
 
 <script>
 import {mapGetters, mapState} from "vuex";
-
-import stringUtils from "@/utils/stringUtils";
 export default {
   name: "Registry",
-  mixins: [stringUtils],
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("editor", ["recordTooltips"]),

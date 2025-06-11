@@ -18,7 +18,7 @@
             />
           </v-avatar>
           <div class="mt-1 ml-3 alignLeft">
-            {{ item.fairsharingRecord.name | cleanString }}
+            {{ $filters.cleanString(item.fairsharingRecord.name) }}
           </div>
         </div>
       </template>
@@ -48,23 +48,27 @@
       </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-menu offset-x>
-          <template #activator="{ on, attrs }">
+        <v-menu>
+          <template #activator="{ props }">
             <v-icon
-              v-bind="attrs"
-              v-on="on"
+             
+              v-bind="props"
             >
               fas fa-ellipsis-v
             </v-icon>
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.fairsharingRecord.id)">
-              <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
+              <template #prepend>
+                <v-icon>fas fa-eye</v-icon>
+              </template>
+              <v-list-item-title> Preview record </v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
-              <v-list-item-avatar><v-icon>fas fa-newspaper</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Go to record </v-list-item-title></v-list-item-content>
+              <template #prepend>
+                <v-icon>fas fa-newspaper</v-icon>
+              </template>
+              <v-list-item-title> Go to record </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -72,7 +76,7 @@
 
       <template #no-data>
         <v-btn
-          class="ma-1 white--text"
+          class="ma-1 text-white"
           color="orange"
           :disabled="loading"
           @click="loadEditEvents"
@@ -95,16 +99,16 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
-        fab
-        small
-        class="grey--text absolute"
+          v-if="closeButton"
+        class="text-black absolute"
+        icon="fa fa-xmark fa-solid"
         @click="hideOverlay()"
       >
-        <v-icon>fa-times</v-icon>
+        <v-icon size="30" />
       </v-btn>
 
       <v-card>
-        <Record :target="targetID" />
+        <Record :target="targetID" @show-dialog="showDialog"/>
       </v-card>
     </v-dialog>
   </div>
@@ -115,7 +119,6 @@ import moment from "moment";
 import {mapActions, mapState} from "vuex"
 
 import Icon from "@/components/Icon";
-import { cleanString } from "@/utils/stringUtils"
 //import StatusPills from "./StatusPills";
 import Record from "@/views/Records/Record";
 
@@ -123,24 +126,24 @@ export default {
   name: "EditsTable",
   //components: {Icon, Record, StatusPills},
   components: {Icon, Record},
-  mixins: [cleanString],
   data: () => {
     return {
       showOverlay: false,
       targetID: null,
       edits: [],
-      loading: false
+      loading: false,
+      closeButton: false
     }
   },
   computed: {
     ...mapState('users', ['user']),
     headers() {
       let headers = [
-        {text: 'Record', value: 'fairsharingRecord.name', align: 'center'},
-        {text: 'Event', value: 'editEvent', align: 'center'},
-        {text: 'Type', value: 'editType', align: 'center'},
-        {text: 'Date', value: 'createdAt', align: 'center'},
-        {text: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
+        {title: 'Record', value: 'fairsharingRecord.name', align: 'center'},
+        {title: 'Event', value: 'editEvent', align: 'center'},
+        {title: 'Type', value: 'editType', align: 'center'},
+        {title: 'Date', value: 'createdAt', align: 'center'},
+        {title: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
       ];
       return headers;
     },
@@ -169,12 +172,16 @@ export default {
     hideOverlay(){
       this.showOverlay = false;
       this.targetID = null;
+      this.closeButton = false
+    },
+    showDialog(value) {
+      this.closeButton = value
     },
     async loadEditEvents() {
       this.loading = true;
       // The means of getting a user's ID differs depending on whether this component is active in the
       // public or private profile. I'm checking the route to see which it is.
-      let loc = this.$router.currentRoute.path;
+      let loc = this.$router.currentRoute.value.path;
       let data;
       let userId;
       if (loc === '/accounts/profile') {
@@ -206,6 +213,7 @@ export default {
 .absolute {
   position: absolute !important;
   z-index: 1;
-  right: 13px;
+  right: -13px;
+  top: -10px
 }
 </style>

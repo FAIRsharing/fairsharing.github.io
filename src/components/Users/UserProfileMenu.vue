@@ -48,7 +48,7 @@
       },
       data: () => {
         return {
-          dialog: false,
+          dialog: false
         }
       },
       computed: {

@@ -32,7 +32,10 @@
             User Profile for {{ userData.user.username }}
           </v-toolbar-title>
           <v-spacer />
-          <user-profile-menu :viewing-id="Number($route.params.id)" />
+          <user-profile-menu
+            :viewing-id="Number($route.params.id)"
+            @showConfirmDelete="showDeleteDialog()"
+          />
         </v-toolbar>
       </v-col>
       <v-col
@@ -335,6 +338,41 @@
         <loaders />
       </v-overlay>
     </v-fade-transition>
+    <v-dialog
+      v-model="confirmDelete"
+      max-width="700px"
+      persistent
+    >
+      <v-card>
+        <v-card-title
+          class="headline, justify-center"
+        >
+          Deleting User Account!
+        </v-card-title>
+        <v-card-text
+          class="text-center"
+        >
+          <b>Are you sure you want to do that? User {{ $route.params.id }}'s account will be permanently deleted!</b>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            class="info"
+            @click="confirmDelete = false"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer />
+          <v-btn
+            class="error"
+            @click="deleteAccount()"
+          >
+            Delete
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -348,6 +386,7 @@ import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisat
 import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSavedSearchesTable.vue";
 import UserProfileMenu from "@/components/Users/UserProfileMenu";
 import ExternalClient from "@/lib/Client/ExternalClients.js";
+import RestClient from "@/lib/Client/RESTClient";
 import { cleanString } from "@/utils/stringUtils";
 import NotFound from "@/views/Errors/404";
 
@@ -355,6 +394,7 @@ import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
 import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
 
 let client = new ExternalClient();
+let restClient = new RestClient();
 
 export default {
   name: "PublicProfile",
@@ -377,6 +417,7 @@ export default {
       error: false,
       publications: [],
       activeTab: 0,
+      confirmDelete: false,
       userData: {
         user: {
           username: "none",
@@ -457,7 +498,18 @@ export default {
       }
       return output;
     },
-  },
+    showDeleteDialog() {
+      if (this.user().is_super_curator) {
+        this.confirmDelete = true;
+      }
+    },
+    async deleteAccount() {
+      if (this.user().is_super_curator) {
+        await restClient.deletePublicUser(this.$route.params.id, this.user().credentials.token);
+        this.$router.push({ path: "/" });
+      }
+    }
+  }
 };
 </script>
 

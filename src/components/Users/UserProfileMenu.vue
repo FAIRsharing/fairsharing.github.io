@@ -35,124 +35,124 @@
 <script>
 import { mapActions, mapState } from "vuex"
 
-export default {
-  name: "UserProfileMenu",
-  // eslint-disable-next-line vue/require-prop-types
-  props: {
-    viewingId: {
-      type: Number,
-      default: null
-    }
-  },
-  data: () => {
-    return {
-      dialog: false,
-    }
-  },
-  computed: {
-    ...mapState('users', ['user']),
-    menuItems: function () {
-      const _module = this;
-      let vecReturn = [];
-      let auxV = [
-        {
-          name: "Edit profile",
-          isDisabled: _module.disableEdit(),
-          action: function(){
-            if (_module.viewingId === Number(_module.user().id)) {
-              _module.$router.push({
-                path: "/profiles/edit"
-              })
+    export default {
+      name: "UserProfileMenu",
+      // eslint-disable-next-line vue/require-prop-types
+      props: {
+        viewingId: {
+          type: Number,
+          default: null
+        }
+      },
+      data: () => {
+        return {
+          dialog: false
+        }
+      },
+      computed: {
+          ...mapState('users', ['user']),
+            menuItems: function () {
+                const _module = this;
+                let vecReturn = [];
+                let auxV = [
+                    {
+                        name: "Edit profile",
+                        isDisabled: _module.disableEdit(),
+                        action: function(){
+                          if (_module.viewingId === Number(_module.user().id)) {
+                            _module.$router.push({
+                              path: "/profiles/edit"
+                            })
+                          }
+                          else if ((_module.viewingId !== Number(_module.user().id) && _module.viewingId) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
+                            _module.$router.push({
+                              path: "/profiles/editPublicProfile/" + _module.viewingId
+                            })
+                          }
+                          else {
+                            _module.$router.push({
+                              path: "/profiles/edit"
+                            })
+                          }
+                        }
+                    },
+                    {
+                      name: "Users List",
+                      isDisabled: _module.disableUserList(),
+                      action: function () {
+                          _module.$router.push({
+                            path: "/profiles/usersList"
+                          })
+                      }
+                    },
+                    {
+                      name: "Delete Account",
+                      isDisabled: _module.disableEdit(),
+                      action: function() {
+                        _module.$emit('showConfirmDelete', true)
+                      }
+                    },
+                    {
+                        name: "Reset Password",
+                        isDisabled: false,
+                        action: async function(){
+                          _module.$router.push({
+                            path: _module.resetPasswordPath()
+                          })
+                        }
+                    },
+                    {
+                        name: "Logout",
+                        isDisabled: !_module.user().isLoggedIn,
+                        action: async function(){
+                            await _module.logoutUser()
+                        }
+                    }
+                ];
+                if (_module.user().role === 'super_curator' ||  _module.user().role === 'developer'){
+                    vecReturn.push(
+                      {
+                          name: "Curator Panel",
+                          isDisabled: false,
+                          action: function(){
+                              _module.$router.push({
+                                path: "/curator"
+                              })
+                          }
+                      }
+                    );
+                }
+                for (let i = 0; i < auxV.length; i++) {
+                  vecReturn.push(auxV[i]);
+                }
+                return vecReturn;
             }
-            else if ((_module.viewingId !== Number(_module.user().id) && _module.viewingId) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
-              _module.$router.push({
-                path: "/profiles/editPublicProfile/" + _module.viewingId
-              })
-            }
-            else {
-              _module.$router.push({
-                path: "/profiles/edit"
-              })
-            }
-          }
         },
-        {
-          name: "Users List",
-          isDisabled: _module.disableUserList(),
-          action: function () {
-            _module.$router.push({
-              path: "/profiles/usersList"
-            })
-          }
+      methods: {
+        ...mapActions('users', ['logout']),
+        logoutUser: async function () {
+          await this.logout();
+          await this.$router.push({name: "Login"})
         },
-        {
-          name: "Delete Account",
-          isDisabled: _module.disableEdit(),
-          action: function() {
-            _module.$emit('showConfirmDelete', true)
+        disableEdit: function () {
+          let _module = this;
+          if (_module.viewingId) {
+            return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role === 'super_curator' || _module.user().role === 'developer'));
           }
+          return false;
         },
-        {
-          name: "Reset Password",
-          isDisabled: false,
-          action: async function(){
-            _module.$router.push({
-              path: _module.resetPasswordPath()
-            })
+        disableUserList: function () {
+          const _module = this;
+          return !_module.user().is_super_curator
+        },
+        resetPasswordPath: function() {
+          if (this.user().isLoggedIn) {
+            return "/users/password/edit"
           }
-        },
-        {
-          name: "Logout",
-          isDisabled: !_module.user().isLoggedIn,
-          action: async function(){
-            await _module.logoutUser()
+          else {
+            return "/accounts/forgotPassword"
           }
         }
-      ];
-      if (_module.user().role === 'super_curator' ||  _module.user().role === 'developer'){
-        vecReturn.push(
-          {
-            name: "Curator Panel",
-            isDisabled: false,
-            action: function(){
-              _module.$router.push({
-                path: "/curator"
-              })
-            }
-          }
-        );
-      }
-      for (let i = 0; i < auxV.length; i++) {
-        vecReturn.push(auxV[i]);
-      }
-      return vecReturn;
-    }
-  },
-  methods: {
-    ...mapActions('users', ['logout']),
-    logoutUser: async function () {
-      await this.logout();
-      await this.$router.push({name: "Login"})
-    },
-    disableEdit: function () {
-      let _module = this;
-      if (_module.viewingId) {
-        return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role === 'super_curator' || _module.user().role === 'developer'));
-      }
-      return false;
-    },
-    disableUserList: function () {
-      const _module = this;
-      return !_module.user().is_super_curator
-    },
-    resetPasswordPath: function() {
-      if (this.user().isLoggedIn) {
-        return "/users/password/edit"
-      }
-      else {
-        return "/accounts/forgotPassword"
       }
     }
-  }
-}
 </script>

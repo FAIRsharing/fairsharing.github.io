@@ -7,6 +7,7 @@ export { default as Domain } from "./GeneralComponents/Domains.vue";
 export { default as RecordStatus } from "./GeneralComponents/RecordStatus.vue";
 export { default as Taxonomies } from "./GeneralComponents/Taxonomies.vue";
 export { default as Licences } from "./GeneralComponents/Licences.vue";
+export { default as ObjectTypes } from "./GeneralComponents/ObjectTypes.vue";
 export { default as Organisations } from "./GeneralComponents/Organisations.vue";
 export { default as Countries } from "./GeneralComponents/Countries.vue";
 export { default as GroupCtrlSlot } from "./GroupCtrlSlot/GroupCtrlSlot.vue";

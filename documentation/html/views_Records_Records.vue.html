@@ -338,7 +338,13 @@ export default {
       this.$store.commit('records/setCollectionIdsParam', []);
       try {
         this.showFiltersSM = false;
-        let token = this.user().credentials.token;
+        let token;
+        if(this.user().credentials !== undefined) {
+          token = this.user().credentials.token
+        }
+        else {
+          token = ""
+        }
         await _module.fetchRecords({
           params: this.getParameters(),
           token: token,

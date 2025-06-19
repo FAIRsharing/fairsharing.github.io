@@ -4,13 +4,17 @@
     v-model="formValid"
     lazy-validation
   >
-    <v-fade-transition v-if="logoLoading">
+    <v-fade-transition>
+      <div>
       <v-overlay
+        v-model="logoLoading"
         :absolute="false"
         opacity="0.8"
+        class="align-center justify-center"
       >
         <Loaders />
       </v-overlay>
+      </div>
     </v-fade-transition>
 
     <v-row>
@@ -45,8 +49,8 @@
           />
           <v-btn
             v-if="currentLogo"
-            class="red white--text ma-1"
-            small
+            class="bg-red text-white ma-1"
+            size="small"
             @click="deleteLogo"
           >
             Delete logo
@@ -67,13 +71,13 @@
           v-model="fields.metadata.name"
           label="Record Name"
           :rules="[rules.isRequired()]"
-          outlined
+          variant="outlined"
         >
           <template #prepend>
-            <v-tooltip bottom>
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
+            <v-tooltip location="bottom">
+              <template #activator="{ props }">
+                <v-icon v-bind="props">
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ tooltips['name'] }}
@@ -84,17 +88,17 @@
         <v-text-field
           v-model="fields.metadata.abbreviation"
           label="Abbreviation"
-          outlined
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip
-              bottom
+              location="bottom"
               max-width="300px"
               class="text-justify"
             >
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
+              <template #activator="{ props }">
+                <v-icon v-bind="props">
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ tooltips['abbreviation'] }}
@@ -106,17 +110,17 @@
           v-model="fields.metadata.homepage"
           label="Homepage"
           :rules="[rules.isRequired(), rules.isUrl()]"
-          outlined
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip
-              bottom
+              location="bottom"
               max-width="300px"
               class="text-justify"
             >
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
+              <template #activator="{ props }">
+                <v-icon v-bind="props">
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ tooltips['homepage'] }}
@@ -133,7 +137,7 @@
         <v-expand-transition>
           <v-card
             v-if="possibleDuplicates.length > 0"
-            class="mx-auto deep-orange darken-4 mb-5"
+            class="mx-auto bg-deep-orange-darken-4 mb-5"
             dark
           >
             <v-card-title>
@@ -173,14 +177,14 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="white black--text"
+                class="bg-white text-black"
                 :disabled="submitAnywayDisabled"
                 @click="submitAnyway"
               >
                 I know what I'm doing...
               </v-btn>
               <v-btn
-                class="black white--text"
+                class="bg-black text-white"
                 @click="tryAgain"
               >
                 Clear and retry
@@ -203,17 +207,17 @@
           v-model="fields.metadata.year_creation"
           label="Year of creation"
           :items="years()"
-          outlined
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip
-              bottom
+              location="bottom"
               max-width="300px"
               class="text-justify"
             >
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
+              <template #activator="{ props }">
+                <v-icon v-bind="props">
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ tooltips['year'] }}
@@ -225,21 +229,21 @@
           v-model="fields.countries"
           label="Countries"
           :items="countries"
-          item-text="name"
+          item-title="name"
           item-value="name"
           multiple
-          outlined
+          variant="outlined"
           return-object
         >
           <template #prepend>
             <v-tooltip
-              bottom
+              location="bottom"
               max-width="300px"
               class="text-justify"
             >
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
+              <template #activator="{ props }">
+                <v-icon v-bind="props">
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ tooltips['countries'] }}
@@ -249,8 +253,8 @@
           <!-- autocomplete selected -->
           <template #selection="data">
             <v-chip
-              class="blue white--text removeStyle"
-              close
+              class="bg-blue text-white removeStyle"
+              closable
               @click:close="removeCountry(data.item)"
             >
               {{ data.item.name }}
@@ -279,9 +283,9 @@
           label="Registry and type"
           :rules="[rules.isRequired()]"
           :items="recordTypes"
-          item-text="name"
+          item-title="name"
           item-value="name"
-          outlined
+          variant="outlined"
           return-object
           :disabled="typeChangeDisabled()"
         >
@@ -292,12 +296,12 @@
 
           <!-- autocomplete data -->
           <template #item="data">
-            <v-tooltip left>
-              <template #activator="{ on, attrs }">
+            <v-tooltip location="left">
+              <template #activator="{ props }">
                 <v-list-item
                   class="registryList"
-                  v-bind="attrs"
-                  v-on="on"
+
+                  v-bind="props"
                 >
                   <v-list-item-avatar>
                     <Icon
@@ -328,9 +332,9 @@
           v-model="fields.status"
           label="Status"
           :items="status"
-          item-text="name"
+          item-title="name"
           item-value="name"
-          outlined
+          variant="outlined"
         >
           <!-- autocomplete selected -->
           <template #selection="data">
@@ -339,20 +343,20 @@
 
           <!-- autocomplete data -->
           <template #item="data">
-            <v-tooltip left>
-              <template #activator="{ on, attrs }">
+            <v-tooltip location="left">
+              <template #activator="{ props }">
                 <v-list-item
                   class="registryList"
-                  v-bind="attrs"
-                  v-on="on"
+
+                  v-bind="props"
                 >
                   <v-list-item-avatar>
                     <status-pills :status="data.item.name" />
                   </v-list-item-avatar>
-                  <v-list-item-content>
+
                     <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
                     <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                  </v-list-item-content>
+
                 </v-list-item>
               </template>
               <span> {{ data.item.description }} </span>
@@ -413,17 +417,17 @@
             v-if="fields.status === 'deprecated'"
             v-model="fields.metadata['deprecation_reason']"
             label="Reason for deprecation"
-            outlined
+            variant="outlined"
           >
             <template #prepend>
               <v-tooltip
-                bottom
+                location="bottom"
                 max-width="300px"
                 class="text-justify"
               >
-                <template #activator="{ on }">
-                  <v-icon v-on="on">
-                    fa-question-circle
+                <template #activator="{ props }">
+                  <v-icon v-bind="props">
+                    fas fa-question-circle
                   </v-icon>
                 </template>
                 {{ tooltips['deprecation_reason'] }}
@@ -439,17 +443,17 @@
           v-model="fields.metadata.description"
           label="Description"
           :rules="[rules.isRequired(), rules.isLongEnough(40)]"
-          outlined
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip
-              bottom
+              location="bottom"
               max-width="300px"
               class="text-justify"
             >
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
+              <template #activator="{ props }">
+                <v-icon v-bind="props">
+                  fas fa-question-circle
                 </v-icon>
               </template>
               {{ tooltips['description'] }}
@@ -465,17 +469,17 @@
             v-if="user().is_curator"
             v-model="fields.curator_notes"
             label="Curator notes"
-            outlined
+            variant="outlined"
           >
             <template #prepend>
               <v-tooltip
-                bottom
+                location="bottom"
                 max-width="300px"
                 class="text-justify"
               >
-                <template #activator="{ on }">
-                  <v-icon v-on="on">
-                    fa-question-circle
+                <template #activator="{ props }">
+                  <v-icon v-bind="props">
+                    fas fa-question-circle
                   </v-icon>
                 </template>
                 {{ tooltips['curator_notes'] }}
@@ -503,7 +507,7 @@
       <!-- create record button -->
       <v-card-actions v-if="createMode">
         <v-btn
-          class="primary"
+          class="bg-primary"
           :loading="loading"
           :disabled="disableSubmit()"
           @click="createNewRecord()"
@@ -516,19 +520,19 @@
 </template>
 
 <script>
-    import CountryFlag from 'vue-country-flag'
-    import { mapGetters,mapState } from "vuex"
+import CountryFlag from 'vue-country-flag-next'
+import { mapGetters,mapState } from "vuex"
 
-    import Icon from "@/components/Icon"
-    import Loaders from "@/components/Navigation/Loaders.vue";
-    import StatusPills from "@/components/Records/Shared/StatusPills";
-    import RESTClient from "@/lib/Client/RESTClient";
-    import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
-    import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js"
+import Icon from "@/components/Icon"
+import Loaders from "@/components/Navigation/Loaders.vue";
+import StatusPills from "@/components/Records/Shared/StatusPills";
+import RESTClient from "@/lib/Client/RESTClient";
+import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
+import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js"
 
-    import DatabaseWarning from "./DatabaseWarning";
+import DatabaseWarning from "./DatabaseWarning";
 
-    let restClient = new RESTClient();
+let restClient = new RESTClient();
 
     export default {
       name: "BaseFields",

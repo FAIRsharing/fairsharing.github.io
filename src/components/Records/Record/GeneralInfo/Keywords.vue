@@ -5,14 +5,14 @@
       <span
         class="d-flex align-baseline width-15-percent-flex"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
             <v-icon
               class="mr-2"
               size="15"
-              v-on="on"
+              v-bind="props"
             >
-              fa-question-circle
+              fas fa-question-circle
             </v-icon>
           </template>
           {{ recordTooltips['object_types'] }}
@@ -30,7 +30,7 @@
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
-          text-color="white"
+          variant="flat"
           @click="returnToSearch('objectTypes', item.label)"
         >
           <KeywordTooltip
@@ -45,14 +45,14 @@
       <span
         class="d-flex align-baseline width-15-percent-flex"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
             <v-icon
               class="mr-2"
               size="15"
-              v-on="on"
+              v-bind="props"
             >
-              fa-question-circle
+              fas fa-question-circle
             </v-icon>
           </template>
           {{ recordTooltips['subjects'] }}
@@ -70,7 +70,7 @@
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
-          text-color="white"
+          variant="flat"
           @click="returnToSearch('subjects', item.label)"
         >
           <KeywordTooltip
@@ -85,14 +85,14 @@
       <span
         class="d-flex align-baseline width-15-percent-flex"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
             <v-icon
               class="mr-2"
               size="15"
-              v-on="on"
+              v-bind="props"
             >
-              fa-question-circle
+              fas fa-question-circle
             </v-icon>
           </template>
           {{ recordTooltips['domains'] }}
@@ -110,7 +110,7 @@
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
-          text-color="white"
+          variant="flat"
           @click="returnToSearch('domains', item.label)"
         >
           <KeywordTooltip
@@ -125,14 +125,14 @@
       <span
         class="d-flex align-baseline width-15-percent-flex"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
             <v-icon
               class="mr-2"
               size="15"
-              v-on="on"
+              v-bind="props"
             >
-              fa-question-circle
+              fas fa-question-circle
             </v-icon>
           </template>
           {{ recordTooltips['taxonomies'] }}
@@ -149,7 +149,7 @@
           v-for="item in getField('taxonomies')"
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
-          text-color="white"
+          variant="flat"
           :color="getChipColor(item)"
           @click="returnToSearch('taxonomies', item.label)"
         >
@@ -165,14 +165,14 @@
       <span
         class="d-flex align-baseline width-15-percent-flex"
       >
-        <v-tooltip bottom>
-          <template #activator="{ on }">
+        <v-tooltip location="bottom">
+          <template #activator="{ props }">
             <v-icon
               class="mr-2"
               size="15"
-              v-on="on"
+              v-bind="props"
             >
-              fa-question-circle
+              fas fa-question-circle
             </v-icon>
           </template>
           {{ recordTooltips['user_defined_tags'] }}
@@ -189,7 +189,7 @@
           v-for="item in getField('userDefinedTags')"
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
-          text-color="white"
+          variant="flat"
           :color="getChipColor(item)"
           @click="returnToSearch('userDefinedTags', item.label)"
         >

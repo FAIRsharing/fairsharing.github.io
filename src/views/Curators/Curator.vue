@@ -14,7 +14,7 @@
           lines="one"
           text="white"
           :stacked="false"
-          class="white--text mb-2 text-h5"
+          class="text-white mb-2 text-h5"
         >
           Welcome, curator {{ user().credentials.username }}
         </v-banner>
@@ -45,8 +45,8 @@
           >
             <div>{{ tab.name }}</div>
           </v-tab>
-          <v-tabs-items v-model="selectedTab">
-            <v-tab-item
+          <v-tabs-window v-model="selectedTab">
+            <v-tabs-window-item
               v-for="(tab, tabIndex) in tabs"
               :key="tab + '_' + tabIndex"
               class="px-1 py-3"
@@ -55,8 +55,8 @@
                 :is="tab.component"
                 :header-items="tab.headers"
               />
-            </v-tab-item>
-          </v-tabs-items>
+            </v-tabs-window-item>
+          </v-tabs-window>
         </v-tabs>
       </v-col>
     </v-row>

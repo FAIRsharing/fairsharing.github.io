@@ -1,5 +1,17 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <main>
+    <v-fade-transition>
+      <div>
+        <v-overlay
+            v-model="loading"
+            :absolute="false"
+            opacity="0.8"
+            class="align-center justify-center"
+        >
+          <Loaders />
+        </v-overlay>
+      </div>
+    </v-fade-transition>
     <v-container
       v-if="queryTriggered"
       fluid
@@ -17,7 +29,7 @@
         <v-col
           cols="12"
         >
-          <!-- alerts         -->
+          <!-- alerts -->
           <record-alert
             v-for="(alert,key,index) in alerts"
             :key="key+'_'+alert.message+'_'+index"
@@ -25,7 +37,7 @@
             :message="alert.message"
           />
 
-          <!--  snackbars        -->
+          <!-- snackbars -->
           <record-snackbar
             v-for="(snackbar,index) in snackbars"
             :key="snackbar.message+'_'+index"
@@ -43,7 +55,7 @@
         </v-col>
       </v-row>
 
-      <!--  CuratorsNotes   -->
+      <!-- CuratorsNotes -->
       <CuratorNotes
         id="curatorNotes"
         class="ma-4 mb-7"
@@ -73,11 +85,11 @@
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           :back-color="getRecordCardBackground"
-          @requestOwnership="requestOwnership"
+          @request-ownership="requestOwnership"
         />
         <!-- Dynamic Block -->
         <v-row no-gutters>
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+          <v-col :cols="$vuetify.display.mdAndDown?'12':'6'">
             <!--Left Block-->
             <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
               <component
@@ -91,7 +103,7 @@
             </div>
           </v-col>
           <!--Right Block-->
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+          <v-col :cols="$vuetify.display.mdAndDown?'12':'6'">
             <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
               <component
                 :is="block"
@@ -128,10 +140,13 @@
     </v-container>
     <!-- This html is from a safe source -->
     <!-- eslint-disable vue/no-v-html -->
-    <script
-      type="application/ld+json"
-      v-html="JSONLD"
-    />
+<!--    <script-->
+<!--      type="application/ld+json"-->
+<!--      v-html="JSONLD"-->
+<!--    />-->
+    <component :is="'script'" type="application/ld+json">
+      <span v-html="JSONLD" />
+    </component>
     <!-- eslint-enable vue/no-v-html -->
     <v-dialog
       v-model="history.show"
@@ -142,17 +157,16 @@
     >
       <v-card>
         <v-card-title
-          class="blue white--text pb-4"
+          class="bg-blue text-white pb-4"
           style="border-radius: 0 !important;"
         >
           {{ getField("name") }} history logs
           <v-spacer />
           <v-btn
-            x-small
-            fab
+            size="x-small"
             @click="closeHistory()"
           >
-            <v-icon> fa-times </v-icon>
+            <v-icon> fas fa-times </v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text class="pt-2">
@@ -172,7 +186,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           Are you sure you want to
           <span
@@ -191,16 +205,16 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeDeleteMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
             :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="confirmDelete()"
           >
             DELETE
@@ -215,7 +229,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           <p class="claimtext">
             <b>Please confirm that you would like to request ownership of this record.</b>
@@ -235,16 +249,16 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeClaimMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
             :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="requestOwnership()"
           >
             OK
@@ -259,7 +273,7 @@
     >
       <v-card>
         <v-card-title
-          class="headline"
+          class="text-h5"
         >
           <p class="claimtext">
             <b>Please confirm that you would like to stop maintaining this record:</b>
@@ -272,16 +286,16 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeMaintainMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
             :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="removeMaintainer()"
           >
             OK
@@ -321,6 +335,7 @@ import NotFound from "@/views/Errors/404"
 
 import Hidden from "../Errors/Hidden";
 import Tombstone from "../Errors/Tombstone";
+import { useTheme } from "vuetify";
 
 const client = new RestClient();
 export default {
@@ -349,6 +364,11 @@ export default {
   mixins: [stringUtils, getHostname],
   props: {
     target: {type: Number, default: null}
+  },
+  emits:['updateHead', 'showDialog'],
+  setup() {
+    const theme = useTheme();
+    return { theme };
   },
   data: () => {
     return {
@@ -410,6 +430,7 @@ export default {
         claimRecord: false,
         stopMaintainRecord: false
       },
+      loading: false
     }
   },
   head: {
@@ -457,34 +478,34 @@ export default {
     ...mapGetters("record", ["getField"]),
     ...mapState('introspection', ["readOnlyMode"]),
     recordHidden() {
-        let _module = this;
-        if (_module.currentRecord.fairsharingRecord.isHidden) {
-            if (!_module.user().isLoggedIn) {
-                return true;
-            }
-            else {
-                if (!_module.canEdit) {
-                    return true;
-                }
-            }
+      let _module = this;
+      if (_module.currentRecord.fairsharingRecord.isHidden) {
+        if (!_module.user().isLoggedIn) {
+          return true;
         }
-        return false;
+        else {
+          if (!_module.canEdit) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
     getRecordCardBackground() {
       let finalCardBackColor
       switch (this.currentRecord.fairsharingRecord.registry) {
-        case 'Standard':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
-          break;
-        case 'Database':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
-          break;
-        case 'Policy':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
-          break;
-        case 'Collection':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
-          break;
+      case 'Standard':
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.bg_standard_record_card;
+        break;
+      case 'Database':
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.colors.bg_database_record_card;
+        break;
+      case 'Policy':
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.colors.bg_policy_record_card;
+        break;
+      case 'Collection':
+        finalCardBackColor = this.theme.computedThemes.value.fairSharingTheme.colors.bg_collection_record_card;
+        break;
       }
       return finalCardBackColor
     },
@@ -493,7 +514,7 @@ export default {
     },
     currentRoute() {
       let id = this.$route.params['id'];
-      if (id.includes("FAIRsharing.")) {
+      if (id !== undefined && id.includes("FAIRsharing.")) {
         return "10.25504/" + id;
       }
       return this.target || this.$route.params['id'];
@@ -519,12 +540,13 @@ export default {
       return _module.currentRecord['fairsharingRecord']['maintainers'].some(({ id }) => id === _module.user().id);
     },
     currentDynamicBlock() {
-      if (this.$vuetify.breakpoint.name === 'md') {
+      if (this.$vuetify.display.name === 'md') {
         return {
           leftBlock: ["Collections", "RelatedContent", "Support"],
           rightBlock: ["DataProcessesAndConditions", "Tools", "Organisations"]
         }
-      } else {
+      }
+      else {
         return {
           leftBlock: ["Collections", "Support", "DataProcessesAndConditions"],
           rightBlock: ["RelatedContent", "Tools", "Organisations"]
@@ -541,7 +563,7 @@ export default {
         await this.getMenuButtons();
       }
       await this.$nextTick();
-      await this.$scrollTo(this.$route.hash || 'body')
+      // await this.$scrollTo(this.$route.hash || 'body')
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
@@ -550,23 +572,24 @@ export default {
       await this.checkAlerts();
     }
   },
-  destroyed() {
-    // minor change in the y axis can fix a serious bug after going back to records..
-    this.$scrollTo('body',5,{})
-  },
+  // unmounted() {
+  //   // minor change in the y axis can fix a serious bug after going back to records..
+  //   this.$scrollTo('body',5,{})
+  // },
   async mounted() {
-      let _module = this;
-      _module.client = new Client();
-      await _module.getData();
-      _module.recordID = this.currentRecord.fairsharingRecord.id;
-      _module.$emit('updateHead');
-      if (!_module.error) {
-        await _module.canEditRecord();
-        await _module.checkClaimStatus();
-        await _module.getMenuButtons()
-      }
-      await _module.$nextTick();
-      await _module.checkAlerts();
+    let _module = this;
+    _module.loading = true;
+    _module.client = new Client();
+    await _module.getData();
+    _module.recordID = this.currentRecord.fairsharingRecord.id;
+    _module.$emit('updateHead');
+    if (!_module.error) {
+      await _module.canEditRecord();
+      await _module.checkClaimStatus();
+      await _module.getMenuButtons()
+    }
+    await _module.$nextTick();
+    await _module.checkAlerts();
     try {
       await _module.$scrollTo(_module.$route.hash || 'body')
       // eslint-disable-next-line no-empty
@@ -590,6 +613,8 @@ export default {
         _module.history.loading = false;
       }
     }
+    _module.loading = false;
+    _module.$emit('showDialog', !_module.loading)
   },
   methods: {
     closeHistory() {
@@ -602,13 +627,13 @@ export default {
       // and then curators alerts(auth-needed orange ones) so blue ones stack,
       // then orange and then red/green [approval/rejection] ones.
       let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
-          .isAwaitingApproval()
-          .isWatching(this.isWatching())
-          .isNeedingReview(this.needsReviewing(), this.error)
-          .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-          .isAlreadyClaimed(this.alreadyClaimed)
-          .isHidden()
-          .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
+        .isAwaitingApproval()
+        .isWatching(this.isWatching())
+        .isNeedingReview(this.needsReviewing(), this.error)
+        .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+        .isAlreadyClaimed(this.alreadyClaimed)
+        .isHidden()
+        .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
       _module.alerts = alertBuilder.getAlerts();
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -647,8 +672,8 @@ export default {
             }
             else {
               _module.claimRecordMenu(
-                  _module.currentRecord['fairsharingRecord'].name,
-                  _module.currentRecord['fairsharingRecord'].id,
+                _module.currentRecord['fairsharingRecord'].name,
+                _module.currentRecord['fairsharingRecord'].id,
               );
             }
           }
@@ -732,58 +757,58 @@ export default {
       ];
       if (_module.user().is_curator && _module.needsReviewing()) {
         initial_buttons.push(
-            {
-              name: function () {
-                return "Review this record"
-              },
-              isDisabled: function () {
-                // Only to be seen by logged-in curators.
-                // So, this line shouldn't really be encountered...
-                /* istanbul ignore if */
-                if (!_module.userIsLoggedIn) {
-                  return true;
-                }
-                return !_module.user().is_curator;
-              },
-              method: async function () {
-                await _module.reviewRecord();
+          {
+            name: function () {
+              return "Review this record"
+            },
+            isDisabled: function () {
+              // Only to be seen by logged-in curators.
+              // So, this line shouldn't really be encountered...
+              /* istanbul ignore if */
+              if (!_module.userIsLoggedIn) {
+                return true;
               }
+              return !_module.user().is_curator;
+            },
+            method: async function () {
+              await _module.reviewRecord();
             }
+          }
         )
       }
       if (_module.user().is_super_curator) {
         initial_buttons.push(
-            {
-              name: function () {
-                return "Delete this record"
-              },
-              isDisabled: function () {
-                return !_module.user().is_super_curator;
-              },
-              method: /* istanbul ignore next */ async function () {
-                _module.deleteRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
+          {
+            name: function () {
+              return "Delete this record"
+            },
+            isDisabled: function () {
+              return !_module.user().is_super_curator;
+            },
+            method: /* istanbul ignore next */ async function () {
+              _module.deleteRecordMenu(
+                _module.currentRecord['fairsharingRecord'].name,
+                _module.currentRecord['fairsharingRecord'].id,
+              );
             }
+          }
         )
       }
       if (_module.maintainsRecord) {
         let _module = this;
         initial_buttons.push(
-            {
-              name: function() { return "Stop maintaining"},
-              isDisabled: function() {
-                return false;
-              },
-              method: async function () {
-                _module.stopMaintainRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
+          {
+            name: function() { return "Stop maintaining"},
+            isDisabled: function() {
+              return false;
             },
+            method: async function () {
+              _module.stopMaintainRecordMenu(
+                _module.currentRecord['fairsharingRecord'].name,
+                _module.currentRecord['fairsharingRecord'].id,
+              );
+            }
+          },
         )
       }
       this.buttons = initial_buttons;
@@ -919,8 +944,8 @@ export default {
         _module.stopMaintainSuccess = true;
         // remove maintainer from local data
         let newMaintainers = _module.currentRecord['fairsharingRecord']['maintainers'].filter(maintainer => {
-            return maintainer.id !== _module.user().id
-          }
+          return maintainer.id !== _module.user().id
+        }
         )
         _module.currentRecord['fairsharingRecord']['maintainers'] = newMaintainers;
       }
@@ -1045,10 +1070,10 @@ export default {
         });
       }
       let response = await this.updateWatchedRecords(
-          {
-            recordID: _module.currentRecord['fairsharingRecord'].id,
-            operation: operation
-          }
+        {
+          recordID: _module.currentRecord['fairsharingRecord'].id,
+          operation: operation
+        }
       );
       // Refresh user data to reload followed record status.
       /* istanbul ignore else */
@@ -1159,7 +1184,7 @@ export default {
             },
             {
               name: 'link',
-              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              content: `${import.meta.env.VITE_HOSTNAME}${id}`,
               rel: 'canonical'
             }
           ]
@@ -1175,13 +1200,14 @@ export default {
             },
             {
               name: 'link',
-              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              content: `${import.meta.env.VITE_HOSTNAME}${id}`,
               rel: 'canonical'
             }
           ]
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       //error
     }
   }

@@ -14,7 +14,7 @@
           >
             <h1
               class="header"
-              :class="{'smallerHeading' : $vuetify.breakpoint.xs}"
+              :class="{'smallerHeading' : $vuetify.display.xs}"
             >
               {{ alumniCurator ? "Alumni Community Champions": `Community Champions for ${ year }` }}
             </h1>
@@ -27,9 +27,10 @@
           >
             <v-btn
               elevation="2"
-              class="full-width white--text"
+              class="full-width text-white text-md-caption text-lg-body-1 font-weight-medium"
               height="40"
-              :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
+              :class="[alumniCurator ? 'bg-green': 'bg-accent3',{'mb-2': $vuetify.display.smAndDown}]"
+              style="text-transform: uppercase !important;"
               @click="listAlumni()"
             >
               {{ alumniCurator ? "View Current Champions": "View Alumni" }}
@@ -43,12 +44,11 @@
           >
             <v-select
               v-model="year"
-              solo
+              variant="solo"
               :items="yearList"
               label="Year"
-              outlined
-              dense
-              @change="selectYear()"
+              density="compact"
+              @update:model-value="selectYear()"
             />
           </v-col>
           <v-col
@@ -59,10 +59,11 @@
           >
             <v-btn
               elevation="2"
-              class="full-width white--text green text-md-caption text-lg-body-2 font-weight-medium"
-              :class="{'mt-n4 mb-4' : $vuetify.breakpoint.smAndDown}"
+              class="full-width text-white bg-green text-md-caption text-lg-body-1 font-weight-medium"
+              :class="{'mt-n4 mb-4' : $vuetify.display.smAndDown}"
               height="40"
               href="/community_champions"
+              style="text-transform: uppercase !important;"
             >
               Community champions
             </v-btn>
@@ -114,30 +115,27 @@
             >
               <v-img
                 :src="card.logo ? `/assets/Community/profiles/${card.logo}` : '/assets/Community/profiles/profileplaceholder.png'"
-                class="white--text align-end"
+                class="text-white align-end"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                 cover
                 aspect-ratio="1"
               >
-                <v-card-actions style="position: absolute; top: 0; right: 0">
-                  <v-btn
-                    icon
+                <v-card-actions style="position: absolute; top: 0; right: 7px">
+                  <div
                     :class="card.show_more ? 'showMore' : 'showLess'"
-                    @click="card.show_more = !card.show_more"
                   >
-                    <v-icon
+                    <div
                       class="toggleIcon"
-                      color="white"
-                      dense
+                      @click="card.show_more = !card.show_more"
                     />
-                  </v-btn>
+                  </div>
                 </v-card-actions>
                 <div
                   class="socialLinks"
                   :class="{'hide': !card.show_more}"
                 >
-                  <v-list-item class="align-baseline">
-                    <v-list-item-content>
+                  <v-list class="align-baseline bg-transparent">
+                    
                       <v-list-item
                         v-if="card.orcid"
                         dark
@@ -148,7 +146,7 @@
                           class="d-flex align-center"
                         >
                           <v-icon
-                            left
+                            start
                             class="mr-2"
                           >
                             {{ 'fab fa-orcid' }}
@@ -163,7 +161,7 @@
                           target="_blank"
                           class="d-flex align-center"
                         ><v-icon
-                          left
+                          start
                           class="mr-2"
                         >
                           {{ 'fab fa-twitter' }}
@@ -178,7 +176,7 @@
                           target="_blank"
                           class="d-flex align-center"
                         ><v-icon
-                          left
+                          start
                           class="mr-2"
                         >
                           {{ 'fab fa-mastodon' }}
@@ -193,25 +191,24 @@
                           target="_blank"
                           class="d-flex align-center"
                         ><v-icon
-                          left
+                          start
                           class="mr-2"
                         >
                           {{ 'fab fa-linkedin' }}
                         </v-icon><span>{{ card.linkedin }}</span></a>
                       </v-list-item>
-                    </v-list-item-content>
-                  </v-list-item>
+                    
+                  </v-list>
                   <v-card-subtitle
                     v-for="skill in card.gained_skills"
                     :key="skill.name"
                     class="mb-n5 mt-n4"
                   >
                     <v-chip
-                      class="pa-1"
+                      class="pa-1 text-white bg-pink"
                       color="pink"
                       label
-                      text-color="white"
-                      small
+                      size="small"
                       :href="skill.url"
                       target="_blank"
                     >
@@ -227,25 +224,22 @@
                 </v-card-title>
                 <v-card-subtitle
                   v-if="card.early_adopter || card.curator_expert"
+                  class="opacity-100 overflow-initial mb-4"
                 >
                   <v-row>
                     <v-chip
                       v-if="card.early_adopter"
-                      class="ml-2"
-                      color="pink"
+                      class="ml-2 text-white bg-pink"
                       label
-                      text-color="white"
-                      small
+                      size="small"
                     >
                       Early Adopter
                     </v-chip>
                     <v-chip
                       v-if="card.curator_expert"
-                      class="ml-2"
-                      color="pink"
+                      class="ml-2 text-white bg-pink"
                       label
-                      text-color="white"
-                      small
+                      size="small"
                     >
                       Curation Expert
                     </v-chip>
@@ -256,7 +250,7 @@
               <v-card-text
                 class="text--primary"
                 style="height: 100%"
-                :style="$vuetify.breakpoint.xl ? 'height: 115px': $vuetify.breakpoint.mdAndUp ? 'height: 135px' : 'height: 100%'"
+                :style="$vuetify.display.xlOnly ? 'height: 115px': $vuetify.display.mdAndUp ? 'height: 135px' : 'height: 100%'"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :
@@ -266,13 +260,13 @@
                   >
                     <v-tooltip
                       v-if="org.tooltip"
-                      bottom
+                      location="bottom"
                     >
-                      <template #activator="{ on }">
+                      <template #activator="{ props }">
                         <a
                           :href="`/organisations/${org.id}`"
                           class="d-inline-block"
-                          v-on="on"
+                          v-bind="props"
                         >{{ org.name }}
                         </a>
                       </template>
@@ -304,25 +298,24 @@
 
               <v-card-actions
                 v-if="card.id"
-                class="pa-0 full-width"
+                class="pa-0 full-width mb-n1"
               >
                 <v-btn
-                  elevation="2"
-                  dark
                   color="primary"
                   :href="`/users/${card.id}`"
-                  class="full-width py-6"
-                  tile
+                  class="full-width"
+                  variant="flat"
+                  height="48px"
                 >
                   <v-icon
-                    left
+                    start
                     class="mr-2"
                   >
-                    {{ 'fa fa-user-circle' }}
+                    {{ 'fas fa-user-circle' }}
                   </v-icon>
                   <span
                     class="text-truncate text-capitalize full-width"
-                    :style=" $vuetify.breakpoint.xs ? 'max-width: 166px': 'max-width: 236px'"
+                    :style=" $vuetify.display.xs ? 'max-width: 166px': 'max-width: 236px'"
                   > Meet {{ card.name }}</span>
                 </v-btn>
               </v-card-actions>
@@ -353,9 +346,9 @@ export default {
       curatorQuotes: communityCurationCohorts.quotes
     }
   },
-   mounted() {
-      this.error = !Object.keys(this.communityCurationCohorts).length
-      this.getCuratorsList(this.year)
+  mounted() {
+    this.error = !Object.keys(this.communityCurationCohorts).length
+    this.getCuratorsList(this.year)
   },
   methods: {
     getCuratorsList(yearSelected) {
@@ -394,7 +387,8 @@ export default {
           return curator.year_active.every(el => el < new Date().getFullYear()) || !curator.active
         })
         this.year = null;
-      } else {
+      }
+      else {
         this.year = new Date().getFullYear();
         this.getCuratorsList(new Date().getFullYear())
       }
@@ -410,17 +404,24 @@ export default {
     content: '';
     position: absolute;
     right: 0;
-    top: 0;
+    top: 8px;
+    opacity: 1;
+    border-radius: unset;
     border: 27px solid transparent;
-    border-top: 27px solid var(--v-primary-base);
-    border-right: 27px solid var(--v-primary-base);
+    border-top: 27px solid rgb(var(--v-theme-primary));
+    border-right: 27px solid rgb(var(--v-theme-primary));
   }
 }
 
 .toggleIcon {
+  position: absolute;
+  top: 15px;
+  right: 7px;
+  cursor: pointer;
   .showMore & {
     transform: rotate(45deg);
   }
+  transition: .3s cubic-bezier(.25,.8,.5,1), visibility 0s;
   z-index: 2;
   opacity: 0.9;
   width:18px !important;
@@ -452,7 +453,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--v-primary-base);
+  background-color: rgb(var(--v-theme-primary));
   width: 100%;
   height: 100%;
   z-index: 1;

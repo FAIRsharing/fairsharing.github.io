@@ -1,8 +1,8 @@
 <template>
   <v-card
     v-if="!inlineStyle && getField('organisations').length!==0 && (getField('organisations')!==undefined && getField('organisations')!==null)"
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -15,8 +15,8 @@
       >
         <v-card
           v-if="getRelations(key).length"
-          class="pa-4 mt-15 d-flex flex-column min-height-100"
-          outlined
+          class="pa-4 mt-15 d-flex flex-column min-height-100 overflow-initial"
+          border
           color="white"
           tile
           elevation="3"
@@ -25,6 +25,8 @@
             :item="key"
             fallback="other_involvement"
             size="20"
+            class="pt-2"
+            :height=25
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ value }}
@@ -37,7 +39,7 @@
             <v-card
               class="pa-4 mt-2 d-flex flex-column v-card-hover"
               flat
-              outlined
+              border
             >
               <div>
                 <a
@@ -47,19 +49,19 @@
                 >
                   {{ organisationLink.organisation.name }}
                   <v-tooltip
-                    bottom
+                    location="bottom"
                   >
-                    <template #activator="{ on }">
+                    <template #activator="{ props }">
                       <v-chip
                         v-if="organisationLink.isLead"
                         class="ma-2"
                         color="primary"
                         label
-                        x-small
-                        v-on="on"
+                        size="x-small"
+                        v-bind="props"
+                        variant="flat"
                       >
                         Lead
-
                       </v-chip>
                     </template>
                     <span>This is a leading organisation in relation to this resource</span>
@@ -124,14 +126,14 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
         </template>
         {{ recordTooltips['organisations'] }}
@@ -170,14 +172,14 @@
     <span
       class="d-flex align-baseline width-15-percent-flex"
     >
-      <v-tooltip bottom>
-        <template #activator="{ on }">
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
           <v-icon
             class="mr-2"
             size="15"
-            v-on="on"
+            v-bind="props"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
         </template>
         {{ recordTooltips['organisations'] }}

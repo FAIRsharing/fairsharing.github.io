@@ -12,7 +12,7 @@
     >
       <v-img
         src="/assets/Errors/404.png"
-        contain
+        class="contain"
         width="500px"
       />
     </v-col>
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-    export default {
-        name: "Error404",
-        metaInfo() {
-          return {
-            title: "FAIRsharing | Not Found"
-          }
-        }
+export default {
+  name: "Error404",
+  metaInfo() {
+    return {
+      title: "FAIRsharing | Not Found"
     }
+  }
+}
 </script>

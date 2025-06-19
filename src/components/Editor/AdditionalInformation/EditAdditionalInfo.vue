@@ -102,7 +102,6 @@
                         <v-spacer />
                         <v-btn
                           class="bg-success"
-                          fab
                           size="x-small"
                           @click="showOverlay(itemIndex,
                                               fieldName, item, allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties,
@@ -117,7 +116,6 @@
                         </v-btn>
                         <v-btn
                           class="bg-error"
-                          fab
                           size="x-small"
                           @click="removeItem(fieldName, itemIndex)"
                         >
@@ -314,7 +312,6 @@
 
 <script>
 //import { isEqual } from "lodash"
-import Vue from "vue"
 import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
 
 import sortObj from "@/utils/generalUtils"
@@ -323,7 +320,7 @@ import stringUtils from '@/utils/stringUtils'
 
 import Alerts from "../Alerts";
 import FieldInput from "./FieldInput";
-const diff = require("deep-object-diff").diff;
+import { diff } from "deep-object-diff"
 
 export default {
   name: "EditAdditionalInfo",
@@ -401,7 +398,7 @@ export default {
             //let expected = new Set(["yes", "no", "not found"]);
             //let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
             //if (isEqual(expected, fieldEnum)) {
-              output[fieldName] = this.allowedFields.properties[fieldName]
+            output[fieldName] = this.allowedFields.properties[fieldName]
             //}
           }
         });
@@ -442,7 +439,7 @@ export default {
         fields: {}
       };
       Object.keys(template).forEach(field => {
-        Vue.set(this.overlay.fields, field, null)
+        this.overlay.fields[field] = null
       });
       /* istanbul ignore next */
       this.$nextTick(() => {

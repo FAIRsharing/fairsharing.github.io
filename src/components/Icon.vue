@@ -59,6 +59,7 @@ export default {
   width: 45px;
   height: 45px;
   cursor: help;
+  color:#0000008a
 }
 .alt-container {
   position: absolute;

@@ -7,7 +7,7 @@
         @click="showOverlay = true"
       >
         <v-icon
-          small
+          size="small"
           class="mr-3"
         >
           fa-plus-circle
@@ -20,14 +20,16 @@
     >
       <v-spacer />
       <v-chip
-        color="green white--text pr-5 shadowChip"
+        color="green text-white pr-5 shadowChip"
+        class="bg-green"
+        variant="flat"
       >
         <a
           :href="email"
-          class="white--text"
+          class="text-white"
         >
           <v-icon
-            small
+            size="small"
             class="mr-3"
           >
             fas fa-envelope
@@ -47,7 +49,7 @@
             <v-row>
               <v-col cols="12">
                 <v-card width="700px">
-                  <v-card-title class="green white--text">
+                  <v-card-title class="bg-green text-white">
                     Create new user defined tags
                   </v-card-title>
                   <v-card-text class="pt-5">
@@ -78,16 +80,16 @@
                             <v-text-field
                               v-model="newTerm"
                               label="New tag label"
-                              outlined
+                              variant="outlined"
                               hide-details
                               class="mb-2"
                             />
                             <v-chip
-                              class="green white--text pr-6"
+                              class="bg-green text-white pr-6"
                               @click="addTerm()"
                             >
                               <v-icon
-                                small
+                                size="small"
                                 class="mr-3"
                               >
                                 fa-plus-circle
@@ -113,7 +115,7 @@
                                 {{ tag }}
                                 <v-icon
                                   class="ml-1"
-                                  small
+                                  size="small"
                                   @click="removeItem(tag)"
                                 >
                                   fa-times-circle
@@ -127,7 +129,7 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-btn
-                      class="success"
+                      class="bg-success"
                       :disabled="newTags.length === 0"
                       :loading="loading"
                       @click="createTerms()"
@@ -135,7 +137,7 @@
                       Submit new tags
                     </v-btn>
                     <v-btn
-                      class="error"
+                      class="bg-error"
                       @click="showOverlay = false"
                     >
                       Cancel
@@ -152,73 +154,72 @@
 </template>
 
 <script>
-    import Vue from "vue"
-    import { mapState } from "vuex"
+import { mapState } from "vuex"
 
-    export default {
-        name: "NewTags",
-        data(){
-            return {
-                newTags: [],
-                newTerm: null,
-                error: false,
-                showOverlay: false,
-                loading: false
-            }
-        },
-        computed: {
-            ...mapState("editor", ["allTags"]),
-            ...mapState("record", ["sections"]),
-            email(){
-              let target = "mailto:contact@fairsharing.org",
-                title = "?subject=Request for a new species",
-                text = "I would like to make a request for a new species in the FAIRsharing.org database. \n"
+export default {
+  name: "NewTags",
+  data(){
+    return {
+      newTags: [],
+      newTerm: null,
+      error: false,
+      showOverlay: false,
+      loading: false
+    }
+  },
+  computed: {
+    ...mapState("editor", ["allTags"]),
+    ...mapState("record", ["sections"]),
+    email(){
+      let target = "mailto:contact@fairsharing.org",
+        title = "?subject=Request for a new species",
+        text = "I would like to make a request for a new species in the FAIRsharing.org database. \n"
                   + `Record id: ${this.$route.params.id} \n`
                   + 'New species name: "ADD_YOUR_SPECIES_HERE" \n \n'
                   + "The FAIRsharing Team";
-              let body = encodeURIComponent(text);
-              return target + title + "&body=" + body;
-            }
-        },
-        methods: {
-            addTerm(){
-                this.error = false;
-                if (this.newTerm) {
-                    let newTags = this.newTags.map(obj => obj.toLowerCase());
-                    this.newTerm = this.newTerm.trim().toLowerCase();
-                    if (newTags.indexOf(this.newTerm) === -1) {
-                        let found = this.allTags.filter(obj => obj.label.toLowerCase() === this.newTerm);
-                        if (found.length > 0){
-                            this.error = `Term ${this.newTerm} already declared as a ${found[0].model}`
-                        }
-                        else {
-                            Vue.set(this.newTags, this.newTags.length, JSON.parse(JSON.stringify(this.newTerm)));
-                            this.newTerm = null;
-                        }
-                    }
-                    else {
-                        this.error = `Term ${this.newTerm} is already in creation list`
-                    }
-                }
-            },
-            removeItem(name){
-                let index = this.newTags.indexOf(name);
-                if (index > -1){
-                    this.newTags.splice(index, index+1)
-                }
-            },
-            createTerms(){
-                this.loading = true;
-                for (let term of this.newTags){
-                    Vue.set(this.sections.generalInformation.data.userDefinedTags,
-                        this.sections.generalInformation.data.userDefinedTags.length,
-                        {label: term});
-                }
-                this.newTags = [];
-                this.loading = false;
-                this.showOverlay = false;
-                this.$scrollTo("#editTags");
-            }
-        }
+      let body = encodeURIComponent(text);
+      return target + title + "&body=" + body;
     }
+  },
+  methods: {
+    addTerm(){
+      this.error = false;
+      if (this.newTerm) {
+        let newTags = this.newTags.map(obj => obj.toLowerCase());
+        this.newTerm = this.newTerm.trim().toLowerCase();
+        if (newTags.indexOf(this.newTerm) === -1) {
+          let found = this.allTags.filter(obj => obj.label.toLowerCase() === this.newTerm);
+          if (found.length > 0){
+            this.error = `Term ${this.newTerm} already declared as a ${found[0].model}`
+          }
+          else {
+            this.newTags[this.newTags.length] = JSON.parse(JSON.stringify(this.newTerm));
+            this.newTerm = null;
+          }
+        }
+        else {
+          this.error = `Term ${this.newTerm} is already in creation list`
+        }
+      }
+    },
+    removeItem(name){
+      let index = this.newTags.indexOf(name);
+      if (index > -1){
+        this.newTags.splice(index, index+1)
+      }
+    },
+    createTerms(){
+      this.loading = true;
+      for (let term of this.newTags){
+        this.sections.generalInformation.data.userDefinedTags[
+          this.sections.generalInformation.data.userDefinedTags.length] =
+          {label: term};
+      }
+      this.newTags = [];
+      this.loading = false;
+      this.showOverlay = false;
+      this.$scrollTo("#editTags");
+    }
+  }
+}
 </script>

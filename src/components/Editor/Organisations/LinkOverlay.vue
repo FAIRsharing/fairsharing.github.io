@@ -462,7 +462,6 @@
 </template>
 
 <script>
-import Vue from "vue"
 import CountryFlag from "vue-country-flag-next";
 import {mapGetters, mapState} from "vuex"
 
@@ -623,7 +622,7 @@ export default {
           urlForLogo: data.data.attributes.url_for_logo
         };
         this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
-        Vue.set(this.organisations, this.organisations.length, newOrganisation);
+        this.organisations[this.organisations.length] = newOrganisation;
         this.menus.show = null;
         this.menus.newOrganisation.data = {
           organisation_type_ids: [],
@@ -646,7 +645,7 @@ export default {
           id: data.id
         };
         this.$store.commit('record/setEditOrganisationLinkGrant', newGrant);
-        Vue.set(this.grants, this.grants.length, newGrant);
+        this.grants[this.grants.length] = newGrant;
         this.menus.show = null;
         this.menus.newGrant.data = {};
       }
@@ -658,9 +657,9 @@ export default {
     confirmModifications() {
       let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
       if (this.editOrganisationLink.id > -1) {
-        Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
+        this.organisationLinks[this.editOrganisationLink.id] = data;
       }
-      else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
+      else this.organisationLinks[this.organisationLinks.length] = data;
       this.editOrganisationLink.showOverlay = false;
     },
     customFilter(item, queryText) {

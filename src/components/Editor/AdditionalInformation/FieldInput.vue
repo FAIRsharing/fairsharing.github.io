@@ -114,7 +114,6 @@
 
 <script>
 import { isEqual } from 'lodash'
-import Vue from "vue"
 import { mapGetters, mapMutations } from "vuex"
 
 import { isUrl } from "@/utils/rules.js"
@@ -162,8 +161,12 @@ export default {
     },
     target() {
       if (!this.fields[this.fieldName]) {
-        if (!this.subfieldName) Vue.set(this.fields, this.fieldName, null);
-        else Vue.set(this.fields, this.fieldName, {});
+        if (!this.subfieldName){
+          this.fields[this.fieldName] = null;
+        }
+        else {
+          this.fields[this.fieldName] = {};
+        }
       }
       if (!this.subfieldName) return this.fields[this.fieldName];
       else {

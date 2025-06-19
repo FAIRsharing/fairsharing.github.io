@@ -100,7 +100,11 @@
         watch: {
             type(val, oldVal){
                 this.oldVal = oldVal;
-                if (val === 'knowledgebase' || val === 'repository' || val === 'knowledgebase_and_repository'){
+                if (val === 'knowledgebase' ||
+                    val === 'repository' ||
+                    val === 'knowledgebase_and_repository' ||
+                    val === 'collection'
+                ){
                     this.showOverlay = true;
                 }
             }

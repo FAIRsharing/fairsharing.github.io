@@ -472,7 +472,7 @@
           {"text": "<b>Richard Brown, </b> BBSRC UKRI"},
           {"link": "https://orcid.org/0000-0002-6853-4602", "text": "<b>Robert Hanisch, </b>National Institute of Standards and Technology"},
           {"link": "https://orcid.org/0000-0002-0517-1031", "text": "<b>Sarah Callaghan, </b>Research Strategy & Policy Unit, University of Oxford"},
-          {"link": "https://orcid.org/0000-0002-9465-4042", "text": "<b>Sarah Stewart, </b>St. George's, University of London; Oxford Internet Institute"},
+          {"link": "https://orcid.org/0000-0002-9465-4042", "text": "<b>Sarah Stewart, </b>University of Westminster"},
           {"link": "https://orcid.org/0000-0001-6444-1436", "text": "<b>Scott Edmunds, </b>GigaScience, Oxford University Press"},
           {"link": "https://orcid.org/0000-0003-3179-7270", "text": "<b>Simon Hodson, </b>CODATA"},
           {"link": "https://orcid.org/000-0002-0222-4177", "text": "<b>Theo Bloom, </b>British Medical Journal"},
@@ -584,16 +584,6 @@
           {"link": "https://orcid.org/0000-0002-2163-5924", "icon": "Orcid"},
           {"link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/", "icon": "linkedin"}
 
-        ]
-      },
-      {
-        "name": "David Tomkins",
-        "role": "Curator",
-        "profileImg": "assets/Community/profiles/d_tomkins.jpeg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0009-0000-4679-676X", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/david-tomkins-83b92534/", "icon": "linkedin"}
         ]
       }
     ]

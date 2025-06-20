@@ -153,6 +153,10 @@
     {
       "text": "Missing optional",
       "value": "optional"
+    },
+    {
+      "text": "Delete record",
+      "value": "optional"
     }
   ],
   "systemMessages": [

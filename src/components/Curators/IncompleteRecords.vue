@@ -1,5 +1,49 @@
 <template>
   <v-col cols12>
+    <div>
+      <v-layout
+        row
+        justify-center
+      >
+        <v-dialog
+          v-model="dialogs.deleteRecord"
+          max-width="700px"
+        >
+          <v-card>
+            <v-card-title class="headline">
+              Are you sure you want to
+              <span style="color: red; padding-left: 5px; padding-right: 5px">
+                DELETE
+              </span>
+              this record? It may take a moment...
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                :disabled="dialogs.disableButton === true"
+                color="blue darken-1"
+                text
+                @click="closeDeleteMenu()"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                :disabled="
+                  dialogs.disableDelButton === true ||
+                    dialogs.disableButton === true
+                "
+                color="blue darken-1"
+                text
+                @click="confirmDelete()"
+              >
+                OK
+              </v-btn>
+              <v-spacer />
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </div>
     <v-card class="mb-2">
       <v-card-text v-if="incompleteRecords">
         <v-card-title
@@ -61,6 +105,17 @@
               <td>
                 {{ props.item.optional }}
               </td>
+              <td>
+                <v-icon
+                  color="red"
+                  dark
+                  right
+                  small
+                  @click="deleteRecordMenu(props.item.id)"
+                >
+                  fas fa-trash
+                </v-icon>
+              </td>
             </tr>
           </template>
         </v-data-table>
@@ -73,11 +128,13 @@
 import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
+import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
 import formatDate from "@/utils/generalUtils";
 
 const client = new GraphClient();
+const restClient = new RestClient();
 
 export default {
   name: "IncompleteRecords",
@@ -97,6 +154,12 @@ export default {
       searches: "",
       recordType: {},
       loading: false,
+      dialogs: {
+        recordID: "",
+        deleteRecord: false,
+        disableDelButton: true,
+        createReview: false,
+      },
     };
   },
   computed: {
@@ -143,6 +206,41 @@ export default {
         object.createdAt = this.formatDate(item.createdAt);
         this.incompleteRecords.push(object);
       });
+    },
+    async confirmDelete() {
+      const _module = this;
+      _module.dialogs.disableButton = true;
+      _module.dialogs.disableDelButton = true;
+      let data = await restClient.deleteRecord(
+        _module.dialogs.recordID,
+        this.user().credentials.token
+      );
+      if (data.error) {
+        _module.error.general = "error deleting record";
+        _module.error.recordID = _module.dialogs.recordID;
+      } else {
+        const index = _module.incompleteRecords.findIndex(
+          (element) => element.id === _module.dialogs.recordID
+        );
+        _module.incompleteRecords.splice(index, 1);
+      }
+      _module.dialogs.deleteRecord = false;
+    },
+
+    deleteRecordMenu(recordID) {
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.deleteRecord = true;
+      setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
+
+    closeDeleteMenu() {
+      this.dialogs.disableButton = true;
+      this.dialogs.deleteRecord = false;
     },
   },
 };

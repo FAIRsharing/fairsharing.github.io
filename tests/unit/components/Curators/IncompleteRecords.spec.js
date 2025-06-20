@@ -81,8 +81,7 @@ describe("Curator -> IncompleteRecords.vue", () => {
         expect(wrapper.vm.$options.name).toMatch("IncompleteRecords");
         expect(wrapper.vm.prepareIncompleteRecords).toHaveBeenCalled;
         expect(wrapper.vm.incompleteRecords.length).toBe(2);
-        let date = new Date("1425,01,01");
-        let auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getDate()+ ', '+date.getFullYear();
+        let auxString = "1425-01-01"
         expect(wrapper.vm.incompleteRecords[1].createdAt).toBe(auxString);
     });
 
@@ -90,7 +89,7 @@ describe("Curator -> IncompleteRecords.vue", () => {
 
     it("can check for incompleteRecords", () => {
         let output = {
-            "createdAt": "Jan 1, 1425",
+            "createdAt": "1425-01-01",
             "id": "2669f95",
             "recordNameID": "ShareSfhare (2669f95)",
             "type": undefined,

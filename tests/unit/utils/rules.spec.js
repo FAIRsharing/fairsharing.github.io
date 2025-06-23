@@ -1,12 +1,12 @@
 import {
     hasValue,
     isAllowedSize,
+    isBluesky,
     isEmail,
     isEmailOrUrl,
     isImage,
     isLongEnough,
     isMastodon,
-    isBluesky,
     isOrcid,
     isRequired,
     isUrl} from "@/utils/rules.js"

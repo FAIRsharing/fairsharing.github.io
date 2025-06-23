@@ -131,7 +131,7 @@ import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
-import formatDate from "@/utils/generalUtils";
+import formatDateIso from "@/utils/generalUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -141,7 +141,7 @@ export default {
   components: {
     Icon,
   },
-  mixins: [formatDate],
+  mixins: [formatDateIso],
   props:{
     headerItems: {
       type: Array,
@@ -203,7 +203,7 @@ export default {
           required: required.sort().join(', '),
           optional: optional.sort().join(', ')
         };
-        object.createdAt = this.formatDate(item.createdAt);
+        object.createdAt = this.formatDateIso(item.createdAt);
         this.incompleteRecords.push(object);
       });
     },

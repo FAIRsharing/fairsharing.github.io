@@ -29,7 +29,7 @@
         <StatusPills
           class="d-flex justify-center"
           :approved="item['isApproved']"
-          :small="true"
+          :small="false"
         />
       </template>
       <template #[`item.status`]="{ item }">

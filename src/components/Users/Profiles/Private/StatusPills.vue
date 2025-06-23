@@ -59,22 +59,22 @@
 
     <div
       v-if="approved !== null"
-      class="d-flex"
+      class="d-flex flex-column justify-center align-center"
     >
       <div
-        class="led d-inline-block"
+        class="led d-inline-block mr-0"
         :class="{'green': approved, 'red': !approved, 'small': small}"
       />
       <div v-if="!small">
         <b
           v-if="approved"
-          class="ml-2 green--text"
+          class="mx-2 green--text"
         >
           APPROVED
         </b>
         <b
           v-if="!approved"
-          class="ml-2 red--text"
+          class="mx-2 red--text"
         >
           NOT APPROVED
         </b>

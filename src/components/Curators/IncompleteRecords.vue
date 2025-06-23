@@ -15,7 +15,7 @@
               <span style="color: red; padding-left: 5px; padding-right: 5px">
                 DELETE
               </span>
-              this record? It may take a moment...
+              record {{ dialogs.recordID }}? It may take a moment...
             </v-card-title>
             <v-card-actions>
               <v-spacer />

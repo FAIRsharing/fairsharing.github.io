@@ -1,8 +1,8 @@
 <template>
   <v-card
     v-if="(allowedFields.properties|| getField('metadata').deprecation_reason) && finalDataItemsHasLength"
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -18,7 +18,7 @@
     >
       <b class="width-200">Dataset Deprecation reason</b>
       <div class="d-flex full-width ml-md-12 ml-13">
-        <p class="ma-0 warning white--text">
+        <p class="ma-0 bg-warning text-white">
           {{ getField('metadata').deprecation_reason }}
         </p>
       </div>
@@ -90,13 +90,13 @@ export default {
       if (!isArray(selectedNode)) {
         this.tempData[key] = []
         // Special case this is a string
-        if (typeof selectedNode === 'string' ){
-            this.tempData[key].push({"Value": selectedNode})
+        if (typeof selectedNode === 'string'){
+          this.tempData[key].push({"Value": selectedNode})
         }
         else {
-            Object.keys(selectedNode).forEach(item_key => {
-             this.tempData[key].push({[item_key]: selectedNode[item_key]})
-            })
+          Object.keys(selectedNode).forEach(item_key => {
+            this.tempData[key].push({[item_key]: selectedNode[item_key]})
+          })
         }
         return
       }

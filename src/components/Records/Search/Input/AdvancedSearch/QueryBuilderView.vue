@@ -9,17 +9,16 @@
       <div class="query-builder-group__group-selection">
         <div class="tooltip">
           <v-icon
-            small
-            class="mr-1 white--text tooltipIcon"
+            size="small"
+            class="mr-1 text-white tooltipIcon"
           >
-            fa-question-circle
+            fas fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
         </div>
         <span class="query-builder-group__group-operator">
           Select an Operator to apply across all groups
         </span>
-
         <select
           class="operatorSelect"
           :value="props.currentOperator"
@@ -47,7 +46,7 @@
 </template>
 
 <script>
-import QueryBuilder from "query-builder-vue";
+import QueryBuilder from "query-builder-vue-3";
 import { mapGetters } from "vuex";
 
 import advancedSearch from "@/store";
@@ -98,7 +97,8 @@ import {
   UpdatingOfDmp,
   UserDefinedTag,
   UsesPersistentIdentifier
-} from "./QueryBuilderComponents";
+} from "./QueryBuilderComponents"
+
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder, GroupCtrlSlot },
@@ -433,6 +433,7 @@ export default {
 
   watch: {
     query(newValue) {
+      newValue = JSON.parse(JSON.stringify(newValue))
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       //Updating edit advanced search only if newValue has some data
       if (newValue["children"] && newValue["children"].length) {
@@ -486,6 +487,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "~vuetify/src/styles/settings/_variables.scss";
-@import "@/styles/queryBuilderView";
+@use "vuetify/settings";
+//@use "@/styles/queryBuilderView";
+//@use "../../../styles/queryBuilderView.scss";
 </style>

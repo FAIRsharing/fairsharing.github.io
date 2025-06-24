@@ -1,8 +1,7 @@
 <template>
   <v-card
     v-if="currentRecord['fairsharingRecord'].curatorNotes && user().is_curator"
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
     :color="backColor"
     tile
     elevation="3"

@@ -15,18 +15,18 @@
               @click="showMenu()"
             >
               <td
-                class="white--text py-2 px-4 titleCell"
+                class="text-white py-2 px-4 titleCell"
                 :class="section.color"
               >
-                <v-tooltip right>
-                  <template #activator="{ on, attrs }">
+                <v-tooltip location="right">
+                  <template #activator="{ props }">
                     <v-icon
-                      v-bind="attrs"
-                      small
-                      class="white--text mr-1"
-                      v-on="on"
+
+                      size="small"
+                      class="text-white mr-1"
+                      v-bind="props"
                     >
-                      fa-question-circle
+                      fas fa-question-circle
                     </v-icon>
                   </template>
                   <span> {{ section.tooltip }} </span>
@@ -47,14 +47,14 @@
                     <KeywordTooltip
                       :keyword="tag"
                     />
-                    <v-tooltip bottom>
-                      <template #activator="{ on, attrs }">
+                    <v-tooltip location="bottom">
+                      <template #activator="{ props }">
                         <v-icon
-                          v-bind="attrs"
-                          small
+
+                          size="small"
                           class="ml-1"
                           :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' white--text']"
-                          v-on="on"
+                          v-bind="props"
                           @click="removeTag(section.items, tagIndex)"
                           @click.stop
                         >
@@ -73,13 +73,13 @@
       <v-row class="pr-5">
         <v-spacer />
         <v-chip
-          class="white--text green pr-5 ml-3 mb-3 shadowChip"
+          class="text-white bg-green pr-5 ml-3 mb-3 shadowChip"
           :disabled="loading"
           @click="showMenu()"
         >
           <v-icon
-            small
-            class="mr-3 white--text"
+            size="small"
+            class="mr-3 text-white"
           >
             {{ buttonIcon }}
           </v-icon>
@@ -104,7 +104,7 @@
               v-model="searchString"
               append-icon="fa-search"
               label="Search names and synonyms"
-              outlined
+              variant="outlined"
               hide-details
             >
               <template #prepend>
@@ -112,11 +112,11 @@
                   offset-y
                   :close-on-content-click="false"
                 >
-                  <template #activator="{ on, attrs }">
+                  <template #activator="{ props }">
                     <v-icon
-                      v-bind="attrs"
-                      class="blue--text ml-3 mr-1"
-                      v-on="on"
+
+                      class="text-blue ml-3 mr-1"
+                      v-bind="props"
                     >
                       fa-cog
                     </v-icon>
@@ -184,6 +184,7 @@
               v-model="recordTags"
               :headers="headers"
               :items="tags"
+              v-model:search-input="searchString"
               :items-per-page="10"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
               item-key="label"
@@ -193,7 +194,6 @@
               mobile-breakpoint="900"
               :loading="loading"
               loading-text="Please wait, tags are loading"
-              :search-input.sync="searchString"
             >
               <template #[`item.model`]="{ item }">
                 <div
@@ -206,7 +206,7 @@
               <template #[`item.label`]="{ item }">
                 <v-chip
                   :class="colors[item.model]"
-                  class="white--text noBreak"
+                  class="text-white noBreak"
                 >
                   {{ capitaliseText(item.label, item.model) }}
                 </v-chip>
@@ -231,12 +231,12 @@
 </template>
 
 <script>
-    import { mapActions,mapGetters, mapState } from "vuex"
+import { mapActions,mapGetters, mapState } from "vuex"
 
-    import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
-    import recordsCardUtils from "@/utils/recordsCardUtils";
+import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
-    import NewTags from "./NewTags";
+import NewTags from "./NewTags";
 
     export default {
         name: "EditTags",

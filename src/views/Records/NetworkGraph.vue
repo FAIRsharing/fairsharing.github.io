@@ -321,7 +321,7 @@ export default {
         collection: true,
         standard: true,
         policy: true,
-        fairassist: false,
+        fairassist: true,
         ready: true,
         in_development: true,
         uncertain: true,

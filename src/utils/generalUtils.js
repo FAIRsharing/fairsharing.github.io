@@ -20,17 +20,21 @@ const generalUtils = {
              date.getUTCDate() +
              ", " +
              date.getUTCFullYear()
-      );
-    },
-    compareRecordDescUpdate(a, b) {
-      if (a.updatedAt > b.updatedAt) {
-        return -1;
-      }
-      else {
-        return 1;
-      }
-    },
-  }
+           );
+         },
+        formatDateIso(d) {
+          let date = new Date(d);
+          date.setSeconds(0,0);
+          return date.toISOString().split('T')[0];
+        },
+        compareRecordDescUpdate(a, b) {
+            if (a.updatedAt > b.updatedAt) {
+                return -1;
+            } else {
+                return 1;
+            }
+        },
+    }
 }
 
 export function LightenDarkenColor(color, percent) {

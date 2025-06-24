@@ -8,8 +8,8 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import getDuplicates from "@/lib/GraphClient/queries/getDuplicates.json"
-import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
 import objectTypesQuery from "@/lib/GraphClient/queries/getObjectTypes.json"
+import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users.js";

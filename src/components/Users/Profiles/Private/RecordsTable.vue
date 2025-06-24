@@ -29,14 +29,14 @@
         <StatusPills
           class="d-flex justify-center"
           :approved="item['isApproved']"
-          :small="true"
+          :small="false"
         />
       </template>
       <template #[`item.status`]="{ item }">
         <StatusPills
           class="d-flex justify-center"
           :status="item.status"
-          :small="true"
+          :small="false"
         />
       </template>
       <template #[`item.actions`]="{ item }">

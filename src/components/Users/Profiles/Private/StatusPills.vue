@@ -2,16 +2,16 @@
   <div class="mt-1">
     <div
       v-if="status"
-      class="d-flex"
+      class="d-flex flex-column justify-center align-center mb-1"
     >
       <div
-        class="led d-inline-block"
-        :class="{'bg-green': status === 'approved', 'bg-red': status === 'rejected', 'bg-orange': status === 'pending', 'small': small}"
+        class="led d-inline-block mr-0"
+        :class="{'green': status === 'approved', 'red': status === 'rejected', 'orange': status === 'pending', 'small': small}"
       />
       <b
         v-if="!small"
-        class="ml-2"
-        :class="{'text-green': status === 'approved', 'text-red': status === 'rejected', 'text-orange': status === 'pending'}"
+        class="mx-md-2"
+        :class="{'green--text': status === 'approved', 'red--text': status === 'rejected', 'orange--text': status === 'pending'}"
       >{{ status.toUpperCase() }}</b>
     </div>
 
@@ -59,22 +59,22 @@
 
     <div
       v-if="approved !== null"
-      class="d-flex"
+      class="d-flex flex-column justify-center align-center mb-1"
     >
       <div
-        class="led d-inline-block"
-        :class="{'bg-green': approved, 'bg-red': !approved, 'small': small}"
+        class="led d-inline-block mr-0"
+        :class="{'green': approved, 'red': !approved, 'small': small}"
       />
       <div v-if="!small">
         <b
           v-if="approved"
-          class="ml-2 text-green"
+          class="mx-md-2 green--text"
         >
           APPROVED
         </b>
         <b
           v-if="!approved"
-          class="ml-2 text-red"
+          class="mx-md-2 red--text"
         >
           NOT APPROVED
         </b>

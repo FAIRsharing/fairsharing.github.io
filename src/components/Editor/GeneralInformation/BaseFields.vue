@@ -1,36 +1,23 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="formValid"
-    lazy-validation
-  >
+  <v-form ref="form" v-model="formValid">
     <v-fade-transition>
       <div>
-      <v-overlay
-        v-model="logoLoading"
-        :absolute="false"
-        opacity="0.8"
-        class="align-center justify-center"
-      >
-        <Loaders />
-      </v-overlay>
+        <v-overlay
+          v-model="logoLoading"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          <Loaders />
+        </v-overlay>
       </div>
     </v-fade-transition>
 
     <v-row>
-      <v-col
-        xl="4"
-        lg="6"
-        md="12"
-        sm="12"
-        xs="12"
-        cols="12"
-      >
+      <v-col xl="4" lg="6" md="12" sm="12" xs="12" cols="12">
         <!-- Upload (Logo) -->
         <!-- current logo to go here -->
-        <span>
-          A record logo is optional (png or jpeg, max. 3MB).
-        </span>
+        <span> A record logo is optional (png or jpeg, max. 3MB). </span>
         <v-file-input
           v-model="recordLogo"
           :rules="[rules.isImage(), imageSizeCorrect]"
@@ -58,14 +45,7 @@
         </v-row>
       </v-col>
 
-      <v-col
-        xl="4"
-        lg="6"
-        md="12"
-        sm="12"
-        xs="12"
-        cols="12"
-      >
+      <v-col xl="4" lg="6" md="12" sm="12" xs="12" cols="12">
         <!-- name -->
         <v-text-field
           v-model="fields.metadata.name"
@@ -76,11 +56,9 @@
           <template #prepend>
             <v-tooltip location="bottom">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  fas fa-question-circle
-                </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
-              {{ tooltips['name'] }}
+              {{ tooltips["name"] }}
             </v-tooltip>
           </template>
         </v-text-field>
@@ -91,17 +69,11 @@
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip
-              location="bottom"
-              max-width="300px"
-              class="text-justify"
-            >
+            <v-tooltip location="bottom" max-width="300px" class="text-justify">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  fas fa-question-circle
-                </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
-              {{ tooltips['abbreviation'] }}
+              {{ tooltips["abbreviation"] }}
             </v-tooltip>
           </template>
         </v-text-field>
@@ -113,27 +85,18 @@
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip
-              location="bottom"
-              max-width="300px"
-              class="text-justify"
-            >
+            <v-tooltip location="bottom" max-width="300px" class="text-justify">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  fas fa-question-circle
-                </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
-              {{ tooltips['homepage'] }}
+              {{ tooltips["homepage"] }}
             </v-tooltip>
           </template>
         </v-text-field>
       </v-col>
 
       <!-- Duplicate warning box to go here -->
-      <v-col
-        v-if="possibleDuplicates.length > 0"
-        cols="12"
-      >
+      <v-col v-if="possibleDuplicates.length > 0" cols="12">
         <v-expand-transition>
           <v-card
             v-if="possibleDuplicates.length > 0"
@@ -147,29 +110,22 @@
             </v-card-title>
             <v-card-text class="text-h6 font-weight-light">
               <p>
-                Please see below for details of records we have detected that may be similar to yours:
+                Please see below for details of records we have detected that
+                may be similar to yours:
               </p>
               <ul>
                 <li
                   v-for="(dup, dupIndex) in possibleDuplicates"
                   :key="'dup_' + dupIndex"
                 >
-                  <a
-                    :href="'/' + dup.id"
-                    target="_blank"
-                  >
+                  <a :href="'/' + dup.id" target="_blank">
                     {{ dup.name }}
                   </a>
                   <span v-if="dup.abbreviation">
                     ({{ dup.abbreviation }}) /
                   </span>
-                  <span v-else>
-                    /
-                  </span>
-                  <a
-                    :href="dup.homepage"
-                    target="_blank"
-                  >
+                  <span v-else> / </span>
+                  <a :href="dup.homepage" target="_blank">
                     {{ dup.homepage }}
                   </a>
                 </li>
@@ -183,10 +139,7 @@
               >
                 I know what I'm doing...
               </v-btn>
-              <v-btn
-                class="bg-black text-white"
-                @click="tryAgain"
-              >
+              <v-btn class="bg-black text-white" @click="tryAgain">
                 Clear and retry
               </v-btn>
             </v-card-actions>
@@ -194,14 +147,7 @@
         </v-expand-transition>
       </v-col>
 
-      <v-col
-        xl="4"
-        lg="12"
-        md="12"
-        sm="12"
-        xs="12"
-        cols="12"
-      >
+      <v-col xl="4" lg="12" md="12" sm="12" xs="12" cols="12">
         <!-- creation year -->
         <v-autocomplete
           v-model="fields.metadata.year_creation"
@@ -210,17 +156,11 @@
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip
-              location="bottom"
-              max-width="300px"
-              class="text-justify"
-            >
+            <v-tooltip location="bottom" max-width="300px" class="text-justify">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  fas fa-question-circle
-                </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
-              {{ tooltips['year'] }}
+              {{ tooltips["year"] }}
             </v-tooltip>
           </template>
         </v-autocomplete>
@@ -236,17 +176,11 @@
           return-object
         >
           <template #prepend>
-            <v-tooltip
-              location="bottom"
-              max-width="300px"
-              class="text-justify"
-            >
+            <v-tooltip location="bottom" max-width="300px" class="text-justify">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  fas fa-question-circle
-                </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
-              {{ tooltips['countries'] }}
+              {{ tooltips["countries"] }}
             </v-tooltip>
           </template>
 
@@ -272,8 +206,8 @@
               v-else
               src="@/assets/placeholders/country.png"
               class="ml-4 mr-3"
-            >
-            <div> {{ data.item.name }} </div>
+            />
+            <div>{{ data.item.name }}</div>
           </template>
         </v-autocomplete>
         <!-- registry -->
@@ -290,34 +224,32 @@
           :disabled="typeChangeDisabled()"
         >
           <!-- autocomplete selected -->
-          <template #selection="data">
-            {{ data.item.name.replace(/_/g, ' ') }}
-          </template>
+<!--          <template #selection="{ item }">-->
+<!--            {{ item.raw.name.replace(/_/g, " ") }}-->
+<!--          </template>-->
 
           <!-- autocomplete data -->
           <template #item="data">
             <v-tooltip location="left">
               <template #activator="{ props }">
-                <v-list-item
-                  class="registryList"
-
-                  v-bind="props"
-                >
-                  <v-list-item-avatar>
+                <v-list-item class="registryList" v-bind="props">
+                  <v-list-item>
                     <Icon
                       :item="data.item.name"
                       wrapper-class=""
                       :height="40"
                     />
-                  </v-list-item-avatar>
-                  <v-list-item-content class="py-0">
+                  </v-list-item>
+                  <div class="py-0">
                     <v-list-item-title>
-                      <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }}</b>
+                      <b>{{
+                        data.item.name.replace(/_/g, " ").toUpperCase()
+                      }}</b>
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       {{ data.item.description }}
                     </v-list-item-subtitle>
-                  </v-list-item-content>
+                  </div>
                 </v-list-item>
               </template>
               <span>{{ data.item.description }}</span>
@@ -337,26 +269,27 @@
           variant="outlined"
         >
           <!-- autocomplete selected -->
-          <template #selection="data">
-            {{ data.item.name.replace(/_/g, ' ') }}
+          <template #selection="{ item }">
+            {{ item.raw.name.replace(/_/g, " ") }}
           </template>
 
           <!-- autocomplete data -->
           <template #item="data">
             <v-tooltip location="left">
               <template #activator="{ props }">
-                <v-list-item
-                  class="registryList"
-
-                  v-bind="props"
-                >
-                  <v-list-item-avatar>
+                <v-list-item class="registryList" v-bind="props">
+                  <v-list-item>
                     <status-pills :status="data.item.name" />
-                  </v-list-item-avatar>
+                  </v-list-item>
 
-                    <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
-                    <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-
+                  <v-list-item-title>
+                    <b
+                      >{{ data.item.name.replace(/_/g, " ").toUpperCase() }}
+                    </b></v-list-item-title
+                  >
+                  <v-list-item-subtitle>
+                    {{ data.item.description }}
+                  </v-list-item-subtitle>
                 </v-list-item>
               </template>
               <span> {{ data.item.description }} </span>
@@ -367,13 +300,12 @@
 
       <!-- does this database only implement internal identifiers -->
       <v-col cols="12">
-        <p
-          v-if="isDatabase()"
-        >
-          FAIRsharing requires that each database record provide the type of identifier(s) used. Either add the
-          persistent identifier schema to your record using the implements relationship type, or tick the box below
-          that confirms that the database instead uses an internal identifier schema.
-          More information is available in our
+        <p v-if="isDatabase()">
+          FAIRsharing requires that each database record provide the type of
+          identifier(s) used. Either add the persistent identifier schema to
+          your record using the implements relationship type, or tick the box
+          below that confirms that the database instead uses an internal
+          identifier schema. More information is available in our
           <a
             href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/identifier-type"
             target="_blank"
@@ -385,33 +317,27 @@
         <v-checkbox
           v-if="isDatabase()"
           v-model="fields.metadata['internal_identifiers']"
-          class="mr-2 "
+          class="mr-2"
         >
           <template #prepend>
-            <v-tooltip
-              bottom
-              max-width="300px"
-              class="text-justify"
-            >
-              <template #activator="{ on }">
-                <v-icon v-on="on">
-                  fa-question-circle
-                </v-icon>
+            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+              <template #activator="{ props }">
+                <v-icon v-bind="props"> fa-question-circle </v-icon>
               </template>
-              {{ tooltips['internal_identifiers'] }}
+              {{ tooltips["internal_identifiers"] }}
             </v-tooltip>
           </template>
           <template #label>
-            <span class="v-label-white">This database uses internal identifiers rather than a community-standard identifier schema.</span>
+            <span class="v-label-white"
+              >This database uses internal identifiers rather than a
+              community-standard identifier schema.</span
+            >
           </template>
         </v-checkbox>
       </v-col>
 
       <!-- deprecation reasons -->
-      <v-col
-        v-if="fields.status === 'deprecated'"
-        cols="12"
-      >
+      <v-col v-if="fields.status === 'deprecated'" cols="12">
         <v-expand-transition>
           <v-textarea
             v-if="fields.status === 'deprecated'"
@@ -426,11 +352,9 @@
                 class="text-justify"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props">
-                    fas fa-question-circle
-                  </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
                 </template>
-                {{ tooltips['deprecation_reason'] }}
+                {{ tooltips["deprecation_reason"] }}
               </v-tooltip>
             </template>
           </v-textarea>
@@ -446,17 +370,11 @@
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip
-              location="bottom"
-              max-width="300px"
-              class="text-justify"
-            >
+            <v-tooltip location="bottom" max-width="300px" class="text-justify">
               <template #activator="{ props }">
-                <v-icon v-bind="props">
-                  fas fa-question-circle
-                </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
-              {{ tooltips['description'] }}
+              {{ tooltips["description"] }}
             </v-tooltip>
           </template>
         </v-textarea>
@@ -478,11 +396,9 @@
                 class="text-justify"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props">
-                    fas fa-question-circle
-                  </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
                 </template>
-                {{ tooltips['curator_notes'] }}
+                {{ tooltips["curator_notes"] }}
               </v-tooltip>
             </template>
           </v-textarea>
@@ -520,178 +436,193 @@
 </template>
 
 <script>
-import CountryFlag from 'vue-country-flag-next'
-import { mapGetters,mapState } from "vuex"
+import CountryFlag from "vue-country-flag-next";
+import { mapGetters, mapState } from "vuex";
 
-import Icon from "@/components/Icon"
+import Icon from "@/components/Icon";
 import Loaders from "@/components/Navigation/Loaders.vue";
 import StatusPills from "@/components/Records/Shared/StatusPills";
 import RESTClient from "@/lib/Client/RESTClient";
-import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
-import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js"
+import getAPIEndPoint, { toBase64 } from "@/utils/generalUtils";
+import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js";
 
 import DatabaseWarning from "./DatabaseWarning";
 
 let restClient = new RESTClient();
 
-    export default {
-      name: "BaseFields",
-      components: {DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders},
-      mixins: [getAPIEndPoint],
-      props:{
-        createMode: {type: Boolean, default: false},
-        submitRecord: {type: Boolean, default: false},
-        loading: {type: Boolean, default: false}
+export default {
+  name: "BaseFields",
+  components: { DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders },
+  mixins: [getAPIEndPoint],
+  props: {
+    createMode: { type: Boolean, default: false },
+    submitRecord: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+  },
+  data() {
+    return {
+      rules: {
+        isRequired: function () {
+          return isRequired();
+        },
+        isUrl: function () {
+          return isUrl();
+        },
+        isLongEnough: function (val) {
+          return isLongEnough(val);
+        },
+        isImage: function (val) {
+          return isImage(val);
+        },
       },
-      data(){
-          return {
-              rules: {
-                  isRequired: function(){return isRequired()},
-                  isUrl: function(){return isUrl()},
-                  isLongEnough: function(val){return isLongEnough(val)},
-                  isImage: function(val){return isImage(val)}
-              },
-              submitAnywayDisabled: false,
-              formValid: false,
-              initialType: '',
-              allowedFileSize: 1048576,
-              recordLogo: null,
-              logoLoading: false,
-              currentLogo: null
+      submitAnywayDisabled: false,
+      formValid: false,
+      initialType: "",
+      allowedFileSize: 1048576,
+      recordLogo: null,
+      logoLoading: false,
+      currentLogo: null,
+    };
+  },
+  computed: {
+    ...mapGetters("record", ["getSection", "getCreatingNewRecord", "getField"]),
+    ...mapState("editor", [
+      "countries",
+      "years",
+      "tooltips",
+      "recordTypes",
+      "status",
+      "possibleDuplicates",
+    ]),
+    ...mapState("users", ["user"]),
+    ...mapState("record", ["currentRecord"]),
+    fields() {
+      return this.getSection("generalInformation").data;
+    },
+    imageSizeCorrect() {
+      if (!this.recordLogo) {
+        this.$emit("imageTooBig", false);
+        return true;
+      }
+      if (this.recordLogo.size < this.allowedFileSize) {
+        this.$emit("imageTooBig", false);
+        return true;
+      }
+      this.$emit("imageTooBig", true);
+      return false;
+    },
+  },
+  watch: {
+    recordLogo: {
+      async handler(logo) {
+        let _module = this;
+        if (logo === null || logo === undefined) {
+          // This is to prevent a logo being deleted if a user fiddles about with the form and then
+          // submits with no image uploaded.
+          if (_module.currentRecord.fairsharingRecord.urlForLogo) {
+            _module.fields.delete("logo");
           }
-      },
-      computed: {
-          ...mapGetters("record", ["getSection", "getCreatingNewRecord","getField"]),
-          ...mapState("editor", [
-              "countries",
-              "years",
-              "tooltips",
-              "recordTypes",
-              "status",
-              "possibleDuplicates"
-          ]),
-          ...mapState('users', ['user']),
-          ...mapState("record", ["currentRecord"]),
-          fields(){
-            return this.getSection("generalInformation").data;
-          },
-          imageSizeCorrect() {
-            if (!this.recordLogo) {
-              this.$emit('imageTooBig', false);
-              return true;
-            }
-            if (this.recordLogo.size < this.allowedFileSize) {
-              this.$emit('imageTooBig', false);
-              return true;
-            }
-            this.$emit('imageTooBig', true);
-            return false;
+          else {
+            _module.fields.logo = {};
           }
-      },
-      watch: {
-        recordLogo: {
-          async handler(logo) {
-            let _module = this;
-            if (logo === null || logo === undefined) {
-              // This is to prevent a logo being deleted if a user fiddles about with the form and then
-              // submits with no image uploaded.
-              if (_module.currentRecord.fairsharingRecord.urlForLogo) {
-                _module.fields.delete('logo');
-              }
-              else {
-                _module.fields.logo = {}
-              }
-              return;
-            }
-            _module.logoLoading = true;
-            let convertedFile = await toBase64(logo);
-            _module.fields.logo = {
-              filename: logo.name,
-              content_type: logo.type,
-              data: convertedFile
-            };
-            _module.logoLoading = false;
-          }
+          return;
         }
+        _module.logoLoading = true;
+        let convertedFile = await toBase64(logo);
+        _module.fields.logo = {
+          filename: logo.name,
+          content_type: logo.type,
+          data: convertedFile,
+        };
+        _module.logoLoading = false;
       },
-      mounted() {
-        this.$refs.form.validate();
-        if (this.$router.currentRoute.path !== '/create' && this.currentRecord.fairsharingRecord.urlForLogo)
-        {
-          this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
+    },
+  },
+  mounted() {
+    this.$refs.form.validate();
+    if (
+      this.$router.currentRoute.path !== "/create" &&
+      this.currentRecord.fairsharingRecord.urlForLogo
+    ) {
+      this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
+    }
+  },
+  methods: {
+    async deleteLogo() {
+      this.logoLoading = true;
+      let response;
+      response = await restClient.clearLogo(
+        this.currentRecord.fairsharingRecord.id,
+        this.user().credentials.token,
+      );
+      if (!response.error) {
+        this.currentLogo = null;
+      }
+      this.logoLoading = false;
+    },
+    removeCountry(country) {
+      this.fields.countries = this.fields.countries.filter(
+        (obj) => obj.label !== country.name && obj.id !== country.id,
+      );
+    },
+    typeChangeDisabled() {
+      let _module = this;
+      if (_module.getCreatingNewRecord) {
+        return false;
+      }
+      return !_module.user().is_curator;
+    },
+    submitAnyway() {
+      this.submitAnywayDisabled = true;
+      this.$emit("submission");
+    },
+    tryAgain() {
+      this.fields.metadata.homepage = null;
+      this.fields.metadata.name = null;
+      this.fields.metadata.abbreviation = null;
+      this.$emit("clearing");
+    },
+    disableSubmit() {
+      let _module = this;
+      if (!_module.formValid) {
+        return true;
+      }
+      if (_module.possibleDuplicates.length > 0) {
+        if (_module.submitRecord) {
+          return false;
         }
-      },
-      methods: {
-        async deleteLogo() {
-          this.logoLoading = true;
-          let response;
-          response = await restClient.clearLogo(this.currentRecord.fairsharingRecord.id, this.user().credentials.token);
-          if (!response.error) {
-            this.currentLogo = null;
-          }
-          this.logoLoading = false;
-        },
-        removeCountry(country){
-            this.fields.countries = this.fields.countries.filter(obj =>
-                obj.label !== country.name && obj.id !== country.id
-            );
-        },
-        typeChangeDisabled(){
-          let _module = this;
-          if (_module.getCreatingNewRecord) {
-            return false;
-          }
-          return !_module.user().is_curator;
-        },
-        submitAnyway() {
-          this.submitAnywayDisabled = true;
-          this.$emit('submission');
-        },
-        tryAgain() {
-          this.fields.metadata.homepage = null;
-          this.fields.metadata.name = null;
-          this.fields.metadata.abbreviation = null;
-          this.$emit('clearing');
-        },
-        disableSubmit() {
-          let _module = this;
-          if (!_module.formValid) {
-            return true;
-          }
-          if (_module.possibleDuplicates.length > 0) {
-            if (_module.submitRecord) {
-              return false;
-            }
-            else {
-              return true;
-            }
-          }
-          return false;
-        },
-        createNewRecord(){
-          this.$emit('createnewrecord');
-        },
-        isDatabase() {
-          if (this.fields.type.name === 'repository' ||
-              this.fields.type.name === 'knowledgebase' ||
-              this.fields.type.name === 'knowledgebase_and_repository' ||
-              this.fields.type === 'repository' ||
-              this.fields.type === 'knowledgebase' ||
-              this.fields.type === 'knowledgebase_and_repository') {
-            return true;
-          }
-          return false;
+        else {
+          return true;
         }
       }
-    }
+      return false;
+    },
+    createNewRecord() {
+      this.$emit("createnewrecord");
+    },
+    isDatabase() {
+      if (
+        this.fields.type.name === "repository" ||
+        this.fields.type.name === "knowledgebase" ||
+        this.fields.type.name === "knowledgebase_and_repository" ||
+        this.fields.type === "repository" ||
+        this.fields.type === "knowledgebase" ||
+        this.fields.type === "knowledgebase_and_repository"
+      ) {
+        return true;
+      }
+      return false;
+    },
+  },
+};
 </script>
 
 <style>
-  .registryList {
-    max-width: 780px;
-  }
-  .removeStyle button {
-    color: white !important;
-    margin-left: 12px !important;
-  }
+.registryList {
+  max-width: 780px;
+}
+.removeStyle button {
+  color: white !important;
+  margin-left: 12px !important;
+}
 </style>

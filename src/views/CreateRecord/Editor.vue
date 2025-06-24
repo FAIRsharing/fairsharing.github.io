@@ -65,6 +65,7 @@
           flat
           color="primary"
           dark
+          class="py-1 px-4"
         >
           <v-toolbar-title>
             Edit Record - {{ sections.generalInformation.initialData.metadata.name }} ({{ recordId }})
@@ -75,7 +76,8 @@
             v-for="(panelData) in confirmPanels"
             :id="panelData.name + '_button'"
             :key="panelData.name"
-            class="default"
+            color="black"
+            variant="elevated"
             @click="panelData.show = true"
           >
             {{ panelData.name }}
@@ -84,16 +86,19 @@
             :to="'/' + $route.params.id"
             class="ml-2"
           >
-            <v-btn class="default">
+            <v-btn
+             color="black"
+             variant="elevated"
+            >
               Exit editing
             </v-btn>
           </router-link>
         </v-toolbar>
         <v-tabs
           v-model="selectedTab"
-          dark
           slider-color="primary"
-          slider-size="5"
+          bg-color="black"
+          selected-class="tabSelected"
         >
           <v-tab
             v-for="tab in tabs"
@@ -186,7 +191,7 @@ export default {
         {
           name: "General Information",
           target: "generalInformation",
-          icon: "fa-info",
+          icon: "fas fa-info",
           component:"EditGeneralInfo"
         },
         {
@@ -197,7 +202,7 @@ export default {
         {
           name: "Publications",
           target: "publications",
-          icon: "fa-info",
+          icon: "fas fa-info",
           component:"EditPublications"
         },
         {
@@ -213,7 +218,7 @@ export default {
         {
           name: "Additional Information",
           target: "additionalInformation",
-          icon: "fa-info",
+          icon: "fas fa-info",
           component:"EditAdditionalInfo"
         }
       ]
@@ -340,6 +345,10 @@ export default {
 .doclink a {
   color: #0f5e66;
   border-bottom: #0f5e66 0.125em solid;
+}
+
+.tabSelected {
+  background-color: #253442
 }
 
 </style>

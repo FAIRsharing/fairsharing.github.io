@@ -169,6 +169,11 @@ export default {
   computed: {
     ...mapState("users", ["user", "messages"]),
   },
+  watch: {
+    "dialogs.deleteRecord"(val) {
+      val || this.closeDeleteMenu();
+    }
+  },
   created() {
     this.$nextTick(function () {
       this.recordType = this.$vuetify.icons.values;

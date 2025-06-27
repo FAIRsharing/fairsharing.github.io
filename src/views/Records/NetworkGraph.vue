@@ -1,6 +1,9 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <div v-if="error">
+      <NotFound />
+    </div>
+    <v-row v-else>
       <v-col
         cols="12"
         xs="12"
@@ -270,6 +273,7 @@ import networkGraph from "@/data/networkGraph.json"
 import relationColors from "@/data/RelationsColors.json"
 import GraphClient from '@/lib/GraphClient/GraphClient.js'
 import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
+import NotFound from '@/views/Errors/404'
 
 const graphClient = new GraphClient();
 const graph = new Graph();
@@ -280,9 +284,11 @@ export default {
   name: "NetworkGraph",
   components: {
     Loaders,
+    NotFound
   },
   data () {
     return {
+      error: false,
       loading: false,
       noData: false,
       initialized: false,
@@ -378,6 +384,9 @@ export default {
     let _module = this;
     this.$nextTick(async function () {
       await this.getData();
+      if (_module.error) {
+        return;
+      }
       container = document.getElementById("sigma-container");
       if (_module.fa2Layout && _module.fa2Layout.isRunning()) {
         _module.fa2Layout.kill();
@@ -398,22 +407,27 @@ export default {
        Higher values may make the resulting graph rather large... */
       graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
       const response = await graphClient.executeQuery(graphQuery);
-      if (response.fairsharingGraph === undefined ||
+        //Check if response is array format
+        if (Array.isArray(response) && response[0].message === 'record not found') {
+          this.error = true;
+        }
+        //response is in object format
+        else if (response.fairsharingGraph === undefined ||
           response.fairsharingGraph.data === undefined ||
           response.fairsharingGraph.data.length === 0 ||
           Object.keys(response.fairsharingGraph.data).length === 0) {
-        this.loading = false;
-        this.noData = true;
-        this.registry = "N/A";
-        this.type = "N/A";
-        this.initialized = true;
-      }
-      else {
-        this.graphData = response.fairsharingGraph.data;
-        this.loading = false;
-        this.registry = this.graphData.registry;
-        this.type = this.graphData.type;
-      }
+          this.loading = false;
+          this.noData = true;
+          this.registry = "N/A";
+          this.type = "N/A";
+          this.initialized = true;
+        }
+        else {
+          this.graphData = response.fairsharingGraph.data;
+          this.loading = false;
+          this.registry = this.graphData.registry;
+          this.type = this.graphData.type;
+        }
     },
     async plotGraph(){
       let _module = this;

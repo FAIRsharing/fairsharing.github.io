@@ -407,13 +407,12 @@ export default {
        Higher values may make the resulting graph rather large... */
       graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
       const response = await graphClient.executeQuery(graphQuery);
-      try {
-        if (response[0].message == 'record not found') {
+        //Check if response is array format
+        if (Array.isArray(response) && response[0].message === 'record not found') {
           this.error = true;
         }
-      }
-      catch (error) {
-        if (response.fairsharingGraph === undefined ||
+        //response is in object format
+        else if (response.fairsharingGraph === undefined ||
           response.fairsharingGraph.data === undefined ||
           response.fairsharingGraph.data.length === 0 ||
           Object.keys(response.fairsharingGraph.data).length === 0) {
@@ -429,7 +428,6 @@ export default {
           this.registry = this.graphData.registry;
           this.type = this.graphData.type;
         }
-      }
     },
     async plotGraph(){
       let _module = this;

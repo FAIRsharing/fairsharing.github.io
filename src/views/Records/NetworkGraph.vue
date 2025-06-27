@@ -384,6 +384,9 @@ export default {
     let _module = this;
     this.$nextTick(async function () {
       await this.getData();
+      if (_module.error) {
+        return;
+      }
       container = document.getElementById("sigma-container");
       if (_module.fa2Layout && _module.fa2Layout.isRunning()) {
         _module.fa2Layout.kill();

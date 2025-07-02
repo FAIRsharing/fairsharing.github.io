@@ -908,7 +908,8 @@
       "organisation": [
         {
           "id": 3440,
-          "name": "European Research Infrastructure on Highly Pathogenic Agents"
+          "name": "ERINHA",
+          "tooltip": "European Research Infrastructure on Highly Pathogenic Agents"
         },
         {
           "id": 873,
@@ -916,15 +917,18 @@
         },
         {
           "id": 3886,
-          "name": "BY-COVID (BeYond COVID) Project"
+          "name": "BY-COVID",
+          "tooltip": "BY-COVID (BeYond COVID) Project"
         },
         {
           "id": 2426,
-          "name": "Research Data Alliance"
+          "name": "RDA",
+          "tooltip": "Research Data Alliance"
         },
         {
           "id": 3768,
-          "name": "European Open Science Cloud (EOSC)"
+          "name": "EOSC",
+          "tooltip": "European Open Science Cloud"
         }
       ],
       "scope": "Life sciences and Research Data Management",

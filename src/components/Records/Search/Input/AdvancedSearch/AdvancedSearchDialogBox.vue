@@ -54,6 +54,11 @@
             <h2 class="primary--text">
               Advanced filtering and searching for FAIRsharing records
             </h2>
+            <h4
+              v-if="searchingCollection"
+            >
+              You are currently searching the within the collection <b>{{ this.currentRecord.fairsharingRecord.name }}</b>.
+            </h4>
             <p style="text-align: center">
               Find out more about our Advanced Search in our
               <a
@@ -144,7 +149,7 @@
 
 <script>
 import { isBoolean } from "lodash";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/TooltipComponent.vue";
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
@@ -176,6 +181,8 @@ export default {
       "getEditDialogStatus",
       "getAdvancedSearchDialogStatus",
     ]),
+    ...mapGetters("records", ["getCollectionIdsParams"]),
+    ...mapState("record", ["currentRecord"]),
     /**
      * Enables the proceed button when all the selected fields are non-empty
      * @returns {boolean}
@@ -201,6 +208,14 @@ export default {
       if (allTrue) isDisabled = !allTrue;
       return isDisabled;
     },
+    searchingCollection() {
+      if (this.getCollectionIdsParams.length > 0 &&
+        this.currentRecord.fairsharingRecord  &&
+        this.currentRecord.fairsharingRecord.type === 'collection' ) {
+        return true;
+      }
+      return false;
+    }
   },
   watch: {
     getEditDialogStatus(newValue) {
@@ -247,6 +262,7 @@ export default {
         operator: this.getAdvancedSearch["operatorIdentifier"],
         fields: queryString,
       };
+
       return queryValues;
     },
 
@@ -262,10 +278,16 @@ export default {
      * in dialog box
      */
     goToAdvancedSearch() {
+      let idsToSend = [];
+      // These IDs are visible here but disappear when sent to the advancedSearch store,
+      // unless the array is copied this way.
+      this.getCollectionIdsParams.forEach((id) => {
+        idsToSend.push(id);
+      })
       if (this.updatedAdvancedSearchText) {
-        this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
+        this.fetchAdvancedSearchResults([this.updatedAdvancedSearchText, idsToSend]);
       } else {
-        this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+        this.fetchAdvancedSearchResults([this.advancedSearchTerm, idsToSend]);
       }
       this.closeDialog();
       //Clear search text field flag
@@ -336,7 +358,6 @@ export default {
         }
       }
     },
-
     /**
      * Method to fetch/update the searchTerm
      * @param {String} -- item

@@ -26,6 +26,11 @@
       </v-btn>
       <SaveSearchButton />
     </div>
+    <h4
+      v-if="searchingCollection"
+    >
+      You are currently searching the within the collection <b>{{ this.currentRecord.fairsharingRecord.name }}</b>.
+    </h4>
     <p class="body-2 mb-0 mt-4">
       <v-icon
         x-small
@@ -164,7 +169,7 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import SaveSearchButton from "@/components/Records/Search/SaveSearch/SaveSearchButton.vue";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
@@ -195,6 +200,8 @@ export default {
       "getErrorStatus",
       "getAdvancedSearchQuery",
     ]),
+    ...mapGetters("records", ["getCollectionIdsParams"]),
+    ...mapState("record", ["currentRecord"]),
     noFooter() {
       return (
         Array.isArray(this.getAdvancedSearchResponse) &&
@@ -311,6 +318,13 @@ export default {
         ? record["publications"].length
         : 0;
     },
+    searchingCollection() {
+      if (this.getCollectionIdsParams.length > 0 &&
+        this.currentRecord.fairsharingRecord  &&
+        this.currentRecord.fairsharingRecord.type === 'collection' ) {
+        return true;
+      }
+      return false;    }
   },
 };
 </script>

@@ -29,7 +29,7 @@
     <h4
       v-if="searchingCollection"
     >
-      You are currently searching the within the collection <b>{{ this.currentRecord.fairsharingRecord.name }}</b>.
+      You are currently searching the within the collection <b>{{ currentRecord.fairsharingRecord.name }}</b>.
     </h4>
     <p class="body-2 mb-0 mt-4">
       <v-icon
@@ -324,7 +324,8 @@ export default {
         this.currentRecord.fairsharingRecord.type === 'collection' ) {
         return true;
       }
-      return false;    }
+      return false;
+    }
   },
 };
 </script>

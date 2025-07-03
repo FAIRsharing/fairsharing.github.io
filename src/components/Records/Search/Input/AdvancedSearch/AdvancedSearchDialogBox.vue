@@ -57,7 +57,7 @@
             <h4
               v-if="searchingCollection"
             >
-              You are currently searching the within the collection <b>{{ this.currentRecord.fairsharingRecord.name }}</b>.
+              You are currently searching the within the collection <b>{{ currentRecord.fairsharingRecord.name }}</b>.
             </h4>
             <p style="text-align: center">
               Find out more about our Advanced Search in our
@@ -281,6 +281,8 @@ export default {
       let idsToSend = [];
       // These IDs are visible here but disappear when sent to the advancedSearch store,
       // unless the array is copied this way.
+      // TODO: Perhaps these collectionIDs should come from somewhere else, e.g. passed by props,
+      // TODO: from the URL params, or something...
       this.getCollectionIdsParams.forEach((id) => {
         idsToSend.push(id);
       })
@@ -307,6 +309,7 @@ export default {
         this.getAdvancedSearch["children"].length
       ) {
         this.getAdvancedSearch["children"].forEach((item) => {
+          // TODO: Insert collection parameters here, just before operator.
           this.queryString = "";
           this.queryString += "(operator=";
           this.queryString += item["operatorIdentifier"];

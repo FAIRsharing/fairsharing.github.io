@@ -10,42 +10,42 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 let editor = {
-    namespaced: true,
-    state: {
-        recordTooltips: {
-            record_type: "type tooltip.",
-        }
+  namespaced: true,
+  state: {
+    recordTooltips: {
+      record_type: "type tooltip.",
     }
+  }
 }
 
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    doi: 'FAIRsharing.wibble',
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[{label:'a'}],
+  doi: 'FAIRsharing.wibble',
+  subjects:[],
+  domains:[],
+  taxonomies:[],
+  userDefinedTags:[{label:'a'}],
 };
 const $store = new Vuex.Store({
-    modules: {
-        record: Record,
-        editor: editor
-    }});
+  modules: {
+    record: Record,
+    editor: editor
+  }});
 
 describe("DOITitle.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    // TODO: Mock properties in options {}.
-    beforeEach(() => {
-        wrapper = shallowMount(Type, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        })
-    });
+  // TODO: Mock properties in options {}.
+  beforeEach(() => {
+    wrapper = shallowMount(Type, {
+      localVue,
+      vuetify,
+      mocks: {$store}
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("Type");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("Type");
+  });
 
 });

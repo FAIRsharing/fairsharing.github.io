@@ -1,8 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
     v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -16,15 +16,15 @@
           v-model="selectedValues"
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
-          solo
-          :attach="true"
-          dense
+          variant="solo"
+          :menu-props="{ attach: true }"
+          density="compact"
           clearable
-          prepend-inner-icon="fa-search"
+          prepend-inner-icon="fas fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-text="name"
+          item-title="name"
           item-value="name"
-          :filter="nameAbbrFilter"
+          :custom-filter="nameAbbrFilter"
         >
           <template #item="data">
             <span class="filterValueName">
@@ -37,8 +37,8 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.breakpoint.mdAndDown"
-        background-color="transparent"
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
         grow
         color="accent3"
         slider-color="accent3"
@@ -49,18 +49,18 @@
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
           :key="tabName+'_'+tabIndex"
           :disabled="tabsData.tabs[tabName].data.length===0"
-          @change="selectedValues=null"
+          @group:selected="selectedValues=null"
         >
           {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
-      <v-tabs-items
+      <v-tabs-window
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        class="transparent height-430"
+        class="bg-transparent height-430"
       >
-        <v-tab-item
+        <v-tabs-window-item
           v-for="(tabItem,tabItemIndex) in filterList"
           :key="tabItem+'_'+tabItemIndex"
         >
@@ -79,7 +79,7 @@
                   :key="item.id + '_' + index"
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  outlined
+                  border
                 >
                   <div class="d-flex align-center">
                     <record-status
@@ -90,15 +90,15 @@
                       {{ item.name }}
                     </div>
                   </div>
-                  <p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                  <p class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5">
                     {{ item.object }}
-                    <v-tooltip top>
-                      <template #activator="{ on }">
+                    <v-tooltip location="top">
+                      <template #activator="{ props }">
                         <span
                           v-for="(label, indexLabel) in item.recordAssocLabel"
                           :key="label+'_'+ indexLabel"
-                          class="red--text mouse-info"
-                          v-on="on"
+                          class="text-red mouse-info"
+                          v-bind="props"
                         >
                           {{ label }}
                           <span
@@ -125,8 +125,8 @@
               </router-link>
             </template>
           </v-virtual-scroll>
-        </v-tab-item>
-      </v-tabs-items>
+        </v-tabs-window-item>
+      </v-tabs-window>
     </div>
   </v-card>
 </template>
@@ -177,18 +177,18 @@ export default {
       const _module = this;
       // A policy may recommend collections; other records may be collected.
       if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
-        _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
+        _module.tabsData.tabs['related_collections'] = {registry: ["Collection"], data: [], count:0}
       }
       if (_module.currentRecord['fairsharingRecord'].registry === 'FAIRassist' ||
           _module.currentRecord['fairsharingRecord'].registry === 'Standard') {
-        _module.$set(_module.tabsData.tabs, 'related_fairassist_components', {registry: ["FAIRassist"], data: [], count:0});
+        _module.tabsData.tabs['related_fairassist_components'] = {registry: ["FAIRassist"], data: [], count:0}
       }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
           Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
-              _module.currentRecord['fairsharingRecord'].recordAssociations,
-              _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
+            _module.currentRecord['fairsharingRecord'].recordAssociations,
+            _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
           ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
@@ -196,7 +196,7 @@ export default {
           // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
           if (tabName === 'related_collections') {
             _module.tabsData.tabs['related_collections'].data =  _module.tabsData.tabs['related_collections'].data
-                .filter((item) => item.recordAssociationLabel === 'recommends');
+              .filter((item) => item.recordAssociationLabel === 'recommends');
           }
           // 1. Create a hash with keys for each linked record ID of all the relations, containing an
           // array of all relations.

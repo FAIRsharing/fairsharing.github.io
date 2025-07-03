@@ -10,7 +10,7 @@
           label="Search"
           single-line
           hide-details
-          outlined
+          variant="outlined"
         />
       </v-card-title>
 
@@ -20,7 +20,7 @@
         :search="search"
         :loading="loading"
         loading-text="Loading... Please wait"
-        :class="{'data-table-mobile': $vuetify.breakpoint.xs}"
+        :class="{'data-table-mobile': $vuetify.display.xs}"
         :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
       >
         <template #[`item.name`]="{ item }">

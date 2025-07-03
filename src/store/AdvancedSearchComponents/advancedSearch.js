@@ -20,12 +20,25 @@ const state = {
   loadingStatus: false,
   errorStatus: false,
   editDialogStatus: false,
-  advancedSearchDialogStatus: false,
+  advancedSearchDialogStatus: false
 };
 
 const actions = {
-  async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
+  //async fetchAdvancedSearchResults({ commit }, advancedSearchTerm, collectionIds) {
+  async fetchAdvancedSearchResults({ commit }, params) {
+    let advancedSearchTerm;
+    let collectionIds;
+    if (!params) {
+      advancedSearchTerm = {};
+      collectionIds = [];
+    }
+    else {
+      advancedSearchTerm = params[0];
+      collectionIds = params[1];
+    }
+
     commit("setLoadingStatus", true);
+    // Get collection IDs from records store here
     state.advancedSearchQuery["operator"] =
       state.advancedSearch["operatorIdentifier"];
     /* istanbul ignore next */
@@ -104,6 +117,7 @@ const actions = {
 
     let whereObj = graphqlQuery.replace("where:", "");
 
+    /* istanbul ignore else */
     if (advancedSearchTerm) {
       commit("setAdvancedSearchText", advancedSearchTerm);
       ADVANCED_TAGS.queryParam = {
@@ -117,6 +131,9 @@ const actions = {
       };
     }
 
+    if (collectionIds.length > 0) {
+      ADVANCED_TAGS.queryParam.id = collectionIds;
+    }
     try {
       let response = await CLIENT.executeQuery(ADVANCED_TAGS);
       commit("setAdvancedSearchResponse", response["advancedSearch"]);

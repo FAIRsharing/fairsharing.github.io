@@ -34,7 +34,7 @@
           <v-spacer />
           <user-profile-menu
             :viewing-id="Number($route.params.id)"
-            @showConfirmDelete="showDeleteDialog()"
+            @show-confirm-delete="showDeleteDialog()"
           />
         </v-toolbar>
       </v-col>
@@ -360,14 +360,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="info"
+            class="bg-info"
             @click="confirmDelete = false"
           >
             Cancel
           </v-btn>
           <v-spacer />
           <v-btn
-            class="error"
+            class="bg-error"
             @click="deleteAccount()"
           >
             Delete
@@ -390,7 +390,7 @@ import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSave
 import UserProfileMenu from "@/components/Users/UserProfileMenu";
 import ExternalClient from "@/lib/Client/ExternalClients.js";
 import RestClient from "@/lib/Client/RESTClient";
-import { cleanString } from "@/utils/stringUtils";
+import stringUtils from '@/utils/stringUtils';
 import NotFound from "@/views/Errors/404";
 
 import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
@@ -412,6 +412,7 @@ export default {
     Icon,
     ViewAwards,
   },
+  mixins: [stringUtils],
   data: () => {
     return {
       panel: 0,

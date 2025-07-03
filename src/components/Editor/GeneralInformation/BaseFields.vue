@@ -25,7 +25,11 @@
           accept="image/png,image/jpeg"
           label="Logo"
           :loading="logoLoading"
-          prepend-icon="fa-image"
+          prepend-icon="fas fa-image"
+          color="primary"
+          variant="underlined"
+          counter
+          :show-size="3072"
         />
         <v-row>
           <v-img
@@ -149,7 +153,7 @@
 
       <v-col xl="4" lg="12" md="12" sm="12" xs="12" cols="12">
         <!-- creation year -->
-        <v-autocomplete
+        <v-select
           v-model="fields.metadata.year_creation"
           label="Year of creation"
           :items="years()"
@@ -163,9 +167,9 @@
               {{ tooltips["year"] }}
             </v-tooltip>
           </template>
-        </v-autocomplete>
+        </v-select>
         <!-- countries -->
-        <v-autocomplete
+        <v-select
           v-model="fields.countries"
           label="Countries"
           :items="countries"
@@ -174,6 +178,7 @@
           multiple
           variant="outlined"
           return-object
+          density="compact"
         >
           <template #prepend>
             <v-tooltip location="bottom" max-width="300px" class="text-justify">
@@ -184,34 +189,39 @@
             </v-tooltip>
           </template>
 
-          <!-- autocomplete selected -->
-          <template #selection="data">
+          <!-- Item selected -->
+          <template #chip="data">
             <v-chip
               class="bg-blue text-white removeStyle"
               closable
-              @click:close="removeCountry(data.item)"
+              @click:close="removeCountry(data.item.raw)"
             >
-              {{ data.item.name }}
+              {{ data.item.raw.name }}
             </v-chip>
           </template>
 
-          <!-- autocomplete data -->
-          <template #item="data">
-            <country-flag
-              v-if="data.item.code !== null"
-              :country="data.item.code"
-              size="normal"
-            />
-            <img
-              v-else
-              src="@/assets/placeholders/country.png"
-              class="ml-4 mr-3"
-            />
-            <div>{{ data.item.name }}</div>
+          <!-- select list data -->
+          <template #item="{ props, item }">
+            <v-list-item v-bind="props">
+              <template #prepend>
+                <country-flag
+                  v-if="item.raw.code !== null"
+                  :country="item.raw.code"
+                  size="normal"
+                  class="mr-1 mt-n2"
+                />
+                <v-img
+                  v-else
+                  src="@/assets/placeholders/country.png"
+                  class="ml-4 mr-3"
+                />
+              </template>
+              <v-list-item-title>{{ item.name }}</v-list-item-title>
+            </v-list-item>
           </template>
-        </v-autocomplete>
+        </v-select>
         <!-- registry -->
-        <v-autocomplete
+        <v-select
           ref="editRecordType"
           v-model="fields.type"
           label="Registry and type"
@@ -221,41 +231,59 @@
           item-value="name"
           variant="outlined"
           return-object
+          density="compact"
           :disabled="typeChangeDisabled()"
         >
-          <!-- autocomplete selected -->
-<!--          <template #selection="{ item }">-->
-<!--            {{ item.raw.name.replace(/_/g, " ") }}-->
-<!--          </template>-->
-
-          <!-- autocomplete data -->
-          <template #item="data">
-            <v-tooltip location="left">
-              <template #activator="{ props }">
-                <v-list-item class="registryList" v-bind="props">
-                  <v-list-item>
-                    <Icon
-                      :item="data.item.name"
-                      wrapper-class=""
-                      :height="40"
-                    />
+          <template #chip="data">
+            <v-chip
+              v-if="data.item.raw.name"
+              class="bg-blue text-white text-capitalize"
+            >
+              {{ data.item.raw.name.replace(/_/g, " ") }}
+            </v-chip>
+            <v-chip v-else class="bg-blue text-white text-capitalize">
+              {{ data.item.raw.replace(/_/g, " ") }}
+            </v-chip>
+          </template>
+          <!-- select list data -->
+          <template #item="{ props, item }">
+            <v-tooltip location="bottom">
+              <template #activator="{ props: activatorProps }">
+                <v-list>
+                  <v-list-subheader v-if="item.raw.header" class="full-width">
+                    <v-divider v-if="item.raw.header !== 'Collection'" class="ma-0 opacity-100 full-width pb-7"/>
+                    <span>{{
+                    item.raw.header
+                  }}</span></v-list-subheader>
+                  <v-list-item
+                    v-if="item.raw.name"
+                    v-bind="props"
+                    class="cursor-pointer registryList"
+                  >
+                    <template #prepend>
+                      <Icon
+                        :item="item.raw.name"
+                        wrapper-class=""
+                        :height="40"
+                      />
+                    </template>
+                    <div class="py-0 pl-4">
+                      <div v-bind="activatorProps">
+                        <b>{{
+                          item.raw.name.replace(/_/g, " ").toUpperCase()
+                        }}</b>
+                      </div>
+                      <v-list-item-subtitle>
+                        {{ item.raw.description }}
+                      </v-list-item-subtitle>
+                    </div>
                   </v-list-item>
-                  <div class="py-0">
-                    <v-list-item-title>
-                      <b>{{
-                        data.item.name.replace(/_/g, " ").toUpperCase()
-                      }}</b>
-                    </v-list-item-title>
-                    <v-list-item-subtitle>
-                      {{ data.item.description }}
-                    </v-list-item-subtitle>
-                  </div>
-                </v-list-item>
+                </v-list>
               </template>
-              <span>{{ data.item.description }}</span>
+              <span>{{ item.raw.description }}</span>
             </v-tooltip>
           </template>
-        </v-autocomplete>
+        </v-select>
       </v-col>
 
       <v-col cols="12">
@@ -281,7 +309,6 @@
                   <v-list-item>
                     <status-pills :status="data.item.name" />
                   </v-list-item>
-
                   <v-list-item-title>
                     <b
                       >{{ data.item.name.replace(/_/g, " ").toUpperCase() }}
@@ -617,12 +644,20 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .registryList {
   max-width: 780px;
 }
 .removeStyle button {
   color: white !important;
   margin-left: 12px !important;
+}
+:deep(.v-list-item-title) {
+  display: none
+}
+:deep .v-list-subheader {
+  &__text {
+    width: 100%
+  }
 }
 </style>

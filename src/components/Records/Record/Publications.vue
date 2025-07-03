@@ -57,9 +57,9 @@
             <!-- pubmed -->
             <v-btn
               v-if="checkLinkValue(publication.pubmedId)"
-              variant="text"
+              variant="outlined"
+              color="primary"
               size="small"
-              class="mr-1"
             >
               <a
                 :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"

@@ -6,12 +6,12 @@
     >
       <div
         class="led d-inline-block mr-0"
-        :class="{'green': status === 'approved', 'red': status === 'rejected', 'orange': status === 'pending', 'small': small}"
+        :class="{'bg-green': status === 'approved', 'bg-red': status === 'rejected', 'bg-orange': status === 'pending', 'small': small}"
       />
       <b
         v-if="!small"
         class="mx-md-2"
-        :class="{'green--text': status === 'approved', 'red--text': status === 'rejected', 'orange--text': status === 'pending'}"
+        :class="{'text-green': status === 'approved', 'text-red': status === 'rejected', 'text-orange': status === 'pending'}"
       >{{ status.toUpperCase() }}</b>
     </div>
 
@@ -63,18 +63,18 @@
     >
       <div
         class="led d-inline-block mr-0"
-        :class="{'green': approved, 'red': !approved, 'small': small}"
+        :class="{'bg-green': approved, 'bg-red': !approved, 'small': small}"
       />
       <div v-if="!small">
         <b
           v-if="approved"
-          class="mx-md-2 green--text"
+          class="mx-md-2 text-green"
         >
           APPROVED
         </b>
         <b
           v-if="!approved"
-          class="mx-md-2 red--text"
+          class="mx-md-2 text-red"
         >
           NOT APPROVED
         </b>

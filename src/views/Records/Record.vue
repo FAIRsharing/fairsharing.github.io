@@ -889,9 +889,13 @@ export default {
       if (_module.userIsLoggedIn) {
         this.$router.push({
           path: recordID + '/edit',
-          params: {
-            fromRecordPage: true
-          }
+          /**
+           * Pushing artifical param breaks app
+           * Ref: https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22
+           */
+          // params: {
+          //   fromRecordPage: true
+          // }
         })
       }
       else {

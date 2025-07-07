@@ -1,5 +1,5 @@
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
-import {isBoolean} from "lodash";
+import {isBoolean, isEqual,uniqWith} from "lodash";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
@@ -43,7 +43,6 @@ const actions = {
 
           mergedValues.forEach((params) => {
             let fieldKey = params["identifier"];
-
             //Changing databasetype/standardtype/policytype keyname to 'type'
             //to pass as a required key for advancedSearch query
             if (
@@ -75,13 +74,16 @@ const actions = {
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
-              fieldsObj[fieldKey] = fieldValue;
+                fieldsObj[fieldKey] = fieldValue;
             }
             else if(isBoolean(fieldValue)) {
-              fieldsObj[fieldKey] = fieldValue;
+                fieldsObj[fieldKey] = fieldValue;
             }
           });
+
           state.advancedSearchQuery["fields"].push(fieldsObj);
+          //Returns duplicate free array
+          state.advancedSearchQuery["fields"] = uniqWith(state.advancedSearchQuery["fields"] , isEqual)
         }
       });
     }

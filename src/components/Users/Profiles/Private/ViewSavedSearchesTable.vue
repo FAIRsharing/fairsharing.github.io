@@ -101,14 +101,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="closeDialog"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="loading"
             @click="deleteItemConfirm()"
@@ -126,14 +126,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="closeDialog"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="loading"
             @click="unlinkItemConfirm()"
@@ -183,12 +183,12 @@ export default {
     ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
-        { text: "Creator", value: "creator", align: "center", sortable: false },
-        { text: "Date", value: "date", align: "center", sortable: false },
-        { text: "Name", value: "name", align: "center", sortable: false },
-        { text: "Comments", value: "comments", align: "center", sortable: false },
-        { text: "Record", value: "record", align: "center", sortable: false },
-        { text: "Organisation", value: "organisation", align: "center", sortable: false },
+        { title: "Creator", value: "creator", align: "center", sortable: false },
+        { title: "Date", value: "date", align: "center", sortable: false },
+        { title: "Name", value: "name", align: "center", sortable: false },
+        { title: "Comments", value: "comments", align: "center", sortable: false },
+        { title: "Record", value: "record", align: "center", sortable: false },
+        { title: "Organisation", value: "organisation", align: "center", sortable: false },
       ];
       if (this.user().isLoggedIn) {
         headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
@@ -303,9 +303,9 @@ export default {
       };
 
       let updatedSearchResult = await restClient.updateSaveSearch(
-          this.selectedItem["id"],
-          saveSearchObj,
-          this.user().credentials.token
+        this.selectedItem["id"],
+        saveSearchObj,
+        this.user().credentials.token
       );
 
       //Commit the updated result to store
@@ -341,7 +341,7 @@ export default {
      */
     additionalUsers(item) {
       let additionalUsersList =  item["users"].filter((e) => {
-         return e['id'] !== item.creator['id']
+        return e['id'] !== item.creator['id']
       })
       return additionalUsersList;
     },
@@ -351,14 +351,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~vuetify/src/styles/settings/_variables.scss';
-.userProfileSavedSearches::v-deep {
+@use "sass:map";
+@use "vuetify/settings" as v;
+.userProfileSavedSearches:deep(*) {
   table {
     tbody {
       tr {
           td {
             word-break: break-all;
-            @media #{map-get($display-breakpoints, 'md-and-up')} {
+            @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
               width: 100px;
               min-width: 100px;
               max-width: 100px;

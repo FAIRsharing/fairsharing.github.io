@@ -28,19 +28,19 @@
               v-model="search"
               :items="flattenedTree"
               :label="`Search ${selectedOntology}s`"
-              outlined
+              variant="outlined"
               hide-details
               :color="color"
-              item-text="name"
+              item-title="name"
               clearable
             />
             <v-divider class="mb-2" />
           </div>
           <v-treeview
+            v-model:open="open"
             :items="tree"
             :color="color"
             :search="search"
-            :open.sync="open"
             class="tree pb-3 px-3"
             hoverable
           >
@@ -95,13 +95,16 @@
       </v-row>
     </v-container>
     <v-fade-transition>
+      <div>
       <v-overlay
-        v-if="loadingData"
+        v-model="loadingData"
         :absolute="false"
         opacity="0.8"
+        class="align-center justify-center"
       >
         <Loaders />
       </v-overlay>
+      </div>
     </v-fade-transition>
   </main>
 </template>
@@ -163,7 +166,7 @@ export default {
     search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
   },
   async mounted() { await this.fetchTerms() },
-  destroyed() { this.leavePage() },
+  unmounted() { this.leavePage() },
   methods: {
     searchTerm(term){
       this.resetPagination()

@@ -12,41 +12,41 @@ localVue.use(VueMoment);
 const vuetify = new Vuetify();
 
 let editor = {
-    namespaced: true,
-    state: {
-        recordTooltips: {
-            how_to_cite: "citation tooltip.",
-        }
+  namespaced: true,
+  state: {
+    recordTooltips: {
+      how_to_cite: "citation tooltip.",
     }
+  }
 }
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[{label:'a'}],
-    metadata: {citations: []},
-    lastEditor:{username:"a user"}
+  subjects:[],
+  domains:[],
+  taxonomies:[],
+  userDefinedTags:[{label:'a'}],
+  metadata: {citations: []},
+  lastEditor:{username:"a user"}
 };
 const $store = new Vuex.Store({
-    modules: {
-        record: Record,
-        editor: editor
-    }});
+  modules: {
+    record: Record,
+    editor: editor
+  }});
 
 describe("Citations.vue", function(){
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Citations, {
-            localVue,
-            vuetify,
-            mocks: {$store}
-        })
-    });
+  beforeEach(() => {
+    wrapper = shallowMount(Citations, {
+      localVue,
+      vuetify,
+      mocks: {$store}
+    })
+  });
 
-    it("can be initiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("Citations");
-    });
+  it("can be initiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("Citations");
+  });
 
 });

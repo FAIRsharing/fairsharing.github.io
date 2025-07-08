@@ -5,13 +5,13 @@
       Login Failure
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Sorry, login failed. This is an unexpected event that might relate to a problem with a remote
       login service. The message was: <b>{{ error.message }}</b>
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       If you need assistance please <a href="mailto:contact@fairsharing.org">contact us</a>
       with the text of the message shown above, details of your account, the approximate time this error
@@ -21,34 +21,34 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex"
+import { mapActions } from "vuex"
 
-    export default {
-        name: "LoginFailure",
-        data() {
-          return {
-            error: "unknown",
-          };
-        },
-        computed: {},
-        mounted() {
-            this.parseParams();
-        },
-        methods: {
-            ...mapActions("users", ["setError"]),
-            parseParams: function(){
-                let _module = this;
-                _module.error = JSON.parse(_module.$route.query.errors);
-                _module.setError({
-                    field: "login",
-                    message: _module.error
-                });
-                _module.$router.push({
-                    path: "accounts/login"
-                })
-            }
-        }
+export default {
+  name: "LoginFailure",
+  data() {
+    return {
+      error: "unknown",
+    };
+  },
+  computed: {},
+  mounted() {
+    this.parseParams();
+  },
+  methods: {
+    ...mapActions("users", ["setError"]),
+    parseParams: function(){
+      let _module = this;
+      _module.error = JSON.parse(_module.$route.query.errors);
+      _module.setError({
+        field: "login",
+        message: _module.error
+      });
+      _module.$router.push({
+        path: "accounts/login"
+      })
     }
+  }
+}
 </script>
 
 <style scoped>

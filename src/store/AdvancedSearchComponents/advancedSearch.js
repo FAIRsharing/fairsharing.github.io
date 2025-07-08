@@ -55,7 +55,8 @@ const actions = {
               fieldTypeValue.push(params["value"]);
               fieldTypeValue = fieldTypeValue.flatMap((value) => value);
               fieldValue = fieldTypeValue;
-            } else {
+            }
+            else {
 
               if (Array.isArray(params["value"])) {
                 fieldValue = params["value"];
@@ -67,7 +68,8 @@ const actions = {
                 //When string is boolean value, convert to boolean format
                 if((params["value"] === "true") || (params["value"] === "false")) {
                   fieldValue = JSON.parse(params["value"]);
-                } else {
+                }
+                else {
                   fieldValue = [params["value"]];
                 }
 
@@ -98,10 +100,8 @@ const actions = {
     let graphqlQuery = jsonToGraphQLQuery(parentQuery, {
       pretty: true,
     });
-
     graphqlQuery = graphqlQuery.replace("query", "").trim()
     graphqlQuery = graphqlQuery.match(/^\((.*)\)$/)[1];
-
     let whereObj = graphqlQuery.replace("where:", "");
 
     if (advancedSearchTerm) {
@@ -110,7 +110,8 @@ const actions = {
         q: state.advancedSearchText,
         where: whereObj,
       };
-    } else {
+    }
+    else {
       commit("setAdvancedSearchText", "");
       ADVANCED_TAGS.queryParam = {
         where: whereObj,
@@ -123,10 +124,12 @@ const actions = {
       if (!response["error"]) {
         commit("setError", false);
         commit("setAdvancedSearchResponse", response["advancedSearch"]);
-      } else {
+      }
+      else {
         commit("setError", true);
       }
-    } catch (error) {
+    }
+    catch (error) {
       /* istanbul ignore next */
       commit("setError", true);
     }

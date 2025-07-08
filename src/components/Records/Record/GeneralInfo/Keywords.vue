@@ -17,7 +17,7 @@
           </template>
           {{ recordTooltips['object_types'] }}
         </v-tooltip>
-        <b>Object Types</b>
+        <b>Object types in scope for this resource</b>
       </span>
       <div
         class="d-flex full-width flex-wrap ml-md-12 ml-13"

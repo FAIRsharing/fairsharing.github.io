@@ -1,5 +1,5 @@
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
-import {isBoolean, isEqual,uniqWith} from "lodash";
+import {isBoolean} from "lodash";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
@@ -83,8 +83,6 @@ const actions = {
           });
 
           state.advancedSearchQuery["fields"].push(fieldsObj);
-          //Returns duplicate free array
-          state.advancedSearchQuery["fields"] = uniqWith(state.advancedSearchQuery["fields"] , isEqual)
         }
       });
     }

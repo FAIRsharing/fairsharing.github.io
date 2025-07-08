@@ -22,7 +22,7 @@ const recordsCardUtils = {
             else if(chip.type==='userDefinedTags') {
                 return 'tags_color';
             }
-            else if(chip.type==='objectTypes') {
+            else if(chip.type ==='objectTypes') {
               return 'object_type_color';
             }
         },
@@ -91,11 +91,17 @@ const recordsCardUtils = {
             _module.remainTagCount = 0
             _module.chips = [];
             order.forEach(node => {
-                record[node].remainTagCount = 0
-                _module.organizeChips(record, node, _module.getMaxItemShown);
+                if(record[node]) {
+                    record[node].remainTagCount = 0
+                    _module.organizeChips(record, node, _module.getMaxItemShown);
+                }
+
             });
             for (let i = 0; i < order.length; i++) {
-                _module.remainTagCount += record[order[i]].remainTagCount
+                if(record[order[i]]) {
+                    _module.remainTagCount += record[order[i]].remainTagCount
+                }
+
             }
         },
         organizeChips(record, node, max_item_shown) {

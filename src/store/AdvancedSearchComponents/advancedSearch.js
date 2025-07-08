@@ -25,6 +25,7 @@ const state = {
 
 const actions = {
   async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
+    state.advancedSearchQuery["fields"] = [];
     commit("setLoadingStatus", true);
     state.advancedSearchQuery["operator"] =
       state.advancedSearch["operatorIdentifier"];
@@ -43,7 +44,6 @@ const actions = {
 
           mergedValues.forEach((params) => {
             let fieldKey = params["identifier"];
-
             //Changing databasetype/standardtype/policytype keyname to 'type'
             //to pass as a required key for advancedSearch query
             if (
@@ -75,12 +75,13 @@ const actions = {
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
-              fieldsObj[fieldKey] = fieldValue;
+                fieldsObj[fieldKey] = fieldValue;
             }
             else if(isBoolean(fieldValue)) {
-              fieldsObj[fieldKey] = fieldValue;
+                fieldsObj[fieldKey] = fieldValue;
             }
           });
+
           state.advancedSearchQuery["fields"].push(fieldsObj);
         }
       });

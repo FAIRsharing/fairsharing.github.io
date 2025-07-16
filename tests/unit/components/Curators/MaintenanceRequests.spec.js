@@ -15,29 +15,29 @@ let curationDataSummary =  dataDashboard.curationSummary;
 const localVue = createLocalVue();
 localVue.use(Vuex);
 let header = [
-      {
-        "text": "Date",
-        "value": "createdAt"
-      },
-      {
-        "text": "Record name (id)",
-        "value": "recordName"
-      },
-      {
-        "text": "User login",
-        "value": "userNameID"
-      },
-      {
-        "text": "Processing Notes",
-        "value": "processingNotes",
-        "sortable": false,
-        "width": 250
-      },
-      { "text": "Accept request?",
-        "value": "actions",
-        "sortable": false
-      }
-    ];
+  {
+    "text": "Date",
+    "value": "createdAt"
+  },
+  {
+    "text": "Record name (id)",
+    "value": "recordName"
+  },
+  {
+    "text": "User login",
+    "value": "userNameID"
+  },
+  {
+    "text": "Processing Notes",
+    "value": "processingNotes",
+    "sortable": false,
+    "width": 250
+  },
+  { "text": "Accept request?",
+    "value": "actions",
+    "sortable": false
+  }
+];
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -72,13 +72,13 @@ describe("Curator -> MaintenanceRequest.vue", () => {
   let graphStub;
   beforeAll(() => {
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery")
-        .returns(curationDataSummary)
+      .returns(curationDataSummary)
     restStub = sinon.stub(Client.prototype, "executeQuery").returns(
-        {
-          data: {
-            error: false
-          }
+      {
+        data: {
+          error: false
         }
+      }
     );
     wrapper = shallowMount(MaintenanceRequest, {
       localVue,
@@ -89,7 +89,7 @@ describe("Curator -> MaintenanceRequest.vue", () => {
       }
     });
   });
-  afterEach( () => {
+  afterEach(() => {
     graphStub.restore();
     restStub.restore();
   });

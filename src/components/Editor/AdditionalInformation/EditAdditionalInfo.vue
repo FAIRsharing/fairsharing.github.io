@@ -5,7 +5,7 @@
     v-model="formValid"
   >
     <v-card>
-      <v-card-title class="grey lighten-4 blue--text">
+      <v-card-title class="bg-grey-lighten-4 text-blue">
         Edit Additional Information
       </v-card-title>
       <Alerts target="additionalInformation" />
@@ -37,26 +37,26 @@
                 <v-tooltip
                   v-if="getFields('array')[fieldName]['description']"
                   class="d-inline-block mr-2"
-                  bottom
+                  location="bottom"
                 >
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props">
+                      fas fa-question-circle
                     </v-icon>
                   </template>
                   {{ getFields('array')[fieldName]['description'] }}
                 </v-tooltip>
-                <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }} </b>
+                <b class="text-body-1 text-blue"> {{ cleanString(fieldName).toUpperCase() }} </b>
 
                 <v-tooltip
-                  bottom
+                  location="bottom"
                   class="d-inline-block mr-2"
                 >
-                  <template #activator="{ on }">
+                  <template #activator="{ props }">
                     <v-icon
-                      small
-                      class="blue--text white ml-2 iconReposition"
-                      v-on="on"
+                      size="small"
+                      class="text-blue bg-white ml-2 iconReposition"
+                      v-bind="props"
                       @click="createItem(fieldName,
                                          allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties,
                                          allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].required || []
@@ -85,7 +85,7 @@
                   >
                     <v-card
                       height="100%"
-                      class="d-flex flex-column grey lighten-4"
+                      class="d-flex flex-column bg-grey-lighten-4"
                     >
                       <v-card-text
                         style="flex-grow: 1;"
@@ -101,27 +101,25 @@
                       <v-card-actions>
                         <v-spacer />
                         <v-btn
-                          class="success"
-                          fab
-                          x-small
+                          class="bg-success"
+                          size="x-small"
                           @click="showOverlay(itemIndex,
                                               fieldName, item, allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties,
                                               allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].required || []
                           )"
                         >
                           <v-icon
-                            x-small
+                            size="x-small"
                           >
                             fa-pen
                           </v-icon>
                         </v-btn>
                         <v-btn
-                          class="error"
-                          fab
-                          x-small
+                          class="bg-error"
+                          size="x-small"
                           @click="removeItem(fieldName, itemIndex)"
                         >
-                          <v-icon x-small>
+                          <v-icon size="x-small">
                             fa-trash
                           </v-icon>
                         </v-btn>
@@ -145,23 +143,23 @@
               xl="3"
             >
               <v-card
-                class="grey lighten-4"
+                class="bg-grey-lighten-4"
                 height="100%"
               >
                 <v-card-title>
                   <v-tooltip
                     v-if="getFields('object')[fieldName]['description']"
-                    bottom
+                    location="bottom"
                     class="d-inline-block mr-2"
                   >
-                    <template #activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
+                    <template #activator="{ props }">
+                      <v-icon v-bind="props">
+                        fas fa-question-circle
                       </v-icon>
                     </template>
                     {{ getFields('object')[fieldName]['description'] }}
                   </v-tooltip>
-                  <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }}: </b>
+                  <b class="text-body-1 text-blue"> {{ cleanString(fieldName).toUpperCase() }}: </b>
                 </v-card-title>
                 <v-card-text>
                   <FieldInput
@@ -180,7 +178,7 @@
           <v-row v-if="Object.keys(getFields('enum')).length > 0">
             <!-- there are currently no fields with type: enum -->
             <v-col cols="12">
-              <b class="body-1 blue--text"> BASE FIELDS: </b>
+              <b class="text-body-1 text-blue"> BASE FIELDS: </b>
             </v-col>
             <v-col
               xs="12"
@@ -221,7 +219,7 @@
       <v-card-actions>
         <v-btn
           :disabled="!formValid"
-          class="info"
+          class="bg-info"
           :loading="saving"
           @click="saveRecord(false)"
         >
@@ -229,7 +227,7 @@
         </v-btn>
         <v-btn
           :disabled="!formValid"
-          class="info"
+          class="bg-info"
           :loading="saving"
           @click="saveRecord(true)"
         >
@@ -250,7 +248,7 @@
             ref="editAdditionalInformationOverlay"
             v-model="subFormValid"
           >
-            <v-card-title class="green white--text">
+            <v-card-title class="bg-green text-white">
               Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
             </v-card-title>
             <v-card-text class="pt-4">
@@ -261,12 +259,12 @@
               >
                 <v-tooltip
                   v-if="overlay.template[fieldName].description"
-                  bottom
+                  location="bottom"
                   class="d-inline-block mr-2"
                 >
-                  <template #activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props">
+                      fas fa-question-circle
                     </v-icon>
                   </template>
                   {{ overlay.template[fieldName].description }}
@@ -275,7 +273,7 @@
                   v-if="!field.enum"
                   v-model="overlay.fields[fieldName]"
                   :label="fieldName"
-                  outlined
+                  variant="outlined"
                   class="field"
                   :rules="rules(fieldName, overlay.required)"
                 />
@@ -283,7 +281,7 @@
                   v-else
                   v-model="overlay.fields[fieldName]"
                   :label="fieldName"
-                  outlined
+                  variant="outlined"
                   :items="field.enum"
                   class="field"
                   :rules="rules(fieldName, overlay.required)"
@@ -293,13 +291,13 @@
             <v-card-actions>
               <v-btn
                 :disabled="!subFormValid"
-                class="success"
+                class="bg-success"
                 @click="addItem()"
               >
                 Submit item
               </v-btn>
               <v-btn
-                class="error"
+                class="bg-error"
                 @click="hideOverlay()"
               >
                 Cancel
@@ -314,7 +312,6 @@
 
 <script>
 //import { isEqual } from "lodash"
-import Vue from "vue"
 import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
 
 import sortObj from "@/utils/generalUtils"
@@ -323,7 +320,7 @@ import stringUtils from '@/utils/stringUtils'
 
 import Alerts from "../Alerts";
 import FieldInput from "./FieldInput";
-const diff = require("deep-object-diff").diff;
+import { diff } from "deep-object-diff"
 
 export default {
   name: "EditAdditionalInfo",
@@ -401,7 +398,7 @@ export default {
             //let expected = new Set(["yes", "no", "not found"]);
             //let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
             //if (isEqual(expected, fieldEnum)) {
-              output[fieldName] = this.allowedFields.properties[fieldName]
+            output[fieldName] = this.allowedFields.properties[fieldName]
             //}
           }
         });
@@ -419,7 +416,8 @@ export default {
       };
       /* istanbul ignore next */
       this.$nextTick(() => {
-        if(this.$refs['editAdditionalInformationOverlay']) this.$refs['editAdditionalInformationOverlay'].validate()}
+        if(this.$refs['editAdditionalInformationOverlay']) this.$refs['editAdditionalInformationOverlay'].validate()
+      }
       );
     },
     hideOverlay(){
@@ -441,11 +439,12 @@ export default {
         fields: {}
       };
       Object.keys(template).forEach(field => {
-        Vue.set(this.overlay.fields, field, null)
+        this.overlay.fields[field] = null
       });
       /* istanbul ignore next */
       this.$nextTick(() => {
-        if(this.$refs['editAdditionalInformationOverlay']) this.$refs['editAdditionalInformationOverlay'].validate()}
+        if(this.$refs['editAdditionalInformationOverlay']) this.$refs['editAdditionalInformationOverlay'].validate()
+      }
       );
     },
     addItem(){

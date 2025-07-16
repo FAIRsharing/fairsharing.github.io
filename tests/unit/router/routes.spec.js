@@ -14,104 +14,104 @@ const $route = {
 
 
 let store = {
-    state: {
-        users: {
-            user: function(){return {isLoggedIn: true,is_super_curator: true}}
-        },
-        introspection: {
-            maintenanceMode: false
-        }
+  state: {
+    users: {
+      user: function(){return {isLoggedIn: true,is_super_curator: true}}
     },
-    dispatch: jest.fn()
+    introspection: {
+      maintenanceMode: false
+    }
+  },
+  dispatch: jest.fn()
 };
 
 let restStub;
 
 describe("Routes", () => {
 
-    beforeAll(() => {
-        window.scrollTo = jest.fn();
-        restStub = sinon.stub(RestClient.prototype, "executeQuery");
-        restStub.returns({
-            data: {
-                success: true
-            }
-        })
-    });
-    afterAll(() => {
-        restStub.restore();
-    });
-
-    it("routing variables are correctly set", () => {
-
-        const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register"
-        ];
-
-        router.options.routes.forEach(function(route){
-            if (route.name !== "Record"){
-                expect(route.meta.title).toBe(route.name.replace(/_/g, " "))
-            }
-            if (beforeEachTester.indexOf(route.name) > -1){
-                const next = jest.fn();
-                route.beforeEnter({path: {}}, undefined, next);
-            }
-        });
-    });
-    it ("- NAVGUARD - redirect if the user is not logged in", async () => {
-        const next = jest.fn();
-        await isLoggedIn(undefined, undefined, next, store);
-        await isNotLoggedIn(undefined, undefined, next, store);
-        await isSuperCurator(undefined, undefined, next, store);
-        expect(next).toHaveBeenCalled();
-    });
-
-    it("Can set a correct title", async () => {
-        let to = {
-            meta: { title: "ABC" }
-        };
-        const next = jest.fn();
-        await beforeEach(to, undefined, next, store);
-        expect(document.title).toMatch("FAIRsharing | ABC");
-
-        to.meta = {};
-        store = {
-            state: {
-                users: {
-                    user: function(){return {isLoggedIn: false, is_super_curator: true}}
-                },
-                introspection: {
-                    maintenanceMode: false
-                }
-            },
-            dispatch: jest.fn()
-        };
-        await beforeEach(to, undefined, next, store);
-        expect(document.title).toMatch("FAIRsharing");
-        store.state.introspection.maintenanceMode = true;
-        await beforeEach(to, undefined, next, store);
-        expect(next).toHaveBeenCalledWith({path: "maintenance"})
-        await afterEach({name:'Records'});
-        await afterEach({name:'Record'});
-    });
-
-    it("can check is a site is in maintenance mode", () => {
-        store = {
-            state: {
-                introspection: {
-                    maintenanceMode: true
-                }
-            }
-        };
-        const next = jest.fn();
-        isMaintenanceMode(undefined, undefined, next, store);
-        expect(next).toHaveBeenCalledWith();
+  beforeAll(() => {
+    window.scrollTo = jest.fn();
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({
+      data: {
+        success: true
+      }
     })
+  });
+  afterAll(() => {
+    restStub.restore();
+  });
 
-    it("can check scrollBehavior", () => {
-        expect(scrollBehavior({hash:'#anchorLink'})).toStrictEqual({selector:"#anchorLink"})
-        expect(scrollBehavior({})).toBe(false)
-    })
+  it("routing variables are correctly set", () => {
+
+    const beforeEachTester = [
+      "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register"
+    ];
+
+    router.options.routes.forEach(function(route){
+      if (route.name !== "Record"){
+        expect(route.meta.title).toBe(route.name.replace(/_/g, " "))
+      }
+      if (beforeEachTester.indexOf(route.name) > -1){
+        const next = jest.fn();
+        route.beforeEnter({path: {}}, undefined, next);
+      }
+    });
+  });
+  it ("- NAVGUARD - redirect if the user is not logged in", async () => {
+    const next = jest.fn();
+    await isLoggedIn(undefined, undefined, next, store);
+    await isNotLoggedIn(undefined, undefined, next, store);
+    await isSuperCurator(undefined, undefined, next, store);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it("Can set a correct title", async () => {
+    let to = {
+      meta: { title: "ABC" }
+    };
+    const next = jest.fn();
+    await beforeEach(to, undefined, next, store);
+    expect(document.title).toMatch("FAIRsharing | ABC");
+
+    to.meta = {};
+    store = {
+      state: {
+        users: {
+          user: function(){return {isLoggedIn: false, is_super_curator: true}}
+        },
+        introspection: {
+          maintenanceMode: false
+        }
+      },
+      dispatch: jest.fn()
+    };
+    await beforeEach(to, undefined, next, store);
+    expect(document.title).toMatch("FAIRsharing");
+    store.state.introspection.maintenanceMode = true;
+    await beforeEach(to, undefined, next, store);
+    expect(next).toHaveBeenCalledWith({path: "maintenance"})
+    await afterEach({name:'Records'});
+    await afterEach({name:'Record'});
+  });
+
+  it("can check is a site is in maintenance mode", () => {
+    store = {
+      state: {
+        introspection: {
+          maintenanceMode: true
+        }
+      }
+    };
+    const next = jest.fn();
+    isMaintenanceMode(undefined, undefined, next, store);
+    expect(next).toHaveBeenCalledWith();
+  })
+
+  it("can check scrollBehavior", () => {
+    expect(scrollBehavior({hash:'#anchorLink'})).toStrictEqual({selector:"#anchorLink"})
+    expect(scrollBehavior({})).toBe(false)
+  })
 
     it("performs hardcoded record redirections correctly", async () => {
         // Records for articles
@@ -224,88 +224,90 @@ describe("Routes", () => {
             fairassist: '/search?fairsharingRegistry=FAIRassist'
         }
 
-        // eslint-disable no-promise-executor-return
-        Object.keys(redirections).forEach(async (goto) => {
-            link = router.options.routes.find((obj) => {
-                return obj.name === goto;
-            });
-            await link.redirect();
-            expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
-        });
-        // eslint-enable no-promise-executor-return
-
+    // eslint-disable no-promise-executor-return
+    Object.keys(redirections).forEach(async (goto) => {
+      link = router.options.routes.find((obj) => {
+        return obj.name === goto;
+      });
+      await link.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
     });
+    // eslint-enable no-promise-executor-return
 
-    // See #2005
-    it("performs 'champion' redirections correctly", async () => {
-        let link;
-        let assignMock = jest.fn();
-        delete window.location;
-        window.location = {assign: assignMock};
-        const redirections = {
-            old_community_curation: '/community_champions',
-            old_our_curators: '/community_champions/our_champions',
+  });
+
+  // See #2005
+  it("performs 'champion' redirections correctly", async () => {
+    let link;
+    let assignMock = jest.fn();
+    delete window.location;
+    window.location = {assign: assignMock};
+    const redirections = {
+      old_community_curation: '/community_champions',
+      old_our_curators: '/community_champions/our_champions',
+    }
+
+    // eslint-disable no-promise-executor-return
+    Object.keys(redirections).forEach(async (goto) => {
+      link = router.options.routes.find((obj) => {
+        return obj.name === goto;
+      });
+      await link.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
+    });
+    // eslint-enable no-promise-executor-return
+  });
+
+  it("performs preservation policy redirections correctly", async () => {
+    let link;
+    let assignMock = jest.fn();
+    delete window.location;
+    window.location = {assign: assignMock};
+    const redirections = {
+      preservation_policy: '/sustainability_and_preservation',
+    }
+
+    // eslint-disable no-promise-executor-return
+    Object.keys(redirections).forEach(async (goto) => {
+      link = router.options.routes.find((obj) => {
+        return obj.name === goto;
+      });
+      await link.redirect();
+      expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
+    });
+    // eslint-enable no-promise-executor-return
+  });
+
+
+
+  it("gets sitemap from the api", async () => {
+    import.meta.env.VITE_API_ENDPOINT = 'https://api.fairsharing.org'
+    let assignMock = jest.fn();
+    delete window.location;
+    window.location = { assign: assignMock };
+    let sitemap = router.options.routes.find((obj) => { return obj.name === 'sitemap'});
+    await sitemap.redirect();
+    // import.meta.env.VITE_API_ENDPOINT
+    expect(window.location.assign).toHaveBeenCalledWith(import.meta.env.VITE_API_ENDPOINT + '/sitemap.xml');
+
+  });
+
+  it ("- NAVGUARD - not let logged in User to access some pages like login and signup ", async () => {
+    const next = jest.fn();
+    store = {
+      state: {
+        users: {
+          user: function(){return {isLoggedIn: false,is_super_curator: true}}
+        },
+        introspection: {
+          maintenanceMode: false
         }
+      },
+      dispatch: jest.fn()
+    };
+    await isNotLoggedIn(undefined, undefined, next, store);
 
-        // eslint-disable no-promise-executor-return
-        Object.keys(redirections).forEach(async (goto) => {
-            link = router.options.routes.find((obj) => {
-                return obj.name === goto;
-            });
-            await link.redirect();
-            expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
-        });
-        // eslint-enable no-promise-executor-return
-    });
-
-    it("performs preservation policy redirections correctly", async () => {
-        let link;
-        let assignMock = jest.fn();
-        delete window.location;
-        window.location = {assign: assignMock};
-        const redirections = {
-            preservation_policy: '/sustainability_and_preservation',
-        }
-
-        // eslint-disable no-promise-executor-return
-        Object.keys(redirections).forEach(async (goto) => {
-            link = router.options.routes.find((obj) => {
-                return obj.name === goto;
-            });
-            await link.redirect();
-            expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
-        });
-        // eslint-enable no-promise-executor-return
-    });
-
-    it("gets sitemap from the api", async () => {
-        process.env.VUE_APP_API_ENDPOINT = 'https://api.fairsharing.org'
-        let assignMock = jest.fn();
-        delete window.location;
-        window.location = { assign: assignMock };
-        let sitemap = router.options.routes.find((obj) => { return obj.name === 'sitemap'} );
-        await sitemap.redirect();
-        // process.env.VUE_APP_API_ENDPOINT
-        expect(window.location.assign).toHaveBeenCalledWith( process.env.VUE_APP_API_ENDPOINT + '/sitemap.xml');
-
-    });
-
-    it ("- NAVGUARD - not let logged in User to access some pages like login and signup ", async () => {
-        const next = jest.fn();
-        store = {
-            state: {
-                users: {
-                    user: function(){return {isLoggedIn: false,is_super_curator: true}}
-                },
-                introspection: {
-                    maintenanceMode: false
-                }
-            },
-            dispatch: jest.fn()
-        };
-        await isNotLoggedIn(undefined, undefined, next, store);
-
-        expect(next).toHaveBeenCalled();
-    });
+    expect(next).toHaveBeenCalled();
+  });
 
 });

@@ -13,7 +13,7 @@
       <ListController
         class="mt-2"
         :options="{hasPagination:true,hasSorting:true,hasListType:true}"
-        @ChangeListType="changeListType"
+        @change-list-type="changeListType"
       />
       <!-- Alert -->
       <div
@@ -21,7 +21,7 @@
         class="code-container"
       >
         <v-alert
-          colored-border
+          border-color
           type="info"
         >
           No records match your search!

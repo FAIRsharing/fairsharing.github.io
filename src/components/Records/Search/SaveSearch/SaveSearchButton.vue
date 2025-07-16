@@ -1,8 +1,8 @@
 <template>
   <v-btn
-    class="mb-2 white--text saveSearchResults"
+    class="mb-2 text-white saveSearchResults font-12"
     color="accent2"
-    small
+    size="small"
     @click="!user().isLoggedIn ? goToLogin() : saveSearchResults()"
   >
     Save Search Results

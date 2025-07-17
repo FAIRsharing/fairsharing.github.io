@@ -84,9 +84,9 @@ let editorStore = {
         supportLinksTypes: supportLinksTypes,
         availableLicences: [],
         licenceRelations: [
-            "undefined",
             "applies_to_content",
-            "least_permissive"
+            "least_permissive",
+            "undefined"
         ],
         accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"],
         availableRecords: [],

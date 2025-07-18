@@ -551,7 +551,7 @@ export default {
     }
   },
   destroyed() {
-    // minor change in the y axis can fix a serious bug after going back to records..
+    // minor change in the y axis can fix a serious bug after going back to records.
     this.$scrollTo('body',5,{})
   },
   async mounted() {

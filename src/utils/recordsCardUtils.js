@@ -91,6 +91,7 @@ const recordsCardUtils = {
             _module.remainTagCount = 0
             _module.chips = [];
             order.forEach(node => {
+                /* istanbul ignore else */
                 if(record[node]) {
                     record[node].remainTagCount = 0
                     _module.organizeChips(record, node, _module.getMaxItemShown);
@@ -98,6 +99,7 @@ const recordsCardUtils = {
 
             });
             for (let i = 0; i < order.length; i++) {
+                /* istanbul ignore else */
                 if(record[order[i]]) {
                     _module.remainTagCount += record[order[i]].remainTagCount
                 }

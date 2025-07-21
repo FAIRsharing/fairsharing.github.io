@@ -198,7 +198,15 @@
                       return-object
                       label="Select the Licence relation"
                       :rules="[rules.isRequired()]"
-                    />
+                      auto-select-first
+                    >
+                      <template slot="selection" slot-scope="data">
+                        {{ data.item.replace(/_/g, " ") }}
+                      </template>
+                      <template slot="item" slot-scope="data">
+                        {{ data.item.replace(/_/g, " ") }}
+                      </template>
+                    </v-autocomplete>
                   </v-card>
                 </v-form>
               </v-card-text>

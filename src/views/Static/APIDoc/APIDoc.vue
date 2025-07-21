@@ -929,7 +929,7 @@ data&lt;-query_con$data
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Are you looking for structured data within an individual record's page? The FAIRsharing site implements content
-      negotiation, so if you make a request for a record, specifying JSON or JSON+LD headers, some basic JSON data
+      negotiation, so if you make a request for a record, specifying JSON or LD+JSON headers, some basic JSON data
       will be provided. For example:
     </p>
 
@@ -938,7 +938,7 @@ data&lt;-query_con$data
       language="bash"
     >
       <pre>
-         curl -i -H "Accept: application/json" "https://fairsharing.org/FAIRsharing.vr52p3"
+         curl -i -H "Accept: application/ld+json" "https://fairsharing.org/FAIRsharing.vr52p3"
       </pre>
     </vue-code-highlight>
 

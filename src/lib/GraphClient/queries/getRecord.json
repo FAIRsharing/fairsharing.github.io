@@ -23,7 +23,6 @@
     "urlForLogo",
     "lastReviewed",
     "hasGraph",
-    "isComplete",
     {
       "name": "reviews",
       "fields": [

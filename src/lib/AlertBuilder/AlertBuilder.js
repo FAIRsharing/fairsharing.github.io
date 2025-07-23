@@ -8,9 +8,16 @@ class AlertBuilder {
     //-- global banners for all users even without authentication
     isAwaitingApproval() {
         if (this.currentRecord.fairsharingRecord['isApproved'] === false) {
+            let message;
+            if (this.currentRecord.fairsharingRecord.isComplete) {
+              message = 'This record is awaiting review by FAIRsharing curators'
+            }
+            else {
+              message = 'This record has been modified, but will not be sent to the curation team until all requirements are met. More information is available in our <a href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record#minimal-curation-requirements">documentation</a>.'
+            }
             this.alerts['isAwaitingApproval'] = {
                 type: "info",
-                message: "This record is awaiting review by FAIRsharing curators"
+                message: message
             }
         }
         return this;

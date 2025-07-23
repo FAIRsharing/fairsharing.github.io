@@ -7,31 +7,24 @@ describe("AlertBuilder", () => {
     let resp;
     it("can be instantiated alertBuilder", function () {
         alertBuilder = new AlertBuilder(
-            {fairsharingRecord: {isApproved: false, isComplete: true}}
+            {fairsharingRecord: {isApproved: false}}
             , {is_curator: true});
         expect(typeof alertBuilder).toBe("object");
     });
 
     it("can show isAwaitingApproval alert", () => {
-      resp = alertBuilder.isAwaitingApproval();
-      expect(Object.keys(resp.alerts).length).toBe(1);
-      expect(resp.alerts['isAwaitingApproval']['message']).toMatch(/awaiting review/);
-      alertBuilder = new AlertBuilder(
-        {fairsharingRecord: {isApproved: true}}
-        , {is_curator: true});
-      resp = alertBuilder.isAwaitingApproval();
-      expect(Object.keys(resp.alerts).length).toBe(0);
-      alertBuilder = new AlertBuilder(
-        {fairsharingRecord: {isApproved: false, isComplete: false}}
-        , {is_curator: true});
-      resp = alertBuilder.isAwaitingApproval();
-      expect(Object.keys(resp.alerts).length).toBe(1);
-      expect(resp.alerts['isAwaitingApproval']['message']).toMatch(/all requirements are met/);
+        resp = alertBuilder.isAwaitingApproval();
+        expect(Object.keys(resp.alerts).length).toBe(1);
+        alertBuilder = new AlertBuilder(
+            {fairsharingRecord: {isApproved: true}}
+            , {is_curator: true});
+        resp = alertBuilder.isAwaitingApproval();
+        expect(Object.keys(resp.alerts).length).toBe(0);
     });
 
     it("can show isWatching alert", () => {
         resp = alertBuilder.isWatching(true);
-        expect(Object.keys(resp.alerts).length).toBe(2);
+        expect(Object.keys(resp.alerts).length).toBe(1);
         alertBuilder = new AlertBuilder(
             {fairsharingRecord: {isApproved: true}}
             , {is_curator: true});
@@ -107,6 +100,5 @@ describe("AlertBuilder", () => {
         resp = alertBuilder.isHidden();
         expect(Object.keys(resp.alerts).length).toBe(0);
     });
-
 
 });

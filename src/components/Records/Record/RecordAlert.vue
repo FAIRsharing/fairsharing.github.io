@@ -23,14 +23,12 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 #message-text {
   color: white;
-  a {
+}
+#message-text a {
     text-decoration: underline;
     color: white;
-  }
 }
-
-
 </style>

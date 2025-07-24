@@ -4,7 +4,12 @@
     :type="type"
     class="mb-2 flex-grow-1"
   >
-    <span>{{ message }}</span>
+    <!-- eslint-enable vue/no-v-html -->
+    <span
+      id="message-text"
+      v-html="message"
+    />
+    <!-- eslint-disable vue/no-v-html -->
   </v-alert>
 </template>
 
@@ -19,5 +24,7 @@ export default {
 </script>
 
 <style scoped>
-
+#message-text {
+  color: white;
+}
 </style>

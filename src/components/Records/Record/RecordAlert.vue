@@ -27,8 +27,4 @@ export default {
 #message-text {
   color: white;
 }
-#message-text a {
-    text-decoration: underline;
-    color: white;
-}
 </style>

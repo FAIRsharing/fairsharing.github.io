@@ -140,4 +140,3 @@ const recordsCardUtils = {
 }
 
 export default recordsCardUtils;
-

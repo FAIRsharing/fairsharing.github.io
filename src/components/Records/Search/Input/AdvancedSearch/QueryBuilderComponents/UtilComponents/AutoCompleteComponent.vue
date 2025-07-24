@@ -1,37 +1,57 @@
 <template>
   <v-autocomplete
     v-model="model"
+    v-model:search="search"
     :items="itemList"
-    :search-input.sync="search"
-    cache-items
     hide-no-data
-    hide-details
+    hide-details="auto"
     flat
     chips
     multiple
     closable-chips
-    solo
+    variant="solo"
     min-height="36px"
-    class="text-capitalize"
+    class="text-capitalize advancedSearchAutocomplete advancedSearchDialogBoxContent"
+    density="compact"
     :loading="loading"
-    loader-height="3"
-    color="accent3"
+    color="primary"
   >
-    <template #selection="data">
-      <v-chip
-        v-bind="data.attrs"
-        :input-value="data.selected"
-        close
-        @click="data.select"
-        @click:close="remove(data.item)"
+    <!--Chip slot is not required anymore-->
+<!--    <template #chip="{ props, item }">-->
+<!--      <v-chip-->
+<!--        class="advancedSearchChip"-->
+<!--        v-bind="props"-->
+<!--        :model-value="item.selected"-->
+<!--        closable-->
+<!--        :text="item.title"-->
+<!--        size="large"-->
+<!--        border="sm"-->
+<!--        @click="item.select"-->
+<!--        @click:close="remove(item.title)"-->
+<!--      />-->
+<!--    </template>-->
+    <!-- Tooltip for the field -->
+    <template #prepend>
+      <v-tooltip
+          location="bottom"
+          class="mr-2"
       >
-        {{ data.item }}
-      </v-chip>
+        <template #activator="{ props }">
+          <v-icon
+              size="x-small"
+              class="mr-1 iconStyle text-white opacity-100"
+              v-bind="props"
+          >
+            fas fa-question-circle
+          </v-icon>
+        </template>
+        <span> {{ toolTipText }} </span>
+      </v-tooltip>
     </template>
   </v-autocomplete>
 </template>
 <script>
-import { removeItem } from "@/utils/advancedSearchUtils";
+// import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "AutoCompleteComponent",
@@ -48,7 +68,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    toolTipText: {
+      type: String,
+      default: null,
+    },
   },
+  emits: ["input", "fetchData"],
   data: () => {
     return {
       search: null,
@@ -73,13 +98,10 @@ export default {
     },
   },
 
-  methods: {
-    remove(item) {
-      return removeItem(item, this.model);
-    },
-  },
+  // methods: {
+  //   remove(item) {
+  //     return removeItem(item, this.model);
+  //   },
+  // },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

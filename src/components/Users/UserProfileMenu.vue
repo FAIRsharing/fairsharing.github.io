@@ -1,20 +1,18 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-list-item-avatar
+<template>
+  <v-avatar
     style="height:auto !important"
   >
     <v-menu
-      offset-y
       transition="scale-transition"
       origin="top center 0"
     >
-      <template #activator="{ on }">
+      <template #activator="{ props }">
         <v-btn
-          dark
           icon
-          v-on="on"
+          v-bind="props"
         >
-          <v-icon>
-            fa-bars
+          <v-icon class="text-white">
+            fa fa-bars
           </v-icon>
         </v-btn>
       </template>
@@ -31,11 +29,11 @@
         </v-list-item>
       </v-list>
     </v-menu>
-  </v-list-item-avatar>
+  </v-avatar>
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
+import { mapActions, mapState } from "vuex"
 
     export default {
       name: "UserProfileMenu",

@@ -5,7 +5,7 @@
     class="standard"
   >
     <v-card id="editPublications">
-      <v-card-title class="grey lighten-4 blue--text">
+      <v-card-title class="bg-grey-lighten-4 text-blue">
         Add/Remove Publications
       </v-card-title>
       <Alerts target="publications" />
@@ -31,7 +31,7 @@
                 class="d-flex flex-column"
               >
                 <v-card-title
-                  class="white--text"
+                  class="text-white"
                   :class="{
                     grey: !publication.isCitation,
                     green: publication.isCitation,
@@ -59,10 +59,10 @@
                   </div>
                   <div><b>AUTHORS:</b> {{ publication.authors }}</div>
                   <v-switch
-                    :input-value="publication.isCitation"
+                    :model-value="publication.isCitation"
                     color="green"
                     label="Cite record using this publication?"
-                    @change="toggleCitation(pubIndex)"
+                    @update:model-value="toggleCitation(pubIndex)"
                   />
                 </v-card-text>
                 <v-card-actions
@@ -72,33 +72,33 @@
                   }"
                 >
                   <v-spacer />
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props }">
                       <v-btn
                         v-if="user().is_curator"
-                        v-bind="attrs"
-                        class="green white--text mr-2"
+                       
+                        class="bg-green text-white mr-2"
                         icon
-                        v-on="on"
+                        v-bind="props"
                         @click="editPublication(publication, pubIndex)"
                       >
-                        <v-icon small>
+                        <v-icon size="small">
                           fas fa-pen
                         </v-icon>
                       </v-btn>
                     </template>
                     <span>Edit this publication</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props }">
                       <v-btn
-                        v-bind="attrs"
-                        class="red white--text"
+                       
+                        class="bg-red text-white"
                         icon
-                        v-on="on"
+                        v-bind="props"
                         @click="removePublication(pubIndex)"
                       >
-                        <v-icon small>
+                        <v-icon size="small">
                           fa-trash
                         </v-icon>
                       </v-btn>
@@ -114,7 +114,7 @@
             <v-alert
               width="100%"
               type="info"
-              dismissible
+              closable
             >
               Please use the search bar below to check if we already have your
               publication in FAIRsharing. If not, you can add it using the
@@ -126,7 +126,7 @@
           v-model="search"
           append-icon="fa-search"
           label="Search existing publications"
-          outlined
+          variant="outlined"
           hide-details
         />
         <v-data-table
@@ -142,11 +142,11 @@
         <div class="noPublications">
           <v-tooltip
             class="d-inline-block mr-2"
-            top
+            location="top"
           >
-            <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
+            <template #activator="{ props }">
+              <v-icon v-bind="props">
+                fas fa-question-circle
               </v-icon>
             </template>
             Please ensure that you enter a doi above in a prefix/suffix format,
@@ -154,21 +154,21 @@
             button.
           </v-tooltip>
           <v-btn
-            class="green white--text my-3"
+            class="bg-green text-white my-3"
             :loading="loadingPub"
             @click="getDOI()"
           >
             Import from DOI / Zenodo
           </v-btn>
           <v-btn
-            class="green white--text my-3 ml-3"
+            class="bg-green text-white my-3 ml-3"
             :loading="loadingPub"
             @click="getPMID()"
           >
             Import from PUBMED ID
           </v-btn>
           <v-btn
-            class="green white--text my-3 ml-3"
+            class="bg-green text-white my-3 ml-3"
             :loading="loadingPub"
             @click="createNewPublication()"
           >
@@ -190,7 +190,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="primary"
+          class="bg-primary"
           :loading="loading"
           @click="saveRecord(false)"
         >
@@ -198,7 +198,7 @@
         </v-btn>
         <v-btn
           :loading="loading"
-          class="primary"
+          class="bg-primary"
           @click="saveRecord(true)"
         >
           Save and exit
@@ -222,7 +222,7 @@
               v-model="subFormValid"
             >
               <v-card width="100%">
-                <v-card-title class="green white--text">
+                <v-card-title class="bg-green text-white">
                   Create/Edit a new publication
                 </v-card-title>
                 <v-card-text
@@ -240,21 +240,21 @@
                         <v-text-field
                           v-model="newPublication.doi"
                           label="DOI"
-                          outlined
+                          variant="outlined"
                         />
                       </v-col>
                       <v-col class="col-6">
                         <v-text-field
                           v-model="newPublication.pubmed_id"
                           label="PubMed ID"
-                          outlined
+                          variant="outlined"
                         />
                       </v-col>
                       <v-col class="col-12">
                         <v-text-field
                           v-model="newPublication.title"
                           label="Title"
-                          outlined
+                          variant="outlined"
                           :rules="[rules.isRequired()]"
                         />
                       </v-col>
@@ -262,7 +262,7 @@
                         <v-text-field
                           v-model="newPublication.authors"
                           label="Authors"
-                          outlined
+                          variant="outlined"
                           :rules="[rules.isRequired()]"
                         />
                       </v-col>
@@ -270,7 +270,7 @@
                         <v-text-field
                           v-model="newPublication.journal"
                           label="Journal"
-                          outlined
+                          variant="outlined"
                           :rules="[rules.isRequired()]"
                         />
                       </v-col>
@@ -278,7 +278,7 @@
                         <v-text-field
                           v-model="newPublication.year"
                           label="Publication Year"
-                          outlined
+                          variant="outlined"
                           :rules="[rules.isRequired()]"
                         />
                       </v-col>
@@ -286,7 +286,7 @@
                         <v-text-field
                           v-model="newPublication.url"
                           label="URL"
-                          outlined
+                          variant="outlined"
                           :rules="[rules.isRequired()]"
                         />
                       </v-col>
@@ -295,14 +295,14 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-btn
-                    class="green white--text"
+                    class="bg-green text-white"
                     :disabled="!subFormValid"
                     @click="addPublication()"
                   >
                     Edit or add a new publication
                   </v-btn>
                   <v-btn
-                    class="red white--text"
+                    class="bg-red text-white"
                     @click="openEditor = false"
                   >
                     Cancel
@@ -421,7 +421,8 @@ export default {
         type: function () {
           if (error) {
             return "error";
-          } else {
+          }
+          else {
             return "success";
           }
         },
@@ -463,7 +464,8 @@ export default {
             )[0];
             if (!isFound) {
               changes += 1;
-            } else {
+            }
+            else {
               let copy = JSON.parse(JSON.stringify(pub));
               if (copy.tablePosition > -1) delete copy.tablePosition;
               if (!isEqual(isFound, copy)) changes += 1;
@@ -520,11 +522,13 @@ export default {
         );
         if (data.message || (Array.isArray(data) && data.length == 0)) {
           this.errors.doi = true;
-        } else {
+        }
+        else {
           let dataPublication;
           if (Array.isArray(data)) {
             dataPublication = data[0];
-          } else {
+          }
+          else {
             dataPublication = data;
           }
           if (dataPublication.metadata !== undefined) {
@@ -544,7 +548,8 @@ export default {
               if (dataPublication.metadata.journal_title) {
                 this.newPublication.journal =
                     dataPublication.metadata.journal_title;
-              } else {
+              }
+              else {
                 if (dataPublication.metadata.meeting) {
                   this.newPublication.journal =
                       dataPublication.metadata.meeting.title;
@@ -554,7 +559,7 @@ export default {
               this.newPublication.title = dataPublication.metadata.title;
               this.newPublication.url = dataPublication.links.doi;
               this.newPublication.year = Number(
-                  dataPublication.metadata.publication_date.split("-")[0]
+                dataPublication.metadata.publication_date.split("-")[0]
               );
               let authors = [];
               dataPublication.metadata.creators.forEach(function (a) {
@@ -618,7 +623,8 @@ export default {
       let data = await pubClient.getPMID(id);
       if (data.error || data.result[id].error) {
         this.errors.pmid = true;
-      } else {
+      }
+      else {
         const pub = data.result[id];
         let pubDate = new Date(pub["sortpubdate"]);
         let doi = this.processIDs(pub["elocationid"]);
@@ -668,7 +674,8 @@ export default {
         );
         if (editedPublication.error) {
           _module.errors.general = editedPublication.error;
-        } else {
+        }
+        else {
           editedPublication.isCitation = newPub.isCitation;
           delete this.availablePublications[newPub.tablePosition];
           editedPublication.tablePosition = this.availablePublications.length;
@@ -685,7 +692,8 @@ export default {
         );
         if (createdPublication.error) {
           _module.errors.general = createdPublication.error;
-        } else {
+        }
+        else {
           this.publications.push(createdPublication);
           createdPublication.tablePosition = this.availablePublications.length;
           this.availablePublications.push(createdPublication);
@@ -695,7 +703,8 @@ export default {
       if (!_module.errors.general) {
         if (!newPub.doi) {
           _module.search = newPub.title;
-        } else {
+        }
+        else {
           _module.search = newPub.doi;
         }
         _module.newPublication = {};

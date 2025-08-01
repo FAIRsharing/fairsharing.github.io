@@ -1,15 +1,16 @@
 <template>
   <v-card
     v-if="(allowedFields.properties)"
-    class="pa-4 mt-15 d-flex flex-column"
+    class="pa-4 mt-15 d-flex flex-column overflow-initial"
     elevation="3"
-    outlined
+    border
     color="white"
     tile
   >
     <Icon
       item="createdAt"
       size="20"
+      class="pt-2"
     />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Attributes and Conditions

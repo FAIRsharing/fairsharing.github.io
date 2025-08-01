@@ -14,7 +14,7 @@
           class="pa-0"
         >
           <v-card>
-            <v-card-title class="grey lighten-4 blue--text">
+            <v-card-title class="bg-grey-lighten-4 text-blue">
               Edit Organisations & Grants
             </v-card-title>
             <Alerts target="organisations" />
@@ -75,19 +75,19 @@
                         <v-spacer />
                         <v-btn
                           icon
-                          class="green white--text"
+                          class="bg-green text-white"
                           @click="showEditOverlay(linkIndex)"
                         >
-                          <v-icon small>
+                          <v-icon size="small">
                             fa-pen
                           </v-icon>
                         </v-btn>
                         <v-btn
                           icon
-                          class="red white--text"
+                          class="bg-red text-white"
                           @click="removeRelation(linkIndex)"
                         >
-                          <v-icon small>
+                          <v-icon size="small">
                             fa-trash
                           </v-icon>
                         </v-btn>
@@ -100,15 +100,15 @@
                   >
                     <v-card
                       height="100%"
-                      class="newRel green--text"
+                      class="newRel text-green"
                       style="cursor: pointer"
                       min-height="190px"
                       @click="showEditOverlay(null)"
                     >
                       <div class="mb-4">
                         <v-icon
-                          x-large
-                          class="green--text icon--xxl"
+                          size="x-large"
+                          class="text-green icon--xxl"
                         >
                           fa-plus-circle
                         </v-icon>
@@ -123,14 +123,14 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="info"
+                class="bg-info"
                 :loading="saving"
                 @click="saveRecord(false)"
               >
                 Save and continue
               </v-btn>
               <v-btn
-                class="info"
+                class="bg-info"
                 :loading="saving"
                 @click="saveRecord(true)"
               >
@@ -143,107 +143,110 @@
     </v-container>
     <LinkOverlay />
     <v-fade-transition>
+      <div>
       <v-overlay
-        v-if="loading"
+        v-model="loading"
         :absolute="false"
         opacity="0.8"
+        class="align-center justify-center"
       >
         <loaders />
       </v-overlay>
+      </div>
     </v-fade-transition>
   </v-form>
 </template>
 
 <script>
-    import { isEqual } from "lodash"
-    import { mapActions, mapGetters,mapState } from "vuex"
+import { isEqual } from "lodash"
+import { mapActions, mapGetters,mapState } from "vuex"
 
-    import Loaders from "../../Navigation/Loaders";
-    import Alerts from "../Alerts";
-    import LinkOverlay from "./LinkOverlay";
+import Loaders from "../../Navigation/Loaders";
+import Alerts from "../Alerts";
+import LinkOverlay from "./LinkOverlay";
 
-    export default {
-        name: "Organisations",
-        components: {Alerts, LinkOverlay, Loaders},
-        data(){
-            return {
-                formValid: false,
-                showOverlay: false,
-                initialized: false,
-                loading: false,
-                saving: false,
-                data: {}
-            }
-        },
-        computed: {
-          ...mapState("record", ["sections"]),
-          ...mapState("users", ["user"]),
-          organisationLinks() {
-            return this.sections["organisations"].data;
-          }
-        },
-        watch: {
-          organisationLinks: {
-            deep: true,
-            handler() {
-              let changes = 0;
-              this.sections["organisations"].initialData.forEach((link) => {
-                let found = this.organisationLinks.filter(obj => obj.id === link.id)[0];
-                if (!found){
-                  changes += 1;
-                }
-                else if (!isEqual(link, found)){
-                    changes += 1;
-                }
-              });
-              this.organisationLinks.forEach((link) => {
-                if (!link.id){
-                  changes += 1;
-                }
-              });
-              this.$store.commit("record/setChanges", {
-                section: "organisations",
-                value: changes
-              })
-            }
-          }
-        },
-        methods: {
-          ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants"]),
-          ...mapActions("record", ["updateOrganisations"]),
-          ...mapGetters("record", ["getSection"]),
-          removeRelation(id){
-            this.organisationLinks.splice(id, 1);
-          },
-          async showEditOverlay(id){
-            if (!this.initialized){
-              this.loading = true;
-              await Promise.all([
-                this.getOrganisationsTypes(),
-                this.getOrganisations(),
-                this.getGrants()
-              ]);
-              this.loading = false;
-              this.initialized = true;
-            }
-            let editObject = {
-              showOverlay: true,
-              data: (this.organisationLinks[id]) ? JSON.parse(JSON.stringify(this.organisationLinks[id])) : {}
-            };
-            if (id !== null) editObject.id = id;
-            this.$store.commit("record/setEditOrganisationLink", editObject);
-          },
-          async saveRecord(redirect){
-            this.saving = true;
-            await this.updateOrganisations(this.user().credentials.token);
-            this.saving = false;
-            if (!redirect) this.$scrollTo("#mainHeader");
-            else if (redirect && !this.getSection("organisations").error){
-              await this.$router.push({path: '/' + this.$route.params.id})
-            }
-          }
-        },
+export default {
+  name: "Organisations",
+  components: {Alerts, LinkOverlay, Loaders},
+  data(){
+    return {
+      formValid: false,
+      showOverlay: false,
+      initialized: false,
+      loading: false,
+      saving: false,
+      data: {}
     }
+  },
+  computed: {
+    ...mapState("record", ["sections"]),
+    ...mapState("users", ["user"]),
+    organisationLinks() {
+      return this.sections["organisations"].data;
+    }
+  },
+  watch: {
+    organisationLinks: {
+      deep: true,
+      handler() {
+        let changes = 0;
+        this.sections["organisations"].initialData.forEach((link) => {
+          let found = this.organisationLinks.filter(obj => obj.id === link.id)[0];
+          if (!found){
+            changes += 1;
+          }
+          else if (!isEqual(link, found)){
+            changes += 1;
+          }
+        });
+        this.organisationLinks.forEach((link) => {
+          if (!link.id){
+            changes += 1;
+          }
+        });
+        this.$store.commit("record/setChanges", {
+          section: "organisations",
+          value: changes
+        })
+      }
+    }
+  },
+  methods: {
+    ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants"]),
+    ...mapActions("record", ["updateOrganisations"]),
+    ...mapGetters("record", ["getSection"]),
+    removeRelation(id){
+      this.organisationLinks.splice(id, 1);
+    },
+    async showEditOverlay(id){
+      if (!this.initialized){
+        this.loading = true;
+        await Promise.all([
+          this.getOrganisationsTypes(),
+          this.getOrganisations(),
+          this.getGrants()
+        ]);
+        this.loading = false;
+        this.initialized = true;
+      }
+      let editObject = {
+        showOverlay: true,
+        data: (this.organisationLinks[id]) ? JSON.parse(JSON.stringify(this.organisationLinks[id])) : {}
+      };
+      if (id !== null) editObject.id = id;
+      this.$store.commit("record/setEditOrganisationLink", editObject);
+    },
+    async saveRecord(redirect){
+      this.saving = true;
+      await this.updateOrganisations(this.user().credentials.token);
+      this.saving = false;
+      if (!redirect) this.$scrollTo("#mainHeader");
+      else if (redirect && !this.getSection("organisations").error){
+        await this.$router.push({path: '/' + this.$route.params.id})
+      }
+    }
+  },
+}
 </script>
 
 <style scoped>

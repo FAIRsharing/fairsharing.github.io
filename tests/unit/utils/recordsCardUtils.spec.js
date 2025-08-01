@@ -1,21 +1,18 @@
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
-
 const utils = recordsCardUtils;
 
-
 describe("recordsCardsUtils.js", function () {
-
-    it("gets a record link", function () {
-        let record = {
-            doi: '123456/FAIRsharing.123456'
-        }
-        expect(utils.methods.getRecordLink(record)).toEqual('FAIRsharing.123456');
-        record = {
-            id: '1'
-        }
-        expect(utils.methods.getRecordLink(record)).toEqual('1');
-    })
+  it("gets a record link", function () {
+    let record = {
+      doi: "123456/FAIRsharing.123456",
+    };
+    expect(utils.methods.getRecordLink(record)).toEqual("FAIRsharing.123456");
+    record = {
+      id: "1",
+    };
+    expect(utils.methods.getRecordLink(record)).toEqual("1");
+  });
 
     it("gets chip colour", function() {
         let chip = {
@@ -40,47 +37,57 @@ describe("recordsCardsUtils.js", function () {
         expect(utils.methods.getChipColor(chip)).toEqual('object_type_color')
     })
 
-    it("capitalizes text", () => {
-        expect(utils.methods.capitaliseText('exciting thing', 'taxonomy')).toEqual('Exciting thing');
-        expect(utils.methods.capitaliseText('exciting thing', 'other')).toEqual('Exciting Thing');
-    })
+  it("capitalizes text", () => {
+    expect(utils.methods.capitaliseText("exciting thing", "taxonomy")).toEqual(
+      "Exciting thing",
+    );
+    expect(utils.methods.capitaliseText("exciting thing", "other")).toEqual(
+      "Exciting Thing",
+    );
+  });
 
-    it("returns associated records", () => {
-        const record = {
-            registry: 'Standard',
-            recordAssociations: [
-                {
-                    linkedRecord: {
-                        registry: 'Database',
-                        id: 1
-                    }
-                },
-                {
-                    linkedRecord: {
-                        registry: 'Collection',
-                        id: 2
-                    }
-                }
-
-            ],
-            reverseRecordAssociations: [
-                {
-                    fairsharingRecord: {
-                        registry: 'Policy',
-                        id: 3
-                    }
-                },
-                {
-                    fairsharingRecord: {
-                        registry: 'Collection',
-                        id: 4
-                    }
-                }
-            ]
-        }
-       let result =  {"registryNumber":{"standard":{"val":0,"label":"standards"},"database":{"val":1,"label":"databases"},"policy":{"val":1,"label":"policies"}},"registry":"standard"};
-       expect(utils.methods.associatedRecords(record)).toStrictEqual(result);
-    })
+  it("returns associated records", () => {
+    const record = {
+      registry: "Standard",
+      recordAssociations: [
+        {
+          linkedRecord: {
+            registry: "Database",
+            id: 1,
+          },
+        },
+        {
+          linkedRecord: {
+            registry: "Collection",
+            id: 2,
+          },
+        },
+      ],
+      reverseRecordAssociations: [
+        {
+          fairsharingRecord: {
+            registry: "Policy",
+            id: 3,
+          },
+        },
+        {
+          fairsharingRecord: {
+            registry: "Collection",
+            id: 4,
+          },
+        },
+      ],
+    };
+    let result = {
+      registryNumber: {
+        standard: { val: 0, label: "standards" },
+        database: { val: 1, label: "databases" },
+        policy: { val: 1, label: "policies" },
+      },
+      registry: "standard",
+    };
+    expect(utils.methods.associatedRecords(record)).toStrictEqual(result);
+  });
 
     it("sets and organises chips", () => {
         utils.methods.getMaxItemShown = 2;
@@ -117,11 +124,10 @@ describe("recordsCardsUtils.js", function () {
         expect(utils.methods.chips).toStrictEqual(result);
     })
 
-    it("truncates strings", function () {
-        expect(utils.methods.truncateString(null,1)).toBe(null);
-        expect(utils.methods.truncateString('',1)).toEqual('');
-        expect(utils.methods.truncateString('pox on you',3)).toEqual('pox...');
-        expect(utils.methods.truncateString('banana',6)).toEqual('banana');
-    })
-
-})
+  it("truncates strings", function () {
+    expect(utils.methods.truncateString(null, 1)).toBe(null);
+    expect(utils.methods.truncateString("", 1)).toEqual("");
+    expect(utils.methods.truncateString("pox on you", 3)).toEqual("pox...");
+    expect(utils.methods.truncateString("banana", 6)).toEqual("banana");
+  });
+});

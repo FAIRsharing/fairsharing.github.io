@@ -77,10 +77,10 @@ const actions = {
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
-                fieldsObj[fieldKey] = fieldValue;
+              fieldsObj[fieldKey] = fieldValue;
             }
-            else if(isBoolean(fieldValue)) {
-                fieldsObj[fieldKey] = fieldValue;
+            else if (isBoolean(fieldValue)) {
+              fieldsObj[fieldKey] = fieldValue;
             }
           });
 

@@ -46,7 +46,9 @@
               >({{ licenceLink.relation }})</span>
             </div>
             <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
+              <template
+                #activator="{ on, attrs }"
+              >
                 <v-icon
                   v-bind="attrs"
                   small
@@ -200,10 +202,16 @@
                       :rules="[rules.isRequired()]"
                       auto-select-first
                     >
-                      <template slot="selection" slot-scope="data">
+                      <template
+                        slot="selection"
+                        slot-scope="data"
+                      >
                         {{ data.item.replace(/_/g, " ") }}
                       </template>
-                      <template slot="item" slot-scope="data">
+                      <template
+                        slot="item"
+                        slot-scope="data"
+                      >
                         {{ data.item.replace(/_/g, " ") }}
                       </template>
                     </v-autocomplete>

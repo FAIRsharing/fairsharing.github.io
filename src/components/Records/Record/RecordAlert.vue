@@ -4,12 +4,12 @@
     :type="type"
     class="mb-2 flex-grow-1"
   >
-    <!-- eslint-enable vue/no-v-html -->
+    <!-- eslint-disable vue/no-v-html -->
     <span
       id="message-text"
       v-html="message"
     />
-    <!-- eslint-disable vue/no-v-html -->
+    <!-- eslint-enable vue/no-v-html -->
   </v-alert>
 </template>
 

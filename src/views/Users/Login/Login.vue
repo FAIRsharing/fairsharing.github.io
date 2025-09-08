@@ -142,7 +142,7 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                    >Can't login with ORCID?</span>
+                    >Can't login with ORCID or Github?</span>
                   </a>
                 </v-card-text>
 

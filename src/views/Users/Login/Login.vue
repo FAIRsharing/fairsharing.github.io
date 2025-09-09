@@ -52,7 +52,9 @@
               />
 
               <!-- OAUTH -->
-              <v-list>
+              <v-list
+                v-if="checkEndpoint()"
+              >
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
                   :key="'provider_' + providerIndex"
@@ -140,7 +142,7 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                    >Can't login with ORCID?</span>
+                    >Can't login with ORCID or Github?</span>
                   </a>
                 </v-card-text>
 
@@ -200,14 +202,6 @@ export default {
           color: "green white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
         },
-        // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
-        /*
-        {
-          name: "Twitter",
-          color: "blue white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
-        },
-         */
         {
           name: "GitHub",
           color: "black white--text",
@@ -278,6 +272,14 @@ export default {
         origin = encodeURI(`${loc}?${query}`);
       }
       return `?origin=${origin}`;
+    },
+    checkEndpoint() {
+      if (process.env.VUE_APP_API_ENDPOINT === 'https://api.fairsharing.org' ||
+          process.env.VUE_APP_API_ENDPOINT === 'http://127.0.0.1:3000'
+         ) {
+        return true;
+      }
+      return false;
     }
   },
 };

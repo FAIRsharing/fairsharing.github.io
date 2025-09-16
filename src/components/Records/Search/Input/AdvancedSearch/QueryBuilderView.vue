@@ -54,6 +54,7 @@ import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
+  AccessMethods,
   AssociatedTools,
   CertificationsAndCommunityBadges,
   CitationToRelatedPublications,
@@ -144,6 +145,12 @@ export default {
             identifier: "standardtype",
             name: "Standard Record Type",
             component: StandardRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "accessMethods",
+            name: "Access Methods",
+            component: AccessMethods,
             initialValue: () => [],
           },
           {

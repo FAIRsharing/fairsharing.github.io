@@ -30,6 +30,7 @@ export const CertificationsAndCommunityBadges = () => import("./DatabaseComponen
 export const DataProcessesAndConditions = () => import("./DatabaseComponents/DataProcessesAndConditions.vue");
 export const DataPreservationPolicy = () => import("./DatabaseComponents/DataPreservationPolicy.vue");
 export const ResourceSustainability = () => import("./DatabaseComponents/ResourceSustainability.vue");
+export const AccessMethods = () => import("./DatabaseComponents/AccessMethods.vue");
 export const DataAvailabilityStatement = () =>
   import("./PolicyComponents/DataAvailabilityStatement.vue");
 export const DataProtection = () =>

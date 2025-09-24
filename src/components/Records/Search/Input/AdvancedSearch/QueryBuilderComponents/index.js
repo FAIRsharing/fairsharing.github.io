@@ -43,3 +43,4 @@ export { default as RecommendsStandard } from "./OtherBooleanComponents/Recommen
 export { default as UpdatingOfDmp } from "./OtherBooleanComponents/UpdatingOfDmp.vue";
 export { default as GuidanceToHelpEnableCompliance } from "./OtherBooleanComponents/GuidanceToHelpEnableCompliance.vue";
 export { default as MonitoringOfCompliance } from "./OtherBooleanComponents/MonitoringOfCompliance.vue";
+export { default as AccessMethods } from "./DatabaseComponents/AccessMethods.vue";

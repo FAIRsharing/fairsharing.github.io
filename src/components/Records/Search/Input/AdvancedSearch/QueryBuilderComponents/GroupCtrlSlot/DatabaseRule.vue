@@ -32,6 +32,7 @@
 import { sortBy } from "lodash"
 
 import {
+  AccessMethods,
   AssociatedTools,
   CertificationsAndCommunityBadges,
   CitationToRelatedPublications,
@@ -80,6 +81,12 @@ export default {
      */
     sortedArrayList() {
       return sortBy([
+        {
+          identifier: "accessMethods",
+          name: "Access Methods",
+          component: AccessMethods,
+          initialValue: () => [],
+        },
         {
           identifier: "dataCuration",
           name: "Data Curation",

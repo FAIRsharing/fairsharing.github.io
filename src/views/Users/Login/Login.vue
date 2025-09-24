@@ -53,7 +53,7 @@
               />
 
               <!-- OAUTH -->
-              <v-list class="d-flex flex-column align-center">
+              <v-list v-if="checkEndpoint()" class="d-flex flex-column align-center">
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
                   :key="'provider_' + providerIndex"
@@ -141,7 +141,7 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                    >Can't login with ORCID?</span>
+                    >Can't login with ORCID or Github?</span>
                   </a>
                 </v-card-text>
 
@@ -305,6 +305,14 @@ export default {
         origin = encodeURI(`${loc}?${query}`);
       }
       return `?origin=${origin}`;
+    },
+    checkEndpoint() {
+      if (process.env.VUE_APP_API_ENDPOINT === 'https://api.fairsharing.org' ||
+          process.env.VUE_APP_API_ENDPOINT === 'http://127.0.0.1:3000'
+         ) {
+        return true;
+      }
+      return false;
     }
   },
 };

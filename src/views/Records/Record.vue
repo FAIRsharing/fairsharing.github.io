@@ -565,6 +565,16 @@ export default {
       await this.$nextTick();
       // await this.$scrollTo(this.$route.hash || 'body')
     },
+    async target() {
+      await this.getData();
+      if (!this.error) {
+        await this.canEditRecord();
+        //await this.checkClaimStatus();
+        await this.getMenuButtons();
+      }
+      await this.$nextTick();
+      await this.$scrollTo(this.$route.hash || 'body')
+    },
     async userIsLoggedIn() {
       await this.canEditRecord();
       //await this.checkClaimStatus();

@@ -158,18 +158,18 @@
         },
         methods: {
             goToEdit(id){
-                this.$router.push({path: `/${id}/edit`})
+              this.$router.push({path: `/${id}/edit`})
             },
             previewRecord(id) {
-                this.targetID = id;
-                this.showOverlay = true;
+              this.targetID = id;
+              this.showOverlay = true;
             },
             goToRecord(id) {
               window.open("/" + id, '_blank');
             },
             hideOverlay(){
-                this.showOverlay = false;
-                this.targetID = null;
+              this.showOverlay = false;
+              this.targetID = null;
             }
         }
     }

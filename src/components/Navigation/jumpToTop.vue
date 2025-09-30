@@ -2,14 +2,12 @@
   <transition name="fade">
     <v-btn
       v-scroll-to="'body'"
-      fab
       color="primary"
-      bottom
-      right
+      location="bottom right"
       fixed
       class="mr-2 mb-10"
     >
-      <v-icon>fa-arrow-up</v-icon>
+      <v-icon>fas fa-arrow-up</v-icon>
     </v-btn>
   </transition>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <v-card
     v-if="Object.keys(getField('metadata')).includes('data_processes_and_conditions') && (getField('metadata').data_processes_and_conditions.length)"
-    class="pa-4 mt-15 d-flex flex-column"
-    outlined
+    class="pa-4 mt-15 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -10,6 +10,7 @@
     <Icon
       item="maintains"
       size="20"
+      class="pt-2"
     />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Processes
@@ -26,7 +27,7 @@
       >
         <div
           class="content-wrapper pa-4 mt-4 d-flex flex-row justify-space-between full-width"
-          :class="{'flex-column': $vuetify.breakpoint.xs}"
+          :class="{'flex-column': $vuetify.display.xs}"
         >
           <!--  Name, Access Method, URL    -->
           <div class="full-width min-width-200 max-width-500">
@@ -95,22 +96,22 @@
           <div
             v-if="subItem.type"
             class="d-flex flex-row align-top min-height-40 justify-end"
-            :class="{'flex-column': $vuetify.breakpoint.xs}"
+            :class="{'flex-column': $vuetify.display.xs}"
           >
             <div
               class="d-flex flex-row full-width ml-md-12"
-              :class="{'flex-column': $vuetify.breakpoint.smAndUp}"
+              :class="{'flex-column': $vuetify.display.smAndUp}"
             >
               <b
                 class="width-100"
-                :class="{'mr-8': $vuetify.breakpoint.xs}"
+                :class="{'mr-8': $vuetify.display.xs}"
               >Read</b>
 
               <span
                 v-if="subItem.type === 'read'"
               >
                 <v-icon
-                  medium
+                  size="medium"
                 >
                   fas fa-check
                 </v-icon>
@@ -118,7 +119,7 @@
                 v-else-if="subItem.type === 'read and write'"
               >
                 <v-icon
-                  medium
+                  size="medium"
                 >
                   fas fa-check
                 </v-icon>
@@ -126,14 +127,14 @@
             </div>
             <div
               class="d-flex flex-row full-width ml-md-12"
-              :class="{'flex-column': $vuetify.breakpoint.smAndUp}"
+              :class="{'flex-column': $vuetify.display.smAndUp}"
             >
-              <b :class="{'width-100 mr-8': $vuetify.breakpoint.xs}">Write</b>
+              <b :class="{'width-100 mr-8': $vuetify.display.xs}">Write</b>
               <span
                 v-if="subItem.type === 'write'"
               >
                 <v-icon
-                  medium
+                  size="medium"
                 >
                   fas fa-check
                 </v-icon>
@@ -141,7 +142,7 @@
                 v-else-if="subItem.type === 'read and write'"
               >
                 <v-icon
-                  medium
+                  size="medium"
                 >
                   fas fa-check
                 </v-icon>

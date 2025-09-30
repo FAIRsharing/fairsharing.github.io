@@ -1,11 +1,11 @@
 <template>
   <v-tabs
     v-model="tabsData.selectedTab"
-    :show-arrows="$vuetify.breakpoint.mdAndDown"
-    centered
+    :show-arrows="$vuetify.display.mdAndDown"
+    align-tabs="center"
     slider-size="5"
     class="height-430"
-    background-color="transparent"
+    bg-color="transparent"
     color="accent3"
     slider-color="accent3"
   >
@@ -15,8 +15,9 @@
     >
       {{ tab.title }}
     </v-tab>
-    <v-tabs-items v-model="tabsData.selectedTab">
-      <v-tab-item
+  </v-tabs>
+    <v-tabs-window v-model="tabsData.selectedTab">
+      <v-tabs-window-item
         v-for="(tabItem,tabItemIndex) in tabsData.tabs"
         :key="tabItem + '_' + tabItemIndex"
       >
@@ -26,9 +27,9 @@
           :image="tabItem.image"
           :link="tabItem.link"
         />
-      </v-tab-item>
-    </v-tabs-items>
-  </v-tabs>
+      </v-tabs-window-item>
+    </v-tabs-window>
+
 </template>
 
 <script>
@@ -36,7 +37,7 @@ import TabContent from "@/components/Home/CarouselContent";
 import homePageData from "@/data/homePageData.json";
 
 export default {
-name: "Carousel",
+  name: "Carousel",
   components: {TabContent},
   data: () => {
     return {

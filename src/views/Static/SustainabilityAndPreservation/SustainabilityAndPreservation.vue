@@ -6,7 +6,7 @@
     </h1>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Since 2011, FAIRsharing is a sustainable service operating with and for the international researcher community
       and other stakeholders involved in the research life cycle. The FAIRsharing resource, along its core operational
@@ -16,7 +16,7 @@
     </p>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       Other key factors contributing to its sustainability are the extensive network of national and international
       collaborations and formal endorsements by organizations and research infrastructures in all disciplines,
@@ -33,7 +33,7 @@
       Introduction
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       FAIRsharing contains a wealth of hand-curated data of use and interest to the research community at large, and
       we therefore wish to make sure that it remains useful for the future. The FAIRsharing Data Preservation Policy
@@ -46,7 +46,7 @@
       Download
     </h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       The document is available in PDF format, and can be downloaded
       <a
@@ -62,7 +62,7 @@
     </h1>
 
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
     >
       For any questions, or to request the policy in a different format, please
       <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Data Preservation Policy">contact us</a>.

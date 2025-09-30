@@ -9,20 +9,20 @@
           :rotate="360"
           :size="85"
           :width="10"
-          :value="badge.progress"
+          :model-value="badge.progress"
           :color="badge.progressColor"
           class="mr-1"
         >
           <v-tooltip
             v-if="showProgressHover"
-            bottom
-            nudge-bottom="30"
+            location="bottom"
+            offset="30"
             :open-on-hover="showProgressHover"
             :color="badge.progressColor"
           >
-            <template #activator="{ on }">
+            <template #activator="{ props }">
               <div
-                v-on="on"
+                v-bind="props"
               >
                 <div class="circle-transparent" />
               </div>
@@ -31,13 +31,13 @@
           </v-tooltip>
           <v-tooltip
             v-if="badge.icon"
-            top
+            location="top"
             :open-on-hover="showTextHover"
           >
-            <template #activator="{ on }">
+            <template #activator="{ props }">
               <div
                 style="position:relative;"
-                v-on="on"
+                v-bind="props"
               >
                 <Icon
                   style="cursor:help"
@@ -105,20 +105,20 @@ export default {
   methods: {
     mergedAssociations() {
       return prepareAssociations(this, this.currentRecordLocal['fairsharingRecord'].recordAssociations,
-          this.currentRecordLocal['fairsharingRecord'].reverseRecordAssociations)
+        this.currentRecordLocal['fairsharingRecord'].reverseRecordAssociations)
     },
     checkBadges() {
       this.badges = new BadgeBuilder(this.currentRecordLocal['fairsharingRecord'])
-      .hasStatus()
-      .hasLicence()
-      .hasMaintainer()
-      .hasStandard()
-      .hasDatabase()
-      .hasPolicy()
-      .hasAPI()
-      .hasPID()
-      .hasCertificate()
-      .getBadges()
+        .hasStatus()
+        .hasLicence()
+        .hasMaintainer()
+        .hasStandard()
+        .hasDatabase()
+        .hasPolicy()
+        .hasAPI()
+        .hasPID()
+        .hasCertificate()
+        .getBadges()
     },
   }
 }

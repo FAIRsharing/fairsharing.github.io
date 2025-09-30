@@ -108,8 +108,8 @@
         "linkedin" : "malinsandstrom",
         "mastodon" : "fediscience.org/@msandstr",
         "logo": "malin.jpg",
-        "year_active": ["2022", "2023"],
-        "active": false
+        "year_active": ["2022", "2023", "2025"],
+        "active": true
       },
       {
         "name": "Gabriel Pelletier",

@@ -35,7 +35,7 @@
             class="white--text"
             type="error"
           >
-            {{ messages().updateProfile.error }}
+            {{ messages().updateProfile.message }}
           </v-alert>
           <v-alert
             v-else
@@ -337,31 +337,10 @@ export default {
     }
   },
   computed: {
-    ...mapState('users',['currentPublicUser','messages', 'user'])
+    ...mapState('users', ['currentPublicUser','messages', 'user'])
   },
   async mounted() {
-    await this.getPublicUserForModification(this.$route.params.id);
-    this.data.profileTypes = await restClient.getProfileTypes();
-    this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
-    /* istanbul ignore else */
-    if (this.currentPublicUser.preferences) {
-      this.formData.username = this.currentPublicUser.username;
-      this.formData.id = this.$route.params.id;
-      this.formData.email = this.currentPublicUser.email;
-      this.formData.preferences_hide = this.currentPublicUser['preferences']['hide_email'];
-      this.formData.preferences_send = this.currentPublicUser['preferences']['email_updates'];
-      this.formData.first_name = this.currentPublicUser.first_name;
-      this.formData.last_name = this.currentPublicUser.last_name;
-      this.formData.homepage = this.currentPublicUser.homepage;
-      this.formData.profile_type = this.currentPublicUser.profile_type;
-      this.formData.role = this.currentPublicUser.role;
-      this.formData.orcid = this.currentPublicUser.orcid;
-      this.formData.twitter = this.currentPublicUser.twitter;
-      this.formData.mastodon = this.currentPublicUser.mastodon;
-      this.formData.bluesky = this.currentPublicUser.bluesky;
-      this.formData.deactivated = !this.currentPublicUser.deactivated;
-    }
-    this.pageLoad = false;
+    await this.loadUser();
   },
   beforeDestroy() {
     this.cleanStore();
@@ -371,6 +350,10 @@ export default {
     ...mapMutations('users', ['cleanStore']),
     async updatePublicProfile () {
       this.loading = true;
+      this.$store.commit("users/setMessage", {
+        field: "updateProfile",
+        message: null,
+      });
       let data = JSON.parse(JSON.stringify(this.formData));
       data.preferences = {
         hide_email: this.formData.preferences_hide,
@@ -380,8 +363,8 @@ export default {
       let role_id = this.data.userRoles.filter(role => this.formData.role === role.name)[0].id;
       data.role_id = role_id;
       await this.updatePublicUser(data);
+      await this.loadUser();
       this.loading = false;
-      this.$router.go();
     },
     async deleteAccount() {
       this.loading = true;
@@ -399,6 +382,30 @@ export default {
         return true;
       }
       return false;
+    },
+    async loadUser() {
+      await this.getPublicUserForModification(this.$route.params.id);
+      this.data.profileTypes = await restClient.getProfileTypes();
+      this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
+      /* istanbul ignore else */
+      if (this.currentPublicUser.preferences) {
+        this.formData.username = this.currentPublicUser.username;
+        this.formData.id = this.$route.params.id;
+        this.formData.email = this.currentPublicUser.email;
+        this.formData.preferences_hide = this.currentPublicUser['preferences']['hide_email'];
+        this.formData.preferences_send = this.currentPublicUser['preferences']['email_updates'];
+        this.formData.first_name = this.currentPublicUser.first_name;
+        this.formData.last_name = this.currentPublicUser.last_name;
+        this.formData.homepage = this.currentPublicUser.homepage;
+        this.formData.profile_type = this.currentPublicUser.profile_type;
+        this.formData.role = this.currentPublicUser.role;
+        this.formData.orcid = this.currentPublicUser.orcid;
+        this.formData.twitter = this.currentPublicUser.twitter;
+        this.formData.mastodon = this.currentPublicUser.mastodon;
+        this.formData.bluesky = this.currentPublicUser.bluesky;
+        this.formData.deactivated = !this.currentPublicUser.deactivated;
+      }
+      this.pageLoad = false;
     }
   }
 }

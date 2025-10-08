@@ -42,7 +42,8 @@ describe('Mutation & Actions & Getters', () => {
         const options = {
             params: {
                 fairsharingRegistry: "Standard",
-                isRecommended: true
+                isRecommended: true,
+                organisations: "european union (eu)"
             },
             token: 'abc123'
         };

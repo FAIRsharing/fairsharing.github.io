@@ -190,8 +190,7 @@ export const actions = {
       // attempt to fix single fields with brackets, as per:
       // https://github.com/FAIRsharing/fairsharing.github.io/issues/2648
       Object.keys(params).forEach((key) => {
-        if ((String(params[key]).includes('(') || String(params[key]).includes(')')) &amp;&amp;
-        String(params[key]).split(',').length === 1) {
+        if (String(params[key]).includes('(') || String(params[key]).includes(')')) {
           let newArray = [];
           newArray.push(params[key]);
           params[key] = newArray;

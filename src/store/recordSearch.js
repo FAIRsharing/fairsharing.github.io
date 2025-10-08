@@ -93,8 +93,15 @@ export const actions = {
     this.commit("records/setLoadingStatus", true);
     this.commit("records/resetRecords");
     this.commit("records/resetPages");
-    // params['q'] needs to be sanitised here.
     if (Object.keys(params).length > 0) {
+      // attempt to fix single fields with brackets, as per:
+      // https://github.com/FAIRsharing/fairsharing.github.io/issues/2648
+      Object.keys(params).forEach((key) => {
+        if (String(params[key]).includes('(') || String(params[key]).includes(')')) {
+          params[key] = [params[key]];
+        }
+      })
+      // params['q'] needs to be sanitised here.
       if ("q" in params) {
         // TODO: Is it worth preserving foreign characters as discussed here?
         // https://stackoverflow.com/questions/22192458/how-to-remove-non-alphanumeric-characters-and-space-but-keep-foreign-language-i

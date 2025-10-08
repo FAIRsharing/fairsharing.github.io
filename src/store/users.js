@@ -383,13 +383,20 @@ export const actions = {
   },
   async updatePublicUser(state, user) {
     try {
-      await client.editPublicUser(user, state.state.user().credentials.token);
-      this.commit("users/setMessage", {
-        field: "updateProfile",
-        message: "Update successful !",
-      });
-    }
-    catch (e) {
+      let message = await client.editPublicUser(user, state.state.user().credentials.token);
+      if (message.error) {
+        this.commit("users/setError", {
+          field: "updateProfile",
+          message: "Update failed! Please email contact@fairsharing.org for assistance.",
+        });
+      }
+      else {
+        this.commit("users/setMessage", {
+          field: "updateProfile",
+          message: "Update successful!",
+        });
+      }
+    } catch (e) {
       this.commit("users/setError", {
         field: "updateProfile",
         message: e.message,

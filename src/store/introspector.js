@@ -137,12 +137,11 @@ export default introspectionStore;
 const parseParam = function (param, paramVal) {
     if (param.name === "Int") {
         return parseFloat(paramVal)
-
     }
     else if (param.name === "Boolean") {
         return JSON.parse(paramVal)
     }
-    return paramVal
+    return paramVal;
 };
 
 /**

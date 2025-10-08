@@ -191,9 +191,7 @@ export const actions = {
       // https://github.com/FAIRsharing/fairsharing.github.io/issues/2648
       Object.keys(params).forEach((key) => {
         if (String(params[key]).includes('(') || String(params[key]).includes(')')) {
-          let newArray = [];
-          newArray.push(params[key]);
-          params[key] = newArray;
+          params[key] = [params[key]];
         }
       })
       // params['q'] needs to be sanitised here.

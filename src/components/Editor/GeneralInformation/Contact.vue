@@ -7,13 +7,15 @@
   >
     <div>Edit Contact information:</div>
     <div
-      class="mb-5 px-4 bg-grey-lighten-3"
+      class="mb-5 px-4 bg-grey-lighten-3 pt-1 pb-2"
     >
       <v-chip
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
-        class="pr-3"
-        :class="[!isNew(contact) ? 'text-white blue' : ' blue--text white borderBlue']"
+        class="pr-3 my-1 mr-2 ml-0"
+        :class="[!isNew(contact) ? 'text-white blue' : 'text-blue white borderBlue']"
+        variant="flat"
+        color="blue"
       >
         <div>
           <v-tooltip location="top">
@@ -64,9 +66,8 @@
 
     <v-expand-transition class="ma-5">
       <v-overlay
-        v-if="menu.content && menu.show"
-        class="py-0"
-        :dark="false"
+        v-model="menu.show"
+        class="align-center justify-center"
         opacity="0.8"
       >
         <v-card width="800px">

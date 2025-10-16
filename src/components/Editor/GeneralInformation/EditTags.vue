@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-form
     id="editTags"
     ref="editTags"
@@ -16,12 +16,11 @@
             >
               <td
                 class="text-white py-2 px-4 titleCell"
-                :class="section.color"
+                :class="'bg-'+section.color"
               >
                 <v-tooltip location="right">
                   <template #activator="{ props }">
                     <v-icon
-
                       size="small"
                       class="text-white mr-1"
                       v-bind="props"
@@ -33,15 +32,17 @@
                 </v-tooltip>
                 {{ sectionName.toUpperCase() }}
               </td>
-              <td :class="section.color + ' lighten-2'">
-                <v-chip-group
+              <td :class="'bg-'+section.color+'_lighten_2'">
+                <div
                   class="pl-2"
-                  column
                 >
                   <v-chip
                     v-for="(tag, tagIndex) in section.items"
                     :key="'section_' + sectionIndex + '_tag_' + tagIndex"
-                    :class="[!isNew(tag, sectionName) ? section.color + '--text white' : section.color + ' text-white whiteBorder']"
+                    :class="[!isNew(tag, sectionName) ? 'text-'+section.color : section.color + ' text-white whiteBorder']"
+                    variant="outlined"
+                    :color="section.color"
+                    class="bg-white pr-3 my-1 mr-2 ml-0"
                     @click.stop
                   >
                     <KeywordTooltip
@@ -50,7 +51,6 @@
                     <v-tooltip location="bottom">
                       <template #activator="{ props }">
                         <v-icon
-
                           size="small"
                           class="ml-1"
                           :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' text-white']"
@@ -64,7 +64,7 @@
                       <span> Remove term </span>
                     </v-tooltip>
                   </v-chip>
-                </v-chip-group>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -102,23 +102,21 @@
             <v-text-field
               id="searchString"
               v-model="searchString"
-              append-icon="fa-search"
+              append-inner-icon="fas fa-search"
               label="Search names and synonyms"
               variant="outlined"
               hide-details
             >
               <template #prepend>
                 <v-menu
-                  offset-y
                   :close-on-content-click="false"
                 >
                   <template #activator="{ props }">
                     <v-icon
-
                       class="text-blue ml-3 mr-1"
                       v-bind="props"
                     >
-                      fa-cog
+                      fas fa-cog
                     </v-icon>
                   </template>
                   <v-list class="">
@@ -197,7 +195,7 @@
             >
               <template #[`item.model`]="{ item }">
                 <div
-                  :class="colors[item.model] + '--text'"
+                  :class="'text-'+colors[item.model]"
                   class="noBreak"
                 >
                   {{ item.model.toUpperCase().replace(/_/g, " ") }}
@@ -205,11 +203,20 @@
               </template>
               <template #[`item.label`]="{ item }">
                 <v-chip
-                  :class="colors[item.model]"
+                  :color="colors[item.model]"
                   class="text-white noBreak"
+                  variant="flat"
                 >
                   {{ capitaliseText(item.label, item.model) }}
                 </v-chip>
+              </template>
+              <template #[`item.definitions`]="{ item }">
+                <div
+                  v-if="item.definitions"
+                  class="font-italic limitWidth"
+                >
+                  {{ item.definitions[0] }}
+                </div>
               </template>
               <template #[`item.synonyms`]="{ item }">
                 <div
@@ -252,23 +259,23 @@ export default {
       },
       headers: [
         {
-          text: "Type of keyword",
+          title: "Type of keyword",
           sortable: false,
           value: "model"
         },
         {
-          text: "Name",
+          title: "Name",
           sortable: false,
           value: "label"
         },
         {
-          text: "Definition",
+          title: "Definition",
           sortable: false,
           value: "definitions",
           filterable: false
         },
         {
-          text: "Alternative names",
+          title: "Alternative names",
           sortable: false,
           value: "synonyms"
         }
@@ -327,7 +334,7 @@ export default {
       return "Add/edit tags";
     },
     buttonIcon(){
-      if (this.menu.show) return "fa-minus-circle";
+      if (this.menu.show) return "fas fa-minus-circle";
       return "fas fa-plus-circle";
     },
     recordTags: {

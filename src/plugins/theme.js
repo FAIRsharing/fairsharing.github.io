@@ -46,6 +46,7 @@ const fairSharingTheme = {
     domain_color_lighten_2: "#A34F4A",
     taxonomic_color_lighten_2: "#469387",
     tags_color_lighten_2: "#E4DADA",
+    object_type_color_lighten_2: '#64a6e4',
   },
   variables: {},
 };

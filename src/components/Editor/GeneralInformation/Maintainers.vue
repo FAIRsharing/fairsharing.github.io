@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-form
     id="editMaintainers"
     ref="editMaintainers"
@@ -14,7 +14,7 @@
         v-for="(maintainer, index) in maintainers"
         :key="'maintainer_' + index"
         class="pr-3"
-        :class="[!isNew(maintainer) ? 'text-white blue' : ' blue--text white borderBlue']"
+        :class="[!isNew(maintainer) ? 'text-white blue' : 'text-blue white borderBlue']"
         variant="outlined"
       >
         <div>
@@ -23,7 +23,6 @@
             <template #activator="{ props }">
               <v-icon
                 class="ml-3 text-white"
-               
                 size="small"
                 v-bind="props"
                 @click="removeMaintainer(index)"

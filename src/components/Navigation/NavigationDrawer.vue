@@ -24,7 +24,7 @@
     <div style="flex-grow: 1">
       <v-btn
         v-if="!user().isLoggedIn"
-        color="accent3 white--text"
+        color="accent3 text-white"
         class="mr-1 mt-10"
         width="100%"
         @click="goToLogin()"

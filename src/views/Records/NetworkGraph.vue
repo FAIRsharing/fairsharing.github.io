@@ -88,7 +88,7 @@
                       :color="registryItem['active'] ? registryItem['color'] : 'gray' "
                       :class="[
                         $vuetify.display.xsOnly ? 'full-width' : 'button-filters',
-                        registryItem['active'] ? 'white--text ' : 'black--text '
+                        registryItem['active'] ? 'text-white ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
                       @click="toggleClick(registryItem)"
@@ -126,7 +126,7 @@
                       :color="status['active'] ? status['color'] : 'gray' "
                       :class="[
                         $vuetify.display.xsOnly ? 'full-width' : 'button-filters',
-                        status['active'] ? 'white--text ' : 'black--text '
+                        status['active'] ? 'text-white ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
                       @click="toggleClick(status)"
@@ -165,7 +165,7 @@
                       :color="getLengthColour(distance['hops'])"
                       :class="[
                         $vuetify.display.xsOnly ? 'full-width' : 'button-filters',
-                        distance['active'] ? 'white--text ' : 'black--text '
+                        distance['active'] ? 'text-white ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
                       @click="lengthLimit(distance)"
@@ -410,27 +410,27 @@ export default {
        Higher values may make the resulting graph rather large... */
       graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
       const response = await graphClient.executeQuery(graphQuery);
-        //Check if response is array format
-        if (Array.isArray(response) && response[0].message === 'record not found') {
-          this.error = true;
-        }
-        //response is in object format
-        else if (response.fairsharingGraph === undefined ||
+      //Check if response is array format
+      if (Array.isArray(response) && response[0].message === 'record not found') {
+        this.error = true;
+      }
+      //response is in object format
+      else if (response.fairsharingGraph === undefined ||
           response.fairsharingGraph.data === undefined ||
           response.fairsharingGraph.data.length === 0 ||
           Object.keys(response.fairsharingGraph.data).length === 0) {
-          this.loading = false;
-          this.noData = true;
-          this.registry = "N/A";
-          this.type = "N/A";
-          this.initialized = true;
-        }
-        else {
-          this.graphData = response.fairsharingGraph.data;
-          this.loading = false;
-          this.registry = this.graphData.registry;
-          this.type = this.graphData.type;
-        }
+        this.loading = false;
+        this.noData = true;
+        this.registry = "N/A";
+        this.type = "N/A";
+        this.initialized = true;
+      }
+      else {
+        this.graphData = response.fairsharingGraph.data;
+        this.loading = false;
+        this.registry = this.graphData.registry;
+        this.type = this.graphData.type;
+      }
     },
     async plotGraph(){
       let _module = this;

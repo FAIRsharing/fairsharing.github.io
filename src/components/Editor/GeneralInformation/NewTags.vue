@@ -3,14 +3,14 @@
     <v-row no-gutters>
       <v-spacer />
       <v-chip
-        color="green white--text pr-5 shadowChip"
+        color="green text-white pr-5 shadowChip"
         @click="showOverlay = true"
       >
         <v-icon
           size="small"
           class="mr-3"
         >
-          fa-plus-circle
+          fas fa-plus-circle
         </v-icon> Create new user defined tags
       </v-chip>
     </v-row>
@@ -92,7 +92,7 @@
                                 size="small"
                                 class="mr-3"
                               >
-                                fa-plus-circle
+                                fas fa-plus-circle
                               </v-icon>Add term to creation list
                             </v-chip>
                           </v-col>
@@ -118,7 +118,7 @@
                                   size="small"
                                   @click="removeItem(tag)"
                                 >
-                                  fa-times-circle
+                                  fas fa-times-circle
                                 </v-icon>
                               </v-chip>
                             </v-chip-group>

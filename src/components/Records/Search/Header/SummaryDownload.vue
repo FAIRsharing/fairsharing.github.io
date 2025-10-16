@@ -7,17 +7,17 @@
       v-if="user().id"
       class="text-center"
     >
-      <v-tooltip top>
+      <v-tooltip location="top">
         <!-- eslint-disable-next-line  vue/no-template-shadow -->
-        <template #activator="{ on }">
+        <template #activator="{ props }">
           <v-btn
             :disabled="buttonDisabled"
-            x-small
-            class="info mr-10"
-            v-on="on"
+            size="x-small"
+            class="bg-info mr-10"
+            v-bind="props"
           >
             <a @click="chooseDownload()">
-              <span class="white--text">Download</span>
+              <span class="text-white">Download</span>
             </a>
           </v-btn>
         </template>
@@ -42,22 +42,22 @@
           <v-spacer />
 
           <v-btn
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="commenceDownload(true)"
           >
             Yes
           </v-btn>
           <v-btn
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="commenceDownload(false)"
           >
             No
           </v-btn>
           <v-btn
-            color="red darken-1"
-            text
+            color="red-darken-1"
+            variant="text"
             @click="chooseDownloadActive = false"
           >
             Cancel
@@ -110,7 +110,8 @@ export default {
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title =
           this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -144,7 +145,8 @@ export default {
         const cleaned = params["q"].replace(/[^0-9a-z\s]/gi, "");
         const newParams = { ...params, q: cleaned };
         downloadSearchResults.queryParam = newParams;
-      } else {
+      }
+      else {
         downloadSearchResults.queryParam = params;
       }
       let ts = Math.round(new Date().getTime() / 1000);

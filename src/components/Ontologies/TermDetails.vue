@@ -23,7 +23,7 @@
         class="d-flex flex-column"
       >
         <div
-          :class="`${color} white--text`"
+          :class="`${color} text-white`"
           class="d-flex justify-center align-center hits largeHits"
         >
           {{ selectedTerm.records_count ? selectedTerm.records_count : 0 }}
@@ -57,7 +57,7 @@
                   v-for="(ancestor, ancestorKey) in ancestors"
                   :key="'ancestor_' + ancestorKey"
                   :class="`${color}--text ${color}--border`"
-                  class="white mr-2 mt-1"
+                  class="bg-white mr-2 mt-1"
                   @click="goToTerm(ancestor)"
                 >
                   {{ ancestor }}
@@ -85,7 +85,7 @@
         </h5>
         <div class="inputGroup d-flex flex-row align-center mb-5 px-4">
           <v-btn
-            class="primary white--text"
+            class="bg-primary text-white"
             @click="goToSearch()"
           >
             Access All Search Options
@@ -204,7 +204,8 @@ export default {
     async setPage (offset) { await this.fetchNewPage(offset) },
     goToSearch () {
       this.$router.push({ name: 'search', query: { subjects: encodeURIComponent(this.selectedTerm.name) }}
-    )},
+      )
+    },
     goToTerm (term) {
       this.$router.push({ path: this.$route.path, query: {term: encodeURIComponent(term) }})
     },

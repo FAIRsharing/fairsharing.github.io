@@ -18,7 +18,7 @@
       <v-card
         class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
         flat
-        outlined
+        border
       >
         <div class="d-flex align-center">
           <record-status
@@ -42,7 +42,7 @@
 
 
         <p
-          class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5"
+          class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
         >
           {{ search.comments }}
         </p>
@@ -50,7 +50,7 @@
       <v-btn
         v-if="user().is_super_curator"
         rounded
-        text
+        variant="text"
         @click="confirmUnlinkSavedSearch(search)"
       >
         <v-icon>mdi-link-off</v-icon>
@@ -75,14 +75,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="unlinkLoader"
             @click="unlinkSavedSearch(true)"
@@ -154,9 +154,9 @@ export default {
         };
 
         let updatedSearchResult = await restClient.updateSaveSearch(
-            this.selectedItem["id"],
-            saveSearchObj,
-            this.user().credentials.token
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token
         );
 
         //Commit the updated result to store

@@ -7,27 +7,28 @@
   >
     <div>Edit Maintainer information:</div>
     <v-chip-group
-      class="mb-5 px-4 grey lighten-3"
+      class="mb-5 px-4 bg-grey-lighten-3"
       column
     >
       <v-chip
         v-for="(maintainer, index) in maintainers"
         :key="'maintainer_' + index"
         class="pr-3"
-        :class="[!isNew(maintainer) ? 'white--text blue' : ' blue--text white borderBlue']"
+        :class="[!isNew(maintainer) ? 'text-white blue' : ' blue--text white borderBlue']"
+        variant="outlined"
       >
         <div>
           {{ maintainer['username'] }} ({{ maintainer['id'] }})
-          <v-tooltip top>
-            <template #activator="{ on, attrs }">
+          <v-tooltip location="top">
+            <template #activator="{ props }">
               <v-icon
-                class="ml-3 white--text"
-                v-bind="attrs"
-                small
+                class="ml-3 text-white"
+               
+                size="small"
+                v-bind="props"
                 @click="removeMaintainer(index)"
-                v-on="on"
               >
-                fa-times-circle
+                fas fa-times-circle
               </v-icon>
             </template>
             <span> Remove maintainer </span>
@@ -37,36 +38,39 @@
       <v-spacer />
       <!--ADD NEW CONTACT -->
       <v-chip
-        class="green white--text pr-5 shadowChip"
+        class="bg-green text-white pr-5 shadowChip"
         @click="selectMaintainers()"
       >
         <v-icon
-          small
-          class="mr-3 white--text"
+          size="small"
+          class="mr-3 text-white"
         >
-          fa-plus-circle
+          fas fa-plus-circle
         </v-icon> Add a maintainer
       </v-chip>
     </v-chip-group>
 
     <v-expand-transition class="ma-5">
       <v-overlay
-        v-if="menu.content && menu.show"
-        class="py-0"
-        :dark="false"
+        v-model="menu['show']"
         opacity="0.8"
+        class="align-center justify-center"
       >
         <v-card width="800px">
-          <v-card-title class="green white--text">
+          <v-card-title class="bg-green text-white d-flex align-center">
             Select Maintainers
             <v-spacer />
             <v-text-field
               id="searchString"
               v-model="searchString"
-              append-icon="mdi-magnify"
+              append-inner-icon="fas fa-search"
               label="Search"
               single-line
+              variant="solo"
               hide-details
+              bg-color="white"
+              rounded="60"
+              clearable
             />
           </v-card-title>
           <v-card-text>
@@ -100,7 +104,7 @@
           </v-card-text>
           <v-card-actions>
             <v-btn
-              class="warning"
+              class="bg-warning"
               @click="menu.show = false"
             >
               Close
@@ -119,22 +123,22 @@
       >
         <v-card>
           <v-card-title
-            class="headline"
+            class="text-h5"
           >
             Also remove this maintainer as watcher?
           </v-card-title>
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="completeRemoval(false)"
             >
               No
             </v-btn>
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="completeRemoval(true)"
             >
               Yes
@@ -148,7 +152,7 @@
 </template>
 
 <script>
-import { isEqual } from 'lodash'
+import { isEqual } from "lodash"
 import {mapActions, mapGetters, mapState} from "vuex"
 
 export default {
@@ -158,13 +162,13 @@ export default {
       searchString: '',
       headers: [
         {
-          text: 'Username',
+          title: 'Username',
           align: 'start',
           sortable: false,
           value: 'username',
         },
-        {text: 'Page', value: 'id',sortable: false},
-        {text: 'Add', value: 'add', sortable: false}
+        {title: 'Page', value: 'id',sortable: false},
+        {title: 'Add', value: 'add', sortable: false}
       ],
       loading: false,
       menu: {
@@ -233,7 +237,7 @@ export default {
     completeRemoval(removeWatcher) {
       let _module = this;
       if (removeWatcher) {
-        let index = _module.watchers.findIndex( element => {
+        let index = _module.watchers.findIndex(element => {
           if (element.id === _module.watcherToRemove) {
             return true;
           }

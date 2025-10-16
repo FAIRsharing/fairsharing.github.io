@@ -12,7 +12,7 @@
 
     <v-alert
       v-if="messages().getPublicUser.message && !pageLoad && currentPublicUser.username"
-      class="white--text"
+      class="text-white"
       type="error"
     >
       {{ messages().getPublicUser.message }}
@@ -32,7 +32,7 @@
         <div v-if="messages().updateProfile.message">
           <v-alert
             v-if="messages().updateProfile.error"
-            class="white--text"
+            class="text-white"
             type="error"
           >
             {{ messages().updateProfile.message }}
@@ -49,7 +49,7 @@
         <div v-if="messages().deletePublicUser.message">
           <v-alert
             v-if="messages().deletePublicUser.error"
-            class="white--text"
+            class="text-white"
             type="error"
           >
             {{ messages().deletePublicUser.error }}
@@ -68,7 +68,7 @@
           v-model="valid"
           @submit.prevent="valid ? updatePublicProfile() : valid=false"
         >
-          <v-card-title class="primary white--text">
+          <v-card-title class="bg-primary text-white">
             <h2> Edit Public profile of User ID: {{ $route.params.id }} </h2>
           </v-card-title>
           <v-container
@@ -91,11 +91,11 @@
                 <div v-if="field.type === 'select'">
                   <v-select
                     v-model="formData[field.name]"
-                    outlined
+                    variant="outlined"
                     :label="field.label"
                     :items="data[field.data]"
                     :rules="field.rules"
-                    item-text="name"
+                    item-title="name"
                   />
                 </div>
                 <div v-if="field.type === 'input'">
@@ -105,7 +105,7 @@
                   <v-text-field
                     v-model="formData[field.name]"
                     :label="field.label"
-                    outlined
+                    variant="outlined"
                     :type="field.type"
                     :disabled="isDisabled(field.name)"
                     :rules="field.rules"
@@ -122,16 +122,16 @@
               </v-col>
             </v-row>
             <v-btn
-              class="primary mr-5 white--text"
+              class="bg-primary mr-5 text-white"
               type="submit"
-              outlined
+              variant="outlined"
             >
               Update Profile
             </v-btn>
             <v-btn
               color="error"
-              text
-              outlined
+              variant="text"
+              variant="outlined"
               @click.prevent="dialog=true"
             >
               Delete Account!
@@ -153,14 +153,14 @@
           <v-spacer />
           <v-btn
             color="gray darken-1"
-            text
+            variant="text"
             @click="dialog = false;"
           >
             No
           </v-btn>
           <v-btn
-            color="red darken-1"
-            text
+            color="red-darken-1"
+            variant="text"
             @click="dialog = false;deleteAccount()"
           >
             Yes
@@ -173,7 +173,7 @@
       height="100%"
       class="d-flex flex-column rounded-0 mb-10"
     >
-      <v-card-title class="primary white--text py-3">
+      <v-card-title class="bg-primary text-white py-3">
         Organisations
       </v-card-title>
       <v-card-text
@@ -260,7 +260,7 @@ export default {
           hint: null,
           type: "input",
           rules: [
-              isMastodon()
+            isMastodon()
           ]
         },
         {
@@ -342,7 +342,7 @@ export default {
   async mounted() {
     await this.loadUser();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanStore();
   },
   methods: {

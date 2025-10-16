@@ -4,11 +4,11 @@
       <v-card-text>
         <v-card-title
           id="download-review-needed"
-          class="green white--text"
+          class="bg-green text-white"
         >
           RECORDS NEEDING REVIEW
           <v-btn
-            class="info ml-5"
+            class="bg-info ml-5"
             :loading="loading"
           >
             <a
@@ -20,7 +20,7 @@
                 color="white"
                 class="mr-1"
               > fa fa-download </v-icon>
-              <span class="white--text">Obtain file</span>
+              <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
         </v-card-title>

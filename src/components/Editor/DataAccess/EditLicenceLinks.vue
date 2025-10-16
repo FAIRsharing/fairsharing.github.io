@@ -9,7 +9,7 @@
       </v-row>
       <v-row>
         <v-chip-group
-          class="mb-5 px-4 grey lighten-3 large"
+          class="mb-5 px-4 bg-grey-lighten-3 large"
           column
         >
           <div
@@ -22,15 +22,15 @@
             v-for="(licenceLink, index) in currentLicences"
             :key="'licence_' + index"
             class="pr-5"
-            :class="[!isNew(licenceLink) ? 'white--text blue' : ' blue--text white borderBlue']"
+            :class="[!isNew(licenceLink) ? 'text-white blue' : ' blue--text white borderBlue']"
           >
-            <v-tooltip bottom>
-              <template #activator="{ on, attrs }">
+            <v-tooltip location="bottom">
+              <template #activator="{ props }">
                 <v-icon
-                  v-bind="attrs"
-                  small
-                  class="mr-2 white--text"
-                  v-on="on"
+                 
+                  size="small"
+                  class="mr-2 text-white"
+                  v-bind="props"
                   @click="showEditItem(index)"
                 >
                   fas fa-pen
@@ -45,18 +45,18 @@
                 class="ml-1"
               >({{ licenceLink.relation }})</span>
             </div>
-            <v-tooltip bottom>
+            <v-tooltip location="bottom">
               <template
-                #activator="{ on, attrs }"
+                #activator="{ props }"
               >
                 <v-icon
-                  v-bind="attrs"
-                  small
-                  class="ml-3 white--text"
-                  v-on="on"
+                 
+                  size="small"
+                  class="ml-3 text-white"
+                  v-bind="props"
                   @click="removeLicenceLink(index)"
                 >
-                  fa-times-circle
+                  fas fa-times-circle
                 </v-icon>
               </template>
               <span> Remove licence </span>
@@ -65,14 +65,14 @@
           <v-spacer />
           <!--ADD NEW LICENCE -->
           <v-chip
-            class="green white--text pr-5 shadowChip"
+            class="bg-green text-white pr-5 shadowChip"
             @click="showEditItem()"
           >
             <v-icon
-              small
-              class="white--text mr-3"
+              size="small"
+              class="text-white mr-3"
             >
-              fa-plus-circle
+              fas fa-plus-circle
             </v-icon> Add a new licence
           </v-chip>
         </v-chip-group>
@@ -94,11 +94,11 @@
         >
           <v-row justify="center">
             <v-card
-              class="flexCard grey black--text"
+              class="flexCard bg-grey text-black"
               width="100%"
               :class="{'lighten-0': showCreator, 'lighten-3': !showCreator}"
             >
-              <v-card-title class="green white--text">
+              <v-card-title class="bg-green text-white">
                 <span v-if="edit.id">Edit</span>
                 <span v-else> Create new</span>
                 <span class="ml-2">Licence Link</span>
@@ -111,21 +111,21 @@
                 >
                   <!-- LICENCE -->
                   <v-card
-                    class="d-flex flex-row transparent elevation-0"
+                    class="d-flex flex-row bg-transparent elevation-0"
                     :disabled="!!showCreator"
                   >
                     <v-autocomplete
                       v-model="edit.template.licence"
                       :items="availableLicences"
                       item-value="id"
-                      item-text="name"
-                      outlined
+                      item-title="name"
+                      variant="outlined"
                       return-object
                       label="Select the Licence name"
                       :rules="[rules.isRequired()]"
                     >
                       <template #selection="data">
-                        <v-chip class="blue white--text px-3 py-1 short">
+                        <v-chip class="bg-blue text-white px-3 py-1 short">
                           <span>{{ data.item.name }}</span>
                         </v-chip>
                       </template>
@@ -137,11 +137,11 @@
                     </v-autocomplete>
                     <v-btn
                       fab
-                      small
-                      class="green white--text mt-2 ml-2"
+                      size="small"
+                      class="bg-green text-white mt-2 ml-2"
                       @click="showCreator = true"
                     >
-                      <v-icon small>
+                      <v-icon size="small">
                         fa-plus
                       </v-icon>
                     </v-btn>
@@ -153,19 +153,19 @@
                   >
                     <v-card
                       v-if="showCreator"
-                      class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+                      class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
                       style="border: 2px dashed grey !important; border-radius:5px;"
                     >
                       <v-card-text class="pt-6">
                         <v-text-field
                           v-model="newLicence.name"
-                          outlined
+                          variant="outlined"
                           label="Licence's name"
                           :rules="[rules.isRequired()]"
                         />
                         <v-text-field
                           v-model="newLicence.url"
-                          outlined
+                          variant="outlined"
                           label="Licence's URL"
                           :rules="[rules.isRequired(), rules.isUrl()]"
                         />
@@ -174,13 +174,13 @@
                         <v-spacer />
                         <v-btn
                           :disabled="!formValid.licence"
-                          class="success"
+                          class="bg-success"
                           @click="createNewLicence()"
                         >
                           Create new licence
                         </v-btn>
                         <v-btn
-                          class="error"
+                          class="bg-error"
                           @click="showCreator = false"
                         >
                           Cancel
@@ -190,27 +190,27 @@
                   </v-form>
                   <!-- RELATION -->
                   <v-card
-                    class="d-flex flex-row transparent elevation-0"
+                    class="d-flex flex-row bg-transparent elevation-0"
                     :disabled="!!showCreator"
                   >
                     <v-autocomplete
                       v-model="edit.template.relation"
                       :items="licenceRelations"
-                      outlined
+                      variant="outlined"
                       return-object
                       label="Select the Licence relation"
                       :rules="[rules.isRequired()]"
                       auto-select-first
                     >
                       <template
-                        slot="selection"
-                        slot-scope="data"
+                        #selection="data"
+                        
                       >
                         {{ data.item.replace(/_/g, " ") }}
                       </template>
                       <template
-                        slot="item"
-                        slot-scope="data"
+                        #item="data"
+                        
                       >
                         {{ data.item.replace(/_/g, " ") }}
                       </template>
@@ -220,7 +220,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                  class="success"
+                  class="bg-success"
                   :disabled="showCreator || !formValid.link"
                   @click="updateLink()"
                 >
@@ -229,7 +229,7 @@
                   <span class="ml-1">licence link</span>
                 </v-btn>
                 <v-btn
-                  class="error"
+                  class="bg-error"
                   @click="hideEdit()"
                 >
                   Cancel
@@ -266,126 +266,126 @@
 </template>
 
 <script>
-    import { isEqual } from 'lodash'
+import { isEqual } from 'lodash'
 import {mapGetters, mapState} from "vuex"
 
-    import { isRequired, isUrl } from "@/utils/rules.js"
+import { isRequired, isUrl } from "@/utils/rules.js"
 
-    export default {
-        name: "EditLicences",
-        data(){
-            return {
-                edit: {
-                    show: false,
-                    id: null,
-                    template: null
-                },
-                formValid: {
-                  link: false,
-                  licence: false
-                },
-                showCreator: false,
-                rules: {
-                  isRequired: function(){return isRequired()},
-                  isUrl: function(){return isUrl()},
-                },
-                newLicence: {
-                  name: null,
-                  url: null
-                }
-            }
-        },
-        computed: {
-            ...mapState('record', ['sections']),
-            ...mapState('editor', ['availableLicences', 'licenceRelations']),
-            ...mapGetters("record", ["getSection"]),
-            currentLicences(){
-                return this.sections.dataAccess.data.licences
-            },
-            initialLicences(){
-              return this.sections.dataAccess.initialData.licences
-            },
-            fields(){
-              return this.getSection("dataAccess").data;
-            }
-        },
-        watch: {
-          'edit.template': function () {
-            this.$nextTick(() => {
-              /* istanbul ignore else */
-              if (this.$refs['editLink']) {
-                this.$refs['editLink'].validate();
-              }
-            })
-          }
-        },
-        methods: {
-          showEditItem(id){
-              this.edit = {
-                show: true,
-                id: id > -1 ? id : null,
-                template: {
-                  relation: id > -1 ? this.currentLicences[id].relation : null,
-                  target: id > -1 ? this.currentLicences[id].id : null
-                }
-              };
-              if (id >= -1) {
-                this.edit.template.licence = {
-                  name: this.currentLicences[id].licence.name,
-                  id: this.currentLicences[id].licence.id
-                };
-              }
-          },
-          hideEdit(){
-            this.edit = {
-              show: false,
-              id: null,
-              template: null
-            };
-            this.showCreator = false;
-          },
-          updateLink(){
-            let id = this.edit.id;
-            let newLink = JSON.parse(JSON.stringify(this.edit.template));
-            if (id !== null) {
-              let link = this.sections.dataAccess.data.licences[id];
-              link.licence = newLink.licence;
-              link.relation = newLink.relation;
-            }
-            else {
-              let createLink = {
-                fairsharingRecord: {id: this.$route.params["id"]},
-                licence: newLink.licence,
-                relation: newLink.relation
-              };
-              this.sections.dataAccess.data.licences.push(createLink);
-            }
-            this.edit = {
-              show: false,
-              id: null,
-              template: null
-            }
-          },
-          removeLicenceLink(id){
-            this.sections.dataAccess.data.licences.splice(id, 1);
-          },
-          createNewLicence(){
-            // make sure name is unique !!!!!
-
-            let newLicence = JSON.parse(JSON.stringify(this.newLicence));
-            this.availableLicences.push(newLicence);
-            this.edit.template.licence = newLicence;
-            this.showCreator = false;
-            this.newLicence = {
-              name: null,
-              url: null
-            }
-          },
-          isNew(item){
-            return !this.initialLicences.filter(obj => isEqual(obj, item))[0];
-          }
-        }
+export default {
+  name: "EditLicences",
+  data(){
+    return {
+      edit: {
+        show: false,
+        id: null,
+        template: null
+      },
+      formValid: {
+        link: false,
+        licence: false
+      },
+      showCreator: false,
+      rules: {
+        isRequired: function(){return isRequired()},
+        isUrl: function(){return isUrl()},
+      },
+      newLicence: {
+        name: null,
+        url: null
+      }
     }
+  },
+  computed: {
+    ...mapState('record', ['sections']),
+    ...mapState('editor', ['availableLicences', 'licenceRelations']),
+    ...mapGetters("record", ["getSection"]),
+    currentLicences(){
+      return this.sections.dataAccess.data.licences
+    },
+    initialLicences(){
+      return this.sections.dataAccess.initialData.licences
+    },
+    fields(){
+      return this.getSection("dataAccess").data;
+    }
+  },
+  watch: {
+    'edit.template': function () {
+      this.$nextTick(() => {
+        /* istanbul ignore else */
+        if (this.$refs['editLink']) {
+          this.$refs['editLink'].validate();
+        }
+      })
+    }
+  },
+  methods: {
+    showEditItem(id){
+      this.edit = {
+        show: true,
+        id: id > -1 ? id : null,
+        template: {
+          relation: id > -1 ? this.currentLicences[id].relation : null,
+          target: id > -1 ? this.currentLicences[id].id : null
+        }
+      };
+      if (id >= -1) {
+        this.edit.template.licence = {
+          name: this.currentLicences[id].licence.name,
+          id: this.currentLicences[id].licence.id
+        };
+      }
+    },
+    hideEdit(){
+      this.edit = {
+        show: false,
+        id: null,
+        template: null
+      };
+      this.showCreator = false;
+    },
+    updateLink(){
+      let id = this.edit.id;
+      let newLink = JSON.parse(JSON.stringify(this.edit.template));
+      if (id !== null) {
+        let link = this.sections.dataAccess.data.licences[id];
+        link.licence = newLink.licence;
+        link.relation = newLink.relation;
+      }
+      else {
+        let createLink = {
+          fairsharingRecord: {id: this.$route.params["id"]},
+          licence: newLink.licence,
+          relation: newLink.relation
+        };
+        this.sections.dataAccess.data.licences.push(createLink);
+      }
+      this.edit = {
+        show: false,
+        id: null,
+        template: null
+      }
+    },
+    removeLicenceLink(id){
+      this.sections.dataAccess.data.licences.splice(id, 1);
+    },
+    createNewLicence(){
+      // make sure name is unique !!!!!
+
+      let newLicence = JSON.parse(JSON.stringify(this.newLicence));
+      this.availableLicences.push(newLicence);
+      this.edit.template.licence = newLicence;
+      this.showCreator = false;
+      this.newLicence = {
+        name: null,
+        url: null
+      }
+    },
+    isNew(item){
+      return !this.initialLicences.filter(obj => isEqual(obj, item))[0];
+    }
+  }
+}
 </script>
 
 <style scoped>

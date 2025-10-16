@@ -74,7 +74,7 @@
             #[`item.actions`]="{ item }"
           >
             <v-icon
-              small
+              size="small"
               @click="AddToUsersOrganisations(item)"
             >
               {{ $vuetify.icons.values.plus }}
@@ -105,11 +105,11 @@
           <v-btn
             v-if="userCanEditOrganisation"
             fab
-            small
-            class="green white--text mt-2 ml-2"
+            size="small"
+            class="bg-green text-white mt-2 ml-2"
             @click="AddNewOrganisation.show = true"
           >
-            <v-icon small>
+            <v-icon size="small">
               fa-plus
             </v-icon>
           </v-btn>
@@ -140,15 +140,15 @@
                 <v-card-actions>
                   <v-spacer />
                   <v-btn
-                    color="blue darken-1"
-                    text
+                    color="blue-darken-1"
+                    variant="text"
                     @click="closeDelete"
                   >
                     Cancel
                   </v-btn>
                   <v-btn
-                    color="blue darken-1"
-                    text
+                    color="blue-darken-1"
+                    variant="text"
                     @click="deleteItemConfirm"
                   >
                     OK
@@ -187,14 +187,14 @@
             #[`item.actions`]="{ item }"
           >
             <v-icon
-              small
+              size="small"
               @click="deleteItem(item)"
             >
               {{ $vuetify.icons.values.delete }}
             </v-icon>
           </template>
 
-          <template slot="no-data">
+          <template #no-data>
             <div>
               You are not a member of any organisations.
             </div>
@@ -211,7 +211,7 @@
         opacity="0.8"
       >
         <v-card
-          class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+          class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
           style="border: 2px dashed grey !important; border-radius:5px;max-width: 1200px"
         >
           <v-card-title>Create a new organisation</v-card-title>
@@ -241,7 +241,7 @@
                     <v-text-field
                       v-model="AddNewOrganisation.data.name"
                       label="Organisation Name"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired()]"
                     />
                   </v-col>
@@ -252,7 +252,7 @@
                     <v-text-field
                       v-model="AddNewOrganisation.data.homepage"
                       label="Organisation Homepage"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired(), rules.isURL()]"
                     />
                   </v-col>
@@ -264,8 +264,8 @@
                       v-model="AddNewOrganisation.data.organisation_type_ids"
                       :items="organisationsTypes"
                       multiple
-                      outlined
-                      item-text="name"
+                      variant="outlined"
+                      item-title="name"
                       item-value="id"
                       return-object
                       label="Select the organisation type(s)"
@@ -279,7 +279,7 @@
                       accept="image/png, image/jpeg"
                       label="File input"
                       placeholder="Select a logo"
-                      outlined
+                      variant="outlined"
                       :show-size="1000"
                       clearable
                       chips
@@ -292,7 +292,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              class="success"
+              class="bg-success"
               :disabled="!AddNewOrganisation.formValid"
               :loading="AddNewOrganisation.loading"
               @click="createNewOrganisation()"
@@ -300,7 +300,7 @@
               Save new organisation
             </v-btn>
             <v-btn
-              class="error"
+              class="bg-error"
               @click="AddNewOrganisation.show = false"
             >
               Cancel
@@ -386,7 +386,7 @@ export default {
       await this.loadUserOrganisationData()
       this.viewerCanManipulate()
     },
-      async '$route.path' () {
+    async '$route.path' () {
       await this.loadUserOrganisationData()
       this.viewerCanManipulate()
     }
@@ -394,9 +394,9 @@ export default {
   async mounted() {
     this.loadingAllOrganisations = true
     await Promise.all([
-    this.getOrganisationsTypes(),
-    this.loadUserOrganisationData(),
-    this.getOrganisations()
+      this.getOrganisationsTypes(),
+      this.loadUserOrganisationData(),
+      this.getOrganisations()
     ]);
     this.loadingAllOrganisations = false
     this.allOrganisations = this.organisations

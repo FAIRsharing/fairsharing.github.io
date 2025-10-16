@@ -197,20 +197,20 @@ export default {
       oauthLogin: [
         {
           name: "ORCID",
-          color: "bg-green white--text",
+          color: "bg-green text-white",
           callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/orcid",
         },
         // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
         /*
         {
           name: "Twitter",
-          color: "blue white--text",
+          color: "blue text-white",
           callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/twitter",
         },
          */
         {
           name: "GitHub",
-          color: "bg-black white--text",
+          color: "bg-black text-white",
           callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/github",
         },
       ],
@@ -309,7 +309,7 @@ export default {
     checkEndpoint() {
       if (process.env.VUE_APP_API_ENDPOINT === 'https://api.fairsharing.org' ||
           process.env.VUE_APP_API_ENDPOINT === 'http://127.0.0.1:3000'
-         ) {
+      ) {
         return true;
       }
       return false;

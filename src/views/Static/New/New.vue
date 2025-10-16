@@ -77,7 +77,7 @@
       </v-container>
       <v-sheet
         class="my-5 mb-10 pa-6"
-        color="accent3 white--text"
+        color="accent3 text-white"
         elevation="3"
       >
         <div style="background-color:white;width:100px;padding:5px">
@@ -185,7 +185,7 @@
       </v-sheet>
       <v-sheet
         :class="['mb-5 pa-6',{'mx-25-percent':$vuetify.display.mdAndUp}]"
-        color="uncertain_color white--text"
+        color="uncertain_color text-white"
         elevation="3"
       >
         <h3 class="text-h4">

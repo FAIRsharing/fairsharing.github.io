@@ -110,7 +110,7 @@
                           size="x-large"
                           class="text-green icon--xxl"
                         >
-                          fa-plus-circle
+                          fas fa-plus-circle
                         </v-icon>
                       </div>
                       <div class="text-h4 text-center">

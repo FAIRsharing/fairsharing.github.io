@@ -9,7 +9,7 @@
         xl="4"
       >
         <v-card>
-          <v-card-title class="primary white--text">
+          <v-card-title class="bg-primary text-white">
             <h2> Confirm your account </h2>
           </v-card-title>
 
@@ -46,38 +46,38 @@
 </template>
 
 <script>
-    import RESTClient from "@/lib/Client/RESTClient.js"
-    const client = new RESTClient();
+import RESTClient from "@/lib/Client/RESTClient.js"
+const client = new RESTClient();
 
-    export default {
-        name: "ConfirmAccount",
-        data: () => {
-            return {
-                message: null,
-                error: true,
-            }
-        },
-        async created(){
-            await this.validateToken();
-        },
-        methods: {
-          async validateToken(){
-            const _module = this;
-            _module.error = false;
-            const token = (_module.$route.query.confirmation_token) ? _module.$route.query.confirmation_token : false;
-            if (token){
-              let response = await client.confirmAccount(token);
-              _module.error = !response.success;
-              _module.message = response;
-              if (!_module.error){
-                _module.message = "you can now login using your credentials."
-              }
-            }
-            else {
-              _module.error = true;
-              _module.message = {Confirmation_token: "missing"}
-            }
-          }
-        }
+export default {
+  name: "ConfirmAccount",
+  data: () => {
+    return {
+      message: null,
+      error: true,
     }
+  },
+  async created(){
+    await this.validateToken();
+  },
+  methods: {
+    async validateToken(){
+      const _module = this;
+      _module.error = false;
+      const token = (_module.$route.query.confirmation_token) ? _module.$route.query.confirmation_token : false;
+      if (token){
+        let response = await client.confirmAccount(token);
+        _module.error = !response.success;
+        _module.message = response;
+        if (!_module.error){
+          _module.message = "you can now login using your credentials."
+        }
+      }
+      else {
+        _module.error = true;
+        _module.message = {Confirmation_token: "missing"}
+      }
+    }
+  }
+}
 </script>

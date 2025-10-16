@@ -18,7 +18,7 @@
             v-model="formValid"
           >
             <v-card>
-              <v-card-title class="blue white--text mb-5">
+              <v-card-title class="bg-blue text-white mb-5">
                 <h2 class="ma-0">
                   Provide your email address
                 </h2>
@@ -54,7 +54,7 @@
                   v-model="email"
                   label="Email"
                   required
-                  outlined
+                  variant="outlined"
                   :rules="[rules.isEmail(), rules.isRequired()]"
                   @focus="success = false"
                 />
@@ -134,7 +134,8 @@ export default {
           _module.success = true;
           _module.emailId = _module.email;
           _module.$refs.emailRef.reset();
-        } else {
+        }
+        else {
           _module.error = "Verification email not sent!";
         }
       }

@@ -9,7 +9,7 @@
         xl="6"
       >
         <v-card>
-          <v-card-title class="primary white--text">
+          <v-card-title class="bg-primary text-white">
             <h2>Edit your profile</h2>
           </v-card-title>
 
@@ -64,7 +64,7 @@
                     <div v-if="field.type === 'select'">
                       <v-select
                         v-model="formData[field.name]"
-                        outlined
+                        variant="outlined"
                         :label="field.label"
                         :items="data[field.data]"
                         :rules="field.rules"
@@ -77,7 +77,7 @@
                       <v-text-field
                         v-model="formData[field.name]"
                         :label="field.label"
-                        outlined
+                        variant="outlined"
                         :type="field.type"
                         :disabled="isDisabled(field.name)"
                         :rules="field.rules"
@@ -100,23 +100,23 @@
                         :items="data[field.data]"
                         :label="field.label"
                         :rules="field.rules"
-                        item-text="name"
-                        outlined
+                        item-title="name"
+                        variant="outlined"
                         return-object
                         chips
-                        deletable-chips
+                        closable-chips
                         :loading="loading"
                       >
                         <template #prepend>
-                          <v-tooltip top>
-                            <template #activator="{ on, attrs }">
+                          <v-tooltip location="top">
+                            <template #activator="{ props }">
                               <v-icon
-                                v-bind="attrs"
+                               
                                 class="mt-2"
-                                v-on="on"
+                                v-bind="props"
                                 @click="newOrganisation.show = true"
                               >
-                                fa-plus-circle
+                                fas fa-plus-circle
                               </v-icon>
                             </template>
                             <span style="z-index: 5">Create a new organisation</span>
@@ -167,7 +167,7 @@
         style="z-index: 50"
       >
         <v-card
-          class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+          class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
           style="
             border: 2px dashed grey !important;
             border-radius: 5px;
@@ -193,14 +193,14 @@
               <v-text-field
                 v-model="newOrganisation.data.name"
                 label="Organisation name"
-                outlined
+                variant="outlined"
                 :rules="[rules.isRequired()]"
                 class="mb-2"
               />
               <v-text-field
                 v-model="newOrganisation.data.homepage"
                 label="Organisation homepage"
-                outlined
+                variant="outlined"
                 :rules="[rules.isRequired(), rules.isURL()]"
                 class="mb-2"
               />
@@ -209,13 +209,13 @@
                 v-model="newOrganisation.data.organisation_type_ids"
                 :items="organisationsTypes"
                 multiple
-                outlined
-                item-text="name"
+                variant="outlined"
+                item-title="name"
                 item-value="id"
                 label="Select the organisation type(s)"
                 :rules="[rules.isRequired(), rules.isLongEnough(1)]"
                 chips
-                deletable-chips
+                closable-chips
               />
               <div>
                 <v-file-input
@@ -238,10 +238,10 @@
                 v-model="newOrganisation.data.country_ids"
                 label="Countries"
                 :items="countries"
-                item-text="name"
+                item-title="name"
                 item-value="name"
                 multiple
-                outlined
+                variant="outlined"
                 return-object
                 :rules="[
                   newOrganisation.data.country_ids &&
@@ -251,8 +251,8 @@
                 <!-- autocomplete selected -->
                 <template #selection="cnameData">
                   <v-chip
-                    class="blue white--text removeStyle"
-                    close
+                    class="bg-blue text-white removeStyle"
+                    closable
                     @click:close="removeCountry(cnameData.item)"
                   >
                     {{ cnameData.item.name }}
@@ -278,7 +278,7 @@
           </v-card-text>
           <v-card-actions>
             <v-btn
-              class="success"
+              class="bg-success"
               :disabled="!newOrganisation.formValid"
               :loading="newOrganisation.loading"
               @click="createOrganisation()"
@@ -286,7 +286,7 @@
               Save new organisation
             </v-btn>
             <v-btn
-              class="primary"
+              class="bg-primary"
               @click="newOrganisation.show = false"
             >
               Cancel
@@ -372,7 +372,7 @@ export default {
           hint: null,
           type: "input",
           rules: [
-              isMastodon()
+            isMastodon()
           ]
         },
         {
@@ -591,7 +591,8 @@ export default {
           error: false,
         };
         this.userOrganisations.push(created);
-      } else this.newOrganisation.error = data.error.response.data;
+      }
+      else this.newOrganisation.error = data.error.response.data;
       this.newOrganisation.loading = false;
     },
     removeCountry(country) {

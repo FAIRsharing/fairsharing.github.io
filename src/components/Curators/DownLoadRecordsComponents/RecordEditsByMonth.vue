@@ -4,11 +4,11 @@
       <v-card-text>
         <v-card-title
           id="download-curator-summary"
-          class="green white--text"
+          class="bg-green text-white"
         >
           RECORD EDITS BY MONTH
           <v-btn
-            class="info ml-5"
+            class="bg-info ml-5"
             :loading="loading"
           >
             <a
@@ -20,7 +20,7 @@
                 color="white"
                 class="mr-1"
               > fa fa-download </v-icon>
-              <span class="white--text">Obtain file</span>
+              <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
         </v-card-title>
@@ -61,12 +61,13 @@ export default {
       let data = await restClient.getEditByMonth(this.user().credentials.token);
       if (data) {
         let content = JSON.stringify(data)
-            .replace(/^\[(.+)\]$/, "$1")
-            .replace(/","/g, '"\r\n"')
-            .replace(/['"]+/g, "");
+          .replace(/^\[(.+)\]$/, "$1")
+          .replace(/","/g, '"\r\n"')
+          .replace(/['"]+/g, "");
         this.downloadEditsByMonth =
             "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      } else {
+      }
+      else {
         this.downloadEditsByMonth = "data:text/json;charset=utf-8," + "";
       }
     },

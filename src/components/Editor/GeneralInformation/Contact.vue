@@ -13,7 +13,7 @@
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
         class="pr-3"
-        :class="[!isNew(contact) ? 'white--text blue' : ' blue--text white borderBlue']"
+        :class="[!isNew(contact) ? 'text-white blue' : ' blue--text white borderBlue']"
       >
         <div>
           <v-tooltip location="top">

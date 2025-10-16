@@ -244,43 +244,43 @@ export default {
         _module.redirect = redirect;
       }
 
-            },
-            closeTypeChanged() {
-              this.showTypeChanged = false;
-            },
-            async submitWithChangedType() {
-              this.showTypeChanged = false;
-              await this.saveRecord(this.redirect, true);
-            },
-            formatType(type) {
-              if (type.name === undefined) {
-                return type;
-              }
-              return type.name;
-            },
-            async saveRecord(redirect, change){
-              this.loading = true;
-              // Non-deprecated records will need their deprecation reason to be cleared.
-              if (this.currentFields.status !== 'deprecated') {
-                this.currentFields.metadata.deprecation_reason = null;
-              }
-              await this.updateGeneralInformation({
-                token: this.user().credentials.token,
-                id: this.$route.params.id,
-                change: change
-              });
-              this.loading = false;
-              if (!redirect) this.$scrollTo("#mainHeader");
-              if (redirect && !this.message.error) {
-                await this.$router.push({path: '/' + this.$route.params.id})
-              }
-            }
-        }
+    },
+    closeTypeChanged() {
+      this.showTypeChanged = false;
+    },
+    async submitWithChangedType() {
+      this.showTypeChanged = false;
+      await this.saveRecord(this.redirect, true);
+    },
+    formatType(type) {
+      if (type.name === undefined) {
+        return type;
+      }
+      return type.name;
+    },
+    async saveRecord(redirect, change){
+      this.loading = true;
+      // Non-deprecated records will need their deprecation reason to be cleared.
+      if (this.currentFields.status !== 'deprecated') {
+        this.currentFields.metadata.deprecation_reason = null;
+      }
+      await this.updateGeneralInformation({
+        token: this.user().credentials.token,
+        id: this.$route.params.id,
+        change: change
+      });
+      this.loading = false;
+      if (!redirect) this.$scrollTo("#mainHeader");
+      if (redirect && !this.message.error) {
+        await this.$router.push({path: '/' + this.$route.params.id})
+      }
     }
+  }
+}
 </script>
 
 <style scoped>
-    #editGeneralInformation .v-chip.white--text .v-icon {
+    #editGeneralInformation .v-chip.text-white .v-icon {
         color: white;
         margin-left: 10px;
     }

@@ -20,7 +20,7 @@
             v-model="formValid"
           >
             <v-card>
-              <v-card-title class="blue white--text mb-5">
+              <v-card-title class="bg-blue text-white mb-5">
                 <h2 class="ma-0">
                   Confirm your email address
                 </h2>
@@ -44,7 +44,7 @@
                   v-model="email"
                   label="Email"
                   required
-                  outlined
+                  variant="outlined"
                   :rules="[rules.isEmail(), rules.isRequired()]"
                 />
               </v-card-text>
@@ -69,49 +69,49 @@
 </template>
 
 <script>
-  import RESTClient from "@/lib/Client/RESTClient.js"
-  let restClient = new RESTClient();
-  import { isEmail, isRequired } from "@/utils/rules.js"
+import RESTClient from "@/lib/Client/RESTClient.js"
+let restClient = new RESTClient();
+import { isEmail, isRequired } from "@/utils/rules.js"
 
 
-  export default {
-    name: "ResendConfirmation",
-    data: () => {
-      return {
-        email: null,
-        buttonDisabled: false,
-        buttonMessage: "Resend Confirmation Email",
-        error: false,
-        loading: false,
-        rules: {
-          isEmail: function(){return isEmail()},
-          isRequired: function(){return isRequired()},
-        },
-        formValid: false,
-        success: false
-      }
-    },
-    methods: {
-      makeResendRequest: async function () {
-        const _module = this;
-        _module.error = false;
-        _module.loading = true;
-        _module.success = false;
-        const user = {
-          "email": _module.email,
-        };
-        if (_module.email) {
-          const outcome = await restClient.resendConfirmation(user);
-          if (outcome.message === "Confirmation message not sent!") {
-            _module.error = "Confirmation message not sent!";
-          }
-          else if (outcome.message === 'Confirmation message sent successfully!') {
-            _module.success = true;
-            _module.buttonMessage = outcome.message;
-          }
+export default {
+  name: "ResendConfirmation",
+  data: () => {
+    return {
+      email: null,
+      buttonDisabled: false,
+      buttonMessage: "Resend Confirmation Email",
+      error: false,
+      loading: false,
+      rules: {
+        isEmail: function(){return isEmail()},
+        isRequired: function(){return isRequired()},
+      },
+      formValid: false,
+      success: false
+    }
+  },
+  methods: {
+    makeResendRequest: async function () {
+      const _module = this;
+      _module.error = false;
+      _module.loading = true;
+      _module.success = false;
+      const user = {
+        "email": _module.email,
+      };
+      if (_module.email) {
+        const outcome = await restClient.resendConfirmation(user);
+        if (outcome.message === "Confirmation message not sent!") {
+          _module.error = "Confirmation message not sent!";
         }
-        _module.loading = false;
+        else if (outcome.message === 'Confirmation message sent successfully!') {
+          _module.success = true;
+          _module.buttonMessage = outcome.message;
+        }
       }
+      _module.loading = false;
     }
   }
+}
 </script>

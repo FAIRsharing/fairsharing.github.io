@@ -10,7 +10,7 @@
           max-width="700px"
         >
           <v-card>
-            <v-card-title class="headline">
+            <v-card-title class="text-h5">
               Are you sure you want to
               <span style="color: red; padding-left: 5px; padding-right: 5px">
                 DELETE
@@ -21,8 +21,8 @@
               <v-spacer />
               <v-btn
                 :disabled="dialogs.disableButton === true"
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
+                variant="text"
                 @click="closeDeleteMenu()"
               >
                 Cancel
@@ -32,8 +32,8 @@
                   dialogs.disableDelButton === true ||
                     dialogs.disableButton === true
                 "
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
+                variant="text"
                 @click="confirmDelete()"
               >
                 OK
@@ -48,7 +48,7 @@
       <v-card-text v-if="incompleteRecords">
         <v-card-title
           id="text-curator-search-2"
-          class="green white--text"
+          class="bg-green text-white"
         >
           <b> INCOMPLETE RECORDS </b>
           <v-spacer />
@@ -58,7 +58,7 @@
             color="white"
             single-line
             hide-details
-            solo
+            variant="solo"
             class="searchField"
             clearable
           />
@@ -109,8 +109,8 @@
                 <v-icon
                   color="red"
                   dark
-                  right
-                  small
+                  end
+                  size="small"
                   @click="deleteRecordMenu(props.item.id)"
                 >
                   fas fa-trash
@@ -218,7 +218,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.incompleteRecords.findIndex(
           (element) => element.id === _module.dialogs.recordID
         );

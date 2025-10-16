@@ -29,7 +29,7 @@
           color="primary"
           variant="underlined"
           counter
-          :show-size="3072"
+          show-size
         />
         <v-row>
           <v-img

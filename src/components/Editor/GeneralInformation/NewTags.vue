@@ -4,6 +4,8 @@
       <v-spacer />
       <v-chip
         color="green text-white pr-5 shadowChip"
+        variant="flat"
+        class="bg-green"
         @click="showOverlay = true"
       >
         <v-icon
@@ -39,10 +41,9 @@
     </v-row>
 
     <v-row>
-      <v-expand-transition>
         <v-overlay
-          v-if="showOverlay"
-          :dark="false"
+          v-model="showOverlay"
+          class="align-center justify-center"
           opacity="0.8"
         >
           <v-container fluid>
@@ -148,7 +149,6 @@
             </v-row>
           </v-container>
         </v-overlay>
-      </v-expand-transition>
     </v-row>
   </v-container>
 </template>

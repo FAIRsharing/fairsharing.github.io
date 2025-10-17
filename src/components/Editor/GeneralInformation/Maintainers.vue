@@ -48,8 +48,6 @@
         </v-icon> Add a maintainer
       </v-chip>
     </v-chip-group>
-
-    <v-expand-transition class="ma-5">
       <v-overlay
         v-model="menu['show']"
         opacity="0.8"
@@ -111,7 +109,6 @@
           </v-card-actions>
         </v-card>
       </v-overlay>
-    </v-expand-transition>
     <v-layout
       row
       justify-center

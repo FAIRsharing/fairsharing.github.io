@@ -63,8 +63,6 @@
         </v-icon> Add a new contact point
       </v-chip>
     </div>
-
-    <v-expand-transition class="ma-5">
       <v-overlay
         v-model="menu.show"
         class="align-center justify-center"
@@ -113,7 +111,6 @@
           </v-card-actions>
         </v-card>
       </v-overlay>
-    </v-expand-transition>
   </v-form>
 </template>
 

@@ -66,16 +66,16 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-    <v-fade-transition>
+    <v-fade-transition v-if="!initialized">
       <div>
-      <v-overlay
-        v-if="!initialized"
-        :absolute="false"
-        opacity="0.8"
-        class="align-center justify-center"
-      >
-        <loaders />
-      </v-overlay>
+        <v-overlay
+          :absolute="false"
+          :model-value="!initialized"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <Loaders />
+        </v-overlay>
       </div>
     </v-fade-transition>
     <v-dialog

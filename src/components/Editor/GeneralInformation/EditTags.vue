@@ -113,66 +113,87 @@
                 >
                   <template #activator="{ props }">
                     <v-icon
-                      class="text-blue ml-3 mr-1"
+                      class="text-blue ml-3 mr-1 opacity-100"
                       v-bind="props"
                     >
                       fas fa-cog
                     </v-icon>
                   </template>
-                  <v-list class="">
+                  <v-list>
                     <v-list-item>
+                      <div class="d-flex align-center">
                       <v-list-item-action>
                         <v-switch
                           v-model="showTypes.taxonomy"
                           inset
                           :color="colors.taxonomy"
+                          hide-details
+                          class="mr-2"
                         />
                       </v-list-item-action>
                       <v-list-item-title>Show taxonomic range</v-list-item-title>
+                      </div>
                     </v-list-item>
-                    <v-divider class="my-1" />
-                    <v-list-item>
+                    <v-divider class="my-1" opacity="80"/>
+                    <v-list-item >
+                      <div class="d-flex align-center">
                       <v-list-item-action>
                         <v-switch
                           v-model="showTypes.subject"
                           inset
                           :color="colors.subject"
+                          hide-details
+                          class="mr-2"
                         />
                       </v-list-item-action>
                       <v-list-item-title>Show subjects</v-list-item-title>
+                      </div>
                     </v-list-item>
-                    <v-divider class="my-1" />
+
+                    <v-divider class="my-1" opacity="80"/>
                     <v-list-item>
+                      <div class="d-flex align-center">
                       <v-list-item-action>
                         <v-switch
                           v-model="showTypes.domain"
                           inset
                           :color="colors.domain"
+                          hide-details
+                          class="mr-2"
                         />
                       </v-list-item-action>
                       <v-list-item-title>Show domains</v-list-item-title>
+                      </div>
                     </v-list-item>
-                    <v-divider class="my-1" />
+                    <v-divider class="my-1" opacity="80"/>
                     <v-list-item>
+                      <div class="d-flex align-center">
                       <v-list-item-action>
                         <v-switch
                           v-model="showTypes.user_defined_tag"
                           inset
                           :color="colors.user_defined_tag"
+                          hide-details
+                          class="mr-2"
                         />
                       </v-list-item-action>
                       <v-list-item-title>Show user defined tags</v-list-item-title>
+                      </div>
                     </v-list-item>
-                    <v-divider class="my-1" />
+                    <v-divider class="my-1" opacity="80"/>
                     <v-list-item>
+                      <div class="d-flex align-center">
                       <v-list-item-action>
                         <v-switch
                           v-model="showTypes.object_type"
                           inset
                           :color="colors.object_type"
+                          hide-details
+                          class="mr-2"
                         />
                       </v-list-item-action>
                       <v-list-item-title>Show object types</v-list-item-title>
+                      </div>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -482,6 +503,10 @@ export default {
 
     .whiteBorder {
       border: 1px solid white !important;
+    }
+
+    :deep(.v-switch__track) {
+      opacity: 1;
     }
 
 </style>

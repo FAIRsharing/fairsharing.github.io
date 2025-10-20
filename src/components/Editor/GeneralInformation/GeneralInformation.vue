@@ -51,16 +51,16 @@
         <v-btn
           class="bg-primary"
           :disabled="!formValid || imageTooBig"
-          :loading="loading"
-          @click="checkTypeChange(false)"
+          :loading="continueLoader"
+          @click="checkTypeChange(false, $event.target)"
         >
           Save and continue
         </v-btn>
         <v-btn
           :disabled="!formValid || imageTooBig"
-          :loading="loading"
+          :loading="exitLoader"
           class="bg-primary"
-          @click="checkTypeChange(true)"
+          @click="checkTypeChange(true, $event.target)"
         >
           Save and exit
         </v-btn>
@@ -142,11 +142,13 @@ export default {
   data(){
     return {
       initialized: false,
-      formValid: false,
+      formValid: true,
       loading: false,
       showTypeChanged: false,
       redirect: false,
-      imageTooBig: false
+      imageTooBig: false,
+      exitLoader: false,
+      continueLoader: false,
     }
   },
   computed: {
@@ -230,13 +232,13 @@ export default {
       await this.getRecordTypes();
       await this.getTags();
     },
-    async checkTypeChange(redirect) {
+    async checkTypeChange(redirect, item) {
       let _module = this;
       let initialType = this.formatType(_module.initialFields.type);
       let currentType = this.formatType(_module.currentFields.type);
 
       if (currentType === initialType) {
-        await _module.saveRecord(redirect, false);
+        await _module.saveRecord(redirect, false, item);
       }
       else {
         // Deal with the confirmation dialogue.
@@ -258,8 +260,15 @@ export default {
       }
       return type.name;
     },
-    async saveRecord(redirect, change){
-      this.loading = true;
+    async saveRecord(redirect, change, item){
+      if(item.textContent.trim() === "Save and continue") {
+        this.continueLoader = true;
+        this.exitLoader = false
+      }
+      else if(item.textContent.trim() === "Save and exit") {
+        this.continueLoader = false;
+        this.exitLoader = true
+      }
       // Non-deprecated records will need their deprecation reason to be cleared.
       if (this.currentFields.status !== 'deprecated') {
         this.currentFields.metadata.deprecation_reason = null;
@@ -269,7 +278,8 @@ export default {
         id: this.$route.params.id,
         change: change
       });
-      this.loading = false;
+      this.continueLoader = false;
+      this.exitLoader = false
       if (!redirect) this.$scrollTo("#mainHeader");
       if (redirect && !this.message.error) {
         await this.$router.push({path: '/' + this.$route.params.id})

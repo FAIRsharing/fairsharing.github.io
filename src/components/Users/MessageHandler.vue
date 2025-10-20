@@ -26,6 +26,7 @@
 import { mapState } from "vuex";
 
 import stringUtils from "@/utils/stringUtils";
+import messages from "../../store/messages";
 
 export default {
   name: "MessageHandler",
@@ -37,6 +38,9 @@ export default {
     },
   },
   computed: {
+    messages() {
+      return messages
+    },
     ...mapState("users", ["messages"]),
   },
 };

@@ -13,7 +13,7 @@
           id="supportLinksTable"
           :items="recordData"
           :headers="headers"
-          group-by="type"
+          :group-by="[{key: 'type', order:'asc'}]"
           show-group-by
           class="elevation-1"
           hide-default-header

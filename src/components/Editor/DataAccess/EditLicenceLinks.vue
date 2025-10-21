@@ -1,33 +1,28 @@
 <template>
   <div id="editLicences">
-    <v-container
-      fluid
-      class="pt-3"
-    >
+    <v-container fluid class="pt-3">
       <v-row>
         <b class="text-uppercase mb-2">Licences</b>
       </v-row>
       <v-row>
-        <v-chip-group
-          class="mb-5 px-4 bg-grey-lighten-3 large"
-          column
-        >
-          <div
-            v-if="currentLicences.length === 0"
-            class="pt-2"
-          >
+        <v-chip-group class="mb-5 px-4 bg-grey-lighten-3 large" column>
+          <div v-if="currentLicences.length === 0" class="pt-2">
             <i class="mt-3">This record has no licence.</i>
           </div>
           <v-chip
             v-for="(licenceLink, index) in currentLicences"
             :key="'licence_' + index"
             class="pr-5"
-            :class="[!isNew(licenceLink) ? 'text-white blue' : ' blue--text white borderBlue']"
+            variant="flat"
+            :class="[
+              !isNew(licenceLink)
+                ? 'text-white bg-blue'
+                : 'bg-blue white borderBlue',
+            ]"
           >
             <v-tooltip location="bottom">
               <template #activator="{ props }">
                 <v-icon
-                 
                   size="small"
                   class="mr-2 text-white"
                   v-bind="props"
@@ -41,16 +36,16 @@
             <div @click="showEditItem(index)">
               {{ licenceLink.licence.name }}
               <span
-                v-if="licenceLink.relation && licenceLink.relation !== 'undefined' "
+                v-if="
+                  licenceLink.relation && licenceLink.relation !== 'undefined'
+                "
                 class="ml-1"
-              >({{ licenceLink.relation }})</span>
+                >({{ licenceLink.relation }})</span
+              >
             </div>
             <v-tooltip location="bottom">
-              <template
-                #activator="{ props }"
-              >
+              <template #activator="{ props }">
                 <v-icon
-                 
                   size="small"
                   class="ml-3 text-white"
                   v-bind="props"
@@ -68,178 +63,150 @@
             class="bg-green text-white pr-5 shadowChip"
             @click="showEditItem()"
           >
-            <v-icon
-              size="small"
-              class="text-white mr-3"
-            >
+            <v-icon size="small" class="text-white mr-3">
               fas fa-plus-circle
-            </v-icon> Add a new licence
+            </v-icon>
+            Add a new licence
           </v-chip>
         </v-chip-group>
       </v-row>
     </v-container>
-    <v-expand-transition class="ma-5">
-      <v-dialog
-        v-model="edit.show"
-        class="py-0"
-        :dark="false"
-        opacity="0.8"
-        persistent
-        width="700px"
-      >
-        <v-container
-          v-if="edit.template"
-          fluid
-          class="py-0"
-        >
-          <v-row justify="center">
-            <v-card
-              class="flexCard bg-grey text-black"
-              width="100%"
-              :class="{'lighten-0': showCreator, 'lighten-3': !showCreator}"
-            >
-              <v-card-title class="bg-green text-white">
-                <span v-if="edit.id">Edit</span>
-                <span v-else> Create new</span>
-                <span class="ml-2">Licence Link</span>
-              </v-card-title>
-              <v-card-text class="pt-3">
-                <v-form
-                  id="editLink"
-                  ref="editLink"
-                  v-model="formValid.link"
+    <v-dialog
+      v-model="edit.show"
+      class="py-0"
+      opacity="0.8"
+      persistent
+      width="700px"
+    >
+      <v-container v-if="edit.template" fluid class="py-0">
+        <v-row justify="center">
+          <v-card
+            class="flexCard text-black"
+            width="100%"
+            :class="{
+              'bg-grey-lighten-0': showCreator,
+              'bg-grey-lighten-3': !showCreator,
+            }"
+          >
+            <v-card-title class="bg-green text-white">
+              <span v-if="edit.id">Edit</span>
+              <span v-else> Create new</span>
+              <span class="ml-2">Licence Link</span>
+            </v-card-title>
+            <v-card-text class="pt-3">
+              <v-form id="editLink" ref="editLink" v-model="formValid.link">
+                <!-- LICENCE -->
+                <v-card
+                  class="d-flex flex-row bg-transparent elevation-0"
+                  :disabled="!!showCreator"
                 >
-                  <!-- LICENCE -->
+                  <v-autocomplete
+                    v-model="edit.template.licence"
+                    :items="availableLicences"
+                    item-value="id"
+                    item-title="name"
+                    variant="outlined"
+                    return-object
+                    label="Select the Licence name"
+                    :rules="[rules.isRequired()]"
+                    chips
+                    closable-chips
+                    color="primary"
+                    class="mt-2"
+                  >
+                    <template #chip="{ props, item }">
+                      <v-chip
+                        v-bind="props"
+                        :text="item.raw.name"
+                        color="blue"
+                        variant="flat"
+                      ></v-chip>
+                    </template>
+
+                  </v-autocomplete>
+                  <v-btn
+                    size="small"
+                    class="bg-green text-white mt-2 ml-2"
+                    icon=""
+                    @click="showCreator = true"
+                  >
+                    <v-icon size="large"> fas fa-plus </v-icon>
+                  </v-btn>
+                </v-card>
+                <!-- NEW LICENCE -->
+                <v-form ref="newLicence" v-model="formValid.licence">
                   <v-card
-                    class="d-flex flex-row bg-transparent elevation-0"
-                    :disabled="!!showCreator"
+                    v-if="showCreator"
+                    class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
+                    style="
+                      border: 2px dashed grey !important;
+                      border-radius: 5px;
+                    "
                   >
-                    <v-autocomplete
-                      v-model="edit.template.licence"
-                      :items="availableLicences"
-                      item-value="id"
-                      item-title="name"
-                      variant="outlined"
-                      return-object
-                      label="Select the Licence name"
-                      :rules="[rules.isRequired()]"
-                    >
-                      <template #selection="data">
-                        <v-chip class="bg-blue text-white px-3 py-1 short">
-                          <span>{{ data.item.name }}</span>
-                        </v-chip>
-                      </template>
-                      <template #item="data">
-                        <v-list-item-content class="menuItem">
-                          {{ data.item.name }}
-                        </v-list-item-content>
-                      </template>
-                    </v-autocomplete>
-                    <v-btn
-                      fab
-                      size="small"
-                      class="bg-green text-white mt-2 ml-2"
-                      @click="showCreator = true"
-                    >
-                      <v-icon size="small">
-                        fa-plus
-                      </v-icon>
-                    </v-btn>
-                  </v-card>
-                  <!-- NEW LICENCE -->
-                  <v-form
-                    ref="newLicence"
-                    v-model="formValid.licence"
-                  >
-                    <v-card
-                      v-if="showCreator"
-                      class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
-                      style="border: 2px dashed grey !important; border-radius:5px;"
-                    >
-                      <v-card-text class="pt-6">
-                        <v-text-field
-                          v-model="newLicence.name"
-                          variant="outlined"
-                          label="Licence's name"
-                          :rules="[rules.isRequired()]"
-                        />
-                        <v-text-field
-                          v-model="newLicence.url"
-                          variant="outlined"
-                          label="Licence's URL"
-                          :rules="[rules.isRequired(), rules.isUrl()]"
-                        />
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer />
-                        <v-btn
-                          :disabled="!formValid.licence"
-                          class="bg-success"
-                          @click="createNewLicence()"
-                        >
-                          Create new licence
-                        </v-btn>
-                        <v-btn
-                          class="bg-error"
-                          @click="showCreator = false"
-                        >
-                          Cancel
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-form>
-                  <!-- RELATION -->
-                  <v-card
-                    class="d-flex flex-row bg-transparent elevation-0"
-                    :disabled="!!showCreator"
-                  >
-                    <v-autocomplete
-                      v-model="edit.template.relation"
-                      :items="licenceRelations"
-                      variant="outlined"
-                      return-object
-                      label="Select the Licence relation"
-                      :rules="[rules.isRequired()]"
-                      auto-select-first
-                    >
-                      <template
-                        #selection="data"
-                        
+                    <v-card-text class="pt-6">
+                      <v-text-field
+                        v-model="newLicence.name"
+                        variant="outlined"
+                        label="Licence's name"
+                        :rules="[rules.isRequired()]"
+                      />
+                      <v-text-field
+                        v-model="newLicence.url"
+                        variant="outlined"
+                        label="Licence's URL"
+                        :rules="[rules.isRequired(), rules.isUrl()]"
+                      />
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer />
+                      <v-btn
+                        :disabled="!formValid.licence"
+                        class="bg-success"
+                        @click="createNewLicence()"
                       >
-                        {{ data.item.replace(/_/g, " ") }}
-                      </template>
-                      <template
-                        #item="data"
-                        
-                      >
-                        {{ data.item.replace(/_/g, " ") }}
-                      </template>
-                    </v-autocomplete>
+                        Create new licence
+                      </v-btn>
+                      <v-btn class="bg-error" @click="showCreator = false">
+                        Cancel
+                      </v-btn>
+                    </v-card-actions>
                   </v-card>
                 </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  class="bg-success"
-                  :disabled="showCreator || !formValid.link"
-                  @click="updateLink()"
+                <!-- RELATION -->
+                <v-card
+                  class="d-flex flex-row bg-transparent elevation-0"
+                  :disabled="!!showCreator"
                 >
-                  <span v-if="edit.id">Edit</span>
-                  <span v-else>Submit</span>
-                  <span class="ml-1">licence link</span>
-                </v-btn>
-                <v-btn
-                  class="bg-error"
-                  @click="hideEdit()"
-                >
-                  Cancel
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-row>
-        </v-container>
-      </v-dialog>
-    </v-expand-transition>
+                  <v-autocomplete
+                    v-model="edit.template.relation"
+                    :items="cleanTextList"
+                    variant="outlined"
+                    return-object
+                    label="Select the Licence relation"
+                    :rules="[rules.isRequired()]"
+                    auto-select-first
+                    class="mt-2"
+                  >
+                  </v-autocomplete>
+                </v-card>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="bg-success"
+                :disabled="showCreator || !formValid.link"
+                @click="updateLink()"
+              >
+                <span v-if="edit.id">Edit</span>
+                <span v-else>Submit</span>
+                <span class="ml-1">licence link</span>
+              </v-btn>
+              <v-btn class="bg-error" @click="hideEdit()"> Cancel </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-row>
+      </v-container>
+    </v-dialog>
     <v-col cols="12">
       <v-switch
         v-model="fields.exhaustiveLicences"
@@ -253,12 +220,13 @@
             <a
               href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/licences-and-support-links/licences"
               target="_blank"
-            >licence documentation
-            </a>,
-            you may choose to provide a complete list of all applicable licences, or a subset of licences that
-            are recommended by your or most commonly used by your users. Please let us know if the
-            licences you have provided are an exhaustive/complete list (if selected), or are non-exhaustive/partial
-            list of licences (default).</span>
+              >licence documentation </a
+            >, you may choose to provide a complete list of all applicable
+            licences, or a subset of licences that are recommended by your or
+            most commonly used by your users. Please let us know if the licences
+            you have provided are an exhaustive/complete list (if selected), or
+            are non-exhaustive/partial list of licences (default).</span
+          >
         </template>
       </v-switch>
     </v-col>
@@ -266,13 +234,15 @@
 </template>
 
 <script>
-import { isEqual } from 'lodash'
+import {capitalize, isEqual } from 'lodash'
 import {mapGetters, mapState} from "vuex"
 
 import { isRequired, isUrl } from "@/utils/rules.js"
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "EditLicences",
+  mixins: [stringUtils],
   data(){
     return {
       edit: {
@@ -307,6 +277,9 @@ export default {
     },
     fields(){
       return this.getSection("dataAccess").data;
+    },
+    cleanTextList() {
+      return this.licenceRelations.map((item) => capitalize(this.cleanString(item)))
     }
   },
   watch: {
@@ -389,16 +362,15 @@ export default {
 </script>
 
 <style scoped>
-    #editLicences .large {
-        width: 100%;
-    }
+#editLicences .large {
+  width: 100%;
+}
 
-    #editLicences .v-overlay__content {
-      width: 700px;
-    }
+#editLicences .v-overlay__content {
+  width: 700px;
+}
 
-    .menuItem {
-      max-width: 580px;
-    }
-
+.menuItem {
+  max-width: 580px;
+}
 </style>

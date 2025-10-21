@@ -28,6 +28,14 @@
 <!--        @click:close="remove(data.item.title)"-->
 <!--      />-->
 <!--    </template>-->
+    <template #chip="{ props, item }">
+      <v-chip
+        v-bind="props"
+        :text="item.raw.title"
+        color="blue"
+        variant="flat"
+      ></v-chip>
+    </template>
     <!-- Tooltip for the field -->
     <template #prepend>
       <v-tooltip
@@ -50,7 +58,6 @@
 </template>
 
 <script>
-// import { removeItem } from "@/utils/advancedSearchUtils";
 import stringUtils from "@/utils/stringUtils";
 import { capitalize } from "lodash"
 
@@ -86,9 +93,6 @@ export default {
     }
   },
   methods: {
-    // remove(item) {
-    //   return removeItem(item, this.model);
-    // },
     capitalize
   },
 };

@@ -13,15 +13,15 @@
       <v-card-actions>
         <v-btn
           class="bg-primary"
-          :loading="saving"
-          @click="saveRecord(false)"
+          :loading="continueLoader"
+          @click="saveRecord(false, $event.target)"
         >
           Save and continue
         </v-btn>
         <v-btn
-          :loading="saving"
+          :loading="exitLoader"
           class="bg-primary"
-          @click="saveRecord(true)"
+          @click="saveRecord(true, $event.target)"
         >
           Save and exit
         </v-btn>
@@ -62,7 +62,8 @@ export default {
   data(){
     return {
       initialized: false,
-      saving: false
+      exitLoader: false,
+      continueLoader: false,
     }
   },
   computed: {
@@ -108,14 +109,22 @@ export default {
     ...mapActions('editor', ['getLicences']),
     ...mapActions('record', ['updateDataAccess']),
     ...mapGetters("record", ["getSection"]),
-    async saveRecord(redirect){
-      this.saving = true;
+    async saveRecord(redirect, item){
+      if(item.textContent.trim() === "Save and continue") {
+        this.continueLoader = true;
+        this.exitLoader = false
+      }
+      else if(item.textContent.trim() === "Save and exit") {
+        this.continueLoader = false;
+        this.exitLoader = true
+      }
       if (!redirect) this.$scrollTo("#mainHeader");
       await this.updateDataAccess({
         id: this.$route.params.id,
         token: this.user().credentials.token
       });
-      this.saving = false;
+      this.continueLoader = false;
+      this.exitLoader = false
       if (redirect && !this.getSection("dataAccess").error){
         await this.$router.push({path: '/' + this.$route.params.id})
       }

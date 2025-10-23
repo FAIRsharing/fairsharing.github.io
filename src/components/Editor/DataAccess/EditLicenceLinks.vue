@@ -16,8 +16,8 @@
             variant="flat"
             :class="[
               !isNew(licenceLink)
-                ? 'text-white bg-blue'
-                : 'bg-blue white borderBlue',
+                ? 'bg-blue'
+                : 'bg-white borderBlue',
             ]"
           >
             <v-tooltip location="bottom">
@@ -39,8 +39,8 @@
                 v-if="
                   licenceLink.relation && licenceLink.relation !== 'undefined'
                 "
-                class="ml-1"
-                >({{ licenceLink.relation }})</span
+                class="ml-1 text-capitalize"
+                >({{ cleanString(licenceLink.relation) }})</span
               >
             </div>
             <v-tooltip location="bottom">
@@ -186,8 +186,7 @@
                     :rules="[rules.isRequired()]"
                     auto-select-first
                     class="mt-2"
-                  >
-                  </v-autocomplete>
+                  />
                 </v-card>
               </v-form>
             </v-card-text>

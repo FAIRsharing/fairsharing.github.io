@@ -52,6 +52,7 @@
           class="bg-primary"
           :disabled="!formValid || imageTooBig"
           :loading="continueLoader"
+          variant="elevated"
           @click="checkTypeChange(false, $event.target)"
         >
           Save and continue
@@ -60,6 +61,7 @@
           :disabled="!formValid || imageTooBig"
           :loading="exitLoader"
           class="bg-primary"
+          variant="elevated"
           @click="checkTypeChange(true, $event.target)"
         >
           Save and exit

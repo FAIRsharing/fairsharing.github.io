@@ -14,6 +14,7 @@
         <v-btn
           class="bg-primary"
           :loading="continueLoader"
+          variant="elevated"
           @click="saveRecord(false, $event.target)"
         >
           Save and continue
@@ -21,6 +22,7 @@
         <v-btn
           :loading="exitLoader"
           class="bg-primary"
+          variant="elevated"
           @click="saveRecord(true, $event.target)"
         >
           Save and exit

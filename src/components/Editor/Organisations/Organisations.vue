@@ -28,12 +28,13 @@
                     v-for="(link, linkIndex) in organisationLinks"
                     :key="'orgaLink_' + linkIndex"
                     cols="12"
-                    class="col-lg-6 col-xl-3"
+                    lg="6"
+                    xl="3"
                   >
                     <v-card
                       v-if="link.organisation.name"
                       key="view"
-                      :class="['flexCard lighten-3',{'grey': !link.isLead, 'green': link.isLead}]"
+                      :class="['flexCard',{'bg-grey-lighten-3': !link.isLead, 'bg-green-lighten-3': link.isLead}]"
                       height="100%"
                     >
                       <v-card-text
@@ -41,11 +42,10 @@
                         style="flex-grow: 1"
                       >
                         <v-list
-                          class="lighten-3 px-0"
-                          :class="['lighten-3 px-0',{'grey': !link.isLead, 'green': link.isLead}]"
+                          class="px-0"
+                          :class="['px-0',{'bg-grey-lighten-3': !link.isLead, 'bg-green-lighten-3': link.isLead}]"
                         >
                           <v-list-item class="px-0">
-                            <v-list-item-content class="mb-0 pb-0">
                               <v-list-item-title class="font-weight-bold">
                                 {{ link.organisation.name }}
                               </v-list-item-title>
@@ -61,7 +61,6 @@
                                 <span class="text-decoration-underline">Grant:</span>
                                 {{ link.grant.name }}
                               </v-list-item-subtitle>
-                            </v-list-item-content>
                           </v-list-item>
                         </v-list>
                         <v-switch
@@ -79,7 +78,7 @@
                           @click="showEditOverlay(linkIndex)"
                         >
                           <v-icon size="small">
-                            fa-pen
+                            fas fa-pen
                           </v-icon>
                         </v-btn>
                         <v-btn
@@ -88,7 +87,7 @@
                           @click="removeRelation(linkIndex)"
                         >
                           <v-icon size="small">
-                            fa-trash
+                            fas fa-trash
                           </v-icon>
                         </v-btn>
                       </v-card-actions>
@@ -96,7 +95,8 @@
                   </v-col>
                   <v-col
                     cols="12"
-                    class="col-lg-6 col-xl-3"
+                    lg="6"
+                    xl="3"
                   >
                     <v-card
                       height="100%"
@@ -124,15 +124,17 @@
             <v-card-actions>
               <v-btn
                 class="bg-info"
-                :loading="saving"
-                @click="saveRecord(false)"
+                :loading="continueLoader"
+                variant="elevated"
+                @click="saveRecord(false, $event.target)"
               >
                 Save and continue
               </v-btn>
               <v-btn
                 class="bg-info"
-                :loading="saving"
-                @click="saveRecord(true)"
+                :loading="exitLoader"
+                variant="elevated"
+                @click="saveRecord(true, $event.target)"
               >
                 Save and exit
               </v-btn>
@@ -174,8 +176,9 @@ export default {
       showOverlay: false,
       initialized: false,
       loading: false,
-      saving: false,
-      data: {}
+      data: {},
+      exitLoader: false,
+      continueLoader: false,
     }
   },
   computed: {
@@ -236,10 +239,18 @@ export default {
       if (id !== null) editObject.id = id;
       this.$store.commit("record/setEditOrganisationLink", editObject);
     },
-    async saveRecord(redirect){
-      this.saving = true;
+    async saveRecord(redirect, item){
+      if (item.textContent.trim() === "Save and continue") {
+        this.continueLoader = true;
+        this.exitLoader = false;
+      }
+      else if (item.textContent.trim() === "Save and exit") {
+        this.continueLoader = false;
+        this.exitLoader = true;
+      }
       await this.updateOrganisations(this.user().credentials.token);
-      this.saving = false;
+      this.continueLoader = false;
+      this.exitLoader = false;
       if (!redirect) this.$scrollTo("#mainHeader");
       else if (redirect && !this.getSection("organisations").error){
         await this.$router.push({path: '/' + this.$route.params.id})

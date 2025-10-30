@@ -105,14 +105,13 @@
                       min-height="190px"
                       @click="showEditOverlay(null)"
                     >
-                      <div class="mb-4">
                         <v-icon
-                          size="x-large"
-                          class="text-green icon--xxl"
+                          size="40"
+                          class="text-green mb-4"
                         >
                           fas fa-plus-circle
                         </v-icon>
-                      </div>
+
                       <div class="text-h4 text-center">
                         Add a new relationship
                       </div>

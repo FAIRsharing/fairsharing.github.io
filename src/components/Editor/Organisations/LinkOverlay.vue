@@ -9,12 +9,13 @@
       id="editOrganisationLink"
       ref="editOrganisationLink"
       v-model="formValid"
+      class="full-width"
     >
       <v-card
         key="edit"
-        class="flexCard text-black"
+        class="flexCard text-black full-width"
         height="100%"
-        width="1000px"
+        width="1000"
         :class="{
           'bg-grey-lighten-0': menus.show,
           'bg-grey-lighten-3': !menus.show,
@@ -39,6 +40,7 @@
                 item-value="id"
                 variant="outlined"
                 color="primary"
+                return-object
                 class="text-capitalize mt-2"
                 chips
                 label="Select an organisation"
@@ -267,7 +269,7 @@
                     <v-btn
                       class="bg-green"
                       :disabled="importROR"
-                      :loading="menus.newOrganisation.loading"
+                      :loading="menus.newOrganisation.rorLoader"
                       v-bind="props"
                       variant="elevated"
                       @click="getOrganisations()"
@@ -313,11 +315,11 @@
             >
               <v-autocomplete
                 v-model="editOrganisationLink.data.relation"
-                :items="cleanTextList"
+                :items="organisationsRelations"
                 variant="outlined"
                 label="Select a type of relationship"
                 :disabled="!!menus.show"
-                class="mt-4 text-capitalize"
+                class="mt-4"
                 chips
                 color="primary"
                 :rules="[rules.isRequired()]"
@@ -325,9 +327,10 @@
                 <template #chip="{ props, item }">
                   <v-chip
                     v-bind="props"
-                    :text="item.raw.title"
+                    :text="cleanString(item.title)"
                     color="blue"
                     variant="flat"
+                    class="text-capitalize"
                   ></v-chip>
                 </template>
               </v-autocomplete>
@@ -346,35 +349,35 @@
                 item-value="id"
                 variant="outlined"
                 return-object
+                class="mt-2"
                 label="Select an optional grant for funding organisations"
               >
-                <template #selection="data">
-                  <v-chip class="bg-blue text-white px-3 py-1">
-                    {{ data.item.name }}
-                  </v-chip>
+                <template #chip="{ props, item }">
+                  <v-chip
+                    v-bind="props"
+                    :text="item.raw.name"
+                    color="blue"
+                    variant="flat"
+                  ></v-chip>
                 </template>
-                <template #item="data">
-                  <v-list-item>
+                <template #item="{ props, item }">
+                  <v-list-item v-bind="props">
+                    <template #prepend>
                     <v-avatar>
                       <v-icon>fas fa-funnel-dollar</v-icon>
                     </v-avatar>
-                  </v-list-item>
-                  <v-list-item class="py-0" style="max-width: 870px">
-                    <v-list-item-title>
-                      {{ data.item.name }}
-                    </v-list-item-title>
+                    </template>
                     <v-list-item-subtitle>
-                      {{ data.item.description }}
+                      {{ item.raw.description }}
                     </v-list-item-subtitle>
                   </v-list-item>
                 </template>
               </v-autocomplete>
               <v-btn
-                size="small"
                 class="bg-green text-white mt-2 ml-2"
                 @click="menus.show = 'grant'"
               >
-                <v-icon size="small"> fa-plus </v-icon>
+                <v-icon size="small"> fas fa-plus </v-icon>
               </v-btn>
             </v-card>
             <v-card
@@ -435,8 +438,10 @@
           </v-btn>
           <v-btn class="bg-error" @click="hideMenu()"> Cancel </v-btn>
         </v-card-actions>
+
       </v-card>
     </v-form>
+
   </v-overlay>
 </template>
 
@@ -477,7 +482,8 @@ export default {
           formValid: false,
           logoData: null,
           error: false,
-          selectOrganisation: {},
+          selectOrganisation: null,
+          rorLoader: false
         },
         newGrant: {
           data: {},
@@ -539,7 +545,7 @@ export default {
         if (logo === null || logo === undefined) {
           // This is to prevent a logo being deleted if a user fiddles about with the form and then
           // submits with no image uploaded.
-          if (_module.organisation.urlForLogo) {
+          if (_module.organisations.urlForLogo) {
             _module.menus.newOrganisation.delete("logoData");
           }
           else {
@@ -710,7 +716,7 @@ export default {
     },
 
     async getOrganisations() {
-      this.menus.newOrganisation.loading = true;
+      this.menus.newOrganisation.rorLoader = true;
       let orgName = (" " + this.menus.newOrganisation.data.name)
         .slice(1)
         .trim(); // make a copy of the string and trim it
@@ -738,7 +744,7 @@ export default {
         this.importROR = false;
         this.validName = false;
       }
-      this.menus.newOrganisation.loading = false;
+      this.menus.newOrganisation.rorLoader = false;
     },
 
     selectOrganisationFromList() {

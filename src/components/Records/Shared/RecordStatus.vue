@@ -48,7 +48,7 @@
       >
         <template #activator="{ props }">
           <p
-            class="text-white text-h5 circle text-center d-flex align-center justify-center"
+            class="text-white text-h5 circle text-center d-flex align-center justify-center mb-0"
             :style="getRecordStatus.backColor"
             v-bind="props"
           >

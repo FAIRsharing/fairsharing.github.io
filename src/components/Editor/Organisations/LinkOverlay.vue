@@ -339,7 +339,7 @@
           <!-- GRANT -->
           <div v-if="editOrganisationLink.data.relation === 'funds'">
             <v-card
-              class="d-flex flex-row bg-transparent elevation-0"
+              class="d-flex flex-row bg-transparent elevation-0 align-center"
               :disabled="!!menus.show"
             >
               <v-autocomplete
@@ -374,7 +374,7 @@
                 </template>
               </v-autocomplete>
               <v-btn
-                class="bg-green text-white mt-2 ml-2"
+                class="bg-green text-white mt-n4 ml-2"
                 @click="menus.show = 'grant'"
               >
                 <v-icon size="small"> fas fa-plus </v-icon>

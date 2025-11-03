@@ -16,7 +16,7 @@
             xs="12"
           >
             <v-card
-              class="my-5 pl-4 bg-grey-lighten-3"
+              class="my-5 px-4 bg-grey-lighten-3"
               elevation="5"
             >
               <v-card-title>
@@ -30,6 +30,7 @@
                   placeholder="e.g. GenBank"
                   hide-details
                   :loading="loading"
+                  color="primary"
                 />
                 <v-container>
                   <v-row no-gutters>
@@ -49,6 +50,7 @@
                         v-model="searchFilters[filterName]"
                         inset
                         :label="`${prepareFilterName(filterName)}`"
+                        color="primary"
                       />
                     </v-col>
                   </v-row>
@@ -77,27 +79,28 @@
                   transition="fade-transition"
                   height="70px"
                 >
-                  <v-list-item>
-                    <v-list-item-avatar>
+                  <div class="d-flex justify-space-between">
+                    <div
+                      class="d-flex full-width"
+                    >
+                    <div>
                       <Icon
                         :item="record.type"
-                        wrapper-class=""
+                        wrapper-class
                         :height="40"
                       />
-                    </v-list-item-avatar>
-                    <v-list-item-content
-                      style="text-align: left"
-                      class="bordered"
-                    >
+                    </div>
+                      <div class="mx-4 pb-2 bordered full-width">
                       <v-list-item-title>
                         {{ record.name }}
                       </v-list-item-title>
-                      <span class="text-capitalize">
+                      <v-list-item-subtitle class="text-capitalize">
                         {{ record.registry }} / {{ cleanString(record.type) }}
-                      </span>
-                    </v-list-item-content>
-                    <v-list-item-icon>
-                      <record-status
+                      </v-list-item-subtitle>
+                      </div>
+                    </div>
+                    <div class="d-flex align-center">
+                      <RecordStatus
                         :record="record"
                         :show-only-status="true"
                         :in-edit-form="true"
@@ -110,6 +113,7 @@
                             icon
                             class="bg-blue text-white mr-2"
                             v-bind="props"
+                            size="36"
                             @click="viewRecord(record)"
                           >
                             <v-icon size="small">
@@ -127,17 +131,18 @@
                             icon
                             class="bg-green text-white"
                             v-bind="props"
+                            size="36"
                             @click="showOverlay(record)"
                           >
                             <v-icon size="small">
-                              fa-arrow-right
+                              fas fa-arrow-right
                             </v-icon>
                           </v-btn>
                         </template>
                         Add
                       </v-tooltip>
-                    </v-list-item-icon>
-                  </v-list-item>
+                    </div>
+                  </div>
                 </v-lazy>
               </v-responsive>
               <div
@@ -209,13 +214,13 @@
                   class="bordered my-1"
                   :class="{'orange lighten-3': association.new}"
                 >
-                  <v-list-item-avatar>
+                  <v-avatar>
                     <Icon
                       :item="association.linkedRecord.type"
                       wrapper-class=""
                       :height="40"
                     />
-                  </v-list-item-avatar>
+                  </v-avatar>
                   
                     <b v-if="!association.recordAssocLabel.relation">- {{ cleanString(association.recordAssocLabel.toUpperCase()) }} -</b>
                     <b v-else>- {{ cleanString(association.recordAssocLabel.relation.toUpperCase()) }} -</b>
@@ -226,7 +231,7 @@
                       {{ association.linkedRecord.registry }} / {{ cleanString(association.linkedRecord.type) }}
                     </span>
                   
-                  <v-list-item-icon>
+                  <v-icon>
                     <record-status
                       :record="association.linkedRecord"
                       :show-only-status="true"
@@ -266,7 +271,7 @@
                       </template>
                       Remove Relation
                     </v-tooltip>
-                  </v-list-item-icon>
+                  </v-icon>
                 </v-list-item>
               </v-list>
               <v-list
@@ -342,8 +347,8 @@
 
               <v-card-text class="text-center py-3 px-4">
                 <div
-                  class="pa-3 lighten-5"
-                  :class="{'blue': formValid, 'red': !formValid}"
+                  class="pa-3"
+                  :class="{'bg-blue-lighten-5': formValid, 'bg-red-lighten-5': !formValid}"
                   style="border-radius:5px;"
                 >
                   <div>
@@ -360,7 +365,7 @@
                     <v-icon
                       size="x-large"
                       class="my-5"
-                      :class="{'blue--text': addingRelation.recordAssocLabel, 'red--text': !addingRelation.recordAssocLabel}"
+                      :class="{'text-blue': addingRelation.recordAssocLabel, 'text-red': !addingRelation.recordAssocLabel}"
                     >
                       fas fa-arrow-down
                     </v-icon>

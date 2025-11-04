@@ -117,25 +117,11 @@ let recordStore = {
     },
     setAdditionalInformation(state, additionalInformation) {
       if (!additionalInformation.subfieldName) {
-        // Vue.set(
-        //   state.sections.additionalInformation.data,
-        //   additionalInformation.fieldName,
-        //   additionalInformation.fieldValue,
-        // );
-
         state.sections.additionalInformation.data.additionalInformation.fieldName =
             additionalInformation.fieldValue
 
       }
       else {
-        // Vue.set(
-        //   state.sections.additionalInformation.data[
-        //     additionalInformation.fieldName
-        //   ],
-        //   additionalInformation.subfieldName,
-        //   additionalInformation.fieldValue,
-        // );
-
         state.sections.additionalInformation.data[
           additionalInformation.fieldName
         ].additionalInformation.subfieldName =
@@ -154,27 +140,11 @@ let recordStore = {
             additionalInformation.fieldName
           ]
         ) {
-          // Vue.set(
-          //   state.sections.additionalInformation.data,
-          //   additionalInformation.fieldName,
-          //   [],
-          // );
-
           state.sections.additionalInformation.data.additionalInformation.fieldName =
               []
 
         }
         try {
-          // Vue.set(
-          //   state.sections.additionalInformation.data[
-          //     additionalInformation.fieldName
-          //   ],
-          //   state.sections.additionalInformation.data[
-          //     additionalInformation.fieldName
-          //   ].length,
-          //   additionalInformation.fieldValue,
-          // );
-
           state.sections.additionalInformation.data[
             additionalInformation.fieldName
           ].state.sections.additionalInformation.data[

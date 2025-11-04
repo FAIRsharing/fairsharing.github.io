@@ -8,20 +8,9 @@
       <v-container fluid>
         <v-row>
           <!-- LEFT PANEL -->
-          <v-col
-            xl="6"
-            lg="6"
-            md="12"
-            sm="12"
-            xs="12"
-          >
-            <v-card
-              class="my-5 px-4 bg-grey-lighten-3"
-              elevation="5"
-            >
-              <v-card-title>
-                Available records:
-              </v-card-title>
+          <v-col xl="6" lg="6" md="12" sm="12" xs="12">
+            <v-card class="my-5 px-4 bg-grey-lighten-3" elevation="5">
+              <v-card-title> Available records: </v-card-title>
               <v-card-text>
                 <v-text-field
                   v-model="search"
@@ -31,11 +20,15 @@
                   hide-details
                   :loading="loading"
                   color="primary"
+                  append-inner-icon="fas fa-search"
+                  clearable
                 />
                 <v-container>
                   <v-row no-gutters>
                     <v-col
-                      v-for="(filterVal, filterName, filterIndex) in searchFilters"
+                      v-for="(
+                        filterVal, filterName, filterIndex
+                      ) in searchFilters"
                       :key="'filter_' + filterIndex"
                       cols="12"
                       sm="12"
@@ -55,7 +48,7 @@
                     </v-col>
                   </v-row>
                 </v-container>
-                <v-divider class="pa-0 ma-0" />
+                <v-divider thickness="1" class="pa-0 ma-0 border-opacity-100" />
               </v-card-text>
               <v-responsive
                 v-if="!loading"
@@ -73,30 +66,26 @@
                   :key="'availableRecord_' + index"
                   v-model="record.isActive"
                   :options="{
-                    threshold: 1
+                    threshold: 1,
                   }"
                   class="py-2"
                   transition="fade-transition"
                   height="70px"
                 >
-                  <div class="d-flex justify-space-between">
-                    <div
-                      class="d-flex full-width"
-                    >
-                    <div>
-                      <Icon
-                        :item="record.type"
-                        wrapper-class
-                        :height="40"
-                      />
-                    </div>
-                      <div class="mx-4 pb-2 bordered full-width">
-                      <v-list-item-title>
-                        {{ record.name }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="text-capitalize">
-                        {{ record.registry }} / {{ cleanString(record.type) }}
-                      </v-list-item-subtitle>
+                  <div class="d-flex justify-space-between bordered pb-2">
+                    <div class="d-flex full-width">
+                      <div>
+                        <Icon :item="record.type" wrapper-class :height="40" />
+                      </div>
+                      <div class="mx-4 full-width">
+                        <v-list-item-title class="text-pre-wrap">
+                          {{ record.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle
+                          class="text-capitalize text-pre-wrap"
+                        >
+                          {{ record.registry }} / {{ cleanString(record.type) }}
+                        </v-list-item-subtitle>
                       </div>
                     </div>
                     <div class="d-flex align-center">
@@ -105,9 +94,7 @@
                         :show-only-status="true"
                         :in-edit-form="true"
                       />
-                      <v-tooltip
-                        location="top"
-                      >
+                      <v-tooltip location="top">
                         <template #activator="{ props }">
                           <v-btn
                             icon
@@ -116,16 +103,12 @@
                             size="36"
                             @click="viewRecord(record)"
                           >
-                            <v-icon size="small">
-                              fas fa-eye
-                            </v-icon>
+                            <v-icon size="small"> fas fa-eye </v-icon>
                           </v-btn>
                         </template>
                         View Record
                       </v-tooltip>
-                      <v-tooltip
-                        location="top"
-                      >
+                      <v-tooltip location="top">
                         <template #activator="{ props }">
                           <v-btn
                             icon
@@ -134,9 +117,7 @@
                             size="36"
                             @click="showOverlay(record)"
                           >
-                            <v-icon size="small">
-                              fas fa-arrow-right
-                            </v-icon>
+                            <v-icon size="small"> fas fa-arrow-right </v-icon>
                           </v-btn>
                         </template>
                         Add
@@ -145,27 +126,15 @@
                   </div>
                 </v-lazy>
               </v-responsive>
-              <div
-                v-else
-                class="scrollZone"
-              >
+              <div v-else class="scrollZone">
                 <Loaders />
               </div>
             </v-card>
           </v-col>
 
           <!-- RIGHT PANEL -->
-          <v-col
-            xl="6"
-            lg="6"
-            md="12"
-            sm="12"
-            xs="12"
-          >
-            <v-card
-              class="my-5 pl-4 bg-grey-lighten-3"
-              elevation="5"
-            >
+          <v-col xl="6" lg="6" md="12" sm="12" xs="12">
+            <v-card class="my-5 pl-4 bg-grey-lighten-3" elevation="5">
               <v-card-title>
                 <span>Associated records ({{ associations.length }})</span>
               </v-card-title>
@@ -175,11 +144,16 @@
                   variant="outlined"
                   label="Search through existing associations names"
                   hide-details
+                  color="primary"
+                  append-inner-icon="fas fa-search"
+                  clearable
                 />
                 <v-container>
                   <v-row no-gutters>
                     <v-col
-                      v-for="(filterVal, filterName, filterIndex) in labelsFilter"
+                      v-for="(
+                        filterVal, filterName, filterIndex
+                      ) in labelsFilter"
                       :key="'filter_' + filterIndex"
                       cols="12"
                       sm="12"
@@ -193,12 +167,13 @@
                       <v-switch
                         v-model="labelsFilter[filterName]"
                         inset
+                        color="primary"
                         :label="`${prepareFilterName(filterName)}`"
                       />
                     </v-col>
                   </v-row>
                 </v-container>
-                <v-divider class="pa-0 ma-0" />
+                <v-divider thickness="1" class="pa-0 ma-0 border-opacity-100" />
               </v-card-text>
               <v-list
                 v-if="getAssociations.length > 0"
@@ -211,73 +186,89 @@
                   :key="'association_' + index"
                   density="compact"
                   ripple
-                  class="bordered my-1"
-                  :class="{'orange lighten-3': association.new}"
+                  class="my-1"
+                  :class="{ 'bg-orange-lighten-3': association.new }"
                 >
-                  <v-avatar>
-                    <Icon
-                      :item="association.linkedRecord.type"
-                      wrapper-class=""
-                      :height="40"
-                    />
-                  </v-avatar>
-                  
-                    <b v-if="!association.recordAssocLabel.relation">- {{ cleanString(association.recordAssocLabel.toUpperCase()) }} -</b>
-                    <b v-else>- {{ cleanString(association.recordAssocLabel.relation.toUpperCase()) }} -</b>
-                    <v-list-item-title>
-                      {{ association.linkedRecord.name }}
-                    </v-list-item-title>
-                    <span class="text-capitalize">
-                      {{ association.linkedRecord.registry }} / {{ cleanString(association.linkedRecord.type) }}
-                    </span>
-                  
-                  <v-icon>
-                    <record-status
-                      :record="association.linkedRecord"
-                      :show-only-status="true"
-                      :in-edit-form="true"
-                    />
-                    <v-tooltip
-                      location="top"
-                    >
-                      <template #activator="{ props }">
-                        <v-btn
-                          icon
-                          class="bg-blue text-white mr-2"
-                          v-bind="props"
-                          @click="viewRecord(association.linkedRecord)"
-                        >
-                          <v-icon size="small">
-                            fas fa-eye
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      View Record
-                    </v-tooltip>
-                    <v-tooltip
-                      location="top"
-                    >
-                      <template #activator="{ props }">
-                        <v-btn
-                          icon
-                          class="bg-red text-white"
-                          v-bind="props"
-                          @click="removeItem(association)"
-                        >
-                          <v-icon size="small">
-                            fa-trash
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      Remove Relation
-                    </v-tooltip>
-                  </v-icon>
+                  <div class="d-flex justify-space-between bordered pb-2">
+                    <div>
+                      <Icon
+                        :item="association.linkedRecord.type"
+                        wrapper-class=""
+                        :height="40"
+                      />
+                    </div>
+                    <div class="mx-4 full-width">
+                      <b v-if="!association.recordAssocLabel.relation"
+                        >-
+                        {{
+                          cleanString(
+                            association.recordAssocLabel.toUpperCase(),
+                          )
+                        }}
+                        -</b
+                      >
+                      <b v-else
+                        >-
+                        {{
+                          cleanString(
+                            association.recordAssocLabel.relation.toUpperCase(),
+                          )
+                        }}
+                        -</b
+                      >
+                      <v-list-item-title
+                        style="font-size: 0.8125rem; font-weight: 500"
+                        class="text-pre-wrap"
+                      >
+                        {{ association.linkedRecord.name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle
+                        class="text-capitalize text-pre-wrap"
+                        style="font-size: 14px; font-weight: 400"
+                      >
+                        {{ association.linkedRecord.registry }} /
+                        {{ cleanString(association.linkedRecord.type) }}
+                      </v-list-item-subtitle>
+                    </div>
+                    <div class="d-flex align-center">
+                      <RecordStatus
+                        :record="association.linkedRecord"
+                        :show-only-status="true"
+                        :in-edit-form="true"
+                      />
+                      <v-tooltip location="top">
+                        <template #activator="{ props }">
+                          <v-btn
+                            icon
+                            class="bg-blue text-white mr-2"
+                            v-bind="props"
+                            size="36"
+                            @click="viewRecord(association.linkedRecord)"
+                          >
+                            <v-icon size="small"> fas fa-eye </v-icon>
+                          </v-btn>
+                        </template>
+                        View Record
+                      </v-tooltip>
+                      <v-tooltip location="top">
+                        <template #activator="{ props }">
+                          <v-btn
+                            icon
+                            class="bg-red text-white"
+                            v-bind="props"
+                            size="36"
+                            @click="removeItem(association)"
+                          >
+                            <v-icon size="small"> fas fa-trash </v-icon>
+                          </v-btn>
+                        </template>
+                        Remove Relation
+                      </v-tooltip>
+                    </div>
+                  </div>
                 </v-list-item>
               </v-list>
-              <v-list
-                v-else
-                class="bg-transparent scrollZone pr-3"
-              >
+              <v-list v-else class="bg-transparent scrollZone pr-3">
                 <v-list-item>
                   This record does not have any associations.
                 </v-list-item>
@@ -290,15 +281,17 @@
     <v-card-actions>
       <v-btn
         class="bg-primary"
-        :loading="saving"
-        @click="saveRecord(false)"
+        :loading="continueLoader"
+        variant="elevated"
+        @click="saveRecord(false, $event.target)"
       >
         Save and continue
       </v-btn>
       <v-btn
-        :loading="saving"
+        :loading="exitLoader"
         class="bg-primary"
-        @click="saveRecord(true)"
+        variant="elevated"
+        @click="saveRecord(true, $event.target)"
       >
         Save and exit
       </v-btn>
@@ -313,16 +306,13 @@
       persistent
       width="700px"
     >
-      <v-container
-        fluid
-        class="py-0"
-      >
+      <v-container fluid class="py-0">
         <v-row justify="center">
           <v-form
             id="editRecordAssociation"
             ref="editRecordAssociation"
             v-model="formValid"
-            style="width:100%"
+            style="width: 100%"
           >
             <v-card
               v-if="addingRelation"
@@ -337,10 +327,7 @@
                 v-if="!panelContent || panelContent.length === 0"
                 class="mb-0 pb-0"
               >
-                <v-alert
-                  type="error"
-                  class="mt-3"
-                >
+                <v-alert type="error" class="mt-3">
                   This source and target can't have relationship.
                 </v-alert>
               </v-card-text>
@@ -348,48 +335,58 @@
               <v-card-text class="text-center py-3 px-4">
                 <div
                   class="pa-3"
-                  :class="{'bg-blue-lighten-5': formValid, 'bg-red-lighten-5': !formValid}"
-                  style="border-radius:5px;"
+                  :class="{
+                    'bg-blue-lighten-5': formValid,
+                    'bg-red-lighten-5': !formValid,
+                  }"
+                  style="border-radius: 5px"
                 >
                   <div>
                     <b>SOURCE</b>
                     <span class="ml-1">
                       {{ sections.relations.data.name }}
                     </span>
-                    <br>
+                    <br />
                     <span>
-                      ({{ cleanString(sections.relations.data.registry) }} - {{ cleanString(sections.relations.data.type) }})
+                      ({{ cleanString(sections.relations.data.registry) }} -
+                      {{ cleanString(sections.relations.data.type) }})
                     </span>
                   </div>
                   <div>
                     <v-icon
                       size="x-large"
                       class="my-5"
-                      :class="{'text-blue': addingRelation.recordAssocLabel, 'text-red': !addingRelation.recordAssocLabel}"
+                      :class="{
+                        'text-blue': addingRelation.recordAssocLabel,
+                        'text-red': !addingRelation.recordAssocLabel,
+                      }"
                     >
                       fas fa-arrow-down
                     </v-icon>
                     <b
                       v-if="addingRelation.recordAssocLabel"
                       class="ml-3 doubleUnderline"
-                    >{{ cleanString(addingRelation.recordAssocLabel.relation).toUpperCase() }}</b>
+                      >{{
+                        cleanString(
+                          addingRelation.recordAssocLabel.relation,
+                        ).toUpperCase()
+                      }}</b
+                    >
                   </div>
                   <div>
                     <b>TARGET:</b>
                     <span class="ml-1">
                       {{ addingRelation.linkedRecord.name }}
                     </span>
-                    <br>
+                    <br />
                     <span>
-                      ({{ cleanString(addingRelation.linkedRecord.registry) }} - {{ cleanString(addingRelation.linkedRecord.type) }})
+                      ({{ cleanString(addingRelation.linkedRecord.registry) }} -
+                      {{ cleanString(addingRelation.linkedRecord.type) }})
                     </span>
                   </div>
                 </div>
               </v-card-text>
-              <v-card-text
-                v-if="addingRelation"
-                class="pb-0 pt-3"
-              >
+              <v-card-text v-if="addingRelation" class="pb-0 pt-3">
                 <v-autocomplete
                   v-model="addingRelation.recordAssocLabel"
                   :items="panelContent"
@@ -410,10 +407,7 @@
                 >
                   Add relation
                 </v-btn>
-                <v-btn
-                  class="bg-error"
-                  @click="showRelationsPanel = false"
-                >
+                <v-btn class="bg-error" @click="showRelationsPanel = false">
                   Cancel
                 </v-btn>
               </v-card-actions>
@@ -442,22 +436,22 @@
 </template>
 
 <script>
-import { capitalize,isEqual } from "lodash"
-import { mapActions, mapGetters,mapState } from "vuex"
+import { capitalize, isEqual } from "lodash";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import { isRequired } from "@/utils/rules.js"
-import stringUtils from '@/utils/stringUtils';
+import { isRequired } from "@/utils/rules.js";
+import stringUtils from "@/utils/stringUtils";
 
 import Loaders from "../Navigation/Loaders";
 import Alerts from "./Alerts";
 
 export default {
   name: "EditRelationships",
-  components: {Alerts, Icon, Loaders, RecordStatus},
+  components: { Alerts, Icon, Loaders, RecordStatus },
   mixins: [stringUtils],
-  data(){
+  data() {
     return {
       saving: false,
       loading: false,
@@ -469,7 +463,11 @@ export default {
       formValid: false,
       targets: [],
       targetPreview: null,
-      rules: { isRequired: () => {return isRequired()} },
+      rules: {
+        isRequired: () => {
+          return isRequired();
+        },
+      },
       labelsFilter: {},
       searchFilters: {},
       initialized: false,
@@ -483,9 +481,11 @@ export default {
         "standard",
         "database",
         "policy",
-        "fairassist"
-      ]
-    }
+        "fairassist",
+      ],
+      continueLoader: false,
+      exitLoader: false,
+    };
   },
   computed: {
     ...mapState("record", ["sections", "currentID", "currentRecord"]),
@@ -493,42 +493,53 @@ export default {
     ...mapState("editor", ["availableRecords", "relationsTypes"]),
     ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
     ...mapGetters("record", ["getSection"]),
-    associations(){
+    associations() {
       return this.sections.relations.data.recordAssociations;
     },
-    getAssociations(){
+    getAssociations() {
       if (!this.labelsFilter) return this.associations;
       let searchTerm = this.searchAssociations || "";
-      return this.associations.filter(obj => {
+      return this.associations.filter((obj) => {
         // Some linkedRecords have a null abbreviation, and so cannot be searched as requested in:
         // https://github.com/FAIRsharing/fairsharing.github.io/issues/1459
         // If it is null, compare the search string only against the name...
         if (obj.linkedRecord.abbreviation == null) {
-          if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    && (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true ||
-                        this.labelsFilter[obj.linkedRecord.type.toLowerCase()] === true)){
+          if (
+            obj.linkedRecord.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) &&
+            (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ===
+              true ||
+              this.labelsFilter[obj.linkedRecord.type.toLowerCase()] === true)
+          ) {
             return obj;
           }
         }
         // ...otherwise, compare against both name and abbreviation.
         else {
           /* istanbul ignore next */
-          if ((obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    obj.linkedRecord.abbreviation.toLowerCase().includes(searchTerm.toLowerCase()))
-                    && (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ||
-                        this.labelsFilter[obj.linkedRecord.type.toLowerCase()]) === true){
+          if (
+            (obj.linkedRecord.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+              obj.linkedRecord.abbreviation
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())) &&
+            (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ||
+              this.labelsFilter[obj.linkedRecord.type.toLowerCase()]) === true
+          ) {
             return obj;
           }
         }
       });
     },
-    message(){
+    message() {
       let error = this.getSection("relations").error;
       return {
         error: error,
         value: this.getSection("relations").message,
       };
-    }
+    },
   },
   watch: {
     async search() {
@@ -538,54 +549,64 @@ export default {
       deep: true,
       async handler() {
         await this.runSearch();
-      }
+      },
     },
     associations: {
       deep: true,
-      handler(){
+      handler() {
         let changes = 0;
-        if (!isEqual(this.sections.relations.initialData.recordAssociations,
-          this.sections.relations.data.recordAssociations)) {
+        if (
+          !isEqual(
+            this.sections.relations.initialData.recordAssociations,
+            this.sections.relations.data.recordAssociations,
+          )
+        ) {
           changes += 1;
         }
         this.$store.commit("record/setChanges", {
           section: "relations",
-          value: changes
+          value: changes,
         });
-      }
-    }
+      },
+    },
   },
   mounted() {
     this.$nextTick(async function () {
       this.loading = true;
       await this.getAvailableRelationsTypes();
-      this.targets = this.allowedTargets(this.sections.relations.data.registry.toLowerCase());
+      this.targets = this.allowedTargets(
+        this.sections.relations.data.registry.toLowerCase(),
+      );
       this.getRelations();
       this.loading = false;
       this.initialized = true;
     });
   },
   methods: {
-    ...mapActions("editor", ["getAvailableRecords", "getAvailableRelationsTypes"]),
+    ...mapActions("editor", [
+      "getAvailableRecords",
+      "getAvailableRelationsTypes",
+    ]),
     ...mapActions("record", ["updateRelations"]),
     capitalize,
     addItem() {
       let _module = this;
       _module.searchAssociations = null;
-      Object.keys(_module.labelsFilter).forEach(filter => {
+      Object.keys(_module.labelsFilter).forEach((filter) => {
         _module.labelsFilter[filter] = true;
       });
-      let exists = this.associations.find(function(link) {
+      let exists = this.associations.find(function (link) {
         let tmpRelation;
-        if (typeof link.recordAssocLabel.relation == 'undefined') {
+        if (typeof link.recordAssocLabel.relation == "undefined") {
           tmpRelation = link.recordAssocLabel;
         }
         else {
           tmpRelation = link.recordAssocLabel.relation;
         }
-        return link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
-                      tmpRelation === _module.addingRelation.recordAssocLabel.relation;
-
+        return (
+          link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
+          tmpRelation === _module.addingRelation.recordAssocLabel.relation
+        );
       });
       // Check if a duplicate relation is being added.
       if (exists) {
@@ -594,13 +615,21 @@ export default {
       }
       // Check if the user is trying to add multiple examples of FAIRassist relations.
       // https://github.com/FAIRsharing/FAIRsharing-API/issues/1137
-      if (_module.currentRecord.fairsharingRecord.type === "metric" || _module.currentRecord.fairsharingRecord.type === "principle") {
-        let parts_of = _module.sections.relations.data.recordAssociations.filter((item) => {
-          return item.recordAssocLabel === 'part_of';
-        })
-        if (parts_of.length > 0 && _module.addingRelation.recordAssocLabel.relation === 'part_of') {
+      if (
+        _module.currentRecord.fairsharingRecord.type === "metric" ||
+        _module.currentRecord.fairsharingRecord.type === "principle"
+      ) {
+        let parts_of =
+          _module.sections.relations.data.recordAssociations.filter((item) => {
+            return item.recordAssocLabel === "part_of";
+          });
+        if (
+          parts_of.length > 0 &&
+          _module.addingRelation.recordAssocLabel.relation === "part_of"
+        ) {
           _module.multipleRelationship = true;
-          _module.multipleRelationshipMessage = "A principle or metric can be part of no more than 1 other of the same type.";
+          _module.multipleRelationshipMessage =
+            "A principle or metric can be part of no more than 1 other of the same type.";
           return;
         }
       }
@@ -613,73 +642,89 @@ export default {
       _module.sections.relations.data.recordAssociations.unshift(newRelation);
       _module.showRelationsPanel = false;
       _module.$nextTick(() => {
-        _module.$scrollTo('#association_' + _module.addingRelation.id, 450, {
-          container: '#associatedRecords',
-          easing: 'ease-in',
-        })
+        _module.$scrollTo("#association_" + _module.addingRelation.id, 450, {
+          container: "#associatedRecords",
+          easing: "ease-in",
+        });
       });
     },
-    removeItem(selected){
+    removeItem(selected) {
       //this.sections.relations.data.recordAssociations.splice(id, 1);
-      let newData = this.sections.relations.data.recordAssociations.filter((item) => {
-        if (item.linkedRecord.id == selected.linkedRecord.id &&
-                    item.recordAssocLabelId == selected.recordAssocLabelId) {
-          return false;
-        }
-        return true;
-      });
+      let newData = this.sections.relations.data.recordAssociations.filter(
+        (item) => {
+          if (
+            item.linkedRecord.id == selected.linkedRecord.id &&
+            item.recordAssocLabelId == selected.recordAssocLabelId
+          ) {
+            return false;
+          }
+          return true;
+        },
+      );
       this.sections.relations.data.recordAssociations = newData;
     },
-    showOverlay(target){
+    showOverlay(target) {
       this.showRelationsPanel = true;
       this.panelContent = null;
       this.addingRelation = {
         linkedRecord: target,
         recordAssocLabel: null,
-        id: target.id
+        id: target.id,
       };
       let prohibited = [];
       this.panelContent = this.allowedRelations({
         target: {
           registry: target.registry.toLowerCase(),
-          type: target.type.toLowerCase()
+          type: target.type.toLowerCase(),
         },
         sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
         sourceType: this.sections.relations.data.type.toLowerCase(),
-        prohibited: prohibited
+        prohibited: prohibited,
       });
-      this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
+      this.$nextTick(() => {
+        this.$refs["editRecordAssociation"].validate();
+      });
     },
-    viewRecord(record){
-      window.open('/' + record.id, '_blank');
+    viewRecord(record) {
+      window.open("/" + record.id, "_blank");
     },
     getRelations() {
       let labelsFilter = {};
-      let allRegistries = ['standard', 'database', 'collection', 'policy', 'fairassist'];
+      let allRegistries = [
+        "standard",
+        "database",
+        "collection",
+        "policy",
+        "fairassist",
+      ];
       let types = [];
       let allowedRelations = this.allowedRelations({
         target: null,
         sourceRegistry: this.sections.relations.data.registry.toLowerCase(),
         sourceType: this.sections.relations.data.type.toLowerCase(),
-        prohibited: null
+        prohibited: null,
       });
-      allowedRelations.forEach(allowedRelation => {
-        if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
+      allowedRelations.forEach((allowedRelation) => {
+        if (!Object.keys(labelsFilter).includes(allowedRelation.target)) {
           /* istanbul ignore else */
           if (allRegistries.includes(allowedRelation.target.toLowerCase())) {
             labelsFilter[allowedRelation.target] = true;
-            allRegistries.splice(allRegistries.indexOf(allowedRelation.target.toLowerCase()), 1)
+            allRegistries.splice(
+              allRegistries.indexOf(allowedRelation.target.toLowerCase()),
+              1,
+            );
           }
-          else {  // This must therefore be a record type.
+          else {
+            // This must therefore be a record type.
             labelsFilter[allowedRelation.target] = true;
             types.push(allowedRelation.target);
           }
         }
       });
-      this.labelsFilter = {...labelsFilter};
-      this.searchFilters = {...labelsFilter};
+      this.labelsFilter = { ...labelsFilter };
+      this.searchFilters = { ...labelsFilter };
     },
-    async runSearch(){
+    async runSearch() {
       let _module = this;
       this.loading = true;
       let search = null;
@@ -688,8 +733,8 @@ export default {
       }
       let registries = [];
       let types = [];
-      Object.keys(this.searchFilters).forEach(filter => {
-        if (this.searchFilters[filter]){
+      Object.keys(this.searchFilters).forEach((filter) => {
+        if (this.searchFilters[filter]) {
           // Check if this is a registry or type
           if (this.fairsharingRegistries.indexOf(filter) > -1) {
             registries.push(filter);
@@ -705,10 +750,10 @@ export default {
         fairsharingRegistry: registries,
         recordType: types,
         excludeId: _module.currentID,
-        searchAnd: false
+        searchAnd: false,
       });
       let i = 0;
-      this.availableRecords.forEach(rec => {
+      this.availableRecords.forEach((rec) => {
         rec.isActive = i < 15; // activate the 15 first items for v-lazy.
         i += 1;
       });
@@ -718,57 +763,65 @@ export default {
       }
       if (search === this.lastQuery) this.loading = false;
     },
-    async saveRecord(redirect){
-      this.saving = true;
+    async saveRecord(redirect, item) {
+      if (item.textContent.trim() === "Save and continue") {
+        this.continueLoader = true;
+        this.exitLoader = false;
+      }
+      else if (item.textContent.trim() === "Save and exit") {
+        this.continueLoader = false;
+        this.exitLoader = true;
+      }
       await this.updateRelations({
         token: this.user().credentials.token,
-        source: this.$route.params.id
+        source: this.$route.params.id,
       });
-      this.saving = false;
+      this.continueLoader = false;
+      this.exitLoader = false;
       if (!redirect) {
         this.$scrollTo("#mainHeader");
         this.$store.commit("record/setChanges", {
           section: "relations",
-          value: 0
-        })
+          value: 0,
+        });
       }
-      if (redirect && !this.message.error){
-        await this.$router.push({path: '/' + this.$route.params.id})
+      if (redirect && !this.message.error) {
+        await this.$router.push({ path: "/" + this.$route.params.id });
       }
     },
     prepareFilterName(name) {
-      if (name == 'fairassist') {
-        return 'FAIRassist'
+      if (name == "fairassist") {
+        return "FAIRassist";
       }
       return capitalize(name) + "(s)";
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.scrollZone {
+  height: 50vh;
+  width: 100%;
+  overflow-y: scroll;
+}
 
-  .scrollZone {
-    height: 50vh;
-    width: 100%;
-    overflow-y: scroll;
-  }
+.bordered {
+  border-bottom: 1px dashed #ccc;
+}
 
-  .bordered{
-    border-bottom: 1px dashed #ccc;
-  }
+.doubleUnderline {
+  text-decoration-line: underline;
+  text-decoration-style: double;
+}
 
-  .doubleUnderline {
-    text-decoration-line: underline;
-    text-decoration-style: double;
-  }
-
-  .absolute {
-    position: absolute !important;
-    z-index: 1;
-    right: 13px;
-    top: 48px;
-  }
-
-
+.absolute {
+  position: absolute !important;
+  z-index: 1;
+  right: 13px;
+  top: 48px;
+}
+:deep(.v-switch__track) {
+  opacity: 1;
+}
 </style>

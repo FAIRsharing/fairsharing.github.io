@@ -53,7 +53,7 @@ let recordStore = {
       tags.forEach((tag) => {
         if (
           state.currentRecord["fairsharingRecord"][tag].length &&
-            state.currentRecord["fairsharingRecord"][tag]
+          state.currentRecord["fairsharingRecord"][tag]
         ) {
           state.currentRecord["fairsharingRecord"][tag].forEach((item) => {
             item.type = tag;
@@ -90,7 +90,7 @@ let recordStore = {
       ).generalInformation;
       if (data["fairsharingRecord"])
         state.sections.generalInformation.message =
-            "Record successfully updated!";
+          "Record successfully updated!";
     },
     resetMessage(state, sectionName) {
       state.sections[sectionName].message = null;
@@ -118,14 +118,12 @@ let recordStore = {
     setAdditionalInformation(state, additionalInformation) {
       if (!additionalInformation.subfieldName) {
         state.sections.additionalInformation.data.additionalInformation.fieldName =
-            additionalInformation.fieldValue
-
+          additionalInformation.fieldValue;
       }
       else {
         state.sections.additionalInformation.data[
           additionalInformation.fieldName
-        ].additionalInformation.subfieldName =
-            additionalInformation.fieldValue
+        ].additionalInformation.subfieldName = additionalInformation.fieldValue;
       }
     },
     setAdditionalInformationSubField(state, additionalInformation) {
@@ -141,17 +139,14 @@ let recordStore = {
           ]
         ) {
           state.sections.additionalInformation.data.additionalInformation.fieldName =
-              []
-
+            [];
         }
         try {
           state.sections.additionalInformation.data[
             additionalInformation.fieldName
           ].state.sections.additionalInformation.data[
             additionalInformation.fieldName
-          ].length =
-              additionalInformation.fieldValue
-
+          ].length = additionalInformation.fieldValue;
 
           // eslint-disable-next-line no-empty
         }
@@ -194,14 +189,14 @@ let recordStore = {
         support_links: dataAccess.metadata.support_links,
       };
       state.sections.generalInformation.data.metadata.support_links =
-          JSON.parse(JSON.stringify(record.support_links));
+        JSON.parse(JSON.stringify(record.support_links));
       state.sections.dataAccess.data.exhaustiveLicences =
-          record.exhaustiveLicences;
+        record.exhaustiveLicences;
       state.sections.generalInformation.initialData.metadata.support_links =
-          JSON.parse(JSON.stringify(record.support_links));
+        JSON.parse(JSON.stringify(record.support_links));
       record.support_links.forEach((supportLink) => {
         if (supportLink.name)
-          supportLink.url = {title: supportLink.name, url: supportLink.url};
+          supportLink.url = { title: supportLink.name, url: supportLink.url };
       });
       state.sections.dataAccess.data = record;
       state.sections.dataAccess.initialData = JSON.parse(
@@ -219,7 +214,7 @@ let recordStore = {
             JSON.stringify(record[field]),
           );
           state.sections.generalInformation.initialData.metadata[field] =
-              JSON.parse(JSON.stringify(record[field]));
+            JSON.parse(JSON.stringify(record[field]));
         }
       });
       state.sections.additionalInformation.data = record;
@@ -228,7 +223,7 @@ let recordStore = {
       );
       state.sections.additionalInformation.changes = 0;
       state.sections.additionalInformation.message =
-          "Record successfully updated!";
+        "Record successfully updated!";
     },
     setCreatingNewRecord(state) {
       state.newRecord = true;
@@ -273,63 +268,75 @@ let recordStore = {
         "additionalInformation",
       ]);
     },
-
   },
   actions: {
     async fetchRecord(state, options) {
       state.commit("resetCurrentRecordHistory");
       recordQuery.queryParam = {
-        id: options.id
+        id: options.id,
       };
       if (options.token) {
         client.setHeader(options.token);
       }
       let data = await client.executeQuery(recordQuery);
-      client.initalizeHeader()
-      if (!data["fairsharingRecord"]['metadata']['contacts']) {
-        data["fairsharingRecord"]['metadata']['contacts'] = [];
+      client.initalizeHeader();
+      if (!data["fairsharingRecord"]["metadata"]["contacts"]) {
+        data["fairsharingRecord"]["metadata"]["contacts"] = [];
       }
       // Citations should be created if empty.
-      if (!data["fairsharingRecord"]['metadata']['citations']) {
-        data["fairsharingRecord"]['metadata']['citations'] = [];
+      if (!data["fairsharingRecord"]["metadata"]["citations"]) {
+        data["fairsharingRecord"]["metadata"]["citations"] = [];
       }
-      state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
-      state.commit('setSections', JSON.parse(JSON.stringify(data)));
+      state.commit("setCurrentRecord", JSON.parse(JSON.stringify(data)));
+      state.commit("setSections", JSON.parse(JSON.stringify(data)));
     },
     async fetchPreviewRecord(state, id) {
       state.commit("resetCurrentRecordHistory");
       recordQuery.queryParam = {
-        id: id
+        id: id,
       };
       let data = await client.executeQuery(recordQuery);
-      state.commit('setCurrentRecord', data);
+      state.commit("setCurrentRecord", data);
     },
     async fetchRecordHistory(state, options) {
-      recordHistory.queryParam = {id: options.id};
+      recordHistory.queryParam = { id: options.id };
       client.setHeader(options.token);
       let data = await client.executeQuery(recordHistory);
-      state.commit('setRecordHistory', data["fairsharingRecord"]);
+      state.commit("setRecordHistory", data["fairsharingRecord"]);
     },
-    async updateGeneralInformation({state, commit}, options) {
+    async updateGeneralInformation({ state, commit }, options) {
       commit("resetMessage", "generalInformation");
       let {
-          type, countries, userDefinedTags, objectTypes, domains, subjects, taxonomies, status, curator_notes, isHidden,
-          logo, maintainers, watchers,
+          type,
+          countries,
+          userDefinedTags,
+          objectTypes,
+          domains,
+          subjects,
+          taxonomies,
+          status,
+          curator_notes,
+          isHidden,
+          logo,
+          maintainers,
+          watchers,
           ...record
         } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
         newTags = [],
         oldTags = [],
         tags = [];
-      userDefinedTags.forEach(tag => {
+      userDefinedTags.forEach((tag) => {
         if (Object.keys(tag).indexOf("id") === -1) {
-          newTags.push(tag.label)
+          newTags.push(tag.label);
         }
         else {
-          oldTags.push(tag.id)
+          oldTags.push(tag.id);
         }
       });
-      newTags = await Promise.all(newTags.map(tag =>
-        restClient.createNewUserDefinedTag(tag, options.token))
+      newTags = await Promise.all(
+        newTags.map((tag) =>
+          restClient.createNewUserDefinedTag(tag, options.token),
+        ),
       );
       newTags.forEach((tag) => {
         if (!tag.error) {
@@ -338,64 +345,70 @@ let recordStore = {
         else {
           commit("setSectionError", {
             section: "generalInformation",
-            value: tag.error
+            value: tag.error,
           });
           return tag.error;
         }
       });
 
-      isEmpty(logo) ? delete record['logo'] : record.logo = logo
-      record.country_ids = countries.map(obj => obj.id);
+      isEmpty(logo) ? delete record["logo"] : (record.logo = logo);
+      record.country_ids = countries.map((obj) => obj.id);
       if (type.id) record.record_type_id = type.id;
       record.metadata.status = status;
       record.curator_notes = curator_notes;
       record.hidden = isHidden;
-      record.object_type_ids = objectTypes.map(obj => obj.id);
-      record.domain_ids = domains.map(obj => obj.id);
-      record.subject_ids = subjects.map(obj => obj.id);
-      record.taxonomy_ids = taxonomies.map(obj => obj.id);
-      record.maintainer_ids = maintainers.map(obj => obj.id);
-      record.watcher_ids = watchers.map(obj => obj.id);
-      record.user_defined_tag_ids = tags.concat(oldTags.filter(function (el) {
-        return el != null;
-      }));
+      record.object_type_ids = objectTypes.map((obj) => obj.id);
+      record.domain_ids = domains.map((obj) => obj.id);
+      record.subject_ids = subjects.map((obj) => obj.id);
+      record.taxonomy_ids = taxonomies.map((obj) => obj.id);
+      record.maintainer_ids = maintainers.map((obj) => obj.id);
+      record.watcher_ids = watchers.map((obj) => obj.id);
+      record.user_defined_tag_ids = tags.concat(
+        oldTags.filter(function (el) {
+          return el != null;
+        }),
+      );
       if (options.change) {
-        record.remove_additional_properties = true
+        record.remove_additional_properties = true;
       }
       let response = await restClient.updateRecord({
         record: record,
         token: options.token,
-        id: options.id
+        id: options.id,
       });
       if (response.error) {
         commit("setSectionError", {
           section: "generalInformation",
-          value: response.error
+          value: response.error,
         });
         return response.error;
       }
       else {
-        let newRecord = JSON.parse(JSON.stringify(state.sections.generalInformation.data));
+        let newRecord = JSON.parse(
+          JSON.stringify(state.sections.generalInformation.data),
+        );
         let userDefinedTags = [];
-        newRecord.userDefinedTags.forEach(obj => {
+        newRecord.userDefinedTags.forEach((obj) => {
           if (Object.keys(obj).indexOf("id") === -1) {
-            obj.id = newTags.filter(tag => {
-              tag.label = obj.label
+            obj.id = newTags.filter((tag) => {
+              tag.label = obj.label;
             })[0];
             userDefinedTags.push(obj);
           }
           else userDefinedTags.push(obj);
         });
         newRecord.userDefinedTags = userDefinedTags;
-        commit('setGeneralInformation', {fairsharingRecord: newRecord});
+        commit("setGeneralInformation", { fairsharingRecord: newRecord });
       }
     },
-    async updatePublications({state, commit}, options) {
+    async updatePublications({ state, commit }, options) {
       commit("resetMessage", "publications");
-      let publications = JSON.parse(JSON.stringify(state.sections.publications.data));
+      let publications = JSON.parse(
+        JSON.stringify(state.sections.publications.data),
+      );
       let record_data = {
         publication_ids: [],
-        citation_ids: []
+        citation_ids: [],
       };
       publications.forEach(function (publication) {
         record_data.publication_ids.push(publication.id);
@@ -407,105 +420,139 @@ let recordStore = {
       const record = {
         record: record_data,
         token: options.token,
-        id: options.id
+        id: options.id,
       };
       let response = await restClient.updateRecord(record);
       if (response.error) {
         commit("setSectionError", {
           section: "publications",
-          value: response.error
+          value: response.error,
         });
         return response.error;
       }
       else {
-        commit("setMessage", {target: "publications", value: "Record successfully updated!"});
+        commit("setMessage", {
+          target: "publications",
+          value: "Record successfully updated!",
+        });
       }
     },
-    async updateOrganisations({state, commit}, userToken) {
+    async updateOrganisations({ state, commit }, userToken) {
       commit("resetMessage", "organisations");
       let deleteItems = [],
         updateItems = [],
         createItems = [];
       state.sections.organisations.initialData.forEach((obj) => {
-        let found = state.sections.organisations.data.filter(org => org.id === obj.id)[0];
+        let found = state.sections.organisations.data.filter(
+          (org) => org.id === obj.id,
+        )[0];
         if (!found) {
           deleteItems.push(obj);
         }
       });
       state.sections.organisations.data.forEach(function (obj) {
         let query = {
-          fairsharing_record_id: state.currentRecord['fairsharingRecord'].id,
+          fairsharing_record_id: state.currentRecord["fairsharingRecord"].id,
           organisation_id: obj.organisation.id,
           relation: obj.relation,
-          grant_id: (obj.grant) ? obj.grant.id : null,
-          is_lead: obj.isLead
+          grant_id: obj.grant ? obj.grant.id : null,
+          is_lead: obj.isLead,
         };
-        if (Object.prototype.hasOwnProperty.call(obj, 'id')) updateItems.push({query: query, id: obj.id});
+        if (Object.prototype.hasOwnProperty.call(obj, "id"))
+          updateItems.push({ query: query, id: obj.id });
         else createItems.push(query);
       });
       let queries = await Promise.all([
-        ...deleteItems.map(organisation => restClient.deleteOrganisationLink(organisation.id, userToken)),
-        ...createItems.map(organisation => restClient.createOrganisationLink(organisation, userToken)),
-        ...updateItems.map(organisation => restClient.updateOrganisationLink(organisation.query, organisation.id, userToken))
+        ...deleteItems.map((organisation) =>
+          restClient.deleteOrganisationLink(organisation.id, userToken),
+        ),
+        ...createItems.map((organisation) =>
+          restClient.createOrganisationLink(organisation, userToken),
+        ),
+        ...updateItems.map((organisation) =>
+          restClient.updateOrganisationLink(
+            organisation.query,
+            organisation.id,
+            userToken,
+          ),
+        ),
       ]);
       queries.forEach((org) => {
         if (org.error) {
           commit("setSectionError", {
             section: "organisations",
-            value: org.error
+            value: org.error,
           });
         }
       });
-      recordOrganisationsQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
+      recordOrganisationsQuery.queryParam = {
+        id: state.currentRecord.fairsharingRecord.id,
+      };
       client.setHeader(userToken);
       let organisations = await client.executeQuery(recordOrganisationsQuery);
-      commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
+      commit(
+        "updateOrganisationsLinks",
+        organisations.fairsharingRecord.organisationLinks,
+      );
     },
-    async updateAdditionalInformation({state, commit}, options) {
+    async updateAdditionalInformation({ state, commit }, options) {
       commit("resetMessage", "additionalInformation");
       let newRecord = {
         metadata: state.sections.generalInformation.initialData.metadata,
       };
-      options.fields.forEach(field => {
+      options.fields.forEach((field) => {
         if (state.sections.additionalInformation.data[field]) {
-          Object.keys(state.sections.additionalInformation.data[field]).forEach(key => {
-            if (state.sections.additionalInformation.data[field][key] === "") {
-              delete state.sections.additionalInformation.data[field][key]
-            }
-          })
-          newRecord.metadata[field] = state.sections.additionalInformation.data[field]
+          Object.keys(state.sections.additionalInformation.data[field]).forEach(
+            (key) => {
+              if (
+                state.sections.additionalInformation.data[field][key] === ""
+              ) {
+                delete state.sections.additionalInformation.data[field][key];
+              }
+            },
+          );
+          newRecord.metadata[field] =
+            state.sections.additionalInformation.data[field];
         }
         else if (state.sections.additionalInformation.data[field] === null) {
           // if its the case that there is a single string textInput only
           state.sections.additionalInformation.data[field] = "";
-          newRecord.metadata[field] = state.sections.additionalInformation.data[field]
+          newRecord.metadata[field] =
+            state.sections.additionalInformation.data[field];
         }
       });
       let response = await restClient.updateRecord({
         record: newRecord,
         token: options.token,
-        id: options.id
+        id: options.id,
       });
       if (response.error) {
         commit("setSectionError", {
           section: "additionalInformation",
-          value: response.error
+          value: response.error,
         });
         return response.error;
       }
       else {
-        commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
-        commit('updateAdditionalInformation', {record: newRecord.metadata, fields: options.fields});
+        commit("setMessage", {
+          target: "additionalInformation",
+          value: "Record successfully updated!",
+        });
+        commit("updateAdditionalInformation", {
+          record: newRecord.metadata,
+          fields: options.fields,
+        });
       }
     },
-    async updateDataAccess({state, commit}, options) {
+    async updateDataAccess({ state, commit }, options) {
       commit("resetMessage", "dataAccess");
       let newRecord = {
         metadata: state.sections.generalInformation.initialData.metadata,
       };
-      newRecord.metadata.support_links = state.sections.dataAccess.data.support_links;
-      newRecord.metadata.support_links.forEach(supportLink => {
-        if (typeof supportLink.url !== 'string') {
+      newRecord.metadata.support_links =
+        state.sections.dataAccess.data.support_links;
+      newRecord.metadata.support_links.forEach((supportLink) => {
+        if (typeof supportLink.url !== "string") {
           supportLink.url = supportLink.url.url;
         }
       });
@@ -530,7 +577,7 @@ let recordStore = {
         }
       });
       newRecord.exhaustive_licences =
-          state.sections.dataAccess.data.exhaustiveLicences;
+        state.sections.dataAccess.data.exhaustiveLicences;
       let responses = await Promise.all([
         restClient.updateRecord({
           record: newRecord,
@@ -564,7 +611,7 @@ let recordStore = {
       let dataAccess = await client.executeQuery(recordDataAccessQuery);
       commit("setDataAccess", dataAccess.fairsharingRecord);
     },
-    async updateRelations({state, commit}, options) {
+    async updateRelations({ state, commit }, options) {
       commit("resetMessage", "relations");
       let newAssociations = [],
         deleteAssociations = [],
@@ -584,9 +631,9 @@ let recordStore = {
             // Using only record_id produced:
             // https://github.com/FAIRsharing/fairsharing.github.io/issues/1620
             let id =
-                  association.linkedRecord.id +
-                  "_" +
-                  association.recordAssocLabelId;
+              association.linkedRecord.id +
+              "_" +
+              association.recordAssocLabelId;
             oldAssociations.push(id);
           }
         },
@@ -595,9 +642,9 @@ let recordStore = {
         (oldAssociation) => {
           // Same unique ID as above.
           let id =
-                oldAssociation.linkedRecord.id +
-                "_" +
-                oldAssociation.recordAssocLabelId;
+            oldAssociation.linkedRecord.id +
+            "_" +
+            oldAssociation.recordAssocLabelId;
           if (id && !oldAssociations.includes(id)) {
             deleteAssociations.push({
               id: oldAssociation.id,
@@ -629,7 +676,7 @@ let recordStore = {
         }
       }
       if (!error) {
-        recordRelationsQuery.queryParam = {id: options.source};
+        recordRelationsQuery.queryParam = { id: options.source };
         client.setHeader(options.token);
         let relations = await client.executeQuery(recordRelationsQuery);
         commit(
@@ -639,7 +686,7 @@ let recordStore = {
       }
     },
     resetRecord(state) {
-      state.commit("setGeneralInformation", {fairsharingRecord: false});
+      state.commit("setGeneralInformation", { fairsharingRecord: false });
     },
     async updateRecord(state, newRecord) {
       let response = await restClient.updateRecord(newRecord);
@@ -679,7 +726,7 @@ let recordStore = {
       return state.sections["generalInformation"].initialData.type;
     },
   },
-}
+};
 function prepareLicence(rawLicence) {
   let preparedLicence = { relation: rawLicence.relation };
   preparedLicence.fairsharing_record_id = rawLicence.fairsharingRecord

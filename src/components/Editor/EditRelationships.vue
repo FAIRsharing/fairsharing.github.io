@@ -283,6 +283,7 @@
         class="bg-primary"
         :loading="continueLoader"
         variant="elevated"
+        style="font-size: 14px"
         @click="saveRecord(false, $event.target)"
       >
         Save and continue
@@ -291,6 +292,7 @@
         :loading="exitLoader"
         class="bg-primary"
         variant="elevated"
+        style="font-size: 14px"
         @click="saveRecord(true, $event.target)"
       >
         Save and exit

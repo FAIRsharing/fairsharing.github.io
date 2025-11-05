@@ -27,7 +27,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-vue-next": "^0.26.26",
     "core-js": "^3.40.0",
-    "deep-object-diff": "^1.1.0",
+    "deep-object-diff": "^1.1.9",
     "dotenv": "^16.0.3",
     "graphology": "^0.25.1",
     "graphology-layout": "^0.6.1",

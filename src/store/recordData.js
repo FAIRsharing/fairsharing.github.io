@@ -144,10 +144,9 @@ let recordStore = {
         try {
           state.sections.additionalInformation.data[
             additionalInformation.fieldName
-          ].state.sections.additionalInformation.data[
+          ][state.sections.additionalInformation.data[
             additionalInformation.fieldName
-          ].length = additionalInformation.fieldValue;
-
+          ].length] = additionalInformation.fieldValue;
           // eslint-disable-next-line no-empty
         }
         catch (e) {

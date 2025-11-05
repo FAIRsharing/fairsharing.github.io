@@ -210,7 +210,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="bg-info"
+          class="bg-primary"
           :loading="continueLoader"
           variant="elevated"
           @click="saveRecord(false, $event.target)"
@@ -218,82 +218,84 @@
           Save and continue
         </v-btn>
         <v-btn
-          class="bg-info"
+          class="bg-primary"
           :loading="exitLoader"
           variant="elevated"
           @click="saveRecord(true, $event.target)"
         >
-          Save And Exit
+          Save and exit
         </v-btn>
       </v-card-actions>
     </v-card>
     <v-fade-transition>
       <div>
-      <v-overlay
-        :model-value="overlay.show"
-        :absolute="false"
-        opacity="0.8"
-        class="align-center justify-center"
-      >
-        <v-card width="800px">
-          <v-form
-            id="editAdditionalInformationOverlay"
-            ref="editAdditionalInformationOverlay"
-            v-model="subFormValid"
-          >
-            <v-card-title class="bg-green text-white">
-              Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
-            </v-card-title>
-            <v-card-text class="pt-4">
-              <div
-                v-for="(field, fieldName, fieldIndex) in overlay.template"
-                :key="'templateField_' + fieldIndex"
-                class="d-flex flex-row reposition"
-              >
-                <v-tooltip
-                  v-if="overlay.template[fieldName].description"
-                  location="bottom"
-                  class="d-inline-block mr-2"
+        <v-overlay
+          :model-value="overlay.show"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          <v-card width="800px">
+            <v-form
+              id="editAdditionalInformationOverlay"
+              ref="editAdditionalInformationOverlay"
+              v-model="subFormValid"
+            >
+              <v-card-title class="bg-green text-white">
+                Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
+              </v-card-title>
+              <v-card-text class="pt-4">
+                <div
+                  v-for="(field, fieldName, fieldIndex) in overlay.template"
+                  :key="'templateField_' + fieldIndex"
+                  class="d-flex flex-row reposition"
                 >
-                  <template #activator="{ props }">
-                    <v-icon v-bind="props" class="mt-5 mr-3"> fas fa-question-circle </v-icon>
-                  </template>
-                  {{ overlay.template[fieldName].description }}
-                </v-tooltip>
-                <v-text-field
-                  v-if="!field.enum"
-                  v-model="overlay.fields[fieldName]"
-                  :label="fieldName"
-                  variant="outlined"
-                  class="field mt-2"
-                  color="primary"
-                  :rules="rules(fieldName, overlay.required)"
-                />
-                <v-autocomplete
-                  v-else
-                  v-model="overlay.fields[fieldName]"
-                  :label="fieldName"
-                  variant="outlined"
-                  :items="field.enum"
-                  class="field"
-                  color="primary"
-                  :rules="rules(fieldName, overlay.required)"
-                />
-              </div>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                :disabled="!subFormValid"
-                class="bg-success"
-                @click="addItem()"
-              >
-                Submit item
-              </v-btn>
-              <v-btn class="bg-error" @click="hideOverlay()"> Cancel </v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-overlay>
+                  <v-tooltip
+                    v-if="overlay.template[fieldName].description"
+                    location="bottom"
+                    class="d-inline-block mr-2"
+                  >
+                    <template #activator="{ props }">
+                      <v-icon v-bind="props" class="mt-5 mr-3">
+                        fas fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ overlay.template[fieldName].description }}
+                  </v-tooltip>
+                  <v-text-field
+                    v-if="!field.enum"
+                    v-model="overlay.fields[fieldName]"
+                    :label="fieldName"
+                    variant="outlined"
+                    class="field mt-2"
+                    color="primary"
+                    :rules="rules(fieldName, overlay.required)"
+                  />
+                  <v-autocomplete
+                    v-else
+                    v-model="overlay.fields[fieldName]"
+                    :label="fieldName"
+                    variant="outlined"
+                    :items="field.enum"
+                    class="field"
+                    color="primary"
+                    :rules="rules(fieldName, overlay.required)"
+                  />
+                </div>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  :disabled="!subFormValid"
+                  class="bg-success"
+                  @click="addItem()"
+                >
+                  Submit item
+                </v-btn>
+                <v-btn class="bg-error" @click="hideOverlay()"> Cancel </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-overlay>
       </div>
     </v-fade-transition>
   </v-form>
@@ -310,6 +312,7 @@ import stringUtils from "@/utils/stringUtils";
 import Alerts from "../Alerts";
 import FieldInput from "./FieldInput";
 import { diff } from "deep-object-diff";
+import record from "@/store";
 
 export default {
   name: "EditAdditionalInfo",
@@ -330,7 +333,7 @@ export default {
       subFormValid: false,
       formValid: false,
       continueLoader: false,
-      exitLoader: false
+      exitLoader: false,
     };
   },
   computed: {
@@ -489,13 +492,13 @@ export default {
       return rules;
     },
     async saveRecord(redirect, item) {
-      if(item.textContent.trim() === "Save and continue") {
+      if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
-        this.exitLoader = false
+        this.exitLoader = false;
       }
-      else if(item.textContent.trim() === "Save and exit") {
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
-        this.exitLoader = true
+        this.exitLoader = true;
       }
       await this.updateAdditionalInformation({
         fields: Object.keys(this.allowedFields.properties),
@@ -503,7 +506,7 @@ export default {
         token: this.user().credentials.token,
       });
       this.continueLoader = false;
-      this.exitLoader = false
+      this.exitLoader = false;
       if (this.message.error || !redirect) {
         this.$scrollTo("#mainHeader");
       }
@@ -518,7 +521,7 @@ export default {
         if (changes[change] !== null && Object.keys(changes[change]).length > 0)
           delta += 1;
       });
-      this.$store.commit("record/setChanges", {
+      record.commit("record/setChanges", {
         section: "additionalInformation",
         value: delta,
       });

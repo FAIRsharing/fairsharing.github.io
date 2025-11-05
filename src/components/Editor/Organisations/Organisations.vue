@@ -122,7 +122,7 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="bg-info"
+                class="bg-primary"
                 :loading="continueLoader"
                 variant="elevated"
                 @click="saveRecord(false, $event.target)"
@@ -130,7 +130,7 @@
                 Save and continue
               </v-btn>
               <v-btn
-                class="bg-info"
+                class="bg-primary"
                 :loading="exitLoader"
                 variant="elevated"
                 @click="saveRecord(true, $event.target)"

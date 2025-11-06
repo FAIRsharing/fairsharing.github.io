@@ -140,15 +140,14 @@
             &lt;/td>
             &lt;td>
               &lt;v-menu>
-                &lt;template #activator="{ props }">
+                &lt;template #activator="{ props: menuProps }">
                   &lt;v-tooltip location="bottom">
-                    &lt;template #activator="{ on: tooltip }">
+                    &lt;template #activator="{ props: tooltipProps }">
                       &lt;v-icon
                         class="clickable"
                         size="small"
                         color="nordnetBlue"
-                       
-                        props""v-on="v-bind="
+                        v-bind="[menuProps, tooltipProps]"
                       >
                         {{ props.item.curator }}
                       &lt;/v-icon>
@@ -175,7 +174,7 @@
                 &lt;v-avatar
                   v-if="props.item.type"
                   class="mr-2"
-                  :height="40"
+                  size="40"
                 >
                   &lt;Icon
                     :item="props.item.type"
@@ -225,7 +224,6 @@
             &lt;td>
               &lt;v-icon
                 color="blue"
-                dark
                 start
                 @click.stop="
                   approveChangesMenu(

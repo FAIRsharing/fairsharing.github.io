@@ -25,17 +25,17 @@
               <v-spacer />
               <v-btn
                 color="green-darken-1"
-                variant="text"
+                variant="elevated"
                 @click="panelData.method()"
               >
-                Yes.
+                Yes
               </v-btn>
               <v-btn
-                color="green-darken-1"
-                variant="text"
+                color="red-darken-1"
+                variant="elevated"
                 @click="panelData.show = false"
               >
-                No, keep editing.
+                No, keep editing
               </v-btn>
             </v-card-actions>
           </v-card>

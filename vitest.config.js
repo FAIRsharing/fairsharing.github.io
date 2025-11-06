@@ -47,7 +47,8 @@ export default mergeConfig(
           "src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
           "src/components/Records/Search/SaveSearch/StepperComponents/index.js",
           "src/components/Curators/index.js",
-          "src/*"
+          "src/*",
+          "tests/*"
         ],
         reporter: ["html", "lcov", "text"],
         reportOnFailure: true,

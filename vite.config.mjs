@@ -6,9 +6,9 @@ import dns from "node:dns";
 import eslintPlugin from "vite-plugin-eslint";
 import path from 'path'
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import compress from 'vite-plugin-compress'
 dns.setDefaultResultOrder("verbatim");
 import autoprefixer from 'autoprefixer'
+import viteCompression from 'vite-plugin-compression';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename);
@@ -36,7 +36,7 @@ export default defineConfig({
     }),
     eslintPlugin,
     nodePolyfills(),
-    compress,
+    viteCompression
   ],
   resolve: {
     alias: {

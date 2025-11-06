@@ -35,9 +35,10 @@
       </router-link>
     </p>
     <v-img
-      src="assets/fairsharing-logo.svg"
+      src="/assets/fairsharing-logo.svg"
       height="70"
       class="text-left pa-0 d-inline-block contain"
+      alt="FAIRsharing-logo"
     />
     <p
       :class="[

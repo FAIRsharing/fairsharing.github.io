@@ -114,7 +114,6 @@
             </v-btn>
             <v-btn
               color="error"
-              variant="text"
               variant="outlined"
               @click.prevent="dialog = true"
             >

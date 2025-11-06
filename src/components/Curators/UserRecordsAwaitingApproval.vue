@@ -47,15 +47,14 @@
             </td>
             <td>
               <v-menu>
-                <template #activator="{ props }">
+                <template #activator="{ props: menuProps }">
                   <v-tooltip location="bottom">
-                    <template #activator="{ on: tooltip }">
+                    <template #activator="{ props: tooltipProps }">
                       <v-icon
                         class="clickable"
                         size="small"
                         color="nordnetBlue"
-                       
-                        props""v-on="v-bind="
+                        v-bind="[menuProps, tooltipProps]"
                       >
                         {{ props.item.curator }}
                       </v-icon>

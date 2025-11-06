@@ -70,15 +70,33 @@
               flat
               border
             >
-              <a
+              <div
                 v-if="subItem.url"
-                :href="subItem.url"
-                target="_blank"
-                class="underline-effect"
               >
-                {{ subItem.name }}
-              </a>
-              <div v-else class="d-flex flex-column">
+                <a
+                  :href="subItem.url"
+                  target="_blank"
+                  class="underline-effect"
+                >
+                  {{ subItem.name }}
+                </a>
+                <span v-if="subItem.spdxLink">
+                  <a
+                    :href="subItem.spdxLink"
+                    target="_blank"
+                  >
+                    <img
+                      src="/assets/icons/logo_spdx_60.png"
+                      alt="Icon for SPDX (System Package Data Exchange)"
+                      style="padding-bottom: 7px; padding-left: 3px;"
+                    >
+                  </a>
+                </span>
+              </div>
+              <div
+                v-else
+                class="d-flex flex-column"
+              >
                 <span>{{ subItem.name }}</span>
                 <span
                   v-if="
@@ -88,9 +106,19 @@
                   "
                 >
                   relationship:
-                  <strong
-                    >({{ cleanString(getLicenceRelation(subItem.id)) }})</strong
+                  <strong>({{ cleanString(getLicenceRelation(subItem.id)) }})</strong>
+                </span>
+                <span v-if="subItem.spdxLink">
+                  <a
+                    :href="subItem.spdxLink"
+                    target="_blank"
                   >
+                    <img
+                      src="/assets/icons/logo_spdx_60.png"
+                      alt="Icon for SPDX (System Package Data Exchange)"
+                      style="padding-bottom: 7px; padding-left: 3px;"
+                    >
+                  </a>
                 </span>
               </div>
             </v-card>

@@ -1,522 +1,522 @@
 {
   "searchSubjects": [
-      {
-        "id": 585,
-        "label": "Genetics",
-        "parents": [
-          {
-            "id": 812,
-            "label": "Biology"
-          }
-        ],
-        "children": [
-          {
-            "id": 578,
-            "label": "Immunogenetics"
-          },
-          {
-            "id": 629,
-            "label": "Phylogenetics"
-          },
-          {
-            "id": 666,
-            "label": "Microbial Genetics"
-          },
-          {
-            "id": 650,
-            "label": "Quantitative Genetics"
-          },
-          {
-            "id": 657,
-            "label": "Human Genetics"
-          },
-          {
-            "id": 756,
-            "label": "Molecular Genetics"
-          },
-          {
-            "id": 852,
-            "label": "Population Genetics"
-          },
-          {
-            "id": 853,
-            "label": "Plant Genetics"
-          },
-          {
-            "id": 475,
-            "label": "Neurogenetics"
-          },
-          {
-            "id": 544,
-            "label": "Epigenetics"
-          }
-        ],
-        "fairsharingRecords": [
-          {
-            "id": 2779,
-            "name": "BioGRID Open Repository of CRISPR Screens"
-          },
-          {
-            "id": 2777,
-            "name": "iGEM Registry of Standard Biological Parts"
-          },
-          {
-            "id": 2835,
-            "name": "PhenoDis"
-          },
-          {
-            "id": 315,
-            "name": "Solanaceae Phenotype Ontology"
-          },
-          {
-            "id": 558,
-            "name": "Barley Trait Ontology"
-          },
-          {
-            "id": 1582,
-            "name": "FlyBase"
-          },
-          {
-            "id": 2369,
-            "name": "Open Targets"
-          },
-          {
-            "id": 2694,
-            "name": "CHD7 Database"
-          },
-          {
-            "id": 2831,
-            "name": "PathBank"
-          },
-          {
-            "id": 135,
-            "name": "BLAST-like Alignment Tool Format"
-          },
-          {
-            "id": 1907,
-            "name": "Daphnia Water Flea Genome Database"
-          },
-          {
-            "id": 1935,
-            "name": "European Mouse Mutant Archive"
-          },
-          {
-            "id": 1991,
-            "name": "Reference Sequence Database"
-          },
-          {
-            "id": 2125,
-            "name": "Giga Science Database"
-          },
-          {
-            "id": 2087,
-            "name": "Xenopus laevis and tropicalis biology and genomics resource"
-          },
-          {
-            "id": 2847,
-            "name": "Agronomic Linked Data"
-          },
-          {
-            "id": 2848,
-            "name": "Panzea"
-          },
-          {
-            "id": 1106,
-            "name": "Physician Data Query"
-          },
-          {
-            "id": 1689,
-            "name": "SNPedia"
-          },
-          {
-            "id": 2335,
-            "name": "C. elegans Natural Diversity Resource"
-          },
-          {
-            "id": 154,
-            "name": "Ontology of Glucose Metabolism Disorder"
-          },
-          {
-            "id": 163,
-            "name": "REporting recommendations for tumour MARKer prognostic studies"
-          },
-          {
-            "id": 192,
-            "name": "ImMunoGeneTics Ontology"
-          },
-          {
-            "id": 395,
-            "name": "Observ-Tab"
-          },
-          {
-            "id": 445,
-            "name": "Ontology for Genetic Susceptibility Factor"
-          },
-          {
-            "id": 757,
-            "name": "Human Phenotype Ontology"
-          },
-          {
-            "id": 936,
-            "name": "Cerebrotendinous Xanthomatosis Ontology"
-          },
-          {
-            "id": 1549,
-            "name": "ADHDgene"
-          },
-          {
-            "id": 1676,
-            "name": "BRCA Share"
-          },
-          {
-            "id": 1709,
-            "name": "Nordic Control Allele Frequency and Genotype Database"
-          },
-          {
-            "id": 1802,
-            "name": "The Autism Chromosome Rearrangement Database"
-          },
-          {
-            "id": 1996,
-            "name": "Database of Genotypes and Phenotypes"
-          },
-          {
-            "id": 2069,
-            "name": "Chemical Effects in Biological Systems"
-          },
-          {
-            "id": 2074,
-            "name": "Type 1 Diabetes Database"
-          },
-          {
-            "id": 2155,
-            "name": "European Variation Archive"
-          },
-          {
-            "id": 2172,
-            "name": "euL1db, the European database of L1-HS retrotransposon insertions in humans"
-          },
-          {
-            "id": 2200,
-            "name": "NIDDK Central Repository"
-          },
-          {
-            "id": 2204,
-            "name": "Catalogue of Somatic Mutations in Cancer"
-          },
-          {
-            "id": 2238,
-            "name": "BioXpress"
-          },
-          {
-            "id": 2245,
-            "name": "Electronic Medical Records and Genomics"
-          },
-          {
-            "id": 3364,
-            "name": "Cell Press - American Journal of Human Genetics (AJHG) - Information for Authors"
-          },
-          {
-            "id": 3468,
-            "name": "Nature Genetics - Reporting standards and availability of data, materials, code and protocols"
-          },
-          {
-            "id": 3473,
-            "name": "Advanced Genetics"
-          },
-          {
-            "id": 1418,
-            "name": "Gene Ontology (GO) Gene Association File Format 2.2"
-          },
-          {
-            "id": 2871,
-            "name": "LEAFDATA"
-          },
-          {
-            "id": 766,
-            "name": "Gene Ontology (GO) Gene Association File Format 2.1"
-          },
-          {
-            "id": 1095,
-            "name": "Gene Ontology Gene Association File Format 2.0"
-          },
-          {
-            "id": 2585,
-            "name": "Animal Quantitative Trait Loci (QTL) Database"
-          },
-          {
-            "id": 2591,
-            "name": "Animal Trait Correlation Database"
-          },
-          {
-            "id": 2825,
-            "name": "Heart Diseases related Noncoding RNA Database"
-          },
-          {
-            "id": 188,
-            "name": "BcForms Grammar"
-          },
-          {
-            "id": 1098,
-            "name": "BpForms Grammar"
-          },
-          {
-            "id": 1632,
-            "name": "Polbase"
-          },
-          {
-            "id": 3019,
-            "name": "Genomic Observatories Meta-Database"
-          },
-          {
-            "id": 2907,
-            "name": "iDog"
-          },
-          {
-            "id": 833,
-            "name": "GenBank Sequence Format"
-          },
-          {
-            "id": 841,
-            "name": "Darwin Core Germplasm"
-          },
-          {
-            "id": 2763,
-            "name": "National Genomics Data Center Repository"
-          },
-          {
-            "id": 1715,
-            "name": "IPD-NHKIR - Non-Human Killer-cell Immunoglobulin-like Receptors"
-          },
-          {
-            "id": 1898,
-            "name": "ImMunoGeneTics Information System"
-          },
-          {
-            "id": 2570,
-            "name": "Citrus Genome Database"
-          },
-          {
-            "id": 2750,
-            "name": "ionomicHUB"
-          },
-          {
-            "id": 2747,
-            "name": "Regulatory Element Database for Drosophila"
-          },
-          {
-            "id": 213,
-            "name": "Clusters of Orthologous Groups (COG) Analysis Ontology"
-          },
-          {
-            "id": 314,
-            "name": "Fission Yeast Phenotype Ontology"
-          },
-          {
-            "id": 427,
-            "name": "GenePix Results Format"
-          },
-          {
-            "id": 478,
-            "name": "Feature Annotation Location Description Ontology"
-          },
-          {
-            "id": 546,
-            "name": "Variation Ontology"
-          },
-          {
-            "id": 576,
-            "name": "Yeast Phenotypes"
-          },
-          {
-            "id": 903,
-            "name": "Ontology for Genetic Interval"
-          },
-          {
-            "id": 1061,
-            "name": "ENA Sequence XML Schema"
-          },
-          {
-            "id": 1062,
-            "name": "Genetic Testing Ontology"
-          },
-          {
-            "id": 1478,
-            "name": "ENA Sequence Flat File Format"
-          },
-          {
-            "id": 1620,
-            "name": "NONCODE"
-          },
-          {
-            "id": 1677,
-            "name": "Gene Wiki"
-          },
-          {
-            "id": 1706,
-            "name": "OrtholugeDB"
-          },
-          {
-            "id": 1785,
-            "name": "StellaBase"
-          },
-          {
-            "id": 1830,
-            "name": "TropGENE DB"
-          },
-          {
-            "id": 1947,
-            "name": "Greengenes"
-          },
-          {
-            "id": 1948,
-            "name": "Maize Genetics and Genomics Database"
-          },
-          {
-            "id": 1974,
-            "name": "Genetic Codes"
-          },
-          {
-            "id": 1983,
-            "name": "NCBI Gene"
-          },
-          {
-            "id": 1988,
-            "name": "NCBI Protein Clusters Database"
-          },
-          {
-            "id": 2013,
-            "name": "GeneNetwork"
-          },
-          {
-            "id": 2106,
-            "name": "The Zebrafish Information Network"
-          },
-          {
-            "id": 2123,
-            "name": "Human Gene Database"
-          },
-          {
-            "id": 2185,
-            "name": "MGI Mouse Gene Expression Database"
-          },
-          {
-            "id": 2221,
-            "name": "Medaka Expression Pattern Database"
-          },
-          {
-            "id": 2396,
-            "name": "Rfam"
-          },
-          {
-            "id": 2544,
-            "name": "Patient-Derived tumor Xenograft Finder"
-          },
-          {
-            "id": 2572,
-            "name": "Pulse Crop Database"
-          },
-          {
-            "id": 2574,
-            "name": "Cucurbit Genomics Database"
-          },
-          {
-            "id": 2576,
-            "name": "GeneNet Engine"
-          },
-          {
-            "id": 2577,
-            "name": "Genome Database for Vaccinium"
-          },
-          {
-            "id": 2578,
-            "name": "KnowPulse"
-          },
-          {
-            "id": 2579,
-            "name": "Legume Information System"
-          },
-          {
-            "id": 2638,
-            "name": "Genome3D"
-          },
-          {
-            "id": 2712,
-            "name": "LegumeMine"
-          },
-          {
-            "id": 2714,
-            "name": "SoyMine"
-          },
-          {
-            "id": 2850,
-            "name": "PolyASite"
-          },
-          {
-            "id": 2866,
-            "name": "Chickspress"
-          },
-          {
-            "id": 2869,
-            "name": "miRwayDB"
-          },
-          {
-            "id": 2898,
-            "name": "Editome Disease Knowledgebase"
-          },
-          {
-            "id": 2908,
-            "name": "Internal Control Genes"
-          },
-          {
-            "id": 2953,
-            "name": "Silkworm Pathogen Database"
-          },
-          {
-            "id": 3083,
-            "name": "Domain Interaction Graph Guided ExploreR"
-          },
-          {
-            "id": 3720,
-            "name": "Yeast-ID"
-          },
-          {
-            "id": 3721,
-            "name": "YeastIP"
-          },
-          {
-            "id": 571,
-            "name": "Ontology of Craniofacial Development and Malformation"
-          },
-          {
-            "id": 2254,
-            "name": "FaceBase"
-          },
-          {
-            "id": 1619,
-            "name": "Newt-omics"
-          },
-          {
-            "id": 3872,
-            "name": "Taylor and Francis All Life - Data Sharing Policy"
-          },
-          {
-            "id": 899,
-            "name": "MeGO"
-          },
-          {
-            "id": 4067,
-            "name": "COVID-19 Host Genetics Initiative"
-          },
-          {
-            "id": 349,
-            "name": "Livestock Breed Ontology"
-          },
-          {
-            "id": 1897,
-            "name": "PeroxisomeDB"
-          }
-        ]
-      }
-    ]
+    {
+      "id": 585,
+      "label": "Genetics",
+      "parents": [
+        {
+          "id": 812,
+          "label": "Biology"
+        }
+      ],
+      "children": [
+        {
+          "id": 578,
+          "label": "Immunogenetics"
+        },
+        {
+          "id": 629,
+          "label": "Phylogenetics"
+        },
+        {
+          "id": 666,
+          "label": "Microbial Genetics"
+        },
+        {
+          "id": 650,
+          "label": "Quantitative Genetics"
+        },
+        {
+          "id": 657,
+          "label": "Human Genetics"
+        },
+        {
+          "id": 756,
+          "label": "Molecular Genetics"
+        },
+        {
+          "id": 852,
+          "label": "Population Genetics"
+        },
+        {
+          "id": 853,
+          "label": "Plant Genetics"
+        },
+        {
+          "id": 475,
+          "label": "Neurogenetics"
+        },
+        {
+          "id": 544,
+          "label": "Epigenetics"
+        }
+      ],
+      "fairsharingRecords": [
+        {
+          "id": 2779,
+          "name": "BioGRID Open Repository of CRISPR Screens"
+        },
+        {
+          "id": 2777,
+          "name": "iGEM Registry of Standard Biological Parts"
+        },
+        {
+          "id": 2835,
+          "name": "PhenoDis"
+        },
+        {
+          "id": 315,
+          "name": "Solanaceae Phenotype Ontology"
+        },
+        {
+          "id": 558,
+          "name": "Barley Trait Ontology"
+        },
+        {
+          "id": 1582,
+          "name": "FlyBase"
+        },
+        {
+          "id": 2369,
+          "name": "Open Targets"
+        },
+        {
+          "id": 2694,
+          "name": "CHD7 Database"
+        },
+        {
+          "id": 2831,
+          "name": "PathBank"
+        },
+        {
+          "id": 135,
+          "name": "BLAST-like Alignment Tool Format"
+        },
+        {
+          "id": 1907,
+          "name": "Daphnia Water Flea Genome Database"
+        },
+        {
+          "id": 1935,
+          "name": "European Mouse Mutant Archive"
+        },
+        {
+          "id": 1991,
+          "name": "Reference Sequence Database"
+        },
+        {
+          "id": 2125,
+          "name": "Giga Science Database"
+        },
+        {
+          "id": 2087,
+          "name": "Xenopus laevis and tropicalis biology and genomics resource"
+        },
+        {
+          "id": 2847,
+          "name": "Agronomic Linked Data"
+        },
+        {
+          "id": 2848,
+          "name": "Panzea"
+        },
+        {
+          "id": 1106,
+          "name": "Physician Data Query"
+        },
+        {
+          "id": 1689,
+          "name": "SNPedia"
+        },
+        {
+          "id": 2335,
+          "name": "C. elegans Natural Diversity Resource"
+        },
+        {
+          "id": 154,
+          "name": "Ontology of Glucose Metabolism Disorder"
+        },
+        {
+          "id": 163,
+          "name": "REporting recommendations for tumour MARKer prognostic studies"
+        },
+        {
+          "id": 192,
+          "name": "ImMunoGeneTics Ontology"
+        },
+        {
+          "id": 395,
+          "name": "Observ-Tab"
+        },
+        {
+          "id": 445,
+          "name": "Ontology for Genetic Susceptibility Factor"
+        },
+        {
+          "id": 757,
+          "name": "Human Phenotype Ontology"
+        },
+        {
+          "id": 936,
+          "name": "Cerebrotendinous Xanthomatosis Ontology"
+        },
+        {
+          "id": 1549,
+          "name": "ADHDgene"
+        },
+        {
+          "id": 1676,
+          "name": "BRCA Share"
+        },
+        {
+          "id": 1709,
+          "name": "Nordic Control Allele Frequency and Genotype Database"
+        },
+        {
+          "id": 1802,
+          "name": "The Autism Chromosome Rearrangement Database"
+        },
+        {
+          "id": 1996,
+          "name": "Database of Genotypes and Phenotypes"
+        },
+        {
+          "id": 2069,
+          "name": "Chemical Effects in Biological Systems"
+        },
+        {
+          "id": 2074,
+          "name": "Type 1 Diabetes Database"
+        },
+        {
+          "id": 2155,
+          "name": "European Variation Archive"
+        },
+        {
+          "id": 2172,
+          "name": "euL1db, the European database of L1-HS retrotransposon insertions in humans"
+        },
+        {
+          "id": 2200,
+          "name": "NIDDK Central Repository"
+        },
+        {
+          "id": 2204,
+          "name": "Catalogue of Somatic Mutations in Cancer"
+        },
+        {
+          "id": 2238,
+          "name": "BioXpress"
+        },
+        {
+          "id": 2245,
+          "name": "Electronic Medical Records and Genomics"
+        },
+        {
+          "id": 3364,
+          "name": "Cell Press - American Journal of Human Genetics (AJHG) - Information for Authors"
+        },
+        {
+          "id": 3468,
+          "name": "Nature Genetics - Reporting standards and availability of data, materials, code and protocols"
+        },
+        {
+          "id": 3473,
+          "name": "Advanced Genetics"
+        },
+        {
+          "id": 1418,
+          "name": "Gene Ontology (GO) Gene Association File Format 2.2"
+        },
+        {
+          "id": 2871,
+          "name": "LEAFDATA"
+        },
+        {
+          "id": 766,
+          "name": "Gene Ontology (GO) Gene Association File Format 2.1"
+        },
+        {
+          "id": 1095,
+          "name": "Gene Ontology Gene Association File Format 2.0"
+        },
+        {
+          "id": 2585,
+          "name": "Animal Quantitative Trait Loci (QTL) Database"
+        },
+        {
+          "id": 2591,
+          "name": "Animal Trait Correlation Database"
+        },
+        {
+          "id": 2825,
+          "name": "Heart Diseases related Noncoding RNA Database"
+        },
+        {
+          "id": 188,
+          "name": "BcForms Grammar"
+        },
+        {
+          "id": 1098,
+          "name": "BpForms Grammar"
+        },
+        {
+          "id": 1632,
+          "name": "Polbase"
+        },
+        {
+          "id": 3019,
+          "name": "Genomic Observatories Meta-Database"
+        },
+        {
+          "id": 2907,
+          "name": "iDog"
+        },
+        {
+          "id": 833,
+          "name": "GenBank Sequence Format"
+        },
+        {
+          "id": 841,
+          "name": "Darwin Core Germplasm"
+        },
+        {
+          "id": 2763,
+          "name": "National Genomics Data Center Repository"
+        },
+        {
+          "id": 1715,
+          "name": "IPD-NHKIR - Non-Human Killer-cell Immunoglobulin-like Receptors"
+        },
+        {
+          "id": 1898,
+          "name": "ImMunoGeneTics Information System"
+        },
+        {
+          "id": 2570,
+          "name": "Citrus Genome Database"
+        },
+        {
+          "id": 2750,
+          "name": "ionomicHUB"
+        },
+        {
+          "id": 2747,
+          "name": "Regulatory Element Database for Drosophila"
+        },
+        {
+          "id": 213,
+          "name": "Clusters of Orthologous Groups (COG) Analysis Ontology"
+        },
+        {
+          "id": 314,
+          "name": "Fission Yeast Phenotype Ontology"
+        },
+        {
+          "id": 427,
+          "name": "GenePix Results Format"
+        },
+        {
+          "id": 478,
+          "name": "Feature Annotation Location Description Ontology"
+        },
+        {
+          "id": 546,
+          "name": "Variation Ontology"
+        },
+        {
+          "id": 576,
+          "name": "Yeast Phenotypes"
+        },
+        {
+          "id": 903,
+          "name": "Ontology for Genetic Interval"
+        },
+        {
+          "id": 1061,
+          "name": "ENA Sequence XML Schema"
+        },
+        {
+          "id": 1062,
+          "name": "Genetic Testing Ontology"
+        },
+        {
+          "id": 1478,
+          "name": "ENA Sequence Flat File Format"
+        },
+        {
+          "id": 1620,
+          "name": "NONCODE"
+        },
+        {
+          "id": 1677,
+          "name": "Gene Wiki"
+        },
+        {
+          "id": 1706,
+          "name": "OrtholugeDB"
+        },
+        {
+          "id": 1785,
+          "name": "StellaBase"
+        },
+        {
+          "id": 1830,
+          "name": "TropGENE DB"
+        },
+        {
+          "id": 1947,
+          "name": "Greengenes"
+        },
+        {
+          "id": 1948,
+          "name": "Maize Genetics and Genomics Database"
+        },
+        {
+          "id": 1974,
+          "name": "Genetic Codes"
+        },
+        {
+          "id": 1983,
+          "name": "NCBI Gene"
+        },
+        {
+          "id": 1988,
+          "name": "NCBI Protein Clusters Database"
+        },
+        {
+          "id": 2013,
+          "name": "GeneNetwork"
+        },
+        {
+          "id": 2106,
+          "name": "The Zebrafish Information Network"
+        },
+        {
+          "id": 2123,
+          "name": "Human Gene Database"
+        },
+        {
+          "id": 2185,
+          "name": "MGI Mouse Gene Expression Database"
+        },
+        {
+          "id": 2221,
+          "name": "Medaka Expression Pattern Database"
+        },
+        {
+          "id": 2396,
+          "name": "Rfam"
+        },
+        {
+          "id": 2544,
+          "name": "Patient-Derived tumor Xenograft Finder"
+        },
+        {
+          "id": 2572,
+          "name": "Pulse Crop Database"
+        },
+        {
+          "id": 2574,
+          "name": "Cucurbit Genomics Database"
+        },
+        {
+          "id": 2576,
+          "name": "GeneNet Engine"
+        },
+        {
+          "id": 2577,
+          "name": "Genome Database for Vaccinium"
+        },
+        {
+          "id": 2578,
+          "name": "KnowPulse"
+        },
+        {
+          "id": 2579,
+          "name": "Legume Information System"
+        },
+        {
+          "id": 2638,
+          "name": "Genome3D"
+        },
+        {
+          "id": 2712,
+          "name": "LegumeMine"
+        },
+        {
+          "id": 2714,
+          "name": "SoyMine"
+        },
+        {
+          "id": 2850,
+          "name": "PolyASite"
+        },
+        {
+          "id": 2866,
+          "name": "Chickspress"
+        },
+        {
+          "id": 2869,
+          "name": "miRwayDB"
+        },
+        {
+          "id": 2898,
+          "name": "Editome Disease Knowledgebase"
+        },
+        {
+          "id": 2908,
+          "name": "Internal Control Genes"
+        },
+        {
+          "id": 2953,
+          "name": "Silkworm Pathogen Database"
+        },
+        {
+          "id": 3083,
+          "name": "Domain Interaction Graph Guided ExploreR"
+        },
+        {
+          "id": 3720,
+          "name": "Yeast-ID"
+        },
+        {
+          "id": 3721,
+          "name": "YeastIP"
+        },
+        {
+          "id": 571,
+          "name": "Ontology of Craniofacial Development and Malformation"
+        },
+        {
+          "id": 2254,
+          "name": "FaceBase"
+        },
+        {
+          "id": 1619,
+          "name": "Newt-omics"
+        },
+        {
+          "id": 3872,
+          "name": "Taylor and Francis All Life - Data Sharing Policy"
+        },
+        {
+          "id": 899,
+          "name": "MeGO"
+        },
+        {
+          "id": 4067,
+          "name": "COVID-19 Host Genetics Initiative"
+        },
+        {
+          "id": 349,
+          "name": "Livestock Breed Ontology"
+        },
+        {
+          "id": 1897,
+          "name": "PeroxisomeDB"
+        }
+      ]
+    }
+  ]
 }

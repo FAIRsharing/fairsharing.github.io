@@ -1,8 +1,5 @@
 <template>
-  <v-container
-    id="container-back"
-    fluid
-  >
+  <v-container id="container-back" fluid>
     <div id="search">
       <section class="d-flex flex-column justify-center">
         <v-row class="justify-center">
@@ -26,16 +23,8 @@
               href="https://assist.fairsharing.org/"
               target="_blank"
             >
-              <v-icon
-                size="x-small"
-                class="mr-1"
-              >
-                fas fa-search
-              </v-icon>
-              <v-icon
-                size="x-small"
-                class="mr-1"
-              >
+              <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
+              <v-icon size="x-small" class="mr-1">
                 fas fa-graduation-cap
               </v-icon>
               <span class="button-text-size">Explore & Learn</span>
@@ -64,14 +53,8 @@
               },
             ]"
           >
-            <div
-              v-if="$vuetify.display.mdAndUp"
-              class="vertical-divider"
-            />
-            <div
-              v-else
-              class="horizontal-divider"
-            />
+            <div v-if="$vuetify.display.mdAndUp" class="vertical-divider" />
+            <div v-else class="horizontal-divider" />
           </v-col>
           <!--Search Block -->
           <v-col
@@ -109,14 +92,8 @@
               },
             ]"
           >
-            <div
-              v-if="$vuetify.display.mdAndUp"
-              class="vertical-divider"
-            />
-            <div
-              v-else
-              class="horizontal-divider"
-            />
+            <div v-if="$vuetify.display.mdAndUp" class="vertical-divider" />
+            <div v-else class="horizontal-divider" />
           </v-col>
           <!--Browse Subject -->
           <v-col
@@ -137,12 +114,7 @@
               ]"
               to="/browse/subject"
             >
-              <v-icon
-                size="x-small"
-                class="mr-1"
-              >
-                fas fa-search
-              </v-icon>
+              <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
               <span class="button-text-size">Browse by Subject</span>
             </v-btn>
             <v-img

@@ -7,15 +7,12 @@
         class="pa-6 d-flex flex-column"
         border
         tile
-        :height="$vuetify.display.smAndDown?'540px':'440px'"
-        :elevation="allowClicking?'5':'1'"
-        @mouseenter="allowClicking=true"
-        @mouseleave="allowClicking=false"
+        :height="$vuetify.display.smAndDown ? '540px' : '440px'"
+        :elevation="allowClicking ? '5' : '1'"
+        @mouseenter="allowClicking = true"
+        @mouseleave="allowClicking = false"
       >
-        <v-row
-          no-gutters
-          class="flex-grow-0"
-        >
+        <v-row no-gutters class="flex-grow-0">
           <v-col
             cols="12"
             xs="12"
@@ -27,40 +24,40 @@
           >
             <div class="text-center">
               <h2
-                style="max-width: 150px;"
+                style="max-width: 150px"
                 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25"
               >
                 {{ truncateString(record.abbreviation, 30) }}
               </h2>
-              <RecordStatus
-                :record="record"
-                class="mt-4"
-              />
+              <RecordStatus :record="record" class="mt-4" />
             </div>
           </v-col>
-          <v-col
-            cols="12"
-            xs="12"
-            sm="10"
-            md="10"
-            lg="10"
-            xl="11"
-          >
+          <v-col cols="12" xs="12" sm="10" md="10" lg="10" xl="11">
             <h3
-              :class="['mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 text-primary',{'overflow-hidden':$vuetify.display.mdAndDown}]"
-              :style="record.status === 'deprecated' ? 'text-decoration: line-through' : 'text-decoration: inherit'"
+              :class="[
+                'mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 text-primary',
+                { 'overflow-hidden': $vuetify.display.mdAndDown },
+              ]"
+              :style="
+                record.status === 'deprecated'
+                  ? 'text-decoration: line-through'
+                  : 'text-decoration: inherit'
+              "
             >
               {{ record.name }}
             </h3>
             <div class="height-50">
-              <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines">
+              <p
+                class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
+              >
                 {{ record.description }}
               </p>
             </div>
             <!-- chips container -->
             <SearchLinkChips
               :chips="chips"
-              class="ml-10" :remain-tag-count="remainTagCount"
+              class="ml-10"
+              :remain-tag-count="remainTagCount"
             />
           </v-col>
         </v-row>
@@ -76,7 +73,6 @@
 </template>
 
 <script>
-
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
@@ -84,19 +80,19 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 
 export default {
   name: "RecordsCardStack",
-  components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
+  components: { SearchLinkChips, AssociatedRecordsSummary, RecordStatus },
   mixins: [recordsCardUtils],
   props: {
-    record: {default: null, type: Object},
+    record: { default: null, type: Object },
   },
   data() {
     return {
       allowClicking: false,
       chips: [],
-      remainTagCount: 0
-    }
+      remainTagCount: 0,
+    };
   },
-  computed:{
+  computed: {
     getMaxItemShown() {
       let maxItemShown;
       if (this.$vuetify.display.mdAndDown) {
@@ -108,18 +104,18 @@ export default {
       else if (this.$vuetify.display.xl) {
         maxItemShown = 3;
       }
-      return maxItemShown
-    }
+      return maxItemShown;
+    },
   },
   watch: {
     getMaxItemShown: function () {
       this.setChips(this.record);
-    }
+    },
   },
   created() {
     this.setChips(this.record);
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">

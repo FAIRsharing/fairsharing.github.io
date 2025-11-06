@@ -1,11 +1,11 @@
 <template>
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="registryTypes"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="registryTypes"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -26,23 +26,24 @@ export default {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The FAIRsharing Registry to which this resource belongs, e.g. Standard, Database or Policy. Multiple selections will be joined with OR.",
+      toolTipText:
+        "The FAIRsharing Registry to which this resource belongs, e.g. Standard, Database or Policy. Multiple selections will be joined with OR.",
     };
   },
   computed: {
     ...mapGetters("recordTypes", ["getRecordTypes"]),
     registryTypes() {
       const registry = this.getRecordTypes.map(({ fairsharingRegistry }) =>
-        fairsharingRegistry["name"].toLowerCase()
+        fairsharingRegistry["name"].toLowerCase(),
       );
       return [...new Set(registry)];
     },
     model: {
       get() {
-        return  this.itemSelected;
+        return this.itemSelected;
       },
       set(value) {
-        this.$emit("input",  value);
+        this.$emit("input", value);
       },
     },
   },

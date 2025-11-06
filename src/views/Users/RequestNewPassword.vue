@@ -1,28 +1,16 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="12"
-        md="8"
-        lg="8"
-        xl="4"
-      >
+      <v-col cols="12" sm="12" md="8" lg="8" xl="4">
         <v-card>
           <v-card-title class="bg-blue text-white mb-5">
-            <h2> Request a new password</h2>
+            <h2>Request a new password</h2>
           </v-card-title>
           <v-card-text v-if="triggered && message">
-            <v-alert
-              v-if="success"
-              type="success"
-            >
+            <v-alert v-if="success" type="success">
               {{ message }}
             </v-alert>
-            <v-alert
-              v-if="!success"
-              type="error"
-            >
+            <v-alert v-if="!success" type="error">
               {{ message }}
             </v-alert>
           </v-card-text>
@@ -58,8 +46,8 @@
 </template>
 
 <script>
-import Client from "@/lib/Client/RESTClient.js"
-import { isEmail,isRequired } from "@/utils/rules.js"
+import Client from "@/lib/Client/RESTClient.js";
+import { isEmail, isRequired } from "@/utils/rules.js";
 
 const client = new Client();
 
@@ -75,13 +63,13 @@ export default {
       formValid: false,
       rules: {
         isRequired: () => isRequired(),
-        isEmail: () => isEmail()
-      }
-    }
+        isEmail: () => isEmail(),
+      },
+    };
   },
   methods: {
-    sendEmail: async function(){
-      if (!this.formValid) return null
+    sendEmail: async function () {
+      if (!this.formValid) return null;
       this.loading = true;
       this.triggered = false;
       let response = await client.requestResetPwd(this.formData.email);
@@ -89,7 +77,7 @@ export default {
       this.success = response.success;
       this.triggered = true;
       this.loading = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>

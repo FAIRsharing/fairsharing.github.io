@@ -1,27 +1,19 @@
 <template>
-  <div
-    id="termDetails"
-    class="px-3"
-  >
+  <div id="termDetails" class="px-3">
     <!-- BACK BUTTON -->
     <div class="pl-3">
       <v-chip
         :class="`${color}--text ${color}--border mb-3 cursor-pointer white`"
-        @click="$router.push({path: '/browse/subject'})"
+        @click="$router.push({ path: '/browse/subject' })"
       >
-        <v-icon :class="`${color}--text`">
-          fa-arrow-left
-        </v-icon>
+        <v-icon :class="`${color}--text`"> fa-arrow-left </v-icon>
         <span :class="`${color}--text ml-3`"> GO BACK TO GRAPH </span>
       </v-chip>
     </div>
 
     <!-- TERM METADATA -->
     <v-card class="pt-3 d-flex flex-column justify-center align-center">
-      <v-card-title
-        id="metadata"
-        class="d-flex flex-column"
-      >
+      <v-card-title id="metadata" class="d-flex flex-column">
         <div
           :class="`${color} text-white`"
           class="d-flex justify-center align-center hits largeHits"
@@ -63,10 +55,7 @@
                   {{ ancestor }}
                 </v-chip>
               </v-row>
-              <v-row
-                v-else
-                class="d-flex flex-row align-center pt-2"
-              >
+              <v-row v-else class="d-flex flex-row align-center pt-2">
                 This term doesn't have any ancestor.
               </v-row>
             </v-col>
@@ -75,19 +64,15 @@
       </v-card-subtitle>
 
       <!-- SEARCH OUTPUT -->
-      <v-card-text
-        id="termSearchResults"
-        class="px-0 pb-0 mt-5"
-      >
+      <v-card-text id="termSearchResults" class="px-0 pb-0 mt-5">
         <v-divider />
-        <h5 :class="`${color}--text mb-4 text-decoration-underline text-h5 px-4`">
+        <h5
+          :class="`${color}--text mb-4 text-decoration-underline text-h5 px-4`"
+        >
           Records with this {{ selectedOntology }}:
         </h5>
         <div class="inputGroup d-flex flex-row align-center mb-5 px-4">
-          <v-btn
-            class="bg-primary text-white"
-            @click="goToSearch()"
-          >
+          <v-btn class="bg-primary text-white" @click="goToSearch()">
             Access All Search Options
           </v-btn>
           <v-spacer />
@@ -101,7 +86,7 @@
             />
           </div>
           <div class="pager flex-row d-flex align-center">
-            Showing {{ min }} to {{ min + perPage -1 }}
+            Showing {{ min }} to {{ min + perPage - 1 }}
             <v-icon
               class="ml-5 mr-10"
               :disabled="currentPage === 1"
@@ -109,10 +94,7 @@
             >
               fa-chevron-left
             </v-icon>
-            <v-icon
-              :disabled="currentPage === totalPages"
-              @click="setPage(1)"
-            >
+            <v-icon :disabled="currentPage === totalPages" @click="setPage(1)">
               fa-chevron-right
             </v-icon>
           </div>
@@ -128,23 +110,13 @@
           :no-data-text="`Cannot find any record with this ${selectedOntology}`"
         >
           <template #[`item.name`]="{ item }">
-            <div
-              :class="color + '--text'"
-              class="noBreak"
-            >
+            <div :class="color + '--text'" class="noBreak">
               <a
                 class="d-flex align-center cursor-pointer"
                 :href="`/${item.id}`"
               >
-                <v-avatar
-                  size="30"
-                  class="mr-3"
-                >
-                  <Icon
-                    :item="item.type"
-                    :height="30"
-                    wrapper-class=""
-                  />
+                <v-avatar size="30" class="mr-3">
+                  <Icon :item="item.type" :height="30" wrapper-class="" />
                 </v-avatar>
                 {{ item.name }}
               </a>
@@ -157,8 +129,8 @@
           </template>
           <template #[`item.registry`]="{ item }">
             <div class="d-flex justify-center align-center flex-column">
-              <div>{{ item.registry }} </div>
-              <div>({{ cleanString(item.type) }}) </div>
+              <div>{{ item.registry }}</div>
+              <div>({{ cleanString(item.type) }})</div>
             </div>
           </template>
         </v-data-table>
@@ -168,104 +140,131 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
-import StatusPills from "@/components/Users/Profiles/Private/StatusPills"
+import StatusPills from "@/components/Users/Profiles/Private/StatusPills";
 import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "TermDetails",
   components: { Icon, StatusPills },
   mixins: [stringUtils],
-  props: { selectedOntology: { required: true, type: String }},
-  data () {
+  props: { selectedOntology: { required: true, type: String } },
+  data() {
     return {
       headers: [
         { text: "Record name", value: "name", align: "center" },
-        { text: "Record registry and type", value: "registry", align: "center" },
-        { text: "Record status", value: "status", align: "center" }
-      ]
-    }
+        {
+          text: "Record registry and type",
+          value: "registry",
+          align: "center",
+        },
+        { text: "Record status", value: "status", align: "center" },
+      ],
+    };
   },
   computed: {
-    min () { return ((this.currentPage - 1) * this.perPage) + 1 },
-    currentPage () { return this.getCurrentPage() },
-    color () { return this.colors[this.selectedOntology] },
-    ancestors () { return this.getAncestors()(this.selectedTerm.identifier, 'name') },
+    min() {
+      return (this.currentPage - 1) * this.perPage + 1;
+    },
+    currentPage() {
+      return this.getCurrentPage();
+    },
+    color() {
+      return this.colors[this.selectedOntology];
+    },
+    ancestors() {
+      return this.getAncestors()(this.selectedTerm.identifier, "name");
+    },
     perPage: {
-      get () { return this.getPerPage() },
-      set (val) { this.changePerPage(val) }
+      get() {
+        return this.getPerPage();
+      },
+      set(val) {
+        this.changePerPage(val);
+      },
     },
     ...mapState("ontologyBrowser", ["records", "totalPages", "selectedTerm"]),
-    ...mapState("editor", ["colors"])
+    ...mapState("editor", ["colors"]),
   },
   methods: {
-    async setPage (offset) { await this.fetchNewPage(offset) },
-    goToSearch () {
-      this.$router.push({ name: 'search', query: { subjects: encodeURIComponent(this.selectedTerm.name) }}
-      )
+    async setPage(offset) {
+      await this.fetchNewPage(offset);
     },
-    goToTerm (term) {
-      this.$router.push({ path: this.$route.path, query: {term: encodeURIComponent(term) }})
+    goToSearch() {
+      this.$router.push({
+        name: "search",
+        query: { subjects: encodeURIComponent(this.selectedTerm.name) },
+      });
     },
-    ...mapGetters("ontologyBrowser", ["getPerPage", "getCurrentPage", "getAncestors"]),
+    goToTerm(term) {
+      this.$router.push({
+        path: this.$route.path,
+        query: { term: encodeURIComponent(term) },
+      });
+    },
+    ...mapGetters("ontologyBrowser", [
+      "getPerPage",
+      "getCurrentPage",
+      "getAncestors",
+    ]),
     ...mapActions("ontologyBrowser", ["fetchNewPage", "changePerPage"]),
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-  .cell {
-    padding: 10px 20px !important
+.cell {
+  padding: 10px 20px !important;
+}
+.fixedHeight {
+  min-height: 40vh;
+  max-height: 50vh;
+  overflow-y: scroll;
+}
+.inputGroup .v-input {
+  width: 70px;
+}
+.largeChips {
+  height: 50px;
+  border-radius: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.largeHits {
+  width: 100px;
+  height: 100px;
+  font-size: 30px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.subject_color--border {
+  border: 1px solid;
+  border-color: #e67e22 !important;
+}
+.domain_color--border {
+  border: 1px solid;
+  border-color: #712727 !important;
+}
+@media (max-width: 760px) {
+  .inputGroup {
+    flex-direction: column !important;
   }
-  .fixedHeight {
-    min-height: 40vh;
-    max-height: 50vh;
-    overflow-y: scroll;
+  .perPageSelector {
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
-  .inputGroup .v-input {
-    width: 70px;
+}
+@media (min-width: 761px) {
+  .perPageSelector {
+    margin-right: 30px;
+    margin-left: 30px;
   }
-  .largeChips {
-    height: 50px;
-    border-radius: 40px;
-    padding-left: 40px;
-    padding-right: 40px;
+}
+@media (min-width: 1904px) {
+  .subTitle {
+    max-width: 50%;
   }
-  .largeHits {
-    width: 100px;
-    height: 100px;
-    font-size: 30px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  .subject_color--border {
-    border: 1px solid ;
-    border-color: #E67E22 !important
-  }
-  .domain_color--border {
-    border: 1px solid ;
-    border-color: #712727 !important
-  }
-  @media (max-width: 760px) {
-    .inputGroup {
-      flex-direction: column !important;
-    }
-    .perPageSelector {
-      margin-top: 15px;
-      margin-bottom: 15px;
-    }
-  }
-  @media (min-width: 761px) {
-    .perPageSelector {
-      margin-right: 30px;
-      margin-left: 30px;
-    }
-  }
-  @media (min-width: 1904px) {
-    .subTitle {
-      max-width: 50%;
-    }
-  }
+}
 </style>

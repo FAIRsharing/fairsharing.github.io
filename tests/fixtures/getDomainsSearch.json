@@ -1,12 +1,14 @@
 {
   "searchDomains": [
     {
-      "definitions": ["A planned process that produces output data from input data."],
+      "definitions": [
+        "A planned process that produces output data from input data."
+      ],
       "id": 1674,
       "inFairsharing": true,
       "iri": "http://purl.obolibrary.org/obo/OBI_0200000",
       "label": "Data transformation",
       "synonyms": ["data processing", "data analysis"]
     }
-    ]
+  ]
 }

@@ -34,12 +34,16 @@
                         v-if="fieldName !== 'preferences'"
                         class="py-0 d-block"
                       >
-                        <b class="text-blue">{{ $filters.cleanString(fieldName) }}: </b>
+                        <b class="text-blue"
+                          >{{ $filters.cleanString(fieldName) }}:
+                        </b>
                         <span v-if="field"> {{ field }} </span>
                         <span v-else> None </span>
                       </div>
                       <div v-else class="py-2">
-                        <b class="text-blue">{{ $filters.cleanString(fieldName) }}: </b>
+                        <b class="text-blue"
+                          >{{ $filters.cleanString(fieldName) }}:
+                        </b>
                         <ul>
                           <li
                             v-for="(pref, prefName, prefKey) in field"
@@ -115,7 +119,7 @@
                     target="_blank"
                     variant="elevated"
                     color="orcid_green"
-                    style="color:white !important"
+                    style="color: white !important"
                   >
                     View ORCID profile
                   </v-btn>
@@ -227,7 +231,10 @@
                   class="bg-primary text-white py-3 flex-column align-start"
                 >
                   <span>Saved Searches</span>
-                  <v-card-subtitle class="pa-0 opacity-100" style="white-space: normal">
+                  <v-card-subtitle
+                    class="pa-0 opacity-100"
+                    style="white-space: normal"
+                  >
                     Clicking on the name of a saved search will take you to its
                     search results. From the results page, if you are logged in
                     you may further refine the search and/or save the search

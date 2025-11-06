@@ -26,7 +26,6 @@ const stringUtils = {
   },
 };
 
-
 // Removed from Organisation.vue, but I've not deleted it in case it is needed again.
 /*
 export const formatList = {

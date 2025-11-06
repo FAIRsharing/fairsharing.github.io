@@ -27,25 +27,22 @@ const router = new VueRouter();
 describe("Curator -> DownloadRecords.vue", () => {
   let restStub, wrapper;
   beforeAll(() => {
-       restStub = sinon.stub(Client.prototype, "executeQuery").returns(
-        {
-          data: {
-            error: false
-          }
-        }
-    );
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+      data: {
+        error: false,
+      },
+    });
     wrapper = shallowMount(DownloadRecords, {
       localVue,
       router,
       mocks: { $store },
     });
   });
-  afterEach( () => {
+  afterEach(() => {
     restStub.restore();
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("DownloadRecords");
   });
-
 });

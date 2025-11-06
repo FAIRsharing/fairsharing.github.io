@@ -1,12 +1,7 @@
 <template>
   <v-container>
     <v-row class="block-category">
-      <v-col
-        cols="12"
-        sm="12"
-        md="4"
-        lg="4"
-      >
+      <v-col cols="12" sm="12" md="4" lg="4">
         <v-card
           class="mx-auto block-category__card d-flex flex-column"
           max-width="350"
@@ -24,12 +19,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col
-        cols="12"
-        sm="12"
-        md="4"
-        lg="4"
-      >
+      <v-col cols="12" sm="12" md="4" lg="4">
         <v-card
           class="mx-auto block-category__card d-flex flex-column"
           max-width="350"
@@ -47,12 +37,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col
-        cols="12"
-        sm="12"
-        md="4"
-        lg="4"
-      >
+      <v-col cols="12" sm="12" md="4" lg="4">
         <v-card
           class="mx-auto block-category__card d-flex flex-column"
           max-width="350"
@@ -75,15 +60,15 @@
 </template>
 
 <script>
-import homePageData from "@/data/homePageData.json"
-import RestClient from "@/lib/Client/RESTClient.js"
-import {truncate} from "@/utils/stringUtils";
+import homePageData from "@/data/homePageData.json";
+import RestClient from "@/lib/Client/RESTClient.js";
+import { truncate } from "@/utils/stringUtils";
 
 const restClient = new RestClient();
 
 export default {
   name: "StatisticsBlock",
-  mixins: [ truncate ],
+  mixins: [truncate],
   data() {
     return {
       statsData: {
@@ -92,8 +77,8 @@ export default {
         views: 1,
       },
       blockCategories: homePageData.blockCategories,
-      statisticsData: homePageData.statisticsData
-    }
+      statisticsData: homePageData.statisticsData,
+    };
   },
 
   mounted() {
@@ -102,7 +87,7 @@ export default {
   methods: {
     async getStatisticsCount() {
       this.statsData = await restClient.getStatisticsData();
-      this.updateStaticsData()
+      this.updateStaticsData();
     },
     updateStaticsData() {
       const counters = this.$el.querySelectorAll(".counter");
@@ -117,40 +102,39 @@ export default {
           if (count < target) {
             counter.innerText = Math.ceil(count + increment);
             setTimeout(updateCounter, 1);
-          } else {
-            counter.innerText = this.updateNumbers(target)
+          }
+          else {
+            counter.innerText = this.updateNumbers(target);
           }
         };
         updateCounter();
       });
     },
-    updateNumbers (labelValue) {
+    updateNumbers(labelValue) {
       // Nine Zeroes for Billions
-      if (labelValue >= 1.0e+9) {
-        return Math.round(Number(labelValue) / 1.0e+9) + "B"
+      if (labelValue >= 1.0e9) {
+        return Math.round(Number(labelValue) / 1.0e9) + "B";
       }
       // Six Zeroes for Millions
-      else if (labelValue >= 1.0e+6) {
-        return Math.round(Number(labelValue) / 1.0e+6) + "M"
+      else if (labelValue >= 1.0e6) {
+        return Math.round(Number(labelValue) / 1.0e6) + "M";
       }
       // Three Zeroes for Thousands
-      else if (labelValue >= 1.0e+4) {
-        return Math.round(Number(labelValue) / 1.0e+3) + "K"
+      else if (labelValue >= 1.0e4) {
+        return Math.round(Number(labelValue) / 1.0e3) + "K";
       }
-      else{
-        return  labelValue
+      else {
+        return labelValue;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 #container-wrp {
   text-align: center;
   margin: 0 auto;
   color: white;
 }
-
 </style>

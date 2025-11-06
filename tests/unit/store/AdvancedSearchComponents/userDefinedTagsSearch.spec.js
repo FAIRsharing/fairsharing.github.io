@@ -68,10 +68,10 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchUserDefinedTags: ["test", "test1", "test2"],
     };
     const builtData = getters.getSearchUserDefinedTags(
-      getUserDefinedTagsResult
+      getUserDefinedTagsResult,
     );
     expect(builtData).toStrictEqual(
-      getUserDefinedTagsResult["searchUserDefinedTags"]
+      getUserDefinedTagsResult["searchUserDefinedTags"],
     );
   });
 

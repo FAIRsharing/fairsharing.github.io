@@ -1,12 +1,12 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import AdditionalInfo from "@/components/Records/Record/AdditionalInfo"
+import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import RESTClient from "@/lib/Client/RESTClient";
 import editorStore from "@/store/editor";
 import record from "@/store/recordData";
-import Record from "@/store/recordData.js"
+import Record from "@/store/recordData.js";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -15,86 +15,85 @@ const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
   modules: {
-    record:Record,
-    editor: editorStore
-  }});
-
+    record: Record,
+    editor: editorStore,
+  },
+});
 
 record.state.currentRecord.fairsharingRecord.metadata = {
   dataset_deposition: {},
 };
-$store.state.editor.allowedFields.properties = {dataset_deposition: {}}
+$store.state.editor.allowedFields.properties = { dataset_deposition: {} };
 let restStub;
 
-
-describe("AdditionalInfo.vue", function(){
+describe("AdditionalInfo.vue", function () {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(AdditionalInfo, {
       localVue,
       vuetify,
-      mocks: {$store}
-    })
+      mocks: { $store },
+    });
   });
   beforeAll(() => {
     restStub = sinon.stub(RESTClient.prototype, "executeQuery");
     restStub.withArgs(sinon.match.any).returns({
-      data: {properties: {
-        dataset_deposition: {item:[1.2]},
-        emptyKey:{}
-      }}
+      data: {
+        properties: {
+          dataset_deposition: { item: [1.2] },
+          emptyKey: {},
+        },
+      },
     });
   });
   afterAll(() => {
     restStub.restore();
   });
 
-
   it("can be initiated", () => {
     expect(wrapper.vm.$options.name).toMatch("AdditionalInfo");
   });
 
   it("can check if data is available", async () => {
-    await wrapper.vm.setAvailableData({a:''},'a')
+    await wrapper.vm.setAvailableData({ a: "" }, "a");
     expect(wrapper.vm.tempData).toStrictEqual({
-      "a": [
+      a: [
         {
-          "a": ""
-        }
+          a: "",
+        },
       ],
-      "dataset_deposition": []
+      dataset_deposition: [],
     });
-    let selectedNode = [{'a': 1}, {'b': 2}]
-    await wrapper.vm.setAvailableData(selectedNode,'a')
-    selectedNode = [{a:[]}]
-    await wrapper.vm.setAvailableData(selectedNode,'n')
-    selectedNode = [{}]
-    await wrapper.vm.setAvailableData(selectedNode,'a')
-    await wrapper.vm.setAvailableData("Hello",'justString')
+    let selectedNode = [{ a: 1 }, { b: 2 }];
+    await wrapper.vm.setAvailableData(selectedNode, "a");
+    selectedNode = [{ a: [] }];
+    await wrapper.vm.setAvailableData(selectedNode, "n");
+    selectedNode = [{}];
+    await wrapper.vm.setAvailableData(selectedNode, "a");
+    await wrapper.vm.setAvailableData("Hello", "justString");
     expect(wrapper.vm.tempData).toStrictEqual({
-      "a": [
+      a: [
         {
-          "a": ""
+          a: "",
         },
         {
-          "a": 1
+          a: 1,
         },
         {
-          "b": 2
-        }
+          b: 2,
+        },
       ],
-      "dataset_deposition": [],
-      "n": [
+      dataset_deposition: [],
+      n: [
         {
-          "a": []
-        }
+          a: [],
+        },
       ],
-      "justString": [
+      justString: [
         {
-          "Value": "Hello"
-        }
-      ]
+          Value: "Hello",
+        },
+      ],
     });
   });
-
 });

@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-wrap">
     <span
-      v-for="(badge,key,index) in badges"
-      :key="key+'_'+badge.icon+'_'+index"
+      v-for="(badge, key, index) in badges"
+      :key="key + '_' + badge.icon + '_' + index"
     >
       <span class="d-flex flex-column align-center">
         <v-progress-circular
@@ -21,9 +21,7 @@
             :color="badge.progressColor"
           >
             <template #activator="{ props }">
-              <div
-                v-bind="props"
-              >
+              <div v-bind="props">
                 <div class="circle-transparent" />
               </div>
             </template>
@@ -35,23 +33,24 @@
             :open-on-hover="showTextHover"
           >
             <template #activator="{ props }">
-              <div
-                style="position:relative;"
-                v-bind="props"
-              >
+              <div style="position: relative" v-bind="props">
                 <Icon
-                  style="cursor:help"
+                  style="cursor: help"
                   :item="badge.icon"
                   size="38"
                   wrapper-class=""
                 />
                 <!--   if the current badge is standard/policy/database then add a node icon over it               -->
                 <div
-                  v-if="key==='hasStandard' || key==='hasDatabase' || key==='hasPolicy'"
+                  v-if="
+                    key === 'hasStandard' ||
+                    key === 'hasDatabase' ||
+                    key === 'hasPolicy'
+                  "
                   class="extra-badge-holder"
                 >
                   <Icon
-                    style="position:absolute;top:25%;left:20%;"
+                    style="position: absolute; top: 25%; left: 20%"
                     item="nodes"
                     :height="15"
                     wrapper-class=""
@@ -68,47 +67,54 @@
           />
         </v-progress-circular>
         <b
-          v-if="showProgress && badge.progress>0"
+          v-if="showProgress && badge.progress > 0"
           :class="[`${badge.progressColor}--text`]"
-        >{{ badge.progress }}</b>
+          >{{ badge.progress }}</b
+        >
       </span>
     </span>
   </div>
 </template>
 
 <script>
-import Icon from "@/components/Icon"
+import Icon from "@/components/Icon";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
-import {prepareAssociations} from "@/utils/recordTabUtils";
+import { prepareAssociations } from "@/utils/recordTabUtils";
 
 export default {
   name: "InfoBadge",
-  components: {Icon, RecordStatus},
+  components: { Icon, RecordStatus },
   props: {
-    currentRecord: {default: null, type: Object},
-    showProgress: {default: true, type: Boolean},
-    showProgressHover: {default: false, type: Boolean},
-    showTextHover: {default: true, type: Boolean}
+    currentRecord: { default: null, type: Object },
+    showProgress: { default: true, type: Boolean },
+    showProgressHover: { default: false, type: Boolean },
+    showTextHover: { default: true, type: Boolean },
   },
   data() {
     return {
       badges: {},
-      currentRecordLocal:null
-    }
+      currentRecordLocal: null,
+    };
   },
   mounted() {
-    this.currentRecordLocal = this.currentRecord
-    this.currentRecordLocal['fairsharingRecord']['mergedAssociations'] = this.mergedAssociations()
-    this.checkBadges()
+    this.currentRecordLocal = this.currentRecord;
+    this.currentRecordLocal["fairsharingRecord"]["mergedAssociations"] =
+      this.mergedAssociations();
+    this.checkBadges();
   },
   methods: {
     mergedAssociations() {
-      return prepareAssociations(this, this.currentRecordLocal['fairsharingRecord'].recordAssociations,
-        this.currentRecordLocal['fairsharingRecord'].reverseRecordAssociations)
+      return prepareAssociations(
+        this,
+        this.currentRecordLocal["fairsharingRecord"].recordAssociations,
+        this.currentRecordLocal["fairsharingRecord"].reverseRecordAssociations,
+      );
     },
     checkBadges() {
-      this.badges = new BadgeBuilder(this.currentRecordLocal['fairsharingRecord'])
+      this.badges = new BadgeBuilder(
+        this.currentRecordLocal["fairsharingRecord"],
+      )
         .hasStatus()
         .hasLicence()
         .hasMaintainer()
@@ -118,19 +124,18 @@ export default {
         .hasAPI()
         .hasPID()
         .hasCertificate()
-        .getBadges()
+        .getBadges();
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-
 .circle-transparent {
-  position:absolute;
+  position: absolute;
   border-radius: 50%;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 86px;
   height: 87px;
   cursor: help;

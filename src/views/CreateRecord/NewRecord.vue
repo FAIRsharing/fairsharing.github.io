@@ -12,8 +12,6 @@
         <v-col cols="12">
           <v-card v-if="loaded">
             <v-card-title class="bg-primary text-white">
-              <h3 class="text-white">
-            <v-card-title class="bg-primary text-white">
               <h3
                 v-if="fairassistOnly"
                 class="text-white"
@@ -32,8 +30,8 @@
             >
               <v-alert type="error">
                 {{ message.value }}<v-icon class="px-3">
-                  fa-arrow-right
-                </v-icon> {{ message.value.response.data }}
+                fa-arrow-right
+              </v-icon> {{ message.value.response.data }}
               </v-alert>
             </v-card-text>
             <v-card-text class="pt-3">
@@ -54,14 +52,14 @@
 
           <v-fade-transition>
             <div>
-            <v-overlay
-              v-if="!loaded"
-              :absolute="false"
-              opacity="0.8"
-              class="align-center justify-center"
-            >
-              <loaders />
-            </v-overlay>
+              <v-overlay
+                v-if="!loaded"
+                :absolute="false"
+                opacity="0.8"
+                class="align-center justify-center"
+              >
+                <loaders />
+              </v-overlay>
             </div>
           </v-fade-transition>
         </v-col>
@@ -83,7 +81,7 @@
           <p>
             We'll email you confirmation, including  details of the
             remaining fields you'll need to add for your record. Our curators
-            won't check your record until it is complete. 
+            won't check your record until it is complete.
           </p>
           <p>
             Click the button below to carry on adding information to your record.
@@ -117,8 +115,8 @@ import Loaders from "../../components/Navigation/Loaders";
 let restClient = new RESTClient();
 
 /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
-     *
-     */
+ *
+ */
 export default {
   name: "NewRecordPage",
   components: {Loaders, BaseFields},

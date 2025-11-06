@@ -1,24 +1,12 @@
 <template>
   <div id="recordHistoryContent">
-    <v-tabs
-      v-model="selectedTab"
-      dark
-      slider-color="primary"
-      slider-size="5"
-    >
-      <v-tab>
-        View history logs
-      </v-tab>
-      <v-tab>
-        View legacy logs
-      </v-tab>
+    <v-tabs v-model="selectedTab" dark slider-color="primary" slider-size="5">
+      <v-tab> View history logs </v-tab>
+      <v-tab> View legacy logs </v-tab>
 
       <v-tabs-window v-model="selectedTab">
         <v-tabs-window-item>
-          <div
-            v-if="selectedTab === 0"
-            class="my-3"
-          >
+          <div v-if="selectedTab === 0" class="my-3">
             <v-tabs
               v-model="subTab"
               slider-color="secondary"
@@ -29,7 +17,7 @@
                 v-for="(subTabContent, subTabIndex) in history"
                 :key="'subTab_' + subTabIndex"
                 dense
-                style="width: 150px;height:80px;"
+                style="width: 150px; height: 80px"
                 class="bg-primary text-white mb-2"
                 @click="page = 1"
               >
@@ -47,7 +35,9 @@
                     max-height="85vh"
                     style="overflow-y: scroll"
                   >
-                    <v-card-text v-if="Object.keys(subTabContent[1]).length > 0">
+                    <v-card-text
+                      v-if="Object.keys(subTabContent[1]).length > 0"
+                    >
                       <!-- CONFIGURATION -->
                       <div class="text-center mb-10">
                         <v-pagination
@@ -60,7 +50,9 @@
                           v-model="reverseDate"
                           inset
                           color="primary"
-                          :label="(reverseDate) ? 'Descending date' : 'Ascending date'"
+                          :label="
+                            reverseDate ? 'Descending date' : 'Ascending date'
+                          "
                         />
                       </div>
 
@@ -71,22 +63,26 @@
                         multiple
                       >
                         <v-expansion-panel
-                          v-for="(entry, entryIndex) in reverse(subTabContent[1], subTabIndex)"
+                          v-for="(entry, entryIndex) in reverse(
+                            subTabContent[1],
+                            subTabIndex,
+                          )"
                           :key="'entry_' + entryIndex"
                         >
                           <v-expansion-panel-title>
                             <div v-if="entry['date']">
                               <h3 class="my-3">
-                                <v-icon
-                                  class="mr-3"
-                                >
+                                <v-icon class="mr-3">
                                   far fa-calendar-check
                                 </v-icon>
-                                <span style="position:relative; top:3px;">
-                                  {{ entry['date'] | moment(dateFormat) }} &mdash;
-                                  {{ entry['event'] }}
+                                <span style="position: relative; top: 3px">
+                                  {{
+                                    entry["date"] | moment(dateFormat)
+                                  }}
+                                  &mdash;
+                                  {{ entry["event"] }}
                                   <span v-if="entry['user']">
-                                    &mdash; {{ entry['user'] }}
+                                    &mdash; {{ entry["user"] }}
                                   </span>
                                 </span>
                               </h3>
@@ -103,9 +99,7 @@
                         </v-expansion-panel>
                       </v-expansion-panels>
                     </v-card-text>
-                    <v-card-text v-else>
-                      No data.
-                    </v-card-text>
+                    <v-card-text v-else> No data. </v-card-text>
                   </v-card>
                 </v-tabs-window-item>
               </v-tabs-window>
@@ -126,21 +120,17 @@
               :total-visible="7"
               class="mb-10"
             />
-            <v-expansion-panels
-              v-model="legacyPanels"
-              focusable
-              multiple
-            >
+            <v-expansion-panels v-model="legacyPanels" focusable multiple>
               <v-expansion-panel
                 v-for="(entry, entryIndex) in reverse(legacyLogs)"
                 :key="'entry_' + entryIndex"
               >
                 <v-expansion-panel-title>
                   <h3 class="my-3">
-                    <v-icon class="mr-3">
-                      far fa-calendar-check
-                    </v-icon>
-                    <span style="position:relative; top:3px;">{{ entry['when'] | moment(dateFormat) }}</span>
+                    <v-icon class="mr-3"> far fa-calendar-check </v-icon>
+                    <span style="position: relative; top: 3px">{{
+                      entry["when"] | moment(dateFormat)
+                    }}</span>
                   </h3>
                 </v-expansion-panel-title>
                 <v-expansion-panel-text class="pt-3">
@@ -162,14 +152,14 @@
 </template>
 
 <script>
-import VueJsonPretty from 'vue-json-pretty'
+import VueJsonPretty from "vue-json-pretty";
 
 export default {
   name: "RecordHistory",
   components: { VueJsonPretty },
   props: {
-    history: { default: null, type: Array},
-    legacyLogs: { default: null, type: Array}
+    history: { default: null, type: Array },
+    legacyLogs: { default: null, type: Array },
   },
   data() {
     return {
@@ -181,45 +171,43 @@ export default {
       reverseDate: true,
       currentPanel: [],
       legacyPanels: [],
-      dateFormat: "dddd, MMMM Do YYYY, h:mm:ss a"
-    }
+      dateFormat: "dddd, MMMM Do YYYY, h:mm:ss a",
+    };
   },
   watch: {
-    page(){
+    page() {
       this.currentPanel = [];
       this.legacyPanels = [];
     },
-    selectedTab(){
+    selectedTab() {
       this.currentPanel = [];
       this.legacyPanels = [];
       this.page = 1;
     },
-    subTab(){
+    subTab() {
       this.currentPanel = [];
       this.legacyPanels = [];
     },
-    reverseDate(){
+    reverseDate() {
       this.currentPanel = [];
       this.legacyPanels = [];
       this.page = 1;
-    }
+    },
   },
   methods: {
-    reverse(array, index){
+    reverse(array, index) {
       let output = JSON.parse(JSON.stringify(array));
-      if (index >  0) output = Object.values(output);
+      if (index > 0) output = Object.values(output);
       let length = output.length;
       if (this.reverseDate) output = output.reverse();
-      this.maxPage = Math.ceil(length/this.perPage);
+      this.maxPage = Math.ceil(length / this.perPage);
       const enter = (this.page - 1) * this.perPage,
-        exit = ((this.page - 1) * this.perPage) + this.perPage;
+        exit = (this.page - 1) * this.perPage + this.perPage;
       output = output.slice(enter, exit);
       return output;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "'Yes' is applicable when the policy makes clear whether compliance will be monitored and provides clarity on related rewards or penalties. When the policy lacks clarity, or does not address this topic, 'no' is used.",
-
+      itemValue: "",
+      toolTipText:
+        "'Yes' is applicable when the policy makes clear whether compliance will be monitored and provides clarity on related rewards or penalties. When the policy lacks clarity, or does not address this topic, 'no' is used.",
     };
   },
   computed: {

@@ -69,7 +69,6 @@ export const actions = {
         expirationTimer,
       );
       if (expiration) {
-
         this.commit("introspection/setLocalStorageExpiryTime");
         this.commit("introspection/setParameters", data.data);
       }
@@ -167,13 +166,13 @@ export default introspectionStore;
  *  // return True
  */
 const parseParam = function (param, paramVal) {
-    if (param.name === "Int") {
-        return parseFloat(paramVal)
-    }
-    else if (param.name === "Boolean") {
-        return JSON.parse(paramVal)
-    }
-    return paramVal;
+  if (param.name === "Int") {
+    return parseFloat(paramVal);
+  }
+  else if (param.name === "Boolean") {
+    return JSON.parse(paramVal);
+  }
+  return paramVal;
 };
 
 /**

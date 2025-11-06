@@ -5,7 +5,6 @@ import CountriesSearchStore from "@/store/AdvancedSearchComponents/countriesSear
 
 import CountriesSearchData from "../../../../tests/fixtures/getCountriesSearch.json";
 
-
 describe("CountriesSearch store methods", () => {
   const { actions, mutations, getters } = CountriesSearchStore;
   const returnedVal = CountriesSearchData;

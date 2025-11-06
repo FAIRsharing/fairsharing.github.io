@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     messages() {
-      return messages
+      return messages;
     },
     ...mapState("users", ["messages"]),
   },

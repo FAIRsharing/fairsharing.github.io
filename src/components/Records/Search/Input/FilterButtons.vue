@@ -20,27 +20,29 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 import FilterButton from "./FilterButton";
 
 export default {
   name: "FilterButtons",
   components: {
-    FilterButton
+    FilterButton,
   },
   computed: {
     ...mapState("searchFilters", ["filterButtons"]),
     ...mapState("searchFilters", ["isLoadingData"]),
-    ...mapState('users', ["user"]),
+    ...mapState("users", ["user"]),
     allowedFilterButtons() {
       let _module = this;
       let user = _module.user();
       if (user.is_curator) {
         return this.filterButtons;
       }
-      return this.filterButtons.filter(function(el) { return el.curator_only === false; });
-    }
-  }
-}
+      return this.filterButtons.filter(function (el) {
+        return el.curator_only === false;
+      });
+    },
+  },
+};
 </script>

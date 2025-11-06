@@ -1,51 +1,53 @@
-import {isEqual} from 'lodash'
+import { isEqual } from "lodash";
 
-import buttonOptions from '@/data/ButtonOptions.json'
-import filterMapping from "@/data/FiltersLabelMapping.json"
-import homePageData from "@/data/homePageData.json"
-import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
+import buttonOptions from "@/data/ButtonOptions.json";
+import filterMapping from "@/data/FiltersLabelMapping.json";
+import homePageData from "@/data/homePageData.json";
+import GraphQLClient from "@/lib/GraphClient/GraphClient.js";
 import query from "@/lib/GraphClient/queries/getFilters.json";
 
 const graphClient = new GraphQLClient();
 
 export const mutations = {
   setFilters(state, data) {
-    state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
+    state.filtersStatistic = data["searchFairsharingRecords"]["aggregations"];
     state.rawFilters = buildFilters(state.filtersStatistic);
-    state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
+    state.filters = state.rawFilters.filter(
+      (item) => item.type !== "Boolean" && item.filterName !== "status",
+    );
   },
   setFilterButtons(state) {
     state.filterButtons.push({
-      "data": [
+      data: [
         {
-          "title": "Match all terms",
-          "active": true,
-          "filterName": "searchAnd",
-          "value": true
+          title: "Match all terms",
+          active: true,
+          filterName: "searchAnd",
+          value: true,
         },
         {
-          "title": "Match any term",
-          "active": false,
-          "filterName": "searchAnd",
-          "value": false
-        }
+          title: "Match any term",
+          active: false,
+          filterName: "searchAnd",
+          value: false,
+        },
       ],
-      "curator_only": false
+      curator_only: false,
     });
-    state.rawFilters.forEach(item => {
+    state.rawFilters.forEach((item) => {
       // TODO: Return here if the button is marked as curator-only and the user isn't logged in as a curator.
-      if (item.type === 'Boolean') {
+      if (item.type === "Boolean") {
         let ObjectModel = buttonOptions[item.filterName];
         state.filterButtons.push(ObjectModel);
       }
-      else if (item.filterName === 'status') {
+      else if (item.filterName === "status") {
         let ObjectModel = buttonOptions.status.data;
         ObjectModel.forEach(function (button) {
-          if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
+          if (Object.prototype.hasOwnProperty.call(button, "apiIndex")) {
             button.value = item.values[button["apiIndex"]];
           }
         });
-        state.filterButtons.push({data: ObjectModel, curator_only: false});
+        state.filterButtons.push({ data: ObjectModel, curator_only: false });
       }
     });
   },
@@ -63,30 +65,30 @@ export const mutations = {
         filterItem.active = true;
       }
     });
-  }
+  },
 };
 export const actions = {
   resetFilterButtons(state, itemParentIndex) {
-    this.commit('searchFilters/resetFilterButtons', itemParentIndex)
+    this.commit("searchFilters/resetFilterButtons", itemParentIndex);
   },
   activateButton(state, item) {
-    this.commit('searchFilters/activateButton', item)
+    this.commit("searchFilters/activateButton", item);
   },
-  async assembleFilters(){
+  async assembleFilters() {
     this.commit("searchFilters/setLoadingStatus", true);
 
     // Please refer to ticket:
     // https://github.com/FAIRsharing/fairsharing.github.io/issues/1288
     let keys = [];
-    homePageData.blockInfo['database']['items'].forEach((item) => {
-      keys.push(item.option.key)
+    homePageData.blockInfo["database"]["items"].forEach((item) => {
+      keys.push(item.option.key);
     });
 
     let data = await graphClient.executeQuery(query);
-    this.commit('searchFilters/setFilters', data);
-    this.commit('searchFilters/setFilterButtons');
+    this.commit("searchFilters/setFilters", data);
+    this.commit("searchFilters/setFilterButtons");
     this.commit("searchFilters/setLoadingStatus", false);
-  }
+  },
 };
 export const getters = {
   getFilters: (state) => {
@@ -94,16 +96,18 @@ export const getters = {
     state.filters.forEach(function (filter) {
       output.push({
         filterName: filter.filterName,
-        filterLabel: filter.filterLabel
-      })
+        filterLabel: filter.filterLabel,
+      });
     });
-    return output
+    return output;
   },
   getFiltersStatisticCount: (state) => (option) => {
     if (state.filtersStatistic && state.filtersStatistic.length) {
-      return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
+      return state.filtersStatistic[option.filterName].buckets.find(
+        (item) => item.key === option.key,
+      )["doc_count"];
     }
-  }
+  },
 };
 
 /**
@@ -119,11 +123,11 @@ let filtersStore = {
     filtersStatistic: [],
     filterButtons: [],
     isLoadingFilters: false,
-    databaseCount: {}
+    databaseCount: {},
   },
   mutations: mutations,
   actions: actions,
-  getters: getters
+  getters: getters,
 };
 export default filtersStore;
 
@@ -135,22 +139,20 @@ export default filtersStore;
 
 export const buildFilters = function (val) {
   let filters = [];
-  let filtersLabels = filterMapping['autocomplete'];
+  let filtersLabels = filterMapping["autocomplete"];
   Object.keys(val).forEach(function (key) {
     if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
       let filter = filtersLabels[key];
       filter.values = null;
       let filterValues = [];
 
-      let buckets = val[key]['buckets'];
+      let buckets = val[key]["buckets"];
       buckets.forEach(function (bucket) {
-        if (Object.prototype.hasOwnProperty.call(
-          bucket,
-          "key_as_string")) {
+        if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
           filterValues.push(bucket["key_as_string"]);
         }
         else {
-          filterValues.push(bucket['key']);
+          filterValues.push(bucket["key"]);
         }
       });
       filter.values = filterValues;

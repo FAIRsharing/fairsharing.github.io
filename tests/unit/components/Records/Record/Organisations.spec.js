@@ -1,9 +1,9 @@
-import {createLocalVue,shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Organisations from "@/components/Records/Record/Organisations.vue"
-import Record from "@/store/recordData.js"
+import Organisations from "@/components/Records/Record/Organisations.vue";
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -14,54 +14,53 @@ let editor = {
   state: {
     recordTooltips: {
       organisations: "description tooltip.",
-    }
-  }
-}
-
+    },
+  },
+};
 
 Record.state.currentRecord["fairsharingRecord"] = {
   organisationLinks: [
     {
-      relation: 'funds',
+      relation: "funds",
       organisation: {
         name: "Organisation One",
-        types: ["exciting", "thrilling"]
+        types: ["exciting", "thrilling"],
       },
       grant: {
         name: "generous grant",
-        id: 1
-      }
+        id: 1,
+      },
     },
     {
-      relation: 'maintains',
+      relation: "maintains",
       organisation: {
         name: "Organisation Two",
-        types: []
-      }
+        types: [],
+      },
     },
     {
-      relation: 'funds',
+      relation: "funds",
       organisation: {
         name: "Organisation One",
-        types: ["exciting", "thrilling"]
+        types: ["exciting", "thrilling"],
       },
       grant: {
         name: "generous grant 2",
-        id: 2
-      }
-    }
+        id: 2,
+      },
+    },
   ],
   subjects: [],
   domains: [],
   taxonomies: [],
   userDefinedTags: [],
-  organisations: [{"id": 1119}]
+  organisations: [{ id: 1119 }],
 };
 const $store = new Vuex.Store({
   modules: {
     record: Record,
-    editor: editor
-  }
+    editor: editor,
+  },
 });
 
 describe("Organisations.vue", function () {
@@ -71,21 +70,26 @@ describe("Organisations.vue", function () {
     wrapper = shallowMount(Organisations, {
       localVue,
       vuetify,
-      mocks: {$store},
-      propsData:{inlineStyle:true}
+      mocks: { $store },
+      propsData: { inlineStyle: true },
     });
   });
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("Organisations");
-    expect(wrapper.vm.getField('organisationLinks')[0].organisation.name).toMatch("Organisation One");
-    expect(wrapper.vm.getField('organisationLinks')[0].grant.name).toMatch("generous grant");
-    expect(wrapper.vm.getField('organisationLinks')[1].organisation.name).toMatch("Organisation Two");
-    expect(wrapper.vm.getField('organisationLinks')[1].grant).toBe(undefined);
+    expect(
+      wrapper.vm.getField("organisationLinks")[0].organisation.name,
+    ).toMatch("Organisation One");
+    expect(wrapper.vm.getField("organisationLinks")[0].grant.name).toMatch(
+      "generous grant",
+    );
+    expect(
+      wrapper.vm.getField("organisationLinks")[1].organisation.name,
+    ).toMatch("Organisation Two");
+    expect(wrapper.vm.getField("organisationLinks")[1].grant).toBe(undefined);
   });
 
   it("counts relations correctly", () => {
-    expect(wrapper.vm.getRelations('funds').length).toEqual(1);
+    expect(wrapper.vm.getRelations("funds").length).toEqual(1);
   });
-
 });

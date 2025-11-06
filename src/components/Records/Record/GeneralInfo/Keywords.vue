@@ -2,29 +2,19 @@
   <div>
     <!--Object Types-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <span
-        class="d-flex align-baseline width-15-percent-flex"
-      >
+      <span class="d-flex align-baseline width-15-percent-flex">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
-            <v-icon
-              class="mr-2"
-              size="15"
-              v-bind="props"
-            >
+            <v-icon class="mr-2" size="15" v-bind="props">
               fas fa-question-circle
             </v-icon>
           </template>
-          {{ recordTooltips['object_types'] }}
+          {{ recordTooltips["object_types"] }}
         </v-tooltip>
         <b>Object types in scope for this resource</b>
       </span>
-      <div
-        class="d-flex full-width flex-wrap ml-md-12 ml-13"
-      >
-        <span v-if="!getField('objectTypes').length">
-          N/A
-        </span>
+      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+        <span v-if="!getField('objectTypes').length"> N/A </span>
         <v-chip
           v-for="item in getField('objectTypes')"
           :key="item.label"
@@ -33,38 +23,25 @@
           variant="flat"
           @click="returnToSearch('objectTypes', item.label)"
         >
-          <KeywordTooltip
-            :keyword="item"
-            :full-width="true"
-          />
+          <KeywordTooltip :keyword="item" :full-width="true" />
         </v-chip>
       </div>
     </div>
     <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <span
-        class="d-flex align-baseline width-15-percent-flex"
-      >
+      <span class="d-flex align-baseline width-15-percent-flex">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
-            <v-icon
-              class="mr-2"
-              size="15"
-              v-bind="props"
-            >
+            <v-icon class="mr-2" size="15" v-bind="props">
               fas fa-question-circle
             </v-icon>
           </template>
-          {{ recordTooltips['subjects'] }}
+          {{ recordTooltips["subjects"] }}
         </v-tooltip>
         <b>Subjects</b>
       </span>
-      <div
-        class="d-flex full-width flex-wrap ml-md-12 ml-13"
-      >
-        <span v-if="!getField('subjects').length">
-          N/A
-        </span>
+      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+        <span v-if="!getField('subjects').length"> N/A </span>
         <v-chip
           v-for="item in getField('subjects')"
           :key="item.label"
@@ -73,38 +50,25 @@
           variant="flat"
           @click="returnToSearch('subjects', item.label)"
         >
-          <KeywordTooltip
-            :keyword="item"
-            :full-width="true"
-          />
+          <KeywordTooltip :keyword="item" :full-width="true" />
         </v-chip>
       </div>
     </div>
     <!--Domains-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <span
-        class="d-flex align-baseline width-15-percent-flex"
-      >
+      <span class="d-flex align-baseline width-15-percent-flex">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
-            <v-icon
-              class="mr-2"
-              size="15"
-              v-bind="props"
-            >
+            <v-icon class="mr-2" size="15" v-bind="props">
               fas fa-question-circle
             </v-icon>
           </template>
-          {{ recordTooltips['domains'] }}
+          {{ recordTooltips["domains"] }}
         </v-tooltip>
         <b>Domains</b>
       </span>
-      <div
-        class="d-flex full-width flex-wrap ml-md-12 ml-13"
-      >
-        <span v-if="!getField('domains').length">
-          N/A
-        </span>
+      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+        <span v-if="!getField('domains').length"> N/A </span>
         <v-chip
           v-for="item in getField('domains')"
           :key="item.label"
@@ -113,38 +77,25 @@
           variant="flat"
           @click="returnToSearch('domains', item.label)"
         >
-          <KeywordTooltip
-            :keyword="item"
-            :full-width="true"
-          />
+          <KeywordTooltip :keyword="item" :full-width="true" />
         </v-chip>
       </div>
     </div>
     <!--Taxonomic Range-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <span
-        class="d-flex align-baseline width-15-percent-flex"
-      >
+      <span class="d-flex align-baseline width-15-percent-flex">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
-            <v-icon
-              class="mr-2"
-              size="15"
-              v-bind="props"
-            >
+            <v-icon class="mr-2" size="15" v-bind="props">
               fas fa-question-circle
             </v-icon>
           </template>
-          {{ recordTooltips['taxonomies'] }}
+          {{ recordTooltips["taxonomies"] }}
         </v-tooltip>
         <b>Taxonomic Range</b>
       </span>
-      <div
-        class="d-flex full-width flex-wrap ml-md-12 ml-13"
-      >
-        <span v-if="!getField('taxonomies').length">
-          N/A
-        </span>
+      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+        <span v-if="!getField('taxonomies').length"> N/A </span>
         <v-chip
           v-for="item in getField('taxonomies')"
           :key="item.label"
@@ -153,38 +104,25 @@
           :color="getChipColor(item)"
           @click="returnToSearch('taxonomies', item.label)"
         >
-          <KeywordTooltip
-            :keyword="item"
-            :full-width="true"
-          />
+          <KeywordTooltip :keyword="item" :full-width="true" />
         </v-chip>
       </div>
     </div>
     <!--User Defined Tags-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <span
-        class="d-flex align-baseline width-15-percent-flex"
-      >
+      <span class="d-flex align-baseline width-15-percent-flex">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
-            <v-icon
-              class="mr-2"
-              size="15"
-              v-bind="props"
-            >
+            <v-icon class="mr-2" size="15" v-bind="props">
               fas fa-question-circle
             </v-icon>
           </template>
-          {{ recordTooltips['user_defined_tags'] }}
+          {{ recordTooltips["user_defined_tags"] }}
         </v-tooltip>
         <b>User Defined Tags</b>
       </span>
-      <div
-        class="d-flex full-width flex-wrap ml-md-12 ml-13"
-      >
-        <span v-if="!getField('userDefinedTags').length">
-          N/A
-        </span>
+      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+        <span v-if="!getField('userDefinedTags').length"> N/A </span>
         <v-chip
           v-for="item in getField('userDefinedTags')"
           :key="item.label"
@@ -193,10 +131,7 @@
           :color="getChipColor(item)"
           @click="returnToSearch('userDefinedTags', item.label)"
         >
-          <KeywordTooltip
-            :keyword="item"
-            :full-width="true"
-          />
+          <KeywordTooltip :keyword="item" :full-width="true" />
         </v-chip>
       </div>
     </div>
@@ -204,7 +139,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex';
+import { mapGetters, mapState } from "vuex";
 
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
@@ -217,17 +152,17 @@ export default {
   mixins: [recordsCardUtils],
   computed: {
     ...mapGetters("record", ["getField"]),
-    ...mapState("editor", ["recordTooltips"])
+    ...mapState("editor", ["recordTooltips"]),
   },
   methods: {
     returnToSearch(field, item) {
       let query = {};
       query[field] = encodeURIComponent(item);
       this.$router.push({
-        name: 'search',
-        query: query
+        name: "search",
+        query: query,
       });
-    }
-  }
-}
+    },
+  },
+};
 </script>

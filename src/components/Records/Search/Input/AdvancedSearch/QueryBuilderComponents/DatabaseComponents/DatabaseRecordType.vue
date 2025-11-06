@@ -1,11 +1,11 @@
 <template>
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="filteredRecordTypes('Database')"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="filteredRecordTypes('Database')"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 <script>
 import { mapActions } from "vuex";

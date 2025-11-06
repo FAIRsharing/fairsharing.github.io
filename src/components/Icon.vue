@@ -1,27 +1,27 @@
 <template>
   <div :class="[wrapperClass, 'd-flex justify-center']">
     <v-icon
-        v-if="!Object.keys(customIcons.values).includes(item)"
-        :size="size"
-        :color="color"
+      v-if="!Object.keys(customIcons.values).includes(item)"
+      :size="size"
+      :color="color"
     >
       {{ customIcons.values[fallback].icon }}
     </v-icon>
     <v-icon
-        v-else-if="customIcons.values[item].type === 'icon'"
-        :size="size"
-        :color="color"
-        :icon="customIcons.values[item].icon"
+      v-else-if="customIcons.values[item].type === 'icon'"
+      :size="size"
+      :color="color"
+      :icon="customIcons.values[item].icon"
     >
       {{ customIcons.values[item].icon }}
     </v-icon>
     <v-img
-        v-else-if="customIcons.values[item].type === 'img'"
-        class="contain"
-        :class="{ 'mt-0': wrapperClass !== '' }"
-        :height="height"
-        :width="height"
-        :src="customIcons.values[item].icon"
+      v-else-if="customIcons.values[item].type === 'img'"
+      class="contain"
+      :class="{ 'mt-0': wrapperClass !== '' }"
+      :height="height"
+      :width="height"
+      :src="customIcons.values[item].icon"
     />
   </div>
 </template>
@@ -59,7 +59,7 @@ export default {
   width: 45px;
   height: 45px;
   cursor: help;
-  color:#0000008a
+  color: #0000008a;
 }
 .alt-container {
   position: absolute;

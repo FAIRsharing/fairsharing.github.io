@@ -8,17 +8,11 @@
     "type",
     {
       "name": "creator",
-      "fields": [
-        "id",
-        "username"
-      ]
+      "fields": ["id", "username"]
     },
     {
       "name": "curator",
-      "fields": [
-        "id",
-        "username"
-      ]
+      "fields": ["id", "username"]
     }
   ]
 }

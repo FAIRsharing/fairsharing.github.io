@@ -28,20 +28,18 @@ const router = new VueRouter();
 describe("CuratorSummaryStatistics", () => {
   let restStub, wrapper;
   beforeAll(() => {
-       restStub = sinon.stub(Client.prototype, "executeQuery").returns(
-        {
-          data: {
-            error: false
-          }
-        }
-    );
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+      data: {
+        error: false,
+      },
+    });
     wrapper = shallowMount(CuratorSummaryStatistics, {
       localVue,
       router,
       mocks: { $store },
     });
   });
-  afterEach( () => {
+  afterEach(() => {
     restStub.restore();
   });
 
@@ -49,5 +47,4 @@ describe("CuratorSummaryStatistics", () => {
     expect(wrapper.vm.$options.name).toMatch("CuratorSummaryStatistics");
     expect(wrapper.vm.obtainFileRecordsCuratorSummary).toHaveBeenCalled;
   });
-
 });

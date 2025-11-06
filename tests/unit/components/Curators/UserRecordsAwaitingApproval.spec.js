@@ -5,57 +5,58 @@ import Vuex from "vuex";
 
 import UserRecordsAwaitingApproval from "@/components/Curators/UserRecordsAwaitingApproval.vue";
 import Client from "@/lib/Client/RESTClient.js";
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
-import dataDashboard from "../../../fixtures/curationDashboardData.json"
+import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
-let curationDataSummary =  dataDashboard.curationSummary;
+let curationDataSummary = dataDashboard.curationSummary;
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 let header = [
   {
-    "text": "Date last edit",
-    "value": "updatedAt",
-    "width": 90
+    text: "Date last edit",
+    value: "updatedAt",
+    width: 90,
   },
   {
-    "text": "",
-    "value": "priority",
-    "width": 40
+    text: "",
+    value: "priority",
+    width: 40,
   },
   {
-    "text": "Curator",
-    "value": "curator",
-    "width": 50
+    text: "Curator",
+    value: "curator",
+    width: 50,
   },
   {
-    "text": "Record name (id)",
-    "value": "recordName",
-    "width": 400
+    text: "Record name (id)",
+    value: "recordName",
+    width: 400,
   },
   {
-    "text": "Last editor",
-    "value": "lastEditor",
-    "width": 120
+    text: "Last editor",
+    value: "lastEditor",
+    width: 120,
   },
   {
-    "text": "Processing Notes",
-    "value": "processingNotes",
-    "sortable": false
-  },
-  { "text": "Accept record/edit?",
-    "value": "actions",
-    "sortable": false,
-    "width": 130
+    text: "Processing Notes",
+    value: "processingNotes",
+    sortable: false,
   },
   {
-    "text": "Creation date & user",
-    "value": "createdAt",
-    "width": 90
-  }
+    text: "Accept record/edit?",
+    value: "actions",
+    sortable: false,
+    width: 130,
+  },
+  {
+    text: "Creation date & user",
+    value: "createdAt",
+    width: 90,
+  },
 ];
 usersStore.state.user = function () {
   return {
@@ -91,19 +92,19 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   let graphStub;
 
   beforeAll(async () => {
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery")
-      .returns(curationDataSummary)
+    graphStub = sinon
+      .stub(GraphClient.prototype, "executeQuery")
+      .returns(curationDataSummary);
     restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: false } });
-
 
     wrapper = await shallowMount(UserRecordsAwaitingApproval, {
       localVue,
       router,
       mocks: { $store, $router },
       propsData: {
-        headerItems: header
-      }
+        headerItems: header,
+      },
     });
   });
 
@@ -117,7 +118,7 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.prepareApprovalRequired).toHaveBeenCalled;
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(3);
     expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch(
-      "Radi (11)"
+      "Radi (11)",
     );
     expect(wrapper.vm.approvalRequired.length).toBe(3);
     expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");
@@ -162,9 +163,7 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   });
 
   it("can assign a curator to a record", async () => {
-    expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch(
-      "Terazu"
-    );
+    expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("Terazu");
 
     await wrapper.vm.assignCurator(11, 1, "Michael Smith");
     expect(wrapper.vm.approvalRequiredProcessed[0].curator).toMatch("Michae");
@@ -243,7 +242,7 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   it("can watch props data", () => {
     wrapper.vm.$options.watch.approvalRequired.call(wrapper.vm);
     expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch(
-      "Radi (11)"
+      "Radi (11)",
     );
   });
 });

@@ -1,8 +1,8 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import AnyAllButton from "@/components/Records/Search/Input/AnyAllButton.vue"
+import AnyAllButton from "@/components/Records/Search/Input/AnyAllButton.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -10,7 +10,7 @@ const vuetify = new Vuetify();
 
 let $route = {
   name: "search",
-  query: {}
+  query: {},
 };
 
 const $router = {
@@ -24,9 +24,9 @@ describe("AnyAllButton.vue", function () {
     localVue,
     vuetify,
     propsData: {
-      searchAnd: true
+      searchAnd: true,
     },
-    mocks: {$router, $route}
+    mocks: { $router, $route },
   });
 
   it("can be instantiated", () => {
@@ -34,11 +34,11 @@ describe("AnyAllButton.vue", function () {
   });
 
   it("can change the value for searchAnd", () => {
-    wrapper.vm.$route.query = {searchAnd: 'true'};
+    wrapper.vm.$route.query = { searchAnd: "true" };
     wrapper.vm.applyFilter(true);
     expect(wrapper.vm.searchAnd).toEqual(true);
     expect(wrapper.vm.$route.query.searchAnd).toEqual("true");
-    wrapper.vm.$route.query = {searchAnd: 'false'};
+    wrapper.vm.$route.query = { searchAnd: "false" };
     wrapper.vm.applyFilter(false);
     expect(wrapper.vm.searchAnd).toEqual(false);
     expect(wrapper.vm.$route.query.searchAnd).toEqual("false");
@@ -48,11 +48,11 @@ describe("AnyAllButton.vue", function () {
     let $route = {
       name: "Standards",
       query: {
-        searchAnd: 'false',
-      }
+        searchAnd: "false",
+      },
     };
     wrapper = shallowMount(AnyAllButton, {
-      mocks: {$route, $router},
+      mocks: { $route, $router },
     });
     expect($router.push).toHaveBeenCalledTimes(1);
     await wrapper.vm.applyFilter(false);
@@ -60,6 +60,4 @@ describe("AnyAllButton.vue", function () {
     expect(wrapper.vm.searchAnd).toEqual(false);
     expect(wrapper.vm.$route.query.searchAnd).toEqual("false");
   });
-
-
 });

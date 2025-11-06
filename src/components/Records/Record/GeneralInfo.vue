@@ -24,48 +24,52 @@
       <Description />
       <!--Organisations-->
       <Organisations
-        v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+        v-if="currentRecord.fairsharingRecord.registry === 'Collection'"
         inline-style
       />
       <!--Home Page-->
       <HomePage />
       <!--Reference URL-->
       <ReferenceURL
-        v-if="currentRecord.fairsharingRecord.registry==='Collection' ||
-          currentRecord.fairsharingRecord.type==='principle'"
+        v-if="
+          currentRecord.fairsharingRecord.registry === 'Collection' ||
+          currentRecord.fairsharingRecord.type === 'principle'
+        "
       />
       <!--Year of Creation-->
-      <YearOfCreation v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <YearOfCreation
+        v-if="currentRecord.fairsharingRecord.registry !== 'Collection'"
+      />
       <!--Maintainers-->
       <Maintainers
         :can-claim="canClaim"
         @request-ownership="callRequestOwnership"
       />
       <!--ContactsData-->
-      <ContactsData v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+      <ContactsData
+        v-if="currentRecord.fairsharingRecord.registry === 'Collection'"
+      />
       <!--Developed Countries-->
-      <Countries v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <Countries
+        v-if="currentRecord.fairsharingRecord.registry !== 'Collection'"
+      />
       <!--Keywords-->
       <Keywords />
 
       <!-- Licence needs to go here -->
-      <Licence v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+      <Licence
+        v-if="currentRecord.fairsharingRecord.registry === 'Collection'"
+      />
 
       <!-- Duplicate link to graph (see also action menu) -->
-      <span
-        class="d-flex align-baseline width-15-percent-flex"
-      >
+      <span class="d-flex align-baseline width-15-percent-flex">
         <v-tooltip location="bottom">
           <template #activator="{ props }">
-            <v-icon
-              class="mr-2"
-              size="15"
-              v-bind="props"
-            >
+            <v-icon class="mr-2" size="15" v-bind="props">
               fas fa-question-circle
             </v-icon>
           </template>
-          {{ recordTooltips['graph_button'] }}
+          {{ recordTooltips["graph_button"] }}
         </v-tooltip>
         <v-btn
           class="my-5"
@@ -75,22 +79,12 @@
           :disabled="graphButtonDisabled()"
           @click="loadGraph"
         >
-          <v-icon
-            size="small"
-            start
-          >
-            fas fa-project-diagram
-          </v-icon>
-          <span
-            v-if="currentRecord.fairsharingRecord.hasGraph"
-          >
+          <v-icon size="small" start> fas fa-project-diagram </v-icon>
+          <span v-if="currentRecord.fairsharingRecord.hasGraph">
             View Relation Graph
           </span>
-          <span v-else>
-            No Graph Available
-          </span>
+          <span v-else> No Graph Available </span>
         </v-btn>
-
       </span>
 
       <!--How to cite & publication for record named Citations-->
@@ -107,9 +101,9 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
-import Licence from '@/components/Records/Record/CollectionRecord/Licence.vue'
+import Licence from "@/components/Records/Record/CollectionRecord/Licence.vue";
 import Citations from "@/components/Records/Record/GeneralInfo/Citations";
 import CommunityCuratorInfo from "@/components/Records/Record/GeneralInfo/CommunityCuratorInfo";
 import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
@@ -127,7 +121,7 @@ import Type from "@/components/Records/Record/GeneralInfo/Type";
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
 import YearOfCreation from "@/components/Records/Record/GeneralInfo/YearOfCreation";
 import Organisations from "@/components/Records/Record/Organisations";
-import SectionTitle from '@/components/Records/Record/SectionTitle';
+import SectionTitle from "@/components/Records/Record/SectionTitle";
 
 export default {
   name: "GeneralInfo",
@@ -150,39 +144,41 @@ export default {
     Keywords,
     SectionTitle,
     CommunityCuratorInfo,
-    Licence
+    Licence,
   },
   props: {
     canClaim: {
       type: Boolean,
       default: true,
     },
-    backColor:{
-      default:null,
+    backColor: {
+      default: null,
       type: String,
-    }
+    },
   },
   computed: {
-    ...mapState('record', ["currentRecord"]),
-    ...mapState('editor', ['recordTooltips']),
-    ...mapGetters("record", ["getField"])
+    ...mapState("record", ["currentRecord"]),
+    ...mapState("editor", ["recordTooltips"]),
+    ...mapGetters("record", ["getField"]),
   },
   methods: {
     callRequestOwnership() {
-      this.$emit('requestOwnership')
+      this.$emit("requestOwnership");
     },
     loadGraph() {
       let _module = this;
-      if(_module.currentRecord.fairsharingRecord.hasGraph) {
-        _module.$router.push({path: `/graph/${_module.currentRecord['fairsharingRecord'].id}`})
+      if (_module.currentRecord.fairsharingRecord.hasGraph) {
+        _module.$router.push({
+          path: `/graph/${_module.currentRecord["fairsharingRecord"].id}`,
+        });
       }
     },
     graphButtonDisabled() {
-      if(this.currentRecord.fairsharingRecord.hasGraph) {
+      if (this.currentRecord.fairsharingRecord.hasGraph) {
         return false;
       }
       return true;
-    }
-  }
-}
+    },
+  },
+};
 </script>

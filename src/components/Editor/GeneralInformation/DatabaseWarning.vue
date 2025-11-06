@@ -1,15 +1,11 @@
 <template>
   <div>
     <v-expand-transition>
-      <v-overlay
-        v-if="showOverlay"
-        :dark="false"
-        opacity="0.8"
-      >
+      <v-overlay v-if="showOverlay" :dark="false" opacity="0.8">
         <v-card width="1000px">
           <v-card-title
             class="text-white"
-            :class="{'red': answered, 'info': !answered}"
+            :class="{ red: answered, info: !answered }"
           >
             <span v-if="!answered">Before you begin...</span>
             <span v-else>
@@ -22,44 +18,30 @@
                 <h2 class="mb-2">
                   Please take a moment to answer the following question.
                 </h2>
-                <div>
-                  Is your record for a dataset?
-                </div>
+                <div>Is your record for a dataset?</div>
               </div>
               <div v-if="answered">
                 <div>
                   FAIRsharing records describe community resources such as
-                  databases, standards and policies and
-                  are not used to describe or store experimental data.
-                  For more information, please see the 'Adding Database Records'
-                  section within our new record documentation. <br>
-                  FAIRsharing can help you find a repository for you to store your data via our Wizard or Advanced
-                  Search pages.
-                  If you are still unsure as to how to proceed then you may contact us.
+                  databases, standards and policies and are not used to describe
+                  or store experimental data. For more information, please see
+                  the 'Adding Database Records' section within our new record
+                  documentation. <br />
+                  FAIRsharing can help you find a repository for you to store
+                  your data via our Wizard or Advanced Search pages. If you are
+                  still unsure as to how to proceed then you may contact us.
                 </div>
               </div>
             </v-slide-x-transition>
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              v-if="!answered"
-              class="bg-success"
-              @click="pressYes()"
-            >
+            <v-btn v-if="!answered" class="bg-success" @click="pressYes()">
               Yes
             </v-btn>
-            <v-btn
-              v-if="!answered"
-              class="bg-warning"
-              @click="pressNo()"
-            >
+            <v-btn v-if="!answered" class="bg-warning" @click="pressNo()">
               <span>No</span>
             </v-btn>
-            <v-btn
-              v-else
-              class="bg-error"
-              @click="closeMenu()"
-            >
+            <v-btn v-else class="bg-error" @click="closeMenu()">
               <span>Go back</span>
             </v-btn>
             <v-btn
@@ -80,52 +62,53 @@ import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "DatabaseWarning",
-  data(){
+  data() {
     return {
       showOverlay: false,
       answered: false,
       oldVal: null,
-      submitted: 0
-    }
+      submitted: 0,
+    };
   },
   computed: {
     ...mapGetters("record", ["getSection"]),
     ...mapState("record", ["sections"]),
     type: {
-      get(){
-        return this.getSection("generalInformation").data.type.name
-      }
-    }
+      get() {
+        return this.getSection("generalInformation").data.type.name;
+      },
+    },
   },
   watch: {
-    type(val, oldVal){
+    type(val, oldVal) {
       this.oldVal = oldVal;
-      if (val === 'knowledgebase' ||
-                    val === 'repository' ||
-                    val === 'knowledgebase_and_repository' ||
-                    val === 'collection'
-      ){
+      if (
+        val === "knowledgebase" ||
+        val === "repository" ||
+        val === "knowledgebase_and_repository" ||
+        val === "collection"
+      ) {
         this.showOverlay = true;
       }
-    }
+    },
   },
   methods: {
-    closeMenu(){
+    closeMenu() {
       this.$store.commit("record/resetRegistry");
       this.showOverlay = false;
       this.answered = false;
     },
-    pressYes(){
+    pressYes() {
       this.answered = true;
       this.submitted += 1;
     },
-    pressNo(){
+    pressNo() {
       this.showOverlay = false;
       if (this.submitted >= 1) {
         // Instead of this log, access the store and add the relevant field to the record.
         this.sections.generalInformation.data.is_dataset = true;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

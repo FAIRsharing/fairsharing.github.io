@@ -1,13 +1,13 @@
 <template>
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchOrganisations"
-      :loading="getLoadingStatus"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-      @fetch-data="getResults"
-    />
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getSearchOrganisations"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -35,7 +35,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("organisationSearch", ["getSearchOrganisations", "getLoadingStatus"]),
+    ...mapGetters("organisationSearch", [
+      "getSearchOrganisations",
+      "getLoadingStatus",
+    ]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -61,7 +64,7 @@ export default {
           if (this.value && this.value.length) {
             organisationSearch.commit(
               "organisationSearch/setSearchOrganisations",
-              this.value
+              this.value,
             );
           }
         }

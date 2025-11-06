@@ -1,11 +1,6 @@
 <template>
-  <div
-    class="rounded-0 bg-white py-3"
-    style="position: relative"
-  >
-    <h2 class="text-center">
-      Save Your Search
-    </h2>
+  <div class="rounded-0 bg-white py-3" style="position: relative">
+    <h2 class="text-center">Save Your Search</h2>
 
     <v-btn
       icon
@@ -22,7 +17,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import saveSearch from "@/store";
 

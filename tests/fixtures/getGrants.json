@@ -2,11 +2,7 @@
   "filterName": "grants",
   "filterLabel": "Grant(s)",
   "type": "String",
-  "values": [
-    "xda08020102",
-    "2014aa021503 and 2015aa020108",
-    "xdb13040500"
-  ],
+  "values": ["xda08020102", "2014aa021503 and 2015aa020108", "xdb13040500"],
   "buckets": [
     {
       "key": "xda08020102",

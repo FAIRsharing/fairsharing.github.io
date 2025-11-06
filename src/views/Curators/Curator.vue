@@ -1,9 +1,5 @@
 <template>
-  <v-container
-    id="curatorPage"
-    fluid
-    class="standard"
-  >
+  <v-container id="curatorPage" fluid class="standard">
     <v-row
       v-if="user().role === 'super_curator' || user().role === 'developer'"
     >
@@ -19,10 +15,7 @@
           Welcome, curator {{ user().credentials.username }}
         </v-banner>
         <!-- least recently updated -->
-        <v-card
-          v-if="leastRecentlyDetails"
-          class="mb-2"
-        >
+        <v-card v-if="leastRecentlyDetails" class="mb-2">
           <v-card-text>
             The record least recently updated is:
             <a :href="getHostname() + leastRecentlyDetails.id">
@@ -39,10 +32,7 @@
           slider-size="5"
           show-arrows
         >
-          <v-tab
-            v-for="tab in tabs"
-            :key="'tab_' + tab.name"
-          >
+          <v-tab v-for="tab in tabs" :key="'tab_' + tab.name">
             <div>{{ tab.name }}</div>
           </v-tab>
           <v-tabs-window v-model="selectedTab">
@@ -51,10 +41,7 @@
               :key="tab + '_' + tabIndex"
               class="px-1 py-3"
             >
-              <component
-                :is="tab.component"
-                :header-items="tab.headers"
-              />
+              <component :is="tab.component" :header-items="tab.headers" />
             </v-tabs-window-item>
           </v-tabs-window>
         </v-tabs>
@@ -172,7 +159,7 @@ export default {
   watch: {
     "dialogs.deleteRecord"(val) {
       val || this.closeDeleteMenu();
-    }
+    },
   },
   created() {
     this.$nextTick(function () {
@@ -192,7 +179,7 @@ export default {
       }
       client.setHeader(this.user().credentials.token);
       let leastRecentlyUpdatedData = await client.executeQuery(
-        getLeastRecentlyUpdated
+        getLeastRecentlyUpdated,
       );
       this.leastRecentlyDetails =
         leastRecentlyUpdatedData["leastRecentlyUpdated"];

@@ -1,11 +1,11 @@
 <template>
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -25,7 +25,8 @@ export default {
       itemList: ["open", "controlled", "not found", "not applicable"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Deposition of data: are there any restrictions (e.g. by location, country, organization, etc.) or can anyone from anywhere deposit data? Multiple selections will be joined with OR.",
+      toolTipText:
+        "Deposition of data: are there any restrictions (e.g. by location, country, organization, etc.) or can anyone from anywhere deposit data? Multiple selections will be joined with OR.",
     };
   },
   computed: {

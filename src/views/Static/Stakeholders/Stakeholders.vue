@@ -8,7 +8,10 @@
     <!--  main_subtitle  -->
     <!-- eslint-disable vue/no-v-html -->
     <p
-      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-8 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
       v-html="stakeholdersData.main_subtitle"
     />
 
@@ -19,7 +22,7 @@
 
     <!--  content  -->
     <div
-      v-for="(item,index) in stakeholdersData.stakeholders_data"
+      v-for="(item, index) in stakeholdersData.stakeholders_data"
       :key="index"
     >
       <a :id="item.anchor" />
@@ -27,7 +30,10 @@
         {{ item.title }}
       </h3>
       <p
-        :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="[
+          'mb-8 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xlOnly },
+        ]"
         v-html="item.content"
       />
       <!-- eslint-enable vue/no-v-html -->
@@ -36,17 +42,17 @@
 </template>
 
 <script>
-import stakeholdersData from '@/data/stakeholdersData.json'
+import stakeholdersData from "@/data/stakeholdersData.json";
 import getHostname from "@/utils/generalUtils";
 export default {
   name: "Stakeholders",
-  mixins: [ getHostname ],
+  mixins: [getHostname],
   data: () => {
     return {
       stakeholdersData: stakeholdersData.stakeholders,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 <style>
 p {

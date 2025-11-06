@@ -20,34 +20,24 @@
         :search="search"
         :loading="loading"
         loading-text="Loading... Please wait"
-        :class="{'data-table-mobile': $vuetify.display.xs}"
-        :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+        :class="{ 'data-table-mobile': $vuetify.display.xs }"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
       >
         <template #[`item.name`]="{ item }">
-          <router-link
-            :to="`/organisations/${item.id}`"
-          >
+          <router-link :to="`/organisations/${item.id}`">
             {{ item.name }}
           </router-link>
         </template>
         <template #[`item.types`]="{ item }">
-          {{ item.types.join(', ') }}
+          {{ item.types.join(", ") }}
         </template>
         <template #[`item.homepage`]="{ item }">
-          <a
-            target="_blank"
-            class="underline-effect"
-            :href="item.homepage"
-          >
+          <a target="_blank" class="underline-effect" :href="item.homepage">
             {{ item.homepage }}
           </a>
         </template>
         <template #[`item.rorLink`]="{ item }">
-          <a
-            target="_blank"
-            class="underline-effect"
-            :href="item.rorLink"
-          >
+          <a target="_blank" class="underline-effect" :href="item.rorLink">
             {{ item.rorLink }}
           </a>
         </template>
@@ -66,7 +56,7 @@ export default {
 
   data() {
     return {
-      search: '',
+      search: "",
       headers: [
         {
           text: "Name",
@@ -76,7 +66,7 @@ export default {
         },
         { text: "Types", value: "types", sortable: false },
         { text: "Homepage", value: "homepage", sortable: false },
-        { text: "ROR", value: "rorLink", sortable: false }
+        { text: "ROR", value: "rorLink", sortable: false },
       ],
       loading: false,
       organisations: [],
@@ -92,7 +82,7 @@ export default {
   methods: {
     async getOrganisationsList() {
       const organisationsList = await graphClient.executeQuery(
-        getAllOrganisationsQuery
+        getAllOrganisationsQuery,
       );
 
       this.organisations = organisationsList.allOrganisations;

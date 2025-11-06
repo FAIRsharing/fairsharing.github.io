@@ -1,8 +1,8 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition"
+import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
 import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
@@ -12,25 +12,26 @@ const vuetify = new Vuetify();
 Record.state.currentRecord["fairsharingRecord"] = {
   metadata: {
     associated_tools: [{}],
-    data_processes_and_conditions: [{name: 'name1', type: 'data access', url: 'www.somewhere.com', access_method: 'access method'}]
+    data_processes_and_conditions: [
+      {
+        name: "name1",
+        type: "data access",
+        url: "www.somewhere.com",
+        access_method: "access method",
+      },
+    ],
   },
-  taxonomies: [
-    {label: "Turdus turdus"},
-  ],
-  subjects: [
-    {label: "Javascript Fun"},
-  ],
-  domains: [
-    {label: "Deneb"},
-  ],
-  userDefinedTags: [{label: 'a'}],
-  objectTypes: [{label: 'b'}]
+  taxonomies: [{ label: "Turdus turdus" }],
+  subjects: [{ label: "Javascript Fun" }],
+  domains: [{ label: "Deneb" }],
+  userDefinedTags: [{ label: "a" }],
+  objectTypes: [{ label: "b" }],
 };
 
 const $store = new Vuex.Store({
   modules: {
-    record: Record
-  }
+    record: Record,
+  },
 });
 
 describe("DataProcessAndCondition.vue", function () {
@@ -40,7 +41,7 @@ describe("DataProcessAndCondition.vue", function () {
     wrapper = shallowMount(DataProcessAndCondition, {
       localVue,
       vuetify,
-      mocks: {$store}
+      mocks: { $store },
     });
   });
 
@@ -51,86 +52,94 @@ describe("DataProcessAndCondition.vue", function () {
   it("can be check the reaction of page if appropriate data not provided", () => {
     let mockData;
     expect(wrapper.vm.generateProcessesData()).toStrictEqual({
-      'data access': {
-        data: [{name: 'name1', type: 'data access', url: 'www.somewhere.com', access_method: 'access method'}],
-        icon: 'data_access'
+      "data access": {
+        data: [
+          {
+            name: "name1",
+            type: "data access",
+            url: "www.somewhere.com",
+            access_method: "access method",
+          },
+        ],
+        icon: "data_access",
       },
-    })
+    });
 
     mockData = {
       fairsharingRecord: {
         licences: [],
         metadata: {},
-        taxonomies: [
-          {label: "asasd turdus"},
-        ],
-        subjects: [
-          {label: "asdasd Fun"},
-        ],
-        domains: [
-          {label: "asasd"},
-        ],
-        userDefinedTags: [{label: 'b'}],
-        objectTypes: [{label: 'c'}]
-      }
-    }
-    $store.commit("record/setCurrentRecord", mockData)
-    expect(wrapper.vm.generateProcessesData()).toStrictEqual({})
+        taxonomies: [{ label: "asasd turdus" }],
+        subjects: [{ label: "asdasd Fun" }],
+        domains: [{ label: "asasd" }],
+        userDefinedTags: [{ label: "b" }],
+        objectTypes: [{ label: "c" }],
+      },
+    };
+    $store.commit("record/setCurrentRecord", mockData);
+    expect(wrapper.vm.generateProcessesData()).toStrictEqual({});
 
     mockData = {
       fairsharingRecord: {
         metadata: {
           data_processes_and_conditions: [
-            {name: 'name1', type: 'data access', url: 'www.somewhere.com', access_method: 'access method'},
-            {name: 'name2', type: 'data access', url: 'www.somewhere.com', access_method: 'access method'},
-            {name: 'name3', type: 'data curation', url: 'www.somewhere3.com', access_method: 'access method'}]
+            {
+              name: "name1",
+              type: "data access",
+              url: "www.somewhere.com",
+              access_method: "access method",
+            },
+            {
+              name: "name2",
+              type: "data access",
+              url: "www.somewhere.com",
+              access_method: "access method",
+            },
+            {
+              name: "name3",
+              type: "data curation",
+              url: "www.somewhere3.com",
+              access_method: "access method",
+            },
+          ],
         },
-        taxonomies: [
-          {label: "asasd turdus"},
-        ],
-        subjects: [
-          {label: "asdasd Fun"},
-        ],
-        domains: [
-          {label: "asasd"},
-        ],
-        userDefinedTags: [{label: 'b'}],
-        objectTypes: [{label: 'c'}]
-      }
-    }
-    $store.commit("record/setCurrentRecord", mockData)
+        taxonomies: [{ label: "asasd turdus" }],
+        subjects: [{ label: "asdasd Fun" }],
+        domains: [{ label: "asasd" }],
+        userDefinedTags: [{ label: "b" }],
+        objectTypes: [{ label: "c" }],
+      },
+    };
+    $store.commit("record/setCurrentRecord", mockData);
     expect(wrapper.vm.generateProcessesData()).toStrictEqual({
       "data access": {
-        "data": [
+        data: [
           {
-            "name": "name1",
-            "type": "data access",
-            "url": "www.somewhere.com",
-            "access_method": 'access method'
+            name: "name1",
+            type: "data access",
+            url: "www.somewhere.com",
+            access_method: "access method",
           },
           {
-            "name": "name2",
-            "type": "data access",
-            "url": "www.somewhere.com",
-            "access_method": 'access method'
-          }
+            name: "name2",
+            type: "data access",
+            url: "www.somewhere.com",
+            access_method: "access method",
+          },
         ],
-        "icon": "data_access"
+        icon: "data_access",
       },
       "data curation": {
-        "data": [
+        data: [
           {
-            "name": "name3",
-            "type": "data curation",
-            "url": "www.somewhere3.com",
-            "access_method": 'access method'
-          }
+            name: "name3",
+            type: "data curation",
+            url: "www.somewhere3.com",
+            access_method: "access method",
+          },
         ],
-        "icon": "data_curation"
-      }
-    })
-
+        icon: "data_curation",
+      },
+    });
   });
-
-
 });

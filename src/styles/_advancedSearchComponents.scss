@@ -1,4 +1,3 @@
-
 .advancedSearchDialogBoxContent {
   width: 90%;
   .v-input__control {
@@ -13,7 +12,7 @@
       min-height: 36px;
     }
     .advancedSearchChip {
-      height: 32px
+      height: 32px;
     }
   }
 }
@@ -24,7 +23,7 @@
     margin-right: 0;
   }
   .v-messages {
-    display: none
+    display: none;
   }
 }
 
@@ -34,16 +33,17 @@
     .v-icon {
       background-color: white;
       border-radius: 50%;
-      opacity: 1
+      opacity: 1;
     }
   }
   .v-messages {
-    display: none
+    display: none;
   }
 }
 
 //Styling for textfield
-.advancedSearchSelect, .advancedSearchAutocomplete {
+.advancedSearchSelect,
+.advancedSearchAutocomplete {
   .v-field__input {
     padding: 0 12px;
   }

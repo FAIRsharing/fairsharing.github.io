@@ -94,15 +94,15 @@
             </div>
           </v-tab>
         </v-tabs>
-          <v-tabs-window v-model="selectedTab">
-            <v-tabs-window-item
-              v-for="(tab, tabIndex) in tabs"
-              :key="tab + '_' + tabIndex"
-              class="px-10 py-3"
-            >
-              <component :is="tab.component" v-if="!isDisabled(tab.name)" />
-            </v-tabs-window-item>
-          </v-tabs-window>
+        <v-tabs-window v-model="selectedTab">
+          <v-tabs-window-item
+            v-for="(tab, tabIndex) in tabs"
+            :key="tab + '_' + tabIndex"
+            class="px-10 py-3"
+          >
+            <component :is="tab.component" v-if="!isDisabled(tab.name)" />
+          </v-tabs-window-item>
+        </v-tabs-window>
       </v-col>
     </v-row>
   </v-container>

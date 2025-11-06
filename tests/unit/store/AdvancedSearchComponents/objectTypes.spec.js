@@ -5,7 +5,6 @@ import ObjectTypesStore from "@/store/AdvancedSearchComponents/objectTypes";
 
 import ObjectTypesData from "../../../../tests/fixtures/getObjectTypes.json";
 
-
 describe("ObjectTypes store methods", () => {
   const { actions, mutations, getters } = ObjectTypesStore;
   const returnedVal = ObjectTypesData;
@@ -67,7 +66,7 @@ describe("ObjectTypes store methods", () => {
   it("can check getObjectTypes getters", () => {
     const getObjectsResult = {
       objectTypes: {
-        records: ["test", "test1", "test2" ]
+        records: ["test", "test1", "test2"],
       },
     };
     const builtData = getters.getObjectTypes(getObjectsResult);

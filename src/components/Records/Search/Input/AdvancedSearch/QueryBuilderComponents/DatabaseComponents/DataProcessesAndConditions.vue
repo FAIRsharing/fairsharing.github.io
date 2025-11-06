@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Stores metadata regarding human (i.e. user interfaces) and machine-readable access points for your resource.",
-
+      itemValue: "",
+      toolTipText:
+        "Stores metadata regarding human (i.e. user interfaces) and machine-readable access points for your resource.",
     };
   },
   computed: {

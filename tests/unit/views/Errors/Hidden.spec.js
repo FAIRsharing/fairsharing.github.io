@@ -7,16 +7,15 @@ const localVue = createLocalVue();
 localVue.use(VueMeta);
 
 describe("Hidden record notification", () => {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Hidden, {
-            localVue
-        });
+  beforeEach(() => {
+    wrapper = shallowMount(Hidden, {
+      localVue,
     });
+  });
 
-    it("can mount", () => {
-        expect(wrapper.vm.$options.name).toBe("Hidden");
-    });
-
+  it("can mount", () => {
+    expect(wrapper.vm.$options.name).toBe("Hidden");
+  });
 });

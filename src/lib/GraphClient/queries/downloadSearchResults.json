@@ -1,7 +1,5 @@
 {
   "queryName": "downloadSearchResults",
   "queryParam": null,
-  "fields": [
-    "fileData"
-  ]
+  "fields": ["fileData"]
 }

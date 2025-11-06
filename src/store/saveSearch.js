@@ -24,7 +24,7 @@ const actions = {
 
     let response = await CLIENT.executeQuery(RECORD_TYPES);
     const policyRecord = response.fairsharingRegistries["records"].filter(
-      (item) => item["name"] === "Policy"
+      (item) => item["name"] === "Policy",
     );
     let policyRecordId = policyRecord[0].id;
 
@@ -34,7 +34,7 @@ const actions = {
     let policyRecordResponse = await CLIENT.executeQuery(REGISTRY_RECORDS);
     commit(
       "setPolicyRecords",
-      policyRecordResponse.fairsharingRegistry["fairsharingRecords"]
+      policyRecordResponse.fairsharingRegistry["fairsharingRecords"],
     );
 
     commit("setLoadingStatus", false);
@@ -66,14 +66,14 @@ const mutations = {
   },
   resetSaveSearchStepper(state) {
     (state.loadingStatus = false),
-      (state.saveSearchStepperDialog = false),
-      (state.saveSearchResult = []),
-      (state.organisationSelected = []),
-      (state.policySelected = []),
-      (state.policyRecords = []),
-      (state.userSelected = []),
-      (state.saveSearchStatus = false),
-      (state.showStepper = true);
+    (state.saveSearchStepperDialog = false),
+    (state.saveSearchResult = []),
+    (state.organisationSelected = []),
+    (state.policySelected = []),
+    (state.policyRecords = []),
+    (state.userSelected = []),
+    (state.saveSearchStatus = false),
+    (state.showStepper = true);
   },
   setLoadingStatus(state, loadingStatus) {
     state.loadingStatus = loadingStatus;

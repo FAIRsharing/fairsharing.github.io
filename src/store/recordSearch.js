@@ -54,7 +54,8 @@ export const actions = {
       data = await client.executeQuery(recordsQuery);
       this.commit("records/setRecords", data["searchFairsharingRecords"]);
       this.commit("records/setLoadingStatus", false);
-    } catch {
+    }
+    catch {
       // Loading complete, but no data returned...
       this.commit("records/setRecords", { records: [] });
     }
@@ -82,7 +83,8 @@ export const actions = {
       data = await client.executeQuery(recordsQuery);
       this.commit("records/setRecords", data["searchFairsharingRecords"]);
       this.commit("records/setLoadingStatus", false);
-    } catch {
+    }
+    catch {
       // Loading complete, but no data returned...
       this.commit("records/setRecords", { records: [] });
     }
@@ -97,10 +99,13 @@ export const actions = {
       // attempt to fix single fields with brackets, as per:
       // https://github.com/FAIRsharing/fairsharing.github.io/issues/2648
       Object.keys(params).forEach((key) => {
-        if (String(params[key]).includes('(') || String(params[key]).includes(')')) {
+        if (
+          String(params[key]).includes("(") ||
+          String(params[key]).includes(")")
+        ) {
           params[key] = [params[key]];
         }
-      })
+      });
       // params['q'] needs to be sanitised here.
       if ("q" in params) {
         // TODO: Is it worth preserving foreign characters as discussed here?
@@ -108,7 +113,8 @@ export const actions = {
         const cleaned = params["q"].replace(/[^0-9a-z\s]/gi, "");
         const newParams = { ...params, q: cleaned };
         recordsQuery.queryParam = newParams;
-      } else {
+      }
+      else {
         recordsQuery.queryParam = params;
       }
     }
@@ -132,11 +138,13 @@ export const actions = {
           },
           records: [],
         });
-      } else {
+      }
+      else {
         this.commit("records/setRecords", data["searchFairsharingRecords"]);
       }
       this.commit("records/setLoadingStatus", false);
-    } catch {
+    }
+    catch {
       // Loading complete, but no data returned...
       /* istanbul ignore next */
       this.commit("records/setRecords", { records: [] });
@@ -151,8 +159,8 @@ export const getters = {
     if (state.facets.length > 0) {
       let currentFacet = JSON.parse(
         JSON.stringify(
-          state.facets.find((facet) => facet.filterName === facetName)
-        )
+          state.facets.find((facet) => facet.filterName === facetName),
+        ),
       );
       currentFacet["values"] = currentFacet["buckets"];
       return currentFacet;

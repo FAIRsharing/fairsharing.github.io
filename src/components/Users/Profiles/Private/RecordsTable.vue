@@ -11,11 +11,7 @@
       <template #[`item.name`]="{ item }">
         <div class="d-flex justify-start align-center">
           <v-avatar size="30">
-            <Icon
-              :item="item.type"
-              :height="30"
-              wrapper-class=""
-            />
+            <Icon :item="item.type" :height="30" wrapper-class="" />
           </v-avatar>
           <div class="mt-1 ml-3 alignLeft">
             {{ $filters.cleanString(item.name) }}
@@ -42,11 +38,7 @@
       <template #[`item.actions`]="{ item }">
         <v-menu>
           <template #activator="{ props }">
-            <v-icon
-              v-bind="props"
-            >
-              fas fa-ellipsis-v
-            </v-icon>
+            <v-icon v-bind="props"> fas fa-ellipsis-v </v-icon>
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.id)">
@@ -62,10 +54,14 @@
               <v-list-item-title> Go to record </v-list-item-title>
             </v-list-item>
             <v-list-item
-              v-if="(source !== 'maintenanceRequests' && source !== 'watchedRecords') || (source === 'watchedRecords' && user().is_curator)"
+              v-if="
+                (source !== 'maintenanceRequests' &&
+                  source !== 'watchedRecords') ||
+                (source === 'watchedRecords' && user().is_curator)
+              "
               @click="goToEdit(item.id)"
             >
-                <template #prepend>
+              <template #prepend>
                 <v-icon>fas fa-pen</v-icon>
               </template>
               <v-list-item-title> Edit record </v-list-item-title>
@@ -76,10 +72,7 @@
       <template #no-data>
         <div>
           {{ noData }}
-          <router-link
-            v-if="source === 'createdRecords'"
-            to="/new"
-          >
+          <router-link v-if="source === 'createdRecords'" to="/new">
             here.
           </router-link>
         </div>
@@ -104,7 +97,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex"
+import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import Record from "@/views/Records/Record";
@@ -113,88 +106,102 @@ import StatusPills from "./StatusPills";
 
 export default {
   name: "RecordsTable",
-  components: {Icon, Record, StatusPills},
+  components: { Icon, Record, StatusPills },
   props: {
-    records: {type: Array, default: () => []},
-    source: { type: String, default: null }
+    records: { type: Array, default: () => [] },
+    source: { type: String, default: null },
   },
   data: () => {
     return {
       showOverlay: false,
       targetID: null,
-      closeButton: false
-    }
+      closeButton: false,
+    };
   },
   computed: {
-    ...mapState('users', ['user']),
-    headers(){
+    ...mapState("users", ["user"]),
+    headers() {
       let headers = [
-        {title: 'Name', value: 'name', align: 'center'},
-        {title: 'Registry', value: 'type', align: 'center'}
+        { title: "Name", value: "name", align: "center" },
+        { title: "Registry", value: "type", align: "center" },
       ];
-      if (this.source !== 'maintenanceRequests' && this.source !== 'watchedRecords'){
-        headers.push({title: 'Approved', value: 'isApproved', align: 'center'});
+      if (
+        this.source !== "maintenanceRequests" &&
+        this.source !== "watchedRecords"
+      ) {
+        headers.push({
+          title: "Approved",
+          value: "isApproved",
+          align: "center",
+        });
       }
-      else if (this.source === 'maintenanceRequests') {
-        headers.push({title: 'Status', value: 'status', align: 'center'});
+      else if (this.source === "maintenanceRequests") {
+        headers.push({ title: "Status", value: "status", align: "center" });
       }
-      headers.push({title: 'Actions', value: 'actions', align: 'center', sortable: false});
+      headers.push({
+        title: "Actions",
+        value: "actions",
+        align: "center",
+        sortable: false,
+      });
       return headers;
     },
-    noData(){
+    noData() {
       return {
         maintenanceRequests: "You do not have any maintenance requests.",
-        createdRecords: "You did not create any record yet. Start creating one ",
+        createdRecords:
+          "You did not create any record yet. Start creating one ",
         maintainedRecords: "You do not maintain any records.",
         publicMaintainedRecords: "This user does not maintain any records.",
-        watchedRecords: "You are not watching any record."
+        watchedRecords: "You are not watching any record.",
       }[this.source];
     },
-    perPage(){
-      if (this.source === 'watchedRecords') return 7;
-      return 5
+    perPage() {
+      if (this.source === "watchedRecords") return 7;
+      return 5;
     },
-    footer(){
-      if (this.source === 'watchedRecords') return {'items-per-page-options': [7]};
-      return {'items-per-page-options': [5]}
-    }
+    footer() {
+      if (this.source === "watchedRecords")
+        return { "items-per-page-options": [7] };
+      return { "items-per-page-options": [5] };
+    },
   },
   methods: {
-    goToEdit(id){
-      this.$router.push({path: `/${id}/edit`})
+    goToEdit(id) {
+      this.$router.push({ path: `/${id}/edit` });
     },
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
     },
     goToRecord(id) {
-      window.open("/" + id, '_blank');
+      window.open("/" + id, "_blank");
     },
-    hideOverlay(){
+    hideOverlay() {
       this.showOverlay = false;
       this.targetID = null;
-      this.closeButton = false
+      this.closeButton = false;
     },
     showDialog(value) {
-      this.closeButton = value
-    }
-  }
-}
+      this.closeButton = value;
+    },
+  },
+};
 </script>
 
 <style scoped>
-  .alignLeft {
-    text-align: left !important;
-  }
+.alignLeft {
+  text-align: left !important;
+}
 
-  .userProfileRecordsTable th {
-    min-width: 100px
-  }
+.userProfileRecordsTable th {
+  min-width: 100px;
+}
 
-  .absolute {
-      position: absolute !important;
-      z-index: 1;
-      right: -13px;
-      top: -10px
-  }
+.absolute {
+  position: absolute !important;
+  z-index: 1;
+  right: -13px;
+  top: -10px;
+}
 </style>

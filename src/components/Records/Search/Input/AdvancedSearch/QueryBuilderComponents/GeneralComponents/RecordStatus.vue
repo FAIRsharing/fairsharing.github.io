@@ -1,11 +1,11 @@
 <template>
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -25,7 +25,8 @@ export default {
       itemList: ["ready", "deprecated", "uncertain", "in_development"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The status of this resource. Multiple selections will be joined with OR.",
+      toolTipText:
+        "The status of this resource. Multiple selections will be joined with OR.",
     };
   },
   computed: {

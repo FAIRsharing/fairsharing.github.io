@@ -11,12 +11,7 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        size="small"
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon size="small" class="mr-1"> fab fa-searchengin </v-icon>
       <span>Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
@@ -28,12 +23,7 @@
       button-size
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        size="small"
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon size="small" class="mr-1"> fab fa-searchengin </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -63,7 +53,7 @@ export default {
     openAdvanceSearch() {
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     },
   },

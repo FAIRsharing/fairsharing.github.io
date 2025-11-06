@@ -5,21 +5,32 @@
       Data sharing licence and attribution, via the web and API
     </h1>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
     >
-      Except where otherwise noted, content on this site is licensed under a <a
+      Except where otherwise noted, content on this site is licensed under a
+      <a
         href="https://creativecommons.org/licenses/by-sa/4.0/legalcode"
         target="_blank"
-      >Creative Commons Attribution and Share-alike (CC-BY-SA) International 4.0</a> licence.
+        >Creative Commons Attribution and Share-alike (CC-BY-SA) International
+        4.0</a
+      >
+      licence.
     </p>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
     >
-      In addition, we request that any data taken from FAIRsharing, either by the API, scraping the site or other means, is attributed and cited appropriately. We request that a link and the FAIRsharing logo is presented next to the data taken from FAIRsharing.
-      For details of how to use the FAIRsharing API please visit <router-link
-        to="/API_doc"
-        class="underline-effect"
-      >
+      In addition, we request that any data taken from FAIRsharing, either by
+      the API, scraping the site or other means, is attributed and cited
+      appropriately. We request that a link and the FAIRsharing logo is
+      presented next to the data taken from FAIRsharing. For details of how to
+      use the FAIRsharing API please visit
+      <router-link to="/API_doc" class="underline-effect">
         https://fairsharing.org/API_doc
       </router-link>
     </p>
@@ -29,41 +40,49 @@
       class="text-left pa-0 d-inline-block contain"
     />
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
     >
       The code below may be used to create a link to our logo.
     </p>
 
-    <pre>&lt;img src="https://api.fairsharing.org/img/fairsharing-attribution.svg" alt="FAIRsharing Logo"&gt;</pre>
+    <pre>
+&lt;img src="https://api.fairsharing.org/img/fairsharing-attribution.svg" alt="FAIRsharing Logo"&gt;</pre
+    >
 
-    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      Search Engines
-    </h2>
+    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Search Engines</h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
     >
-      We encourage search engines to index FAIRsharing and provide mechanisms for this. We are also involved in the <a
-        href="https://schema.org/"
-        target="_blank"
-      >schema.org</a> and the <a
-        href="https://bioschemas.org/"
-        target="_blank"
-      >BioSchemas</a> projects, extending the vocabulary of tags to annotate our content. We will mark up FAIRsharing content with these tags in the near future.
+      We encourage search engines to index FAIRsharing and provide mechanisms
+      for this. We are also involved in the
+      <a href="https://schema.org/" target="_blank">schema.org</a> and the
+      <a href="https://bioschemas.org/" target="_blank">BioSchemas</a> projects,
+      extending the vocabulary of tags to annotate our content. We will mark up
+      FAIRsharing content with these tags in the near future.
     </p>
-    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      Screen Scraping
-    </h2>
+    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Screen Scraping</h2>
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
     >
-      Please do not scrape the HTML page content. Much of the data is generated dynamically and is updated daily. Instead, please use our API or contact us directly and ask for a cut of the data. We're friendly and don't bite.
+      Please do not scrape the HTML page content. Much of the data is generated
+      dynamically and is updated daily. Instead, please use our API or contact
+      us directly and ask for a cut of the data. We're friendly and don't bite.
     </p>
   </main>
 </template>
 <script>
 export default {
-  name: "Licence"
-}
+  name: "Licence",
+};
 </script>
 <style scoped>
 pre {
@@ -86,7 +105,7 @@ li {
 
 li::before {
   display: inline-block;
-  content: '';
+  content: "";
   -webkit-border-radius: 0.375rem;
   border-radius: 0.375rem;
   -moz-border-radius: 0.375rem;

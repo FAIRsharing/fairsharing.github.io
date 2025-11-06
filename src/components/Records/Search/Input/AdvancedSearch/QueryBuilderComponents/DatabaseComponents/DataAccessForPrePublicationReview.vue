@@ -1,11 +1,11 @@
 <template>
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -22,14 +22,11 @@ export default {
   },
   data: () => {
     return {
-      itemList: [
-        "yes",
-        "no",
-        "not found"
-      ],
+      itemList: ["yes", "no", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Does the repository have a mechanism to facilitate peer review of embargoed data. Multiple selections will be joined with OR.",
+      toolTipText:
+        "Does the repository have a mechanism to facilitate peer review of embargoed data. Multiple selections will be joined with OR.",
     };
   },
   computed: {

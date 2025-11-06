@@ -1,53 +1,53 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import RelatedContent from "@/components/Records/Record/RelatedContent.vue"
-import Record from "@/store/recordData.js"
+import RelatedContent from "@/components/Records/Record/RelatedContent.vue";
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
-  name:"standard",
+  name: "standard",
   recordAssociations: [
     {
       linkedRecord: {
         id: 1,
         name: "a name",
         registry: "Standard",
-        type: "terminology_artifact"
+        type: "terminology_artifact",
       },
-      recordAssocLabel: "implements"
+      recordAssocLabel: "implements",
     },
     {
       linkedRecord: {
         id: 3,
         name: "a name 3",
         registry: "Database",
-        type: "journal"
+        type: "journal",
       },
-      recordAssocLabel: "related to"
+      recordAssocLabel: "related to",
     },
     {
       linkedRecord: {
         id: 3,
         name: "a name 3",
         registry: "Database",
-        type: "journal"
+        type: "journal",
       },
-      recordAssocLabel: "related to"
+      recordAssocLabel: "related to",
     },
     {
       linkedRecord: {
         id: 4,
         name: "a name 4",
         registry: "Collection",
-        type: "collection"
+        type: "collection",
       },
-      recordAssocLabel: "collects"
-    }
+      recordAssocLabel: "collects",
+    },
   ],
   reverseRecordAssociations: [
     {
@@ -55,26 +55,27 @@ Record.state.currentRecord["fairsharingRecord"] = {
         id: 2,
         name: "b name",
         registry: "Policy",
-        type: "repository"
+        type: "repository",
       },
-      recordAssocLabel: "related to"
-    }
+      recordAssocLabel: "related to",
+    },
   ],
-  registry:'Standard'
+  registry: "Standard",
 };
 const $store = new Vuex.Store({
   modules: {
-    record:Record
-  }});
+    record: Record,
+  },
+});
 
-describe("RelatedContent.vue", function(){
+describe("RelatedContent.vue", function () {
   let wrapper;
 
   beforeEach(() => {
     wrapper = shallowMount(RelatedContent, {
       localVue,
       vuetify,
-      mocks: {$store}
+      mocks: { $store },
     });
   });
 
@@ -83,29 +84,29 @@ describe("RelatedContent.vue", function(){
   });
 
   it("search data is reactive when user changes text box value", () => {
-    wrapper.vm.selectedValues = "a name 3"
-    wrapper.vm.tabsData.tabs.related_standards.data = []
-    wrapper.vm.tabsData.selectedTab = 1
-    wrapper.vm.selectedValues = "a name 3"
-    wrapper.vm.tabsData.selectedTab = 0
-    wrapper.vm.getFirstActiveTab()
-    expect(wrapper.vm.tabsData.selectedTab).toBe(1)
+    wrapper.vm.selectedValues = "a name 3";
+    wrapper.vm.tabsData.tabs.related_standards.data = [];
+    wrapper.vm.tabsData.selectedTab = 1;
+    wrapper.vm.selectedValues = "a name 3";
+    wrapper.vm.tabsData.selectedTab = 0;
+    wrapper.vm.getFirstActiveTab();
+    expect(wrapper.vm.tabsData.selectedTab).toBe(1);
   });
 
   it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {
-    delete Record.state.currentRecord.fairsharingRecord.recordAssociations
-    delete Record.state.currentRecord.fairsharingRecord.reverseRecordAssociations
-    expect(wrapper.vm.prepareTabsData()).toBe(false)
+    delete Record.state.currentRecord.fairsharingRecord.recordAssociations;
+    delete Record.state.currentRecord.fairsharingRecord
+      .reverseRecordAssociations;
+    expect(wrapper.vm.prepareTabsData()).toBe(false);
   });
 
   it("can filter searches on name and abbreviation", () => {
-    let item = {name: "one", abbreviation: null}
+    let item = { name: "one", abbreviation: null };
     expect(wrapper.vm.nameAbbrFilter(item, "one")).toBe(true);
     expect(wrapper.vm.nameAbbrFilter(item, "two")).toBe(false);
-    item = {name: "a_very_long_string", abbreviation: 'small'}
+    item = { name: "a_very_long_string", abbreviation: "small" };
     expect(wrapper.vm.nameAbbrFilter(item, "very")).toBe(true);
     expect(wrapper.vm.nameAbbrFilter(item, "small")).toBe(true);
     expect(wrapper.vm.nameAbbrFilter(item, "item")).toBe(false);
   });
-
 });

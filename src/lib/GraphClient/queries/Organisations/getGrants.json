@@ -3,9 +3,5 @@
   "queryParam": {
     "load": false
   },
-  "fields": [
-    "id",
-    "name",
-    "description"
-  ]
+  "fields": ["id", "name", "description"]
 }

@@ -2,21 +2,20 @@
   <v-card
     v-if="
       Object.keys(getField('metadata')).includes(
-        'data_processes_and_conditions') ||
-        (getField('licences') && getField('licences').length) ||
-        (getField('metadata')['data_access_condition'] &&
-          Object.keys(getField('metadata')['data_access_condition'])
-            .length) ||
-        (getField('metadata')['data_curation'] &&
-          Object.keys(getField('metadata')['data_curation']).length) ||
-        (getField('metadata')['data_deposition_condition'] &&
-          Object.keys(getField('metadata')['data_deposition_condition'])
-            .length) ||
-        (getField('metadata')['data_preservation_policy'] &&
-          Object.keys(getField('metadata')['data_preservation_policy'])
-            .length) ||
-        (getField('metadata')['certifications_and_community_badges'] &&
-          getField('metadata')['certifications_and_community_badges'].length)
+        'data_processes_and_conditions',
+      ) ||
+      (getField('licences') && getField('licences').length) ||
+      (getField('metadata')['data_access_condition'] &&
+        Object.keys(getField('metadata')['data_access_condition']).length) ||
+      (getField('metadata')['data_curation'] &&
+        Object.keys(getField('metadata')['data_curation']).length) ||
+      (getField('metadata')['data_deposition_condition'] &&
+        Object.keys(getField('metadata')['data_deposition_condition'])
+          .length) ||
+      (getField('metadata')['data_preservation_policy'] &&
+        Object.keys(getField('metadata')['data_preservation_policy']).length) ||
+      (getField('metadata')['certifications_and_community_badges'] &&
+        getField('metadata')['certifications_and_community_badges'].length)
     "
     class="pa-4 d-flex flex-column overflow-initial"
     border
@@ -32,9 +31,10 @@
         v-if="
           (getField('metadata')['data_processes_and_conditions'] &&
             getField('metadata')['data_processes_and_conditions'].length) ||
-            (getField('licences').length && getField('licences')) ||
-            (getField('metadata')['certifications_and_community_badges'] &&
-              getField('metadata')['certifications_and_community_badges'].length > 0)
+          (getField('licences').length && getField('licences')) ||
+          (getField('metadata')['certifications_and_community_badges'] &&
+            getField('metadata')['certifications_and_community_badges'].length >
+              0)
         "
       >
         <!-- DataProcessAndCondition component -->
@@ -49,25 +49,18 @@
           tile
           elevation="3"
         >
-          <Icon
-            :item="item.icon"
-            size="20"
-            class="pt-2"
-          />
+          <Icon :item="item.icon" size="20" class="pt-2" />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ $filters.capitalize(cleanString(key)) }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <div v-if="key === 'licences'">
-              <p
-                v-if="currentRecord.fairsharingRecord.exhaustiveLicences"
-              >
+              <p v-if="currentRecord.fairsharingRecord.exhaustiveLicences">
                 This is a complete list of licences applicable to the resource.
               </p>
-              <p
-                v-else
-              >
-                This is a subset of licences recommended by the resource or most commonly used by its users.
+              <p v-else>
+                This is a subset of licences recommended by the resource or most
+                commonly used by its users.
               </p>
             </div>
             <v-card
@@ -85,20 +78,19 @@
               >
                 {{ subItem.name }}
               </a>
-              <div
-                v-else
-                class="d-flex flex-column"
-              >
+              <div v-else class="d-flex flex-column">
                 <span>{{ subItem.name }}</span>
                 <span
                   v-if="
                     subItem.id &&
-                      subItem.id !== 'undefined' &&
-                      getLicenceRelation(subItem.id) !== 'undefined'
+                    subItem.id !== 'undefined' &&
+                    getLicenceRelation(subItem.id) !== 'undefined'
                   "
                 >
                   relationship:
-                  <strong>({{ cleanString(getLicenceRelation(subItem.id)) }})</strong>
+                  <strong
+                    >({{ cleanString(getLicenceRelation(subItem.id)) }})</strong
+                  >
                 </span>
               </div>
             </v-card>
@@ -111,14 +103,14 @@
           (getField('metadata')['data_access_condition'] &&
             Object.keys(getField('metadata')['data_access_condition'])
               .length) ||
-            (getField('metadata')['data_curation'] &&
-              Object.keys(getField('metadata')['data_curation']).length) ||
-            (getField('metadata')['data_deposition_condition'] &&
-              Object.keys(getField('metadata')['data_deposition_condition'])
-                .length) ||
-            (getField('metadata')['data_preservation_policy'] &&
-              Object.keys(getField('metadata')['data_preservation_policy'])
-                .length)
+          (getField('metadata')['data_curation'] &&
+            Object.keys(getField('metadata')['data_curation']).length) ||
+          (getField('metadata')['data_deposition_condition'] &&
+            Object.keys(getField('metadata')['data_deposition_condition'])
+              .length) ||
+          (getField('metadata')['data_preservation_policy'] &&
+            Object.keys(getField('metadata')['data_preservation_policy'])
+              .length)
         "
       >
         <OtherDataProcesses />
@@ -129,7 +121,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
@@ -154,7 +146,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
-    ...mapState('record', ["currentRecord"])
+    ...mapState("record", ["currentRecord"]),
   },
   methods: {
     generateDataConditions: function () {
@@ -171,7 +163,7 @@ export default {
         };
         community_badges.forEach((community_badge) => {
           processedData["certifications_and_community_badges"].data.push(
-            community_badge
+            community_badge,
           );
         });
       }
@@ -190,7 +182,7 @@ export default {
     },
     getLicenceRelation(licenceId) {
       return this.getField("licenceLinks").find(
-        (obj) => obj.licence.id === licenceId
+        (obj) => obj.licence.id === licenceId,
       ).relation;
     },
   },

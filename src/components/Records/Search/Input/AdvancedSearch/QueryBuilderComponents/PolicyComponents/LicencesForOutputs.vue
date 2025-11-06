@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Preferred list of appropriate licences making clear what reuse conditions (if any) must be respected. Related policy guidance should be provided to help researchers to select appropriate licences.",
-
+      itemValue: "",
+      toolTipText:
+        "Preferred list of appropriate licences making clear what reuse conditions (if any) must be respected. Related policy guidance should be provided to help researchers to select appropriate licences.",
     };
   },
   computed: {

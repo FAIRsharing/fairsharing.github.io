@@ -1,9 +1,8 @@
 <template>
   <div
     class="query-builder-group-slot__group-control pa-4 d-flex"
-    :class="{'flex-column': $vuetify.display.smAndDown}"
+    :class="{ 'flex-column': $vuetify.display.smAndDown }"
   >
-
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />
     <div class="slotSpacer" />
@@ -26,26 +25,25 @@
 </template>
 
 <script>
-import {GeneralRule, DatabaseRule, PolicyRule, StandardRule} from "./index";
+import { GeneralRule, DatabaseRule, PolicyRule, StandardRule } from "./index";
 export default {
   name: "GroupCtrlSlot",
-  components:{GeneralRule, DatabaseRule, StandardRule, PolicyRule },
+  components: { GeneralRule, DatabaseRule, StandardRule, PolicyRule },
   props: {
     groupCtrl: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
-  methods:{
+  methods: {
     /**
      * Add group to query builder
      * @param item - Object
      */
     addNewGroup(item) {
-      item.newGroup()
+      item.newGroup();
     },
-  }
+  },
 };
 </script>
-

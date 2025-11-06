@@ -4,10 +4,7 @@
   "fields": [
     {
       "name": "fairsharingRecords",
-      "fields": [
-        "id",
-        "name"
-      ]
+      "fields": ["id", "name"]
     }
   ]
 }

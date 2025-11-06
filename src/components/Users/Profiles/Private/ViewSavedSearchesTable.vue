@@ -10,18 +10,14 @@
       mobile-breakpoint="960"
     >
       <template #[`item.creator`]="{ item }">
-        <a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
+        <a :href="`/users/${item.creator['id']}`"
+          >{{ item.creator["username"] }}
         </a>
       </template>
       <template #[`item.additionalUser`]="{ item }">
         <ul class="pl-0">
-          <li
-            v-for="user in additionalUsers(item)"
-            :key="user.id"
-            class="mb-2"
-          >
-            <a :href="`/users/${user['id']}`">{{ user["username"] }}
-            </a>
+          <li v-for="user in additionalUsers(item)" :key="user.id" class="mb-2">
+            <a :href="`/users/${user['id']}`">{{ user["username"] }} </a>
           </li>
         </ul>
       </template>
@@ -41,8 +37,7 @@
             :key="record.id"
             class="my-2"
           >
-            <a :href="`/${record['id']}`">{{ record["name"] }}
-            </a>
+            <a :href="`/${record['id']}`">{{ record["name"] }} </a>
           </li>
         </ul>
       </template>
@@ -53,7 +48,8 @@
             :key="organisation.id"
             class="my-2"
           >
-            <a :href="`/organisations/${organisation['id']}`">{{ organisation["name"] }}
+            <a :href="`/organisations/${organisation['id']}`"
+              >{{ organisation["name"] }}
             </a>
           </li>
         </ul>
@@ -74,12 +70,7 @@
           mdi-link-off
         </v-icon>
         <!--User is on its account profile page-->
-        <v-icon
-          v-else
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
+        <v-icon v-else @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <template #no-data>
         <div>
@@ -89,10 +80,7 @@
       </template>
     </v-data-table>
     <!--Delete action dialog box -->
-    <v-dialog
-      v-model="modifyDialog"
-      max-width="500px"
-    >
+    <v-dialog v-model="modifyDialog" max-width="500px">
       <!--Delete -->
       <v-card v-if="deleteSavedSearch">
         <v-card-title class="text-h5">
@@ -100,11 +88,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            class="text-white"
-            color="accent3"
-            @click="closeDialog"
-          >
+          <v-btn class="text-white" color="accent3" @click="closeDialog">
             Cancel
           </v-btn>
           <v-btn
@@ -125,11 +109,7 @@
         </v-card-title>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            class="text-white"
-            color="accent3"
-            @click="closeDialog"
-          >
+          <v-btn class="text-white" color="accent3" @click="closeDialog">
             Cancel
           </v-btn>
           <v-btn
@@ -160,7 +140,7 @@ export default {
   name: "ViewSavedSearchesTable",
   props: {
     createdSearches: { type: Array, default: null },
-    savedSearches: { type: Array, default: null }
+    savedSearches: { type: Array, default: null },
   },
   data: () => {
     return {
@@ -183,18 +163,43 @@ export default {
     ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
-        { title: "Creator", value: "creator", align: "center", sortable: false },
+        {
+          title: "Creator",
+          value: "creator",
+          align: "center",
+          sortable: false,
+        },
         { title: "Date", value: "date", align: "center", sortable: false },
         { title: "Name", value: "name", align: "center", sortable: false },
-        { title: "Comments", value: "comments", align: "center", sortable: false },
+        {
+          title: "Comments",
+          value: "comments",
+          align: "center",
+          sortable: false,
+        },
         { title: "Record", value: "record", align: "center", sortable: false },
-        { title: "Organisation", value: "organisation", align: "center", sortable: false },
+        {
+          title: "Organisation",
+          value: "organisation",
+          align: "center",
+          sortable: false,
+        },
       ];
       if (this.user().isLoggedIn) {
-        headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
+        headers.push({
+          text: "Actions",
+          value: "actions",
+          align: "center",
+          sortable: false,
+        });
       }
-      if(this.user().is_super_curator) {
-        headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
+      if (this.user().is_super_curator) {
+        headers.splice(1, 0, {
+          text: "Additional User",
+          value: "additionalUser",
+          align: "center",
+          sortable: false,
+        });
       }
       return headers;
     },
@@ -211,7 +216,7 @@ export default {
      * page
      */
     async combinedSearches(searchDeleted, searchUnlinked) {
-      let createdSearches, savedSearches
+      let createdSearches, savedSearches;
 
       if (searchDeleted) {
         await this.getUser();
@@ -237,10 +242,9 @@ export default {
       }
       //Reversed array to show latest entry first
       let searchValues = [...mapSearches.values()];
-      this.totalSearches = searchValues.sort((a, b) => new Date(b.createdAt)
-          - new Date(a.createdAt)
+      this.totalSearches = searchValues.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
       );
-
     },
 
     /**
@@ -262,7 +266,7 @@ export default {
       this.loading = true;
       let data = await restClient.deleteSavedSearch(
         this.selectedItem["id"],
-        this.user().credentials.token
+        this.user().credentials.token,
       );
 
       if (data["message"] === "success") {
@@ -290,13 +294,15 @@ export default {
      */
     async unlinkItemConfirm() {
       this.loading = true;
-      let additionalUsersArr = this.additionalUsers(this.selectedItem)
+      let additionalUsersArr = this.additionalUsers(this.selectedItem);
 
       //Filter the user to unlink
-      let linkedUser = additionalUsersArr.filter(({id}) => id !== Number(this.$route.params.id))
+      let linkedUser = additionalUsersArr.filter(
+        ({ id }) => id !== Number(this.$route.params.id),
+      );
 
       //Array of id of the remaining users
-      linkedUser = linkedUser.map(({id}) => id)
+      linkedUser = linkedUser.map(({ id }) => id);
 
       let saveSearchObj = {
         user_ids: linkedUser,
@@ -305,7 +311,7 @@ export default {
       let updatedSearchResult = await restClient.updateSaveSearch(
         this.selectedItem["id"],
         saveSearchObj,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
 
       //Commit the updated result to store
@@ -316,7 +322,6 @@ export default {
       this.loading = false;
       this.unlinkSavedSearch = false;
       this.closeDialog();
-
     },
 
     /**
@@ -331,7 +336,7 @@ export default {
     openAdvancedSearch() {
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     },
     /**
@@ -340,12 +345,11 @@ export default {
      * @return {Array} - additional user list without creator
      */
     additionalUsers(item) {
-      let additionalUsersList =  item["users"].filter((e) => {
-        return e['id'] !== item.creator['id']
-      })
+      let additionalUsersList = item["users"].filter((e) => {
+        return e["id"] !== item.creator["id"];
+      });
       return additionalUsersList;
     },
-
   },
 };
 </script>
@@ -357,14 +361,14 @@ export default {
   table {
     tbody {
       tr {
-          td {
-            word-break: break-all;
-            @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
-              width: 100px;
-              min-width: 100px;
-              max-width: 100px;
-            }
+        td {
+          word-break: break-all;
+          @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
           }
+        }
       }
     }
   }

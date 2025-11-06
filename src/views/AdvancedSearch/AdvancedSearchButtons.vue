@@ -4,23 +4,14 @@
     :class="{ 'flex-column': $vuetify.display.smAndDown }"
   >
     <v-btn
-      :class="
-        $vuetify.display.smAndDown ? 'full-width' : 'mx-2 button-width'
-      "
+      :class="$vuetify.display.smAndDown ? 'full-width' : 'mx-2 button-width'"
       color="accent"
       elevation="2"
       @click="editAdvancedSearch()"
     >
-      <v-icon
-        size="small"
-        class="mr-1"
-      >
-        fa-solid fa-pen
-      </v-icon>
+      <v-icon size="small" class="mr-1"> fa-solid fa-pen </v-icon>
       <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }">{{
-        $vuetify.display.mdAndDown
-          ? "Show/Edit"
-          : "Edit"
+        $vuetify.display.mdAndDown ? "Show/Edit" : "Edit"
       }}</span>
     </v-btn>
     <v-btn
@@ -32,13 +23,10 @@
       elevation="2"
       @click="openAdvancedSearch()"
     >
-      <v-icon
-        size="small"
-        class="mr-1"
+      <v-icon size="small" class="mr-1"> fa-solid fa-reply </v-icon>
+      <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }"
+        >Restart</span
       >
-        fa-solid fa-reply
-      </v-icon>
-      <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }">Restart</span>
     </v-btn>
   </div>
 </template>
@@ -53,10 +41,10 @@ export default {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
     },
     openAdvancedSearch() {
-      this.$router.replace({'query': null});
+      this.$router.replace({ query: null });
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     },
   },

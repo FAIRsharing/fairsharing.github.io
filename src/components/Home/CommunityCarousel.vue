@@ -4,67 +4,48 @@
       Our Community of Adopters and Collaborators
     </p>
     <v-container>
-      <v-carousel
-        v-model="model"
-        cycle
-        height="300"
-        hide-delimiter-background
-      >
+      <v-carousel v-model="model" cycle height="300" hide-delimiter-background>
         <v-carousel-item
           v-for="(logo, index) in responsiveSlideData"
-          :key="logo.image+'_'+index"
+          :key="logo.image + '_' + index"
         >
-          <v-sheet
-            color="white"
-            height="100%"
-          >
-            <v-row
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+          <v-sheet color="white" height="100%">
+            <v-row class="fill-height" align="center" justify="center">
               <v-img
                 contain
                 :src="logo.image"
                 width="100"
                 height="100"
-                style="filter: grayscale(1);"
+                style="filter: grayscale(1)"
               />
             </v-row>
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
-      <v-btn
-        color="primary"
-        to="/communities"
-      >
-        View All
-      </v-btn>
+      <v-btn color="primary" to="/communities"> View All </v-btn>
     </v-container>
   </div>
 </template>
 
 <script>
-import {blockLogos} from '@/data/homePageData.json'
+import { blockLogos } from "@/data/homePageData.json";
 export default {
   name: "CommunityCarousel",
   data: () => ({
     model: 0,
-    logos: blockLogos
+    logos: blockLogos,
   }),
   computed: {
     responsiveSlideData() {
       if (this.$vuetify.display.smAndUp) {
-        return this.logos.multipleImageSlider
+        return this.logos.multipleImageSlider;
       }
       else {
-        return this.logos.singleImageSlider
+        return this.logos.singleImageSlider;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

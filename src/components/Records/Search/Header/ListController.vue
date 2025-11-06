@@ -8,9 +8,7 @@
         width="60px"
         type="avatar"
       >
-        <v-menu
-          fixed
-        >
+        <v-menu fixed>
           <template #activator="{ props }">
             <div v-bind="props">
               <v-tooltip location="top">
@@ -19,10 +17,10 @@
                   <v-icon
                     size="large"
                     class="mouse-cursor"
-                    :class="{'active':!isSortHovered}"
+                    :class="{ active: !isSortHovered }"
                     v-bind="props"
-                    @mouseenter="isSortHovered=true"
-                    @mouseleave="isSortHovered=false"
+                    @mouseenter="isSortHovered = true"
+                    @mouseleave="isSortHovered = false"
                   >
                     fas fa-sort-amount-up-alt
                   </v-icon>
@@ -35,10 +33,7 @@
           <sorting />
         </v-menu>
       </v-skeleton-loader>
-      <div
-        v-else
-        style="width: 60px;"
-      />
+      <div v-else style="width: 60px" />
       <!--Pagination-->
       <v-skeleton-loader
         v-if="options.hasPagination"
@@ -46,34 +41,20 @@
         width="100%"
         type="list-item"
       >
-        <Pagination
-          :total-pages="totalPages"
-          :current-page="currentPage"
-        />
+        <Pagination :total-pages="totalPages" :current-page="currentPage" />
       </v-skeleton-loader>
-      <div
-        v-else
-        style="width: 100%"
-      />
+      <div v-else style="width: 100%" />
       <!--Stack or Column list toggle buttons-->
       <div class="d-flex flex-row align-start">
         <!--Stack or Column list toggle buttons-->
-        <div
-          class="d-flex flex-row align-center"
-        >
-          <div
-            v-if="options.hasListType"
-            class="d-flex"
-          >
-            <v-skeleton-loader
-              :loading="loading"
-              type="avatar"
-            >
+        <div class="d-flex flex-row align-center">
+          <div v-if="options.hasListType" class="d-flex">
+            <v-skeleton-loader :loading="loading" type="avatar">
               <v-tooltip location="top">
                 <template #activator="{ props }">
                   <v-icon
                     size="large"
-                    :class="[{'active':isColumnList},'mr-2']"
+                    :class="[{ active: isColumnList }, 'mr-2']"
                     v-bind="props"
                     @click="changeListType('stackList')"
                   >
@@ -83,15 +64,12 @@
                 <span>{{ listControllerData.stackList }}</span>
               </v-tooltip>
             </v-skeleton-loader>
-            <v-skeleton-loader
-              :loading="loading"
-              type="avatar"
-            >
+            <v-skeleton-loader :loading="loading" type="avatar">
               <v-tooltip location="top">
                 <template #activator="{ props }">
                   <v-icon
                     size="large"
-                    :class="{'active':!isColumnList}"
+                    :class="{ active: !isColumnList }"
                     v-bind="props"
                     @click="changeListType('columnList')"
                   >
@@ -102,10 +80,7 @@
               </v-tooltip>
             </v-skeleton-loader>
           </div>
-          <div
-            v-else
-            style="width: 70px;"
-          />
+          <div v-else style="width: 70px" />
         </div>
       </div>
     </div>
@@ -115,7 +90,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 import listControllerData from "@/data/ListControllerData.json";
 
@@ -126,40 +101,42 @@ import SummaryDownload from "./SummaryDownload";
 
 export default {
   name: "ListController",
-  components: {HitCount, SummaryDownload, Pagination, Sorting},
-  props:{
-    options:{
-      type:Object,
-      default:null
-    }
+  components: { HitCount, SummaryDownload, Pagination, Sorting },
+  props: {
+    options: {
+      type: Object,
+      default: null,
+    },
   },
-  emits:["ChangeListType"],
+  emits: ["ChangeListType"],
   data() {
     return {
-      showMenu:false,
+      showMenu: false,
       listControllerData: listControllerData,
       isSortHovered: false,
-      isColumnList: false // need to go to store to have them synced in everywhere.
-    }
+      isColumnList: false, // need to go to store to have them synced in everywhere.
+    };
   },
   computed: {
-    ...mapState('records', ["totalPages", "loading", "currentPage"]),
+    ...mapState("records", ["totalPages", "loading", "currentPage"]),
   },
   methods: {
     changeListType: function (listType) {
-      listType === 'stackList' ? this.isColumnList = false : this.isColumnList = true;
-      this.$emit('ChangeListType', this.isColumnList)
-    }
-  }
-}
+      listType === "stackList"
+        ? (this.isColumnList = false)
+        : (this.isColumnList = true);
+      this.$emit("ChangeListType", this.isColumnList);
+    },
+  },
+};
 </script>
 
 <style scoped>
-    .active {
-        color: lightgrey;
-    }
+.active {
+  color: lightgrey;
+}
 
-    .theme--light.v-icon:focus::after {
-        opacity: 0;
-    }
+.theme--light.v-icon:focus::after {
+  opacity: 0;
+}
 </style>

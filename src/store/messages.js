@@ -6,7 +6,7 @@ export const mutations = {
   setMessages(state, data) {
     state.publicMessages = data;
   },
-  setLoadingStatus(state, status){
+  setLoadingStatus(state, status) {
     state.isLoadingFilters = status;
   },
 };
@@ -14,17 +14,17 @@ export const actions = {
   async setMessages() {
     this.commit("messages/setLoadingStatus", true);
     const messageData = await graphClient.executeQuery(queryMessages);
-    this.commit('messages/setMessages', messageData.messages);
+    this.commit("messages/setMessages", messageData.messages);
     this.commit("searchFilters/setLoadingStatus", false);
   },
 };
 let uiController = {
   namespaced: true,
   state: {
-    publicMessages:[],
-    loading:false
+    publicMessages: [],
+    loading: false,
   },
   mutations: mutations,
-  actions: actions
+  actions: actions,
 };
 export default uiController;

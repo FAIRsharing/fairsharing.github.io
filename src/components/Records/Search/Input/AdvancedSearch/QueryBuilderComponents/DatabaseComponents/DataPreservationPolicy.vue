@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Policy that details how the preservation of the data is ensured.",
-
+      itemValue: "",
+      toolTipText:
+        "Policy that details how the preservation of the data is ensured.",
     };
   },
   computed: {

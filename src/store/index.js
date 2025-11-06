@@ -45,7 +45,7 @@ const store = createStore({
     taxonomiesSearch,
     licencesSearch,
     countriesSearch,
-    saveSearch
+    saveSearch,
   },
 });
 

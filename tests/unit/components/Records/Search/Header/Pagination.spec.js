@@ -1,159 +1,156 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Pagination from "@/components/Records/Search/Header/Pagination";
-import records from "@/store/recordSearch.js"
+import records from "@/store/recordSearch.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const $store = new Vuex.Store({
-    modules: {
-        records: records
-    }
+  modules: {
+    records: records,
+  },
 });
 
 $store.state.records.currentPage = 1;
 
 const vuetify = new Vuetify();
 let $route = {
-    name: "Standards",
-    query: {
-        page: 12,
-        type: Number
-    }
+  name: "Standards",
+  query: {
+    page: 12,
+    type: Number,
+  },
 };
 
 const push = jest.fn();
 const $router = {
-    push: jest.fn(),
+  push: jest.fn(),
 };
 
-
 describe("Pagination.vue", () => {
+  it("can be instantiated", () => {
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        currentPage: 1,
+      },
+      vuetify,
+      localVue,
+    });
+    expect(wrapper.vm.$options.name).toMatch("Pagination");
+  });
 
-    it("can be instantiated", () => {
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                currentPage: 1
-            },
-            vuetify,
-            localVue
-        });
-        expect(wrapper.vm.$options.name).toMatch("Pagination");
+  it("Sets the page parameter to one on creation when receiving no values or undefined", () => {
+    $route.name = "Search";
+    $route.query = {};
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        currentPage: 1,
+      },
+      vuetify,
+      localVue,
     });
 
-    it('Sets the page parameter to one on creation when receiving no values or undefined', () => {
-        $route.name = "Search";
-        $route.query = {};
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                currentPage: 1
-            },
-            vuetify,
-            localVue
-        });
+    expect(wrapper.vm.currentPageLocal).toBe(1);
+    expect(wrapper.vm.page).toBe(1);
+  });
 
-        expect(wrapper.vm.currentPageLocal).toBe(1);
-        expect(wrapper.vm.page).toBe(1);
+  it("can set the current page to a new value when route changes", () => {
+    $route.query = { page: "2" };
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        default: 0,
+      },
+      vuetify,
+      localVue,
     });
 
-    it("can set the current page to a new value when route changes", () => {
-        $route.query = {page: "2"};
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                default: 0
-            },
-            vuetify,
-            localVue
-        });
+    expect(wrapper.vm.currentPageLocal).toBe(2);
+    expect(wrapper.vm.page).toBe(2);
+  });
 
-        expect(wrapper.vm.currentPageLocal).toBe(2);
-        expect(wrapper.vm.page).toBe(2);
+  it("can react to changes in the URL query and/or name", () => {
+    $route.name = "Search";
+    $route.query = {};
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        default: 0,
+      },
+      vuetify,
+      localVue,
     });
 
-    it('can react to changes in the URL query and/or name', () => {
-        $route.name = "Search";
-        $route.query = {};
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                default: 0
-            },
-            vuetify,
-            localVue
-        });
+    expect(wrapper.vm.currentPageLocal).toBe(1);
+  });
 
-        expect(wrapper.vm.currentPageLocal).toBe(1);
+  it("Sets the page parameter to the given input on creation", () => {
+    $route.query = { page: "120" };
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        default: 0,
+      },
+      vuetify,
+      localVue,
     });
+    expect(wrapper.vm.currentPageLocal).toBe(120);
+  });
 
-    it('Sets the page parameter to the given input on creation', () => {
-        $route.query = {page: "120"};
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                default: 0
-            },
-            vuetify,
-            localVue
-        });
-        expect(wrapper.vm.currentPageLocal).toBe(120);
+  it("Has a paginate() method that sets the current page in the URL query", async () => {
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        default: 0,
+      },
+      vuetify,
+      localVue,
     });
+    wrapper.vm.allowPaginate = true;
+    wrapper.vm.$router.push = push;
+    await wrapper.vm.paginate(2);
+    expect(push).toHaveBeenCalledWith({ name: "Search", query: { page: 2 } });
+    expect(wrapper.vm.$route.name).toBe("Search");
+  });
 
-    it('Has a paginate() method that sets the current page in the URL query', async () => {
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                default: 0
-            },
-            vuetify,
-            localVue
-        });
-        wrapper.vm.allowPaginate = true;
-        wrapper.vm.$router.push = push;
-        await wrapper.vm.paginate(2);
-        expect(push).toHaveBeenCalledWith({"name": "Search", "query": {"page": 2}});
-        expect(wrapper.vm.$route.name).toBe("Search");
+  it("can define whether it is testing or development environment", () => {
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        default: 0,
+      },
+      vuetify,
+      localVue,
     });
+    wrapper.vm.disableThrottle(false);
+    expect(wrapper.vm.allowPaginate).toBe(false);
+    wrapper.vm.disableThrottle(true);
+    expect(wrapper.vm.allowPaginate).toBe(true);
+  });
 
-    it('can define whether it is testing or development environment', () => {
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                default: 0
-            },
-            vuetify,
-            localVue
-        });
-        wrapper.vm.disableThrottle(false);
-        expect(wrapper.vm.allowPaginate).toBe(false);
-        wrapper.vm.disableThrottle(true);
-        expect(wrapper.vm.allowPaginate).toBe(true);
+  it("can check whether paginate works if it is not allowed", () => {
+    const wrapper = shallowMount(Pagination, {
+      mocks: { $route, $router, $store },
+      propsData: {
+        totalPages: 10,
+        default: 0,
+      },
+      vuetify,
+      localVue,
     });
-
-    it('can check whether paginate works if it is not allowed', () => {
-        const wrapper = shallowMount(Pagination, {
-            mocks: {$route, $router, $store},
-            propsData: {
-                totalPages: 10,
-                default: 0
-            },
-            vuetify,
-            localVue
-        });
-        wrapper.vm.allowPaginate = false;
-        wrapper.vm.paginate(2);
-        expect(wrapper.vm.currentPageLocal).not.toBe(2);
-    });
-
+    wrapper.vm.allowPaginate = false;
+    wrapper.vm.paginate(2);
+    expect(wrapper.vm.currentPageLocal).not.toBe(2);
+  });
 });

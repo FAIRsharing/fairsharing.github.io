@@ -1,9 +1,9 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Support from "@/components/Records/Record/Support.vue"
-import Record from "@/store/recordData.js"
+import Support from "@/components/Records/Record/Support.vue";
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -14,33 +14,34 @@ Record.state.currentRecord["fairsharingRecord"] = {
     contacts: [
       {
         contact_name: "A Contact",
-        contact_email: "contact@goatse.cx"
+        contact_email: "contact@goatse.cx",
       },
       {
         contact_name: "B Contact",
         contact_email: "b contact@goatse.cx",
-        contact_orcid: "orcid id"
-      }
+        contact_orcid: "orcid id",
+      },
     ],
-    support_links:[
+    support_links: [
       {
         url: "some url",
-        type: "blog/web"
+        type: "blog/web",
       },
-    ]
+    ],
   },
-  subjects:[],
-  domains:[],
-  taxonomies:[],
-  userDefinedTags:[],
-  objectTypes:[],
+  subjects: [],
+  domains: [],
+  taxonomies: [],
+  userDefinedTags: [],
+  objectTypes: [],
 };
 const $store = new Vuex.Store({
   modules: {
-    record:Record
-  }});
+    record: Record,
+  },
+});
 
-describe("Support.vue", function(){
+describe("Support.vue", function () {
   let wrapper;
 
   // TODO: Mock properties in options {}.
@@ -48,61 +49,61 @@ describe("Support.vue", function(){
     wrapper = shallowMount(Support, {
       localVue,
       vuetify,
-      mocks: {$store}
+      mocks: { $store },
     });
   });
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("Support");
-    expect(wrapper.vm.getField('metadata')['contacts'][0].contact_name).toMatch("A Contact");
-    expect(wrapper.vm.getField('metadata')['contacts'][0].contact_email).toMatch("contact@goatse.cx");
+    expect(wrapper.vm.getField("metadata")["contacts"][0].contact_name).toMatch(
+      "A Contact",
+    );
+    expect(
+      wrapper.vm.getField("metadata")["contacts"][0].contact_email,
+    ).toMatch("contact@goatse.cx");
   });
 
   it("can be check the reaction of page if appropriate data not provided for support", () => {
     let mockData;
     expect(wrapper.vm.generateSupport()).toStrictEqual({
-      'blog/web': {
-        data: [{
-          url: "some url",
-          type: "blog/web"
-        }],
-        icon: 'blog_web'
+      "blog/web": {
+        data: [
+          {
+            url: "some url",
+            type: "blog/web",
+          },
+        ],
+        icon: "blog_web",
       },
       contacts: {
         data: [
           {
             contact_name: "A Contact",
-            contact_email: "contact@goatse.cx"
+            contact_email: "contact@goatse.cx",
           },
           {
             contact_name: "B Contact",
             contact_email: "b contact@goatse.cx",
-            contact_orcid: "orcid id"
-          }
+            contact_orcid: "orcid id",
+          },
         ],
-        icon:'contacts'
-      }
-    })
+        icon: "contacts",
+      },
+    });
 
     mockData = {
       fairsharingRecord: {
         licences: [],
         metadata: {},
-        taxonomies: [
-          {label: "asasd turdus"},
-        ],
-        subjects: [
-          {label: "asdasd Fun"},
-        ],
-        domains: [
-          {label: "asasd"},
-        ],
-        userDefinedTags: [{label: 'b'}],
-        objectTypes: [{label: 'c'}]
-      }
-    }
-    $store.commit("record/setCurrentRecord", mockData)
-    expect(wrapper.vm.generateSupport()).toStrictEqual({})
+        taxonomies: [{ label: "asasd turdus" }],
+        subjects: [{ label: "asdasd Fun" }],
+        domains: [{ label: "asasd" }],
+        userDefinedTags: [{ label: "b" }],
+        objectTypes: [{ label: "c" }],
+      },
+    };
+    $store.commit("record/setCurrentRecord", mockData);
+    expect(wrapper.vm.generateSupport()).toStrictEqual({});
 
     mockData = {
       fairsharingRecord: {
@@ -110,88 +111,81 @@ describe("Support.vue", function(){
           contacts: [
             {
               contact_name: "A Contact",
-              contact_email: "contact@goatse.cx"
+              contact_email: "contact@goatse.cx",
             },
             {
               contact_name: "B Contact",
               contact_email: "b contact@goatse.cx",
-              contact_orcid: "orcid id"
-            }
+              contact_orcid: "orcid id",
+            },
           ],
           support_links: [
             {
               url: "some url",
-              type: "blog/web"
+              type: "blog/web",
             },
             {
               url: "some url 2",
-              type: "another type"
+              type: "another type",
             },
             {
               url: "some url 3",
-              type: "blog/web"
+              type: "blog/web",
             },
-          ]
+          ],
         },
-        taxonomies: [
-          {label: "asasd turdus"},
-        ],
-        subjects: [
-          {label: "asdasd Fun"},
-        ],
-        domains: [
-          {label: "asasd"},
-        ],
-        userDefinedTags: [{label: 'b'}],
-        objectTypes: [{label: 'c'}]
-      }
-    }
-    $store.commit("record/setCurrentRecord", mockData)
+        taxonomies: [{ label: "asasd turdus" }],
+        subjects: [{ label: "asdasd Fun" }],
+        domains: [{ label: "asasd" }],
+        userDefinedTags: [{ label: "b" }],
+        objectTypes: [{ label: "c" }],
+      },
+    };
+    $store.commit("record/setCurrentRecord", mockData);
     expect(wrapper.vm.generateSupport()).toStrictEqual({
       "blog/web": {
         data: [
           {
             url: "some url",
-            type: "blog/web"
+            type: "blog/web",
           },
           {
             url: "some url 3",
-            type: "blog/web"
-          }
+            type: "blog/web",
+          },
         ],
-        icon: "blog_web"
+        icon: "blog_web",
       },
       "another type": {
         data: [
           {
             url: "some url 2",
-            type: "another type"
-          }
+            type: "another type",
+          },
         ],
-        icon: "another_type"
+        icon: "another_type",
       },
       contacts: {
         data: [
           {
             contact_name: "A Contact",
-            contact_email: "contact@goatse.cx"
+            contact_email: "contact@goatse.cx",
           },
           {
             contact_name: "B Contact",
             contact_email: "b contact@goatse.cx",
-            contact_orcid: "orcid id"
-          }
+            contact_orcid: "orcid id",
+          },
         ],
-        icon: "contacts"
-      }
-    })
+        icon: "contacts",
+      },
+    });
   });
 
   it("deals with mailto: correctly", () => {
-    let url = 'http://dodgy.com';
+    let url = "http://dodgy.com";
     expect(wrapper.vm.checkUrl(url)).toEqual(url);
-    url = 'me@dodgy.com';
-    expect(wrapper.vm.checkUrl(url)).toEqual('mailto:' + url);
-  })
-
+    url = "me@dodgy.com";
+    expect(wrapper.vm.checkUrl(url)).toEqual("mailto:" + url);
+  });
 });

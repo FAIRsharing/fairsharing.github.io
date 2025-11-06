@@ -3,39 +3,35 @@
     v-if="getField('metadata').contacts && getField('metadata').contacts.length"
     class="d-flex align-center flex-wrap"
   >
-    <span
-      class="d-flex align-baseline width-15-percent-flex"
-    >
+    <span class="d-flex align-baseline width-15-percent-flex">
       <v-tooltip location="bottom">
         <template #activator="{ props }">
-          <v-icon
-            class="mr-2"
-            size="15"
-            v-bind="props"
-          >
+          <v-icon class="mr-2" size="15" v-bind="props">
             fas fa-question-circle
           </v-icon>
         </template>
-        {{ recordTooltips['contacts'] }}
+        {{ recordTooltips["contacts"] }}
       </v-tooltip>
       <b class="width-15-percent-flex">Contacts</b>
     </span>
     <div class="d-flex flex-wrap ml-md-12 ml-13">
       <div
-        v-for="(contact,index) in getField('metadata').contacts"
-        :key="contact+'_'+index"
+        v-for="(contact, index) in getField('metadata').contacts"
+        :key="contact + '_' + index"
         style="min-height: 40px"
         class="d-flex align-center"
       >
         <a
           v-if="contact.contact_name"
-          :class="[{'ml-1':index!==0},'pr-0 underline-effect']"
-          :href="contact.contact_email.toString().includes('@')?`mailto:${contact.contact_email}`:contact.contact_email"
+          :class="[{ 'ml-1': index !== 0 }, 'pr-0 underline-effect']"
+          :href="
+            contact.contact_email.toString().includes('@')
+              ? `mailto:${contact.contact_email}`
+              : contact.contact_email
+          "
           target="_blank"
         >
-          <span
-            class="mr-1"
-          >{{ contact.contact_name }}</span>
+          <span class="mr-1">{{ contact.contact_name }}</span>
         </a>
         <a
           v-if="contact.contact_orcid"
@@ -48,29 +44,22 @@
             :height="25"
             size="30"
             wrapper-class=""
-          />
-        </a><span v-if="getField('metadata').contacts.length-1!==index">,</span>
+          /> </a
+        ><span v-if="getField('metadata').contacts.length - 1 !== index"
+          >,</span
+        >
       </div>
     </div>
   </div>
-  <div
-    v-else
-    class="align-center d-flex flex-row mb-2"
-  >
-    <span
-      class="d-flex align-baseline width-15-percent-flex"
-    >
+  <div v-else class="align-center d-flex flex-row mb-2">
+    <span class="d-flex align-baseline width-15-percent-flex">
       <v-tooltip location="bottom">
         <template #activator="{ props }">
-          <v-icon
-            class="mr-2"
-            size="15"
-            v-bind="props"
-          >
+          <v-icon class="mr-2" size="15" v-bind="props">
             fas fa-question-circle
           </v-icon>
         </template>
-        {{ recordTooltips['contacts'] }}
+        {{ recordTooltips["contacts"] }}
       </v-tooltip>
       <b class="width-15-percent-flex">Contacts</b>
     </span>
@@ -79,15 +68,15 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 export default {
   name: "ContactsData",
-  components:{Icon},
+  components: { Icon },
   computed: {
     ...mapGetters("record", ["getField"]),
-    ...mapState("editor", ["recordTooltips"])
-  }
-}
+    ...mapState("editor", ["recordTooltips"]),
+  },
+};
 </script>

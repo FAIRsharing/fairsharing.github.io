@@ -1,13 +1,13 @@
 <template>
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getObjectTypes"
-      :loading="getLoadingData"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-      @fetch-data="getResults"
-    />
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getObjectTypes"
+    :loading="getLoadingData"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -59,10 +59,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            objectTypes.commit(
-              "objectTypes/setObjectTypes",
-              this.value
-            );
+            objectTypes.commit("objectTypes/setObjectTypes", this.value);
           }
         }
       },

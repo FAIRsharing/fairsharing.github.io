@@ -2,24 +2,15 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text>
-        <v-card-title
-          id="download-curator-summary"
-          class="bg-green text-white"
-        >
+        <v-card-title id="download-curator-summary" class="bg-green text-white">
           RECORD EDITS BY MONTH
-          <v-btn
-            class="bg-info ml-5"
-            :loading="loading"
-          >
+          <v-btn class="bg-info ml-5" :loading="loading">
             <a
               v-if="downloadEditsByMonth"
               :href="downloadEditsByMonth"
               download="editsPerformedByMonth.txt"
             >
-              <v-icon
-                color="white"
-                class="mr-1"
-              > fa fa-download </v-icon>
+              <v-icon color="white" class="mr-1"> fa fa-download </v-icon>
               <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
@@ -53,7 +44,6 @@ export default {
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to download file having record edits by month
      */
@@ -65,7 +55,7 @@ export default {
           .replace(/","/g, '"\r\n"')
           .replace(/['"]+/g, "");
         this.downloadEditsByMonth =
-            "data:text/json;charset=utf-8," + encodeURIComponent(content);
+          "data:text/json;charset=utf-8," + encodeURIComponent(content);
       }
       else {
         this.downloadEditsByMonth = "data:text/json;charset=utf-8," + "";

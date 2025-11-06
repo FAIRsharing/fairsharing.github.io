@@ -1,16 +1,10 @@
-
 <template>
   <div class="d-flex ruleWrapper">
     <select
       v-model="selectedStandardRule"
       class="query-builder-group-slot__rule-selection"
     >
-      <option
-        disabled
-        value=""
-      >
-        Select a standards rule
-      </option>
+      <option disabled value="">Select a standards rule</option>
       <option
         v-for="rule in standardQueryBuilderComponents()"
         :key="rule.identifier"
@@ -29,17 +23,14 @@
 </template>
 
 <script>
-
-import {
-  IsImplemented, StandardRecordType,
-} from "../index";
+import { IsImplemented, StandardRecordType } from "../index";
 export default {
   name: "StandardRule",
   props: {
     groupCtrl: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data: () => {
     return {
@@ -47,7 +38,7 @@ export default {
     };
   },
 
-  methods:{
+  methods: {
     standardQueryBuilderComponents() {
       return [
         {
@@ -62,7 +53,7 @@ export default {
           component: IsImplemented,
           initialValue: "",
         },
-      ]
+      ];
     },
 
     /**
@@ -71,10 +62,9 @@ export default {
      * @param selectedRule - String
      */
     addNewRule(item, selectedRule) {
-      item.addRule(selectedRule)
-      this.selectedStandardRule = ''
+      item.addRule(selectedRule);
+      this.selectedStandardRule = "";
     },
-  }
+  },
 };
 </script>
-

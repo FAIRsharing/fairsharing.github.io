@@ -1,9 +1,9 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import Vuetify from "vuetify"
-import Vuex from "vuex"
+import Vuetify from "vuetify";
+import Vuex from "vuex";
 
-import Maintainers from "@/components/Editor/GeneralInformation/Maintainers.vue"
+import Maintainers from "@/components/Editor/GeneralInformation/Maintainers.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import recordStore from "@/store/recordData.js";
@@ -13,62 +13,64 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 let maintainer = {
-  username: 'jean',
+  username: "jean",
   id: 100,
-  orcid: '0000-'
+  orcid: "0000-",
 };
 let extra = {
-  username: 'de fleur',
+  username: "de fleur",
   id: 101,
-  orcid: '1111-'
+  orcid: "1111-",
 };
 recordStore.state.sections = {
   generalInformation: {
     data: {
       maintainers: [maintainer],
-      watchers: [maintainer, extra]
+      watchers: [maintainer, extra],
     },
     initialData: {
       maintainers: [maintainer],
-      watchers: [maintainer, extra]
-    }
-  }
+      watchers: [maintainer, extra],
+    },
+  },
 };
 const $store = new Vuex.Store({
   modules: {
     record: recordStore,
-    users: usersStore
-  }
+    users: usersStore,
+  },
 });
 
 let wrapper;
 
-describe('Editor -> Maintainers.vue', () => {
+describe("Editor -> Maintainers.vue", () => {
   let graphStub;
 
   graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
   graphStub.withArgs(allUsersQuery).returns({
-    allUsers: [
-      {id: 1, username: 'one', email: 'one@one.com'}
-    ]
-  })
+    allUsers: [{ id: 1, username: "one", email: "one@one.com" }],
+  });
 
   afterAll(() => {
     graphStub.restore();
-  })
+  });
 
   beforeEach(() => {
     wrapper = shallowMount(Maintainers, {
       localVue,
       vuetify,
-      mocks: {$store}
+      mocks: { $store },
     });
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("Maintainers");
-    expect(wrapper.vm.getSection("generalInformation").data.maintainers).toStrictEqual([maintainer]);
-    expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([maintainer, extra]);
+    expect(
+      wrapper.vm.getSection("generalInformation").data.maintainers,
+    ).toStrictEqual([maintainer]);
+    expect(
+      wrapper.vm.getSection("generalInformation").data.watchers,
+    ).toStrictEqual([maintainer, extra]);
   });
 
   it("can add a new maintainer", async () => {
@@ -81,8 +83,8 @@ describe('Editor -> Maintainers.vue', () => {
       content: {
         name: null,
         id: null,
-        orcid: null
-      }
+        orcid: null,
+      },
     });
     wrapper.vm.formValid = true;
     wrapper.vm.menu.content = maintainer;
@@ -90,9 +92,9 @@ describe('Editor -> Maintainers.vue', () => {
     // The same maintainer will not be added again.
     expect(wrapper.vm.maintainers.length).toEqual(count);
     let nextMaintainer = {
-      username: 'another',
+      username: "another",
       id: 2222,
-      orcid: null
+      orcid: null,
     };
     wrapper.vm.menu.content = nextMaintainer;
     wrapper.vm.addItem(nextMaintainer);
@@ -112,9 +114,9 @@ describe('Editor -> Maintainers.vue', () => {
   it("determines if a maintainer is newly added", () => {
     expect(wrapper.vm.isNew(maintainer)).toBe(false);
     let nextMaintainer = {
-      username: 'another',
+      username: "another",
       id: 2222,
-      orcid: null
+      orcid: null,
     };
     expect(wrapper.vm.isNew(nextMaintainer)).toBe(true);
   });
@@ -123,11 +125,10 @@ describe('Editor -> Maintainers.vue', () => {
     wrapper.vm.maintainers.push(maintainer);
     expect(wrapper.vm.isAlreadyMaintainer(maintainer)).toBe(true);
     let nextMaintainer = {
-      username: 'unknown',
+      username: "unknown",
       id: 1234,
-      orcid: null
+      orcid: null,
     };
     expect(wrapper.vm.isAlreadyMaintainer(nextMaintainer)).toBe(false);
   });
-
 });

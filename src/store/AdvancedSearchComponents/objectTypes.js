@@ -15,8 +15,13 @@ const actions = {
       q: queryParams,
     };
     let response = await CLIENT.executeQuery(SEARCH_OBJECTTYPES);
-    if (response["objectTypes"].records && response["objectTypes"].records.length) {
-      const objectTypesList = response["objectTypes"].records.map(({ label }) => label);
+    if (
+      response["objectTypes"].records &&
+      response["objectTypes"].records.length
+    ) {
+      const objectTypesList = response["objectTypes"].records.map(
+        ({ label }) => label,
+      );
       commit("setObjectTypes", objectTypesList);
     }
 
@@ -45,7 +50,7 @@ const getters = {
   },
   getLoadingData(state) {
     return state.loadingData;
-  }
+  },
 };
 const objectTypes = {
   namespaced: true,

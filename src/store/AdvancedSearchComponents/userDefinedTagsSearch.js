@@ -22,7 +22,7 @@ const actions = {
       response["searchUserDefinedTags"].length
     ) {
       const userDefinedTagsList = response["searchUserDefinedTags"].map(
-        ({ label }) => label
+        ({ label }) => label,
       );
       commit("setSearchUserDefinedTags", userDefinedTagsList);
     }

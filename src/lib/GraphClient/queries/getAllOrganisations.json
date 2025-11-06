@@ -1,11 +1,5 @@
 {
   "queryName": "allOrganisations",
   "queryParam": null,
-  "fields": [
-    "id",
-    "name",
-    "homepage",
-    "types",
-    "rorLink"
-  ]
+  "fields": ["id", "name", "homepage", "types", "rorLink"]
 }

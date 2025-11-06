@@ -150,10 +150,10 @@ describe("AdvancedSearch store methods", () => {
     };
     mutations.setAdvancedSearchQuery(state, advancedSearchQuery);
     expect(state.advancedSearchQuery["operator"]).toBe(
-      advancedSearchQuery["operator"]
+      advancedSearchQuery["operator"],
     );
     expect(state.advancedSearchQuery["fields"]).toBe(
-      advancedSearchQuery["fields"]
+      advancedSearchQuery["fields"],
     );
   });
 
@@ -278,7 +278,7 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getAdvancedSearchDialogStatus(getSearchResult);
     expect(builtData).toStrictEqual(
-      getSearchResult["advancedSearchDialogStatus"]
+      getSearchResult["advancedSearchDialogStatus"],
     );
   });
 });

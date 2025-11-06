@@ -1,29 +1,26 @@
 <template>
   <v-container>
     <v-row class="my-4">
-      <v-col
-        cols="12"
-        sm="12"
-        lg="5"
-        class="d-flex justify-center"
-      >
+      <v-col cols="12" sm="12" lg="5" class="d-flex justify-center">
         <v-img
           class="contain"
           :src="image"
-          :width="$vuetify.display.mdAndDown?'150':'300'"
-          :height="$vuetify.display.mdAndDown?'150':'300'"
+          :width="$vuetify.display.mdAndDown ? '150' : '300'"
+          :height="$vuetify.display.mdAndDown ? '150' : '300'"
         />
       </v-col>
-      <v-col
-        cols="12"
-        sm="12"
-        lg="7"
-        class="d-flex flex-column justify-center"
-      >
-        <h4 class="mb-2 text-left text-body-2 text-sm-h6 text-md-h5 font-weight-bold text-primary">
+      <v-col cols="12" sm="12" lg="7" class="d-flex flex-column justify-center">
+        <h4
+          class="mb-2 text-left text-body-2 text-sm-h6 text-md-h5 font-weight-bold text-primary"
+        >
           {{ header }}
         </h4>
-        <p :class="['mb-1 lato-font-medium font-weight-thin text-justify lato-text-sm',{'lato-text-md':$vuetify.display.mdAndUp}]">
+        <p
+          :class="[
+            'mb-1 lato-font-medium font-weight-thin text-justify lato-text-sm',
+            { 'lato-text-md': $vuetify.display.mdAndUp },
+          ]"
+        >
           {{ description }}
         </p>
         <router-link
@@ -43,20 +40,20 @@ export default {
   props: {
     header: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     image: {
       type: String,
-      default: null
+      default: null,
     },
     link: {
       type: String,
-      default: null
-    }
-  }
-}
+      default: null,
+    },
+  },
+};
 </script>

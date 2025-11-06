@@ -32,7 +32,9 @@
                   location="bottom"
                 >
                   <template #activator="{ props }">
-                    <v-icon v-bind="props" color="grey"> fas fa-question-circle </v-icon>
+                    <v-icon v-bind="props" color="grey">
+                      fas fa-question-circle
+                    </v-icon>
                   </template>
                   {{ getFields("array")[fieldName]["description"] }}
                 </v-tooltip>

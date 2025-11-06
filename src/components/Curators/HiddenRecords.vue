@@ -2,10 +2,7 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="hiddenRecords">
-        <v-card-title
-          id="text-curator-search-2"
-          class="bg-green text-white"
-        >
+        <v-card-title id="text-curator-search-2" class="bg-green text-white">
           <b> HIDDEN RECORDS </b>
           <v-spacer />
           <v-text-field
@@ -26,18 +23,11 @@
           :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
-          <template
-            v-if="recordType"
-            #item="props"
-          >
+          <template v-if="recordType" #item="props">
             <tr>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
                     <Icon
                       :item="props.item.type"
                       :height="40"
@@ -78,7 +68,7 @@ import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json"
+import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json";
 import formatDate from "@/utils/generalUtils";
 
 const client = new GraphClient();
@@ -89,15 +79,15 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
     return {
-      hiddenRecords:[],
+      hiddenRecords: [],
       searches: "",
       recordType: {},
       loading: false,
@@ -112,11 +102,10 @@ export default {
     client.setHeader(this.user().credentials.token);
     //Fetching hidden records
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
-    this.prepareHiddenRecords(hiddenRecords)
+    this.prepareHiddenRecords(hiddenRecords);
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to fetch hidden records
      * @param dataCuration
@@ -156,6 +145,6 @@ export default {
 }
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 </style>

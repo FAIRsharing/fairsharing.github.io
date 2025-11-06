@@ -3,7 +3,7 @@
     <!--Jump to top arrow button -->
     <v-fade-transition v-if="getLoadingStatus">
       <JumpToTop v-if="scrollStatus" />
-    <!--Loader-->
+      <!--Loader-->
       <div>
         <v-overlay
           :model-value="getLoadingStatus"
@@ -16,10 +16,7 @@
       </div>
     </v-fade-transition>
     <!--Search result -->
-    <v-container
-      fluid
-      class="pa-0"
-    >
+    <v-container fluid class="pa-0">
       <v-row v-if="$vuetify.display.mdAndDown">
         <v-col>
           <AdvancedSearchButtons />
@@ -34,7 +31,7 @@
           xl="3"
           class="d-flex mt-2 ml-2"
         >
-          <AdvancedSearchSelection/>
+          <AdvancedSearchSelection />
         </v-col>
         <!-- Advanced search result right column-->
         <v-col style="width: 66%">
@@ -107,7 +104,7 @@ export default {
     this.resetSearchDomains();
     this.resetSearchTaxonomies();
     this.resetSearchLicences();
-    this.resetSearchCountries()
+    this.resetSearchCountries();
   },
   methods: {
     ...mapActions("uiController", ["setStickToTop"]),

@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Data protection is part of research data management and provides links to related policies and/or supporting documentation.",
-
+      itemValue: "",
+      toolTipText:
+        "Data protection is part of research data management and provides links to related policies and/or supporting documentation.",
     };
   },
   computed: {

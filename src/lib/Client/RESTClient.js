@@ -758,7 +758,7 @@ class RESTClient {
   async updateStatusMaintenanceRequest(
     maintenanceRequest,
     newStatus,
-    userToken
+    userToken,
   ) {
     let _client = this;
     const request = {

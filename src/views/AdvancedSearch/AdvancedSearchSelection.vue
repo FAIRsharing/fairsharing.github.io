@@ -7,10 +7,7 @@
     ]"
   >
     <AdvancedSearchButtons />
-    <div
-      v-if="getAdvancedSearchText"
-      class="searchText chips-holder ma-2"
-    >
+    <div v-if="getAdvancedSearchText" class="searchText chips-holder ma-2">
       <v-chip
         class="ma-2 mt-2 text-capitalize"
         color="accent3"
@@ -118,11 +115,11 @@ export default {
     printSelectionValues(key, value) {
       let refinedValues = "";
       if (key !== "operator") {
-        if ((value === true) || (value[0] === "true"))  {
-          return "true"
+        if (value === true || value[0] === "true") {
+          return "true";
         }
-        if ((value === false) || (value[0] === "false"))  {
-          return "false"
+        if (value === false || value[0] === "false") {
+          return "false";
         }
         else {
           refinedValues = value
@@ -166,7 +163,7 @@ export default {
       const re = new RegExp(find, "g");
       return str.replace(
         re,
-        "<span class='font-weight-medium'>" + find + "</span>"
+        "<span class='font-weight-medium'>" + find + "</span>",
       );
     },
   },
@@ -186,7 +183,7 @@ export default {
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 .filters-holder-after-scroll {
   overflow-x: hidden;

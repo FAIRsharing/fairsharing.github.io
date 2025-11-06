@@ -3,7 +3,10 @@
     id="mainHeader"
     height="150px"
     class="header-container"
-    :class="[{'largeScreen': $vuetify.display.xl}, {'smallScreen': $vuetify.display.mdAndDown}]"
+    :class="[
+      { largeScreen: $vuetify.display.xl },
+      { smallScreen: $vuetify.display.mdAndDown },
+    ]"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mdAndDown"
@@ -12,21 +15,16 @@
     <!-- First Level Menu -->
     <div
       class="navFirst d-flex"
-      :class="{'full-width': $vuetify.display.mdAndDown}"
+      :class="{ 'full-width': $vuetify.display.mdAndDown }"
     >
       <router-link to="/">
-        <img
-          src="/assets/fairsharing-logo.svg"
-          alt="FAIRsharing logo"
-        >
+        <img src="/assets/fairsharing-logo.svg" alt="FAIRsharing logo" />
       </router-link>
-      <div
-        class="d-flex justify-start align-center custom-width"
-      >
+      <div class="d-flex justify-start align-center custom-width">
         <string-search
           v-if="$vuetify.display.sm || $vuetify.display.mdAndUp"
           placeholder="search through all content"
-          :class="$vuetify.display.lgAndDown?'flex-grow-1':'full-width'"
+          :class="$vuetify.display.lgAndDown ? 'flex-grow-1' : 'full-width'"
         />
         <nav>
           <ul
@@ -43,19 +41,20 @@
             >
               <template #activator="{ props }">
                 <v-btn
-                  :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+                  :size="
+                    $vuetify.display.xl
+                      ? 'x-large'
+                      : $vuetify.display.mdAndDown
+                        ? 'small'
+                        : undefined
+                  "
                   class="mr-1 mt-sm-1 bg-accent3"
                   v-bind="props"
                   elevation="3"
                   @click="closePopup(false)"
                 >
                   Login
-                  <v-icon
-                    class="ml-1"
-                    size="small"
-                  >
-                    fa fa-sign-in-alt
-                  </v-icon>
+                  <v-icon class="ml-1" size="small"> fa fa-sign-in-alt </v-icon>
                 </v-btn>
               </template>
               <Login
@@ -66,20 +65,22 @@
             </v-menu>
             <v-btn
               v-else
-              :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+              :size="
+                $vuetify.display.xl
+                  ? 'x-large'
+                  : $vuetify.display.mdAndDown
+                    ? 'small'
+                    : undefined
+              "
               class="mr-1 mt-sm-1 bg-green"
               to="/accounts/profile"
               elevation="2"
             >
+              <v-icon color="white" class="mr-1"> fas fa-user-circle </v-icon>
 
-                <v-icon
-                  color="white"
-                  class="mr-1"
-                >
-                  fas fa-user-circle
-                </v-icon>
-
-              <span class="text-white ellipse-150">{{ user().credentials.username }}</span>
+              <span class="text-white ellipse-150">{{
+                user().credentials.username
+              }}</span>
             </v-btn>
           </ul>
         </nav>
@@ -100,9 +101,15 @@
             :key="'navBarTopMenuItem_' + itemIndex"
           >
             <v-btn
-                :size="$vuetify.display.xl ? 'x-large' : $vuetify.display.mdAndDown ? 'small' : undefined"
+              :size="
+                $vuetify.display.xl
+                  ? 'x-large'
+                  : $vuetify.display.mdAndDown
+                    ? 'small'
+                    : undefined
+              "
               class="mr-1 mt-sm-1 menuLinks"
-              :class="{'px-2': $vuetify.display.lgAndDown}"
+              :class="{ 'px-2': $vuetify.display.lgAndDown }"
               :color="item.color"
               :variant="!item.active ? 'outlined' : 'elevated'"
               :to="item.link"
@@ -110,7 +117,14 @@
               min-width="167px"
               max-width="184px"
             >
-              <span :class="['text-white',{'text-primary': !item.active}, {'text-accent3': item.primary && !item.active}]">{{ item.label }}</span>
+              <span
+                :class="[
+                  'text-white',
+                  { 'text-primary': !item.active },
+                  { 'text-accent3': item.primary && !item.active },
+                ]"
+                >{{ item.label }}</span
+              >
             </v-btn>
           </li>
         </ul>
@@ -120,15 +134,15 @@
 </template>
 
 <script>
-import {isEmpty} from "lodash";
-import {mapState} from 'vuex'
+import { isEmpty } from "lodash";
+import { mapState } from "vuex";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import Login from "@/views/Users/Login/Login";
 
 export default {
   name: "HeaderComp",
-  components: {StringSearch, Login},
+  components: { StringSearch, Login },
   data: function () {
     return {
       closeMenuStatus: false,
@@ -140,7 +154,7 @@ export default {
           link: "/standards",
           color: "accent3",
           active: false,
-          primary: true
+          primary: true,
         },
         {
           label: "Databases",
@@ -148,7 +162,7 @@ export default {
           link: "/databases",
           color: "accent3",
           active: false,
-          primary: true
+          primary: true,
         },
         {
           label: "Policies",
@@ -156,7 +170,7 @@ export default {
           link: "/policies",
           color: "accent3",
           active: false,
-          primary: true
+          primary: true,
         },
         {
           label: "Collections",
@@ -164,7 +178,7 @@ export default {
           link: "/collections",
           color: "primary",
           active: false,
-          primary: false
+          primary: false,
         },
         {
           label: "Organisations",
@@ -172,7 +186,7 @@ export default {
           link: "/organisations",
           color: "primary",
           active: false,
-          primary: false
+          primary: false,
         },
         {
           label: "Add content",
@@ -180,7 +194,7 @@ export default {
           link: "/new",
           color: "primary",
           active: false,
-          primary: false
+          primary: false,
         },
         {
           label: "Stats",
@@ -188,76 +202,73 @@ export default {
           link: "/summary-statistics",
           color: "primary",
           active: false,
-          primary: false
-        }
-      ]
-    }
+          primary: false,
+        },
+      ],
+    };
   },
   computed: {
-    ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"]),
+    ...mapState("uiController", ["UIGeneralStatus"]),
+    ...mapState("users", ["user"]),
     currentParameter() {
       let currentQuery = this.$route.query;
       if (!isEmpty(currentQuery)) {
-        return currentQuery
+        return currentQuery;
       }
       else {
-        return {fairsharingRegistry: this.$route.name}
+        return { fairsharingRegistry: this.$route.name };
       }
-    }
+    },
   },
   watch: {
     currentParameter: {
       handler(newVal) {
         const _module = this;
-        _module.setCurrentActiveButton(newVal.fairsharingRegistry)
+        _module.setCurrentActiveButton(newVal.fairsharingRegistry);
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     toggleDrawerLeft: function () {
       this.drawerLeft = !this.UIGeneralStatus.drawerVisibilityState;
       this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
         headerVisibilityState: true,
-        drawerVisibilityState: this.drawerLeft
+        drawerVisibilityState: this.drawerLeft,
       });
     },
     closePopup: function (status) {
       this.closeMenuStatus = status;
     },
-    setCurrentActiveButton: function(newValue) {
-      this.links.map(link => {
-        link.name === newValue ? link.active = true : link.active = false;
+    setCurrentActiveButton: function (newValue) {
+      this.links.map((link) => {
+        link.name === newValue ? (link.active = true) : (link.active = false);
       });
-    }
-  }
-}
-
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
 header {
-  padding-right: .5rem;
+  padding-right: 0.5rem;
 }
 
 .custom-width {
   width: 94%;
 }
 
-
 .header-container {
   border-bottom: 3px dashed #253442;
   position: relative !important;
-  height:150px;
+  height: 150px;
   max-height: 150px;
 }
-
 
 .header-container:deep(.v-toolbar__content) {
   flex-direction: column;
   align-items: stretch;
-  padding: 4px 16px
+  padding: 4px 16px;
 }
 
 .smallScreen {
@@ -277,7 +288,6 @@ header {
 }
 
 .largeScreen:deep(.menuLinks) {
-  min-width: 260px !important
+  min-width: 260px !important;
 }
-
 </style>

@@ -3,17 +3,15 @@
 </template>
 
 <script>
-    /** This component handles the sign-up/register page
-     * @memberOf Static
-     * @name Timeline
-     * @type module
-     * @instance
-     * */
-    export default {
-        name: "Timeline"
-    }
+/** This component handles the sign-up/register page
+ * @memberOf Static
+ * @name Timeline
+ * @type module
+ * @instance
+ * */
+export default {
+  name: "Timeline",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

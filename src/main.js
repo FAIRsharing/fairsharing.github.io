@@ -17,7 +17,7 @@ import VueCodeHighlight from "vue-code-highlight";
 import VueGtag from "vue-gtag";
 /* import linkify to turn url within text into an actual url link */
 import linkify from "vue-3-linkify";
-import {createMetaManager} from "vue-meta";
+import { createMetaManager } from "vue-meta";
 // import VueMoment from "vue-moment";
 import Vue3Sanitize from "vue-3-sanitize";
 import VueScrollTo from "vue-scrollto";
@@ -69,7 +69,6 @@ async function bootstrapApp() {
 //   MODE: 3,
 // });
 
-
 const app = createApp(App)
   .use(createVuetify)
   .use(router)
@@ -92,10 +91,10 @@ const app = createApp(App)
   .use(SimpleAnalytics, {
     skip: import.meta.env.NODE_ENV !== "production",
   });
-app.directive("linkified", linkify)
+app.directive("linkified", linkify);
 app.mount("#app");
 app.config.globalProperties.$filters = {
-  cleanString (str) {
+  cleanString(str) {
     return str
       .replace(/_/g, " ")
       .replace(/([A-Z])/g, "$1")
@@ -107,4 +106,4 @@ app.config.globalProperties.$filters = {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1);
   },
-}
+};

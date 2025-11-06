@@ -1,9 +1,9 @@
-import {createLocalVue,shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import Tools from "@/components/Records/Record/Tools.vue"
-import Record from "@/store/recordData.js"
+import Tools from "@/components/Records/Record/Tools.vue";
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -14,31 +14,24 @@ let editor = {
   state: {
     recordTooltips: {
       tools: "tools tooltip.",
-    }
-  }
-}
-
+    },
+  },
+};
 
 Record.state.currentRecord["fairsharingRecord"] = {
   metadata: {
-    associated_tools: [{url: 'http://url.com', name: 'name'}]
+    associated_tools: [{ url: "http://url.com", name: "name" }],
   },
-  taxonomies: [
-    {label: "Turdus turdus"},
-  ],
-  subjects: [
-    {label: "Javascript Fun"},
-  ],
-  domains: [
-    {label: "Deneb"},
-  ],
-  userDefinedTags: [{label: 'a'}],
+  taxonomies: [{ label: "Turdus turdus" }],
+  subjects: [{ label: "Javascript Fun" }],
+  domains: [{ label: "Deneb" }],
+  userDefinedTags: [{ label: "a" }],
 };
 const $store = new Vuex.Store({
   modules: {
     record: Record,
-    editor: editor
-  }
+    editor: editor,
+  },
 });
 
 describe("Tools.vue", function () {
@@ -48,7 +41,7 @@ describe("Tools.vue", function () {
     wrapper = shallowMount(Tools, {
       localVue,
       vuetify,
-      mocks: {$store}
+      mocks: { $store },
     });
   });
 
@@ -61,5 +54,4 @@ describe("Tools.vue", function () {
     Record.state.currentRecord.fairsharingRecord.metadata.associated_tools = [];
     expect(wrapper.vm.showTools()).toBe(false);
   });
-
 });

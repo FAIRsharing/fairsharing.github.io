@@ -2,24 +2,15 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text>
-        <v-card-title
-          id="download-curator-summary"
-          class="bg-green text-white"
-        >
+        <v-card-title id="download-curator-summary" class="bg-green text-white">
           RECORDS CREATED BY MONTH
-          <v-btn
-            class="bg-info ml-5"
-            :loading="loading"
-          >
+          <v-btn class="bg-info ml-5" :loading="loading">
             <a
               v-if="downloadRecordsByMonth"
               :href="downloadRecordsByMonth"
               download="recordsCreatedByMonth.txt"
             >
-              <v-icon
-                color="white"
-                class="mr-1"
-              > fa fa-download </v-icon>
+              <v-icon color="white" class="mr-1"> fa fa-download </v-icon>
               <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
@@ -53,13 +44,12 @@ export default {
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to download file having records created by month
      */
     async obtainFileRecordCreatedByMonth() {
       let data = await restClient.getRecordCreatedByMonth(
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data) {
         let content = JSON.stringify(data)
@@ -67,7 +57,7 @@ export default {
           .replace(/","/g, '"\r\n"')
           .replace(/['"]+/g, "");
         this.downloadRecordsByMonth =
-            "data:text/json;charset=utf-8," + encodeURIComponent(content);
+          "data:text/json;charset=utf-8," + encodeURIComponent(content);
       }
       else {
         this.downloadRecordsByMonth = "data:text/json;charset=utf-8," + "";

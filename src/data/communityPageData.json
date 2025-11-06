@@ -80,11 +80,7 @@
   ],
   "tables": {
     "adopterTable": {
-      "tabs": [
-        "Logo",
-        "adopter",
-        "Associated FAIRsharing Record"
-      ],
+      "tabs": ["Logo", "adopter", "Associated FAIRsharing Record"],
       "data": [
         {
           "image": "assets/Community/elife.jpg",
@@ -173,10 +169,7 @@
       ]
     },
     "globalOrganisationTable": {
-      "tabs": [
-        "Logo",
-        "Name"
-      ],
+      "tabs": ["Logo", "Name"],
       "data": [
         {
           "image": "assets/Community/RDA_logo_cbIKmKK.png",
@@ -255,9 +248,7 @@
               "id": "fair_cookbook"
             }
           ],
-          "methods": [
-            "Cross-referencing FAIRsharing content"
-          ],
+          "methods": ["Cross-referencing FAIRsharing content"],
           "name": "FAIR Cookbook",
           "types": ["Training Material / documentation"],
           "logo": "faircookbook.png",
@@ -282,9 +273,7 @@
               "id": "866"
             }
           ],
-          "methods": [
-            "FAIRsharing API"
-          ],
+          "methods": ["FAIRsharing API"],
           "name": "The FAIR Maturity Evaluation Service",
           "types": ["FAIR evaluation/assessment"],
           "logo": "metrics.png",
@@ -400,9 +389,7 @@
               "id": "Elli_p"
             }
           ],
-          "methods": [
-            "FAIRsharing API"
-          ],
+          "methods": ["FAIRsharing API"],
           "name": "ARGOS and OpenDMP",
           "types": [
             "Data Management Plan (DMP) development/lifecycle",
@@ -451,39 +438,114 @@
   "governance": {
     "Stakeholder Advisory Board": [
       {
-        "title":"Stakeholder Advisors",
+        "title": "Stakeholder Advisors",
         "data": [
-          {"link": "https://orcid.org/0000-0002-9147-8397", "text": "<b>Adam Leary, </b>Oxford University Press"},
-          {"link": "https://orcid.org/0000-0001-9623-2225", "text": "<b>Catriona MacCallum, </b>Wiley"},
-          {"link": "https://orcid.org/0000-0002-2094-0230", "text": "<b>Dagmar Meyer, </b>European Research Council, Executive Agency"},
-          {"link": "https://orcid.org/0000-0003-1435-307X", "text": "<b>David Carr, </b>Global Biodata Coalition"},
-          {"link": "https://orcid.org/0000-0002-2557-6204", "text": "<b>Emma Ganley, </b>Protocols.io"},
-          {"link": "https://orcid.org/0000-0001-9305-7230", "text": "<b>Geraldine Clement-Stoneham, </b>Medical Research Council"},
-          {"link": "https://orcid.org/0000-0001-9520-0109","text": "<b>Graham Smith, </b>Springer Nature"},
-          {"link": "https://orcid.org/0000-0001-9697-9599","text": "<b>Ishwar Chandramouliswaran, </b>National Institutes of Health"},
-          {"link": "https://orcid.org/0000-0003-2839-4067", "text": "<b>Kiera McNiece, </b>Cambridge University Press"},
-          {"link": "https://orcid.org/0000-0002-7571-3502", "text": "<b>Lauren Cadwallader, </b>PLoS"},
-          {"link": "https://orcid.org/0000-0001-8520-5598", "text": "<b>Marta Teperek, </b>Open Science NL"},
-          {"link": "https://orcid.org/0000-0003-4139-0802", "text": "<b>Michael Ball, </b>Medical Research Council"},
-          {"link": "https://orcid.org/0000-0002-1496-8392", "text": "<b>Matthew Cannon, </b>Taylor and Francis"},
-          {"link": "https://orcid.org/0000-0001-8343-8910", "text": "<b>Nick Everitt,</b> Taylor and Francis</b>"},
-          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>(FAIRsharing Founding Member), GSK"},
-          {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>Taylor and Francis"},
-          {"text": "<b>Richard Brown, </b> BBSRC UKRI"},
-          {"link": "https://orcid.org/0000-0002-6853-4602", "text": "<b>Robert Hanisch, </b>National Institute of Standards and Technology"},
-          {"link": "https://orcid.org/0000-0002-0517-1031", "text": "<b>Sarah Callaghan, </b>Research Strategy & Policy Unit, University of Oxford"},
-          {"link": "https://orcid.org/0000-0002-9465-4042", "text": "<b>Sarah Stewart, </b>University of Westminster"},
-          {"link": "https://orcid.org/0000-0001-6444-1436", "text": "<b>Scott Edmunds, </b>GigaScience, Oxford University Press"},
-          {"link": "https://orcid.org/0000-0003-3179-7270", "text": "<b>Simon Hodson, </b>CODATA"},
-          {"link": "https://orcid.org/000-0002-0222-4177", "text": "<b>Theo Bloom, </b>British Medical Journal"},
-          {"link": "https://orcid.org/0000-0002-2499-4025", "text": "<b>Thomas Lemberger, </b>EMBO Press"},
-          {"link": "https://orcid.org/0000-0002-2743-6918", "text": "<b>Varsha Khodiyar, </b>Independent Expert"},
-          {"link": "https://orcid.org/0000-0002-0285-4910", "text": "<b>Wei-Mun Chan, </b>eLife"}
+          {
+            "link": "https://orcid.org/0000-0002-9147-8397",
+            "text": "<b>Adam Leary, </b>Oxford University Press"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-9623-2225",
+            "text": "<b>Catriona MacCallum, </b>Wiley"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-2094-0230",
+            "text": "<b>Dagmar Meyer, </b>European Research Council, Executive Agency"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-1435-307X",
+            "text": "<b>David Carr, </b>Global Biodata Coalition"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-2557-6204",
+            "text": "<b>Emma Ganley, </b>Protocols.io"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-9305-7230",
+            "text": "<b>Geraldine Clement-Stoneham, </b>Medical Research Council"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-9520-0109",
+            "text": "<b>Graham Smith, </b>Springer Nature"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-9697-9599",
+            "text": "<b>Ishwar Chandramouliswaran, </b>National Institutes of Health"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-2839-4067",
+            "text": "<b>Kiera McNiece, </b>Cambridge University Press"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-7571-3502",
+            "text": "<b>Lauren Cadwallader, </b>PLoS"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-8520-5598",
+            "text": "<b>Marta Teperek, </b>Open Science NL"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-4139-0802",
+            "text": "<b>Michael Ball, </b>Medical Research Council"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-1496-8392",
+            "text": "<b>Matthew Cannon, </b>Taylor and Francis"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-8343-8910",
+            "text": "<b>Nick Everitt,</b> Taylor and Francis</b>"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-2687-1982",
+            "text": "<b>Peter McQuilton, </b>(FAIRsharing Founding Member), GSK"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-7614-0806",
+            "text": "<b>Rebecca Grant, </b>Taylor and Francis"
+          },
+          { "text": "<b>Richard Brown, </b> BBSRC UKRI" },
+          {
+            "link": "https://orcid.org/0000-0002-6853-4602",
+            "text": "<b>Robert Hanisch, </b>National Institute of Standards and Technology"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-0517-1031",
+            "text": "<b>Sarah Callaghan, </b>Research Strategy & Policy Unit, University of Oxford"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-9465-4042",
+            "text": "<b>Sarah Stewart, </b>University of Westminster"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-6444-1436",
+            "text": "<b>Scott Edmunds, </b>GigaScience, Oxford University Press"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-3179-7270",
+            "text": "<b>Simon Hodson, </b>CODATA"
+          },
+          {
+            "link": "https://orcid.org/000-0002-0222-4177",
+            "text": "<b>Theo Bloom, </b>British Medical Journal"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-2499-4025",
+            "text": "<b>Thomas Lemberger, </b>EMBO Press"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-2743-6918",
+            "text": "<b>Varsha Khodiyar, </b>Independent Expert"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-0285-4910",
+            "text": "<b>Wei-Mun Chan, </b>eLife"
+          }
         ]
       }
     ]
   },
-  "governance_text":[
+  "governance_text": [
     {
       "text": "The FAIRsharing Stakeholder Advisory Board is composed of international experts across many disciplines, representing diverse groups and organisations, including researchers, developers and curators, publishers, librarians and trainers, funders, societies and alliances. Advisors provide <b>advice</b> on specific community needs, <b>feedback</b> on new features, <b>connection</b> with other activities, and FAIRsharing <b>advocacy</b>. Membership is regularly reviewed to ensure coverage and engagement remains high and active."
     },
@@ -493,18 +555,24 @@
   ],
   "meettheteam": {
     "title": "Meet The Team",
-  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at the University of Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",
+    "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at the University of Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",
     "profiles": [
       {
         "name": "Allyson Lister",
         "role": "Content and Community Coordinator",
         "profileImg": "assets/Community/profiles/allyson.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-7702-4495", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/allysonlister/","icon": "linkedin"},
-          {"link": "https://github.com/allysonlister","icon": "github"},
-          {"link": "allyson.lister@oerc.ox.ac.uk","icon": "contacts"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0002-7702-4495", "icon": "Orcid" },
+          {
+            "link": "https://www.linkedin.com/in/allysonlister/",
+            "icon": "linkedin"
+          },
+          { "link": "https://github.com/allysonlister", "icon": "github" },
+          { "link": "allyson.lister@oerc.ox.ac.uk", "icon": "contacts" }
         ]
       },
       {
@@ -512,11 +580,17 @@
         "role": "Technical Coordinator",
         "profileImg": "assets/Community/profiles/milo.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-6468-9260", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/milo-thurston-86557510/","icon": "linkedin"},
-          {"link": "https://github.com/knirirr","icon": "github"},
-          {"link": "milo.thurston@oerc.ox.ac.uk","icon": "contacts"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0002-6468-9260", "icon": "Orcid" },
+          {
+            "link": "https://www.linkedin.com/in/milo-thurston-86557510/",
+            "icon": "linkedin"
+          },
+          { "link": "https://github.com/knirirr", "icon": "github" },
+          { "link": "milo.thurston@oerc.ox.ac.uk", "icon": "contacts" }
         ]
       },
       {
@@ -524,11 +598,20 @@
         "role": "Principal Investigator and Founder",
         "profileImg": "assets/Community/profiles/susanna.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0001-5306-5690", "icon": "Orcid"},
-          {"link": "http://uk.linkedin.com/in/sasansone", "icon": "linkedin"},
-          {"link": "http://www.twitter.com/SusannaASansone", "icon": "twitter"},
-          {"link": "susanna-assunta.sansone@oerc.ox.ac.uk", "icon": "contacts"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0001-5306-5690", "icon": "Orcid" },
+          { "link": "http://uk.linkedin.com/in/sasansone", "icon": "linkedin" },
+          {
+            "link": "http://www.twitter.com/SusannaASansone",
+            "icon": "twitter"
+          },
+          {
+            "link": "susanna-assunta.sansone@oerc.ox.ac.uk",
+            "icon": "contacts"
+          }
         ]
       },
       {
@@ -536,12 +619,18 @@
         "role": "Co-Founder",
         "profileImg": "assets/Community/profiles/philippe.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0001-9853-5668", "icon": "Orcid"},
-          {"link": "http://uk.linkedin.com/in/philipperoccaserra", "icon": "linkedin"},
-          {"link": "http://www.twitter.com/Phil_at_OeRC", "icon": "twitter"},
-          {"link": "http://github.com/proccaserra", "icon": "github"},
-          {"link": "philippe.rocca-serra@oerc.ox.ac.uk", "icon": "contacts"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0001-9853-5668", "icon": "Orcid" },
+          {
+            "link": "http://uk.linkedin.com/in/philipperoccaserra",
+            "icon": "linkedin"
+          },
+          { "link": "http://www.twitter.com/Phil_at_OeRC", "icon": "twitter" },
+          { "link": "http://github.com/proccaserra", "icon": "github" },
+          { "link": "philippe.rocca-serra@oerc.ox.ac.uk", "icon": "contacts" }
         ]
       },
       {
@@ -549,10 +638,13 @@
         "role": "Data Manager and Research Software Engineer",
         "profileImg": "assets/Community/profiles/ramon.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0001-9572-0972", "icon": "Orcid"},
-          {"link": "https://github.com/ramGranell", "icon": "github"},
-          {"link": "ramon.granell@oerc.ox.ac.uk", "icon": "contacts"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0001-9572-0972", "icon": "Orcid" },
+          { "link": "https://github.com/ramGranell", "icon": "github" },
+          { "link": "ramon.granell@oerc.ox.ac.uk", "icon": "contacts" }
         ]
       },
       {
@@ -560,8 +652,11 @@
         "role": "Curation Manager",
         "profileImg": "assets/Community/profiles/delphine.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0003-3152-1194", "icon": "Orcid"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0003-3152-1194", "icon": "Orcid" }
         ]
       },
       {
@@ -569,10 +664,13 @@
         "role": "Web Developer and Research Software Engineer",
         "profileImg": "assets/Community/profiles/prakhyat.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-9109-9266", "icon": "Orcid"},
-          {"link": "https://github.com/prakhyatox", "icon": "github"},
-          {"link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts"}
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0002-9109-9266", "icon": "Orcid" },
+          { "link": "https://github.com/prakhyatox", "icon": "github" },
+          { "link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts" }
         ]
       },
       {
@@ -580,10 +678,15 @@
         "role": "Curator",
         "profileImg": "assets/Community/profiles/Lea.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-2163-5924", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/", "icon": "linkedin"}
-
+          {
+            "link": "https://datareadiness.eng.ox.ac.uk/#people",
+            "icon": "home"
+          },
+          { "link": "https://orcid.org/0000-0002-2163-5924", "icon": "Orcid" },
+          {
+            "link": "https://www.linkedin.com/in/l%C3%A9a-girard-0bb5a6b0/",
+            "icon": "linkedin"
+          }
         ]
       }
     ]
@@ -595,13 +698,34 @@
       {
         "title": "Chairs",
         "data": [
-          {"link": "https://orcid.org/0000-0001-9520-0109","text": "<b>Graham Smith, </b>Springer Nature"},
-          {"link": "https://orcid.org/0000-0002-8243-2493", "text": "<b>Holly Murray, </b>Health Data Research UK"},
-          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>GSK"},
-          {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>F1000"},
-          {"link": "https://orcid.org/0000-0003-3179-7270", "text": "<b>Simon Hodson, </b>CODATA"},
-          {"link": "https://orcid.org/0000-0002-7702-4495", "text": "<b>Allyson Lister, </b>University of Oxford"},
-          {"link": "https://orcid.org/0000-0001-5306-5690", "text": "<b>Susanna-Assunta Sansone, </b>University of Oxford"}
+          {
+            "link": "https://orcid.org/0000-0001-9520-0109",
+            "text": "<b>Graham Smith, </b>Springer Nature"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-8243-2493",
+            "text": "<b>Holly Murray, </b>Health Data Research UK"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-2687-1982",
+            "text": "<b>Peter McQuilton, </b>GSK"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-7614-0806",
+            "text": "<b>Rebecca Grant, </b>F1000"
+          },
+          {
+            "link": "https://orcid.org/0000-0003-3179-7270",
+            "text": "<b>Simon Hodson, </b>CODATA"
+          },
+          {
+            "link": "https://orcid.org/0000-0002-7702-4495",
+            "text": "<b>Allyson Lister, </b>University of Oxford"
+          },
+          {
+            "link": "https://orcid.org/0000-0001-5306-5690",
+            "text": "<b>Susanna-Assunta Sansone, </b>University of Oxford"
+          }
         ]
       },
       {

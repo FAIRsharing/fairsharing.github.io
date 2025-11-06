@@ -1,13 +1,13 @@
 <template>
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchLicences"
-      :loading="getLoadingStatus"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-      @fetch-data="getResults"
-    />
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getSearchLicences"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -61,7 +61,7 @@ export default {
           if (this.value && this.value.length) {
             licencesSearch.commit(
               "licencesSearch/setSearchLicences",
-              this.value
+              this.value,
             );
           }
         }

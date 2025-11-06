@@ -38,18 +38,18 @@
 
     <v-fade-transition>
       <div>
-      <v-dialog v-model="showFiltersSM" fullscreen :scrim="false" scrollable>
-        <v-card>
-          <v-card-title class="bg-primary text-white pb-5">
-            Add a filter
-            <v-spacer />
-            <v-btn size="x-small" @click="showFiltersSM = false">
-              <v-icon>fas fa-times</v-icon>
-            </v-btn>
-          </v-card-title>
-          <SearchInput class="pa-5" />
-        </v-card>
-      </v-dialog>
+        <v-dialog v-model="showFiltersSM" fullscreen :scrim="false" scrollable>
+          <v-card>
+            <v-card-title class="bg-primary text-white pb-5">
+              Add a filter
+              <v-spacer />
+              <v-btn size="x-small" @click="showFiltersSM = false">
+                <v-icon>fas fa-times</v-icon>
+              </v-btn>
+            </v-card-title>
+            <SearchInput class="pa-5" />
+          </v-card>
+        </v-dialog>
       </div>
     </v-fade-transition>
 
@@ -125,7 +125,7 @@ export default {
       return title;
     },
     currentPath: function () {
-      document.title = "FAIRsharing | " + this.getTitle // Setting up the metaInfo of the page
+      document.title = "FAIRsharing | " + this.getTitle; // Setting up the metaInfo of the page
       let title = this.$route.path.replace("/", "");
       const client = this;
       let queryParams = {};
@@ -230,11 +230,11 @@ export default {
       try {
         this.showFiltersSM = false;
         let token;
-        if(this.user().credentials !== undefined) {
-          token = this.user().credentials.token
+        if (this.user().credentials !== undefined) {
+          token = this.user().credentials.token;
         }
         else {
-          token = ""
+          token = "";
         }
         await _module.fetchRecords({
           params: this.getParameters(),

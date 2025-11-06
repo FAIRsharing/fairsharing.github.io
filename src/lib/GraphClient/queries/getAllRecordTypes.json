@@ -9,10 +9,7 @@
         "name",
         {
           "queryName": "fairsharingRegistry",
-          "fields": [
-            "id",
-            "name"
-          ]
+          "fields": ["id", "name"]
         }
       ]
     }

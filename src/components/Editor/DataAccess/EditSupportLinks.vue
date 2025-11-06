@@ -49,9 +49,7 @@
                   style="cursor: pointer"
                   variant="flat"
                   :class="[
-                    !isNew(links.raw)
-                      ? 'bg-blue'
-                      : 'bg-white borderBlue',
+                    !isNew(links.raw) ? 'bg-blue' : 'bg-white borderBlue',
                   ]"
                 >
                   <v-tooltip location="bottom">

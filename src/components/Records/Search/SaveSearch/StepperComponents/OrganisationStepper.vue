@@ -19,30 +19,22 @@
         label="Enter text to search for organisation(s) to associate with this saved search"
       >
         <!--Chip slot is not required anymore-->
-<!--        <template #chip="data">-->
-<!--          <v-chip-->
-<!--            v-bind="data.attrs"-->
-<!--            :model-value="data.item['id']"-->
-<!--            closable-->
-<!--            @click="data.select"-->
-<!--            @click:close="remove(data.item['id'])"-->
-<!--          >-->
-<!--            {{ data.item["name"] }}-->
-<!--          </v-chip>-->
-<!--        </template>-->
+        <!--        <template #chip="data">-->
+        <!--          <v-chip-->
+        <!--            v-bind="data.attrs"-->
+        <!--            :model-value="data.item['id']"-->
+        <!--            closable-->
+        <!--            @click="data.select"-->
+        <!--            @click:close="remove(data.item['id'])"-->
+        <!--          >-->
+        <!--            {{ data.item["name"] }}-->
+        <!--          </v-chip>-->
+        <!--        </template>-->
         <template #no-data>
-          <div
-            v-show="!getLoadingStatus"
-            class="py-3 px-4"
-          >
+          <div v-show="!getLoadingStatus" class="py-3 px-4">
             No organisation found
           </div>
-          <div
-            v-show="getLoadingStatus"
-            class="py-3 px-4"
-          >
-            Loading...
-          </div>
+          <div v-show="getLoadingStatus" class="py-3 px-4">Loading...</div>
         </template>
       </v-autocomplete>
     </template>
@@ -64,9 +56,7 @@
         />
       </template>
       <template v-else>
-        <p v-if="!loading">
-          No organisation found
-        </p>
+        <p v-if="!loading">No organisation found</p>
       </template>
     </template>
   </div>

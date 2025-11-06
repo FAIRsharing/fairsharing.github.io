@@ -64,7 +64,9 @@ let routes = [
     name: "sitemap",
     path: "/sitemap.xml",
     redirect: () => {
-      window.location.assign(import.meta.env.VITE_API_ENDPOINT + "/sitemap.xml");
+      window.location.assign(
+        import.meta.env.VITE_API_ENDPOINT + "/sitemap.xml",
+      );
     },
   },
   {
@@ -138,7 +140,7 @@ let routes = [
         [
           process.env.VUE_APP_API_HOSTNAME,
           "/search?fairsharingRegistry=FAIRassist",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -187,7 +189,7 @@ let routes = [
     path: "/FAIRsharing.NFOBJT",
     redirect: () => {
       window.location.assign(
-        "https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/object-types"
+        "https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/object-types",
       );
     },
   },
@@ -197,7 +199,7 @@ let routes = [
     path: "/ontology/subject/SRAO.owl",
     redirect: () => {
       window.location.assign(
-        "https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl"
+        "https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl",
       );
     },
   },
@@ -206,7 +208,7 @@ let routes = [
     path: "/ontology/subject/SRAO.owl/0.3.0",
     redirect: () => {
       window.location.assign(
-        "https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl"
+        "https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl",
       );
     },
   },
@@ -216,12 +218,12 @@ let routes = [
     redirect: (to) => {
       if (to.params.name.toLowerCase() === "srao") {
         window.location.assign(
-          "https://github.com/FAIRsharing/subject-ontology"
+          "https://github.com/FAIRsharing/subject-ontology",
         );
       }
       else if (to.params.name.toLowerCase() === "drao") {
         window.location.assign(
-          "https://github.com/FAIRsharing/domain-ontology"
+          "https://github.com/FAIRsharing/domain-ontology",
         );
       }
       else {
@@ -274,7 +276,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -288,7 +290,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Database&recordType=repository&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -301,7 +303,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Database&recordType=knowledgebase&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -314,7 +316,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Database&recordType=knowledgebase_and_repository&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -327,7 +329,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=model_and_format&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -340,7 +342,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=metric&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -353,7 +355,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=terminology_artefact&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -366,7 +368,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=reporting_guideline&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -379,7 +381,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Standard&recordType=identifier_schema&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -392,7 +394,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=project&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -405,7 +407,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=journal&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -418,7 +420,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=institution&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -431,7 +433,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=society&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -444,7 +446,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -457,7 +459,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/search?fairsharingRegistry=Policy&recordType=funder&page=1",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -561,7 +563,7 @@ let routes = [
         [
           import.meta.env.VITE_HOSTNAME,
           "/sustainability_and_preservation",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -580,7 +582,7 @@ let routes = [
     path: "/community_curation",
     redirect: () => {
       window.location.assign(
-        [import.meta.env.VUE_APP_API_HOSTNAME, "/community_champions"].join("")
+        [import.meta.env.VUE_APP_API_HOSTNAME, "/community_champions"].join(""),
       );
     },
   },
@@ -592,7 +594,7 @@ let routes = [
         [
           import.meta.env.VUE_APP_API_HOSTNAME,
           "/community_champions/our_champions",
-        ].join("")
+        ].join(""),
       );
     },
   },
@@ -778,7 +780,7 @@ const router = createRouter({
     if (to.hash) {
       return {
         selector: to.hash,
-        behavior: 'smooth',
+        behavior: "smooth",
       };
     }
     return false;

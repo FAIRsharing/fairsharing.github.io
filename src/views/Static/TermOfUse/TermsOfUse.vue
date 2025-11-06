@@ -6,7 +6,10 @@
     </h1>
     <!--  subtitle  -->
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
     >
       {{ TermsOfUse.subTitle }}
     </p>
@@ -14,7 +17,7 @@
     <!--  bullet points  -->
     <ul class="mb-10">
       <li
-        v-for="(bulletPoint,index) in TermsOfUse.bullet_points"
+        v-for="(bulletPoint, index) in TermsOfUse.bullet_points"
         :key="index"
         class="mb-4"
       >
@@ -25,39 +28,53 @@
     <!--  contact points  -->
     <div>
       <p
-        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="[
+          'mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xlOnly },
+        ]"
       >
         The administrative and security contact for this AUP is:
-      </p><a :href="`mailto:${TermsOfUse.admin_contact}`">{{ TermsOfUse.admin_contact }}</a>.
+      </p>
+      <a :href="`mailto:${TermsOfUse.admin_contact}`">{{
+        TermsOfUse.admin_contact
+      }}</a
+      >.
     </div>
 
     <div>
       <p
-        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="[
+          'mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xlOnly },
+        ]"
       >
         The privacy statements (e.g. Privacy Notices) are located at:
-      </p><a
+      </p>
+      <a
         class="underline-effect"
         target="_blank"
         :href="TermsOfUse.privacy_statements"
-      >{{ getHostname() }}{{ TermsOfUse.privacy_statements }}</a>.
+        >{{ getHostname() }}{{ TermsOfUse.privacy_statements }}</a
+      >.
     </div>
     <div>
       <p
-        :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.display.xlOnly }]"
+        :class="[
+          'mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xlOnly },
+        ]"
       >
         API use and data Licence statements are located at:
-      </p><a
-        class="underline-effect"
-        target="_blank"
-        :href="TermsOfUse.api_usage"
-      >{{ getHostname() }}{{ TermsOfUse.api_usage }}</a>.
+      </p>
+      <a class="underline-effect" target="_blank" :href="TermsOfUse.api_usage"
+        >{{ getHostname() }}{{ TermsOfUse.api_usage }}</a
+      >.
     </div>
   </main>
 </template>
 
 <script>
-import termsofUseData from '@/data/TermsofUseData.json'
+import termsofUseData from "@/data/TermsofUseData.json";
 import getHostname from "@/utils/generalUtils";
 
 export default {
@@ -65,10 +82,10 @@ export default {
   mixins: [getHostname],
   data: () => {
     return {
-      TermsOfUse: termsofUseData.termsOfUse
-    }
-  }
-}
+      TermsOfUse: termsofUseData.termsOfUse,
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -78,7 +95,7 @@ li {
 
 li::before {
   display: inline-block;
-  content: '';
+  content: "";
   -webkit-border-radius: 0.375rem;
   border-radius: 0.375rem;
   -moz-border-radius: 0.375rem;
@@ -87,5 +104,4 @@ li::before {
   margin-right: 0.5rem;
   background-color: black;
 }
-
 </style>

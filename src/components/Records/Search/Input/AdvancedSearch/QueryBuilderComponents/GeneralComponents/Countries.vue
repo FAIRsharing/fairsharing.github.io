@@ -1,13 +1,13 @@
 <template>
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchCountries"
-      :loading="getLoadingStatus"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-      @fetch-data="getResults"
-    />
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getSearchCountries"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -35,7 +35,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("countriesSearch", ["getSearchCountries", "getLoadingStatus"]),
+    ...mapGetters("countriesSearch", [
+      "getSearchCountries",
+      "getLoadingStatus",
+    ]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -61,7 +64,7 @@ export default {
           if (this.value && this.value.length) {
             countriesSearch.commit(
               "countriesSearch/setSearchCountries",
-              this.value
+              this.value,
             );
           }
         }

@@ -1,8 +1,5 @@
 {
   "queryName": "searchUserDefinedTags",
   "queryParam": null,
-  "fields": [
-    "id",
-    "label"
-  ]
+  "fields": ["id", "label"]
 }

@@ -15,14 +15,8 @@
           }"
         >
           <!--Close Button -->
-          <div
-            class="order-md-3"
-            style="padding-left: 14.4%"
-          >
-            <v-btn
-              icon
-              @click="closeDialog()"
-            >
+          <div class="order-md-3" style="padding-left: 14.4%">
+            <v-btn icon @click="closeDialog()">
               <v-icon icon="fa fa-xmark fa-solid" size="40" />
             </v-btn>
           </div>
@@ -38,7 +32,7 @@
               src="/assets/fairsharing-logo.svg"
               alt="FAIRsharing logo"
               @click="closeDialog()"
-            >
+            />
           </router-link>
           <!--Advanced Search Header Text -->
           <div
@@ -54,9 +48,9 @@
                 href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                 target="_blank"
                 class="text-decoration-underline"
-              >gitbook documentation<v-icon size="x-small">
-                {{ "fa fa-link" }}
-              </v-icon>
+                >gitbook documentation<v-icon size="x-small">
+                  {{ "fa fa-link" }}
+                </v-icon>
               </a>
             </p>
           </div>
@@ -133,7 +127,7 @@
   </v-row>
 </template>
 
-<script >
+<script>
 import { isBoolean } from "lodash";
 import { mapActions, mapGetters } from "vuex";
 
@@ -182,7 +176,9 @@ export default {
       ) {
         this.getAdvancedSearch["children"].forEach(({ children }) => {
           if (children && children.length) {
-            isTrue = children.every(({ value }) => value.length || isBoolean(value));
+            isTrue = children.every(
+              ({ value }) => value.length || isBoolean(value),
+            );
             isTrueArr.push(isTrue);
           }
         });
@@ -197,12 +193,16 @@ export default {
   watch: {
     getEditDialogStatus(newValue) {
       this.dialog = newValue;
-      this.updatedAdvancedSearchText = this.getAdvancedSearchText
+      this.updatedAdvancedSearchText = this.getAdvancedSearchText;
     },
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;
       //Reset searchText field
-      if (newValue && this.$refs.inputRef !== undefined &&  this.$refs.inputRef !== null) {
+      if (
+        newValue &&
+        this.$refs.inputRef !== undefined &&
+        this.$refs.inputRef !== null
+      ) {
         this.$refs.inputRef.reset();
       }
     },
@@ -213,7 +213,7 @@ export default {
     if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     }
   },
@@ -225,7 +225,7 @@ export default {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        false
+        false,
       );
       // Redirecting to home page after closing
       if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
@@ -287,7 +287,7 @@ export default {
             this.queryString += params["identifier"];
             this.queryString += "=";
             if (Array.isArray(params["value"])) {
-              this.queryString += params["value"].join('+');
+              this.queryString += params["value"].join("+");
             }
             else if (params["value"]) {
               this.queryString += params["value"];
@@ -337,7 +337,7 @@ export default {
      * Method to fetch/update the searchTerm
      * @param {String} -- item
      */
-    updateSearchText(item){
+    updateSearchText(item) {
       this.updatedAdvancedSearchText = item;
     },
   },

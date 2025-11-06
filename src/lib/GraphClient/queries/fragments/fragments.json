@@ -1,11 +1,5 @@
 {
-  "keywords": [
-    "label",
-    "id",
-    "definitions",
-    "iri",
-    "synonyms"
-  ],
+  "keywords": ["label", "id", "definitions", "iri", "synonyms"],
   "objectTypes": [
     {
       "queryName": "objectTypes",
@@ -46,10 +40,7 @@
         "isLead",
         {
           "name": "grant",
-          "fields": [
-            "name",
-            "id"
-          ]
+          "fields": ["name", "id"]
         },
         {
           "name": "organisation",
@@ -63,25 +54,14 @@
             {
               "queryName": "countries",
               "name": "countries",
-              "fields": [
-                "code",
-                "id",
-                "name"
-              ]
+              "fields": ["code", "id", "name"]
             }
           ]
         }
       ]
     }
   ],
-  "summary": [
-    "id",
-    "type",
-    "name",
-    "doi",
-    "registry",
-    "isApproved"
-  ],
+  "summary": ["id", "type", "name", "doi", "registry", "isApproved"],
   "recordsInCuration": [
     {
       "queryName": "recordsInCuration",
@@ -130,31 +110,19 @@
     "createdAt",
     {
       "queryName": "creator",
-      "fields": [
-        "id",
-        "username"
-      ]
+      "fields": ["id", "username"]
     },
     {
       "queryName": "fairsharingRecords",
-      "fields": [
-        "id",
-        "name"
-      ]
+      "fields": ["id", "name"]
     },
     {
       "queryName": "organisations",
-      "fields": [
-        "id",
-        "name"
-      ]
+      "fields": ["id", "name"]
     },
     {
       "queryName": "users",
-      "fields": [
-        "id",
-        "username"
-      ]
+      "fields": ["id", "username"]
     }
   ],
   "createdSearches": [

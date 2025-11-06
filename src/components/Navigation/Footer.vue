@@ -40,17 +40,17 @@
     <div class="footer-dash" />
     <!--  JumpToTop button  -->
     <v-slide-y-reverse-transition>
-    <v-fab
-      v-show="fab"
-      v-scroll-to="'body'"
-      v-scroll="onScroll"
-      icon="fas fa-angle-up"
-      color="primary"
-      position="fixed"
-      app
-      appear
-      style="right: 72px; bottom: 50px; left: auto"
-    />
+      <v-fab
+        v-show="fab"
+        v-scroll-to="'body'"
+        v-scroll="onScroll"
+        icon="fas fa-angle-up"
+        color="primary"
+        position="fixed"
+        app
+        appear
+        style="right: 72px; bottom: 50px; left: auto"
+      />
     </v-slide-y-reverse-transition>
     <!--  Licence and copy right  -->
     <v-row class="d-flex flex-row justify-center align-center mb-2 pt-6">
@@ -79,16 +79,16 @@ export default {
   data: () => {
     return {
       footerData,
-      fab: false
+      fab: false,
     };
   },
   methods: {
-    onScroll (e){
-      if (typeof window === 'undefined') return
-      const top = window.scrollY || e.target.scrollTop || 0
-      this.fab = top > 700
-    }
-  }
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.scrollY || e.target.scrollTop || 0;
+      this.fab = top > 700;
+    },
+  },
 };
 </script>
 <style scoped lang="scss">

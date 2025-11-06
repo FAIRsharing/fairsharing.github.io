@@ -14,11 +14,7 @@
             :key="'licence_' + index"
             class="pr-5"
             variant="flat"
-            :class="[
-              !isNew(licenceLink)
-                ? 'bg-blue'
-                : 'bg-white borderBlue',
-            ]"
+            :class="[!isNew(licenceLink) ? 'bg-blue' : 'bg-white borderBlue']"
           >
             <v-tooltip location="bottom">
               <template #activator="{ props }">
@@ -122,7 +118,6 @@
                         variant="flat"
                       ></v-chip>
                     </template>
-
                   </v-autocomplete>
                   <v-btn
                     size="small"
@@ -233,90 +228,96 @@
 </template>
 
 <script>
-import {capitalize, isEqual } from 'lodash'
-import {mapGetters, mapState} from "vuex"
+import { capitalize, isEqual } from "lodash";
+import { mapGetters, mapState } from "vuex";
 
-import { isRequired, isUrl } from "@/utils/rules.js"
+import { isRequired, isUrl } from "@/utils/rules.js";
 import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "EditLicences",
   mixins: [stringUtils],
-  data(){
+  data() {
     return {
       edit: {
         show: false,
         id: null,
-        template: null
+        template: null,
       },
       formValid: {
         link: false,
-        licence: false
+        licence: false,
       },
       showCreator: false,
       rules: {
-        isRequired: function(){return isRequired()},
-        isUrl: function(){return isUrl()},
+        isRequired: function () {
+          return isRequired();
+        },
+        isUrl: function () {
+          return isUrl();
+        },
       },
       newLicence: {
         name: null,
-        url: null
-      }
-    }
+        url: null,
+      },
+    };
   },
   computed: {
-    ...mapState('record', ['sections']),
-    ...mapState('editor', ['availableLicences', 'licenceRelations']),
+    ...mapState("record", ["sections"]),
+    ...mapState("editor", ["availableLicences", "licenceRelations"]),
     ...mapGetters("record", ["getSection"]),
-    currentLicences(){
-      return this.sections.dataAccess.data.licences
+    currentLicences() {
+      return this.sections.dataAccess.data.licences;
     },
-    initialLicences(){
-      return this.sections.dataAccess.initialData.licences
+    initialLicences() {
+      return this.sections.dataAccess.initialData.licences;
     },
-    fields(){
+    fields() {
       return this.getSection("dataAccess").data;
     },
     cleanTextList() {
-      return this.licenceRelations.map((item) => capitalize(this.cleanString(item)))
-    }
+      return this.licenceRelations.map((item) =>
+        capitalize(this.cleanString(item)),
+      );
+    },
   },
   watch: {
-    'edit.template': function () {
+    "edit.template": function () {
       this.$nextTick(() => {
         /* istanbul ignore else */
-        if (this.$refs['editLink']) {
-          this.$refs['editLink'].validate();
+        if (this.$refs["editLink"]) {
+          this.$refs["editLink"].validate();
         }
-      })
-    }
+      });
+    },
   },
   methods: {
-    showEditItem(id){
+    showEditItem(id) {
       this.edit = {
         show: true,
         id: id > -1 ? id : null,
         template: {
           relation: id > -1 ? this.currentLicences[id].relation : null,
-          target: id > -1 ? this.currentLicences[id].id : null
-        }
+          target: id > -1 ? this.currentLicences[id].id : null,
+        },
       };
       if (id >= -1) {
         this.edit.template.licence = {
           name: this.currentLicences[id].licence.name,
-          id: this.currentLicences[id].licence.id
+          id: this.currentLicences[id].licence.id,
         };
       }
     },
-    hideEdit(){
+    hideEdit() {
       this.edit = {
         show: false,
         id: null,
-        template: null
+        template: null,
       };
       this.showCreator = false;
     },
-    updateLink(){
+    updateLink() {
       let id = this.edit.id;
       let newLink = JSON.parse(JSON.stringify(this.edit.template));
       if (id !== null) {
@@ -326,22 +327,22 @@ export default {
       }
       else {
         let createLink = {
-          fairsharingRecord: {id: this.$route.params["id"]},
+          fairsharingRecord: { id: this.$route.params["id"] },
           licence: newLink.licence,
-          relation: newLink.relation
+          relation: newLink.relation,
         };
         this.sections.dataAccess.data.licences.push(createLink);
       }
       this.edit = {
         show: false,
         id: null,
-        template: null
-      }
+        template: null,
+      };
     },
-    removeLicenceLink(id){
+    removeLicenceLink(id) {
       this.sections.dataAccess.data.licences.splice(id, 1);
     },
-    createNewLicence(){
+    createNewLicence() {
       // make sure name is unique !!!!!
 
       let newLicence = JSON.parse(JSON.stringify(this.newLicence));
@@ -350,14 +351,14 @@ export default {
       this.showCreator = false;
       this.newLicence = {
         name: null,
-        url: null
-      }
+        url: null,
+      };
     },
-    isNew(item){
-      return !this.initialLicences.filter(obj => isEqual(obj, item))[0];
-    }
-  }
-}
+    isNew(item) {
+      return !this.initialLicences.filter((obj) => isEqual(obj, item))[0];
+    },
+  },
+};
 </script>
 
 <style scoped>

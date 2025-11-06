@@ -14,28 +14,28 @@ describe("recordsCardsUtils.js", function () {
     expect(utils.methods.getRecordLink(record)).toEqual("1");
   });
 
-    it("gets chip colour", function() {
-        let chip = {
-            type: 'subjects'
-        }
-        expect(utils.methods.getChipColor(chip)).toEqual('subject_color')
-        chip = {
-            type: 'domains'
-        }
-        expect(utils.methods.getChipColor(chip)).toEqual('domain_color')
-        chip = {
-            type: 'taxonomies'
-        }
-        expect(utils.methods.getChipColor(chip)).toEqual('taxonomic_color')
-        chip = {
-            type: 'userDefinedTags'
-        }
-        expect(utils.methods.getChipColor(chip)).toEqual('tags_color')
-        chip = {
-          type: 'objectTypes'
-        }
-        expect(utils.methods.getChipColor(chip)).toEqual('object_type_color')
-    })
+  it("gets chip colour", function () {
+    let chip = {
+      type: "subjects",
+    };
+    expect(utils.methods.getChipColor(chip)).toEqual("subject_color");
+    chip = {
+      type: "domains",
+    };
+    expect(utils.methods.getChipColor(chip)).toEqual("domain_color");
+    chip = {
+      type: "taxonomies",
+    };
+    expect(utils.methods.getChipColor(chip)).toEqual("taxonomic_color");
+    chip = {
+      type: "userDefinedTags",
+    };
+    expect(utils.methods.getChipColor(chip)).toEqual("tags_color");
+    chip = {
+      type: "objectTypes",
+    };
+    expect(utils.methods.getChipColor(chip)).toEqual("object_type_color");
+  });
 
   it("capitalizes text", () => {
     expect(utils.methods.capitaliseText("exciting thing", "taxonomy")).toEqual(
@@ -89,40 +89,43 @@ describe("recordsCardsUtils.js", function () {
     expect(utils.methods.associatedRecords(record)).toStrictEqual(result);
   });
 
-    it("sets and organises chips", () => {
-        utils.methods.getMaxItemShown = 2;
-        const record = {
-            objectTypes: [
-              {
-                id: 1,
-                label: "one"
-              }
-            ],
-            subjects: [
-                {
-                    id: 1,
-                    label: "one"
-                }
-
-            ],
-            domains: [
-                {
-                    id: 2,
-                    label: "two"
-                },
-                {
-                    id: 3,
-                    label: "three"
-                }
-
-            ],
-            taxonomies: []
-        }
-        expect(utils.methods.chips).toBe(undefined);
-        utils.methods.setChips(record);
-        let result = [{"id":1,"label":"one","type":"objectTypes"},{"id":1,"label":"one","type":"subjects"},{"id":2,"label":"two","type":"domains"},{"id":3,"label":"three","type":"domains"}]
-        expect(utils.methods.chips).toStrictEqual(result);
-    })
+  it("sets and organises chips", () => {
+    utils.methods.getMaxItemShown = 2;
+    const record = {
+      objectTypes: [
+        {
+          id: 1,
+          label: "one",
+        },
+      ],
+      subjects: [
+        {
+          id: 1,
+          label: "one",
+        },
+      ],
+      domains: [
+        {
+          id: 2,
+          label: "two",
+        },
+        {
+          id: 3,
+          label: "three",
+        },
+      ],
+      taxonomies: [],
+    };
+    expect(utils.methods.chips).toBe(undefined);
+    utils.methods.setChips(record);
+    let result = [
+      { id: 1, label: "one", type: "objectTypes" },
+      { id: 1, label: "one", type: "subjects" },
+      { id: 2, label: "two", type: "domains" },
+      { id: 3, label: "three", type: "domains" },
+    ];
+    expect(utils.methods.chips).toStrictEqual(result);
+  });
 
   it("truncates strings", function () {
     expect(utils.methods.truncateString(null, 1)).toBe(null);

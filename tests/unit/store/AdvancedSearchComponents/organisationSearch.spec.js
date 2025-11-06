@@ -73,7 +73,7 @@ describe("OrganisationSearchStore store methods", () => {
     };
     const builtData = getters.getSearchOrganisations(getOrganisationsResult);
     expect(builtData).toStrictEqual(
-      getOrganisationsResult["searchOrganisations"]
+      getOrganisationsResult["searchOrganisations"],
     );
   });
 
@@ -86,10 +86,10 @@ describe("OrganisationSearchStore store methods", () => {
       ],
     };
     const builtData = getters.getSearchOrganisationNames(
-      getOrganisationsResult
+      getOrganisationsResult,
     );
     expect(builtData).toStrictEqual(
-      getOrganisationsResult["searchOrganisations"].map(({ name }) => name)
+      getOrganisationsResult["searchOrganisations"].map(({ name }) => name),
     );
   });
 

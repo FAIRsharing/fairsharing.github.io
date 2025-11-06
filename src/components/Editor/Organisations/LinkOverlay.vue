@@ -363,9 +363,9 @@
                 <template #item="{ props, item }">
                   <v-list-item v-bind="props">
                     <template #prepend>
-                    <v-avatar>
-                      <v-icon>fas fa-funnel-dollar</v-icon>
-                    </v-avatar>
+                      <v-avatar>
+                        <v-icon>fas fa-funnel-dollar</v-icon>
+                      </v-avatar>
                     </template>
                     <v-list-item-subtitle>
                       {{ item.raw.description }}
@@ -438,10 +438,8 @@
           </v-btn>
           <v-btn class="bg-error" @click="hideMenu()"> Cancel </v-btn>
         </v-card-actions>
-
       </v-card>
     </v-form>
-
   </v-overlay>
 </template>
 
@@ -483,7 +481,7 @@ export default {
           logoData: null,
           error: false,
           selectOrganisation: null,
-          rorLoader: false
+          rorLoader: false,
         },
         newGrant: {
           data: {},

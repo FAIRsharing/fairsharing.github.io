@@ -22,12 +22,7 @@
         "status": {
           "type": "string",
           "description": "The resource's current status.",
-          "enum": [
-            "uncertain",
-            "deprecated",
-            "in_development",
-            "ready"
-          ]
+          "enum": ["uncertain", "deprecated", "in_development", "ready"]
         },
         "homepage": {
           "type": "string",
@@ -75,10 +70,7 @@
           "description": "Previous names of the record."
         }
       },
-      "required": [
-        "name",
-        "status"
-      ]
+      "required": ["name", "status"]
     },
     "contacts": {
       "type": "object",
@@ -230,8 +222,5 @@
       "type": "boolean"
     }
   },
-  "required": [
-    "metadata",
-    "record_type_id"
-  ]
+  "required": ["metadata", "record_type_id"]
 }

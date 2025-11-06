@@ -21,11 +21,8 @@
         loading-text="Loading... Please wait"
       >
         <template #[`item.id`]="{ item }">
-          <router-link
-            class="underline-effect"
-            :to="`/users/${item.id}`"
-          >
-            {{ getHostname()+"users/"+item.id }}
+          <router-link class="underline-effect" :to="`/users/${item.id}`">
+            {{ getHostname() + "users/" + item.id }}
           </router-link>
         </template>
       </v-data-table>
@@ -34,7 +31,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex"
+import { mapActions, mapMutations, mapState } from "vuex";
 import getHostname from "@/utils/generalUtils";
 
 export default {
@@ -42,25 +39,25 @@ export default {
   mixins: [getHostname],
   data() {
     return {
-      searchString: '',
+      searchString: "",
       headers: [
         {
-          title: 'Username',
-          align: 'start',
+          title: "Username",
+          align: "start",
           sortable: false,
-          value: 'username',
+          value: "username",
         },
-        {title: 'Email', value: 'email',sortable: false},
-        {title: 'Public Profile', value: 'id',sortable: false}
+        { title: "Email", value: "email", sortable: false },
+        { title: "Public Profile", value: "id", sortable: false },
       ],
-      loading:false
-    }
+      loading: false,
+    };
   },
   computed: {
-    ...mapState('users', ['usersList']),
+    ...mapState("users", ["usersList"]),
   },
   watch: {
-    async searchString(val){
+    async searchString(val) {
       if (!val || val.length < 3) {
         return;
       }
@@ -74,10 +71,10 @@ export default {
     this.cleanStore();
   },
   methods: {
-    ...mapActions('users', ['getUsersList']),
-    ...mapMutations('users', ['cleanStore'])
-  }
-}
+    ...mapActions("users", ["getUsersList"]),
+    ...mapMutations("users", ["cleanStore"]),
+  },
+};
 </script>
 
 <style scoped>

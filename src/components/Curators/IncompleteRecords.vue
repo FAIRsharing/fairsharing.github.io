@@ -1,14 +1,8 @@
 <template>
   <v-col cols12>
     <div>
-      <v-layout
-        row
-        justify-center
-      >
-        <v-dialog
-          v-model="dialogs.deleteRecord"
-          max-width="700px"
-        >
+      <v-layout row justify-center>
+        <v-dialog v-model="dialogs.deleteRecord" max-width="700px">
           <v-card>
             <v-card-title class="text-h5">
               Are you sure you want to
@@ -30,7 +24,7 @@
               <v-btn
                 :disabled="
                   dialogs.disableDelButton === true ||
-                    dialogs.disableButton === true
+                  dialogs.disableButton === true
                 "
                 color="blue-darken-1"
                 variant="text"
@@ -46,10 +40,7 @@
     </div>
     <v-card class="mb-2">
       <v-card-text v-if="incompleteRecords">
-        <v-card-title
-          id="text-curator-search-2"
-          class="bg-green text-white"
-        >
+        <v-card-title id="text-curator-search-2" class="bg-green text-white">
           <b> INCOMPLETE RECORDS </b>
           <v-spacer />
           <v-text-field
@@ -70,18 +61,11 @@
           :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
-          <template
-            v-if="recordType"
-            #item="props"
-          >
+          <template v-if="recordType" #item="props">
             <tr>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
                     <Icon
                       :item="props.item.type"
                       :height="40"
@@ -130,7 +114,7 @@ import { mapState } from "vuex";
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json"
+import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json";
 import formatDateIso from "@/utils/generalUtils";
 
 const client = new GraphClient();
@@ -142,15 +126,15 @@ export default {
     Icon,
   },
   mixins: [formatDateIso],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
     return {
-      incompleteRecords:[],
+      incompleteRecords: [],
       searches: "",
       recordType: {},
       loading: false,
@@ -171,11 +155,10 @@ export default {
     client.setHeader(this.user().credentials.token);
     //Fetching incomplete records
     let records = await client.executeQuery(getIncompleteRecords);
-    this.prepareIncompleteRecords(records)
+    this.prepareIncompleteRecords(records);
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to fetch incomplete records
      * @param dataCuration
@@ -184,24 +167,24 @@ export default {
       let records = dataCuration.incompleteRecords;
       records.forEach((item) => {
         let recommended = [];
-        item.incomplete.recommended.forEach(rec => {
-          recommended.push(rec.field)
+        item.incomplete.recommended.forEach((rec) => {
+          recommended.push(rec.field);
         });
         let required = [];
-        item.incomplete.required.forEach(req => {
-          required.push(req.field)
+        item.incomplete.required.forEach((req) => {
+          required.push(req.field);
         });
         let optional = [];
-        item.incomplete.optional.forEach(req => {
-          optional.push(req.field)
+        item.incomplete.optional.forEach((req) => {
+          optional.push(req.field);
         });
         let object = {
           recordNameID: `${item.name} (${item.id})`,
           type: item.type,
           id: item.id,
-          recommended: recommended.sort().join(', '),
-          required: required.sort().join(', '),
-          optional: optional.sort().join(', ')
+          recommended: recommended.sort().join(", "),
+          required: required.sort().join(", "),
+          optional: optional.sort().join(", "),
         };
         object.createdAt = this.formatDateIso(item.createdAt);
         this.incompleteRecords.push(object);
@@ -213,7 +196,7 @@ export default {
       _module.dialogs.disableDelButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data.error) {
         _module.error.general = "error deleting record";
@@ -221,7 +204,7 @@ export default {
       }
       else {
         const index = _module.incompleteRecords.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.incompleteRecords.splice(index, 1);
       }
@@ -253,6 +236,6 @@ export default {
 }
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 </style>

@@ -1,19 +1,10 @@
 <template>
-  <div
-    v-if="getErrorStatus"
-    fluid
-    class="pa-0"
-  >
+  <div v-if="getErrorStatus" fluid class="pa-0">
     <ErrorPage />
   </div>
-  <div
-    v-else
-    class="pa-5 mb-15"
-  >
+  <div v-else class="pa-5 mb-15">
     <div
-      :class="
-        $vuetify.display.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
-      "
+      :class="$vuetify.display.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'"
     >
       <v-btn
         class="mb-2 font-12"
@@ -26,20 +17,15 @@
       <SaveSearchButton />
     </div>
     <p class="text-body-2 mb-0 mt-4">
-      <v-icon
-        size="small"
-        class="mr-1"
-      >
-        fa fa-info-circle
-      </v-icon>Find out more about our Advanced Search in our
+      <v-icon size="small" class="mr-1"> fa fa-info-circle </v-icon>Find out
+      more about our Advanced Search in our
       <a
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
         target="_blank"
         class="text-decoration-underline"
-      >gitbook documentation</a>
-      <v-icon size="x-small">
-        fa fa-link
-      </v-icon>
+        >gitbook documentation</a
+      >
+      <v-icon size="x-small"> fa fa-link </v-icon>
     </p>
     <v-data-iterator
       :items-per-page="itemsPerPage"
@@ -53,41 +39,41 @@
       <!-- headers start -->
       <template #header="{ pagination, options, updateOptions }">
         <v-data-table-footer
-            v-if="!noPagination"
-            :pagination="pagination"
-            :options="options"
-            items-per-page-text="Records per page:"
-            @update:options="updateOptions"
+          v-if="!noPagination"
+          :pagination="pagination"
+          :options="options"
+          items-per-page-text="Records per page:"
+          @update:options="updateOptions"
         />
         <v-toolbar dark color="blue-lighten-1" class="mb-5 px-4 py-1">
           <v-text-field
-              :model-value="search"
-              clearable
-              flat
-              variant="solo"
-              hide-details
-              prepend-inner-icon="fa fa-solid fa-filter"
-              label="Filter these results"
-              width="125"
-              @update:model-value="search = $event"
+            :model-value="search"
+            clearable
+            flat
+            variant="solo"
+            hide-details
+            prepend-inner-icon="fa fa-solid fa-filter"
+            label="Filter these results"
+            width="125"
+            @update:model-value="search = $event"
           />
           <template v-if="$vuetify.display.mdAndUp">
             <v-spacer />
             <v-select
-                v-model="sortBy"
-                flat
-                variant="solo"
-                hide-details
-                :items="keys"
-                prepend-inner-icon="fa fa-solid fa-arrow-up-short-wide"
-                label="Sort by"
-                width="125"
+              v-model="sortBy"
+              flat
+              variant="solo"
+              hide-details
+              :items="keys"
+              prepend-inner-icon="fa fa-solid fa-arrow-up-short-wide"
+              label="Sort by"
+              width="125"
             />
             <v-spacer />
             <v-btn-toggle
-                :model-value="sortDesc"
-                mandatory
-                @update:model-value="sortDesc = $event"
+              :model-value="sortDesc"
+              mandatory
+              @update:model-value="sortDesc = $event"
             >
               <v-btn size="large" variant="flat" color="blue" :value="false">
                 <v-icon icon="fa fa-solid fa-arrow-up" />
@@ -95,25 +81,25 @@
               <v-btn size="large" variant="flat" color="blue" :value="true">
                 <v-icon icon="fa fa-solid fa-arrow-down" />
               </v-btn>
-            </v-btn-toggle >
+            </v-btn-toggle>
           </template>
         </v-toolbar>
       </template>
       <!-- headers stop -->
       <!-- data section begins -->
-      <template #default="{items}">
+      <template #default="{ items }">
         <v-row>
           <v-col v-for="item in items" :key="item.raw.name" cols="12">
             <v-card>
               <v-card-title
-                  class="subheading font-weight-bold d-flex align-center"
+                class="text-subtitle-1 font-weight-bold d-flex align-center"
               >
                 <RecordStatus :record="item.raw" />
                 <a
-                    :href="fairSharingURL + getRecordLink(item.raw)"
-                    target="_blank"
-                    class="ml-10"
-                    style="white-space: normal"
+                  :href="fairSharingURL + getRecordLink(item.raw)"
+                  target="_blank"
+                  class="ml-10"
+                  style="white-space: normal"
                 >
                   {{ item.raw.name }}
                 </a>
@@ -133,18 +119,19 @@
       </template>
       <!-- data section ends -->
       <!-- footer start -->
-      <template v-if="!noPagination" #footer="{ pagination, options, updateOptions }">
+      <template
+        v-if="!noPagination"
+        #footer="{ pagination, options, updateOptions }"
+      >
         <v-data-table-footer
-            :pagination="pagination"
-            :options="options"
-            items-per-page-text="Records per page:"
-            @update:options="updateOptions"
+          :pagination="pagination"
+          :options="options"
+          items-per-page-text="Records per page:"
+          @update:options="updateOptions"
         />
       </template>
       <!-- footer ends -->
-      <template #no-data>
-        No results found.
-      </template>
+      <template #no-data> No results found. </template>
     </v-data-iterator>
   </div>
 </template>
@@ -254,7 +241,7 @@ export default {
                 };
                 advancedSearchParams["identifier"] = paramValues[0];
                 // For boolean/string values
-                if ((paramValues[1] === "true") || paramValues[1] === "false") {
+                if (paramValues[1] === "true" || paramValues[1] === "false") {
                   advancedSearchParams["value"] = paramValues[1];
                 }
                 else {
@@ -270,13 +257,13 @@ export default {
           //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
           advancedSearch.commit(
             "advancedSearch/setAdvancedSearch",
-            searchQuery
+            searchQuery,
           );
 
           //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
           advancedSearch.commit(
             "advancedSearch/setEditAdvancedSearch",
-            searchQuery
+            searchQuery,
           );
 
           //Calling the fetch method to get the result
@@ -299,7 +286,7 @@ export default {
             record.abbreviation || "n/a"
           },https://fairsharing.org/${record.id},${record.doi || "n/a"},${
             record.homepage || "n/a"
-          },${this.recordPublicationsLength(record)}\n`
+          },${this.recordPublicationsLength(record)}\n`,
         );
       });
       let blob = new Blob(data, { type: MIME_TYPE });

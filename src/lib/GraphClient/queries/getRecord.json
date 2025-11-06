@@ -31,60 +31,36 @@
         "createdAt",
         {
           "queryName": "user",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         }
       ]
     },
     {
       "name": "lastEditor",
-      "fields": [
-        "username",
-        "id"
-      ]
+      "fields": ["username", "id"]
     },
     {
       "name": "countries",
-      "fields": [
-        "name",
-        "id",
-        "code"
-      ]
+      "fields": ["name", "id", "code"]
     },
     "metadata",
     {
       "name": "taxonomies",
-      "fields": [
-        "label",
-        "id"
-      ]
+      "fields": ["label", "id"]
     },
-    {"$ref": "domains"},
-    {"$ref": "subjects"},
+    { "$ref": "domains" },
+    { "$ref": "subjects" },
     {
       "name": "userDefinedTags",
-      "fields": [
-        "label",
-        "id"
-      ]
+      "fields": ["label", "id"]
     },
     {
       "name": "objectTypes",
-      "fields": [
-        "label",
-        "id",
-        "iri",
-        "definitions"
-      ]
+      "fields": ["label", "id", "iri", "definitions"]
     },
     {
       "name": "grants",
-      "fields": [
-        "name",
-        "description"
-      ]
+      "fields": ["name", "description"]
     },
     "isRecommended",
     "legacyIds",
@@ -95,51 +71,31 @@
         "id",
         {
           "queryName": "fairsharingRecord",
-          "fields": [
-            "id"
-          ]
+          "fields": ["id"]
         },
         {
           "queryName": "licence",
-          "fields": [
-            "id",
-            "name",
-            "url"
-          ]
+          "fields": ["id", "name", "url"]
         }
       ]
     },
     {
       "name": "licences",
-      "fields": [
-        "id",
-        "name",
-        "url"
-      ]
+      "fields": ["id", "name", "url"]
     },
     {
       "name": "maintainers",
-      "fields": [
-        "username",
-        "id",
-        "orcid"
-      ]
+      "fields": ["username", "id", "orcid"]
     },
     {
       "name": "watchers",
-      "fields": [
-        "username",
-        "id",
-        "orcid"
-      ]
+      "fields": ["username", "id", "orcid"]
     },
     {
       "name": "organisations",
-      "fields": [
-        "id"
-      ]
+      "fields": ["id"]
     },
-    {"$ref": "organisationLinks"},
+    { "$ref": "organisationLinks" },
     {
       "name": "publications",
       "fields": [
@@ -177,11 +133,7 @@
     },
     {
       "name": "communityCurators",
-      "fields": [
-        "id",
-        "username",
-        "orcid"
-      ]
+      "fields": ["id", "username", "orcid"]
     },
     {
       "name": "savedSearches",
@@ -196,10 +148,7 @@
         },
         {
           "queryName": "creator",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         }
       ]
     }

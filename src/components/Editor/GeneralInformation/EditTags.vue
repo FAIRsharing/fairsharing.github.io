@@ -1,9 +1,5 @@
 <template>
-  <v-form
-    id="editTags"
-    ref="editTags"
-    v-model="formValid"
-  >
+  <v-form id="editTags" ref="editTags" v-model="formValid">
     <v-container fluid>
       <v-row>
         <table id="tagsTable">
@@ -16,15 +12,11 @@
             >
               <td
                 class="text-white py-2 px-4 titleCell"
-                :class="'bg-'+section.color"
+                :class="'bg-' + section.color"
               >
                 <v-tooltip location="right">
                   <template #activator="{ props }">
-                    <v-icon
-                      size="small"
-                      class="text-white mr-1"
-                      v-bind="props"
-                    >
+                    <v-icon size="small" class="text-white mr-1" v-bind="props">
                       fas fa-question-circle
                     </v-icon>
                   </template>
@@ -32,28 +24,32 @@
                 </v-tooltip>
                 {{ sectionName.toUpperCase() }}
               </td>
-              <td :class="'bg-'+section.color+'_lighten_2'">
-                <div
-                  class="pl-2"
-                >
+              <td :class="'bg-' + section.color + '_lighten_2'">
+                <div class="pl-2">
                   <v-chip
                     v-for="(tag, tagIndex) in section.items"
                     :key="'section_' + sectionIndex + '_tag_' + tagIndex"
-                    :class="[!isNew(tag, sectionName) ? 'text-'+section.color : section.color + ' text-white whiteBorder']"
+                    :class="[
+                      !isNew(tag, sectionName)
+                        ? 'text-' + section.color
+                        : section.color + ' text-white whiteBorder',
+                    ]"
                     variant="outlined"
                     :color="section.color"
                     class="bg-white pr-3 my-1 mr-2 ml-0"
                     @click.stop
                   >
-                    <KeywordTooltip
-                      :keyword="tag"
-                    />
+                    <KeywordTooltip :keyword="tag" />
                     <v-tooltip location="bottom">
                       <template #activator="{ props }">
                         <v-icon
                           size="small"
                           class="ml-1"
-                          :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' text-white']"
+                          :class="[
+                            !isNew(tag, sectionName)
+                              ? section.color + '--text white'
+                              : ' text-white',
+                          ]"
                           v-bind="props"
                           @click="removeTag(section.items, tagIndex)"
                           @click.stop
@@ -77,10 +73,7 @@
           :disabled="loading"
           @click="showMenu()"
         >
-          <v-icon
-            size="small"
-            class="mr-3 text-white"
-          >
+          <v-icon size="small" class="mr-3 text-white">
             {{ buttonIcon }}
           </v-icon>
           {{ buttonLabel }}
@@ -89,15 +82,8 @@
     </v-container>
 
     <v-expand-transition class="ma-5">
-      <v-container
-        v-if="menu.show"
-        fluid
-        class="py-0"
-      >
-        <v-row
-          justify="center"
-          no-gutters
-        >
+      <v-container v-if="menu.show" fluid class="py-0">
+        <v-row justify="center" no-gutters>
           <v-col cols="12">
             <v-text-field
               id="searchString"
@@ -108,9 +94,7 @@
               hide-details
             >
               <template #prepend>
-                <v-menu
-                  :close-on-content-click="false"
-                >
+                <v-menu :close-on-content-click="false">
                   <template #activator="{ props }">
                     <v-icon
                       class="text-blue ml-3 mr-1 opacity-100"
@@ -122,77 +106,81 @@
                   <v-list>
                     <v-list-item>
                       <div class="d-flex align-center">
-                      <v-list-item-action>
-                        <v-switch
-                          v-model="showTypes.taxonomy"
-                          inset
-                          :color="colors.taxonomy"
-                          hide-details
-                          class="mr-2"
-                        />
-                      </v-list-item-action>
-                      <v-list-item-title>Show taxonomic range</v-list-item-title>
+                        <v-list-item-action>
+                          <v-switch
+                            v-model="showTypes.taxonomy"
+                            inset
+                            :color="colors.taxonomy"
+                            hide-details
+                            class="mr-2"
+                          />
+                        </v-list-item-action>
+                        <v-list-item-title
+                          >Show taxonomic range</v-list-item-title
+                        >
                       </div>
                     </v-list-item>
-                    <v-divider class="my-1" opacity="80"/>
-                    <v-list-item >
+                    <v-divider class="my-1" opacity="80" />
+                    <v-list-item>
                       <div class="d-flex align-center">
-                      <v-list-item-action>
-                        <v-switch
-                          v-model="showTypes.subject"
-                          inset
-                          :color="colors.subject"
-                          hide-details
-                          class="mr-2"
-                        />
-                      </v-list-item-action>
-                      <v-list-item-title>Show subjects</v-list-item-title>
+                        <v-list-item-action>
+                          <v-switch
+                            v-model="showTypes.subject"
+                            inset
+                            :color="colors.subject"
+                            hide-details
+                            class="mr-2"
+                          />
+                        </v-list-item-action>
+                        <v-list-item-title>Show subjects</v-list-item-title>
                       </div>
                     </v-list-item>
 
-                    <v-divider class="my-1" opacity="80"/>
+                    <v-divider class="my-1" opacity="80" />
                     <v-list-item>
                       <div class="d-flex align-center">
-                      <v-list-item-action>
-                        <v-switch
-                          v-model="showTypes.domain"
-                          inset
-                          :color="colors.domain"
-                          hide-details
-                          class="mr-2"
-                        />
-                      </v-list-item-action>
-                      <v-list-item-title>Show domains</v-list-item-title>
+                        <v-list-item-action>
+                          <v-switch
+                            v-model="showTypes.domain"
+                            inset
+                            :color="colors.domain"
+                            hide-details
+                            class="mr-2"
+                          />
+                        </v-list-item-action>
+                        <v-list-item-title>Show domains</v-list-item-title>
                       </div>
                     </v-list-item>
-                    <v-divider class="my-1" opacity="80"/>
+                    <v-divider class="my-1" opacity="80" />
                     <v-list-item>
                       <div class="d-flex align-center">
-                      <v-list-item-action>
-                        <v-switch
-                          v-model="showTypes.user_defined_tag"
-                          inset
-                          :color="colors.user_defined_tag"
-                          hide-details
-                          class="mr-2"
-                        />
-                      </v-list-item-action>
-                      <v-list-item-title>Show user defined tags</v-list-item-title>
+                        <v-list-item-action>
+                          <v-switch
+                            v-model="showTypes.user_defined_tag"
+                            inset
+                            :color="colors.user_defined_tag"
+                            hide-details
+                            class="mr-2"
+                          />
+                        </v-list-item-action>
+                        <v-list-item-title
+                          >Show user defined tags</v-list-item-title
+                        >
                       </div>
                     </v-list-item>
-                    <v-divider class="my-1" opacity="80"/>
+                    <v-divider class="my-1" opacity="80" />
                     <v-list-item>
                       <div class="d-flex align-center">
-                      <v-list-item-action>
-                        <v-switch
-                          v-model="showTypes.object_type"
-                          inset
-                          :color="colors.object_type"
-                          hide-details
-                          class="mr-2"
-                        />
-                      </v-list-item-action>
-                      <v-list-item-title>Show object types</v-list-item-title>
+                        <v-list-item-action>
+                          <v-switch
+                            v-model="showTypes.object_type"
+                            inset
+                            :color="colors.object_type"
+                            hide-details
+                            class="mr-2"
+                          />
+                        </v-list-item-action>
+                        <v-list-item-title>Show object types</v-list-item-title>
                       </div>
                     </v-list-item>
                   </v-list>
@@ -205,7 +193,7 @@
               :headers="headers"
               :items="tags"
               :items-per-page="10"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+              :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
               item-key="label"
               class="elevation-1"
               show-select
@@ -215,10 +203,7 @@
               loading-text="Please wait, tags are loading"
             >
               <template #[`item.model`]="{ item }">
-                <div
-                  :class="'text-'+colors[item.model]"
-                  class="noBreak"
-                >
+                <div :class="'text-' + colors[item.model]" class="noBreak">
                   {{ item.model.toUpperCase().replace(/_/g, " ") }}
                 </div>
               </template>
@@ -232,18 +217,12 @@
                 </v-chip>
               </template>
               <template #[`item.definitions`]="{ item }">
-                <div
-                  v-if="item.definitions"
-                  class="font-italic limitWidth"
-                >
+                <div v-if="item.definitions" class="font-italic limitWidth">
                   {{ item.definitions[0] }}
                 </div>
               </template>
               <template #[`item.synonyms`]="{ item }">
-                <div
-                  v-if="item.synonyms"
-                  class="font-italic limitWidth"
-                >
+                <div v-if="item.synonyms" class="font-italic limitWidth">
                   {{ item.synonyms.join(", ") }}
                 </div>
               </template>
@@ -259,7 +238,7 @@
 </template>
 
 <script>
-import { mapActions,mapGetters, mapState } from "vuex"
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
 import recordsCardUtils from "@/utils/recordsCardUtils";
@@ -268,38 +247,38 @@ import NewTags from "./NewTags";
 
 export default {
   name: "EditTags",
-  components: {NewTags, KeywordTooltip},
+  components: { NewTags, KeywordTooltip },
   mixins: [recordsCardUtils],
-  data(){
+  data() {
     return {
       formValid: false,
       menu: {
         content: null,
         show: false,
-        label: "Edit record's tags"
+        label: "Edit record's tags",
       },
       headers: [
         {
           title: "Type of keyword",
           sortable: false,
-          value: "model"
+          value: "model",
         },
         {
           title: "Name",
           sortable: false,
-          value: "label"
+          value: "label",
         },
         {
           title: "Definition",
           sortable: false,
           value: "definitions",
-          filterable: false
+          filterable: false,
         },
         {
           title: "Alternative names",
           sortable: false,
-          value: "synonyms"
-        }
+          value: "synonyms",
+        },
       ],
       searchString: null,
       initialized: false,
@@ -308,13 +287,13 @@ export default {
         taxonomy: true,
         subject: true,
         user_defined_tag: true,
-        object_type: true
+        object_type: true,
       },
       tags: [],
       loading: false,
       showAddTagOverlay: false,
-      lastQuery: null
-    }
+      lastQuery: null,
+    };
   },
   computed: {
     ...mapGetters("record", ["getSection"]),
@@ -324,58 +303,75 @@ export default {
     sections() {
       return {
         "taxonomic range": {
-          items:this.getSection("generalInformation").data.taxonomies,
+          items: this.getSection("generalInformation").data.taxonomies,
           color: this.colors["taxonomy"],
-          tooltip: this.tooltips.species
+          tooltip: this.tooltips.species,
         },
         subjects: {
           items: this.getSection("generalInformation").data.subjects,
           color: this.colors["subject"],
-          tooltip: this.tooltips.subjects
+          tooltip: this.tooltips.subjects,
         },
         domains: {
           items: this.getSection("generalInformation").data.domains,
           color: this.colors["domain"],
-          tooltip: this.tooltips.domains
+          tooltip: this.tooltips.domains,
         },
         "user defined tags": {
           items: this.getSection("generalInformation").data.userDefinedTags,
           color: this.colors["user_defined_tag"],
-          tooltip: this.tooltips.userDefinedTags
+          tooltip: this.tooltips.userDefinedTags,
         },
         "object types": {
           items: this.getSection("generalInformation").data.objectTypes,
           color: this.colors["object_type"],
-          tooltip: this.tooltips.objectTypes
-        }
-      }
+          tooltip: this.tooltips.objectTypes,
+        },
+      };
     },
-    buttonLabel(){
+    buttonLabel() {
       if (this.menu.show) return "Hide table";
       return "Add/edit tags";
     },
-    buttonIcon(){
+    buttonIcon() {
       if (this.menu.show) return "fas fa-minus-circle";
       return "fas fa-plus-circle";
     },
     recordTags: {
       get() {
-        return this.getSection("generalInformation").data.taxonomies.map(term => {
-          term.model = 'taxonomy';
-          return term;
-        }).concat(this.getSection("generalInformation").data.domains.map(term => {
-          term.model = 'domain';
-          return term;
-        })).concat(this.getSection("generalInformation").data.subjects.map(term => {
-          term.model = 'subject';
-          return term;
-        })).concat(this.getSection("generalInformation").data.objectTypes.map(term => {
-          term.model = 'object_type';
-          return term;
-        })).concat(this.getSection("generalInformation").data.userDefinedTags.map(term => {
-          term.model = 'user_defined_tag';
-          return term;
-        }));
+        return this.getSection("generalInformation")
+          .data.taxonomies.map((term) => {
+            term.model = "taxonomy";
+            return term;
+          })
+          .concat(
+            this.getSection("generalInformation").data.domains.map((term) => {
+              term.model = "domain";
+              return term;
+            }),
+          )
+          .concat(
+            this.getSection("generalInformation").data.subjects.map((term) => {
+              term.model = "subject";
+              return term;
+            }),
+          )
+          .concat(
+            this.getSection("generalInformation").data.objectTypes.map(
+              (term) => {
+                term.model = "object_type";
+                return term;
+              },
+            ),
+          )
+          .concat(
+            this.getSection("generalInformation").data.userDefinedTags.map(
+              (term) => {
+                term.model = "user_defined_tag";
+                return term;
+              },
+            ),
+          );
       },
       set(val) {
         if (this.initialized) {
@@ -384,44 +380,48 @@ export default {
             taxonomy: [],
             subject: [],
             user_defined_tag: [],
-            object_type: []
+            object_type: [],
           };
-          for (let selectedTag of val) tags[selectedTag.model].push(selectedTag);
+          for (let selectedTag of val)
+            tags[selectedTag.model].push(selectedTag);
           this.$store.commit("record/setTags", {
             value: tags.domain,
-            target: "domains"
+            target: "domains",
           });
           this.$store.commit("record/setTags", {
             value: tags.taxonomy,
-            target: "taxonomies"
+            target: "taxonomies",
           });
           this.$store.commit("record/setTags", {
             value: tags.subject,
-            target: "subjects"
+            target: "subjects",
           });
           this.$store.commit("record/setTags", {
             value: tags.user_defined_tag,
-            target: "userDefinedTags"
-          })
+            target: "userDefinedTags",
+          });
           this.$store.commit("record/setTags", {
             value: tags.object_type,
-            target: "objectTypes"
-          })
+            target: "objectTypes",
+          });
         }
-      }
+      },
     },
     initialSections() {
       return {
-        "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
-        "subjects": this.getSection("generalInformation").initialData.subjects,
-        "domains": this.getSection("generalInformation").initialData.domains,
-        "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags,
-        "object types": this.getSection("generalInformation").initialData.objectTypes,
+        "taxonomic range":
+          this.getSection("generalInformation").initialData.taxonomies,
+        subjects: this.getSection("generalInformation").initialData.subjects,
+        domains: this.getSection("generalInformation").initialData.domains,
+        "user defined tags":
+          this.getSection("generalInformation").initialData.userDefinedTags,
+        "object types":
+          this.getSection("generalInformation").initialData.objectTypes,
       };
-    }
+    },
   },
   watch: {
-    async searchString(val){
+    async searchString(val) {
       this.loading = true;
       this.tags = [];
       val = val.trim();
@@ -436,77 +436,80 @@ export default {
     },
     showTypes: {
       deep: true,
-      handler(){
+      handler() {
         this.partialTags();
-      }
-    }
+      },
+    },
   },
-  mounted(){
+  mounted() {
     this.$nextTick(async function () {
       this.loading = true;
       this.initialized = false;
       this.partialTags();
       this.loading = false;
       this.initialized = true;
-    })
+    });
   },
   methods: {
-    ...mapActions('editor', ["getTags"]),
-    showMenu(){
-      if (!this.menu.show) { this.$scrollTo("#editTags") }
+    ...mapActions("editor", ["getTags"]),
+    showMenu() {
+      if (!this.menu.show) {
+        this.$scrollTo("#editTags");
+      }
       this.menu.show = !this.menu.show;
     },
-    removeTag(sectionItems, termIndex){
-      sectionItems.splice(termIndex, 1)
+    removeTag(sectionItems, termIndex) {
+      sectionItems.splice(termIndex, 1);
     },
-    partialTags(){
+    partialTags() {
       let sections = [];
-      Object.keys(this.showTypes).forEach(type => {
+      Object.keys(this.showTypes).forEach((type) => {
         if (this.showTypes[type]) sections.push(type);
       });
       this.tags = this.getPartialTags(sections);
     },
-    isNew(term, section){
-      return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
-    }
+    isNew(term, section) {
+      return !this.initialSections[section].filter(
+        (obj) => obj.id === term.id,
+      )[0];
+    },
   },
-}
+};
 </script>
 
 <style scoped>
-    table#tagsTable {
-        border-collapse: collapse;
-        width: 100%
-    }
+table#tagsTable {
+  border-collapse: collapse;
+  width: 100%;
+}
 
-    table#tagsTable td.titleCell {
-      width: 100px;
-      white-space: nowrap;
-      text-align: center;
-      font-size: 16px;
-      font-weight: bolder;
-      height: 55px;
-    }
+table#tagsTable td.titleCell {
+  width: 100px;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bolder;
+  height: 55px;
+}
 
-    table#tagsTable tr {
-        border-collapse: collapse;
-        border-bottom: 10px solid white;
-    }
+table#tagsTable tr {
+  border-collapse: collapse;
+  border-bottom: 10px solid white;
+}
 
-    .noBreak {
-      white-space: nowrap;
-    }
+.noBreak {
+  white-space: nowrap;
+}
 
-    .limitWidth {
-      max-width: 800px;
-    }
+.limitWidth {
+  max-width: 800px;
+}
 
-    .whiteBorder {
-      border: 1px solid white !important;
-    }
+.whiteBorder {
+  border: 1px solid white !important;
+}
 
-    :deep(.v-switch__track) {
-      opacity: 1;
-    }
-
+:deep(.v-switch__track) {
+  opacity: 1;
+}
 </style>

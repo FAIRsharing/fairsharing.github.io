@@ -20,11 +20,11 @@ const fairSharingTheme = {
     deprecated_color: "#8a3737",
 
     //-- subjects domains tax tags color
-    subject_color: '#E67E22',
-    domain_color: '#6B1E1E',
-    taxonomic_color: '#006055',
-    tags_color: '#ADA3A3',
-    object_type_color: '#2172ac',
+    subject_color: "#E67E22",
+    domain_color: "#6B1E1E",
+    taxonomic_color: "#006055",
+    tags_color: "#ADA3A3",
+    object_type_color: "#2172ac",
 
     //-- browse subject color level:
     subject_topLevel_1: "#a04545",
@@ -46,7 +46,7 @@ const fairSharingTheme = {
     domain_color_lighten_2: "#A34F4A",
     taxonomic_color_lighten_2: "#469387",
     tags_color_lighten_2: "#E4DADA",
-    object_type_color_lighten_2: '#64a6e4',
+    object_type_color_lighten_2: "#64a6e4",
   },
   variables: {},
 };

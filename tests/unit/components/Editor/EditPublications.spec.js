@@ -1,11 +1,11 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router"
-import Vuetify from "vuetify"
+import VueRouter from "vue-router";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
-import editPublications from "@/components/Editor/EditPublications.vue"
-import ExternalClient from "@/lib/Client/ExternalClients.js"
-import RestClient from "@/lib/Client/RESTClient.js"
+import editPublications from "@/components/Editor/EditPublications.vue";
+import ExternalClient from "@/lib/Client/ExternalClients.js";
+import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
@@ -16,18 +16,18 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
-const VueScrollTo = require('vue-scrollto');
+const VueScrollTo = require("vue-scrollto");
 localVue.use(VueScrollTo);
 
 let pubs = [
   {
     title: "Hello",
-    id: 1
+    id: 1,
   },
   {
     title: "World",
-    id: 2
-  }
+    id: 2,
+  },
 ];
 
 recordStore.state.sections = {
@@ -35,33 +35,33 @@ recordStore.state.sections = {
     data: pubs,
     error: false,
     changes: 0,
-    initialData: JSON.parse(JSON.stringify(pubs))
+    initialData: JSON.parse(JSON.stringify(pubs)),
   },
   generalInformation: {
     data: {
       metadata: {
-        citations: [
-          {publication_id: 2}
-        ]
+        citations: [{ publication_id: 2 }],
       },
-    }
+    },
   },
-  record: {fairsharingRecord: {id: 1243}}
+  record: { fairsharingRecord: { id: 1243 } },
 };
 recordStore.state.sections.publications.data[0].tablePosition = 123;
-editorStore.state.availablePublications = [{
-  title: "World",
-  id: 2
-}];
+editorStore.state.availablePublications = [
+  {
+    title: "World",
+    id: 2,
+  },
+];
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({
   modules: {
     users: userStore,
     record: recordStore,
-    editor: editorStore
-  }
+    editor: editorStore,
+  },
 });
-let $route = { path: "/123/edit", params: {id: 123} };
+let $route = { path: "/123/edit", params: { id: 123 } };
 const router = new VueRouter();
 const $router = { push: jest.fn() };
 
@@ -74,102 +74,106 @@ const formValidation = {
   methods: {
     validate: () => true,
   },
-  data(){return {}}
+  data() {
+    return {};
+  },
 };
 
 const article = {
   "container-title-short": "Science",
   "container-title": "Very Science Indeed",
-  "DOI": "10.1126/science.2781282",
-  "title": "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-  "URL": "https://doi.org/10.1126%2Fscience.2781282",
-  "created": {
-    "date-parts": [
-      1989,3,2
-    ]
+  DOI: "10.1126/science.2781282",
+  title:
+    "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+  URL: "https://doi.org/10.1126%2Fscience.2781282",
+  created: {
+    "date-parts": [1989, 3, 2],
   },
-  "author": [
+  author: [
     {
-      "given": "E.",
-      "family": "Baulieu"
-    }
+      given: "E.",
+      family: "Baulieu",
+    },
   ],
 };
 
 const article_zenodo_1 = {
-  "metadata": {
-    "journal_title" : "Science",
-    "publication_date": "1989-3-12",
-    "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    "creators": [
+  metadata: {
+    journal_title: "Science",
+    publication_date: "1989-3-12",
+    title:
+      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+    creators: [
       {
-        "name": "Baulieu, E."
-      }
+        name: "Baulieu, E.",
+      },
     ],
-    "upload_type" : "publication"
+    upload_type: "publication",
   },
-  "doi" : "10.1126/science.2781282",
-  "links" : {
-    "doi": "https://doi.org/10.1126%2Fscience.2781282"
-  }
+  doi: "10.1126/science.2781282",
+  links: {
+    doi: "https://doi.org/10.1126%2Fscience.2781282",
+  },
 };
 
-
 const article_zenodo_2 = {
-  "metadata": {
-    "meeting": {
-      "title": "Science2"
+  metadata: {
+    meeting: {
+      title: "Science2",
     },
-    "publication_date": "1989-3-12",
-    "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    "creators": [
+    publication_date: "1989-3-12",
+    title:
+      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+    creators: [
       {
-        "name": "Baulieu, E."
-      }
+        name: "Baulieu, E.",
+      },
     ],
-    "upload_type" : "publication"
+    upload_type: "publication",
   },
-  "doi" : "10.1126/science.2781282",
-  "links" : {
-    "doi": "https://doi.org/10.1126%2Fscience.2781282"
-  }
+  doi: "10.1126/science.2781282",
+  links: {
+    doi: "https://doi.org/10.1126%2Fscience.2781282",
+  },
 };
 
 const article_zenodo_3 = {
-  "metadata": {
-    "publication_date": "1989-3-12",
-    "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    "creators": [
+  metadata: {
+    publication_date: "1989-3-12",
+    title:
+      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+    creators: [
       {
-        "name": "Baulieu, E."
-      }
+        name: "Baulieu, E.",
+      },
     ],
-    "upload_type" : "publication"
+    upload_type: "publication",
   },
-  "doi" : "10.1126/science.2781282",
-  "links" : {
-    "doi": "https://doi.org/10.1126%2Fscience.2781282"
-  }
+  doi: "10.1126/science.2781282",
+  links: {
+    doi: "https://doi.org/10.1126%2Fscience.2781282",
+  },
 };
 
 const article_zenodo_4 = {
-  "metadata": {
-    "publication_date": "1989-3-12",
-    "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    "creators": [
+  metadata: {
+    publication_date: "1989-3-12",
+    title:
+      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+    creators: [
       {
-        "name": "Baulieu, E."
-      }
+        name: "Baulieu, E.",
+      },
     ],
-    "upload_type" : "no_publication"
+    upload_type: "no_publication",
   },
-  "doi" : "10.1126/science.2781282",
-  "links" : {
-    "doi": "https://doi.org/10.1126%2Fscience.2781282"
-  }
+  doi: "10.1126/science.2781282",
+  links: {
+    doi: "https://doi.org/10.1126%2Fscience.2781282",
+  },
 };
 
-describe("EditPublications.vue", function() {
+describe("EditPublications.vue", function () {
   let wrapper;
   beforeEach(() => {
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
@@ -177,15 +181,15 @@ describe("EditPublications.vue", function() {
       searchPublications: [
         { title: "Hello", id: 1 },
         { title: "title", doi: "123" },
-        { title: "title"}
-      ]
+        { title: "title" },
+      ],
     });
     wrapper = shallowMount(editPublications, {
       localVue,
       vuetify,
       router,
-      mocks: {$store, $route, $router},
-      stubs: {'v-form': formValidation}
+      mocks: { $store, $route, $router },
+      stubs: { "v-form": formValidation },
     });
   });
   afterEach(() => {
@@ -194,8 +198,12 @@ describe("EditPublications.vue", function() {
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("EditPublications");
-    expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
-    expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
+    expect(wrapper.vm.section.data).toStrictEqual(
+      recordStore.state.sections.publications.data,
+    );
+    expect(wrapper.vm.metadata).toStrictEqual(
+      recordStore.state.sections.generalInformation.data.metadata,
+    );
     expect(wrapper.vm.message.type()).toBe("success");
     recordStore.state.sections.publications.error = true;
     expect(wrapper.vm.message.type()).toBe("error");
@@ -204,17 +212,18 @@ describe("EditPublications.vue", function() {
 
   it("can get a DOI from https://dx.doi.org/", async () => {
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data:article});
+    fetchStub.returns({ data: article });
     const expectedArticle = {
-      authors: 'Baulieu, E.; ',
-      doi: '10.1126/science.2781282',
-      title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
-      journal: 'Science',
-      url: 'https://doi.org/10.1126%2Fscience.2781282',
+      authors: "Baulieu, E.; ",
+      doi: "10.1126/science.2781282",
+      title:
+        "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      journal: "Science",
+      url: "https://doi.org/10.1126%2Fscience.2781282",
       year: 1989,
       isCitation: false,
     };
-    wrapper.vm.search = 'amIaDoi?';
+    wrapper.vm.search = "amIaDoi?";
     await wrapper.vm.getDOI();
     expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
@@ -222,30 +231,36 @@ describe("EditPublications.vue", function() {
 
   it("When getting a DOI can process errors from calls", async () => {
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
-    wrapper.vm.search = 'amIaDoi?';
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: {message: "this is a message"}});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
+    wrapper.vm.search = "amIaDoi?";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: { message: "this is a message" } });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.errors.doi).toBe(true);
     fetchStub.restore();
     restStub.restore();
 
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
-    wrapper.vm.search = 'amIaDoi?';
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: []});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
+    wrapper.vm.search = "amIaDoi?";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: [] });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.errors.doi).toBe(true);
     fetchStub.restore();
     restStub.restore();
 
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
-    wrapper.vm.search = 'amIaDoi?';
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data:article_zenodo_4});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
+    wrapper.vm.search = "amIaDoi?";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: article_zenodo_4 });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.errors.doi).toBe(true);
     fetchStub.restore();
@@ -254,41 +269,46 @@ describe("EditPublications.vue", function() {
 
   it("can get a DOI from zenodo returning one element with journal title", async () => {
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
     const expectedArticle = {
-      authors: 'Baulieu, E.; ',
-      doi: '10.1126/science.2781282',
-      title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
-      journal: 'Science',
-      url: 'https://doi.org/10.1126%2Fscience.2781282',
+      authors: "Baulieu, E.; ",
+      doi: "10.1126/science.2781282",
+      title:
+        "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      journal: "Science",
+      url: "https://doi.org/10.1126%2Fscience.2781282",
       year: 1989,
       isCitation: false,
     };
-    wrapper.vm.search = 'amIaDoi?';
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data:article_zenodo_1});
+    wrapper.vm.search = "amIaDoi?";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: article_zenodo_1 });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
     restStub.restore();
-
   });
 
   it("can get a DOI from zenodo returning more than one element with meeting title", async () => {
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
     const expectedArticle = {
-      authors: 'Baulieu, E.; ',
-      doi: '10.1126/science.2781282',
-      title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
-      journal: 'Science2',
-      url: 'https://doi.org/10.1126%2Fscience.2781282',
+      authors: "Baulieu, E.; ",
+      doi: "10.1126/science.2781282",
+      title:
+        "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      journal: "Science2",
+      url: "https://doi.org/10.1126%2Fscience.2781282",
       year: 1989,
       isCitation: false,
     };
-    wrapper.vm.search = 'amIaDoi?';
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data:[article_zenodo_2,article_zenodo_1]});
+    wrapper.vm.search = "amIaDoi?";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: [article_zenodo_2, article_zenodo_1] });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
@@ -297,24 +317,26 @@ describe("EditPublications.vue", function() {
 
   it("can get a DOI from zenodo returning publication without journal", async () => {
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
     const expectedArticle = {
-      authors: 'Baulieu, E.; ',
-      doi: '10.1126/science.2781282',
-      title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
-      url: 'https://doi.org/10.1126%2Fscience.2781282',
+      authors: "Baulieu, E.; ",
+      doi: "10.1126/science.2781282",
+      title:
+        "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      url: "https://doi.org/10.1126%2Fscience.2781282",
       year: 1989,
       isCitation: false,
-      journal: null
+      journal: null,
     };
-    wrapper.vm.search = 'amIaDoi?';
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data:article_zenodo_3});
+    wrapper.vm.search = "amIaDoi?";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: article_zenodo_3 });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
     restStub.restore();
-
   });
 
   it("can get a PMID and process related errors", async () => {
@@ -324,26 +346,27 @@ describe("EditPublications.vue", function() {
       sortpubdate: "2002/10/10 00:00",
       authors: [
         {
-          name: "authorName"
+          name: "authorName",
         },
         {
-          name: "otherAuthor"
-        }
+          name: "otherAuthor",
+        },
       ],
       uid: "pmid",
-      elocationid: "pii: S0092-8674(20)30740-6. doi: 10.1016/j.cell.2020.06.009",
+      elocationid:
+        "pii: S0092-8674(20)30740-6. doi: 10.1016/j.cell.2020.06.009",
     };
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {result: {test: returnedData}}});
+    fetchStub.returns({ data: { result: { test: returnedData } } });
     let expectedOutput = {
       title: "title",
       journal: "journal",
       year: 2002,
       authors: "authorName, otherAuthor",
       pubmed_id: "pmid",
-      doi: '10.1016/j.cell.2020.06.009',
-      url: 'https://doi.org/10.1016/j.cell.2020.06.009',
-      isCitation: false
+      doi: "10.1016/j.cell.2020.06.009",
+      url: "https://doi.org/10.1016/j.cell.2020.06.009",
+      isCitation: false,
     };
     wrapper.vm.search = "test";
     await wrapper.vm.getPMID();
@@ -356,7 +379,7 @@ describe("EditPublications.vue", function() {
     delete expectedOutput.url;
     expectedOutput.url = "https://pubmed.ncbi.nlm.nih.gov/test";
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {result: {test: returnedData}}});
+    fetchStub.returns({ data: { result: { test: returnedData } } });
     wrapper.vm.search = "test";
     await wrapper.vm.getPMID();
     expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
@@ -364,30 +387,45 @@ describe("EditPublications.vue", function() {
 
     // ERROR PROCESS
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-    fetchStub.returns({data: {error: {response: {data: 'Im an error'}}}});
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
     await wrapper.vm.getPMID();
     expect(wrapper.vm.errors.pmid).toBe(true);
     fetchStub.restore();
   });
 
   it("can add/remove a publication to the array of publications", async () => {
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: {id: 123, title: "Im a publication"}});
-    wrapper.vm.newPublication = {title: "title"};
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: { id: 123, title: "Im a publication" } });
+    wrapper.vm.newPublication = { title: "title" };
     await wrapper.vm.addPublication();
     expect(wrapper.vm.search).toBe("title");
-    expect(wrapper.vm.publications[2]).toStrictEqual({id: 123, tablePosition: 3, title: "Im a publication"});
+    expect(wrapper.vm.publications[2]).toStrictEqual({
+      id: 123,
+      tablePosition: 3,
+      title: "Im a publication",
+    });
     expect(wrapper.vm.publications.length).toBe(3);
     restStub.restore();
 
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: {id: 456}});
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: { id: 456 } });
     wrapper.vm.currentPublicationIndex = 2;
-    wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123", isCitation: true};
+    wrapper.vm.newPublication = {
+      pubIndex: 3,
+      title: "title",
+      doi: "123",
+      isCitation: true,
+    };
     await wrapper.vm.addPublication();
     expect(wrapper.vm.search).toBe("123");
     expect(wrapper.vm.publications.length).toBe(3);
-    expect(wrapper.vm.publications[2]).toStrictEqual({id: 456, tablePosition: 4, isCitation: true});
+    expect(wrapper.vm.publications[2]).toStrictEqual({
+      id: 456,
+      tablePosition: 4,
+      isCitation: true,
+    });
     restStub.restore();
 
     expect(wrapper.vm.publications.length).toBe(3);
@@ -398,7 +436,7 @@ describe("EditPublications.vue", function() {
     expect(wrapper.vm.errors).toStrictEqual({
       doi: null,
       general: null,
-      pmid: null
+      pmid: null,
     });
     expect(wrapper.vm.newPublication).toStrictEqual({
       doi: "",
@@ -407,23 +445,32 @@ describe("EditPublications.vue", function() {
       year: "",
       authors: "",
       pubmed_id: "",
-      isCitation: false
+      isCitation: false,
     });
     expect(wrapper.vm.openEditor).toBe(true);
   });
 
   it("can process errors", async () => {
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: {error: {response: {data: "Im an error"}}}});
-    wrapper.vm.newPublication = {title: "title"};
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
+    wrapper.vm.newPublication = { title: "title" };
     await wrapper.vm.addPublication();
     expect(wrapper.vm.errors.general.response.data).toBe("Im an error");
     restStub.restore();
 
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: {error: {response: {data: "Im an error"}}}});
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
     wrapper.vm.currentPublicationIndex = 2;
-    wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123", isCitation: true};
+    wrapper.vm.newPublication = {
+      pubIndex: 3,
+      title: "title",
+      doi: "123",
+      isCitation: true,
+    };
     await wrapper.vm.addPublication();
     expect(wrapper.vm.errors.general.response.data).toBe("Im an error");
     restStub.restore();
@@ -436,22 +483,24 @@ describe("EditPublications.vue", function() {
   });
 
   it("can update a record", async () => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    jest.spyOn(console, "warn").mockImplementation(() => {});
     recordStore.state.sections.publications.changes = 0;
-    restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-    restStub.returns({data: {id: 123}});
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: { id: 123 } });
     wrapper.vm.publications = [];
     wrapper.vm.publications.push({ id: 3, isCitation: true });
     wrapper.vm.publications.push({ id: 4, isCitation: false });
     await wrapper.vm.saveRecord(true);
-    expect($router.push).toHaveBeenCalledWith({path: "/123"});
+    expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     expect($router.push).toHaveBeenCalledTimes(1);
     await wrapper.vm.saveRecord(false);
     expect(recordStore.state.sections.publications.changes).toEqual(0);
-    restStub.returns({data: {error: {response: {data: "error"}}}});
+    restStub.returns({ data: { error: { response: { data: "error" } } } });
     await wrapper.vm.saveRecord(true);
     expect(recordStore.state.sections.publications.error).toBe(true);
-    expect(recordStore.state.sections.publications.message).toStrictEqual({"response": {"data": "error"}});
+    expect(recordStore.state.sections.publications.message).toStrictEqual({
+      response: { data: "error" },
+    });
     restStub.restore();
     jest.clearAllMocks();
   });
@@ -462,18 +511,16 @@ describe("EditPublications.vue", function() {
         data: pubs,
         error: false,
         changes: 0,
-        initialData: JSON.parse(JSON.stringify(pubs))
+        initialData: JSON.parse(JSON.stringify(pubs)),
       },
       generalInformation: {
         data: {
           metadata: {
-            citations: [
-              {publication_id: 2}
-            ]
+            citations: [{ publication_id: 2 }],
           },
-        }
+        },
       },
-      record: {fairsharingRecord: {id: 1243}}
+      record: { fairsharingRecord: { id: 1243 } },
     };
     wrapper.vm.publications[0].isCitation = true;
     wrapper.vm.toggleCitation(0);
@@ -481,6 +528,4 @@ describe("EditPublications.vue", function() {
     wrapper.vm.toggleCitation(0);
     expect(wrapper.vm.publications[0].isCitation).toBe(true);
   });
-
-
 });

@@ -1,9 +1,9 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -20,9 +20,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Related guidance should provide advice on how to cite a broader range of research outputs including data and software, as well as actors and enablers such as data managers, data stewards, funding bodies, research infrastructures and organisations.",
-
+      itemValue: "",
+      toolTipText:
+        "Related guidance should provide advice on how to cite a broader range of research outputs including data and software, as well as actors and enablers such as data managers, data stewards, funding bodies, research infrastructures and organisations.",
     };
   },
   computed: {

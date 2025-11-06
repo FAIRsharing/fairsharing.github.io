@@ -19,30 +19,20 @@
         label="Enter text to search for additional user(s) to associate with this saved search"
       >
         <!--Chip slot is not required anymore-->
-<!--        <template #selection="data">-->
-<!--          <v-chip-->
-<!--            v-bind="data.attrs"-->
-<!--            :input-value="data.item['id']"-->
-<!--            close-->
-<!--            @click="data.select"-->
-<!--            @click:close="remove(data.item['id'])"-->
-<!--          >-->
-<!--            {{ data.item["username"] }}-->
-<!--          </v-chip>-->
-<!--        </template>-->
+        <!--        <template #selection="data">-->
+        <!--          <v-chip-->
+        <!--            v-bind="data.attrs"-->
+        <!--            :input-value="data.item['id']"-->
+        <!--            close-->
+        <!--            @click="data.select"-->
+        <!--            @click:close="remove(data.item['id'])"-->
+        <!--          >-->
+        <!--            {{ data.item["username"] }}-->
+        <!--          </v-chip>-->
+        <!--        </template>-->
         <template #no-data>
-          <div
-            v-show="!loading"
-            class="py-3 px-4"
-          >
-            No User found
-          </div>
-          <div
-            v-show="loading"
-            class="py-3 px-4"
-          >
-            Loading...
-          </div>
+          <div v-show="!loading" class="py-3 px-4">No User found</div>
+          <div v-show="loading" class="py-3 px-4">Loading...</div>
         </template>
       </v-autocomplete>
     </template>

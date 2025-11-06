@@ -1,14 +1,8 @@
 <template>
   <main>
-    <v-container
-      fluid
-      class="py-0 mb-10"
-    >
+    <v-container fluid class="py-0 mb-10">
       <NotFound v-if="error" />
-      <v-row
-        v-else
-        no-gutters
-      >
+      <v-row v-else no-gutters>
         <v-col
           id="ontologyBrowser"
           xs="12"
@@ -19,11 +13,7 @@
           col="12"
           class="border-right"
         >
-          <div
-            v-if="tree.length > 0"
-            id="searchOntology"
-            class="pr-2"
-          >
+          <div v-if="tree.length > 0" id="searchOntology" class="pr-2">
             <v-autocomplete
               v-model="search"
               :items="flattenedTree"
@@ -50,14 +40,22 @@
                 @click="searchTerm(item)"
               >
                 <v-chip
-                  :class="!activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} text-white`"
+                  :class="
+                    !activeTerms.includes(item.identifier)
+                      ? `white ${color}--text ${color}--border`
+                      : `${color} text-white`
+                  "
                   class="cursor-pointer"
                 >
                   {{ item.name }}
                 </v-chip>
                 <v-spacer />
                 <div
-                  :class="activeTerms.includes(item.identifier) ? `${color} text-white`:`white ${color}--text ${color}--border`"
+                  :class="
+                    activeTerms.includes(item.identifier)
+                      ? `${color} text-white`
+                      : `white ${color}--text ${color}--border`
+                  "
                   class="d-flex justify-center align-center hits"
                 >
                   {{ item.records_count ? item.records_count : 0 }}
@@ -81,11 +79,7 @@
               v-if="records && selectedTerm"
               :selected-ontology="selectedOntology"
             />
-            <v-card
-              v-else
-              class="pa-0"
-              flat
-            >
+            <v-card v-else class="pa-0" flat>
               <v-card-text class="pa-0">
                 <OntologySunburst />
               </v-card-text>
@@ -96,14 +90,14 @@
     </v-container>
     <v-fade-transition>
       <div>
-      <v-overlay
-        v-model="loadingData"
-        :absolute="false"
-        opacity="0.8"
-        class="align-center justify-center"
-      >
-        <Loaders />
-      </v-overlay>
+        <v-overlay
+          v-model="loadingData"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          <Loaders />
+        </v-overlay>
       </div>
     </v-fade-transition>
   </main>
@@ -113,33 +107,46 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
-import OntologySunburst from "@/components/Ontologies/OntologySunburst"
-import TermDetails from "@/components/Ontologies/TermDetails"
+import OntologySunburst from "@/components/Ontologies/OntologySunburst";
+import TermDetails from "@/components/Ontologies/TermDetails";
 import NotFound from "@/views/Errors/404";
 
 export default {
   name: "OntologyBrowser",
-  components: {Loaders, NotFound, TermDetails, OntologySunburst},
-  data(){
+  components: { Loaders, NotFound, TermDetails, OntologySunburst },
+  data() {
     return {
-      allowedOntologies: ['domain', 'subject'],
-      search: null
-    }
+      allowedOntologies: ["domain", "subject"],
+      search: null,
+    };
   },
   computed: {
-    selectedOntology () { return this.$route.params.id },
-    error () { return !this.allowedOntologies.includes(this.selectedOntology) },
-    color () { return this.colors[this.selectedOntology] },
-    term () {
+    selectedOntology() {
+      return this.$route.params.id;
+    },
+    error() {
+      return !this.allowedOntologies.includes(this.selectedOntology);
+    },
+    color() {
+      return this.colors[this.selectedOntology];
+    },
+    term() {
       return this.flattenedTree.find((currentNode) => {
-        if (this.$route.query['term']) {
-          return currentNode.name.toLowerCase() === decodeURIComponent(this.$route.query['term']).toLowerCase()
+        if (this.$route.query["term"]) {
+          return (
+            currentNode.name.toLowerCase() ===
+            decodeURIComponent(this.$route.query["term"]).toLowerCase()
+          );
         }
-      })
+      });
     },
     open: {
-      get() { return this.openedTerms },
-      set(val) { this.openTerms(val) }
+      get() {
+        return this.openedTerms;
+      },
+      set(val) {
+        this.openTerms(val);
+      },
     },
     ...mapState("editor", ["colors"]),
     ...mapState("ontologyBrowser", [
@@ -150,7 +157,7 @@ export default {
       "pagination",
       "activeTerms",
       "selectedTerm",
-      "openedTerms"
+      "openedTerms",
     ]),
   },
   watch: {
@@ -158,20 +165,31 @@ export default {
       /* istanbul ignore else */
       if (newVal) {
         let parents = [...new Set(this.getAncestors()(newVal.identifier))];
-        await this.activateTerms(newVal)
-        this.open = parents
+        await this.activateTerms(newVal);
+        this.open = parents;
       }
-      else await this.activateTerms()
+      else await this.activateTerms();
     },
-    search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
+    search(newTerm) {
+      this.openTerms(this.getAncestors()(newTerm, "id", "name"));
+    },
   },
-  async mounted() { await this.fetchTerms() },
-  unmounted() { this.leavePage() },
+  async mounted() {
+    await this.fetchTerms();
+  },
+  unmounted() {
+    this.leavePage();
+  },
   methods: {
-    searchTerm(term){
-      this.resetPagination()
-      if (this.activeTerms.includes(term.identifier)) this.$router.push({path: this.$route.path})
-      else this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(term.name)}})
+    searchTerm(term) {
+      this.resetPagination();
+      if (this.activeTerms.includes(term.identifier))
+        this.$router.push({ path: this.$route.path });
+      else
+        this.$router.push({
+          path: this.$route.path,
+          query: { term: encodeURIComponent(term.name) },
+        });
     },
     ...mapActions("ontologyBrowser", [
       "fetchTerms",
@@ -179,22 +197,22 @@ export default {
       "resetPagination",
       "activateTerms",
       "openTerms",
-      "leavePage"
+      "leavePage",
     ]),
-    ...mapGetters("ontologyBrowser", ["getAncestors"])
-  }
-}
+    ...mapGetters("ontologyBrowser", ["getAncestors"]),
+  },
+};
 </script>
 
 <style scoped>
 .subject_color--border {
-  border: 1px solid ;
-  border-color: #E67E22 !important
+  border: 1px solid;
+  border-color: #e67e22 !important;
 }
 
 .domain_color--border {
-  border: 1px solid ;
-  border-color: #712727 !important
+  border: 1px solid;
+  border-color: #712727 !important;
 }
 
 .hits {
@@ -203,7 +221,8 @@ export default {
   border-radius: 50%;
 }
 
-#ontologyBrowser, #termDisplay {
+#ontologyBrowser,
+#termDisplay {
   display: flex;
   flex-direction: column;
 }
@@ -231,5 +250,4 @@ export default {
 .cursor-pointer {
   cursor: pointer !important;
 }
-
 </style>

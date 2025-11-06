@@ -1,90 +1,91 @@
 <template>
   <v-expansion-panel
     v-if="filter.filterName"
-    :id="filter.filterName + 'AutocompleteList' "
+    :id="filter.filterName + 'AutocompleteList'"
   >
     <v-expansion-panel-title> {{ filter.filterLabel }}</v-expansion-panel-title>
 
     <v-expansion-panel-text class="pl-5 pr-5">
       <v-row no-gutters>
         <v-col cols="12">
-      <div :class="['d-flex',{'flex-column':$vuetify.display.mdAndDown}]">
-        <v-combobox
-          v-model="selectedValues"
-          :items="getValues"
-          :item-props="itemProps"
-          hide-no-data
-          hide-details="auto"
-          chips
-          multiple
-          closable-chips
-          variant="solo"
-          density="compact"
-          color="primary"
-          class="text-capitalize"
-          prepend-inner-icon="fas fa-search"
-          :placeholder="`Search`"
-          @focus="scrollTo(filter.filterName)"
-          @click:clear="reset(filter)"
-        >
-<!--          <template #selection="data">-->
-<!--            <v-chip class="bg-blue text-white mb-1">-->
-<!--              <span class="chipsValueName">-->
-<!--                {{ cleanString(data.item.raw.key) }}-->
-<!--              </span>-->
-<!--            </v-chip>-->
-<!--          </template>-->
-<!--          <template #item="data">-->
-<!--            <div class="d-flex full-width">-->
-<!--              <span class="filterValueName"> {{ cleanString(data.item.raw.key) }}</span>-->
-<!--              <span class="filterValueCount"> {{ data.item.raw['doc_count'] }}</span>-->
-<!--            </div>-->
-<!--          </template>-->
-        </v-combobox>
-        <v-btn
-          color="primary"
-          class="ml-lg-2 custom-btn"
-          @click="applyFilters(filter)"
-        >
-          Apply
-        </v-btn>
-      </div>
+          <div
+            :class="['d-flex', { 'flex-column': $vuetify.display.mdAndDown }]"
+          >
+            <v-combobox
+              v-model="selectedValues"
+              :items="getValues"
+              :item-props="itemProps"
+              hide-no-data
+              hide-details="auto"
+              chips
+              multiple
+              closable-chips
+              variant="solo"
+              density="compact"
+              color="primary"
+              class="text-capitalize"
+              prepend-inner-icon="fas fa-search"
+              :placeholder="`Search`"
+              @focus="scrollTo(filter.filterName)"
+              @click:clear="reset(filter)"
+            >
+              <!--          <template #selection="data">-->
+              <!--            <v-chip class="bg-blue text-white mb-1">-->
+              <!--              <span class="chipsValueName">-->
+              <!--                {{ cleanString(data.item.raw.key) }}-->
+              <!--              </span>-->
+              <!--            </v-chip>-->
+              <!--          </template>-->
+              <!--          <template #item="data">-->
+              <!--            <div class="d-flex full-width">-->
+              <!--              <span class="filterValueName"> {{ cleanString(data.item.raw.key) }}</span>-->
+              <!--              <span class="filterValueCount"> {{ data.item.raw['doc_count'] }}</span>-->
+              <!--            </div>-->
+              <!--          </template>-->
+            </v-combobox>
+            <v-btn
+              color="primary"
+              class="ml-lg-2 custom-btn"
+              @click="applyFilters(filter)"
+            >
+              Apply
+            </v-btn>
+          </div>
         </v-col>
-    </v-row>
+      </v-row>
     </v-expansion-panel-text>
-
   </v-expansion-panel>
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex'
+import { mapGetters, mapState } from "vuex";
 
-import clearString from '@/utils/stringUtils'
-import {capitalize} from "lodash";
+import clearString from "@/utils/stringUtils";
+import { capitalize } from "lodash";
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: {default: null, type: Object},
-    lastItem:{default:false, type:Boolean}
+    filter: { default: null, type: Object },
+    lastItem: { default: false, type: Boolean },
   },
   data: () => {
     return {
-      selectedValues: []
-    }
+      selectedValues: [],
+    };
   },
   computed: {
-    ...mapGetters('records', ['getFilter']),
-    ...mapState('uiController', ['stickToTop']),
+    ...mapGetters("records", ["getFilter"]),
+    ...mapState("uiController", ["stickToTop"]),
     getValues: function () {
       let _module = this;
       let output = _module.getFilter(this.filter.filterName);
-      if (output.values && typeof output.values === 'object') {
+      if (output.values && typeof output.values === "object") {
         return output.values;
       }
-      return []
-    }
+      return [];
+    },
   },
   methods: {
     /**
@@ -95,12 +96,16 @@ export default {
       let filterName = _module.filter.filterName;
       let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
 
-      _module.selectedValues = _module.selectedValues.map(({key}) => key)
+      _module.selectedValues = _module.selectedValues.map(({ key }) => key);
       if (Object.keys(currentParams).indexOf(filterName) === -1) {
-        if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
-
+        if (
+          _module.selectedValues !== null &&
+          _module.selectedValues.length > 0
+        ) {
           if (_module.selectedValues.length === 1) {
-            currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
+            currentParams[filterName] = encodeURIComponent(
+              _module.selectedValues.join(","),
+            );
           }
           else {
             let newParam = [];
@@ -109,25 +114,29 @@ export default {
             });
             currentParams[filterName] = newParam.join(",");
           }
-          currentParams['page'] = 1;
+          currentParams["page"] = 1;
           _module.$router.push({
             name: _module.$route.name,
-            query: currentParams
+            query: currentParams,
           });
         }
       }
       else {
-        if (_module.selectedValues === null || _module.selectedValues.length === 0) {
+        if (
+          _module.selectedValues === null ||
+          _module.selectedValues.length === 0
+        ) {
           delete currentParams[_module.filter.filterName];
-          currentParams['page'] = 1;
+          currentParams["page"] = 1;
           _module.$router.push({
             name: _module.$route.name,
-            query: currentParams
+            query: currentParams,
           });
         }
         else {
           let newParams = [];
-          let existingValues = currentParams[_module.filter.filterName].split(",");
+          let existingValues =
+            currentParams[_module.filter.filterName].split(",");
           _module.selectedValues.forEach(function (selectedValue) {
             const filterVal = encodeURIComponent(selectedValue);
             if (existingValues.indexOf(filterVal) === -1) {
@@ -136,10 +145,10 @@ export default {
           });
           currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
           if (newParams.length > 0) {
-            currentParams['page'] = 1;
+            currentParams["page"] = 1;
             _module.$router.push({
               name: _module.$route.name,
-              query: currentParams
+              query: currentParams,
             });
           }
         }
@@ -155,10 +164,10 @@ export default {
     /* istanbul ignore next */
     scrollTo(name) {
       let _module = this;
-      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
-        container: '#scrollable-holder',
-        easing: 'ease-in',
-      })
+      _module.$scrollTo("#" + name + "AutocompleteList", 450, {
+        container: "#scrollable-holder",
+        easing: "ease-in",
+      });
     },
 
     itemProps(item) {
@@ -166,10 +175,10 @@ export default {
         key: item.key,
         title: capitalize(this.cleanString(item.key)),
         subtitle: item.doc_count,
-      }
+      };
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -188,7 +197,7 @@ export default {
 }
 
 .filterValueCount {
-  background: #2196F3;
+  background: #2196f3;
   color: white;
   padding: 0 7px;
 }

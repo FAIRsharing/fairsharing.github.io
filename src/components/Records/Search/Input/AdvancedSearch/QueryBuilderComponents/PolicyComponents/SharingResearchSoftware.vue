@@ -1,11 +1,11 @@
 <template>
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -22,15 +22,11 @@ export default {
   },
   data: () => {
     return {
-      itemList: [
-        "required",
-        "suggested",
-        "not covered",
-        "other"
-      ],
+      itemList: ["required", "suggested", "not covered", "other"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Policy clearly states that sharing research software is required and provides clarity on any legitimate exceptions. Multiple selections will be joined with OR.",
+      toolTipText:
+        "Policy clearly states that sharing research software is required and provides clarity on any legitimate exceptions. Multiple selections will be joined with OR.",
     };
   },
   computed: {

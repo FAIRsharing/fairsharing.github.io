@@ -1,13 +1,7 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="12"
-        md="8"
-        lg="8"
-        xl="4"
-      >
+      <v-col cols="12" sm="12" md="8" lg="8" xl="4">
         <v-card>
           <v-card-title class="bg-blue text-white mb-5">
             <h2>Enter your new password below</h2>
@@ -20,9 +14,7 @@
           <v-card-text>
             <v-form if="resetPwd">
               <!-- if user is logged in and has a password, ask them for it -->
-              <div
-                v-if="user().isLoggedIn"
-              >
+              <div v-if="user().isLoggedIn">
                 <v-text-field
                   v-model="formData['oldPwd']"
                   type="password"
@@ -31,8 +23,8 @@
                   variant="outlined"
                 />
                 <p>
-                  Don't know your current password or never set one? Please make sure you're
-                  logged out and then request a password reset.
+                  Don't know your current password or never set one? Please make
+                  sure you're logged out and then request a password reset.
                 </p>
                 <p>
                   <v-btn
@@ -64,10 +56,7 @@
                 required
                 variant="outlined"
               />
-              <v-btn
-                :loading="loading"
-                @click="submitPassword()"
-              >
+              <v-btn :loading="loading" @click="submitPassword()">
                 Save your new password
               </v-btn>
             </v-form>
@@ -79,39 +68,47 @@
 </template>
 
 <script>
-import { mapActions,mapState } from "vuex"
+import { mapActions, mapState } from "vuex";
 
 import MessageHandler from "@/components/Users/MessageHandler";
 import ValidityProgress from "@/components/Users/Password/ValidityProgress";
 
 export default {
   name: "ResetPassword",
-  components: {ValidityProgress, MessageHandler},
+  components: { ValidityProgress, MessageHandler },
   data: () => {
     return {
       message: null,
       error: null,
       formData: {},
       password: null,
-      loading: false
-    }
+      loading: false,
+    };
   },
   computed: {
-    ...mapState("users", ["user", "messages"])
+    ...mapState("users", ["user", "messages"]),
   },
   mounted() {
     this.$nextTick(async function () {
       const params = this.$route.query;
-      if (!Object.keys(params).includes('reset_password_token') && !this.user().isLoggedIn) {
+      if (
+        !Object.keys(params).includes("reset_password_token") &&
+        !this.user().isLoggedIn
+      ) {
         this.setError({
           field: "resetPassword",
-          message: "Missing Token"
+          message: "Missing Token",
         });
       }
-    })
+    });
   },
   methods: {
-    ...mapActions("users", ["resetPwdWithoutToken", 'resetPwd', "setError", "logout"]),
+    ...mapActions("users", [
+      "resetPwdWithoutToken",
+      "resetPwd",
+      "setError",
+      "logout",
+    ]),
     async submitPassword() {
       this.loading = true;
       let _module = this;
@@ -122,28 +119,35 @@ export default {
       let _module = this;
       let query = {
         password: _module.password,
-        password_confirmation: _module.formData['passwordRepeat'],
+        password_confirmation: _module.formData["passwordRepeat"],
       };
       if (isLoggedIn) {
-        query.current_password = _module.formData['oldPwd'];
+        query.current_password = _module.formData["oldPwd"];
         await _module.resetPwdWithoutToken(query);
         if (!_module.messages().resetPassword.error) {
-          _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
+          _module.$router.push({
+            path: "/accounts/login",
+            query: { redirect: "/accounts/profile" },
+          });
         }
       }
       else {
-        query.reset_password_token = _module.$route.query['reset_password_token'];
+        query.reset_password_token =
+          _module.$route.query["reset_password_token"];
         await _module.resetPwd(query);
         if (!_module.messages().resetPassword.error) {
-          _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
+          _module.$router.push({
+            path: "/accounts/login",
+            query: { redirect: "/accounts/profile" },
+          });
         }
       }
     },
     async ensureLogout() {
       await this.logout();
       this.$store.commit("users/logout");
-      this.$router.push({path: '/accounts/forgotPassword'});
-    }
-  }
-}
+      this.$router.push({ path: "/accounts/forgotPassword" });
+    },
+  },
+};
 </script>

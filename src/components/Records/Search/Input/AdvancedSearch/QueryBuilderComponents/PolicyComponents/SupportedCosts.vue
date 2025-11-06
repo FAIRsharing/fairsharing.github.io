@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Funding bodies’ data policies support justified costs associated with RDM and making data FAIR.",
-
+      itemValue: "",
+      toolTipText:
+        "Funding bodies’ data policies support justified costs associated with RDM and making data FAIR.",
     };
   },
   computed: {

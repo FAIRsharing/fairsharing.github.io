@@ -1,27 +1,26 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuetify from "vuetify"
-import Vuex from "vuex"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
+import Vuex from "vuex";
 
-import Alerts from "@/components/Editor/Alerts.vue"
-import recordStore from "@/store/recordData.js"
+import Alerts from "@/components/Editor/Alerts.vue";
+import recordStore from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 recordStore.state.sections = {
   organisations: {
     error: true,
-    message: {response:{ data: "I am en error"}}
-  }
+    message: { response: { data: "I am en error" } },
+  },
 };
 const $store = new Vuex.Store({
   modules: {
     record: recordStore,
-  }
+  },
 });
 const vuetify = new Vuetify();
 
-
-describe("Edit -> Alerts.vue", function() {
+describe("Edit -> Alerts.vue", function () {
   let wrapper;
 
   it("can be mounted", () => {
@@ -29,9 +28,9 @@ describe("Edit -> Alerts.vue", function() {
       localVue,
       vuetify,
       propsData: {
-        target: "organisations"
+        target: "organisations",
       },
-      mocks: {$store}
+      mocks: { $store },
     });
     expect(wrapper.vm.$options.name).toMatch("Alerts");
     recordStore.state.sections.organisations.error = false;

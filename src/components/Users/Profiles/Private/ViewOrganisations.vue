@@ -9,18 +9,13 @@
       calculate-widths
     >
       <template #[`item.name`]="{ item }">
-        <router-link
-          :to="'/organisations/' + item.id"
-        >
+        <router-link :to="'/organisations/' + item.id">
           {{ item.name }}
         </router-link>
       </template>
 
       <template #[`item.homepage`]="{ item }">
-        <a
-          :href="item.homepage"
-          target="_blank"
-        >
+        <a :href="item.homepage" target="_blank">
           {{ item.homepage }}
         </a>
       </template>
@@ -30,51 +25,47 @@
       </template>
 
       <template #no-data>
-        <div>
-          You are not a member of any organisations.
-        </div>
+        <div>You are not a member of any organisations.</div>
       </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "ViewOrganisations",
   props: {
-    organisations: { type: Array, default: null }
+    organisations: { type: Array, default: null },
   },
   computed: {
-    ...mapState('users', ['user']),
+    ...mapState("users", ["user"]),
     headers() {
       let headers = [
-        {title: 'Name', value: 'name', align: 'center'},
-        {title: 'Types', value: 'organisationTypes', align: 'center'},
-        {title: 'Homepage', value: 'homepage', align: 'center'},
+        { title: "Name", value: "name", align: "center" },
+        { title: "Types", value: "organisationTypes", align: "center" },
+        { title: "Homepage", value: "homepage", align: "center" },
       ];
       return headers;
     },
-    perPage(){
+    perPage() {
       return 5;
     },
-    footer(){
-      return {'items-per-page-options': [5]}
-    }
+    footer() {
+      return { "items-per-page-options": [5] };
+    },
   },
   methods: {
     objToList(obj) {
       let names = [];
       obj.forEach((t) => {
-        names.push(t.name)
-      })
+        names.push(t.name);
+      });
       return names.join(", ");
-    }
+    },
   },
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -26,9 +26,7 @@
   },
   "mergedAssociations": [
     {
-      "recordAssocLabel": [
-        "recommends"
-      ],
+      "recordAssocLabel": ["recommends"],
       "id": 3353,
       "registry": "Policy",
       "name": "MNI Open Research",
@@ -38,9 +36,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 1497,
       "registry": "Standard",
       "name": "Investigation Study Assay Tabular",
@@ -50,9 +46,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 1414,
       "registry": "Standard",
       "name": "Minimum Information about a Molecular Interaction Causal Statement",
@@ -62,9 +56,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 314,
       "registry": "Standard",
       "name": "Fission Yeast Phenotype Ontology",
@@ -74,9 +66,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 458,
       "registry": "Standard",
       "name": "PRIDE XML Format",
@@ -86,9 +76,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 206,
       "registry": "Standard",
       "name": "FAANG metadata experiment specification standard",
@@ -98,9 +86,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 1495,
       "registry": "Standard",
       "name": "FAANG metadata sample specification standard",
@@ -110,9 +96,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "related_to"
-      ],
+      "recordAssocLabel": ["related_to"],
       "id": 165,
       "registry": "Standard",
       "name": "Ontology for Parasite LifeCycle",
@@ -122,9 +106,7 @@
       "linkType": "linkedRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1561,
       "registry": "Database",
       "name": "ChEMBL",
@@ -134,9 +116,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1681,
       "registry": "Database",
       "name": "neXtProt",
@@ -146,9 +126,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1688,
       "registry": "Database",
       "name": "Stem Cell Discovery Engine",
@@ -158,9 +136,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1711,
       "registry": "Database",
       "name": "MetaboLights",
@@ -170,9 +146,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1789,
       "registry": "Database",
       "name": "BRENDA",
@@ -182,9 +156,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1891,
       "registry": "Database",
       "name": "SABIO-RK Biochemical Reaction Kinetics Database",
@@ -194,9 +166,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 1949,
       "registry": "Database",
       "name": "The Global Proteome Machine Database",
@@ -206,9 +176,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2028,
       "registry": "Database",
       "name": "Biological General Repository for Interaction Datasets",
@@ -218,9 +186,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2220,
       "registry": "Database",
       "name": "ReMap",
@@ -230,9 +196,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2224,
       "registry": "Database",
       "name": "SIGnaling Network Open Resource",
@@ -242,9 +206,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2346,
       "registry": "Database",
       "name": "Immune Epitope Database",
@@ -254,9 +216,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2364,
       "registry": "Database",
       "name": "Target Central Resource Database",
@@ -266,9 +226,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2600,
       "registry": "Database",
       "name": "OBO Foundry",
@@ -278,9 +236,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2633,
       "registry": "Database",
       "name": "Bovine Genome Database",
@@ -290,9 +246,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2716,
       "registry": "Database",
       "name": "BovineMine",
@@ -302,9 +256,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2866,
       "registry": "Database",
       "name": "Chickspress",
@@ -314,9 +266,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2869,
       "registry": "Database",
       "name": "miRwayDB",
@@ -326,9 +276,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2870,
       "registry": "Database",
       "name": "TISSUES",
@@ -338,9 +286,7 @@
       "linkType": "fairsharingRecord"
     },
     {
-      "recordAssocLabel": [
-        "implements"
-      ],
+      "recordAssocLabel": ["implements"],
       "id": 2871,
       "registry": "Database",
       "name": "LEAFDATA",

@@ -1,41 +1,43 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
-import Publications from "@/components/Records/Record/Publications.vue"
-import Record from "@/store/recordData.js"
+import Publications from "@/components/Records/Record/Publications.vue";
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 Record.state.currentRecord["fairsharingRecord"] = {
-  publications: [
-    {title: "Publication One"},
-    {title: "Publication Two"}
-  ],
-  subjects:[],
-  domains:[],
-  taxonomies:[],
-  userDefinedTags:[],
+  publications: [{ title: "Publication One" }, { title: "Publication Two" }],
+  subjects: [],
+  domains: [],
+  taxonomies: [],
+  userDefinedTags: [],
 };
 const $store = new Vuex.Store({
   modules: {
-    record:Record
-  }});
+    record: Record,
+  },
+});
 
-describe("Publications.vue", function(){
+describe("Publications.vue", function () {
   let wrapper;
 
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(Publications, {
       localVue,
-      mocks: {$store}
+      mocks: { $store },
     });
   });
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("Publications");
-    expect(wrapper.vm.getField('publications')[0].title).toMatch("Publication One");
-    expect(wrapper.vm.getField('publications')[1].title).toMatch("Publication Two");
+    expect(wrapper.vm.getField("publications")[0].title).toMatch(
+      "Publication One",
+    );
+    expect(wrapper.vm.getField("publications")[1].title).toMatch(
+      "Publication Two",
+    );
   });
 
   it("correctly handles dodgy pubmed and doi links", () => {
@@ -46,6 +48,4 @@ describe("Publications.vue", function(){
     expect(wrapper.vm.checkLinkValue(null)).toBe(false);
     expect(wrapper.vm.checkLinkValue(undefined)).toBe(false);
   });
-
-
 });

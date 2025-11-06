@@ -30,7 +30,8 @@
       "value": "processingNotes",
       "sortable": false
     },
-    { "text": "Accept record/edit?",
+    {
+      "text": "Accept record/edit?",
       "value": "actions",
       "sortable": false,
       "width": 130
@@ -60,10 +61,7 @@
       "sortable": false,
       "width": 250
     },
-    { "text": "Accept request?",
-      "value": "actions",
-      "sortable": false
-    }
+    { "text": "Accept request?", "value": "actions", "sortable": false }
   ],
   "recordsCreatedCuratorsLastWeek": [
     {

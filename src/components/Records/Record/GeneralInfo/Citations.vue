@@ -2,11 +2,7 @@
   <div class="d-flex flex-row mt-8">
     <v-row>
       <!--How to cite this record-->
-      <v-col
-        cols="12"
-        sm="12"
-        md="6"
-      >
+      <v-col cols="12" sm="12" md="6">
         <v-card
           class="pa-4 d-flex flex-column overflow-initial"
           border
@@ -14,39 +10,31 @@
           tile
           elevation="3"
         >
-          <Icon
-            size="20"
-            item="howToCite"
-            class="pt-2"
-          />
-          <v-card-title
-            class="pa-0 text--primary card-title-customize"
-          >
+          <Icon size="20" item="howToCite" class="pt-2" />
+          <v-card-title class="pa-0 text--primary card-title-customize">
             <v-tooltip location="bottom">
               <template #activator="{ props }">
-                <v-icon
-                  class="mr-2"
-                  size="15"
-                  v-bind="props"
-                >
+                <v-icon class="mr-2" size="15" v-bind="props">
                   fas fa-question-circle
                 </v-icon>
               </template>
-              {{ recordTooltips['how_to_cite'] }}
+              {{ recordTooltips["how_to_cite"] }}
             </v-tooltip>
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
             <span v-if="getField('name')"> FAIRsharing.org: </span>
             <span v-if="getField('abbreviation')">
-              {{ getField("abbreviation") + ";" }} </span>{{ getField("name") }},
+              {{ getField("abbreviation") + ";" }} </span
+            >{{ getField("name") }},
 
             <span v-if="getField('id') && !getField('doi')">
               <b>
                 FAIRsharing ID:
                 <router-link :to="`${getField('id')}`">{{
                   getHostname() + getField("id")
-                }}</router-link> </b>,
+                }}</router-link> </b
+              >,
             </span>
 
             <span v-if="getField('doi')">
@@ -54,46 +42,44 @@
                 DOI:
                 <a :href="'https://doi.org/' + getField('doi')">{{
                   getField("doi")
-                }}</a>,
+                }}</a
+                >,
               </b>
             </span>
 
             <span v-if="getField('lastEdited')">
               <b>Last Edited:</b> {{ moment(getField("lastEdited")) }},
             </span>
-            <b v-if="getField('lastEditor') !== null"><span class="mr-2">Last Editor:</span></b><span
+            <b v-if="getField('lastEditor') !== null"
+              ><span class="mr-2">Last Editor:</span></b
+            ><span
               v-if="
                 getField('lastEditor') !== null &&
-                  getField('lastEditor').username
+                getField('lastEditor').username
               "
               class="mr-2"
-            >{{ getField("lastEditor").username }},</span>
+              >{{ getField("lastEditor").username }},</span
+            >
             <b>Last Accessed:</b>
             <span class="mr-2">
-              {{ moment(new Date()) }}<span v-if="getField('lastReviewed')">,</span>
+              {{ moment(new Date())
+              }}<span v-if="getField('lastReviewed')">,</span>
             </span>
-            <span
-              v-if="getField('lastReviewed')"
-            >
+            <span v-if="getField('lastReviewed')">
               <b>Last Reviewed:</b>
               <span class="mr-2">
-                {{ moment(getField('lastReviewed')) }}
+                {{ moment(getField("lastReviewed")) }}
               </span>
             </span>
           </v-card-text>
         </v-card>
       </v-col>
       <!--Publication for citation-->
-      <v-col
-        cols="12"
-        sm="12"
-        md="6"
-        class="mt-md-0 mt-sm-8"
-      >
+      <v-col cols="12" sm="12" md="6" class="mt-md-0 mt-sm-8">
         <v-card
           v-if="
             getField('metadata')['citations'] &&
-              getField('metadata')['citations'].length > 0
+            getField('metadata')['citations'].length > 0
           "
           class="pa-4 d-flex flex-column overflow-initial"
           border
@@ -101,23 +87,15 @@
           tile
           elevation="3"
         >
-          <Icon
-            item="PublicationCitation"
-            size="20"
-            class="pt-2"
-          />
+          <Icon item="PublicationCitation" size="20" class="pt-2" />
           <v-card-title class="pa-0 card-title-customize">
             <v-tooltip location="bottom">
               <template #activator="{ props }">
-                <v-icon
-                  class="mr-2"
-                  size="15"
-                  v-bind="props"
-                >
+                <v-icon class="mr-2" size="15" v-bind="props">
                   fas fa-question-circle
                 </v-icon>
               </template>
-              {{ recordTooltips['publication_for_citation'] }}
+              {{ recordTooltips["publication_for_citation"] }}
             </v-tooltip>
             Publication for citation
           </v-card-title>
@@ -135,7 +113,8 @@
                   class="d-flex flex-wrap"
                 >
                   <p class="ma-0 mr-2">
-                    <b>{{ publication.title }}</b>:
+                    <b>{{ publication.title }}</b
+                    >:
                     {{
                       $vuetify.display.lgAndUp
                         ? truncate(publication.authors, 600)

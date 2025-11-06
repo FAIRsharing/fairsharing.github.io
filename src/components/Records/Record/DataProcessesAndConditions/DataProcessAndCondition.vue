@@ -1,33 +1,33 @@
 <template>
   <v-card
-    v-if="Object.keys(getField('metadata')).includes('data_processes_and_conditions') && (getField('metadata').data_processes_and_conditions.length)"
+    v-if="
+      Object.keys(getField('metadata')).includes(
+        'data_processes_and_conditions',
+      ) && getField('metadata').data_processes_and_conditions.length
+    "
     class="pa-4 mt-15 d-flex flex-column overflow-initial"
     border
     :color="backColor"
     tile
     elevation="3"
   >
-    <Icon
-      item="maintains"
-      size="20"
-      class="pt-2"
-    />
+    <Icon item="maintains" size="20" class="pt-2" />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Processes
     </v-card-title>
     <!--  Container  -->
     <div
-      v-for="(item,key,index) in generateProcessesData()"
-      :key="key+'_'+index"
+      v-for="(item, key, index) in generateProcessesData()"
+      :key="key + '_' + index"
       class="mt-0 pt-8 d-flex flex-column"
     >
       <div
-        v-for="(subItem,subIndex) in item.data"
-        :key="subItem.name+'_'+subIndex"
+        v-for="(subItem, subIndex) in item.data"
+        :key="subItem.name + '_' + subIndex"
       >
         <div
           class="content-wrapper pa-4 mt-4 d-flex flex-row justify-space-between full-width"
-          :class="{'flex-column': $vuetify.display.xs}"
+          :class="{ 'flex-column': $vuetify.display.xs }"
         >
           <!--  Name, Access Method, URL    -->
           <div class="full-width min-width-200 max-width-500">
@@ -38,11 +38,7 @@
             >
               <b class="width-200">Name</b>
               <div class="d-flex full-width ml-md-12 ml-13">
-                <a
-                  class="underline-effect"
-                  :href="subItem.url"
-                  target="_blank"
-                >
+                <a class="underline-effect" :href="subItem.url" target="_blank">
                   {{ subItem.name }}
                 </a>
               </div>
@@ -79,8 +75,7 @@
               v-if="subItem.documentation_url"
               class="d-flex flex-row align-stretch min-height-40"
             >
-              <b class="width-200">Documentation URL
-              </b>
+              <b class="width-200">Documentation URL </b>
               <div class="d-flex full-width ml-md-12 ml-13">
                 <a
                   class="underline-effect word-break"
@@ -96,56 +91,31 @@
           <div
             v-if="subItem.type"
             class="d-flex flex-row align-top min-height-40 justify-end"
-            :class="{'flex-column': $vuetify.display.xs}"
+            :class="{ 'flex-column': $vuetify.display.xs }"
           >
             <div
               class="d-flex flex-row full-width ml-md-12"
-              :class="{'flex-column': $vuetify.display.smAndUp}"
+              :class="{ 'flex-column': $vuetify.display.smAndUp }"
             >
-              <b
-                class="width-100"
-                :class="{'mr-8': $vuetify.display.xs}"
-              >Read</b>
+              <b class="width-100" :class="{ 'mr-8': $vuetify.display.xs }"
+                >Read</b
+              >
 
-              <span
-                v-if="subItem.type === 'read'"
-              >
-                <v-icon
-                  size="medium"
-                >
-                  fas fa-check
-                </v-icon>
-              </span><span
-                v-else-if="subItem.type === 'read and write'"
-              >
-                <v-icon
-                  size="medium"
-                >
-                  fas fa-check
-                </v-icon>
+              <span v-if="subItem.type === 'read'">
+                <v-icon size="medium"> fas fa-check </v-icon> </span
+              ><span v-else-if="subItem.type === 'read and write'">
+                <v-icon size="medium"> fas fa-check </v-icon>
               </span>
             </div>
             <div
               class="d-flex flex-row full-width ml-md-12"
-              :class="{'flex-column': $vuetify.display.smAndUp}"
+              :class="{ 'flex-column': $vuetify.display.smAndUp }"
             >
-              <b :class="{'width-100 mr-8': $vuetify.display.xs}">Write</b>
-              <span
-                v-if="subItem.type === 'write'"
-              >
-                <v-icon
-                  size="medium"
-                >
-                  fas fa-check
-                </v-icon>
-              </span><span
-                v-else-if="subItem.type === 'read and write'"
-              >
-                <v-icon
-                  size="medium"
-                >
-                  fas fa-check
-                </v-icon>
+              <b :class="{ 'width-100 mr-8': $vuetify.display.xs }">Write</b>
+              <span v-if="subItem.type === 'write'">
+                <v-icon size="medium"> fas fa-check </v-icon> </span
+              ><span v-else-if="subItem.type === 'read and write'">
+                <v-icon size="medium"> fas fa-check </v-icon>
               </span>
             </div>
           </div>
@@ -156,29 +126,29 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 import Icon from "@/components/Icon";
-import clearString from '@/utils/stringUtils';
+import clearString from "@/utils/stringUtils";
 import truncate from "@/utils/stringUtils";
 
 export default {
   name: "DataProcessAndCondition",
   components: {
-    Icon
+    Icon,
   },
   mixins: [clearString, truncate],
-  props:{
-    backColor:{
-      default:null,
+  props: {
+    backColor: {
+      default: null,
       type: String,
-    }
+    },
   },
   data: () => {
     return {
       processedDataConditions: {},
-      finalData:{},
-    }
+      finalData: {},
+    };
   },
   computed: {
     ...mapGetters("record", ["getField"]),
@@ -186,27 +156,36 @@ export default {
   methods: {
     generateProcessesData() {
       let processedDataConditions = {};
-      const data_processes_and_conditions = this.getField('metadata')['data_processes_and_conditions'];
+      const data_processes_and_conditions =
+        this.getField("metadata")["data_processes_and_conditions"];
       // initializing object's key and data dynamically based on any number of types coming from API
       if (data_processes_and_conditions) {
-        data_processes_and_conditions.forEach(item => {
-          if (!Object.prototype.hasOwnProperty.call(this.processedDataConditions, item.type)) {
+        data_processes_and_conditions.forEach((item) => {
+          if (
+            !Object.prototype.hasOwnProperty.call(
+              this.processedDataConditions,
+              item.type,
+            )
+          ) {
             processedDataConditions[item.type] = {
               data: [],
-              icon: null
-            }
+              icon: null,
+            };
           }
         });
         // assigning data and icon to the different types came from API.
-        data_processes_and_conditions.forEach(item => {
-          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_');
-          processedDataConditions[item.type].data.push(item)
-        })
+        data_processes_and_conditions.forEach((item) => {
+          processedDataConditions[item.type].icon = item.type.replace(
+            /\s/g,
+            "_",
+          );
+          processedDataConditions[item.type].data.push(item);
+        });
       }
-      return processedDataConditions
+      return processedDataConditions;
     },
   },
-}
+};
 </script>
 
 <style scoped>

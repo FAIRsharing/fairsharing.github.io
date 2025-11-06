@@ -13,35 +13,19 @@
     "urlForLogo",
     {
       "name": "users",
-      "fields": [
-        "id",
-        "username",
-        "email",
-        "orcid",
-        "twitter"
-      ]
+      "fields": ["id", "username", "email", "orcid", "twitter"]
     },
     {
       "name": "countries",
-      "fields": [
-        "name",
-        "id",
-        "code"
-      ]
+      "fields": ["name", "id", "code"]
     },
     {
       "name": "childOrganisations",
-      "fields": [
-        "id",
-        "name"
-      ]
+      "fields": ["id", "name"]
     },
     {
       "name": "parentOrganisations",
-      "fields": [
-        "id",
-        "name"
-      ]
+      "fields": ["id", "name"]
     },
     {
       "name": "organisationLinks",
@@ -61,44 +45,25 @@
             "description",
             {
               "name": "subjects",
-              "fields": [
-                "id",
-                "label",
-                "iri",
-                "definitions"
-              ]
+              "fields": ["id", "label", "iri", "definitions"]
             },
             {
               "name": "domains",
-              "fields": [
-                "id",
-                "label",
-                "iri",
-                "definitions"
-              ]
+              "fields": ["id", "label", "iri", "definitions"]
             },
             {
               "name": "userDefinedTags",
-              "fields": [
-                "id",
-                "label"
-              ]
+              "fields": ["id", "label"]
             },
             {
               "name": "taxonomies",
-              "fields": [
-                "id",
-                "label"
-              ]
+              "fields": ["id", "label"]
             }
           ]
         },
         {
           "queryName": "grant",
-          "fields": [
-            "id",
-            "name"
-          ]
+          "fields": ["id", "name"]
         }
       ]
     },

@@ -1,13 +1,13 @@
 <template>
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchTaxonomies"
-      :loading="getLoadingStatus"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-      @fetch-data="getResults"
-    />
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getSearchTaxonomies"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -35,7 +35,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("taxonomiesSearch", ["getSearchTaxonomies", "getLoadingStatus"]),
+    ...mapGetters("taxonomiesSearch", [
+      "getSearchTaxonomies",
+      "getLoadingStatus",
+    ]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -61,7 +64,7 @@ export default {
           if (this.value && this.value.length) {
             taxonomiesSearch.commit(
               "taxonomiesSearch/setSearchTaxonomies",
-              this.value
+              this.value,
             );
           }
         }

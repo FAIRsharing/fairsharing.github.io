@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Certification schemes and/or community badges that assess certain aspects of the repository (e.g., its fitness, trustworthiness, adoption).",
-
+      itemValue: "",
+      toolTipText:
+        "Certification schemes and/or community badges that assess certain aspects of the repository (e.g., its fitness, trustworthiness, adoption).",
     };
   },
   computed: {

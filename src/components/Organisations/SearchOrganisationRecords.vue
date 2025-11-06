@@ -1,20 +1,9 @@
 <template>
   <div>
-    <v-container
-      v-if="error"
-      fluid
-      class="pa-0"
-    >
-      <p
-        class="pa-10"
-      >
-        Sorry, something went wrong!
-      </p>
+    <v-container v-if="error" fluid class="pa-0">
+      <p class="pa-10">Sorry, something went wrong!</p>
     </v-container>
-    <v-container
-      v-else
-      fluid
-    >
+    <v-container v-else fluid>
       <v-data-iterator
         v-model:items-per-page="itemsPerPage"
         v-model:page="page"
@@ -22,15 +11,11 @@
         :search="search"
         :sort-by="sortBy.toLowerCase()"
         :sort-desc="sortDesc"
-        :footer-props="{'items-per-page-options': [5, 10, 25, 50, 100]}"
+        :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
       >
         <!-- headers start -->
         <template #header>
-          <v-toolbar
-            dark
-            color="blue-lighten-1"
-            class="mb-5"
-          >
+          <v-toolbar dark color="blue-lighten-1" class="mb-5">
             <v-text-field
               v-model="search"
               clearable
@@ -52,24 +37,11 @@
                 label="Sort by"
               />
               <v-spacer />
-              <v-btn-toggle
-                v-model="sortDesc"
-                mandatory
-              >
-                <v-btn
-                  size="large"
-                  variant="flat"
-                  color="blue"
-                  :value="false"
-                >
+              <v-btn-toggle v-model="sortDesc" mandatory>
+                <v-btn size="large" variant="flat" color="blue" :value="false">
                   <v-icon>fa-arrow-up</v-icon>
                 </v-btn>
-                <v-btn
-                  size="large"
-                  variant="flat"
-                  color="blue"
-                  :value="true"
-                >
+                <v-btn size="large" variant="flat" color="blue" :value="true">
                   <v-icon>fa-arrow-down</v-icon>
                 </v-btn>
               </v-btn-toggle>
@@ -80,21 +52,11 @@
         <!-- data section begins -->
         <template #default="props">
           <v-row>
-            <v-col
-              v-for="item in props.items"
-              :key="item.id"
-              cols="12"
-            >
+            <v-col v-for="item in props.items" :key="item.id" cols="12">
               <v-card>
-                <v-card-title class="subheading font-weight-bold">
-                  <RecordStatus
-                    :record="item"
-                  />
-                  <a
-                    :href="'/' + item.id"
-                    target="_blank"
-                    class="ml-10"
-                  >
+                <v-card-title class="text-subtitle-1 font-weight-bold">
+                  <RecordStatus :record="item" />
+                  <a :href="'/' + item.id" target="_blank" class="ml-10">
                     {{ item.name }} {{ getAbbr(item) }}
                   </a>
                 </v-card-title>
@@ -106,11 +68,10 @@
                 <p
                   class="mt-2 ml-3 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
                 >
-                  <v-chip
-                    variant="outlined"
-                    color="blue"
-                  >
-                    Relation: &nbsp;<b>{{ capitaliseText(cleanString(item.relation)) }}</b>
+                  <v-chip variant="outlined" color="blue">
+                    Relation: &nbsp;<b>{{
+                      capitaliseText(cleanString(item.relation))
+                    }}</b>
                   </v-chip>
                   <v-chip
                     v-if="item.isLead"
@@ -123,15 +84,10 @@
                     LEAD ORGANISATION
                   </v-chip>
                 </p>
-                <TagChips
-                  :record="item"
-                  class="ml-3"
-                />
+                <TagChips :record="item" class="ml-3" />
 
                 <!-- TODO: this is a hacky placeholder -->
-                <p
-                  class="pb-5"
-                />
+                <p class="pb-5" />
 
                 <!-- TODO: change below here -->
                 <!--
@@ -163,7 +119,6 @@
 </template>
 
 <script>
-
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import TagChips from "@/components/Records/Shared/TagChips.vue";
 import recordsCardUtils from "@/utils/recordsCardUtils";
@@ -176,38 +131,32 @@ export default {
   props: {
     organisation: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   // TODO: Passing in these props fails to do what's required.
-  data () {
+  data() {
     return {
       itemsPerPageArray: [10, 20, 50, 100, 200],
-      search: '',
+      search: "",
       filter: {},
       sortDesc: false,
       page: 1,
       itemsPerPage: 5,
-      sortBy: 'name',
+      sortBy: "name",
       records: [],
       loading: true,
       error: false,
-      keys: [
-        'Name',
-        'Relation',
-        'Registry',
-        'Type',
-        'Status'
-      ],
-      fairSharingURL: import.meta.env.VITE_FAIRSHARING_URL
-    }
+      keys: ["Name", "Relation", "Registry", "Type", "Status"],
+      fairSharingURL: import.meta.env.VITE_FAIRSHARING_URL,
+    };
   },
   computed: {
     currentRouteQuery() {
       return this.$route.query;
     },
-    filteredKeys () {
-      return this.keys.filter(key => key !== 'Name' && key !== 'Description')
+    filteredKeys() {
+      return this.keys.filter((key) => key !== "Name" && key !== "Description");
     },
   },
   methods: {
@@ -216,9 +165,11 @@ export default {
       var MIME_TYPE = "text/csv";
       let data = ["name,abbreviation,URL\n"];
       this.organisation.organisationLinks.forEach((link) => {
-        data.push(`${link.fairsharingRecord.name},${link.fairsharingRecord.abbreviation || 'n/a'},https://fairsharing.org/${link.fairsharingRecord.id}\n`);
-      })
-      var blob = new Blob(data, {type: MIME_TYPE});
+        data.push(
+          `${link.fairsharingRecord.name},${link.fairsharingRecord.abbreviation || "n/a"},https://fairsharing.org/${link.fairsharingRecord.id}\n`,
+        );
+      });
+      var blob = new Blob(data, { type: MIME_TYPE });
       window.location.href = window.URL.createObjectURL(blob);
     },
     getAbbr(record) {
@@ -231,14 +182,14 @@ export default {
     reformatLinks(links) {
       let newLinks = [];
       if (links) {
-        links.forEach(function(link) {
+        links.forEach(function (link) {
           link.fairsharingRecord.isLead = link.isLead;
           link.fairsharingRecord.relation = link.relation;
           newLinks.push(link.fairsharingRecord);
-        })
+        });
       }
       return newLinks;
-    }
-  }
+    },
+  },
 };
 </script>

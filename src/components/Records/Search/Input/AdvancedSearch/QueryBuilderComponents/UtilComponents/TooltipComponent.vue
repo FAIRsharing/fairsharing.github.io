@@ -1,8 +1,5 @@
 <template>
-  <v-tooltip
-    location="bottom"
-    class="mr-2"
-  >
+  <v-tooltip location="bottom" class="mr-2">
     <template #activator="{ props }">
       <v-icon
         size="x-small"
@@ -27,26 +24,26 @@ export default {
     },
     textColour: {
       type: String,
-      default: 'text-white'
-    }
+      default: "text-white",
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
-  .iconStyle {
-    align-items: center;
-    display: inline-flex;
-    font-feature-settings: "liga";
-    font-size: 16px;
-    justify-content: center;
-    letter-spacing: normal;
-    line-height: 1;
-    position: relative;
-    text-indent: 0;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
+.iconStyle {
+  align-items: center;
+  display: inline-flex;
+  font-feature-settings: "liga";
+  font-size: 16px;
+  justify-content: center;
+  letter-spacing: normal;
+  line-height: 1;
+  position: relative;
+  text-indent: 0;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
 </style>

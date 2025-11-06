@@ -2,10 +2,7 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="recordsCreatedCuratorsLastWeek">
-        <v-card-title
-          id="text-curator-search-3"
-          class="bg-green text-white"
-        >
+        <v-card-title id="text-curator-search-3" class="bg-green text-white">
           <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
           <v-spacer />
           <v-text-field
@@ -26,18 +23,11 @@
           :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
-          <template
-            v-if="recordType"
-            #item="props"
-          >
+          <template v-if="recordType" #item="props">
             <tr>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
                     <Icon
                       :item="props.item.type"
                       :height="40"
@@ -75,7 +65,7 @@ import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json"
+import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json";
 import formatDate from "@/utils/generalUtils";
 
 const client = new GraphClient();
@@ -86,15 +76,15 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
     return {
-      recordsCreatedCuratorsLastWeek:[],
+      recordsCreatedCuratorsLastWeek: [],
       searches: "",
       recordType: {},
       loading: false,
@@ -108,12 +98,13 @@ export default {
     this.loading = true;
     client.setHeader(this.user().credentials.token);
     //Fetching hidden records
-    let recentCuratorCreations = await client.executeQuery(getRecentCuratorCreations);
-    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations)
+    let recentCuratorCreations = await client.executeQuery(
+      getRecentCuratorCreations,
+    );
+    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations);
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to fetch recent curator creation records
      * @param dataCuration
@@ -147,6 +138,6 @@ export default {
 }
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 </style>

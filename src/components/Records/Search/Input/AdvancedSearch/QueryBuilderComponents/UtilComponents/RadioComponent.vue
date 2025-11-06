@@ -13,39 +13,24 @@
     :model-value="model"
     @update:model-value="$emit('update:modelValue', $event)"
   >
-    <v-radio
-      color="success"
-      value="true"
-      class="mr-6 radioButtons"
-    >
+    <v-radio color="success" value="true" class="mr-6 radioButtons">
       <template #label>
-        <div class="text-white">
-          Yes
-        </div>
+        <div class="text-white">Yes</div>
       </template>
     </v-radio>
-    <v-radio
-      color="error"
-      value="false"
-      class="radioButtons"
-    >
+    <v-radio color="error" value="false" class="radioButtons">
       <template #label>
-        <div class="text-white">
-          No
-        </div>
+        <div class="text-white">No</div>
       </template>
     </v-radio>
     <!-- Tooltip for the field -->
     <template #prepend>
-      <v-tooltip
-          location="bottom"
-          class="mr-2"
-      >
+      <v-tooltip location="bottom" class="mr-2">
         <template #activator="{ props }">
           <v-icon
-              size="x-small"
-              class="mr-1 iconStyle text-white opacity-100"
-              v-bind="props"
+            size="x-small"
+            class="mr-1 iconStyle text-white opacity-100"
+            v-bind="props"
           >
             fas fa-question-circle
           </v-icon>
@@ -54,7 +39,6 @@
       </v-tooltip>
     </template>
   </v-radio-group>
-
 </template>
 
 <script>
@@ -80,6 +64,6 @@ export default {
         this.$emit("input", itemValue);
       },
     },
-  }
+  },
 };
 </script>

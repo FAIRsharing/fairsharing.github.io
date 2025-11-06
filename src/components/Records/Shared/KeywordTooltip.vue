@@ -3,7 +3,6 @@
     <v-tooltip v-if="keyword.definitions" location="bottom">
       <template #activator="{ props }">
         <div
-         
           :class="['text-center', { 'ellipse-width-80': !fullWidth }]"
           v-bind="props"
         >
@@ -11,7 +10,7 @@
         </div>
       </template>
       <div class="tooltip">
-        <div :class="'bg-'+getChipColor(keyword)">
+        <div :class="'bg-' + getChipColor(keyword)">
           <b v-if="keyword.type" class="mr-1">Type:</b> {{ keyword.type }}
         </div>
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
@@ -30,27 +29,20 @@
         </div>
       </div>
     </v-tooltip>
-    <v-tooltip
-      v-else-if="keyword.iri"
-      bottom
-    >
-      <template #activator="{ on, attrs }">
+    <v-tooltip v-else-if="keyword.iri" location="bottom">
+      <template #activator="{ props }">
         <div
-          v-bind="attrs"
-          :class="['text-center',{'ellipse-width-80':!fullWidth}]"
-          v-on="on"
+         
+          :class="['text-center', { 'ellipse-width-80': !fullWidth }]"
+          v-bind="props"
         >
-          {{ capitaliseText(keyword.label, 'other') }}
+          {{ capitaliseText(keyword.label, "other") }}
         </div>
       </template>
       <div class="tooltip">
-        <div>
-          <b class="mr-1">Type:</b> Research Object Type
-        </div>
+        <div><b class="mr-1">Type:</b> Research Object Type</div>
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
-        <div>
-          <b class="mr-1">URL:</b> {{ keyword['iri'] }}
-        </div>
+        <div><b class="mr-1">URL:</b> {{ keyword["iri"] }}</div>
       </div>
     </v-tooltip>
     <div v-else>

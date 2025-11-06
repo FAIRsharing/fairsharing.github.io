@@ -303,8 +303,13 @@
           Please paste or type a value (e.g. a DOI or Pubmed ID) into the search
           box above.
         </v-card-text>
-        <v-card-actions class="mx-auto full-width"  style="max-width: 250px;">
-          <v-btn color="primary" variant="elevated" block @click="showEmptySearch = false">
+        <v-card-actions class="mx-auto full-width" style="max-width: 250px">
+          <v-btn
+            color="primary"
+            variant="elevated"
+            block
+            @click="showEmptySearch = false"
+          >
             OK
           </v-btn>
         </v-card-actions>
@@ -666,7 +671,9 @@ export default {
           // delete this.availablePublications[newPub.tablePosition];
 
           //Delete the old publication from the availablePublications array before adding the new one
-          let editedPublicationIndex = this.availablePublications.findIndex(e => e.title === editedPublication.title);
+          let editedPublicationIndex = this.availablePublications.findIndex(
+            (e) => e.title === editedPublication.title,
+          );
           if (editedPublicationIndex !== -1) {
             this.availablePublications.splice(editedPublicationIndex, 1);
           }

@@ -13,13 +13,7 @@
     "homepage",
     {
       "name": "subjects",
-      "fields": [
-        "label",
-        "id",
-        "definitions",
-        "iri",
-        "synonyms"
-      ]
+      "fields": ["label", "id", "definitions", "iri", "synonyms"]
     },
     {
       "name": "domains",
@@ -34,18 +28,11 @@
     },
     {
       "name": "taxonomies",
-      "fields": [
-        "id",
-        "label"
-      ]
+      "fields": ["id", "label"]
     },
     {
       "name": "publications",
-      "fields": [
-        "title",
-        "url",
-        "doi"
-      ]
+      "fields": ["title", "url", "doi"]
     }
   ]
 }

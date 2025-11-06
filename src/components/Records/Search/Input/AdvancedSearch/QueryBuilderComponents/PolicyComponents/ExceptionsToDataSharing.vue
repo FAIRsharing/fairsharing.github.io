@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -21,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "The policy should also make clear which exceptions to data sharing are allowed (e.g., personal sensitivity, commercial sensitivity). Any embargo periods that are allowed should be clearly stated in the policy.",
-
+      itemValue: "",
+      toolTipText:
+        "The policy should also make clear which exceptions to data sharing are allowed (e.g., personal sensitivity, commercial sensitivity). Any embargo periods that are allowed should be clearly stated in the policy.",
     };
   },
   computed: {

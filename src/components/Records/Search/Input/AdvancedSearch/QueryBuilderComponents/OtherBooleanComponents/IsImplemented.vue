@@ -1,10 +1,10 @@
 <template>
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      :tool-tip-text="toolTipText"
-      @input="selectedValue"
-    />
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
@@ -22,9 +22,8 @@ export default {
   emits: ["input"],
   data: () => {
     return {
-      itemValue:"",
+      itemValue: "",
       toolTipText: "Implemented by at least one database.",
-
     };
   },
   computed: {

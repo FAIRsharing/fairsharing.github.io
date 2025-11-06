@@ -31,12 +31,7 @@
         type="submit"
         @click="searchString()"
       >
-        <v-icon
-          size="x-small"
-          class="mr-1"
-        >
-          fas fa-search
-        </v-icon>
+        <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
 
@@ -52,26 +47,16 @@
         color="primary"
         :class="[
           'mt-1 mt-lg-1 ml-2',
-          $vuetify.display.lgAndDown
-            ? 'home-search-bt'
-            : 'home-search-bt-xl',
+          $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
         ]"
         @click="searchStringHomePage()"
       >
-        <v-icon
-          size="x-small"
-          class="mr-1"
-        >
-          fas fa-search
-        </v-icon>
+        <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
     </v-form>
     <!--  home page exclusive check box for search  -->
-    <div
-      v-if="showHomeSearch"
-      class="pt-6"
-    >
+    <div v-if="showHomeSearch" class="pt-6">
       <v-checkbox
         v-for="(checkbox, index) in registries"
         :key="checkbox.value + '_' + index"
@@ -91,7 +76,7 @@
 
 <script>
 import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
-import { useDisplay } from 'vuetify'
+import { useDisplay } from "vuetify";
 
 export default {
   name: "StringSearch",
@@ -103,8 +88,8 @@ export default {
     searchPath: { default: "/search", type: String },
   },
   setup() {
-    const { mdAndDown, md, lg, xl, mobile } = useDisplay()
-    return {mdAndDown, md, lg, xl, mobile}
+    const { mdAndDown, md, lg, xl, mobile } = useDisplay();
+    return { mdAndDown, md, lg, xl, mobile };
   },
   data() {
     return {
@@ -121,7 +106,7 @@ export default {
         { label: "policies", value: "policy" },
         { label: "collections", value: "collection" },
       ],
-      formValid: true
+      formValid: true,
     };
   },
   computed: {
@@ -171,7 +156,7 @@ export default {
     },
     searchStringHomePage() {
       const _module = this;
-      let query = {}
+      let query = {};
       if (_module.searchTerm) {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
@@ -192,7 +177,7 @@ export default {
             q: _module.searchTerm ? _module.searchTerm : undefined,
             fairsharingRegistry: selectedRegistriesValues.toString(),
             searchAnd: false,
-          }
+          };
         }
         _module.$router.push({
           path: "/search",
@@ -218,9 +203,9 @@ export default {
   box-shadow: 0 0 0 0;
   height: 48px;
   margin-bottom: 15px;
-    :deep(input) {
-      height: 50px;
-    }
+  :deep(input) {
+    height: 50px;
+  }
 }
 
 .button-text-size {

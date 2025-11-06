@@ -26,15 +26,12 @@
     </template>
     <!-- Tooltip for the field -->
     <template #prepend>
-      <v-tooltip
-          location="bottom"
-          class="mr-2"
-      >
+      <v-tooltip location="bottom" class="mr-2">
         <template #activator="{ props }">
           <v-icon
-              size="x-small"
-              class="mr-1 iconStyle text-white opacity-100"
-              v-bind="props"
+            size="x-small"
+            class="mr-1 iconStyle text-white opacity-100"
+            v-bind="props"
           >
             fas fa-question-circle
           </v-icon>
@@ -89,6 +86,5 @@ export default {
       this.$emit("fetchData", val);
     },
   },
-
 };
 </script>

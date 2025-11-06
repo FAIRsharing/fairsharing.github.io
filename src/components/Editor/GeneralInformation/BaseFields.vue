@@ -251,10 +251,12 @@
               <template #activator="{ props: activatorProps }">
                 <v-list>
                   <v-list-subheader v-if="item.raw.header" class="full-width">
-                    <v-divider v-if="item.raw.header !== 'Collection'" class="ma-0 opacity-100 full-width pb-7"/>
-                    <span>{{
-                    item.raw.header
-                  }}</span></v-list-subheader>
+                    <v-divider
+                      v-if="item.raw.header !== 'Collection'"
+                      class="ma-0 opacity-100 full-width pb-7"
+                    />
+                    <span>{{ item.raw.header }}</span></v-list-subheader
+                  >
                   <v-list-item
                     v-if="item.raw.name"
                     v-bind="props"
@@ -653,11 +655,11 @@ export default {
   margin-left: 12px !important;
 }
 :deep(.v-list-item-title) {
-  display: none
+  display: none;
 }
 :deep .v-list-subheader {
   &__text {
-    width: 100%
+    width: 100%;
   }
 }
 </style>

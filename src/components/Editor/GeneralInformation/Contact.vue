@@ -6,14 +6,14 @@
     @submit.prevent="addItem()"
   >
     <div>Edit Contact information:</div>
-    <div
-      class="mb-5 px-4 bg-grey-lighten-3 pt-1 pb-2"
-    >
+    <div class="mb-5 px-4 bg-grey-lighten-3 pt-1 pb-2">
       <v-chip
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
         class="pr-3 my-1 mr-2 ml-0"
-        :class="[!isNew(contact) ? 'text-white blue' : 'text-blue white borderBlue']"
+        :class="[
+          !isNew(contact) ? 'text-white blue' : 'text-blue white borderBlue',
+        ]"
         variant="flat"
         color="blue"
       >
@@ -32,7 +32,10 @@
             <span> Edit contact </span>
           </v-tooltip>
           <span @click="editContact(contact, index)">
-            {{ contact['contact_name'] }} ({{ contact['contact_email'] }})<span v-if="contact['contact_orcid']">: {{ contact['contact_orcid'] }}</span>
+            {{ contact["contact_name"] }} ({{ contact["contact_email"] }})<span
+              v-if="contact['contact_orcid']"
+              >: {{ contact["contact_orcid"] }}</span
+            >
           </span>
           <v-tooltip location="top">
             <template #activator="{ props }">
@@ -55,111 +58,114 @@
         class="bg-green text-white pr-5 shadowChip"
         @click="createNewContact()"
       >
-        <v-icon
-          size="small"
-          class="mr-3 text-white"
-        >
+        <v-icon size="small" class="mr-3 text-white">
           fas fa-plus-circle
-        </v-icon> Add a new contact point
+        </v-icon>
+        Add a new contact point
       </v-chip>
     </div>
-      <v-overlay
-        v-model="menu.show"
-        class="align-center justify-center"
-        opacity="0.8"
-      >
-        <v-card width="800px">
-          <v-card-title class="bg-green text-white">
+    <v-overlay
+      v-model="menu.show"
+      class="align-center justify-center"
+      opacity="0.8"
+    >
+      <v-card width="800px">
+        <v-card-title class="bg-green text-white">
+          {{ menu.label }}
+        </v-card-title>
+        <v-card-text class="pt-4">
+          <v-text-field
+            v-model="menu.content['contact_name']"
+            label="Contact Name"
+            :rules="[rules.isRequired()]"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="menu.content['contact_email']"
+            label="Contact Email"
+            :rules="[rules.isRequired(), rules.isEmail()]"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="menu.content['contact_orcid']"
+            label="Contact ORCID"
+            :rules="[rules.isOrcid(false)]"
+            placeholder="0000-0000-0000-0000"
+            variant="outlined"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            class="bg-success"
+            :disabled="!formValid"
+            type="submit"
+            @click="addItem()"
+          >
             {{ menu.label }}
-          </v-card-title>
-          <v-card-text class="pt-4">
-            <v-text-field
-              v-model="menu.content['contact_name']"
-              label="Contact Name"
-              :rules="[rules.isRequired()]"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="menu.content['contact_email']"
-              label="Contact Email"
-              :rules="[rules.isRequired(), rules.isEmail()]"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="menu.content['contact_orcid']"
-              label="Contact ORCID"
-              :rules="[rules.isOrcid(false)]"
-              placeholder="0000-0000-0000-0000"
-              variant="outlined"
-            />
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              class="bg-success"
-              :disabled="!formValid"
-              type="submit"
-              @click="addItem()"
-            >
-              {{ menu.label }}
-            </v-btn>
-            <v-btn
-              class="bg-error"
-              @click="menu.show = false"
-            >
-              Cancel
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-overlay>
+          </v-btn>
+          <v-btn class="bg-error" @click="menu.show = false"> Cancel </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-overlay>
   </v-form>
 </template>
 
 <script>
-import { isEqual } from 'lodash'
-import { mapGetters } from "vuex"
+import { isEqual } from "lodash";
+import { mapGetters } from "vuex";
 
-import { isEmail, isOrcid,isRequired } from "@/utils/rules.js"
+import { isEmail, isOrcid, isRequired } from "@/utils/rules.js";
 
 export default {
   name: "Contact",
-  data(){
+  data() {
     return {
       menu: {
         show: false,
         label: "Create new contact point",
         content: null,
-        index: null
+        index: null,
       },
       rules: {
-        isRequired: function(){return isRequired()},
-        isEmail: function(){return isEmail()},
-        isOrcid: function(val){return isOrcid(val)},
+        isRequired: function () {
+          return isRequired();
+        },
+        isEmail: function () {
+          return isEmail();
+        },
+        isOrcid: function (val) {
+          return isOrcid(val);
+        },
       },
       formValid: false,
-      submitted: false
-    }
+      submitted: false,
+    };
   },
   computed: {
     ...mapGetters("record", ["getSection"]),
-    contacts:{
-      get(){
-        return this.getSection("generalInformation").data.metadata.contacts
+    contacts: {
+      get() {
+        return this.getSection("generalInformation").data.metadata.contacts;
       },
-      set(val){
+      set(val) {
         this.$store.commit("record/setContacts", val);
-      }
+      },
     },
-    initialContact(){
-      return this.getSection('generalInformation').initialData.metadata.contacts
-    }
+    initialContact() {
+      return this.getSection("generalInformation").initialData.metadata
+        .contacts;
+    },
   },
   watch: {
-    'menu.show': function (val) {
-      if (val) this.$nextTick(() => { this.$refs['editContact'].validate()})
+    "menu.show": function (val) {
+      if (val)
+        this.$nextTick(() => {
+          this.$refs["editContact"].validate();
+        });
     },
   },
   methods: {
-    createNewContact(){
+    createNewContact() {
       this.submitted = false;
       this.menu.show = true;
       this.menu.label = "Create new contact point";
@@ -167,23 +173,23 @@ export default {
       this.menu.content = {
         contact_name: null,
         contact_email: null,
-        contact_orcid: null
+        contact_orcid: null,
       };
     },
-    removeContact(contactIndex){
-      this.contacts.splice(contactIndex, contactIndex+1)
+    removeContact(contactIndex) {
+      this.contacts.splice(contactIndex, contactIndex + 1);
     },
-    editContact(contact, contactIndex){
+    editContact(contact, contactIndex) {
       this.submitted = false;
       this.menu.show = true;
       this.menu.label = "Apply changes to contact point";
       this.menu.index = contactIndex;
       this.menu.content = JSON.parse(JSON.stringify(contact));
     },
-    addItem(){
+    addItem() {
       if (this.formValid && !this.submitted) {
-        if (this.menu.index || this.menu.index === 0){
-          this.$set(this.contacts, this.menu.index, this.menu.content)
+        if (this.menu.index || this.menu.index === 0) {
+          this.$set(this.contacts, this.menu.index, this.menu.content);
         }
         else {
           this.$set(this.contacts, this.contacts.length, this.menu.content);
@@ -192,26 +198,26 @@ export default {
         this.submitted = true;
       }
     },
-    isNew(term){
-      return !this.initialContact.filter(obj => isEqual(obj, term))[0];
-    }
-  }
-}
+    isNew(term) {
+      return !this.initialContact.filter((obj) => isEqual(obj, term))[0];
+    },
+  },
+};
 </script>
 
 <style scoped>
-  #editContact .v-overlay__content {
-    min-width: 700px;
-  }
-  #editContact .borderBlue {
-    border: 1px solid #2A9AF4 !important;
-    background-color: white !important;
-    border-color: #2A9AF4 !important;
-  }
-  #editContact .v-chip.white {
-    border-color: #2A9AF4 !important;
-  }
-  #editContact .borderBlue * {
-    color: #2A9AF4 !important;
-  }
+#editContact .v-overlay__content {
+  min-width: 700px;
+}
+#editContact .borderBlue {
+  border: 1px solid #2a9af4 !important;
+  background-color: white !important;
+  border-color: #2a9af4 !important;
+}
+#editContact .v-chip.white {
+  border-color: #2a9af4 !important;
+}
+#editContact .borderBlue * {
+  color: #2a9af4 !important;
+}
 </style>

@@ -55,7 +55,7 @@ describe("GraphQL Client", function () {
         searchFairsharingRecords: {
           records: [{}],
         },
-      })
+      }),
     );
 
     let output2 = await client.getData(localQuery);
@@ -66,7 +66,7 @@ describe("GraphQL Client", function () {
             records: [{}],
           },
         },
-      })
+      }),
     );
     stub.restore();
   });
@@ -125,7 +125,7 @@ describe("GraphQL Client", function () {
     ];
     let queryFragment = client.buildQuery(smallQuery);
     expect(queryFragment).toBe(
-      "test{ inFairsharing label id definitions iri synonyms domains{ label id definitions iri synonyms inFairsharing}}"
+      "test{ inFairsharing label id definitions iri synonyms domains{ label id definitions iri synonyms inFairsharing}}",
     );
   });
 });

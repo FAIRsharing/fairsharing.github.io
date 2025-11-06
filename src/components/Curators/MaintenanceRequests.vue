@@ -2,10 +2,7 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="maintenanceRequestsProcessed">
-        <v-card-title
-          id="text-curator-search-5"
-          class="bg-green text-white"
-        >
+        <v-card-title id="text-curator-search-5" class="bg-green text-white">
           <b> OWNERSHIP REQUESTS </b>
           <v-spacer />
           <v-text-field
@@ -33,21 +30,14 @@
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           sort-by=""
         >
-          <template
-            v-if="recordType"
-            #item="props"
-          >
+          <template v-if="recordType" #item="props">
             <tr>
               <td>
                 {{ props.item.createdAt }}
               </td>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
                     <Icon
                       :item="props.item.type"
                       :height="40"
@@ -71,16 +61,14 @@
                   @save="
                     saveProcessingNotes(
                       props.item.id,
-                      props.item.processingNotes
+                      props.item.processingNotes,
                     )
                   "
                 >
                   {{ props.item.processingNotes }}
                   <template #input>
                     <div class="testDialog">
-                      <div class="mt-4 text-h6">
-                        Update Processing Notes
-                      </div>
+                      <div class="mt-4 text-h6">Update Processing Notes</div>
                       <v-textarea
                         v-model="props.item.processingNotes"
                         width="1200px"
@@ -101,7 +89,7 @@
                       props.item.recordName,
                       props.item.id,
                       props.item.userName,
-                      props.item.requestID
+                      props.item.requestID,
                     )
                   "
                 >
@@ -117,7 +105,7 @@
                       props.item.recordName,
                       props.item.id,
                       props.item.userName,
-                      props.item.requestID
+                      props.item.requestID,
                     )
                   "
                 >
@@ -128,10 +116,7 @@
           </template>
         </v-data-table>
       </v-card-text>
-      <v-layout
-        row
-        justify-center
-      >
+      <v-layout row justify-center>
         <v-dialog
           v-model="dialogs.confirmAssignment"
           max-width="700px"
@@ -146,15 +131,11 @@
               this ownership?
               <ul style="list-style-type: none">
                 <li>
-                  <span style="color: gray">
-                    Record:
-                  </span>
+                  <span style="color: gray"> Record: </span>
                   {{ dialogs.recordName }}
                 </li>
                 <li>
-                  <span style="color: gray">
-                    User:
-                  </span>
+                  <span style="color: gray"> User: </span>
                   {{ dialogs.userName }}
                 </li>
               </ul>
@@ -184,10 +165,7 @@
           </v-card>
         </v-dialog>
       </v-layout>
-      <v-layout
-        row
-        justify-center
-      >
+      <v-layout row justify-center>
         <v-dialog
           v-model="dialogs.rejectAssignment"
           max-width="700px"
@@ -202,15 +180,11 @@
               this ownership?
               <ul style="list-style-type: none">
                 <li>
-                  <span style="color: gray">
-                    Record:
-                  </span>
+                  <span style="color: gray"> Record: </span>
                   {{ dialogs.recordName }}
                 </li>
                 <li>
-                  <span style="color: gray">
-                    User:
-                  </span>
+                  <span style="color: gray"> User: </span>
                   {{ dialogs.userName }}
                 </li>
               </ul>
@@ -262,10 +236,10 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
@@ -298,7 +272,7 @@ export default {
   watch: {
     maintenanceRequests: function () {
       this.maintenanceRequestsProcessed = JSON.parse(
-        JSON.stringify(this.maintenanceRequests)
+        JSON.stringify(this.maintenanceRequests),
       );
     },
     "dialogs.confirmAssignment"(val) {
@@ -315,7 +289,7 @@ export default {
     let data = await client.executeQuery(getPendingMaintenanceRequests);
     this.prepareMaintenanceRequests(data);
     this.maintenanceRequestsProcessed = JSON.parse(
-      JSON.stringify(this.maintenanceRequests)
+      JSON.stringify(this.maintenanceRequests),
     );
     this.loading = false;
   },
@@ -344,7 +318,7 @@ export default {
       this.maintenanceRequests.sort(this.compareRecordDesc);
       for (let i = 0; i < this.maintenanceRequests.length; i++) {
         this.maintenanceRequests[i].createdAt = this.formatDate(
-          this.maintenanceRequests[i].createdAt
+          this.maintenanceRequests[i].createdAt,
         );
       }
     },
@@ -394,21 +368,21 @@ export default {
       let data = await restClient.updateStatusMaintenanceRequest(
         _module.dialogs.requestId,
         newStatus,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
-          (element) => element.requestID === _module.dialogs.requestId
+          (element) => element.requestID === _module.dialogs.requestId,
         );
         _module.maintenanceRequestsProcessed.splice(index, 1);
         if (
           _module.approvalRequired.findIndex(
-            (element) => element.id === _module.dialogs.recordID
+            (element) => element.id === _module.dialogs.recordID,
           ) < 0
         ) {
           if (
             _module.maintenanceRequestsProcessed.findIndex(
-              (element) => element.id === _module.dialogs.recordID
+              (element) => element.id === _module.dialogs.recordID,
             ) < 0
           ) {
             await _module.saveProcessingNotes(_module.dialogs.recordID, null);
@@ -453,8 +427,8 @@ export default {
 
 <style scoped>
 #text-curator-search-5
-div.theme--light.v-input:not(.v-input--is-disabled)
-input {
+  div.theme--light.v-input:not(.v-input--is-disabled)
+  input {
   color: #fff;
 }
 .testDialog {
@@ -466,6 +440,6 @@ input {
 }
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 </style>

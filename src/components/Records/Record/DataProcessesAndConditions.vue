@@ -196,7 +196,7 @@ export default {
         });
       }
 
-      // adding licenses if available
+      //adding licenses if available
       if (licences.length) {
         processedData["licences"] = {
           data: [],

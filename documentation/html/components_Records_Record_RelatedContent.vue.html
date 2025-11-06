@@ -94,8 +94,8 @@
             class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   &lt;v-card
     v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -107,17 +107,20 @@
         &lt;v-autocomplete
           v-if="!tabsDataExist"
           v-model="selectedValues"
-          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
+          :disabled="
+            tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data
+              .length &lt; 5
+          "
           :items="getValues"
-          solo
-          :attach="true"
-          dense
+          variant="solo"
+          :menu-props="{ attach: true }"
+          density="compact"
           clearable
-          prepend-inner-icon="fa-search"
+          prepend-inner-icon="fas fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-text="name"
+          item-title="name"
           item-value="name"
-          :filter="nameAbbrFilter"
+          :custom-filter="nameAbbrFilter"
         >
           &lt;template #item="data">
             &lt;span class="filterValueName">
@@ -130,32 +133,35 @@
       &lt;v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.breakpoint.mdAndDown"
-        background-color="transparent"
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
         grow
         color="accent3"
         slider-color="accent3"
         class="mb-5"
-        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
+        :hide-slider="
+          tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data
+            .length === 0
+        "
       >
         &lt;v-tab
-          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
-          :key="tabName+'_'+tabIndex"
-          :disabled="tabsData.tabs[tabName].data.length===0"
-          @change="selectedValues=null"
+          v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
+          :key="tabName + '_' + tabIndex"
+          :disabled="tabsData.tabs[tabName].data.length === 0"
+          @group:selected="selectedValues = null"
         >
           {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         &lt;/v-tab>
       &lt;/v-tabs>
       &lt;!--  tab content  -->
-      &lt;v-tabs-items
+      &lt;v-tabs-window
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        class="transparent height-430"
+        class="bg-transparent height-430"
       >
-        &lt;v-tab-item
-          v-for="(tabItem,tabItemIndex) in filterList"
-          :key="tabItem+'_'+tabItemIndex"
+        &lt;v-tabs-window-item
+          v-for="(tabItem, tabItemIndex) in filterList"
+          :key="tabItem + '_' + tabItemIndex"
         >
           &lt;v-virtual-scroll
             :items="tabItem.data"
@@ -163,52 +169,77 @@
             item-height="130"
             class="ma-4 overflow-x-hidden"
           >
-            &lt;template #default="{ item,index }">
+            &lt;template #default="{ item, index }">
               &lt;router-link
-                :to="'/'+item.id"
-                @click.native="()=>$scrollTo('body',0,{})"
+                :to="'/' + item.id"
+                @click.native="() => $scrollTo('body', 0, {})"
               >
                 &lt;v-card
                   :key="item.id + '_' + index"
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  outlined
+                  border
                 >
                   &lt;div class="d-flex align-center">
-                    &lt;record-status
-                      :record="item"
-                      :show-status="false"
-                    />
-                    &lt;div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
+                    &lt;record-status :record="item" :show-status="false" />
+                    &lt;div
+                      class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+                    >
                       {{ item.name }}
                     &lt;/div>
                   &lt;/div>
-                  &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                  &lt;p
+                    class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
+                  >
                     {{ item.object }}
-                    &lt;v-tooltip top>
-                      &lt;template #activator="{ on }">
+                    &lt;v-tooltip location="top">
+                      &lt;template #activator="{ props }">
                         &lt;span
                           v-for="(label, indexLabel) in item.recordAssocLabel"
-                          :key="label+'_'+ indexLabel"
-                          class="red--text mouse-info"
-                          v-on="on"
+                          :key="label + '_' + indexLabel"
+                          class="text-red mouse-info"
+                          v-bind="props"
                         >
                           {{ label }}
                           &lt;span
-                            v-if="indexLabel !== 0 &amp;&amp; item.recordAssocLabel.length!==1"
-                            style="color: black!important"
-                          >and&lt;/span>
+                            v-if="
+                              indexLabel !== 0 &amp;&amp;
+                              item.recordAssocLabel.length !== 1
+                            "
+                            style="color: black !important"
+                            >and&lt;/span
+                          >
                         &lt;/span>
                       &lt;/template>
                       &lt;span
-                        v-for="(label2,indexHint) in item.recordAssocLabel"
-                        :key="label2+'_'+indexHint"
+                        v-for="(label2, indexHint) in item.recordAssocLabel"
+                        :key="label2 + '_' + indexHint"
                       >
-                        &lt;span>{{ indexHint !== 0 &amp;&amp; item.recordAssocLabel.length>1?relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]].toLowerCase():relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]] }}
+                        &lt;span
+                          >{{
+                            indexHint !== 0 &amp;&amp; item.recordAssocLabel.length > 1
+                              ? relationDefinition[
+                                  item.recordAssocLabel[
+                                    item.recordAssocLabel.length - 1 - indexHint
+                                  ]
+                                ].toLowerCase()
+                              : relationDefinition[
+                                  item.recordAssocLabel[
+                                    item.recordAssocLabel.length - 1 - indexHint
+                                  ]
+                                ]
+                          }}
                           &lt;span
-                            v-if="indexHint !== item.recordAssocLabel.length-1 &amp;&amp; item.recordAssocLabel.length!==1"
-                            style="color: white!important;margin-left: -2px!important;"
-                          >; &lt;/span>
+                            v-if="
+                              indexHint !== item.recordAssocLabel.length - 1 &amp;&amp;
+                              item.recordAssocLabel.length !== 1
+                            "
+                            style="
+                              color: white !important;
+                              margin-left: -2px !important;
+                            "
+                            >;
+                          &lt;/span>
                         &lt;/span>
                       &lt;/span>
                     &lt;/v-tooltip>
@@ -218,16 +249,16 @@
               &lt;/router-link>
             &lt;/template>
           &lt;/v-virtual-scroll>
-        &lt;/v-tab-item>
-      &lt;/v-tabs-items>
+        &lt;/v-tabs-window-item>
+      &lt;/v-tabs-window>
     &lt;/div>
   &lt;/v-card>
 &lt;/template>
 
 &lt;script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
-import SectionTitle from '@/components/Records/Record/SectionTitle';
+import SectionTitle from "@/components/Records/Record/SectionTitle";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 import recordTabUtils from "@/utils/recordTabUtils";
@@ -239,12 +270,12 @@ export default {
     RecordStatus,
     SectionTitle,
   },
-  mixins:[stringUtils,recordTabUtils],
-  props:{
-    backColor:{
-      default:null,
+  mixins: [stringUtils, recordTabUtils],
+  props: {
+    backColor: {
+      default: null,
       type: String,
-    }
+    },
   },
   data: () => {
     return {
@@ -253,11 +284,11 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {registry: ["Standard"], data: [], count:0},
-          related_databases: {registry: ["Database"], data: [], count:0}
-        }
-      }
-    }
+          related_standards: { registry: ["Standard"], data: [], count: 0 },
+          related_databases: { registry: ["Database"], data: [], count: 0 },
+        },
+      },
+    };
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
@@ -269,27 +300,50 @@ export default {
     prepareTabsData() {
       const _module = this;
       // A policy may recommend collections; other records may be collected.
-      if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
-        _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
+      if (_module.currentRecord["fairsharingRecord"].registry === "Policy") {
+        _module.tabsData.tabs["related_collections"] = {
+          registry: ["Collection"],
+          data: [],
+          count: 0,
+        };
       }
-      if (_module.currentRecord['fairsharingRecord'].registry === 'FAIRassist' ||
-          _module.currentRecord['fairsharingRecord'].registry === 'Standard') {
-        _module.$set(_module.tabsData.tabs, 'related_fairassist_components', {registry: ["FAIRassist"], data: [], count:0});
+      if (
+        _module.currentRecord["fairsharingRecord"].registry === "FAIRassist" ||
+        _module.currentRecord["fairsharingRecord"].registry === "Standard"
+      ) {
+        _module.tabsData.tabs["related_fairassist_components"] = {
+          registry: ["FAIRassist"],
+          data: [],
+          count: 0,
+        };
       }
-      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
-          Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
-        Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
-              _module.currentRecord['fairsharingRecord'].recordAssociations,
-              _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
-          ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+      if (
+        Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
+          "recordAssociations",
+        ) ||
+        Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
+          "reverseRecordAssociations",
+        )
+      ) {
+        Object.keys(_module.tabsData.tabs).forEach((tabName) => {
+          _module.tabsData.tabs[tabName].data = _module
+            .prepareAssociations(
+              _module.currentRecord["fairsharingRecord"].recordAssociations,
+              _module.currentRecord["fairsharingRecord"]
+                .reverseRecordAssociations,
+            )
+            .filter((item) =>
+              _module.tabsData.tabs[tabName].registry.includes(item.registry),
+            );
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
           // 0. This hack is related to this comment:
           // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
-          if (tabName === 'related_collections') {
-            _module.tabsData.tabs['related_collections'].data =  _module.tabsData.tabs['related_collections'].data
-                .filter((item) => item.recordAssociationLabel === 'recommends');
+          if (tabName === "related_collections") {
+            _module.tabsData.tabs["related_collections"].data =
+              _module.tabsData.tabs["related_collections"].data.filter(
+                (item) => item.recordAssociationLabel === "recommends",
+              );
           }
           // 1. Create a hash with keys for each linked record ID of all the relations, containing an
           // array of all relations.
@@ -301,41 +355,48 @@ export default {
             if (!duplicates[item.id].includes(item.recordAssociationLabel)) {
               duplicates[item.id].push(item.recordAssociationLabel);
             }
-          })
+          });
           // 2. Update the tabs data with the duplicated labels.
           _module.tabsData.tabs[tabName].data.forEach((item) => {
             item.recordAssocLabel = duplicates[item.id];
-          })
+          });
           // 3. Delete extraneous entries.
           // Thanks, Stack Overflow!
           // https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects#comment72641733_36744732
-          _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[tabName].data.filter((thing, index, self) => self.findIndex(t => t.id === thing.id) === index);
+          _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[
+            tabName
+          ].data.filter(
+            (thing, index, self) =>
+              self.findIndex((t) => t.id === thing.id) === index,
+          );
 
           // Duplicates removed, now do the count.
-          _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
+          _module.tabsData.tabs[tabName].count =
+            _module.tabsData.tabs[tabName].data.length;
         });
       }
       else {
-        return false
+        return false;
       }
     },
     nameAbbrFilter(item, queryText) {
-      const search = queryText.toLowerCase()
+      const search = queryText.toLowerCase();
       const name = item.name.toLowerCase();
 
       if (item.abbreviation == null) {
-        let answer = name.indexOf(search) > -1
+        let answer = name.indexOf(search) > -1;
         return answer;
       }
       else {
-        let answer = (name.indexOf(search) > -1 || item.abbreviation.toLowerCase().indexOf(search) > -1)
+        let answer =
+          name.indexOf(search) > -1 ||
+          item.abbreviation.toLowerCase().indexOf(search) > -1;
         return answer;
       }
-    }
-  }
-}
+    },
+  },
+};
 &lt;/script>
-
 </pre>
     </article>
 </section>
@@ -381,7 +442,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Tue Nov 4th 2025
+		on Thu Nov 6th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import ObjectTypesStore from "@/store/AdvancedSearchComponents/objectTypes";
 
-import ObjectTypesData from "../../../../tests/fixtures/getObjectTypes.json";
+import ObjectTypesData from "../../../fixtures/getObjectTypes.json";
 
 describe("ObjectTypes store methods", () => {
   const { actions, mutations, getters } = ObjectTypesStore;

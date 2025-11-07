@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import RecordTypesStore from "@/store/AdvancedSearchComponents/recordTypes";
 
-import AllRecordsData from "../../../../tests/fixtures/getAllRecordsType.json";
+import AllRecordsData from "../../../fixtures/getAllRecordsType.json";
 
 describe("SubjectSearch store methods", () => {
   const { actions, mutations, getters } = RecordTypesStore;

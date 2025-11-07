@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import AdvancedSearchStore from "@/store/AdvancedSearchComponents/advancedSearch.js";
 
-import AdvancedSearchData from "../../../tests/fixtures/getAdvancedSearch.json";
+import AdvancedSearchData from "../../fixtures/getAdvancedSearch.json";
 
 describe("AdvancedSearch store methods", () => {
   const { actions, mutations, getters } = AdvancedSearchStore;

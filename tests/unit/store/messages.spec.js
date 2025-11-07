@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import { actions, mutations } from "@/store/messages.js";
 
-import MessagesData from "../../../tests/fixtures/getMessages.json";
+import MessagesData from "../../fixtures/getMessages.json";
 
 describe("Mutations & Actions", () => {
   const returnedVal = MessagesData;

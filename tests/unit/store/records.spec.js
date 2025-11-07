@@ -8,7 +8,7 @@ import {
   mutations,
 } from "@/store/recordSearch.js";
 
-import RecordsData from "../../../tests/fixtures/getRecords.json";
+import RecordsData from "../../fixtures/getRecords.json";
 
 describe("Mutation & Actions & Getters", () => {
   const returnedVal = RecordsData;

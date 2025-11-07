@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import CountriesSearchStore from "@/store/AdvancedSearchComponents/countriesSearch";
 
-import CountriesSearchData from "../../../../tests/fixtures/getCountriesSearch.json";
+import CountriesSearchData from "../../../fixtures/getCountriesSearch.json";
 
 describe("CountriesSearch store methods", () => {
   const { actions, mutations, getters } = CountriesSearchStore;

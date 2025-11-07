@@ -6,7 +6,7 @@ import {
   mutations,
 } from "@/store/searchFilters.js";
 
-import RecordsData from "../../../tests/fixtures/getRecords.json";
+import RecordsData from "../../fixtures/getRecords.json";
 
 let sinon = require("sinon");
 

@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import SaveSearchStore from "@/store/saveSearch.js";
 
-import SaveSearchData from "../../../tests/fixtures/getSaveSearch.json";
+import SaveSearchData from "../../fixtures/getSaveSearch.json";
 
 describe("SaveSearch store methods", () => {
   const { actions, mutations, getters } = SaveSearchStore;

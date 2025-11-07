@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import OrganisationSearchStore from "@/store/AdvancedSearchComponents/organisationSearch";
 
-import OrganisationSearchData from "../../../../tests/fixtures/getOrganisationsSearch.json";
+import OrganisationSearchData from "../../../fixtures/getOrganisationsSearch.json";
 
 describe("OrganisationSearchStore store methods", () => {
   const { actions, mutations, getters } = OrganisationSearchStore;

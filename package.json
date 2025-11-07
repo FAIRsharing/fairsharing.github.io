@@ -6,7 +6,6 @@
     "dev": "VITE_CJS_TRACE=true vite --host",
     "preview": "vite preview --host",
     "build": "VITE_CJS_TRACE=true vite build",
-    "test:unit": "vitest --ui --coverage.enabled=true",
     "coverage": "vitest run --coverage",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
     "lint:fix": "prettier .  --write",

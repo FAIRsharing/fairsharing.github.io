@@ -384,8 +384,7 @@ export default {
       //Check the success or error response
       if (searchResult?.error) {
         saveSearch.commit("saveSearch/setSaveSearchStatus", false);
-      }
-      else {
+      } else {
         saveSearch.commit("saveSearch/setSaveSearchStatus", true);
       }
 

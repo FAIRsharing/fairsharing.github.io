@@ -94,10 +94,7 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-card class="mb-2">
     &lt;v-card-text v-if="approvalRequiredProcessed">
-      &lt;v-card-title
-        id="text-curator-search-0"
-        class="bg-green text-white"
-      >
+      &lt;v-card-title id="text-curator-search-0" class="bg-green text-white">
         &lt;b> USER EDITS AWAITING APPROVAL &lt;/b>
         &lt;v-spacer />
         &lt;v-text-field
@@ -125,10 +122,7 @@
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
-        &lt;template
-          v-if="recordType"
-          #item="props"
-        >
+        &lt;template v-if="recordType" #item="props">
           &lt;tr>
             &lt;td>
               {{ props.item.updatedAt }}
@@ -171,16 +165,8 @@
             &lt;/td>
             &lt;td>
               &lt;div class="d-flex align-center">
-                &lt;v-avatar
-                  v-if="props.item.type"
-                  class="mr-2"
-                  :height="40"
-                >
-                  &lt;Icon
-                    :item="props.item.type"
-                    :height="40"
-                    wrapper-class=""
-                  />
+                &lt;v-avatar v-if="props.item.type" class="mr-2" :height="40">
+                  &lt;Icon :item="props.item.type" :height="40" wrapper-class="" />
                 &lt;/v-avatar>
                 &lt;a :href="'/' + props.item.id">
                   {{ props.item.recordName }}
@@ -208,9 +194,7 @@
                 {{ props.item.processingNotes }}
                 &lt;template #input>
                   &lt;div class="dialogProcNotesEdit">
-                    &lt;div class="mt-4 text-h6">
-                      Update Processing Notes
-                    &lt;/div>
+                    &lt;div class="mt-4 text-h6">Update Processing Notes&lt;/div>
                     &lt;v-textarea
                       v-model="props.item.processingNotes"
                       width="1200px"
@@ -230,7 +214,7 @@
                   approveChangesMenu(
                     props.item.recordName,
                     props.item.id,
-                    props.item.hidden
+                    props.item.hidden,
                   )
                 "
               >
@@ -248,10 +232,7 @@
               &lt;/v-icon>
               &lt;v-tooltip location="bottom">
                 &lt;template #activator="{ props }">
-                  &lt;span
-                   
-                    v-bind="props"
-                  >
+                  &lt;span v-bind="props">
                     &lt;a
                       :href="'/' + props.item.id + '/edit'"
                       style="padding-left: 12px"
@@ -278,14 +259,8 @@
         &lt;/template>
       &lt;/v-data-table>
     &lt;/v-card-text>
-    &lt;v-layout
-      row
-      justify-center
-    >
-      &lt;v-dialog
-        v-model="dialogs.approveChanges"
-        max-width="700px"
-      >
+    &lt;v-layout row justify-center>
+      &lt;v-dialog v-model="dialogs.approveChanges" max-width="700px">
         &lt;v-card>
           &lt;v-card-title class="text-h5">
             Are you sure you want to
@@ -333,14 +308,8 @@
         &lt;/v-card>
       &lt;/v-dialog>
     &lt;/v-layout>
-    &lt;v-layout
-      row
-      justify-center
-    >
-      &lt;v-dialog
-        v-model="dialogs.deleteRecord"
-        max-width="700px"
-      >
+    &lt;v-layout row justify-center>
+      &lt;v-dialog v-model="dialogs.deleteRecord" max-width="700px">
         &lt;v-card>
           &lt;v-card-title class="text-h5">
             Are you sure you want to
@@ -367,7 +336,7 @@
             &lt;v-btn
               :disabled="
                 dialogs.disableDelButton === true ||
-                  dialogs.disableButton === true
+                dialogs.disableButton === true
               "
               color="blue-darken-1"
               variant="text"
@@ -442,7 +411,7 @@ export default {
   watch: {
     approvalRequired: function () {
       this.approvalRequiredProcessed = JSON.parse(
-        JSON.stringify(this.approvalRequired)
+        JSON.stringify(this.approvalRequired),
       );
     },
     "dialogs.approveChanges"(val) {
@@ -461,7 +430,7 @@ export default {
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(
-      JSON.stringify(this.approvalRequired)
+      JSON.stringify(this.approvalRequired),
     );
     this.loading = false;
   },
@@ -491,18 +460,16 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          }
-          else {
+          } else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          }
-          else {
+          } else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
-            (element) => element.id === rec.id
+            (element) => element.id === rec.id,
           );
           if (index >= 0) {
             object.hidden = true;
@@ -510,8 +477,7 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          }
-          else {
+          } else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -520,10 +486,10 @@ export default {
       this.approvalRequired.sort(this.compareRecordDescUpdate);
       for (let i = 0; i &lt; this.approvalRequired.length; i++) {
         this.approvalRequired[i].updatedAt = this.formatDate(
-          this.approvalRequired[i].updatedAt
+          this.approvalRequired[i].updatedAt,
         );
         this.approvalRequired[i].createdAt = this.formatDate(
-          this.approvalRequired[i].createdAt
+          this.approvalRequired[i].createdAt,
         );
       }
       let curators = listOfCurators.curatorList;
@@ -537,8 +503,7 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        }
-        else if (role === "curator") {
+        } else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -578,8 +543,7 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      }
-      else {
+      } else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -593,11 +557,11 @@ export default {
         _module.error.recordID = idRecord;
       }
       const index = _module.approvalRequiredProcessed.findIndex(
-        (element) => element.id === idRecord
+        (element) => element.id === idRecord,
       );
       _module.approvalRequiredProcessed[index].curator = nameUser.substring(
         0,
-        6
+        6,
       );
     },
 
@@ -632,10 +596,9 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -648,15 +611,14 @@ export default {
       _module.dialogs.disableButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }

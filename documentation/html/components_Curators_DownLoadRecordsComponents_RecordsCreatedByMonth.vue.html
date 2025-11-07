@@ -151,8 +151,7 @@ export default {
           .replace(/['"]+/g, "");
         this.downloadRecordsByMonth =
           "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      }
-      else {
+      } else {
         this.downloadRecordsByMonth = "data:text/json;charset=utf-8," + "";
       }
     },

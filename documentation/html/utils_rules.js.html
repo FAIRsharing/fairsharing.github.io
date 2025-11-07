@@ -238,8 +238,7 @@ export function isAllowedSize(allowedSize) {
         !finalVal.includes(false) ||
         `One or some of your selected files' size is more than ${allowedSize} MB!`
       );
-    }
-    else {
+    } else {
       // if its a single image
       return (
         !value[0] ||

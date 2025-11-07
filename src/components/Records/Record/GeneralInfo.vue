@@ -156,6 +156,7 @@ export default {
       type: String,
     },
   },
+  emits: ["requestOwnership"],
   computed: {
     ...mapState("record", ["currentRecord"]),
     ...mapState("editor", ["recordTooltips"]),

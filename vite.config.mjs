@@ -65,6 +65,7 @@ export default defineConfig({
     target: 'es2015',
     cssCodeSplit: true,
     chunkSizeWarningLimit: 1250,
+    commonjsOptions: { transformMixedEsModules: true },
     rollupOptions: {
       input:path.resolve(__dirname, "index.html"),
       output: {

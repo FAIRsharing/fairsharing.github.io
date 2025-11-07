@@ -138,8 +138,7 @@ export default {
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title =
           this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-      }
-      else title = title.charAt(0).toUpperCase() + title.slice(1);
+      } else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -148,8 +147,7 @@ export default {
       this.$scrollTo("body", 50, {});
       try {
         await this.tryRedirect();
-      }
-      catch (e) {
+      } catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
@@ -163,8 +161,7 @@ export default {
       try {
         await this.tryRedirect();
         this.$scrollTo("body", 50, {});
-      }
-      catch (e) {
+      } catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
@@ -207,8 +204,7 @@ export default {
               query: query,
             });
             return true;
-          }
-          catch (e) {
+          } catch (e) {
             return false;
           }
         }
@@ -232,16 +228,14 @@ export default {
         let token;
         if (this.user().credentials !== undefined) {
           token = this.user().credentials.token;
-        }
-        else {
+        } else {
           token = "";
         }
         await _module.fetchRecords({
           params: this.getParameters(),
           token: token,
         });
-      }
-      catch (e) {
+      } catch (e) {
         /* istanbul ignore next */
         this.errors = e.message;
       }

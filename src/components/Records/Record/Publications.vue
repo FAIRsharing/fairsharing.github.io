@@ -121,8 +121,7 @@ export default {
     checkLinkValue: (link) => {
       if (!link) {
         return false;
-      }
-      else if (
+      } else if (
         link.toLowerCase() === "missing" ||
         link === 0 ||
         link === "0"

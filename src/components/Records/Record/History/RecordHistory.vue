@@ -76,9 +76,7 @@
                                   far fa-calendar-check
                                 </v-icon>
                                 <span style="position: relative; top: 3px">
-                                  {{
-                                    entry["date"] | moment(dateFormat)
-                                  }}
+                                  {{ entry["date"] | moment(dateFormat) }}
                                   &mdash;
                                   {{ entry["event"] }}
                                   <span v-if="entry['user']">

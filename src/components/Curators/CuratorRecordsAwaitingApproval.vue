@@ -1,10 +1,7 @@
 <template>
   <v-card class="mb-2">
     <v-card-text v-if="approvalRequiredProcessed">
-      <v-card-title
-        id="text-curator-search-0"
-        class="bg-green text-white"
-      >
+      <v-card-title id="text-curator-search-0" class="bg-green text-white">
         <b>CURATOR EDITS AWAITING APPROVAL</b>
         <v-spacer />
         <v-text-field
@@ -32,10 +29,7 @@
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
-        <template
-          v-if="recordType"
-          #item="props"
-        >
+        <template v-if="recordType" #item="props">
           <tr>
             <td>
               {{ props.item.updatedAt }}
@@ -78,16 +72,8 @@
             </td>
             <td>
               <div class="d-flex align-center">
-                <v-avatar
-                  v-if="props.item.type"
-                  class="mr-2"
-                  size="40"
-                >
-                  <Icon
-                    :item="props.item.type"
-                    :height="40"
-                    wrapper-class=""
-                  />
+                <v-avatar v-if="props.item.type" class="mr-2" size="40">
+                  <Icon :item="props.item.type" :height="40" wrapper-class="" />
                 </v-avatar>
                 <a :href="'/' + props.item.id">
                   {{ props.item.recordName }}
@@ -115,9 +101,7 @@
                 {{ props.item.processingNotes }}
                 <template #input>
                   <div class="dialogProcNotesEdit">
-                    <div class="mt-4 text-h6">
-                      Update Processing Notes
-                    </div>
+                    <div class="mt-4 text-h6">Update Processing Notes</div>
                     <v-textarea
                       v-model="props.item.processingNotes"
                       width="1200px"
@@ -136,7 +120,7 @@
                   approveChangesMenu(
                     props.item.recordName,
                     props.item.id,
-                    props.item.hidden
+                    props.item.hidden,
                   )
                 "
               >
@@ -154,10 +138,7 @@
               </v-icon>
               <v-tooltip location="bottom">
                 <template #activator="{ props }">
-                  <span
-                   
-                    v-bind="props"
-                  >
+                  <span v-bind="props">
                     <a
                       :href="'/' + props.item.id + '/edit'"
                       style="padding-left: 12px"
@@ -184,14 +165,8 @@
         </template>
       </v-data-table>
     </v-card-text>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="dialogs.approveChanges"
-        max-width="700px"
-      >
+    <v-layout row justify-center>
+      <v-dialog v-model="dialogs.approveChanges" max-width="700px">
         <v-card>
           <v-card-title class="text-h5">
             Are you sure you want to
@@ -239,14 +214,8 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="dialogs.deleteRecord"
-        max-width="700px"
-      >
+    <v-layout row justify-center>
+      <v-dialog v-model="dialogs.deleteRecord" max-width="700px">
         <v-card>
           <v-card-title class="text-h5">
             Are you sure you want to
@@ -273,7 +242,7 @@
             <v-btn
               :disabled="
                 dialogs.disableDelButton === true ||
-                  dialogs.disableButton === true
+                dialogs.disableButton === true
               "
               color="blue-darken-1"
               variant="text"
@@ -348,7 +317,7 @@ export default {
   watch: {
     approvalRequired: function () {
       this.approvalRequiredProcessed = JSON.parse(
-        JSON.stringify(this.approvalRequired)
+        JSON.stringify(this.approvalRequired),
       );
     },
     "dialogs.approveChanges"(val) {
@@ -367,7 +336,7 @@ export default {
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(
-      JSON.stringify(this.approvalRequired)
+      JSON.stringify(this.approvalRequired),
     );
     this.loading = false;
   },
@@ -397,18 +366,16 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          }
-          else {
+          } else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          }
-          else {
+          } else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
-            (element) => element.id === rec.id
+            (element) => element.id === rec.id,
           );
           if (index >= 0) {
             object.hidden = true;
@@ -416,8 +383,7 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          }
-          else {
+          } else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -426,10 +392,10 @@ export default {
       this.approvalRequired.sort(this.compareRecordDescUpdate);
       for (let i = 0; i < this.approvalRequired.length; i++) {
         this.approvalRequired[i].updatedAt = this.formatDate(
-          this.approvalRequired[i].updatedAt
+          this.approvalRequired[i].updatedAt,
         );
         this.approvalRequired[i].createdAt = this.formatDate(
-          this.approvalRequired[i].createdAt
+          this.approvalRequired[i].createdAt,
         );
       }
       let curators = listOfCurators.curatorList;
@@ -443,8 +409,7 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        }
-        else if (role === "curator") {
+        } else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -484,8 +449,7 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      }
-      else {
+      } else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -499,11 +463,11 @@ export default {
         _module.error.recordID = idRecord;
       }
       const index = _module.approvalRequiredProcessed.findIndex(
-        (element) => element.id === idRecord
+        (element) => element.id === idRecord,
       );
       _module.approvalRequiredProcessed[index].curator = nameUser.substring(
         0,
-        6
+        6,
       );
     },
 
@@ -538,10 +502,9 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -554,15 +517,14 @@ export default {
       _module.dialogs.disableButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }

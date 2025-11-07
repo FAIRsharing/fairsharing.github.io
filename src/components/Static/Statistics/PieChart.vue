@@ -91,8 +91,7 @@ export default {
                   function (e) {
                     if (this.options.url) {
                       location.href = this.options.url;
-                    }
-                    else {
+                    } else {
                       e.stopPropagation();
                     }
                   },

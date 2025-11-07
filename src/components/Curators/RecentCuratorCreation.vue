@@ -121,8 +121,7 @@ export default {
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        }
-        else {
+        } else {
           object.creator = "unknown";
         }
         this.recordsCreatedCuratorsLastWeek.push(object);

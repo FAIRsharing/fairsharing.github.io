@@ -158,8 +158,7 @@ export default {
         type: function () {
           if (error) {
             return "error";
-          }
-          else {
+          } else {
             return "success";
           }
         },
@@ -180,8 +179,7 @@ export default {
             if (differences[difference] || differences[difference] === "") {
               if (difference === "type") {
                 if (newVal.type.name !== this.initialFields.type) changes += 1;
-              }
-              else if (difference !== "metadata") {
+              } else if (difference !== "metadata") {
                 const exceptions = [
                   "domains",
                   "subjects",
@@ -197,8 +195,7 @@ export default {
                   let localDiff = diff(initArray, currentArray);
                   if (Object.keys(localDiff).length > 0) changes += 1;
                 }
-              }
-              else {
+              } else {
                 Object.keys(differences[difference]).forEach(() => {
                   changes += 1;
                 });
@@ -237,8 +234,7 @@ export default {
 
       if (currentType === initialType) {
         await _module.saveRecord(redirect, false, item);
-      }
-      else {
+      } else {
         // Deal with the confirmation dialogue.
         _module.showTypeChanged = true;
         _module.redirect = redirect;
@@ -261,8 +257,7 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      }
-      else if (item.textContent.trim() === "Save and exit") {
+      } else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

@@ -150,16 +150,14 @@ export default {
         this.currentRecord["fairsharingRecord"].status.toLowerCase() === "ready"
       ) {
         return "Awaiting DOI";
-      }
-      else if (
+      } else if (
         this.currentRecord["fairsharingRecord"].status.toLowerCase() ===
           "uncertain" ||
         this.currentRecord["fairsharingRecord"].status.toLowerCase() ===
           "deprecated"
       ) {
         return "DOI will not be issued";
-      }
-      else {
+      } else {
         return "DOIs are only issued to records with 'Ready' status";
       }
     },

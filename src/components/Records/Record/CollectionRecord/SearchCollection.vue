@@ -170,8 +170,7 @@ export default {
           params: returnedQuery,
           token: this.user().credentials.token,
         });
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
     },
@@ -221,12 +220,10 @@ export default {
           this.errors = false;
           returnedQuery = this.buildQueryParameters(this.currentPath);
           await this.initializeCollectionRecords(this.collectionIDs);
-        }
-        else {
+        } else {
           return false;
         }
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
       try {
@@ -234,8 +231,7 @@ export default {
           params: returnedQuery,
           token: this.user().credentials.token,
         });
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
       }
     },

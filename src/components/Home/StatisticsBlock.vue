@@ -102,8 +102,7 @@ export default {
           if (count < target) {
             counter.innerText = Math.ceil(count + increment);
             setTimeout(updateCounter, 1);
-          }
-          else {
+          } else {
             counter.innerText = this.updateNumbers(target);
           }
         };
@@ -122,8 +121,7 @@ export default {
       // Three Zeroes for Thousands
       else if (labelValue >= 1.0e4) {
         return Math.round(Number(labelValue) / 1.0e3) + "K";
-      }
-      else {
+      } else {
         return labelValue;
       }
     },

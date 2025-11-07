@@ -222,15 +222,13 @@ export default {
         await this.getUser();
         createdSearches = this.getUserRecords.user["createdSearches"];
         savedSearches = this.getUserRecords.user["savedSearches"];
-      }
-      else if (searchUnlinked) {
+      } else if (searchUnlinked) {
         let userId = this.$route.params.id;
         let userR = await this.getPublicUser(userId);
         await this.getUser();
         createdSearches = userR.user["createdSearches"];
         savedSearches = userR.user["savedSearches"];
-      }
-      else {
+      } else {
         createdSearches = this.createdSearches;
         savedSearches = this.savedSearches;
       }

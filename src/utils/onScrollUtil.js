@@ -13,8 +13,7 @@ const onScrollUtil = {
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           headerVisibilityState: false,
         });
-      }
-      else {
+      } else {
         _module.setStickToTop(false);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           drawerVisibilityState: false,

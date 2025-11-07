@@ -256,8 +256,7 @@ export default {
     goToAdvancedSearch() {
       if (this.updatedAdvancedSearchText) {
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
-      }
-      else {
+      } else {
         this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       }
       this.closeDialog();
@@ -288,8 +287,7 @@ export default {
             this.queryString += "=";
             if (Array.isArray(params["value"])) {
               this.queryString += params["value"].join("+");
-            }
-            else if (params["value"]) {
+            } else if (params["value"]) {
               this.queryString += params["value"];
             }
           });
@@ -310,8 +308,7 @@ export default {
             name: "AdvancedSearchResult",
             query: this.isAdvancedSearchTerm(queryString),
           });
-        }
-        else {
+        } else {
           this.$router.push({
             name: "AdvancedSearchResult",
             query: this.noAdvancedSearchTerm(queryString),
@@ -324,8 +321,7 @@ export default {
           this.$router.push({
             query: this.isAdvancedSearchTerm(queryString),
           });
-        }
-        else {
+        } else {
           this.$router.push({
             query: this.noAdvancedSearchTerm(queryString),
           });

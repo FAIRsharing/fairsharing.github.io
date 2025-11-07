@@ -141,8 +141,7 @@ export default {
       if (!this.fields[this.fieldName]) {
         if (!this.subfieldName) {
           this.fields[this.fieldName] = null;
-        }
-        else {
+        } else {
           this.fields[this.fieldName] = {};
         }
       }

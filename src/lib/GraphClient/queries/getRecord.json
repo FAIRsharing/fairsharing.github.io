@@ -75,23 +75,13 @@
         },
         {
           "queryName": "licence",
-          "fields": [
-            "id",
-            "name",
-            "url",
-            "spdxLink"
-          ]
+          "fields": ["id", "name", "url", "spdxLink"]
         }
       ]
     },
     {
       "name": "licences",
-      "fields": [
-        "id",
-        "name",
-        "url",
-        "spdxLink"
-      ]
+      "fields": ["id", "name", "url", "spdxLink"]
     },
     {
       "name": "maintainers",

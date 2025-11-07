@@ -116,8 +116,7 @@ export default {
           _module.success = true;
           _module.emailId = _module.email;
           _module.$refs.emailRef.reset();
-        }
-        else {
+        } else {
           _module.error = "Verification email not sent!";
         }
       }

@@ -1,8 +1,10 @@
 <template>
-  <v-tooltip v-if="abbreviation !== null && abbreviation.length > 40" location="bottom">
+  <v-tooltip
+    v-if="abbreviation !== null && abbreviation.length > 40"
+    location="bottom"
+  >
     <template #activator="{ props }">
       <h2
-       
         class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25 ellipse-width-600"
         v-bind="props"
       >

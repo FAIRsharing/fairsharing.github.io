@@ -60,8 +60,7 @@ export default {
           .replace(/['"]+/g, "");
         this.downloadContent =
           "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      }
-      else {
+      } else {
         this.downloadContent = "data:text/json;charset=utf-8," + "";
       }
     },

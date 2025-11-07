@@ -39,8 +39,7 @@ export const mutations = {
       if (item.type === "Boolean") {
         let ObjectModel = buttonOptions[item.filterName];
         state.filterButtons.push(ObjectModel);
-      }
-      else if (item.filterName === "status") {
+      } else if (item.filterName === "status") {
         let ObjectModel = buttonOptions.status.data;
         ObjectModel.forEach(function (button) {
           if (Object.prototype.hasOwnProperty.call(button, "apiIndex")) {
@@ -150,8 +149,7 @@ export const buildFilters = function (val) {
       buckets.forEach(function (bucket) {
         if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
           filterValues.push(bucket["key_as_string"]);
-        }
-        else {
+        } else {
           filterValues.push(bucket["key"]);
         }
       });

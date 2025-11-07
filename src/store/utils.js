@@ -137,8 +137,7 @@ export function initEditorSections(data, sectionsNames) {
         initialData: copy,
       };
     });
-  }
-  else {
+  } else {
     sections.generalInformation = {
       changes: 0,
       message: null,

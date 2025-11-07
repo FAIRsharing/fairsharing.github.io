@@ -97,11 +97,9 @@ export default {
       let maxItemShown;
       if (this.$vuetify.display.mdAndDown) {
         maxItemShown = 1;
-      }
-      else if (this.$vuetify.display.lg) {
+      } else if (this.$vuetify.display.lg) {
         maxItemShown = 2;
-      }
-      else if (this.$vuetify.display.xl) {
+      } else if (this.$vuetify.display.xl) {
         maxItemShown = 3;
       }
       return maxItemShown;

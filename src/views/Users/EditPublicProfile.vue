@@ -352,8 +352,7 @@ export default {
       /* istanbul ignore if */
       if (name === "username" || name === "orcid") {
         return true;
-      }
-      else if (name === "email" && _module.currentPublicUser.third_party) {
+      } else if (name === "email" && _module.currentPublicUser.third_party) {
         return true;
       }
       return false;

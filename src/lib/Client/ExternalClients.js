@@ -83,8 +83,7 @@ class ExternalRESTClients {
   async executeQuery(query) {
     try {
       return await axios.get(query.url, { headers: query.headers });
-    }
-    catch (e) {
+    } catch (e) {
       return { data: { error: e } };
     }
   }

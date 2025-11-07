@@ -130,8 +130,7 @@ export default {
             query: { redirect: "/accounts/profile" },
           });
         }
-      }
-      else {
+      } else {
         query.reset_password_token =
           _module.$route.query["reset_password_token"];
         await _module.resetPwd(query);

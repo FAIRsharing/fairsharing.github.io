@@ -281,8 +281,7 @@ export default {
           _module.tabsData.tabs[tabName].count =
             _module.tabsData.tabs[tabName].data.length;
         });
-      }
-      else {
+      } else {
         return false;
       }
     },
@@ -293,8 +292,7 @@ export default {
       if (item.abbreviation == null) {
         let answer = name.indexOf(search) > -1;
         return answer;
-      }
-      else {
+      } else {
         let answer =
           name.indexOf(search) > -1 ||
           item.abbreviation.toLowerCase().indexOf(search) > -1;

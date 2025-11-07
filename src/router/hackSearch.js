@@ -37,8 +37,7 @@ export function hackSearch(query) {
       let newKey = lookupKeys[key];
       if (Object.keys(lookupValues).includes(value)) {
         query[newKey] = lookupValues[value];
-      }
-      else {
+      } else {
         query[newKey] = value;
       }
       // Delete old key.
@@ -50,8 +49,7 @@ export function hackSearch(query) {
       if (Object.keys(lookupValues).includes(value)) {
         query[key] = lookupValues[value];
         modified = true;
-      }
-      else {
+      } else {
         modified = false;
       }
     }

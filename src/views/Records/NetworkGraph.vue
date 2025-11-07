@@ -357,8 +357,7 @@ export default {
           _module.fa2Layout.start();
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
-        }
-        else {
+        } else {
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
         }
@@ -372,8 +371,7 @@ export default {
           _module.fa2Layout.start();
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
-        }
-        else {
+        } else {
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
         }
@@ -427,8 +425,7 @@ export default {
         this.registry = "N/A";
         this.type = "N/A";
         this.initialized = true;
-      }
-      else {
+      } else {
         this.graphData = response.fairsharingGraph.data;
         this.loading = false;
         this.registry = this.graphData.registry;
@@ -549,8 +546,7 @@ export default {
         this.loading = true;
         window.location.assign("/" + node);
         //this.loading = false;
-      }
-      else {
+      } else {
         this.loading = true;
         window.location.assign("/graph/" + node);
         //this.loading = false;
@@ -564,8 +560,7 @@ export default {
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
         return "#27aae1";
-      }
-      else {
+      } else {
         return "gray";
       }
     },

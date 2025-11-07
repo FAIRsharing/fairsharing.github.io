@@ -32,7 +32,6 @@
     <v-tooltip v-else-if="keyword.iri" location="bottom">
       <template #activator="{ props }">
         <div
-         
           :class="['text-center', { 'ellipse-width-80': !fullWidth }]"
           v-bind="props"
         >

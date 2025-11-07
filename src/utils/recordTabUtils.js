@@ -73,8 +73,7 @@ const recordTabUtils = {
             if (prop === "linkedRecord") {
               object.object = _module.currentRecord["fairsharingRecord"].name;
               object.subject = item[prop].name;
-            }
-            else if (prop === "fairsharingRecord") {
+            } else if (prop === "fairsharingRecord") {
               object.object = item[prop].name;
               object.subject = _module.currentRecord["fairsharingRecord"].name;
             }

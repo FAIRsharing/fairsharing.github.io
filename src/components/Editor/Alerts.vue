@@ -43,8 +43,7 @@ export default {
         type: function () {
           if (error) {
             return "error";
-          }
-          else {
+          } else {
             return "success";
           }
         },

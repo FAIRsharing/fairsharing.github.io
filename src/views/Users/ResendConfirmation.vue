@@ -90,8 +90,7 @@ export default {
         const outcome = await restClient.resendConfirmation(user);
         if (outcome.message === "Confirmation message not sent!") {
           _module.error = "Confirmation message not sent!";
-        }
-        else if (
+        } else if (
           outcome.message === "Confirmation message sent successfully!"
         ) {
           _module.success = true;

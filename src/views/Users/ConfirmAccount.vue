@@ -62,8 +62,7 @@ export default {
         if (!_module.error) {
           _module.message = "you can now login using your credentials.";
         }
-      }
-      else {
+      } else {
         _module.error = true;
         _module.message = { Confirmation_token: "missing" };
       }

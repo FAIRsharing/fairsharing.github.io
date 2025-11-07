@@ -119,8 +119,7 @@ let recordStore = {
       if (!additionalInformation.subfieldName) {
         state.sections.additionalInformation.data.additionalInformation.fieldName =
           additionalInformation.fieldValue;
-      }
-      else {
+      } else {
         state.sections.additionalInformation.data[
           additionalInformation.fieldName
         ].additionalInformation.subfieldName = additionalInformation.fieldValue;
@@ -131,8 +130,7 @@ let recordStore = {
         state.sections.additionalInformation.data[
           additionalInformation.fieldName
         ][additionalInformation.id] = additionalInformation.fieldValue;
-      }
-      else {
+      } else {
         if (
           !state.sections.additionalInformation.data[
             additionalInformation.fieldName
@@ -150,8 +148,7 @@ let recordStore = {
             ].length
           ] = additionalInformation.fieldValue;
           // eslint-disable-next-line no-empty
-        }
-        catch (e) {
+        } catch (e) {
           // TODO: Investigate comments below.
           // Github has been failing tests (which are fine locally) here for reasons which
           // have not so far been determined.
@@ -329,8 +326,7 @@ let recordStore = {
       userDefinedTags.forEach((tag) => {
         if (Object.keys(tag).indexOf("id") === -1) {
           newTags.push(tag.label);
-        }
-        else {
+        } else {
           oldTags.push(tag.id);
         }
       });
@@ -342,8 +338,7 @@ let recordStore = {
       newTags.forEach((tag) => {
         if (!tag.error) {
           tags.push(tag.id);
-        }
-        else {
+        } else {
           commit("setSectionError", {
             section: "generalInformation",
             value: tag.error,
@@ -383,8 +378,7 @@ let recordStore = {
           value: response.error,
         });
         return response.error;
-      }
-      else {
+      } else {
         let newRecord = JSON.parse(
           JSON.stringify(state.sections.generalInformation.data),
         );
@@ -395,8 +389,7 @@ let recordStore = {
               tag.label = obj.label;
             })[0];
             userDefinedTags.push(obj);
-          }
-          else userDefinedTags.push(obj);
+          } else userDefinedTags.push(obj);
         });
         newRecord.userDefinedTags = userDefinedTags;
         commit("setGeneralInformation", { fairsharingRecord: newRecord });
@@ -430,8 +423,7 @@ let recordStore = {
           value: response.error,
         });
         return response.error;
-      }
-      else {
+      } else {
         commit("setMessage", {
           target: "publications",
           value: "Record successfully updated!",
@@ -514,8 +506,7 @@ let recordStore = {
           );
           newRecord.metadata[field] =
             state.sections.additionalInformation.data[field];
-        }
-        else if (state.sections.additionalInformation.data[field] === null) {
+        } else if (state.sections.additionalInformation.data[field] === null) {
           // if its the case that there is a single string textInput only
           state.sections.additionalInformation.data[field] = "";
           newRecord.metadata[field] =
@@ -533,8 +524,7 @@ let recordStore = {
           value: response.error,
         });
         return response.error;
-      }
-      else {
+      } else {
         commit("setMessage", {
           target: "additionalInformation",
           value: "Record successfully updated!",
@@ -572,8 +562,7 @@ let recordStore = {
           newLicence = prepareLicence(licence);
         if (!found) {
           toCreate.push(newLicence);
-        }
-        else if (found && !isEqual(licence, found)) {
+        } else if (found && !isEqual(licence, found)) {
           toUpdate.push(newLicence);
         }
       });
@@ -626,8 +615,7 @@ let recordStore = {
               record_assoc_label_id: association.recordAssocLabel.id,
             };
             newAssociations.push(newAssociation);
-          }
-          else {
+          } else {
             // Using a combination of record_id and label_id as this should be unique.
             // Using only record_id produced:
             // https://github.com/FAIRsharing/fairsharing.github.io/issues/1620
@@ -693,8 +681,7 @@ let recordStore = {
       let response = await restClient.updateRecord(newRecord);
       if (response.error) {
         state.commit("setError", response.error.response);
-      }
-      else {
+      } else {
         state.commit("setNewRecord", response);
       }
     },
@@ -737,8 +724,7 @@ function prepareLicence(rawLicence) {
 
   if (rawLicence.licence.id) {
     preparedLicence.licence_id = rawLicence.licence.id;
-  }
-  else {
+  } else {
     preparedLicence.licence_attributes = rawLicence.licence;
   }
   return preparedLicence;

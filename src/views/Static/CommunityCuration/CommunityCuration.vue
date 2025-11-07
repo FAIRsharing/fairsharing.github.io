@@ -223,8 +223,7 @@ export default {
       }
       if (tempSubjects[subj]) {
         tempSubjects[subj] = tempSubjects[subj] + 1;
-      }
-      else {
+      } else {
         tempSubjects[subj] = 1;
       }
     });

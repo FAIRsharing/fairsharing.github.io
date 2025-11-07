@@ -56,8 +56,7 @@ export default {
           .replace(/['"]+/g, "");
         this.downloadEditsByMonth =
           "data:text/json;charset=utf-8," + encodeURIComponent(content);
-      }
-      else {
+      } else {
         this.downloadEditsByMonth = "data:text/json;charset=utf-8," + "";
       }
     },

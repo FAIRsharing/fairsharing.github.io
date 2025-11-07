@@ -896,8 +896,7 @@ class RESTClient {
   async executeQuery(query) {
     try {
       return await axios(query);
-    }
-    catch (e) {
+    } catch (e) {
       return { data: { error: e } };
     }
   }

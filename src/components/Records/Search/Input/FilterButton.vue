@@ -81,12 +81,10 @@ export default {
       if (fieldValue === null) {
         this.itemModified.active =
           title === "all" || title === "match all terms";
-      }
-      else {
+      } else {
         if (currentValue === undefined) {
           this.itemModified.active = false;
-        }
-        else {
+        } else {
           this.itemModified.active = currentValue.toString() === fieldValue;
         }
       }
@@ -105,8 +103,8 @@ export default {
       });
       Object.prototype.hasOwnProperty.call(selectedItem, "value")
         ? (currentQuery[selectedItem.filterName] = encodeURIComponent(
-          selectedItem.value,
-        ))
+            selectedItem.value,
+          ))
         : delete currentQuery[selectedItem.filterName];
       if (!isEqual(currentQuery, oldQuery)) {
         currentQuery["page"] = 1;

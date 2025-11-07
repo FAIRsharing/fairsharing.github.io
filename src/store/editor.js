@@ -271,8 +271,7 @@ let editorStore = {
               relationId: typeObject.id,
             });
           });
-        }
-        else {
+        } else {
           recordTypes.forEach((relationParent) => {
             if (!Object.keys(allowed).includes(relationParent)) {
               allowed[relationParent] = [];

@@ -392,15 +392,13 @@ export default {
         ) {
           this.userCanEditOrganisation = true;
           return;
-        }
-        else if (
+        } else if (
           this.$route.name === "EditPublicProfile" &&
           this.user().is_super_curator
         ) {
           this.userCanEditOrganisation = true;
           return;
-        }
-        else if (this.$route.name === "Edit profile") {
+        } else if (this.$route.name === "Edit profile") {
           this.userCanEditOrganisation = true;
           return;
         }
@@ -416,8 +414,7 @@ export default {
         /* istanbul ignore else */
         if (user) {
           this.userOrganisations = user.organisations;
-        }
-        else {
+        } else {
           this.userOrganisations = [];
         }
       }
@@ -452,8 +449,7 @@ export default {
         await this.persistUserOrganisations();
         this.successTerm = "added";
         this.showSuccessAction = true;
-      }
-      else {
+      } else {
         this.showFailedAction = true;
       }
     },
@@ -480,8 +476,7 @@ export default {
       ) {
         newUser.id = this.$route.params.id;
         await this.updatePublicUser(newUser);
-      }
-      else {
+      } else {
         await this.updateUser(newUser);
       }
       await this.loadUserOrganisationData();
@@ -526,8 +521,7 @@ export default {
         this.allOrganisations = this.organisations;
         this.showSuccessAction = true;
         this.successTerm = "added";
-      }
-      else {
+      } else {
         this.AddNewOrganisation.error = data.error;
       }
     },

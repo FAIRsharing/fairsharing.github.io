@@ -105,8 +105,7 @@ export default {
         if (Object.keys(selectedNode[item]).length) {
           if (Object.keys(this.otherDataConditions).includes(key)) {
             this.otherDataConditions[key][item] = selectedNode[item];
-          }
-          else {
+          } else {
             this.otherDataConditions[key] = {};
             this.otherDataConditions[key][item] = selectedNode[item];
           }

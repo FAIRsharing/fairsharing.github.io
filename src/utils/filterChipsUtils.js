@@ -9,8 +9,7 @@ const filterChipsUtils = {
           let param = parameters[paramName];
           if (typeof param === "string") {
             param = param.split(",");
-          }
-          else {
+          } else {
             param = [param];
           }
           param.forEach(function (val) {

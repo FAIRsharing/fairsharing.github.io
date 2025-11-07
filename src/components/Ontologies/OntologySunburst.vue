@@ -171,8 +171,7 @@ export default {
             query: { term: encodeURIComponent(node.name) },
           });
         }
-      }
-      else {
+      } else {
         if (node.name !== "Subject") {
           let ancestors = this.getAncestors()(node.identifier);
           if (node["innerArcLength"] === 0)

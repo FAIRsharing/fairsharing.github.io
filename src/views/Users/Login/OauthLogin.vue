@@ -41,8 +41,7 @@ export default {
       let path;
       if (paramsArray.return_to) {
         path = paramsArray.return_to;
-      }
-      else {
+      } else {
         path = "accounts/profile";
       }
       _module.$router.push({

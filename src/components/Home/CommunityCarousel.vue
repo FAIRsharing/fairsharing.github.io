@@ -39,8 +39,7 @@ export default {
     responsiveSlideData() {
       if (this.$vuetify.display.smAndUp) {
         return this.logos.multipleImageSlider;
-      }
-      else {
+      } else {
         return this.logos.singleImageSlider;
       }
     },

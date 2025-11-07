@@ -190,8 +190,7 @@ export default {
       if (this.formValid && !this.submitted) {
         if (this.menu.index || this.menu.index === 0) {
           this.$set(this.contacts, this.menu.index, this.menu.content);
-        }
-        else {
+        } else {
           this.$set(this.contacts, this.contacts.length, this.menu.content);
         }
         this.menu.show = false;

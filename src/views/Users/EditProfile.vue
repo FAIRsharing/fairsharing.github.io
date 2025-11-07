@@ -567,8 +567,7 @@ export default {
           error: false,
         };
         this.userOrganisations.push(created);
-      }
-      else this.newOrganisation.error = data.error.response.data;
+      } else this.newOrganisation.error = data.error.response.data;
       this.newOrganisation.loading = false;
     },
     removeCountry(country) {

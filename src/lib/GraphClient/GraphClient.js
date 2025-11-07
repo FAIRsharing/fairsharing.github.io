@@ -68,8 +68,7 @@ class GraphQLClient {
           typeof query.queryParam[key] === "number"
         ) {
           queryString += `${key}:${query.queryParam[key]} `;
-        }
-        else if (typeof query.queryParam[key] === "string") {
+        } else if (typeof query.queryParam[key] === "string") {
           //Modified to adjust multiple arguments in GraphQl query params
           const regExp = /\(|\)|\{|\}/g;
 
@@ -78,8 +77,7 @@ class GraphQLClient {
           if (hasBrackets) queryString += `${key}:${query.queryParam[key]}`;
           else queryString += `${key}:"${query.queryParam[key]}" `;
           // queryString += `${key}:"${query.queryParam[key]}" `;
-        }
-        else {
+        } else {
           let param = [];
           query.queryParam[key].forEach(function (paramVal) {
             typeof paramVal !== "number"
@@ -105,19 +103,16 @@ class GraphQLClient {
             for (let subField of myRef) {
               if (typeof subField === "string") {
                 queryString += ` ${subField}`;
-              }
-              else {
+              } else {
                 queryString += ` ${client.buildQuery(subField)}`;
               }
             }
-          }
-          else {
+          } else {
             queryString += ` ${field.name}{`;
             field.fields.forEach(function (subField) {
               if (typeof subField === "string") {
                 queryString += `${subField} `;
-              }
-              else {
+              } else {
                 queryString += `${client.buildQuery(subField)}`;
               }
             });

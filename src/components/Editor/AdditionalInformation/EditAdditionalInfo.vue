@@ -389,8 +389,7 @@ export default {
               !this.allowedFields.properties[fieldName].enum
             ) {
               output[fieldName] = this.allowedFields.properties[fieldName];
-            }
-            else if (
+            } else if (
               type === "string" &&
               this.allowedFields.properties[fieldName].enum
             ) {
@@ -497,8 +496,7 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      }
-      else if (item.textContent.trim() === "Save and exit") {
+      } else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }
@@ -511,8 +509,7 @@ export default {
       this.exitLoader = false;
       if (this.message.error || !redirect) {
         this.$scrollTo("#mainHeader");
-      }
-      else {
+      } else {
         await this.$router.push({ path: "/" + this.$route.params.id });
       }
     },

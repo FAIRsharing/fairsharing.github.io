@@ -66,14 +66,14 @@ const mutations = {
   },
   resetSaveSearchStepper(state) {
     (state.loadingStatus = false),
-    (state.saveSearchStepperDialog = false),
-    (state.saveSearchResult = []),
-    (state.organisationSelected = []),
-    (state.policySelected = []),
-    (state.policyRecords = []),
-    (state.userSelected = []),
-    (state.saveSearchStatus = false),
-    (state.showStepper = true);
+      (state.saveSearchStepperDialog = false),
+      (state.saveSearchResult = []),
+      (state.organisationSelected = []),
+      (state.policySelected = []),
+      (state.policyRecords = []),
+      (state.userSelected = []),
+      (state.saveSearchStatus = false),
+      (state.showStepper = true);
   },
   setLoadingStatus(state, loadingStatus) {
     state.loadingStatus = loadingStatus;

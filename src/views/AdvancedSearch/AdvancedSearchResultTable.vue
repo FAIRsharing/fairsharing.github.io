@@ -176,20 +176,20 @@ export default {
     },
     sortData() {
       switch (this.sortBy) {
-      case "Name":
-        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
-      case "Registry":
-        return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
-      case "Type":
-        return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
-      case "Status":
-        return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
-      case "Description":
-        return [
-          { key: "description", order: this.sortDesc ? "desc" : "asc" },
-        ];
-      default:
-        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+        case "Name":
+          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+        case "Registry":
+          return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
+        case "Type":
+          return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
+        case "Status":
+          return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
+        case "Description":
+          return [
+            { key: "description", order: this.sortDesc ? "desc" : "asc" },
+          ];
+        default:
+          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
       }
     },
   },
@@ -233,8 +233,7 @@ export default {
               const paramValues = subItem.split("=");
               if (paramValues[0] === "operator") {
                 searchObj["operatorIdentifier"] = paramValues[1];
-              }
-              else {
+              } else {
                 let advancedSearchParams = {
                   identifier: "",
                   value: [] || Boolean,
@@ -243,8 +242,7 @@ export default {
                 // For boolean/string values
                 if (paramValues[1] === "true" || paramValues[1] === "false") {
                   advancedSearchParams["value"] = paramValues[1];
-                }
-                else {
+                } else {
                   advancedSearchParams["value"] = paramValues[1].split("+");
                 }
                 searchObj["children"].push(advancedSearchParams);

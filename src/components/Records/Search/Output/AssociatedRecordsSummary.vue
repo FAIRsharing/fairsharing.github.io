@@ -37,16 +37,16 @@ export default {
   methods: {
     setRecordLabels(label) {
       switch (label) {
-      case "standard":
-        return "Linked Standards";
-      case "database":
-        return "Linked Databases";
-      case "policy":
-        return "Linked Policies";
-      case "collection":
-        return "Linked Collections";
-      case "fairassist":
-        return "Linked FAIRassist";
+        case "standard":
+          return "Linked Standards";
+        case "database":
+          return "Linked Databases";
+        case "policy":
+          return "Linked Policies";
+        case "collection":
+          return "Linked Collections";
+        case "fairassist":
+          return "Linked FAIRassist";
       }
     },
   },

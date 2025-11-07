@@ -54,8 +54,7 @@ export const actions = {
       data = await client.executeQuery(recordsQuery);
       this.commit("records/setRecords", data["searchFairsharingRecords"]);
       this.commit("records/setLoadingStatus", false);
-    }
-    catch {
+    } catch {
       // Loading complete, but no data returned...
       this.commit("records/setRecords", { records: [] });
     }
@@ -83,8 +82,7 @@ export const actions = {
       data = await client.executeQuery(recordsQuery);
       this.commit("records/setRecords", data["searchFairsharingRecords"]);
       this.commit("records/setLoadingStatus", false);
-    }
-    catch {
+    } catch {
       // Loading complete, but no data returned...
       this.commit("records/setRecords", { records: [] });
     }
@@ -113,8 +111,7 @@ export const actions = {
         const cleaned = params["q"].replace(/[^0-9a-z\s]/gi, "");
         const newParams = { ...params, q: cleaned };
         recordsQuery.queryParam = newParams;
-      }
-      else {
+      } else {
         recordsQuery.queryParam = params;
       }
     }
@@ -138,13 +135,11 @@ export const actions = {
           },
           records: [],
         });
-      }
-      else {
+      } else {
         this.commit("records/setRecords", data["searchFairsharingRecords"]);
       }
       this.commit("records/setLoadingStatus", false);
-    }
-    catch {
+    } catch {
       // Loading complete, but no data returned...
       /* istanbul ignore next */
       this.commit("records/setRecords", { records: [] });

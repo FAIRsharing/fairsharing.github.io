@@ -32,8 +32,7 @@ const generalUtils = {
     compareRecordDescUpdate(a, b) {
       if (a.updatedAt > b.updatedAt) {
         return -1;
-      }
-      else {
+      } else {
         return 1;
       }
     },

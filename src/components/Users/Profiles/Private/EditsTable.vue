@@ -182,8 +182,7 @@ export default {
       let userId;
       if (loc === "/accounts/profile") {
         userId = this.user().id;
-      }
-      else {
+      } else {
         userId = loc.split("/")[2];
       }
       if (userId) {

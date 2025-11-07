@@ -45,8 +45,7 @@ export default {
         if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
           _module.currentPageLocal = 1;
           _module.page = _module.currentPageLocal;
-        }
-        else {
+        } else {
           _module.currentPageLocal = Number(newVal.page);
           _module.page = _module.currentPageLocal;
         }
@@ -62,8 +61,7 @@ export default {
     if (!Object.prototype.hasOwnProperty.call(_module.$route.query, "page")) {
       _module.currentPageLocal = 1;
       _module.page = _module.currentPageLocal;
-    }
-    else {
+    } else {
       _module.currentPageLocal = Number(_module.$route.query.page);
       _module.page = _module.currentPageLocal;
     }
@@ -106,8 +104,7 @@ export default {
       if (!disable) {
         this.allowPaginate = false;
         this.PaginatePermission();
-      }
-      else {
+      } else {
         this.allowPaginate = true;
       }
     },

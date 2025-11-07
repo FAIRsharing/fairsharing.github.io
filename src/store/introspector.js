@@ -9,8 +9,7 @@ export const mutations = {
     try {
       if (Object.keys(data).includes("errors")) {
         state.error = data.errors[0].message;
-      }
-      else {
+      } else {
         localStorage.introspectionQuery = JSON.stringify(data);
         let queryParams = data.data["__schema"]["types"].filter(
           (param) => param.name === "Query",
@@ -22,8 +21,7 @@ export const mutations = {
           localStorage.searchQueryParameters = JSON.stringify(
             state.searchQueryParameters,
           );
-        }
-        else {
+        } else {
           if (
             !isEqual(
               JSON.parse(localStorage.searchQueryParameters),
@@ -33,16 +31,14 @@ export const mutations = {
             localStorage.searchQueryParameters = JSON.stringify(
               state.searchQueryParameters,
             );
-          }
-          else {
+          } else {
             state.searchQueryParameters = JSON.parse(
               localStorage.searchQueryParameters,
             );
           }
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       state.error = "Can't initialize application";
     }
   },
@@ -71,8 +67,7 @@ export const actions = {
       if (expiration) {
         this.commit("introspection/setLocalStorageExpiryTime");
         this.commit("introspection/setParameters", data.data);
-      }
-      else {
+      } else {
         this.commit(
           "introspection/setParameters",
           JSON.parse(localStorage.introspectionQuery),
@@ -108,8 +103,7 @@ export const getters = {
           expectedTypeObject,
           params[1][param],
         );
-      }
-      else {
+      } else {
         const currentVal = params[1][param];
         const expectedType = expectedTypeObject["ofType"]["ofType"].name;
         queryParameters[param] = [];
@@ -119,8 +113,7 @@ export const getters = {
               decodeURIComponent(parseParam(expectedType, val)),
             );
           });
-        }
-        else {
+        } else {
           queryParameters[param] = decodeURIComponent(
             parseParam(expectedType, currentVal),
           );
@@ -168,8 +161,7 @@ export default introspectionStore;
 const parseParam = function (param, paramVal) {
   if (param.name === "Int") {
     return parseFloat(paramVal);
-  }
-  else if (param.name === "Boolean") {
+  } else if (param.name === "Boolean") {
     return JSON.parse(paramVal);
   }
   return paramVal;

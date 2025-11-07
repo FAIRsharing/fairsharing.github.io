@@ -85,8 +85,7 @@ export default {
       });
       if (!currentQuery[chip.type]) {
         currentQuery[chip.type] = encodeURIComponent(chip.label);
-      }
-      else {
+      } else {
         let terms = currentQuery[chip.type].split(",");
         terms.push(encodeURIComponent(chip.label));
         currentQuery[chip.type] = terms

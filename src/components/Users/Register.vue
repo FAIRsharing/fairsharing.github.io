@@ -187,8 +187,7 @@ export default {
         _module.message =
           "Account created, please verify your email address " + user_mail;
         _module.$refs["registerForm"].reset();
-      }
-      else {
+      } else {
         Object.keys(response.error.response.data.errors).forEach(
           function (errorField) {
             response.error.response.data.errors[errorField].forEach(

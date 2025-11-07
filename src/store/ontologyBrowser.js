@@ -62,8 +62,7 @@ export const actions = {
     if (!term || state.activeTerms.includes(term.identifier)) {
       commit("resetActiveTerms");
       commit("resetSelectedTerm");
-    }
-    else {
+    } else {
       await dispatch("fetchRecords", term.name);
       commit("setActiveTerms", [term.identifier]);
       commit("setSelectedTerm", term);
@@ -153,21 +152,21 @@ export const mutations = {
 export const getters = {
   getAncestors:
     (state) =>
-      (value, field = "id", target = "identifier") => {
-        let ancestors = [];
-        state.flattenedTree
-          .filter((obj) => obj[target] === value)
-          .forEach((node) => {
-            node.ancestors.forEach((ancestorID) => {
-              state.flattenedTree
-                .filter((obj) => obj.identifier === ancestorID)
-                .forEach((ancestor) => {
-                  ancestors.push(ancestor[field]);
-                });
-            });
+    (value, field = "id", target = "identifier") => {
+      let ancestors = [];
+      state.flattenedTree
+        .filter((obj) => obj[target] === value)
+        .forEach((node) => {
+          node.ancestors.forEach((ancestorID) => {
+            state.flattenedTree
+              .filter((obj) => obj.identifier === ancestorID)
+              .forEach((ancestor) => {
+                ancestors.push(ancestor[field]);
+              });
           });
-        return [...new Set(ancestors)];
-      },
+        });
+      return [...new Set(ancestors)];
+    },
   getCurrentPage: (state) => {
     return state.pagination.page;
   },

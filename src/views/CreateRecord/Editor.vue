@@ -137,8 +137,7 @@ export default {
     let changes = this.getAllChanges;
     if (changes === 0) {
       next();
-    }
-    else {
+    } else {
       const answer = window.confirm(
         `Are you sure you want to leave this page? You have ${changes} unsaved modifications.`,
       );
@@ -218,8 +217,7 @@ export default {
       let id;
       try {
         id = _module.currentRecord["fairsharingRecord"].id;
-      }
-      catch {
+      } catch {
         id = _module.$route.params.id;
       }
       return id;

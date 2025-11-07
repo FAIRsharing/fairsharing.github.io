@@ -156,15 +156,13 @@ export default {
           );
           if (found.length > 0) {
             this.error = `Term ${this.newTerm} already declared as a ${found[0].model}`;
-          }
-          else {
+          } else {
             this.newTags[this.newTags.length] = JSON.parse(
               JSON.stringify(this.newTerm),
             );
             this.newTerm = null;
           }
-        }
-        else {
+        } else {
           this.error = `Term ${this.newTerm} is already in creation list`;
         }
       }

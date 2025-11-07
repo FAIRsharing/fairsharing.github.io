@@ -329,8 +329,7 @@ export default {
             );
           },
         );
-      }
-      else {
+      } else {
         this.error = true;
       }
     },
@@ -350,8 +349,7 @@ export default {
           },
         );
         this.year = null;
-      }
-      else {
+      } else {
         this.year = new Date().getFullYear();
         this.getCuratorsList(new Date().getFullYear());
       }

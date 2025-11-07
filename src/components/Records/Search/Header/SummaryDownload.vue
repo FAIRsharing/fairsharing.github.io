@@ -100,8 +100,7 @@ export default {
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title =
           this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-      }
-      else title = title.charAt(0).toUpperCase() + title.slice(1);
+      } else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -135,8 +134,7 @@ export default {
         const cleaned = params["q"].replace(/[^0-9a-z\s]/gi, "");
         const newParams = { ...params, q: cleaned };
         downloadSearchResults.queryParam = newParams;
-      }
-      else {
+      } else {
         downloadSearchResults.queryParam = params;
       }
       let ts = Math.round(new Date().getTime() / 1000);

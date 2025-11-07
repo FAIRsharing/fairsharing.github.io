@@ -409,8 +409,7 @@ export default {
         /* istanbul ignore if */
         if (publications.error) {
           return [];
-        }
-        else {
+        } else {
           output = publications["activities-summary"]["works"]["group"]
             .slice(0, 7)
             .map((obj) => {
@@ -447,8 +446,7 @@ export default {
       let text = this.getHostname() + "users/" + this.user().id;
       try {
         await navigator.clipboard.writeText(text);
-      }
-      catch ($e) {
+      } catch ($e) {
         this.copyButtonStatus = false;
       }
     },

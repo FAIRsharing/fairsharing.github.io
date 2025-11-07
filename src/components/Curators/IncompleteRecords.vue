@@ -201,8 +201,7 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.incompleteRecords.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

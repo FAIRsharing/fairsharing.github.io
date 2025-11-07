@@ -1,37 +1,20 @@
 <template>
-  <v-container
-    id="createRecord"
-    fluid
-  >
-    <v-form
-      id="createRecord"
-      ref="createRecord"
-      v-model="formValid"
-    >
+  <v-container id="createRecord" fluid>
+    <v-form id="createRecord" ref="createRecord" v-model="formValid">
       <v-row>
         <v-col cols="12">
           <v-card v-if="loaded">
             <v-card-title class="bg-primary text-white">
-              <h3
-                v-if="fairassistOnly"
-                class="text-white"
-              >
+              <h3 v-if="fairassistOnly" class="text-white">
                 Creating a new FAIRassist record
               </h3>
-              <h3
-                v-else
-              >
-                Creating a new FAIRsharing record
-              </h3>
+              <h3 v-else>Creating a new FAIRsharing record</h3>
             </v-card-title>
-            <v-card-text
-              v-if="message.error"
-              class="pt-4"
-            >
+            <v-card-text v-if="message.error" class="pt-4">
               <v-alert type="error">
-                {{ message.value }}<v-icon class="px-3">
-                fa-arrow-right
-              </v-icon> {{ message.value.response.data }}
+                {{ message.value
+                }}<v-icon class="px-3"> fa-arrow-right </v-icon>
+                {{ message.value.response.data }}
               </v-alert>
             </v-card-text>
             <v-card-text class="pt-3">
@@ -65,26 +48,22 @@
         </v-col>
       </v-row>
     </v-form>
-    <v-dialog
-      v-model="recordCreated"
-      max-width="700px"
-    >
+    <v-dialog v-model="recordCreated" max-width="700px">
       <v-card>
-        <v-card-title
-          class="text-h5"
-        >
+        <v-card-title class="text-h5">
           <p>
             <b>Draft submission saved!</b>
           </p>
         </v-card-title>
         <v-card-text>
           <p>
-            We'll email you confirmation, including  details of the
-            remaining fields you'll need to add for your record. Our curators
-            won't check your record until it is complete.
+            We'll email you confirmation, including details of the remaining
+            fields you'll need to add for your record. Our curators won't check
+            your record until it is complete.
           </p>
           <p>
-            Click the button below to carry on adding information to your record.
+            Click the button below to carry on adding information to your
+            record.
           </p>
         </v-card-text>
         <v-card-actions>
@@ -103,11 +82,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters,mapState } from "vuex"
+import { mapActions, mapGetters, mapState } from "vuex";
 
-import status from "@/data/status.json"
-import RESTClient from "@/lib/Client/RESTClient.js"
-import { isUrl } from "@/utils/rules.js"
+import status from "@/data/status.json";
+import RESTClient from "@/lib/Client/RESTClient.js";
+import { isUrl } from "@/utils/rules.js";
 
 import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
 import Loaders from "../../components/Navigation/Loaders";
@@ -119,11 +98,11 @@ let restClient = new RESTClient();
  */
 export default {
   name: "NewRecordPage",
-  components: {Loaders, BaseFields},
+  components: { Loaders, BaseFields },
   props: {
-    fairassistOnly: { type: Boolean, default: false }
+    fairassistOnly: { type: Boolean, default: false },
   },
-  data(){
+  data() {
     return {
       record: {},
       newRecord: {},
@@ -132,22 +111,24 @@ export default {
       loaded: false,
       message: {
         error: false,
-        value: null
+        value: null,
       },
       rules: {
-        isUrl: function(){return isUrl()}
+        isUrl: function () {
+          return isUrl();
+        },
       },
       submitAnyway: false,
       recordCreated: false,
       loading: false,
-    }
+    };
   },
   computed: {
-    ...mapState('users', ["user"]),
-    ...mapState('editor', ['possibleDuplicates', 'objectTypes']),
-    ...mapGetters('record', ['getSection'])
+    ...mapState("users", ["user"]),
+    ...mapState("editor", ["possibleDuplicates", "objectTypes"]),
+    ...mapGetters("record", ["getSection"]),
   },
-  async mounted(){
+  async mounted() {
     this.$nextTick(async function () {
       this.loaded = false;
       this.resetRecord();
@@ -158,28 +139,30 @@ export default {
     });
   },
   methods: {
-    ...mapActions("editor",
-      ["getCountries",
-        "getRecordTypes",
-        "getTags",
-        "getObjectTypes",
-        "getPossibleDuplicates",
-        "cleanEditorStore"
-      ]),
+    ...mapActions("editor", [
+      "getCountries",
+      "getRecordTypes",
+      "getTags",
+      "getObjectTypes",
+      "getPossibleDuplicates",
+      "cleanEditorStore",
+    ]),
     ...mapActions("record", ["resetRecord"]),
-    async getData(){
+    async getData() {
       await this.getCountries();
       await this.getRecordTypes(this.fairassistOnly);
       await this.getTags();
       await this.getObjectTypes();
     },
-    async createRecord(){
+    async createRecord() {
       this.message = {
         error: false,
-        value: null
+        value: null,
       };
 
-      let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
+      let record = JSON.parse(
+        JSON.stringify(this.getSection("generalInformation").data),
+      );
       // The user has not specified to ignore the warning of duplicate records.
       // So, a check is made to see if the server reports any possibilities
       if (!this.submitAnyway) {
@@ -189,12 +172,10 @@ export default {
       if (this.submitAnyway) {
         if (this.possibleDuplicates.length > 0) {
           record.dups_suspected = true;
-        }
-        else {
+        } else {
           record.dups_suspected = false;
         }
-      }
-      else {
+      } else {
         if (this.possibleDuplicates.length > 0) {
           return;
         }
@@ -204,20 +185,22 @@ export default {
 
       record.record_type_id = record.type.id;
       record.metadata.status = status;
-      record.country_ids = record.countries.map(obj => obj.id);
+      record.country_ids = record.countries.map((obj) => obj.id);
       record.metadata.status = record.status;
 
       delete record.status;
       delete record.countries;
       delete record.type;
-      let new_record = await restClient.createRecord(record, this.user().credentials.token);
+      let new_record = await restClient.createRecord(
+        record,
+        this.user().credentials.token,
+      );
       if (new_record.error) {
         this.message = {
           error: true,
-          value: new_record.error
-        }
-      }
-      else {
+          value: new_record.error,
+        };
+      } else {
         this.recordCreated = true;
         this.newRecord = new_record;
       }
@@ -225,7 +208,7 @@ export default {
     redirectToEdit(record) {
       this.recordCreated = false;
       this.$router.push({
-        path: record.data.id + "/edit"
+        path: record.data.id + "/edit",
       });
     },
     async checkForDups(record) {
@@ -234,27 +217,29 @@ export default {
       // are over three characters in length.
       let fieldsToQuery = [];
       // These are only queried if they are at least 6 characters...
-      [record.metadata.name, record.metadata.abbreviation].forEach(function(val) {
-        /* istanbul ignore else */
-        if (val === null) {
-          return;
-        }
-        if (val.trim().length >= 3) {
-          fieldsToQuery.push(val);
-        }
-      });
+      [record.metadata.name, record.metadata.abbreviation].forEach(
+        function (val) {
+          /* istanbul ignore else */
+          if (val === null) {
+            return;
+          }
+          if (val.trim().length >= 3) {
+            fieldsToQuery.push(val);
+          }
+        },
+      );
       // ...whereas any length URL will do if it is valid.
       let urlCheck = _module.rules.isUrl();
       /* istanbul ignore next */
       if (urlCheck(record.metadata.homepage)) {
-        fieldsToQuery.push(record.metadata.homepage)
+        fieldsToQuery.push(record.metadata.homepage);
       }
       /* istanbul ignore if */
       if (fieldsToQuery.length === 0) {
         return;
       }
       // Now send the query.
-      await _module.getPossibleDuplicates({fields: fieldsToQuery});
+      await _module.getPossibleDuplicates({ fields: fieldsToQuery });
       if (_module.possibleDuplicates.length > 0) {
         record.dups_suspected = true;
       }
@@ -266,9 +251,9 @@ export default {
     tryAgain() {
       this.submitAnyway = false;
       this.$store.commit("editor/clearPossibleDuplicates");
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

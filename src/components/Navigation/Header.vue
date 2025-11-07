@@ -214,8 +214,7 @@ export default {
       let currentQuery = this.$route.query;
       if (!isEmpty(currentQuery)) {
         return currentQuery;
-      }
-      else {
+      } else {
         return { fairsharingRegistry: this.$route.name };
       }
     },

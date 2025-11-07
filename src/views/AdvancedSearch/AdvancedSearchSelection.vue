@@ -120,8 +120,7 @@ export default {
         }
         if (value === false || value[0] === "false") {
           return "false";
-        }
-        else {
+        } else {
           refinedValues = value
             .map((item) => this.cleanString(item))
             .join(" OR ");

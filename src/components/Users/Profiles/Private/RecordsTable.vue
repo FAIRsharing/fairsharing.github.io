@@ -134,8 +134,7 @@ export default {
           value: "isApproved",
           align: "center",
         });
-      }
-      else if (this.source === "maintenanceRequests") {
+      } else if (this.source === "maintenanceRequests") {
         headers.push({ title: "Status", value: "status", align: "center" });
       }
       headers.push({

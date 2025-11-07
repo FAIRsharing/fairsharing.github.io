@@ -140,8 +140,7 @@ export default {
             ..._module.$route.query,
             q: _module.searchTerm,
           };
-        }
-        else {
+        } else {
           query = {
             // Changed due to: https://github.com/FAIRsharing/FAIRsharing-API/issues/625
             q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
@@ -167,8 +166,7 @@ export default {
           });
           _module.searchTerm = null;
           _module.$refs.form.resetValidation();
-        }
-        else {
+        } else {
           const selectedRegistriesValues = [];
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);

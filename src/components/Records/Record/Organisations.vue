@@ -227,8 +227,7 @@ export default {
           let extendedItem = { ...item, grants: [] };
           extendedItem.grants.push(item.grant);
           processedOrganisations.push(extendedItem);
-        }
-        else {
+        } else {
           // add grant of repeated item to the corresponding item with repeated id
           let repeatedItemIndex = processedOrganisations.findIndex(
             (obj) => obj.organisation.id === item.organisation.id,

@@ -221,8 +221,7 @@ export default {
           count: 0,
           type: "conforming_resources",
         };
-      }
-      else {
+      } else {
         _module.tabsData.tabs.in_policies = {
           relation: "recommends",
           data: [],
@@ -285,11 +284,10 @@ export default {
                 _module.tabsData.tabs[tabName].data.length;
             }
           });
-        }
-        else {
-        /*
-         * Here, only incoming recommends or collects relations are expected.
-         */
+        } else {
+          /*
+           * Here, only incoming recommends or collects relations are expected.
+           */
           Object.keys(_module.tabsData.tabs).forEach((tabName) => {
             _module.tabsData.tabs[tabName].data = _module
               .prepareAssociations(
@@ -307,8 +305,7 @@ export default {
               _module.tabsData.tabs[tabName].data.length;
           });
         }
-      }
-      else {
+      } else {
         return false;
       }
     },

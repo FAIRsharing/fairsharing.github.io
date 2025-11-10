@@ -16,7 +16,7 @@
             fa-question-circle
           </v-icon>
         </template>
-        {{ recordTooltips['reference_url'] }}
+        {{ recordTooltips['reference_url'][getField('type')] }}
       </v-tooltip>
       <b class="width-15-percent-flex">Reference URL</b>
     </span>
@@ -41,7 +41,7 @@
             fa-question-circle
           </v-icon>
         </template>
-        {{ recordTooltips['reference_url'] }}
+        {{ recordTooltips['reference_url'][getField('type')] }}
       </v-tooltip>
       <b class="width-15-percent-flex">Reference URL</b>
     </span>
@@ -75,7 +75,7 @@
             fa-question-circle
           </v-icon>
         </template>
-        {{ recordTooltips['reference_url'] }}
+        {{ recordTooltips['reference_url'][getField('type')] }}
       </v-tooltip>
       <b class="width-15-percent-flex">Reference URL</b>
     </span>

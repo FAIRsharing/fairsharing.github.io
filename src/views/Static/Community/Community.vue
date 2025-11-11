@@ -340,7 +340,7 @@
                 >
                   <template #activator="{ on }">
                     <a
-                      :href="`/organisations/${org.id}`"
+                      :href="orgUrl(org)"
                       class="d-inline-block"
                       v-on="on"
                     >{{ org.name }}
@@ -350,7 +350,7 @@
                 </v-tooltip>
                 <a
                   v-else
-                  :href="`/organisations/${org.id}`"
+                  :href="orgUrl(org)"
                   class="d-inline-block"
                 >{{ org.name }}
                 </a>
@@ -723,6 +723,14 @@ export default {
         },
         isArray(input){
             return isArray(input)
+        },
+        orgUrl(org) {
+          if (org.id) {
+            return `/organisations/${org.id}`;
+          }
+          else {
+            return org.url;
+          }
         }
     }
 }

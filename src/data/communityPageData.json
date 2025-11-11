@@ -444,6 +444,28 @@
           "homepage": "https://www.f-uji.net",
           "usage_image": "",
           "id": "f-uji"
+        },
+        {
+          "organisations": [
+            {
+              "name": "Tosatto BioComputing Group, University of Padova",
+              "url": "https://biocomputingup.it/"
+            }
+          ],
+          "contacts": [ ],
+          "methods": [
+            "Cross-referencing FAIRsharing content within your resource"
+          ],
+          "name": "OSAI AI Ecosystem",
+          "types": [
+            "(Meta)data retrieval/integration"
+          ],
+          "logo": "osai_ai_ecosystem.png",
+          "status": "Completed",
+          "description": "OSAI is designed around 9x guidelines to support AI best practices. These are mapped to implementation resources of diverse scope. Within there is a degree of overlap for databases, standards, policies, + of FAIRsharing for which we cross link back out to. We hope to keep all content aligned and ensure good alignment to get our users into FAIRsharing for richer functionality on the databases/standards/+ side of things using for example FAIRsharing KG to see which AI model hosting resources would use croissant/fair4ml or other metadata standards is a key use case.",
+          "homepage": "https://osai.dome-ml.org/ai-ecosystem",
+          "usage_image": "osai_screenshot.png",
+          "id": "osai"
         }
       ]
     }

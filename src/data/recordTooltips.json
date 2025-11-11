@@ -15,7 +15,10 @@
     "organisations": "Any organisations related to this resource, e.g. funders or maintainers.",
     "publication_for_citation": "How to cite the resource described by this record.",
     "record_type": "The type of resource this record describes; each FAIRsharing registry is composed of several types.",
-    "reference_url": "A direct link to the standards, policies or databases on the homepage of the organisation or group with which the collection is associated.",
+    "reference_url": {
+      "collection":   "A direct link to the standards, policies or databases on the homepage of the organisation or group with which the collection is associated.",
+      "principle": "The URL of a documentation or reference URL more fully describing the principle."
+    },
     "taxonomies": "The organismal taxonomies covered by this resource. This is only applicable to life sciences records.",
     "subjects": "The broad subject area / academic disciplines for this record.",
     "tools": "The tools associated with or maintained by this resource.",

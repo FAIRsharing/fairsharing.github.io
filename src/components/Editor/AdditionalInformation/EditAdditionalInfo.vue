@@ -406,7 +406,6 @@ export default {
           }
         });
       }
-      console.log(JSON.stringify(Object.keys(output)));
       return output;
     },
     showOverlay(id, fieldName, item, template, required){

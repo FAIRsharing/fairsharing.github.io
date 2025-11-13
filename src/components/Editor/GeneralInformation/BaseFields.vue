@@ -401,6 +401,29 @@
             <span class="v-label-white">This database uses internal identifiers rather than a community-standard identifier schema.</span>
           </template>
         </v-checkbox>
+        <v-checkbox
+          v-if="isIdentifierSchema()"
+          v-model="fields.metadata['gupri']"
+          class="mr-2 "
+        >
+          <template #prepend>
+            <v-tooltip
+              bottom
+              max-width="300px"
+              class="text-justify"
+            >
+              <template #activator="{ on }">
+                <v-icon v-on="on">
+                  fa-question-circle
+                </v-icon>
+              </template>
+              {{ tooltips['gupri'] }}
+            </v-tooltip>
+          </template>
+          <template #label>
+            <span class="v-label-white">Is this identifier schema a <a href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas">GUPRI</a> as defined by FAIRsharing?</span>
+          </template>
+        </v-checkbox>
       </v-col>
 
       <!-- deprecation reasons -->
@@ -674,6 +697,13 @@
               this.fields.type === 'repository' ||
               this.fields.type === 'knowledgebase' ||
               this.fields.type === 'knowledgebase_and_repository') {
+            return true;
+          }
+          return false;
+        },
+        isIdentifierSchema() {
+          if (this.fields.type.name === 'identifier_schema' ||
+            this.fields.type === 'identifier_schema') {
             return true;
           }
           return false;

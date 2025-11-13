@@ -346,7 +346,7 @@
                 <v-tooltip v-if="org.tooltip" location="bottom">
                   <template #activator="{ props }">
                     <a
-                      :href="`/organisations/${org.id}`"
+                      :href="orgUrl(org)"
                       class="d-inline-block"
                       v-bind="props"
                       >{{ org.name }}
@@ -356,7 +356,7 @@
                 </v-tooltip>
                 <a
                   v-else
-                  :href="`/organisations/${org.id}`"
+                  :href="orgUrl(org)"
                   class="d-inline-block"
                   >{{ org.name }}
                 </a>
@@ -725,25 +725,32 @@ export default {
         });
       },
     },
-  },
-  created() {
-    this.$nextTick(() => {
-      // update the UI padding and margin after DOM is fully loaded.
-      this.applyCss = true;
-    });
-  },
-  methods: {
-    jumpToAnchor(selectedAnchor) {
-      if (selectedAnchor !== this.currentAnchor) {
-        this.$router.push({ hash: `${selectedAnchor}` });
-        this.currentAnchor = selectedAnchor;
-      }
+    created() {
+        this.$nextTick(() => {
+            // update the UI padding and margin after DOM is fully loaded.
+            this.applyCss = true
+        })
     },
-    isArray(input) {
-      return isArray(input);
-    },
-  },
-};
+    methods: {
+        jumpToAnchor(selectedAnchor) {
+            if (selectedAnchor !== this.currentAnchor) {
+                this.$router.push({hash: `${selectedAnchor}`});
+                this.currentAnchor = selectedAnchor;
+            }
+        },
+        isArray(input){
+            return isArray(input)
+        },
+        orgUrl(org) {
+          if (org.id) {
+            return `/organisations/${org.id}`;
+          }
+          else {
+            return org.url;
+          }
+        }
+    }
+}
 </script>
 
 <style scoped lang="scss">

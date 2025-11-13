@@ -99,11 +99,22 @@
         class="mb-2"
       >
         &lt;v-card-text v-if="systemMessages">
-          &lt;v-card-title id="system-messages" class="bg-green text-white">
+          &lt;v-card-title
+            id="system-messages"
+            class="green white--text"
+          >
             SYSTEM MESSAGES
-            &lt;v-btn class="bg-info ml-5" @click.stop="showAddMessage()">
-              &lt;v-icon color="white" class="mr-1"> fa fa-plus &lt;/v-icon>
-              &lt;span class="text-white">Add message&lt;/span>
+            &lt;v-btn
+              class="info ml-5"
+              @click.stop="showAddMessage()"
+            >
+              &lt;v-icon
+                color="white"
+                class="mr-1"
+              >
+                fa fa-plus
+              &lt;/v-icon>
+              &lt;span class="white--text">Add message&lt;/span>
             &lt;/v-btn>
             &lt;v-spacer />
           &lt;/v-card-title>
@@ -113,26 +124,33 @@
             :items="systemMessages"
             :footer-props="{ 'items-per-page-options': [5, 10, 20, 25, 30] }"
           >
-            &lt;template v-if="systemMessages" #item="props">
+            &lt;template
+              v-if="systemMessages"
+              #item="props"
+            >
               &lt;tr>
                 &lt;td>
                   {{ props.item.id }}
                 &lt;/td>
                 &lt;td>
                   &lt;v-edit-dialog
-                    v-model:return-value="props.item.message"
+                    :return-value.sync="props.item.message"
                     large
-                    @save="saveEditedMessage(props.item.id, props.item.message)"
+                    @save="
+                      saveEditedMessage(props.item.id, props.item.message)
+                    "
                   >
                     {{ props.item.message }}
                     &lt;template #input>
                       &lt;div class="dialogMessageEdit">
-                        &lt;div class="mt-4 text-h6">Update Message&lt;/div>
+                        &lt;div class="mt-4 title">
+                          Update Message
+                        &lt;/div>
                         &lt;v-textarea
                           v-model="props.item.message"
                           width="1200px"
                           label="Edit away!"
-                          variant="filled"
+                          filled
                         />
                       &lt;/div>
                     &lt;/template>
@@ -148,8 +166,8 @@
                   &lt;v-icon
                     color="red"
                     dark
-                    end
-                    size="small"
+                    right
+                    small
                     @click="deleteMessage(props.item.id)"
                   >
                     fas fa-trash
@@ -164,10 +182,18 @@
     &lt;!-- this shouldn't appear as an unauthorised user shouldn't be here -->
     &lt;v-row>
       &lt;!-- dialogs -->
-      &lt;v-layout row justify-center>
-        &lt;v-dialog v-model="dialogs.addMessage" max-width="700px">
+      &lt;v-layout
+        row
+        justify-center
+      >
+        &lt;v-dialog
+          v-model="dialogs.addMessage"
+          max-width="700px"
+        >
           &lt;v-card>
-            &lt;v-card-title class="text-h5"> Add new message &lt;/v-card-title>
+            &lt;v-card-title class="headline">
+              Add new message
+            &lt;/v-card-title>
             &lt;v-card-text>
               &lt;v-textarea
                 v-model="dialogs.newMessage"
@@ -181,15 +207,15 @@
             &lt;v-card-actions>
               &lt;v-spacer />
               &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 @click="closeAddMessageMenu()"
               >
                 Cancel
               &lt;/v-btn>
               &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 :disabled="!dialogs.newMessage"
                 @click="addMessage()"
               >
@@ -200,10 +226,16 @@
           &lt;/v-card>
         &lt;/v-dialog>
       &lt;/v-layout>
-      &lt;v-layout row justify-center>
-        &lt;v-dialog v-model="dialogs.deleteMessage" max-width="700px">
+      &lt;v-layout
+        row
+        justify-center
+      >
+        &lt;v-dialog
+          v-model="dialogs.deleteMessage"
+          max-width="700px"
+        >
           &lt;v-card>
-            &lt;v-card-title class="text-h5">
+            &lt;v-card-title class="headline">
               Are you sure you want to
               &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
                 DELETE
@@ -216,15 +248,15 @@
             &lt;v-card-actions>
               &lt;v-spacer />
               &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 @click="closeDeleteMessageMenu()"
               >
                 Cancel
               &lt;/v-btn>
               &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 @click="confirmDeleteMessage()"
               >
                 OK
@@ -243,7 +275,7 @@ import { mapState } from "vuex";
 
 import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getMessages from "@/lib/GraphClient/queries/getMessages.json";
+import getMessages from "@/lib/GraphClient/queries/getMessages.json"
 import store from "@/store";
 import formatDate from "@/utils/generalUtils";
 
@@ -253,15 +285,15 @@ const client = new GraphClient();
 export default {
   name: "SystemMessages",
   mixins: [formatDate],
-  props: {
+  props:{
     headerItems: {
       type: Array,
-      default: null,
+      default: null
     },
   },
   data: () => {
     return {
-      systemMessages: [],
+      systemMessages:[],
       loading: false,
       dialogs: {
         id: null,
@@ -285,19 +317,17 @@ export default {
     client.setHeader(this.user().credentials.token);
     //Fetching hidden records
     let messages = await client.executeQuery(getMessages);
-    this.prepareSystemMessages(messages);
+    this.prepareSystemMessages(messages)
     this.loading = false;
   },
   methods: {
+
     /**
      * Method to fetch messages from system
      * @param dataCuration
      */
     prepareSystemMessages(dataCuration) {
-      if (
-        Array.isArray(dataCuration.messages) &amp;&amp;
-        dataCuration.messages.length
-      ) {
+      if(Array.isArray(dataCuration.messages) &amp;&amp; dataCuration.messages.length) {
         dataCuration.messages.forEach((item) => {
           this.systemMessages.push({
             id: item.id,
@@ -321,8 +351,8 @@ export default {
         message: message,
       };
       let response = await restClient.updateMessage(
-        data,
-        this.user().credentials.token,
+          data,
+          this.user().credentials.token
       );
       if (response.error) {
         _module.error.general = response.error;
@@ -353,8 +383,8 @@ export default {
         message: _module.dialogs.newMessage,
       };
       let response = await restClient.createMessage(
-        data,
-        this.user().credentials.token,
+          data,
+          this.user().credentials.token
       );
       if (response.error) {
         _module.error.general = response.error;
@@ -380,8 +410,8 @@ export default {
     async confirmDeleteMessage() {
       const _module = this;
       let response = await restClient.deleteMessage(
-        _module.dialogs.messageId,
-        this.user().credentials.token,
+          _module.dialogs.messageId,
+          this.user().credentials.token
       );
       if (response.error) {
         _module.error.general = response.error;
@@ -400,7 +430,7 @@ export default {
 &lt;/script>
 
 &lt;style scoped>
-:deep(.v-data-table-header tr th) {
+::v-deep .v-data-table-header tr th {
   white-space: nowrap;
 }
 &lt;/style>
@@ -449,7 +479,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 7th 2025
+		on Tue Nov 11th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -4,29 +4,23 @@
       <NotFound />
     </div>
     <v-row v-else>
-      <v-col
-        cols="12"
-        xs="12"
-        sm="12"
-        md="3"
-        lg="3"
-        xl="3"
-        class="pt-0 mt-2"
-      >
+      <v-col cols="12" xs="12" sm="12" md="3" lg="3" xl="3" class="pt-0 mt-2">
         <v-card height="100%">
-          <v-card-title class="blue white--text">
+          <v-card-title class="bg-blue text-white">
             Legend and configuration
           </v-card-title>
           <v-card-text class="pt-3">
             <v-container fluid>
               <v-row no-gutters>
                 <v-col cols="12">
-                  The graph's centre is shown in <span class="red--text">red.</span>
+                  The graph's centre is shown in
+                  <span class="text-red">red.</span>
                 </v-col>
                 <v-col cols="12">
-                  Click on any point to re-draw the graph with that point as the centre.
-                  Click on the centre to view the record. Hover over to view direct connections. Use the mouse/trackpad
-                  to scroll and zoom.
+                  Click on any point to re-draw the graph with that point as the
+                  centre. Click on the centre to view the record. Hover over to
+                  view direct connections. Use the mouse/trackpad to scroll and
+                  zoom.
                 </v-col>
                 <v-col cols="12">
                   For more information, please see the
@@ -34,8 +28,8 @@
                     href="https://fairsharing.gitbook.io/fairsharing/about-our-records/network-graphs"
                     target="_blank"
                   >
-                    documentation
-                  </a>.
+                    documentation </a
+                  >.
                 </v-col>
               </v-row>
               <v-row no-gutters>
@@ -43,7 +37,7 @@
                   Relations between records are coloured as follows:
                 </v-col>
                 <v-col cols="12">
-                  <v-list dense>
+                  <v-list density="compact">
                     <v-list-item
                       v-for="legendItem in networkGraph['legend']"
                       :key="legendItem['name']"
@@ -53,8 +47,10 @@
                           fa fa-long-arrow-alt-right
                         </v-icon>
                       </v-list-item-icon>
-                      <v-list-item-title class="font-weight-regular text-body-2">
-                        {{ legendItem['name'] }}
+                      <v-list-item-title
+                        class="font-weight-regular text-body-2"
+                      >
+                        {{ legendItem["name"] }}
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -63,12 +59,12 @@
               <v-divider />
               <!-- Color definition meaning in NetworkGraph -->
               <div>
-                <h3 class="mb-4">
-                  Registry
-                </h3>
+                <h3 class="mb-4">Registry</h3>
                 <v-row
                   no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                  :class="{
+                    'd-flex justify-space-around': $vuetify.display.smOnly,
+                  }"
                 >
                   <v-col
                     cols="12"
@@ -79,21 +75,29 @@
                     xl="12"
                     fluid
                     class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                    :class="
+                      $vuetify.display.smOnly
+                        ? 'flex-row align-center flex-grow-0 flex-shrink-1'
+                        : 'flex-column'
+                    "
                   >
                     <v-btn
                       v-for="registryItem in networkGraph['registry']"
                       :key="registryItem['name']"
                       class="status_style mx-3 mb-2"
-                      :color="registryItem['active'] ? registryItem['color'] : 'gray' "
+                      :color="
+                        registryItem['active'] ? registryItem['color'] : 'gray'
+                      "
                       :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
-                        registryItem['active'] ? 'white--text ' : 'black--text '
+                        $vuetify.display.xsOnly
+                          ? 'full-width'
+                          : 'button-filters',
+                        registryItem['active'] ? 'text-white ' : 'black--text ',
                       ]"
                       :disabled="!buttonsActive"
                       @click="toggleClick(registryItem)"
                     >
-                      {{ registryItem['name'] }}
+                      {{ registryItem["name"] }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -101,12 +105,12 @@
               <v-divider />
               <div>
                 <!-- Color definition meaning in NetworkGraph -->
-                <h3 class="mb-4">
-                  Status (shown on mouseover)
-                </h3>
+                <h3 class="mb-4">Status (shown on mouseover)</h3>
                 <v-row
                   no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                  :class="{
+                    'd-flex justify-space-around': $vuetify.display.smOnly,
+                  }"
                 >
                   <v-col
                     cols="12"
@@ -117,21 +121,27 @@
                     xl="12"
                     fluid
                     class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                    :class="
+                      $vuetify.display.smOnly
+                        ? 'flex-row align-center flex-grow-0 flex-shrink-1'
+                        : 'flex-column'
+                    "
                   >
                     <v-btn
                       v-for="status in networkGraph['status']"
                       :key="status['name']"
                       class="status_style mx-3 mb-2"
-                      :color="status['active'] ? status['color'] : 'gray' "
+                      :color="status['active'] ? status['color'] : 'gray'"
                       :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
-                        status['active'] ? 'white--text ' : 'black--text '
+                        $vuetify.display.xsOnly
+                          ? 'full-width'
+                          : 'button-filters',
+                        status['active'] ? 'text-white ' : 'black--text ',
                       ]"
                       :disabled="!buttonsActive"
                       @click="toggleClick(status)"
                     >
-                      {{ status['name'] }}
+                      {{ status["name"] }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -139,12 +149,12 @@
               <v-divider />
               <div>
                 <!-- buttons here -->
-                <h3 class="mb-4">
-                  Distance from centre
-                </h3>
+                <h3 class="mb-4">Distance from centre</h3>
                 <v-row
                   no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                  :class="{
+                    'd-flex justify-space-around': $vuetify.display.smOnly,
+                  }"
                 >
                   <v-col
                     cols="12"
@@ -155,7 +165,11 @@
                     xl="12"
                     fluid
                     class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                    :class="
+                      $vuetify.display.smOnly
+                        ? 'flex-row align-center flex-grow-0 flex-shrink-1'
+                        : 'flex-column'
+                    "
                   >
                     <v-btn
                       v-for="distance in networkGraph['distance']"
@@ -164,13 +178,15 @@
                       class="status_style mx-3 mb-2"
                       :color="getLengthColour(distance['hops'])"
                       :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
-                        distance['active'] ? 'white--text ' : 'black--text '
+                        $vuetify.display.xsOnly
+                          ? 'full-width'
+                          : 'button-filters',
+                        distance['active'] ? 'text-white ' : 'black--text ',
                       ]"
                       :disabled="!buttonsActive"
                       @click="lengthLimit(distance)"
                     >
-                      {{ distance['name'] }}
+                      {{ distance["name"] }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -179,82 +195,67 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col
-        cols="12"
-        xs="12"
-        sm="12"
-        md="9"
-        lg="9"
-        xl="9"
-        class="pt-0 mt-2"
-      >
-        <v-btn
-          class="ml-2 my-2 white"
-          :to="`/${$route.params.id}`"
-        >
-          <v-icon :class="`primary--text`">
-            fa-arrow-left
-          </v-icon>
-          <span :class="`primary--text ml-3`"> Go to Record </span>
+      <v-col cols="12" xs="12" sm="12" md="9" lg="9" xl="9" class="pt-0 mt-2">
+        <v-btn class="ml-2 my-2 bg-white" :to="`/${$route.params.id}`">
+          <v-icon :class="`text-primary`"> fa-arrow-left </v-icon>
+          <span :class="`text-primary ml-3`"> Go to Record </span>
         </v-btn>
         <div v-if="noData">
-          <v-card-title class="blue white--text">
+          <v-card-title class="bg-blue text-white">
             No graph found!
           </v-card-title>
         </div>
         <div v-else>
-          <v-card-title
-            v-if="!loading"
-            class="blue white--text"
-          >
+          <v-card-title v-if="!loading" class="bg-blue text-white">
             {{ graphData.name }} ({{ graphData.id }})
           </v-card-title>
-          <v-card-subtitle
-            v-if="!loading"
-            class="blue white--text"
-          >
+          <v-card-subtitle v-if="!loading" class="bg-blue text-white">
             {{ registry }}/{{ type }}
           </v-card-subtitle>
         </div>
 
-        <v-card
-          height="100%"
-        >
-          <div
-            v-if="noData"
-            height="100%"
-          >
+        <v-card height="100%">
+          <div v-if="noData" height="100%">
             <v-card-text class="pt-3">
               <v-container fluid>
                 <v-row no-gutters>
                   <v-col cols="12">
-                    <p>No data were found showing links between this record and others. This could be because:</p>
-                    <ul style="list-style-type: square;">
-                      <li>The record has just been created and the graph data are still being generated.</li>
+                    <p>
+                      No data were found showing links between this record and
+                      others. This could be because:
+                    </p>
+                    <ul style="list-style-type: square">
+                      <li>
+                        The record has just been created and the graph data are
+                        still being generated.
+                      </li>
                       <li>This record has no links to other records.</li>
                       <li>Something went wrong.</li>
                     </ul>
-                    <br>
-                    <p>If you need assistance, please <a href="mailto:contact@fairsharing.org">contact us</a>.</p>
+                    <br />
+                    <p>
+                      If you need assistance, please
+                      <a href="mailto:contact@fairsharing.org">contact us</a>.
+                    </p>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
           </div>
-          <div
-            id="sigma-container"
-          />
+          <div id="sigma-container" />
         </v-card>
 
-
         <v-fade-transition>
-          <v-overlay
-            v-if="layoutRendering"
-            :absolute="false"
-            opacity="0.8"
-          >
-            <Loaders />
-          </v-overlay>
+          <div>
+            <v-overlay
+              v-model="layoutRendering"
+              :absolute="false"
+              opacity="0.8"
+              class="align-center justify-center"
+            >
+              <Loaders />
+            </v-overlay>
+          </div>
         </v-fade-transition>
       </v-col>
     </v-row>
@@ -269,11 +270,11 @@ import Sigma from "sigma";
 import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
 
 import Loaders from "@/components/Navigation/Loaders";
-import networkGraph from "@/data/networkGraph.json"
-import relationColors from "@/data/RelationsColors.json"
-import GraphClient from '@/lib/GraphClient/GraphClient.js'
-import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
-import NotFound from '@/views/Errors/404'
+import networkGraph from "@/data/networkGraph.json";
+import relationColors from "@/data/RelationsColors.json";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import graphQuery from "@/lib/GraphClient/queries/getGraphRelations.json";
+import NotFound from "@/views/Errors/404";
 
 const graphClient = new GraphClient();
 const graph = new Graph();
@@ -284,9 +285,9 @@ export default {
   name: "NetworkGraph",
   components: {
     Loaders,
-    NotFound
+    NotFound,
   },
-  data () {
+  data() {
     return {
       error: false,
       loading: false,
@@ -303,8 +304,8 @@ export default {
           circle: false,
           square: false,
           triangle: false,
-          diamond: false
-        }
+          diamond: false,
+        },
       },
       typesFound: [],
       graphData: {},
@@ -317,7 +318,7 @@ export default {
       selectedLengths: {
         1: true,
         2: false,
-        3: false
+        3: false,
       },
       active: {
         database: true,
@@ -328,22 +329,22 @@ export default {
         ready: true,
         in_development: true,
         uncertain: true,
-        deprecated: true
+        deprecated: true,
       },
       buttonsActive: false,
-      networkGraph: networkGraph
-    }
+      networkGraph: networkGraph,
+    };
   },
   computed: {
     currentRoute() {
-      return this.target || this.$route.params['id'];
+      return this.target || this.$route.params["id"];
     },
     layoutRendering() {
       if (this.fa2Layout === undefined || this.fa2Layout === null) {
-        return false
+        return false;
       }
       return this.fa2Layout.isRunning();
-    }
+    },
   },
   watch: {
     async currentRoute() {
@@ -354,31 +355,29 @@ export default {
         let _module = this;
         if (!_module.fa2Layout.isRunning()) {
           _module.fa2Layout.start();
-          await new Promise(r => setTimeout(r, 2000));
+          await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
-        }
-        else {
-          await new Promise(r => setTimeout(r, 2000));
+        } else {
+          await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
         }
       },
-      deep: true
+      deep: true,
     },
     selectedLengths: {
       async handler() {
         let _module = this;
         if (!_module.fa2Layout.isRunning()) {
           _module.fa2Layout.start();
-          await new Promise(r => setTimeout(r, 2000));
+          await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
-        }
-        else {
-          await new Promise(r => setTimeout(r, 2000));
+        } else {
+          await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
         }
       },
       deep: true,
-    }
+    },
   },
   async mounted() {
     let _module = this;
@@ -392,44 +391,48 @@ export default {
         _module.fa2Layout.kill();
       }
       _module.plotGraph();
-    })
+    });
   },
   methods: {
-    async getData(){
+    async getData() {
       this.loading = true;
       this.legend.types = {
         circle: false,
         square: false,
         triangle: false,
-        diamond: false
-      }
+        diamond: false,
+      };
       /* A maxPathLength of 1-3 may be specified (API's default is 2).
        Higher values may make the resulting graph rather large... */
-      graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
+      graphQuery.queryParam = { id: parseInt(this.$route.params.id) };
       const response = await graphClient.executeQuery(graphQuery);
-        //Check if response is array format
-        if (Array.isArray(response) && response[0].message === 'record not found') {
-          this.error = true;
-        }
-        //response is in object format
-        else if (response.fairsharingGraph === undefined ||
-          response.fairsharingGraph.data === undefined ||
-          response.fairsharingGraph.data.length === 0 ||
-          Object.keys(response.fairsharingGraph.data).length === 0) {
-          this.loading = false;
-          this.noData = true;
-          this.registry = "N/A";
-          this.type = "N/A";
-          this.initialized = true;
-        }
-        else {
-          this.graphData = response.fairsharingGraph.data;
-          this.loading = false;
-          this.registry = this.graphData.registry;
-          this.type = this.graphData.type;
-        }
+      //Check if response is array format
+      if (
+        Array.isArray(response) &&
+        response[0].message === "record not found"
+      ) {
+        this.error = true;
+      }
+      //response is in object format
+      else if (
+        response.fairsharingGraph === undefined ||
+        response.fairsharingGraph.data === undefined ||
+        response.fairsharingGraph.data.length === 0 ||
+        Object.keys(response.fairsharingGraph.data).length === 0
+      ) {
+        this.loading = false;
+        this.noData = true;
+        this.registry = "N/A";
+        this.type = "N/A";
+        this.initialized = true;
+      } else {
+        this.graphData = response.fairsharingGraph.data;
+        this.loading = false;
+        this.registry = this.graphData.registry;
+        this.type = this.graphData.type;
+      }
     },
-    async plotGraph(){
+    async plotGraph() {
       let _module = this;
       graph.clear();
       graph.import(this.graphData);
@@ -450,15 +453,12 @@ export default {
       });
 
       // eslint-disable-next-line no-unused-vars
-      renderer = new Sigma(
-          graph,
-          container,
-          {
-            allowInvalidContainer: true,
-            nodeProgramClasses: {
-              image: getNodeProgramImage()
-            }
-          });
+      renderer = new Sigma(graph, container, {
+        allowInvalidContainer: true,
+        nodeProgramClasses: {
+          image: getNodeProgramImage(),
+        },
+      });
       _module.fa2Layout.start();
 
       // Attempt to highlight nodes on hover...
@@ -477,9 +477,9 @@ export default {
 
         // This is for hiding everything except the node being hovered over.
         if (
-            _module.state.hoveredNeighbors &&
-            !_module.state.hoveredNeighbors.has(node) &&
-            _module.state.hoveredNode !== node
+          _module.state.hoveredNeighbors &&
+          !_module.state.hoveredNeighbors.has(node) &&
+          _module.state.hoveredNode !== node
         ) {
           if (parseInt(node) !== parseInt(_module.$route.params.id)) {
             res.hidden = true;
@@ -491,20 +491,23 @@ export default {
         }
 
         // Hide nodes which are further away than the path length.
-        if (_module.selectedLengths[res.length] === false)
-        {
+        if (_module.selectedLengths[res.length] === false) {
           res.hidden = true;
         }
 
         // Hide nodes when their registry is not selected
-        if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-        {
+        if (
+          !this.active[res.registry] &&
+          parseInt(_module.$route.params.id) !== parseInt(node)
+        ) {
           res.hidden = true;
         }
 
         // Hide nodes when their status is not selected
-        if (!this.active[res.status] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-        {
+        if (
+          !this.active[res.status] &&
+          parseInt(_module.$route.params.id) !== parseInt(node)
+        ) {
           res.hidden = true;
         }
 
@@ -514,7 +517,10 @@ export default {
       // This is for hiding everything except the node being hovered over.
       renderer.setSetting("edgeReducer", (edge, data) => {
         const res = { ...data };
-        if (_module.state.hoveredNode && !graph.hasExtremity(edge, _module.state.hoveredNode)) {
+        if (
+          _module.state.hoveredNode &&
+          !graph.hasExtremity(edge, _module.state.hoveredNode)
+        ) {
           res.hidden = true;
         }
         return res;
@@ -527,7 +533,7 @@ export default {
 
       renderer.refresh();
 
-      await new Promise(r => setTimeout(r, 10000));
+      await new Promise((r) => setTimeout(r, 10000));
       _module.fa2Layout.stop();
       _module.buttonsActive = true;
     },
@@ -540,34 +546,32 @@ export default {
         this.loading = true;
         window.location.assign("/" + node);
         //this.loading = false;
-      }
-      else {
+      } else {
         this.loading = true;
         window.location.assign("/graph/" + node);
         //this.loading = false;
       }
     },
     lengthLimit(item) {
-      const itemLength = item.hops
+      const itemLength = item.hops;
       this.selectedLengths[itemLength] = !this.selectedLengths[itemLength];
-      item.active = !item.active
+      item.active = !item.active;
     },
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
-        return "#27aae1"
-      }
-      else {
-        return "gray"
+        return "#27aae1";
+      } else {
+        return "gray";
       }
     },
     toggleClick(item) {
-      let itemName = item.name.toLowerCase()
-      if (itemName === 'in development')  itemName = "in_development"
+      let itemName = item.name.toLowerCase();
+      if (itemName === "in development") itemName = "in_development";
       this.active[itemName] = !this.active[itemName];
-      item.active = !item.active
-    }
-  }
-}
+      item.active = !item.active;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

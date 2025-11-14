@@ -1,13 +1,10 @@
 <template>
-  <div
-    v-if="publicMessages.length && !loading"
-    class="my-1"
-  >
+  <div v-if="publicMessages.length && !loading" class="my-1">
     <!-- eslint-disable vue/no-v-html -->
     <v-alert
-      v-for="(messageObj,index) in publicMessages"
-      :key="messageObj.message+'_'+index"
-      dense
+      v-for="(messageObj, index) in publicMessages"
+      :key="messageObj.message + '_' + index"
+      density="compact"
       type="warning"
       class="mb-2 mx-2 flex-grow-1"
       v-html="`${moment(messageObj.updatedAt)}: ${messageObj.message}`"
@@ -19,21 +16,19 @@
 <script>
 // no-v-html allowed as the text will come only from super_curators...
 import moment from "moment";
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "PublicMessages",
   computed: {
-    ...mapState('messages', ["publicMessages", "loading"])
+    ...mapState("messages", ["publicMessages", "loading"]),
   },
   methods: {
     moment(date) {
-      return moment(date).format('dddd, MMMM Do YYYY, H:mm');
-    }
-  }
-}
+      return moment(date).format("dddd, MMMM Do YYYY, H:mm");
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

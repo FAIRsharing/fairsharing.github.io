@@ -7,17 +7,18 @@ const localVue = createLocalVue();
 localVue.use(VueMeta);
 
 describe("404 error page", () => {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Error, {
-            localVue
-        });
+  beforeEach(() => {
+    wrapper = shallowMount(Error, {
+      localVue,
     });
+  });
 
-    it("can mount", () => {
-        expect(wrapper.vm.$options.name).toBe("Error404");
-        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Not Found");
-    });
-
+  it("can mount", () => {
+    expect(wrapper.vm.$options.name).toBe("Error404");
+    expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
+      "FAIRsharing | Not Found",
+    );
+  });
 });

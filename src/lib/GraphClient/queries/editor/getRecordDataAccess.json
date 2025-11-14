@@ -12,16 +12,11 @@
         "id",
         {
           "queryName": "fairsharingRecord",
-          "fields": [
-            "id"
-          ]
+          "fields": ["id"]
         },
         {
           "queryName": "licence",
-          "fields": [
-            "id",
-            "name"
-          ]
+          "fields": ["id", "name"]
         }
       ]
     }

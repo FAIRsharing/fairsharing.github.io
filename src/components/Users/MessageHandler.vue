@@ -23,21 +23,25 @@
 </template>
 
 <script>
-    import { mapState } from "vuex";
+import { mapState } from "vuex";
 
-    import stringUtils from '@/utils/stringUtils';
+import stringUtils from "@/utils/stringUtils";
+import messages from "../../store/messages";
 
-    export default {
-        name: "MessageHandler",
-        mixins: [ stringUtils ],
-        props: {
-          field: {
-            type: String,
-            default: null
-          }
-        },
-        computed: {
-          ...mapState("users", ["messages"])
-        }
-    }
+export default {
+  name: "MessageHandler",
+  mixins: [stringUtils],
+  props: {
+    field: {
+      type: String,
+      default: null,
+    },
+  },
+  computed: {
+    messages() {
+      return messages;
+    },
+    ...mapState("users", ["messages"]),
+  },
+};
 </script>

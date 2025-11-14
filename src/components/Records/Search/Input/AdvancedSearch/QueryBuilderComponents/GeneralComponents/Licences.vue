@@ -1,15 +1,13 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchLicences"
-      :loading="getLoadingStatus"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
-  </div>
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getSearchLicences"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -17,11 +15,10 @@ import { mapActions, mapGetters } from "vuex";
 import licencesSearch from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Licences",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,
@@ -64,7 +61,7 @@ export default {
           if (this.value && this.value.length) {
             licencesSearch.commit(
               "licencesSearch/setSearchLicences",
-              this.value
+              this.value,
             );
           }
         }

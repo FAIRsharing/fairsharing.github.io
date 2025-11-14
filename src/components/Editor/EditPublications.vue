@@ -1,19 +1,12 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-container
-    id="editPublications"
-    fluid
-    class="standard"
-  >
+<template>
+  <v-container id="editPublications" fluid class="standard">
     <v-card id="editPublications">
-      <v-card-title class="grey lighten-4 blue--text">
+      <v-card-title class="bg-grey-lighten-4 text-blue">
         Add/Remove Publications
       </v-card-title>
       <Alerts target="publications" />
       <v-card-text>
-        <v-container
-          fluid
-          class="pb-0"
-        >
+        <v-container fluid class="pb-0">
           <v-row>
             <v-col
               v-for="(publication, pubIndex) in publications"
@@ -26,28 +19,23 @@
               lg="4"
               xl="3"
             >
-              <v-card
-                height="100%"
-                class="d-flex flex-column"
-              >
+              <v-card height="100%" class="d-flex flex-column">
                 <v-card-title
-                  class="white--text"
+                  class="text-white"
                   :class="{
-                    grey: !publication.isCitation,
-                    green: publication.isCitation,
+                    'bg-grey': !publication.isCitation,
+                    'bg-green': publication.isCitation,
                   }"
                 >
                   Publication
-                  <span
-                    v-if="publication.doi"
-                    class="ml-2"
+                  <span v-if="publication.doi" class="ml-2">
+                    - {{ publication.doi }}</span
                   >
-                    - {{ publication.doi }}</span>
                 </v-card-title>
                 <v-card-text
                   :class="{
-                    'grey lighten-3': !publication.isCitation,
-                    'green lighten-3': publication.isCitation,
+                    'bg-grey-lighten-3': !publication.isCitation,
+                    'bg-green-lighten-3': publication.isCitation,
                   }"
                   class="pt-4 pb-0"
                   style="flex-grow: 1"
@@ -59,48 +47,44 @@
                   </div>
                   <div><b>AUTHORS:</b> {{ publication.authors }}</div>
                   <v-switch
-                    :input-value="publication.isCitation"
+                    :model-value="publication.isCitation"
                     color="green"
                     label="Cite record using this publication?"
-                    @change="toggleCitation(pubIndex)"
+                    @update:model-value="toggleCitation(pubIndex)"
                   />
                 </v-card-text>
                 <v-card-actions
                   :class="{
-                    'grey lighten-3': !publication.isCitation,
-                    'green lighten-3': publication.isCitation,
+                    'grey-lighten-3': !publication.isCitation,
+                    'green-lighten-3': publication.isCitation,
                   }"
                 >
                   <v-spacer />
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props }">
                       <v-btn
                         v-if="user().is_curator"
-                        v-bind="attrs"
-                        class="green white--text mr-2"
+                        class="bg-green text-white mr-2"
                         icon
-                        v-on="on"
+                        size="small"
+                        v-bind="props"
                         @click="editPublication(publication, pubIndex)"
                       >
-                        <v-icon small>
-                          fas fa-pen
-                        </v-icon>
+                        <v-icon size="small"> fas fa-pen </v-icon>
                       </v-btn>
                     </template>
                     <span>Edit this publication</span>
                   </v-tooltip>
-                  <v-tooltip bottom>
-                    <template #activator="{ on, attrs }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props }">
                       <v-btn
-                        v-bind="attrs"
-                        class="red white--text"
+                        class="bg-red text-white"
                         icon
-                        v-on="on"
+                        v-bind="props"
+                        size="small"
                         @click="removePublication(pubIndex)"
                       >
-                        <v-icon small>
-                          fa-trash
-                        </v-icon>
+                        <v-icon size="small"> fas fa-trash </v-icon>
                       </v-btn>
                     </template>
                     <span>Remove this publication</span>
@@ -111,222 +95,218 @@
           </v-row>
           <v-divider />
           <v-row>
-            <v-alert
-              width="100%"
-              type="info"
-              dismissible
-            >
-              Please use the search bar below to check if we already have your
-              publication in FAIRsharing. If not, you can add it using the
-              buttons below.
-            </v-alert>
+            <v-col class="col-12">
+              <v-alert
+                width="100%"
+                type="info"
+                closable
+                icon="fas fa-info-circle"
+                close-icon="fas fa-solid fa-circle-xmark"
+              >
+                Please use the search bar below to check if we already have your
+                publication in FAIRsharing. If not, you can add it using the
+                buttons below.
+              </v-alert>
+            </v-col>
           </v-row>
         </v-container>
-        <v-text-field
-          v-model="search"
-          append-icon="fa-search"
-          label="Search existing publications"
-          outlined
-          hide-details
-        />
-        <v-data-table
-          v-model="publications"
-          :items="availablePublications"
-          :headers="headers"
-          :search="search"
-          :loading="loading"
-          class="elevation-1"
-          show-select
-          :items-per-page="9"
-        />
-        <div class="noPublications">
-          <v-tooltip
-            class="d-inline-block mr-2"
-            top
-          >
-            <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
-              </v-icon>
-            </template>
-            Please ensure that you enter a doi above in a prefix/suffix format,
-            e.g. 10.25504/FAIRsharing.2abjs5, before clicking the DOI import
-            button.
-          </v-tooltip>
-          <v-btn
-            class="green white--text my-3"
-            :loading="loadingPub"
-            @click="getDOI()"
-          >
-            Import from DOI / Zenodo
-          </v-btn>
-          <v-btn
-            class="green white--text my-3 ml-3"
-            :loading="loadingPub"
-            @click="getPMID()"
-          >
-            Import from PUBMED ID
-          </v-btn>
-          <v-btn
-            class="green white--text my-3 ml-3"
-            :loading="loadingPub"
-            @click="createNewPublication()"
-          >
-            Create new publication
-          </v-btn>
-        </div>
-        <v-alert
-          v-if="errors.doi"
-          type="error"
-        >
-          DOI not found !
-        </v-alert>
-        <v-alert
-          v-if="errors.pmid"
-          type="error"
-        >
+        <v-row>
+          <v-col class="col-12 ml-4 mr-3">
+            <v-text-field
+              v-model="search"
+              append-inner-icon="fas fa-search"
+              label="Search existing publications"
+              variant="outlined"
+              hide-details
+              color="primary"
+              clearable
+            />
+            <v-data-table
+              v-model="publications"
+              :items="availablePublications"
+              :headers="headers"
+              :search="search"
+              :loading="loading"
+              class="elevation-1"
+              show-select
+              :items-per-page="9"
+              item-key="title"
+            />
+
+            <div class="noPublications">
+              <v-tooltip location="top">
+                <template #activator="{ props }">
+                  <v-icon v-bind="props" class="d-inline-block mr-2">
+                    fas fa-question-circle
+                  </v-icon>
+                </template>
+                Please ensure that you enter a doi above in a prefix/suffix
+                format, e.g. 10.25504/FAIRsharing.2abjs5, before clicking the
+                DOI import button.
+              </v-tooltip>
+              <v-btn
+                class="bg-green text-white my-3"
+                :loading="doiLoader"
+                @click="getDOI()"
+              >
+                Import from DOI / Zenodo
+              </v-btn>
+              <v-btn
+                class="bg-green text-white my-3 ml-3"
+                :loading="loadingPub"
+                @click="getPMID()"
+              >
+                Import from PUBMED ID
+              </v-btn>
+              <v-btn
+                class="bg-green text-white my-3 ml-3"
+                @click="createNewPublication()"
+              >
+                Create new publication
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+        <v-alert v-if="errors.doi" type="error"> DOI not found ! </v-alert>
+        <v-alert v-if="errors.pmid" type="error">
           PubMed ID not found !
         </v-alert>
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="primary"
-          :loading="loading"
-          @click="saveRecord(false)"
+          class="bg-primary"
+          :loading="continueLoader"
+          variant="elevated"
+          @click="saveRecord(false, $event.target)"
         >
           Save and continue
         </v-btn>
         <v-btn
-          :loading="loading"
-          class="primary"
-          @click="saveRecord(true)"
+          :loading="exitLoader"
+          class="bg-primary"
+          variant="elevated"
+          @click="saveRecord(true, $event.target)"
         >
           Save and exit
         </v-btn>
       </v-card-actions>
       <v-dialog
-        v-model="openEditor"
+        :model-value="openEditor"
         max-width="1000px"
         class="pa-0"
         persistent
         no-click-animation
       >
-        <v-container
-          fluid
-          class="py-0"
-        >
-          <v-row justify="center">
-            <v-form
-              id="editPublication"
-              ref="editPublication"
-              v-model="subFormValid"
-            >
-              <v-card width="100%">
-                <v-card-title class="green white--text">
-                  Create/Edit a new publication
-                </v-card-title>
-                <v-card-text
-                  v-if="errors.general"
-                  class="pt-3 mb-0 pb-0"
+        <v-container fluid class="py-0">
+          <v-form
+            id="editPublication"
+            ref="editPublication"
+            v-model="subFormValid"
+            width="1000"
+          >
+            <v-card>
+              <v-card-title class="bg-green text-white">
+                Create/Edit a new publication
+              </v-card-title>
+              <v-card-text v-if="errors.general" class="pt-3 mb-0 pb-0">
+                <v-alert type="error">
+                  {{ errors.general.response.data }}
+                </v-alert>
+              </v-card-text>
+              <v-card-text v-else class="pt-0 mt-0">
+                <v-container fluid>
+                  <v-row>
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="newPublication.doi"
+                        label="DOI"
+                        variant="outlined"
+                      />
+                    </v-col>
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="newPublication.pubmed_id"
+                        label="PubMed ID"
+                        variant="outlined"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="col-12">
+                      <v-text-field
+                        v-model="newPublication.title"
+                        label="Title"
+                        variant="outlined"
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="col-4">
+                      <v-text-field
+                        v-model="newPublication.authors"
+                        label="Authors"
+                        variant="outlined"
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-4">
+                      <v-text-field
+                        v-model="newPublication.journal"
+                        label="Journal"
+                        variant="outlined"
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-4">
+                      <v-text-field
+                        v-model="newPublication.year"
+                        label="Publication Year"
+                        variant="outlined"
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="col-12">
+                      <v-text-field
+                        v-model="newPublication.url"
+                        label="URL"
+                        variant="outlined"
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  class="bg-green text-white"
+                  :disabled="!subFormValid"
+                  @click="addPublication()"
                 >
-                  <v-alert type="error">
-                    {{ errors.general.response.data }}
-                  </v-alert>
-                </v-card-text>
-                <v-card-text class="pt-0 mt-0">
-                  <v-container fluid>
-                    <v-row justify="start">
-                      <v-col class="col-6">
-                        <v-text-field
-                          v-model="newPublication.doi"
-                          label="DOI"
-                          outlined
-                        />
-                      </v-col>
-                      <v-col class="col-6">
-                        <v-text-field
-                          v-model="newPublication.pubmed_id"
-                          label="PubMed ID"
-                          outlined
-                        />
-                      </v-col>
-                      <v-col class="col-12">
-                        <v-text-field
-                          v-model="newPublication.title"
-                          label="Title"
-                          outlined
-                          :rules="[rules.isRequired()]"
-                        />
-                      </v-col>
-                      <v-col class="col-4">
-                        <v-text-field
-                          v-model="newPublication.authors"
-                          label="Authors"
-                          outlined
-                          :rules="[rules.isRequired()]"
-                        />
-                      </v-col>
-                      <v-col class="col-4">
-                        <v-text-field
-                          v-model="newPublication.journal"
-                          label="Journal"
-                          outlined
-                          :rules="[rules.isRequired()]"
-                        />
-                      </v-col>
-                      <v-col class="col-4">
-                        <v-text-field
-                          v-model="newPublication.year"
-                          label="Publication Year"
-                          outlined
-                          :rules="[rules.isRequired()]"
-                        />
-                      </v-col>
-                      <v-col class="col-12">
-                        <v-text-field
-                          v-model="newPublication.url"
-                          label="URL"
-                          outlined
-                          :rules="[rules.isRequired()]"
-                        />
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn
-                    class="green white--text"
-                    :disabled="!subFormValid"
-                    @click="addPublication()"
-                  >
-                    Edit or add a new publication
-                  </v-btn>
-                  <v-btn
-                    class="red white--text"
-                    @click="openEditor = false"
-                  >
-                    Cancel
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-form>
-          </v-row>
+                  Edit or add a new publication
+                </v-btn>
+                <v-btn class="bg-red text-white" @click="openEditor = false">
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-form>
         </v-container>
       </v-dialog>
     </v-card>
-    <v-dialog
-      v-model="showEmptySearch"
-      width="auto"
-    >
+    <v-dialog v-model="showEmptySearch" width="auto">
       <v-card>
         <v-card-title> Search Term Missing </v-card-title>
         <v-card-text>
           Please paste or type a value (e.g. a DOI or Pubmed ID) into the search
           box above.
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="mx-auto full-width" style="max-width: 250px">
           <v-btn
             color="primary"
+            variant="elevated"
             block
             @click="showEmptySearch = false"
           >
@@ -348,6 +328,7 @@ import RestClient from "@/lib/Client/RESTClient.js";
 import { isRequired } from "@/utils/rules.js";
 const pubClient = new PublicationClient();
 const restClient = new RestClient();
+import record from "@/store";
 
 export default {
   name: "EditPublications",
@@ -356,36 +337,38 @@ export default {
     return {
       headers: [
         {
-          text: "title",
+          title: "Title",
           value: "title",
         },
         {
-          text: "DOI",
+          title: "DOI",
           value: "doi",
         },
         {
-          text: "Pubmed ID",
+          title: "Pubmed ID",
           value: "pubmedId",
         },
         {
-          text: "authors",
+          title: "Authors",
           value: "authors",
         },
         {
-          text: "journal",
+          title: "Journal",
           value: "journal",
         },
         {
-          text: "url",
+          title: "Url",
           value: "url",
         },
         {
-          text: "year",
+          title: "Year",
           value: "year",
         },
       ],
       search: null,
       loading: false,
+      exitLoader: false,
+      continueLoader: false,
       newPublication: {},
       errors: {
         doi: null,
@@ -404,6 +387,7 @@ export default {
         },
       },
       showEmptySearch: false,
+      doiLoader: false,
     };
   },
   computed: {
@@ -432,7 +416,8 @@ export default {
         return this.getSection("publications").data;
       },
       set(newValue) {
-        this.$store.commit("record/setPublications", newValue);
+        // this.$store.commit("record/setPublications", newValue);
+        record.commit("record/setPublications", newValue);
       },
     },
     metadata() {
@@ -450,7 +435,7 @@ export default {
           // DELETE
           initialPublications.forEach((pub) => {
             let isFound = this.publications.filter(
-              (obj) => obj.id === pub.id
+              (obj) => obj.id === pub.id,
             )[0];
             if (!isFound) {
               changes += 1;
@@ -459,7 +444,7 @@ export default {
           // UPDATE//ADD
           this.publications.forEach((pub) => {
             let isFound = initialPublications.filter(
-              (obj) => obj.id === pub.id
+              (obj) => obj.id === pub.id,
             )[0];
             if (!isFound) {
               changes += 1;
@@ -469,7 +454,11 @@ export default {
               if (!isEqual(isFound, copy)) changes += 1;
             }
           });
-          this.$store.commit("record/setChanges", {
+          // this.$store.commit("record/setChanges", {
+          //   section: "publications",
+          //   value: changes,
+          // });
+          record.commit("record/setChanges", {
             section: "publications",
             value: changes,
           });
@@ -497,14 +486,14 @@ export default {
     toggleCitation(index) {
       let pub = this.publications[index];
       pub.isCitation = !pub.isCitation;
-      this.$set(this.publications, index, pub);
+      this.publications.index = pub;
     },
     async getDOI() {
       if (!this.search) {
         this.showEmptySearch = true;
         return;
       }
-      this.loadingPub = true;
+      this.doiLoader = true;
       this.currentPublicationIndex = false;
       this.errors = {
         doi: null,
@@ -516,7 +505,7 @@ export default {
       if (data.error) {
         let data = await restClient.getZenodoSearch(
           doi,
-          this.user().credentials.token
+          this.user().credentials.token,
         );
         if (data.message || (Array.isArray(data) && data.length == 0)) {
           this.errors.doi = true;
@@ -528,10 +517,11 @@ export default {
             dataPublication = data;
           }
           if (dataPublication.metadata !== undefined) {
-            if (dataPublication.metadata.upload_type === "publication" ||
-                (dataPublication.metadata.resource_type &&
-                    dataPublication.metadata.resource_type.type &&
-                    dataPublication.metadata.resource_type.type === "publication")
+            if (
+              dataPublication.metadata.upload_type === "publication" ||
+              (dataPublication.metadata.resource_type &&
+                dataPublication.metadata.resource_type.type &&
+                dataPublication.metadata.resource_type.type === "publication")
             ) {
               this.newPublication = {
                 journal: null,
@@ -543,18 +533,18 @@ export default {
               };
               if (dataPublication.metadata.journal_title) {
                 this.newPublication.journal =
-                    dataPublication.metadata.journal_title;
+                  dataPublication.metadata.journal_title;
               } else {
                 if (dataPublication.metadata.meeting) {
                   this.newPublication.journal =
-                      dataPublication.metadata.meeting.title;
+                    dataPublication.metadata.meeting.title;
                 }
               }
               this.newPublication.doi = dataPublication.doi;
               this.newPublication.title = dataPublication.metadata.title;
               this.newPublication.url = dataPublication.links.doi;
               this.newPublication.year = Number(
-                  dataPublication.metadata.publication_date.split("-")[0]
+                dataPublication.metadata.publication_date.split("-")[0],
               );
               let authors = [];
               dataPublication.metadata.creators.forEach(function (a) {
@@ -563,19 +553,16 @@ export default {
               this.newPublication.authors = authors.join("");
               this.newPublication.isCitation = false;
               this.openEditor = true;
-            }
-            else {
+            } else {
               this.errors.doi = true;
             }
-          }
-          else {
+          } else {
             // TODO: Add a query to osf.io here:
             // TODO: https://developer.osf.io/
             this.errors.doi = true;
           }
         }
-      }
-      else {
+      } else {
         /* istanbul ignore next */
         this.newPublication.journal =
           data["container-title-short"] || data["container-title"];
@@ -584,10 +571,9 @@ export default {
         this.newPublication.url = data["URL"];
         if (data["created"]) {
           let dateParts;
-          if (data['published-print']) {
+          if (data["published-print"]) {
             dateParts = data["published-print"]["date-parts"][0].toString();
-          }
-          else {
+          } else {
             dateParts = data["created"]["date-parts"][0].toString();
           }
           this.newPublication.year = Number(dateParts.split(",")[0]);
@@ -600,7 +586,7 @@ export default {
         this.newPublication.isCitation = false;
         this.openEditor = true;
       }
-      this.loadingPub = false;
+      this.doiLoader = false;
     },
     async getPMID() {
       if (!this.search) {
@@ -664,13 +650,22 @@ export default {
       if (_module.currentPublicationIndex !== false) {
         let editedPublication = await restClient.editPublication(
           newPub,
-          _module.user().credentials.token
+          _module.user().credentials.token,
         );
         if (editedPublication.error) {
           _module.errors.general = editedPublication.error;
         } else {
           editedPublication.isCitation = newPub.isCitation;
-          delete this.availablePublications[newPub.tablePosition];
+          //Commenting below code as it is causing the issue of undefined tablePosition
+          // delete this.availablePublications[newPub.tablePosition];
+
+          //Delete the old publication from the availablePublications array before adding the new one
+          let editedPublicationIndex = this.availablePublications.findIndex(
+            (e) => e.title === editedPublication.title,
+          );
+          if (editedPublicationIndex !== -1) {
+            this.availablePublications.splice(editedPublicationIndex, 1);
+          }
           editedPublication.tablePosition = this.availablePublications.length;
           this.availablePublications.push(editedPublication);
           this.publications[this.currentPublicationIndex] = editedPublication;
@@ -681,7 +676,7 @@ export default {
       else {
         let createdPublication = await restClient.createPublication(
           newPub,
-          _module.user().credentials.token
+          _module.user().credentials.token,
         );
         if (createdPublication.error) {
           _module.errors.general = createdPublication.error;
@@ -711,15 +706,26 @@ export default {
       this.openEditor = true;
       this.newPublication = JSON.parse(JSON.stringify(publication));
     },
-    async saveRecord(redirect) {
+    async saveRecord(redirect, item) {
       this.openEditor = false; // what's this for?
-      this.loading = true;
+      if (item.textContent.trim() === "Save and continue") {
+        this.continueLoader = true;
+        this.exitLoader = false;
+      } else if (item.textContent.trim() === "Save and exit") {
+        this.continueLoader = false;
+        this.exitLoader = true;
+      }
       await this.updatePublications({
         token: this.user().credentials.token,
         id: this.$route.params.id,
       });
-      this.loading = false;
-      this.$store.commit("record/setChanges", {
+      this.continueLoader = false;
+      this.exitLoader = false;
+      // this.$store.commit("record/setChanges", {
+      //   section: "publications",
+      //   value: 0,
+      // });
+      record.commit("record/setChanges", {
         section: "publications",
         value: 0,
       });

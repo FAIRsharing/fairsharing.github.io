@@ -16,17 +16,11 @@
         "priority",
         {
           "queryName": "lastEditor",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         },
         {
           "queryName": "creator",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         }
       ]
     }

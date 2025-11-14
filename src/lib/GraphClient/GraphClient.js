@@ -1,5 +1,4 @@
-const axios = require("axios");
-
+import axios from "axios";
 import Fragments from "./queries/fragments/fragments.json";
 
 class GraphQLClient {
@@ -14,7 +13,7 @@ class GraphQLClient {
       return GraphQLClient._instance;
     }
     GraphQLClient._instance = this;
-    this.url = process.env.VUE_APP_API_ENDPOINT + "/graphql";
+    this.url = import.meta.env.VITE_API_ENDPOINT + "/graphql";
   }
 
   /**
@@ -139,7 +138,7 @@ class GraphQLClient {
       Accept: "application/json",
       "Content-Type": "application/json",
     };
-    this.headers["X-Client-Id"] = process.env.VUE_APP_CLIENT_ID;
+    this.headers["X-Client-Id"] = import.meta.env.VITE_CLIENT_ID;
     /* istanbul ignore if */
     if (this.headers["X-Client-Id"] === undefined) {
       delete this.headers["X-Client-Id"];

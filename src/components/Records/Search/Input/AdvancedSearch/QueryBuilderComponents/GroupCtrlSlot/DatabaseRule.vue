@@ -1,16 +1,10 @@
-
 <template>
   <div class="d-flex ruleWrapper">
     <select
       v-model="selectedDatabaseRule"
       class="query-builder-group-slot__rule-selection"
     >
-      <option
-        disabled
-        value=""
-      >
-        Select a database rule
-      </option>
+      <option disabled value="">Select a database rule</option>
       <option
         v-for="rule in databaseQueryBuilderComponents()"
         :key="rule.identifier"
@@ -29,7 +23,7 @@
 </template>
 
 <script>
-import { sortBy } from "lodash"
+import { sortBy } from "lodash";
 
 import {
   AccessMethods,
@@ -46,15 +40,15 @@ import {
   DataProcessesAndConditions,
   DataVersioning,
   ResourceSustainability,
-  UsesPersistentIdentifier
+  UsesPersistentIdentifier,
 } from "../index";
 export default {
   name: "DatabaseRule",
   props: {
     groupCtrl: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data: () => {
     return {
@@ -62,7 +56,7 @@ export default {
     };
   },
 
-  methods:{
+  methods: {
     databaseQueryBuilderComponents() {
       let databaseRecordType = [
         {
@@ -71,101 +65,104 @@ export default {
           component: DatabaseRecordType,
           initialValue: () => [],
         },
-      ]
+      ];
 
-      return databaseRecordType.concat(this.sortedArrayList())
+      return databaseRecordType.concat(this.sortedArrayList());
     },
 
     /**
      * Sort Array list by name
      */
     sortedArrayList() {
-      return sortBy([
-        {
-          identifier: "accessMethods",
-          name: "Access Methods",
-          component: AccessMethods,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataCuration",
-          name: "Data Curation",
-          component: DataCuration,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataDepositionCondition",
-          name: "Data Deposition Condition",
-          component: DataDepositionCondition,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataAccessCondition",
-          name: "Data Access Condition ",
-          component: DataAccessCondition,
-          initialValue: () => [],
-        },
-        {
-          identifier: "citationToRelatedPublications",
-          name: "Citation To Related Publications",
-          component: CitationToRelatedPublications,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataAccessForPrePublicationReview",
-          name: "Data Access For Pre Publication Review",
-          component: DataAccessForPrePublicationReview,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataContactInformation",
-          name: "Data Contact Information",
-          component: DataContactInformation,
-          initialValue: () => [],
-        },
-        {
-          identifier: "dataVersioning",
-          name: "Data Versioning",
-          component: DataVersioning,
-          initialValue: () => [],
-        },
-        {
-          identifier: "associatedTools",
-          name: "Associated Tools",
-          component: AssociatedTools,
-          initialValue: "",
-        },
-        {
-          identifier: "certificationsAndCommunityBadges",
-          name: "Certifications And Community Badges",
-          component: CertificationsAndCommunityBadges,
-          initialValue: "",
-        },
-        {
-          identifier: "dataProcessesAndConditions",
-          name: "Data Processes And Conditions",
-          component: DataProcessesAndConditions,
-          initialValue: "",
-        },
-        {
-          identifier: "dataPreservationPolicy",
-          name: "Data Preservation Policy",
-          component: DataPreservationPolicy,
-          initialValue: "",
-        },
-        {
-          identifier: "resourceSustainability",
-          name: "Resource Sustainability",
-          component: ResourceSustainability,
-          initialValue: "",
-        },
-        {
-          identifier: "usesPersistentIdentifier",
-          name: "Uses Persistent Identifier",
-          component: UsesPersistentIdentifier,
-          initialValue: "",
-        },
-      ], "name")
+      return sortBy(
+        [
+          {
+            identifier: "accessMethods",
+            name: "Access Methods",
+            component: AccessMethods,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataCuration",
+            name: "Data Curation",
+            component: DataCuration,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataDepositionCondition",
+            name: "Data Deposition Condition",
+            component: DataDepositionCondition,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataAccessCondition",
+            name: "Data Access Condition ",
+            component: DataAccessCondition,
+            initialValue: () => [],
+          },
+          {
+            identifier: "citationToRelatedPublications",
+            name: "Citation To Related Publications",
+            component: CitationToRelatedPublications,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataAccessForPrePublicationReview",
+            name: "Data Access For Pre Publication Review",
+            component: DataAccessForPrePublicationReview,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataContactInformation",
+            name: "Data Contact Information",
+            component: DataContactInformation,
+            initialValue: () => [],
+          },
+          {
+            identifier: "dataVersioning",
+            name: "Data Versioning",
+            component: DataVersioning,
+            initialValue: () => [],
+          },
+          {
+            identifier: "associatedTools",
+            name: "Associated Tools",
+            component: AssociatedTools,
+            initialValue: "",
+          },
+          {
+            identifier: "certificationsAndCommunityBadges",
+            name: "Certifications And Community Badges",
+            component: CertificationsAndCommunityBadges,
+            initialValue: "",
+          },
+          {
+            identifier: "dataProcessesAndConditions",
+            name: "Data Processes And Conditions",
+            component: DataProcessesAndConditions,
+            initialValue: "",
+          },
+          {
+            identifier: "dataPreservationPolicy",
+            name: "Data Preservation Policy",
+            component: DataPreservationPolicy,
+            initialValue: "",
+          },
+          {
+            identifier: "resourceSustainability",
+            name: "Resource Sustainability",
+            component: ResourceSustainability,
+            initialValue: "",
+          },
+          {
+            identifier: "usesPersistentIdentifier",
+            name: "Uses Persistent Identifier",
+            component: UsesPersistentIdentifier,
+            initialValue: "",
+          },
+        ],
+        "name",
+      );
     },
 
     /**
@@ -174,10 +171,9 @@ export default {
      * @param selectedRule - String
      */
     addNewRule(item, selectedRule) {
-      item.addRule(selectedRule)
-      this.selectedDatabaseRule = ''
+      item.addRule(selectedRule);
+      this.selectedDatabaseRule = "";
     },
-  }
+  },
 };
 </script>
-

@@ -8,25 +8,25 @@ import Client from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import usersStore from "@/store/users";
 
-import dataDashboard from "../../../fixtures/curationDashboardData.json"
+import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
-let curationDataSummary =  dataDashboard.curationSummary;
+let curationDataSummary = dataDashboard.curationSummary;
 const localVue = createLocalVue();
 localVue.use(Vuex);
 let header = [
-    {
-        "text": "Record name (id)",
-        "value": "recordNameID"
-    },
-    {
-        "text": "Date created",
-        "value": "createdAt"
-    },
-    {
-        "text": "Creator",
-        "value": "creator"
-    }
-    ];
+  {
+    text: "Record name (id)",
+    value: "recordNameID",
+  },
+  {
+    text: "Date created",
+    value: "createdAt",
+  },
+  {
+    text: "Creator",
+    value: "creator",
+  },
+];
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -46,43 +46,56 @@ const $router = { push: jest.fn() };
 describe("Curator -> RecentCuratorCreation.vue", () => {
   let restStub, wrapper, graphStub;
   beforeAll(() => {
-      graphStub = sinon.stub(GraphClient.prototype, "executeQuery")
-          .returns(curationDataSummary)
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns(
-        {
-          data: {
-            error: false
-          }
-        }
-    );
+    graphStub = sinon
+      .stub(GraphClient.prototype, "executeQuery")
+      .returns(curationDataSummary);
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+      data: {
+        error: false,
+      },
+    });
     wrapper = shallowMount(RecentCuratorCreation, {
       localVue,
       router,
       mocks: { $store, $router },
       propsData: {
-        headerItems: header
-      }
+        headerItems: header,
+      },
     });
   });
-  afterEach( () => {
-      graphStub.restore();
+  afterEach(() => {
+    graphStub.restore();
     restStub.restore();
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("RecentCuratorCreation");
     expect(wrapper.vm.prepareRecordsCuratorCreationsLastWeek).toHaveBeenCalled;
-      expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
-      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
-      let date = new Date("2017,11,11");
-      let auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getDate()+ ', '+date.getFullYear();
-      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(auxString);
+    expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
+    expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe(
+      "Second (44)",
+    );
+    let date = new Date("2017,11,11");
+    let auxString =
+      date.toLocaleString("default", { month: "short" }) +
+      " " +
+      date.getDate() +
+      ", " +
+      date.getFullYear();
+    expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(
+      auxString,
+    );
   });
 
-
-
   it("can check for hiddenRecords", () => {
-      let output = {"createdAt": "Oct 27, 2020", "creator": "Lara Aral", "id": "32", "idCreator": "44", "recordNameID": "ewewrr (32)", "type": "database"}
+    let output = {
+      createdAt: "Oct 27, 2020",
+      creator: "Lara Aral",
+      id: "32",
+      idCreator: "44",
+      recordNameID: "ewewrr (32)",
+      type: "database",
+    };
     expect(wrapper.vm.recordsCreatedCuratorsLastWeek[0]).toStrictEqual(output);
   });
 });

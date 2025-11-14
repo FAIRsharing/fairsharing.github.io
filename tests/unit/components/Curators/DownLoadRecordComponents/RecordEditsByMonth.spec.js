@@ -28,20 +28,18 @@ const router = new VueRouter();
 describe("RecordEditsByMonth", () => {
   let restStub, wrapper;
   beforeAll(() => {
-       restStub = sinon.stub(Client.prototype, "executeQuery").returns(
-        {
-          data: {
-            error: false
-          }
-        }
-    );
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+      data: {
+        error: false,
+      },
+    });
     wrapper = shallowMount(RecordEditsByMonth, {
       localVue,
       router,
       mocks: { $store },
     });
   });
-  afterEach( () => {
+  afterEach(() => {
     restStub.restore();
   });
 
@@ -49,5 +47,4 @@ describe("RecordEditsByMonth", () => {
     expect(wrapper.vm.$options.name).toMatch("RecordEditsByMonth");
     expect(wrapper.vm.obtainFileEditByMonth).toHaveBeenCalled;
   });
-
 });

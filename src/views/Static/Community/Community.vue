@@ -429,7 +429,7 @@
         Our activities are classified using the three GO-FAIR pillar structures
         (change, build, train) and are outlined here.
       </b>
-      <!--Activities table-->
+      <!-- Activities table -->
       <ActivitiesStaticTable class="mb-16 mt-2" />
     </section>
 

@@ -345,19 +345,13 @@
               <span v-for="(org, i) in tool.organisations" :key="org.id">
                 <v-tooltip v-if="org.tooltip" location="bottom">
                   <template #activator="{ props }">
-                    <a
-                      :href="orgUrl(org)"
-                      class="d-inline-block"
-                      v-bind="props"
+                    <a :href="orgUrl(org)" class="d-inline-block" v-bind="props"
                       >{{ org.name }}
                     </a>
                   </template>
                   <span>{{ org.tooltip }}</span>
                 </v-tooltip>
-                <a
-                  v-else
-                  :href="orgUrl(org)"
-                  class="d-inline-block"
+                <a v-else :href="orgUrl(org)" class="d-inline-block"
                   >{{ org.name }}
                 </a>
                 <span v-if="i + 1 < tool.organisations.length">, </span>
@@ -725,31 +719,32 @@ export default {
         });
       },
     },
-    created() {
-        this.$nextTick(() => {
-            // update the UI padding and margin after DOM is fully loaded.
-            this.applyCss = true
-        })
+  },
+  created() {
+    this.$nextTick(() => {
+      // update the UI padding and margin after DOM is fully loaded.
+      this.applyCss = true
+    })
+  },
+  methods: {
+    jumpToAnchor(selectedAnchor) {
+      if (selectedAnchor !== this.currentAnchor) {
+        this.$router.push({hash: `${selectedAnchor}`});
+        this.currentAnchor = selectedAnchor;
+      }
     },
-    methods: {
-        jumpToAnchor(selectedAnchor) {
-            if (selectedAnchor !== this.currentAnchor) {
-                this.$router.push({hash: `${selectedAnchor}`});
-                this.currentAnchor = selectedAnchor;
-            }
-        },
-        isArray(input){
-            return isArray(input)
-        },
-        orgUrl(org) {
-          if (org.id) {
-            return `/organisations/${org.id}`;
-          }
-          else {
-            return org.url;
-          }
-        }
+    isArray(input){
+      return isArray(input)
+    },
+    orgUrl(org) {
+      if (org.id) {
+        return `/organisations/${org.id}`;
+      }
+      else {
+        return org.url;
+      }
     }
+  }
 }
 </script>
 

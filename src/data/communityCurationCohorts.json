@@ -813,7 +813,7 @@
       "show_more" : false,
       "twitter": "bethknazook",
       "linkedin" : "",
-      "mastodon" : "digipres.club/bethknazook",
+      "mastodon" : "digipres.club/@bethknazook",
       "logo": "beth_knazook.jpg",
       "year_active": ["2024", "2025"],
       "active": true
@@ -936,9 +936,9 @@
       "orcid": "0000-0003-4073-7456",
       "early_adopter" : false,
       "show_more" : false,
-      "twitter": "https://x.com/romain_david_13",
-      "linkedin" : "https://www.linkedin.com/in/romain-david-ph-d-77181b32/",
-      "mastodon" : "https://mastouille.fr/@RomainD",
+      "twitter": "romain_david_13",
+      "linkedin" : "in/romain-david-ph-d-77181b32/",
+      "mastodon" : "mastouille.fr/@RomainD",
       "logo": "david_romain.jpg",
       "year_active": ["2025"],
       "active": true

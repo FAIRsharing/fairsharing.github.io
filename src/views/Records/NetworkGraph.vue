@@ -42,11 +42,11 @@
                       v-for="legendItem in networkGraph['legend']"
                       :key="legendItem['name']"
                     >
-                      <v-list-item-icon>
+                      <v-avatar>
                         <v-icon :color="legendItem['color']">
                           fa fa-long-arrow-alt-right
                         </v-icon>
-                      </v-list-item-icon>
+                      </v-avatar>
                       <v-list-item-title
                         class="font-weight-regular text-body-2"
                       >
@@ -357,7 +357,8 @@ export default {
           _module.fa2Layout.start();
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
-        } else {
+        }
+        else {
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
         }
@@ -371,7 +372,8 @@ export default {
           _module.fa2Layout.start();
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
-        } else {
+        }
+        else {
           await new Promise((r) => setTimeout(r, 2000));
           _module.fa2Layout.stop();
         }
@@ -381,7 +383,7 @@ export default {
   },
   async mounted() {
     let _module = this;
-    this.$nextTick(async function () {
+    this.$nextTick(async function() {
       await this.getData();
       if (_module.error) {
         return;
@@ -390,7 +392,7 @@ export default {
       if (_module.fa2Layout && _module.fa2Layout.isRunning()) {
         _module.fa2Layout.kill();
       }
-      _module.plotGraph();
+      await _module.plotGraph();
     });
   },
   methods: {
@@ -425,7 +427,8 @@ export default {
         this.registry = "N/A";
         this.type = "N/A";
         this.initialized = true;
-      } else {
+      }
+      else {
         this.graphData = response.fairsharingGraph.data;
         this.loading = false;
         this.registry = this.graphData.registry;
@@ -439,14 +442,6 @@ export default {
 
       // Graphology implementation of Force Atlas 2 in a web worker
       _module.sensibleSettings = forceAtlas2.inferSettings(graph);
-      /*
-      _module.sensibleSettings.slowDown = 10;
-      _module.sensibleSettings.iterationsPerRender = 1;
-      _module.sensibleSettings.barnesHutOptimize = true;
-      _module.sensibleSettings.barnesHutTheta = 1;
-      _module.sensibleSettings.timeout = 2000;
-      _module.sensibleSettings.delay = 2000;
-       */
       _module.fa2Layout = new FA2Layout(graph, {
         iterations: 50,
         settings: _module.sensibleSettings,
@@ -546,7 +541,8 @@ export default {
         this.loading = true;
         window.location.assign("/" + node);
         //this.loading = false;
-      } else {
+      }
+      else {
         this.loading = true;
         window.location.assign("/graph/" + node);
         //this.loading = false;
@@ -560,7 +556,8 @@ export default {
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
         return "#27aae1";
-      } else {
+      }
+      else {
         return "gray";
       }
     },

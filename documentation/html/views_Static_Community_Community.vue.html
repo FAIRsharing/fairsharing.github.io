@@ -92,39 +92,44 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;main :class="applyCss?'pa-15 mb-10':''">
+  &lt;main :class="applyCss ? 'pa-15 mb-10' : ''">
     &lt;!--  main_title_2 -->
     &lt;!-- eslint-disable vue/no-v-html -->
     &lt;h1 class="mb-5">
-      FAIRsharing is a community-driven resource with users and collaborators across all disciplines.
-      We work together with our stakeholders to enable the &lt;a
+      FAIRsharing is a community-driven resource with users and collaborators
+      across all disciplines. We work together with our stakeholders to enable
+      the
+      &lt;a
         href="https://www.nature.com/articles/sdata201618"
         target="_blank"
         class="underline-effect"
-      >FAIR Principles&lt;/a> by promoting the value and the use of standards,
-      databases and policies.
+        >FAIR Principles&lt;/a
+      >
+      by promoting the value and the use of standards, databases and policies.
     &lt;/h1>
 
     &lt;p class="text-h5">
-      How to cite us: use the DOI for the &lt;a
+      How to cite us: use the DOI for the
+      &lt;a
         href="https://doi.org/10.25504/FAIRsharing.2abjs5"
         target="_blank"
         class="underline-effect"
-      >FAIRsharing record&lt;/a>, or our &lt;a
+        >FAIRsharing record&lt;/a
+      >, or our
+      &lt;a
         href="https://doi.org/10.1038/s41587-019-0080-8"
         target="_blank"
         class="underline-effect"
-      >publication.&lt;/a>
+        >publication.&lt;/a
+      >
     &lt;/p>
 
     &lt;!-- Adopters, activities, Governance tabs-->
     &lt;v-container class="my-10">
-      &lt;v-row
-        class="block-category"
-      >
+      &lt;v-row class="block-category">
         &lt;v-col
-          v-for="(tab,index) in contentTabs"
-          :key="tab.name+'_'+index"
+          v-for="(tab, index) in contentTabs"
+          :key="tab.name + '_' + index"
           cols="12"
           sm="12"
           md="4"
@@ -136,26 +141,24 @@
             height="300"
             @click="jumpToAnchor(tab.name.toLowerCase())"
           >
-            &lt;div class="white--text d-flex flex-column justify-center block-category__card__gradient">
+            &lt;div
+              class="text-white d-flex flex-column justify-center block-category__card__gradient"
+            >
               &lt;div
                 style="height: 136px"
-                class="d-flex justify-center"
+                class="d-flex justify-center align-center"
               >
-                &lt;v-icon
-                  size="80"
-                  color="white"
-                  style="opacity: .7"
-                >
-                  {{ $vuetify.icons.values[tab.icon].icon }}
+                &lt;v-icon size="80" color="white" style="opacity: 0.7">
+                  {{ customIcons.values[tab.icon].icon }}
                 &lt;/v-icon>
               &lt;/div>
-              &lt;v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
+              &lt;v-card-title
+                class="d-inline text-h4 text-center text-md-h5 text-lg-h4"
+              >
                 {{ tab.name }}
               &lt;/v-card-title>
             &lt;/div>
-            &lt;v-card-text
-              class="text--primary text-justify"
-            >
+            &lt;v-card-text class="text--primary text-justify">
               &lt;p class="text-center">
                 {{ tab.description }}
               &lt;/p>
@@ -167,46 +170,50 @@
 
     &lt;!-- Adopters   -->
     &lt;section id="adopters">
-      &lt;h3 class="text-h3 mb-4 mt-5">
-        Adopters
-      &lt;/h3>
+      &lt;h3 class="text-h3 mb-4 mt-5">Adopters&lt;/h3>
 
       &lt;p>
-        A broad range of &lt;a href="/stakeholders">stakeholders&lt;/a> come to FAIRsharing from across all research domains.
-        However, adopters use FAIRsharing specifically to do one or more of the following:
+        A broad range of &lt;a href="/stakeholders">stakeholders&lt;/a> come to
+        FAIRsharing from across all research domains. However, adopters use
+        FAIRsharing specifically to do one or more of the following:
       &lt;/p>
 
       &lt;ol type="i">
         &lt;li>
-          Educate their users/community on the variety of existing standards, repositories and policies that exist in
-          FAIRsharing and actively encourage them to submit/claim records, where relevant;
+          Educate their users/community on the variety of existing standards,
+          repositories and policies that exist in FAIRsharing and actively
+          encourage them to submit/claim records, where relevant;
         &lt;/li>
         &lt;li>
-          Recommend resources by registering their data policy, and then link it to standards and/or databases
-          &lt;a href="/search?page=1&amp;isRecommended=true">recommended&lt;/a> in the policy;
+          Recommend resources by registering their data policy, and then link it
+          to standards and/or databases
+          &lt;a href="/search?page=1&amp;isRecommended=true">recommended&lt;/a> in the
+          policy;
         &lt;/li>
         &lt;li>
-          Create a &lt;a href="/collections">Collection&lt;/a> that pulls together a list of standards and/or databases
-          around a given domain of interest relevant to them.
+          Create a &lt;a href="/collections">Collection&lt;/a> that pulls together a
+          list of standards and/or databases around a given domain of interest
+          relevant to them.
         &lt;/li>
       &lt;/ol>
 
       &lt;p>
-        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure
-        programmes, societies and other organisations or projects that in turn serve and guide individual
-        researchers or other stakeholders on research data management matters. Adopters display a FAIRsharing logo
-        on their websites with a link from their website to our homepage.
+        Adopters are generally representatives of institutions, libraries,
+        journal publishers, infrastructure programmes, societies and other
+        organisations or projects that in turn serve and guide individual
+        researchers or other stakeholders on research data management matters.
+        Adopters display a FAIRsharing logo on their websites with a link from
+        their website to our homepage.
       &lt;/p>
 
       &lt;p>
-        In general, our adopters fall into the following broad categories. If you don't see your project on the
-        list of adopters, please &lt;a href="mailto:contact@fairsharing.org">get in touch&lt;/a>.
+        In general, our adopters fall into the following broad categories. If
+        you don't see your project on the list of adopters, please
+        &lt;a href="mailto:contact@fairsharing.org">get in touch&lt;/a>.
       &lt;/p>
 
       &lt;div class="text-center">
-        &lt;v-btn
-          class="ma-2 text-white"
-        >
+        &lt;v-btn class="ma-2 text-white">
           &lt;router-link
             v-scroll-to="'#funders'"
             to="#funders"
@@ -215,9 +222,7 @@
             Funders
           &lt;/router-link>
         &lt;/v-btn>
-        &lt;v-btn
-          class="ma-2 text-white"
-        >
+        &lt;v-btn class="ma-2 text-white">
           &lt;router-link
             v-scroll-to="'#publishers'"
             to="#publishers"
@@ -226,9 +231,7 @@
             Publishers
           &lt;/router-link>
         &lt;/v-btn>
-        &lt;v-btn
-          class="ma-2 text-white"
-        >
+        &lt;v-btn class="ma-2 text-white">
           &lt;router-link
             v-scroll-to="'#organisations'"
             to="#organisations"
@@ -237,81 +240,85 @@
             Organisations
           &lt;/router-link>
         &lt;/v-btn>
-        &lt;v-btn
-          class="ma-2 text-white"
-        >
-          &lt;router-link
-            v-scroll-to="'#tools'"
-            to="#tools"
-            text-color="white"
-          >
+        &lt;v-btn class="ma-2 text-white">
+          &lt;router-link v-scroll-to="'#tools'" to="#tools" text-color="white">
             Tools
           &lt;/router-link>
         &lt;/v-btn>
       &lt;/div>
 
-      &lt;h4 class="text-h4 mb-4 mt-5 pt-10">
-        Funders
-      &lt;/h4>
+      &lt;h4 class="text-h4 mb-4 mt-5 pt-10">Funders&lt;/h4>
 
       &lt;p
         id="funders"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-0 mt-10 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
       >
-        A selection of official reports from funders and other organisations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+        A selection of official reports from funders and other organisations
+        that recommend the use of FAIRsharing as a key asset for all
+        stakeholders to enable FAIR data:
       &lt;/p>
 
       &lt;!--  External Links  -->
-      &lt;v-row
-        class="my-2"
-      >
+      &lt;v-row class="my-2">
         &lt;v-col
-          v-for="(item,index) in externalLinks"
-          :key="index+'_'+item.titleLink"
+          v-for="(item, index) in externalLinks"
+          :key="index + '_' + item.titleLink"
           cols="12"
           md="12"
           lg="4"
-          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+          :class="[
+            'pa-5 links',
+            { 'max-width-32-percent': $vuetify.display.mdAndUp },
+          ]"
         >
-          &lt;a
-            :href="item.titleLink"
-            target="_blank"
-          >
+          &lt;a :href="item.titleLink" target="_blank">
             &lt;p
-              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="[
+                'mb-0 lato-font-medium lato-text-sm underline-effect',
+                { 'lato-text-md': $vuetify.display.xl },
+              ]"
             >
               {{ item.title }}
             &lt;/p>
           &lt;/a>
           &lt;i
-            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            :class="[
+              'mb-0 word-break lato-font-medium lato-text-sm',
+              { 'lato-text-md': $vuetify.display.xl },
+            ]"
             v-html="$sanitize(item.text)"
           />
         &lt;/v-col>
       &lt;/v-row>
 
-      &lt;h4 class="text-h4 mb-4 mt-5 pt-10">
-        Publishers
-      &lt;/h4>
+      &lt;h4 class="text-h4 mb-4 mt-5 pt-10">Publishers&lt;/h4>
 
       &lt;p
         id="publishers"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-0 mt-10 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
       >
-        A selection of the publishers that use FAIRsharing to define and refine their data policies:
+        A selection of the publishers that use FAIRsharing to define and refine
+        their data policies:
       &lt;/p>
 
       &lt;!--Adopter table-->
-      &lt;v-row
-        class="mt-2 ml-0"
-      >
+      &lt;v-row class="mt-2 ml-0">
         &lt;v-col
-          v-for="(item,index) in tables.adopterTable.data"
-          :key="index+'_'+item.adopter"
+          v-for="(item, index) in tables.adopterTable.data"
+          :key="index + '_' + item.adopter"
           cols="12"
           md="12"
           lg="4"
-          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+          :class="[
+            'pa-5 links',
+            { 'max-width-32-percent': $vuetify.display.mdAndUp },
+          ]"
         >
           &lt;v-img
             v-if="item.image"
@@ -319,28 +326,30 @@
             max-height="250px"
             :src="item.image"
             height="120"
-            contain
-            style="filter: grayscale(1);"
+            class="contain"
+            style="filter: grayscale(1)"
           />
         &lt;/v-col>
       &lt;/v-row>
 
-      &lt;h4 class="text-h4 mt-5 pt-10">
-        Other Organisations
-      &lt;/h4>
+      &lt;h4 class="text-h4 mt-5 pt-10">Other Organisations&lt;/h4>
       &lt;p
         id="organisations"
-        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-0 mt-10 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
       >
         Some other organisations using FAIRsharing.
       &lt;/p>
-      &lt;v-row
-        class="mt-2 ml-0"
-      >
+      &lt;v-row class="mt-2 ml-0">
         &lt;v-col
-          v-for="(item,index) in tables.globalOrganisationTable.data"
+          v-for="(item, index) in tables.globalOrganisationTable.data"
           :key="`${item.adopter}_${index}`"
-          :class="['pa-5 links full-width',{'max-width-24-percent':$vuetify.breakpoint.mdAndUp}]"
+          :class="[
+            'pa-5 links full-width',
+            { 'max-width-24-percent': $vuetify.display.mdAndUp },
+          ]"
           cols="12"
           md="12"
           lg="4"
@@ -351,35 +360,35 @@
             max-height="250px"
             :src="item.image"
             height="120"
-            contain
-            style="filter: grayscale(1);"
+            class="contain"
+            style="filter: grayscale(1)"
           />
         &lt;/v-col>
       &lt;/v-row>
     &lt;/section>
 
     &lt;!--  new tools section  -->
-    &lt;h4 class="text-h4 mt-5 pt-10">
-      Tools
-    &lt;/h4>
+    &lt;h4 class="text-h4 mt-5 pt-10">Tools&lt;/h4>
     &lt;p
       v-if="tables.toolsTable.data.length"
       id="tools"
-      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="[
+        'mb-0 mt-10 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xl },
+      ]"
     >
-      Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use
+      Tools that make use of FAIRsharing content. If you would like your tool
+      included in this list, please use
       &lt;a
         href="https://docs.google.com/forms/d/e/1FAIpQLSdl1lKj9xlgN5Od_LyqWfnqBl-8aOLXhdFQa2nfm5CBmZ1TgQ/viewform?usp=sf_link"
         target="_blank"
-      >this form&lt;/a>
+        >this form&lt;/a
+      >
       to let us know how you're using FAIRsharing.
     &lt;/p>
 
     &lt;!-- Tools table begins -->
-    &lt;v-row
-      v-if="tables.toolsTable.data.length"
-      dense
-    >
+    &lt;v-row v-if="tables.toolsTable.data.length" dense>
       &lt;v-col
         v-for="tool in tables.toolsTable.data"
         :key="tool.id"
@@ -389,29 +398,26 @@
         lg="3"
         xl="2"
       >
-        &lt;v-card
-          class="full-width"
-        >
+        &lt;v-card class="full-width">
           &lt;v-img
-            :src="tool.logo ? `/assets/Community/tools/${tool.logo}` : '/assets/Community/tools/toolplaceholder.png'"
-            class="white--text align-end"
+            :src="
+              tool.logo
+                ? `/assets/Community/tools/${tool.logo}`
+                : '/assets/Community/tools/toolplaceholder.png'
+            "
+            class="text-white align-end"
             gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
             cover
             aspect-ratio="1"
           >
             &lt;v-card-title>
               &lt;h4 style="word-break: initial">
-                &lt;a
-                  :id="tool.id"
-                  :href="tool.homepage"
-                >
+                &lt;a :id="tool.id" :href="tool.homepage">
                   {{ tool.name }}
                 &lt;/a>
               &lt;/h4>
             &lt;/v-card-title>
-            &lt;v-card-subtitle
-              v-if="tool.description"
-            >
+            &lt;v-card-subtitle v-if="tool.description">
               {{ tool.description }}
             &lt;/v-card-subtitle>
           &lt;/v-img>
@@ -419,78 +425,52 @@
           &lt;v-card-text
             class="text--primary"
             style="height: 100%"
-            :style="$vuetify.breakpoint.xl ? 'height: 320px': $vuetify.breakpoint.mdAndUp ? 'height: 350px' : 'height: 100%'"
+            :style="
+              $vuetify.display.xl
+                ? 'height: 320px'
+                : $vuetify.display.mdAndUp
+                  ? 'height: 350px'
+                  : 'height: 100%'
+            "
           >
             &lt;div v-if="tool.organisations &amp;&amp; tool.organisations.length">
               Organisation :
-              &lt;span
-                v-for="(org, i) in tool.organisations"
-                :key="org.id"
-              >
-                &lt;v-tooltip
-                  v-if="org.tooltip"
-                  bottom
-                >
-                  &lt;template #activator="{ on }">
-                    &lt;a
-                      :href="orgUrl(org)"
-                      class="d-inline-block"
-                      v-on="on"
-                    >{{ org.name }}
+              &lt;span v-for="(org, i) in tool.organisations" :key="org.id">
+                &lt;v-tooltip v-if="org.tooltip" location="bottom">
+                  &lt;template #activator="{ props }">
+                    &lt;a :href="orgUrl(org)" class="d-inline-block" v-bind="props"
+                      >{{ org.name }}
                     &lt;/a>
                   &lt;/template>
                   &lt;span>{{ org.tooltip }}&lt;/span>
                 &lt;/v-tooltip>
-                &lt;a
-                  v-else
-                  :href="orgUrl(org)"
-                  class="d-inline-block"
-                >{{ org.name }}
+                &lt;a v-else :href="orgUrl(org)" class="d-inline-block"
+                  >{{ org.name }}
                 &lt;/a>
-                &lt;span v-if="i+1 &lt; tool.organisations.length">, &lt;/span>
+                &lt;span v-if="i + 1 &lt; tool.organisations.length">, &lt;/span>
               &lt;/span>
             &lt;/div>
-            &lt;div v-if="tool.status">
-              Status: {{ tool.status }}
-            &lt;/div>
+            &lt;div v-if="tool.status">Status: {{ tool.status }}&lt;/div>
             &lt;div v-if="tool.contacts &amp;&amp; tool.contacts.length">
-              Contacts:&lt;br>
-              &lt;span
-                v-for="(contact) in tool.contacts"
-                :key="contact.id"
-              >
-                &lt;v-chip
-                  class="ma-2"
-                  x-small
-                >
+              Contacts:&lt;br />
+              &lt;span v-for="contact in tool.contacts" :key="contact.id">
+                &lt;v-chip class="ma-2" size="x-small">
                   &lt;a :href="contact.url">{{ contact.name }}&lt;/a>
                 &lt;/v-chip>
               &lt;/span>
             &lt;/div>
             &lt;div v-if="tool.methods &amp;&amp; tool.methods.length">
-              Methods of using FAIRsharing:&lt;br>
-              &lt;span
-                v-for="(method) in tool.methods"
-                :key="tool.name + method"
-              >
-                &lt;v-chip
-                  class="ma-2"
-                  x-small
-                >
+              Methods of using FAIRsharing:&lt;br />
+              &lt;span v-for="method in tool.methods" :key="tool.name + method">
+                &lt;v-chip class="ma-2" size="x-small">
                   {{ method }}
                 &lt;/v-chip>
               &lt;/span>
             &lt;/div>
             &lt;div v-if="tool.types &amp;&amp; tool.types.length">
-              Type of resource:&lt;br>
-              &lt;span
-                v-for="(type) in tool.types"
-                :key="tool.name + type"
-              >
-                &lt;v-chip
-                  class="ma-2"
-                  x-small
-                >
+              Type of resource:&lt;br />
+              &lt;span v-for="type in tool.types" :key="tool.name + type">
+                &lt;v-chip class="ma-2" size="x-small">
                   {{ type }}
                 &lt;/v-chip>
               &lt;/span>
@@ -501,61 +481,80 @@
     &lt;/v-row>
     &lt;!-- Tools table ends -->
 
-
     &lt;!-- Activities   -->
     &lt;section id="activities">
-      &lt;h3 class="text-h4 my-4">
-        Activities
-      &lt;/h3>
+      &lt;h3 class="text-h4 my-4">Activities&lt;/h3>
       &lt;p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-2 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
       >
-        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+        FAIRsharing is not just a registry. The team behind FAIRsharing is
+        involved in a number of FAIR-enabling activities, delivering guidance,
+        tools and services with and for a variety of stakeholders. As these
+        activities mature, we will implement or connect them in/to the
+        FAIRsharing resource itself.
       &lt;/p>
       &lt;p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-2 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
       >
-        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+        Some of these activities are part of funded projects and of national or
+        international consortia, while others are volunteer efforts that fall
+        under a variety of umbrella organisations, such as working groups (WG)
+        and learned societies.
       &lt;/p>
       &lt;b
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-2 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
       >
-        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+        Our activities are classified using the three GO-FAIR pillar structures
+        (change, build, train) and are outlined here.
       &lt;/b>
       &lt;!--Activities table-->
       &lt;ActivitiesStaticTable class="mb-16 mt-2" />
     &lt;/section>
 
-
     &lt;!-- Governance   -->
     &lt;section id="governance">
-      &lt;h3 class="text-h4 mb-4">
-        Governance
-      &lt;/h3>
+      &lt;h3 class="text-h4 mb-4">Governance&lt;/h3>
       &lt;!--   Meet the team   -->
       &lt;a id="team" />
       &lt;h4 class="text-h5 mb-2">
         {{ meettheteam.title }}
       &lt;/h4>
       &lt;p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-5 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
         v-html="$sanitize(meettheteam.description)"
       />
       &lt;ul class="d-flex flex-wrap pl-0">
         &lt;li
-          v-for="(profileItem,index) in meettheteam.profiles"
+          v-for="(profileItem, index) in meettheteam.profiles"
           :key="`${profileItem}_${index}`"
-          :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
+          :class="[
+            'text-center width-250 height-400 mb-10',
+            $vuetify.display.mdAndDown ? 'mx-auto' : '',
+          ]"
         >
           &lt;v-avatar size="160">
-            &lt;v-img
-              :src="profileItem.profileImg"
-              style="filter: grayscale(1);"
-            />
+            &lt;v-img :src="profileItem.profileImg" style="filter: grayscale(1)" />
           &lt;/v-avatar>
           &lt;p
-            class="text-center primary--text lato-font-bold mt-2 ma-0"
-            style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
+            class="text-center text-primary lato-font-bold mt-2 ma-0"
+            style="
+              font-size: 1.5rem;
+              min-height: 80px;
+              display: flex;
+              flex-direction: column;
+            "
             v-html="$sanitize(profileItem.name)"
           />
           &lt;i class="small d-block height-75">
@@ -563,12 +562,16 @@
           &lt;/i>
           &lt;div class="text-center mt-2 d-flex justify-center">
             &lt;span
-              v-for="(socialItem,socialIndex) in profileItem.social"
+              v-for="(socialItem, socialIndex) in profileItem.social"
               :key="`${socialItem}_${socialIndex}`"
             >
               &lt;a
                 class="pr-2"
-                :href="socialItem.link.includes('@')?`mailto:${socialItem.link}`:socialItem.link"
+                :href="
+                  socialItem.link.includes('@')
+                    ? `mailto:${socialItem.link}`
+                    : socialItem.link
+                "
                 target="_blank"
               >
                 &lt;Icon
@@ -586,46 +589,49 @@
       &lt;!--  Advisory Board   -->
       &lt;a id="board" />
       &lt;div
-        v-for="(governanceItem,key,index) in governance"
-        :key="Object.keys(governanceItem)[index]+'_'+'index'"
+        v-for="(governanceItem, key, index) in governance"
+        :key="Object.keys(governanceItem)[index] + '_' + 'index'"
       >
         &lt;div class="mb-10">
           &lt;h4 class="text-h5 mb-8">
             {{ key }}
           &lt;/h4>
           &lt;div
-            v-for="(itemText,itemIndex) in governance_text"
-            :key="itemText+'_'+itemIndex"
+            v-for="(itemText, itemIndex) in governance_text"
+            :key="itemText + '_' + itemIndex"
           >
-            &lt;p
-              class="ma-1"
-              v-html="$sanitize(itemText.text)"
-            />
+            &lt;p class="ma-1" v-html="$sanitize(itemText.text)" />
           &lt;/div>
           &lt;div
-            v-for="(item,itemIndex) in governanceItem"
-            :key="item.title+'_'+itemIndex"
+            v-for="(item, itemIndex) in governanceItem"
+            :key="item.title + '_' + itemIndex"
             class="mt-5"
           >
             &lt;div class="mb-5">
-              &lt;ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
+              &lt;ul
+                :class="['mt-2', { 'column-count': $vuetify.display.mdAndUp }]"
+              >
                 &lt;li
-                  v-for="(itemData,itemDataIndex) in item.data"
-                  :key="itemData+'_'+itemDataIndex"
-                  :class="['mb-1',{'d-flex':isArray(itemData)===true &amp;&amp; $vuetify.breakpoint.lgAndUp}]"
+                  v-for="(itemData, itemDataIndex) in item.data"
+                  :key="itemData + '_' + itemDataIndex"
+                  :class="[
+                    'mb-1',
+                    {
+                      'd-flex':
+                        isArray(itemData) === true &amp;&amp; $vuetify.display.lgAndUp,
+                    },
+                  ]"
                 >
-                  &lt;div
-                    v-if="!isArray(itemData)"
-                    class="d-flex mb-2"
-                  >
-                    &lt;p
-                      class="ma-0"
-                      v-html="$sanitize(itemData.text)"
-                    />
+                  &lt;div v-if="!isArray(itemData)" class="d-flex mb-2">
+                    &lt;p class="ma-0" v-html="$sanitize(itemData.text)" />
                     &lt;a
                       v-if="itemData.link"
                       class="ml-2 pr-2"
-                      :href="itemData.link.toString().includes('@')?`mailto:${itemData.link}`:itemData.link"
+                      :href="
+                        itemData.link.toString().includes('@')
+                          ? `mailto:${itemData.link}`
+                          : itemData.link
+                      "
                       target="_blank"
                     >
                       &lt;Icon
@@ -638,18 +644,19 @@
                     &lt;/a>
                   &lt;/div>
                   &lt;div
-                    v-for="(itemDataArray,itemDataArrayIndex) in itemData"
+                    v-for="(itemDataArray, itemDataArrayIndex) in itemData"
                     v-else
-                    :key="itemDataArray.link+'_'+itemDataArrayIndex"
+                    :key="itemDataArray.link + '_' + itemDataArrayIndex"
                     class="d-flex mb-2"
                   >
-                    &lt;p
-                      class="ma-0"
-                      v-html="$sanitize(itemDataArray.text)"
-                    />
+                    &lt;p class="ma-0" v-html="$sanitize(itemDataArray.text)" />
                     &lt;a
                       class="ml-2 pr-2"
-                      :href="itemDataArray.link.toString().includes('@')?`mailto:${itemDataArray.link}`:itemDataArray.link"
+                      :href="
+                        itemDataArray.link.toString().includes('@')
+                          ? `mailto:${itemDataArray.link}`
+                          : itemDataArray.link
+                      "
                       target="_blank"
                     >
                       &lt;Icon
@@ -673,38 +680,38 @@
         {{ rda.title }}
       &lt;/h4>
       &lt;p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        :class="[
+          'mb-5 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xl },
+        ]"
         v-html="$sanitize(rda.description)"
       />
       &lt;div
-        v-for="(item,itemIndex) in rda.subsections"
-        :key="item.title+'_'+itemIndex"
+        v-for="(item, itemIndex) in rda.subsections"
+        :key="item.title + '_' + itemIndex"
         class="ml-8"
       >
         &lt;div class="mb-5">
           &lt;h4 class="text-h5">
             {{ item.title }}
           &lt;/h4>
-          &lt;div
-            v-if="isArray(item.data)"
-          >
-            &lt;ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
+          &lt;div v-if="isArray(item.data)">
+            &lt;ul :class="['mt-2', { 'column-count': $vuetify.display.mdAndUp }]">
               &lt;li
-                v-for="(itemData,itemDataIndex) in item.data"
-                :key="itemData+'_'+itemDataIndex"
-                :class="['mb-1',{'d-flex': $vuetify.breakpoint.lgAndUp}]"
+                v-for="(itemData, itemDataIndex) in item.data"
+                :key="itemData + '_' + itemDataIndex"
+                :class="['mb-1', { 'd-flex': $vuetify.display.lgAndUp }]"
               >
-                &lt;div
-                  class="d-flex mb-2"
-                >
-                  &lt;p
-                    class="ma-0"
-                    v-html="$sanitize(itemData.text)"
-                  />
+                &lt;div class="d-flex mb-2">
+                  &lt;p class="ma-0" v-html="$sanitize(itemData.text)" />
                   &lt;a
                     v-if="itemData.link"
                     class="ml-2 pr-2"
-                    :href="itemData.link.toString().includes('@')?`mailto:${itemData.link}`:itemData.link"
+                    :href="
+                      itemData.link.toString().includes('@')
+                        ? `mailto:${itemData.link}`
+                        : itemData.link
+                    "
                     target="_blank"
                   >
                     &lt;Icon
@@ -721,7 +728,10 @@
           &lt;/div>
           &lt;div v-else>
             &lt;p
-              :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="[
+                'mb-5 lato-font-medium lato-text-sm',
+                { 'lato-text-md': $vuetify.display.xl },
+              ]"
               v-html="$sanitize(item.data)"
             />
           &lt;/div>
@@ -729,25 +739,25 @@
       &lt;/div>
       &lt;div>
         &lt;p
-          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          :class="[
+            'mb-5 lato-font-medium lato-text-sm',
+            { 'lato-text-md': $vuetify.display.xl },
+          ]"
         >
-          &lt;a
-            href="https://zulip.com/"
-            target="_blank"
-          >
+          &lt;a href="https://zulip.com/" target="_blank">
             &lt;img
               height="27px"
               width="27px"
               src="/assets/icons/zulip-icon.png"
-            >
+            />
           &lt;/a>
-          We'd like to thank &lt;a
-            href="https://zulip.com/"
-            target="_blank"
-            class="underline-effect"
-          >Zulip&lt;/a>
-          for access to their community plan, which helps both our core team and our champions.
-          Zulip is an open-source modern team chat app designed to keep both live and asynchronous conversations organized.
+          We'd like to thank
+          &lt;a href="https://zulip.com/" target="_blank" class="underline-effect"
+            >Zulip&lt;/a
+          >
+          for access to their community plan, which helps both our core team and
+          our champions. Zulip is an open-source modern team chat app designed
+          to keep both live and asynchronous conversations organized.
         &lt;/p>
       &lt;/div>
     &lt;/section>
@@ -761,11 +771,12 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import {isArray} from "lodash";
+import { isArray } from "lodash";
 
 import Icon from "@/components/Icon";
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import communityData from "@/data/communityPageData.json"
+import communityData from "@/data/communityPageData.json";
+import customIcons from "@/plugins/icons";
 /** This component handles the sign-up/register page
  * @memberOf Static
  * @name Community
@@ -773,59 +784,60 @@ import communityData from "@/data/communityPageData.json"
  * @instance
  * */
 export default {
-    name: "Community",
-    components: {Icon, ActivitiesStaticTable},
-    title: "This will be the community page",
-    data: () => {
-        return {
-            contentTabs:  communityData.contentTabs,
-            externalLinks:  communityData.externalLinks,
-            governance:  communityData.governance,
-            governance_text:  communityData.governance_text,
-            meettheteam:  communityData.meettheteam,
-            rda:  communityData.rda,
-            tables:  communityData.tables,
-            applyCss: false,
-            currentAnchor:'',
-            Icon
-        }
-    },
-    watch: {
-        $route: {
-            deep:true,
-            handler() {
-                this.applyCss = false
-                this.$nextTick(() => {
-                    this.applyCss = true
-                })
-            }
-        }
-    },
-    created() {
+  name: "Community",
+  components: { Icon, ActivitiesStaticTable },
+  title: "This will be the community page",
+  data: () => {
+    return {
+      contentTabs: communityData.contentTabs,
+      externalLinks: communityData.externalLinks,
+      governance: communityData.governance,
+      governance_text: communityData.governance_text,
+      meettheteam: communityData.meettheteam,
+      rda: communityData.rda,
+      tables: communityData.tables,
+      applyCss: false,
+      currentAnchor: "",
+      Icon,
+      customIcons: customIcons,
+    };
+  },
+  watch: {
+    $route: {
+      deep: true,
+      handler() {
+        this.applyCss = false;
         this.$nextTick(() => {
-            // update the UI padding and margin after DOM is fully loaded.
-            this.applyCss = true
-        })
+          this.applyCss = true;
+        });
+      },
     },
-    methods: {
-        jumpToAnchor(selectedAnchor) {
-            if (selectedAnchor !== this.currentAnchor) {
-                this.$router.push({hash: `${selectedAnchor}`});
-                this.currentAnchor = selectedAnchor;
-            }
-        },
-        isArray(input){
-            return isArray(input)
-        },
-        orgUrl(org) {
-          if (org.id) {
-            return `/organisations/${org.id}`;
-          }
-          else {
-            return org.url;
-          }
-        }
+  },
+  created() {
+    this.$nextTick(() => {
+      // update the UI padding and margin after DOM is fully loaded.
+      this.applyCss = true
+    })
+  },
+  methods: {
+    jumpToAnchor(selectedAnchor) {
+      if (selectedAnchor !== this.currentAnchor) {
+        this.$router.push({hash: `${selectedAnchor}`});
+        this.currentAnchor = selectedAnchor;
+      }
+    },
+    isArray(input){
+      return isArray(input)
+    },
+    orgUrl(org) {
+      if (org.id) {
+        return `/organisations/${org.id}`;
+      }
+      else {
+        return org.url;
+      }
     }
+  }
 }
 &lt;/script>
 
@@ -837,14 +849,14 @@ export default {
 
 .block-category {
   &amp;__card {
-    transition: all .2ms ease;
-    -webkit-transition: all .2s ease;
-    -moz-transition: all .2s ease;
-    -o-transition: all .2s ease;
-    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    transition: all 0.2ms ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
 
     &amp;:hover {
       transform: scale(1.05);
@@ -856,10 +868,26 @@ export default {
     &amp;__gradient {
       height: 200px;
       background: rgb(171, 171, 171);
-      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
-      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
-      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
-      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: linear-gradient(
+        50deg,
+        rgb(204, 204, 204) 0%,
+        rgb(135, 135, 135) 100%
+      );
+      background: -webkit-linear-gradient(
+        50deg,
+        rgb(204, 204, 204) 0%,
+        rgb(135, 135, 135) 100%
+      );
+      background: -o-linear-gradient(
+        50deg,
+        rgb(204, 204, 204) 0%,
+        rgb(135, 135, 135) 100%
+      );
+      background: -ms-linear-gradient(
+        50deg,
+        rgb(204, 204, 204) 0%,
+        rgb(135, 135, 135) 100%
+      );
     }
   }
 }
@@ -869,11 +897,11 @@ export default {
 }
 
 .border-bottom {
-  border-bottom: 1px solid #ECF0F1 !important;
+  border-bottom: 1px solid #ecf0f1 !important;
 }
 
 .border-left {
-  border-left: 1px solid #ECF0F1 !important;
+  border-left: 1px solid #ecf0f1 !important;
 }
 
 a:hover {
@@ -885,11 +913,11 @@ a:hover {
   }
 }
 td {
-  font-size: 1rem!important;
+  font-size: 1rem !important;
 }
 
 .column-count {
-  column-count:2;
+  column-count: 2;
   -moz-column-count: 2;
   -webkit-column-count: 2;
 }
@@ -897,8 +925,8 @@ td {
 .word-break {
   white-space: break-spaces;
 }
-
-&lt;/style></pre>
+&lt;/style>
+</pre>
     </article>
 </section>
 
@@ -943,7 +971,7 @@ td {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Mon Nov 17th 2025
+		on Fri Nov 14th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

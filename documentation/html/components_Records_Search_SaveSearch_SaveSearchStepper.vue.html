@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
@@ -87,85 +94,87 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-row justify="center">
     &lt;v-dialog
-      :model-value="stepperDialog"
+      :value="stepperDialog"
       width="900"
       persistent
       :retain-focus="false"
       @keydown.esc="closeStepperDialog()"
     >
       &lt;!--Dialog Header -->
-      &lt;StepperDialogHeader @restart-stepper="restartStepper" />
+      &lt;StepperDialogHeader @restartStepper="restartStepper" />
       &lt;!--Stepper Form -->
       &lt;div v-if="getShowStepper">
-        &lt;v-stepper :model-value="steps" non-linear class="rounded-t-0">
+        &lt;v-stepper
+          v-model="steps"
+          non-linear
+          class="rounded-t-0"
+        >
           &lt;!--Stepper Header -->
           &lt;v-stepper-header class="rounded-0">
             &lt;!--Header 1 -->
-            &lt;v-stepper-item
+            &lt;v-stepper-step
               editable
-              :complete="steps > 0"
-              value="1"
-              title="Create Policy Link"
-              subtitle="Optional"
-              @click="steps = 0"
+              :complete="steps > 1"
+              step="1"
             >
-            &lt;/v-stepper-item>
+              Create Policy Link
+              &lt;small>Optional&lt;/small>
+            &lt;/v-stepper-step>
 
             &lt;v-divider />
             &lt;!--Header 2 -->
-            &lt;v-stepper-item
-              v-if="user().is_super_curator"
-              editable
-              :complete="steps > 1"
-              value="2"
-              title="Create Organisation Link"
-              subtitle="Optional"
-              @click="steps = 1"
-            >
-            &lt;/v-stepper-item>
-
-            &lt;v-divider v-if="user().is_super_curator" />
-            &lt;!--Header 3 -->
-            &lt;v-stepper-item
+            &lt;v-stepper-step
               v-if="user().is_super_curator"
               editable
               :complete="steps > 2"
-              value="3"
-              title="Create User Link"
-              subtitle="Optional"
-              @click="steps = 2"
+              step="2"
             >
-            &lt;/v-stepper-item>
+              Create Organisation Link
+              &lt;small>Optional&lt;/small>
+            &lt;/v-stepper-step>
+
+            &lt;v-divider v-if="user().is_super_curator" />
+            &lt;!--Header 3 -->
+            &lt;v-stepper-step
+              v-if="user().is_super_curator"
+              editable
+              :complete="steps > 3"
+              step="3"
+            >
+              Create User Link
+              &lt;small>Optional&lt;/small>
+            &lt;/v-stepper-step>
 
             &lt;v-divider v-if="user().is_super_curator" />
             &lt;!--Header 4 -->
-            &lt;v-stepper-item
+            &lt;v-stepper-step
               editable
-              :value="user().is_super_curator ? 4 : 2"
-              @click="steps = user().is_super_curator ? 3 : 1"
+              :step="user().is_super_curator ? 4 : 2"
             >
               Save Search
-            &lt;/v-stepper-item>
+            &lt;/v-stepper-step>
           &lt;/v-stepper-header>
 
           &lt;!--Stepper Body -->
-          &lt;v-stepper-window>
+          &lt;v-stepper-items>
             &lt;!--Stepper Content 1 Policy List-->
-            &lt;v-stepper-window-item value="1">
+            &lt;v-stepper-content step="1">
               &lt;PolicyStepper />
               &lt;v-btn
                 class="float-md-right my-3"
-                :class="{ 'full-width': $vuetify.display.smAndDown }"
+                :class="{ 'full-width': $vuetify.breakpoint.smAndDown }"
                 color="primary"
-                variant="elevated"
-                @click="steps = 1"
+                @click="steps = 2"
               >
                 Continue
               &lt;/v-btn>
-            &lt;/v-stepper-window-item>
+            &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 2 Organisation List-->
-            &lt;v-stepper-window-item v-if="user().is_super_curator" value="2">
+            &lt;v-stepper-content
+              v-if="user().is_super_curator"
+              step="2"
+            >
               &lt;OrganisationStepper />
 
               &lt;div
@@ -174,27 +183,28 @@
                 &lt;v-btn
                   class="order-md-2"
                   :class="{
-                    'mb-3': $vuetify.display.smAndDown,
+                    'mb-3': $vuetify.breakpoint.smAndDown,
                   }"
                   color="primary"
-                  variant="elevated"
-                  @click="steps = 2"
+                  @click="steps = 3"
                 >
                   Continue
                 &lt;/v-btn>
                 &lt;v-btn
-                  class="text-white order-md-1"
+                  class="white--text order-md-1"
                   color="accent3"
-                  variant="elevated"
-                  @click="steps = 0"
+                  @click="steps = 1"
                 >
                   Back
                 &lt;/v-btn>
               &lt;/div>
-            &lt;/v-stepper-window-item>
+            &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 3 Save Search Form-->
-            &lt;v-stepper-window-item v-if="user().is_super_curator" value="3">
+            &lt;v-stepper-content
+              v-if="user().is_super_curator"
+              step="3"
+            >
               &lt;UserStepper />
 
               &lt;div
@@ -203,28 +213,29 @@
                 &lt;v-btn
                   class="order-md-2"
                   :class="{
-                    'mb-3': $vuetify.display.smAndDown,
+                    'mb-3': $vuetify.breakpoint.smAndDown,
                   }"
                   color="primary"
-                  variant="elevated"
-                  @click="steps = 3"
+                  @click="steps = 4"
                 >
                   Continue
                 &lt;/v-btn>
                 &lt;v-btn
-                  class="text-white order-md-1"
+                  class="white--text order-md-1"
                   color="accent3"
-                  variant="elevated"
-                  @click="steps = 1"
+                  @click="steps = 2"
                 >
                   Back
                 &lt;/v-btn>
               &lt;/div>
-            &lt;/v-stepper-window-item>
+            &lt;/v-stepper-content>
 
             &lt;!--Stepper Content 4 Save Search Form-->
-            &lt;v-stepper-window-item :value="user().is_super_curator ? 4 : 2">
-              &lt;v-form ref="searchFormRef" v-model="searchForm">
+            &lt;v-stepper-content :step="user().is_super_curator ? 4 : 2">
+              &lt;v-form
+                ref="searchFormRef"
+                v-model="searchForm"
+              >
                 &lt;v-text-field
                   v-model="searchName"
                   label="Search Name"
@@ -243,30 +254,31 @@
                 &lt;v-btn
                   class="order-md-2"
                   :class="{
-                    'mb-3': $vuetify.display.smAndDown,
+                    'mb-3': $vuetify.breakpoint.smAndDown,
                   }"
                   color="success order-md-1"
                   :disabled="!searchForm"
                   :loading="loading"
-                  variant="elevated"
                   @click="saveSearch"
                 >
                   Save
                 &lt;/v-btn>
                 &lt;v-btn
-                  class="text-white"
+                  class="white--text"
                   color="accent3"
-                  variant="elevated"
-                  @click="steps = user().is_super_curator ? 2 : 0"
+                  @click="steps = user().is_super_curator ? 3 : 1"
                 >
                   Back
                 &lt;/v-btn>
               &lt;/div>
-            &lt;/v-stepper-window-item>
-          &lt;/v-stepper-window>
+            &lt;/v-stepper-content>
+          &lt;/v-stepper-items>
         &lt;/v-stepper>
       &lt;/div>
-      &lt;ResultCard v-else @restart-stepper="restartStepper" />
+      &lt;ResultCard
+        v-else
+        @restartStepper="restartStepper"
+      />
     &lt;/v-dialog>
   &lt;/v-row>
 &lt;/template>
@@ -300,7 +312,7 @@ export default {
   data() {
     return {
       stepperDialog: false,
-      steps: 0,
+      steps: 1,
       policySelected: [],
       organisationSelected: [],
       policyList: [],
@@ -368,7 +380,7 @@ export default {
 
       const searchResult = await restClient.saveSearch(
         saveSearchObj,
-        this.user().credentials.token,
+        this.user().credentials.token
       );
 
       //Hide stepper and show result section
@@ -404,7 +416,7 @@ export default {
 
     /**
      * Restart the Save Search from step 1
-     * @param value - Value number 1
+     * @param value - Step number 1
      */
     restartStepper(value) {
       this.steps = value;
@@ -457,7 +469,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 14th 2025
+		on Mon Nov 17th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

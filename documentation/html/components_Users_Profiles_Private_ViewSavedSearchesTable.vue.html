@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
@@ -96,14 +103,18 @@
       mobile-breakpoint="960"
     >
       &lt;template #[`item.creator`]="{ item }">
-        &lt;a :href="`/users/${item.creator['id']}`"
-          >{{ item.creator["username"] }}
+        &lt;a :href="`/users/${item.creator['id']}`">{{ item.creator["username"] }}
         &lt;/a>
       &lt;/template>
       &lt;template #[`item.additionalUser`]="{ item }">
         &lt;ul class="pl-0">
-          &lt;li v-for="user in additionalUsers(item)" :key="user.id" class="mb-2">
-            &lt;a :href="`/users/${user['id']}`">{{ user["username"] }} &lt;/a>
+          &lt;li
+            v-for="user in additionalUsers(item)"
+            :key="user.id"
+            class="mb-2"
+          >
+            &lt;a :href="`/users/${user['id']}`">{{ user["username"] }}
+            &lt;/a>
           &lt;/li>
         &lt;/ul>
       &lt;/template>
@@ -123,7 +134,8 @@
             :key="record.id"
             class="my-2"
           >
-            &lt;a :href="`/${record['id']}`">{{ record["name"] }} &lt;/a>
+            &lt;a :href="`/${record['id']}`">{{ record["name"] }}
+            &lt;/a>
           &lt;/li>
         &lt;/ul>
       &lt;/template>
@@ -134,8 +146,7 @@
             :key="organisation.id"
             class="my-2"
           >
-            &lt;a :href="`/organisations/${organisation['id']}`"
-              >{{ organisation["name"] }}
+            &lt;a :href="`/organisations/${organisation['id']}`">{{ organisation["name"] }}
             &lt;/a>
           &lt;/li>
         &lt;/ul>
@@ -156,7 +167,12 @@
           mdi-link-off
         &lt;/v-icon>
         &lt;!--User is on its account profile page-->
-        &lt;v-icon v-else @click="deleteItem(item)"> mdi-delete &lt;/v-icon>
+        &lt;v-icon
+          v-else
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        &lt;/v-icon>
       &lt;/template>
       &lt;template #no-data>
         &lt;div>
@@ -166,7 +182,10 @@
       &lt;/template>
     &lt;/v-data-table>
     &lt;!--Delete action dialog box -->
-    &lt;v-dialog v-model="modifyDialog" max-width="500px">
+    &lt;v-dialog
+      v-model="modifyDialog"
+      max-width="500px"
+    >
       &lt;!--Delete -->
       &lt;v-card v-if="deleteSavedSearch">
         &lt;v-card-title class="text-h5">
@@ -174,11 +193,15 @@
         &lt;/v-card-title>
         &lt;v-card-actions>
           &lt;v-spacer />
-          &lt;v-btn class="text-white" color="accent3" @click="closeDialog">
+          &lt;v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
             Cancel
           &lt;/v-btn>
           &lt;v-btn
-            class="text-white"
+            class="white--text"
             color="success"
             :loading="loading"
             @click="deleteItemConfirm()"
@@ -195,11 +218,15 @@
         &lt;/v-card-title>
         &lt;v-card-actions>
           &lt;v-spacer />
-          &lt;v-btn class="text-white" color="accent3" @click="closeDialog">
+          &lt;v-btn
+            class="white--text"
+            color="accent3"
+            @click="closeDialog"
+          >
             Cancel
           &lt;/v-btn>
           &lt;v-btn
-            class="text-white"
+            class="white--text"
             color="success"
             :loading="loading"
             @click="unlinkItemConfirm()"
@@ -226,7 +253,7 @@ export default {
   name: "ViewSavedSearchesTable",
   props: {
     createdSearches: { type: Array, default: null },
-    savedSearches: { type: Array, default: null },
+    savedSearches: { type: Array, default: null }
   },
   data: () => {
     return {
@@ -249,43 +276,18 @@ export default {
     ...mapGetters("users", ["getUserRecords"]),
     headers() {
       let headers = [
-        {
-          title: "Creator",
-          value: "creator",
-          align: "center",
-          sortable: false,
-        },
-        { title: "Date", value: "date", align: "center", sortable: false },
-        { title: "Name", value: "name", align: "center", sortable: false },
-        {
-          title: "Comments",
-          value: "comments",
-          align: "center",
-          sortable: false,
-        },
-        { title: "Record", value: "record", align: "center", sortable: false },
-        {
-          title: "Organisation",
-          value: "organisation",
-          align: "center",
-          sortable: false,
-        },
+        { text: "Creator", value: "creator", align: "center", sortable: false },
+        { text: "Date", value: "date", align: "center", sortable: false },
+        { text: "Name", value: "name", align: "center", sortable: false },
+        { text: "Comments", value: "comments", align: "center", sortable: false },
+        { text: "Record", value: "record", align: "center", sortable: false },
+        { text: "Organisation", value: "organisation", align: "center", sortable: false },
       ];
       if (this.user().isLoggedIn) {
-        headers.push({
-          text: "Actions",
-          value: "actions",
-          align: "center",
-          sortable: false,
-        });
+        headers.push({ text: "Actions", value: "actions", align: "center", sortable: false },)
       }
-      if (this.user().is_super_curator) {
-        headers.splice(1, 0, {
-          text: "Additional User",
-          value: "additionalUser",
-          align: "center",
-          sortable: false,
-        });
+      if(this.user().is_super_curator) {
+        headers.splice(1,0, { text: "Additional User", value: "additionalUser", align: "center", sortable: false },)
       }
       return headers;
     },
@@ -302,19 +304,21 @@ export default {
      * page
      */
     async combinedSearches(searchDeleted, searchUnlinked) {
-      let createdSearches, savedSearches;
+      let createdSearches, savedSearches
 
       if (searchDeleted) {
         await this.getUser();
         createdSearches = this.getUserRecords.user["createdSearches"];
         savedSearches = this.getUserRecords.user["savedSearches"];
-      } else if (searchUnlinked) {
+      }
+      else if (searchUnlinked) {
         let userId = this.$route.params.id;
         let userR = await this.getPublicUser(userId);
         await this.getUser();
         createdSearches = userR.user["createdSearches"];
         savedSearches = userR.user["savedSearches"];
-      } else {
+      }
+      else {
         createdSearches = this.createdSearches;
         savedSearches = this.savedSearches;
       }
@@ -326,9 +330,10 @@ export default {
       }
       //Reversed array to show latest entry first
       let searchValues = [...mapSearches.values()];
-      this.totalSearches = searchValues.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      this.totalSearches = searchValues.sort((a, b) => new Date(b.createdAt)
+          - new Date(a.createdAt)
       );
+
     },
 
     /**
@@ -350,7 +355,7 @@ export default {
       this.loading = true;
       let data = await restClient.deleteSavedSearch(
         this.selectedItem["id"],
-        this.user().credentials.token,
+        this.user().credentials.token
       );
 
       if (data["message"] === "success") {
@@ -378,24 +383,22 @@ export default {
      */
     async unlinkItemConfirm() {
       this.loading = true;
-      let additionalUsersArr = this.additionalUsers(this.selectedItem);
+      let additionalUsersArr = this.additionalUsers(this.selectedItem)
 
       //Filter the user to unlink
-      let linkedUser = additionalUsersArr.filter(
-        ({ id }) => id !== Number(this.$route.params.id),
-      );
+      let linkedUser = additionalUsersArr.filter(({id}) => id !== Number(this.$route.params.id))
 
       //Array of id of the remaining users
-      linkedUser = linkedUser.map(({ id }) => id);
+      linkedUser = linkedUser.map(({id}) => id)
 
       let saveSearchObj = {
         user_ids: linkedUser,
       };
 
       let updatedSearchResult = await restClient.updateSaveSearch(
-        this.selectedItem["id"],
-        saveSearchObj,
-        this.user().credentials.token,
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token
       );
 
       //Commit the updated result to store
@@ -406,6 +409,7 @@ export default {
       this.loading = false;
       this.unlinkSavedSearch = false;
       this.closeDialog();
+
     },
 
     /**
@@ -420,7 +424,7 @@ export default {
     openAdvancedSearch() {
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
+        true
       );
     },
     /**
@@ -429,30 +433,30 @@ export default {
      * @return {Array} - additional user list without creator
      */
     additionalUsers(item) {
-      let additionalUsersList = item["users"].filter((e) => {
-        return e["id"] !== item.creator["id"];
-      });
+      let additionalUsersList =  item["users"].filter((e) => {
+         return e['id'] !== item.creator['id']
+      })
       return additionalUsersList;
     },
+
   },
 };
 &lt;/script>
 
 &lt;style lang="scss" scoped>
-@use "sass:map";
-@use "vuetify/settings" as v;
-.userProfileSavedSearches:deep(*) {
+@import '~vuetify/src/styles/settings/_variables.scss';
+.userProfileSavedSearches::v-deep {
   table {
     tbody {
       tr {
-        td {
-          word-break: break-all;
-          @media #{map.get(v.$display-breakpoints, 'md-and-up')} {
-            width: 100px;
-            min-width: 100px;
-            max-width: 100px;
+          td {
+            word-break: break-all;
+            @media #{map-get($display-breakpoints, 'md-and-up')} {
+              width: 100px;
+              min-width: 100px;
+              max-width: 100px;
+            }
           }
-        }
       }
     }
   }
@@ -503,7 +507,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 14th 2025
+		on Mon Nov 17th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

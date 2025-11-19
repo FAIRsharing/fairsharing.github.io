@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
@@ -88,7 +95,10 @@
   &lt;v-col cols12>
     &lt;v-card class="mb-2">
       &lt;v-card-text v-if="maintenanceRequestsProcessed">
-        &lt;v-card-title id="text-curator-search-5" class="bg-green text-white">
+        &lt;v-card-title
+          id="text-curator-search-5"
+          class="green white--text"
+        >
           &lt;b> OWNERSHIP REQUESTS &lt;/b>
           &lt;v-spacer />
           &lt;v-text-field
@@ -97,7 +107,7 @@
             color="white"
             single-line
             hide-details
-            variant="solo"
+            solo
             class="searchField"
             clearable
           />
@@ -116,14 +126,21 @@
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           sort-by=""
         >
-          &lt;template v-if="recordType" #item="props">
+          &lt;template
+            v-if="recordType"
+            #item="props"
+          >
             &lt;tr>
               &lt;td>
                 {{ props.item.createdAt }}
               &lt;/td>
               &lt;td>
                 &lt;div class="d-flex align-center">
-                  &lt;v-avatar v-if="props.item.type" class="mr-2" :height="40">
+                  &lt;v-avatar
+                    v-if="props.item.type"
+                    class="mr-2"
+                    :height="40"
+                  >
                     &lt;Icon
                       :item="props.item.type"
                       :height="40"
@@ -142,24 +159,26 @@
               &lt;/td>
               &lt;td>
                 &lt;v-edit-dialog
-                  v-model:return-value="props.item.processingNotes"
+                  :return-value.sync="props.item.processingNotes"
                   large
                   @save="
                     saveProcessingNotes(
                       props.item.id,
-                      props.item.processingNotes,
+                      props.item.processingNotes
                     )
                   "
                 >
                   {{ props.item.processingNotes }}
                   &lt;template #input>
                     &lt;div class="testDialog">
-                      &lt;div class="mt-4 text-h6">Update Processing Notes&lt;/div>
+                      &lt;div class="mt-4 title">
+                        Update Processing Notes
+                      &lt;/div>
                       &lt;v-textarea
                         v-model="props.item.processingNotes"
                         width="1200px"
                         label="Edit (not long words)"
-                        variant="filled"
+                        filled
                       />
                     &lt;/div>
                   &lt;/template>
@@ -169,13 +188,13 @@
                 &lt;v-icon
                   color="blue"
                   dark
-                  start
+                  left
                   @click.stop="
                     assignMaintenanceOwner(
                       props.item.recordName,
                       props.item.id,
                       props.item.userName,
-                      props.item.requestID,
+                      props.item.requestID
                     )
                   "
                 >
@@ -185,13 +204,13 @@
                 &lt;v-icon
                   color="red"
                   dark
-                  end
+                  right
                   @click="
                     rejectMaintenanceOwner(
                       props.item.recordName,
                       props.item.id,
                       props.item.userName,
-                      props.item.requestID,
+                      props.item.requestID
                     )
                   "
                 >
@@ -202,14 +221,17 @@
           &lt;/template>
         &lt;/v-data-table>
       &lt;/v-card-text>
-      &lt;v-layout row justify-center>
+      &lt;v-layout
+        row
+        justify-center
+      >
         &lt;v-dialog
           v-model="dialogs.confirmAssignment"
           max-width="700px"
           persistent
         >
           &lt;v-card>
-            &lt;v-card-title class="text-h5">
+            &lt;v-card-title class="headline">
               Are you sure you want to
               &lt;span style="color: blue; padding-left: 5px; padding-right: 5px">
                 ACCEPT
@@ -217,11 +239,15 @@
               this ownership?
               &lt;ul style="list-style-type: none">
                 &lt;li>
-                  &lt;span style="color: gray"> Record: &lt;/span>
+                  &lt;span style="color: gray">
+                    Record:
+                  &lt;/span>
                   {{ dialogs.recordName }}
                 &lt;/li>
                 &lt;li>
-                  &lt;span style="color: gray"> User: &lt;/span>
+                  &lt;span style="color: gray">
+                    User:
+                  &lt;/span>
                   {{ dialogs.userName }}
                 &lt;/li>
               &lt;/ul>
@@ -230,8 +256,8 @@
               &lt;v-spacer />
               &lt;v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 persistent
                 @click="closeMaintenanceAssign()"
               >
@@ -239,8 +265,8 @@
               &lt;/v-btn>
               &lt;v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 persistent
                 @click="assignMaintenanceOwnConfirm('approved')"
               >
@@ -251,14 +277,17 @@
           &lt;/v-card>
         &lt;/v-dialog>
       &lt;/v-layout>
-      &lt;v-layout row justify-center>
+      &lt;v-layout
+        row
+        justify-center
+      >
         &lt;v-dialog
           v-model="dialogs.rejectAssignment"
           max-width="700px"
           persistent
         >
           &lt;v-card>
-            &lt;v-card-title class="text-h5">
+            &lt;v-card-title class="headline">
               Are you sure you want to
               &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
                 REJECT
@@ -266,11 +295,15 @@
               this ownership?
               &lt;ul style="list-style-type: none">
                 &lt;li>
-                  &lt;span style="color: gray"> Record: &lt;/span>
+                  &lt;span style="color: gray">
+                    Record:
+                  &lt;/span>
                   {{ dialogs.recordName }}
                 &lt;/li>
                 &lt;li>
-                  &lt;span style="color: gray"> User: &lt;/span>
+                  &lt;span style="color: gray">
+                    User:
+                  &lt;/span>
                   {{ dialogs.userName }}
                 &lt;/li>
               &lt;/ul>
@@ -279,8 +312,8 @@
               &lt;v-spacer />
               &lt;v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 persistent
                 @click="closeMaintenanceReject()"
               >
@@ -288,8 +321,8 @@
               &lt;/v-btn>
               &lt;v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                variant="text"
+                color="blue darken-1"
+                text
                 persistent
                 @click="assignMaintenanceOwnConfirm('rejected')"
               >
@@ -322,10 +355,10 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props: {
+  props:{
     headerItems: {
       type: Array,
-      default: null,
+      default: null
     },
   },
   data: () => {
@@ -358,7 +391,7 @@ export default {
   watch: {
     maintenanceRequests: function () {
       this.maintenanceRequestsProcessed = JSON.parse(
-        JSON.stringify(this.maintenanceRequests),
+          JSON.stringify(this.maintenanceRequests)
       );
     },
     "dialogs.confirmAssignment"(val) {
@@ -375,7 +408,7 @@ export default {
     let data = await client.executeQuery(getPendingMaintenanceRequests);
     this.prepareMaintenanceRequests(data);
     this.maintenanceRequestsProcessed = JSON.parse(
-      JSON.stringify(this.maintenanceRequests),
+        JSON.stringify(this.maintenanceRequests)
     );
     this.loading = false;
   },
@@ -404,7 +437,7 @@ export default {
       this.maintenanceRequests.sort(this.compareRecordDesc);
       for (let i = 0; i &lt; this.maintenanceRequests.length; i++) {
         this.maintenanceRequests[i].createdAt = this.formatDate(
-          this.maintenanceRequests[i].createdAt,
+            this.maintenanceRequests[i].createdAt
         );
       }
     },
@@ -452,24 +485,24 @@ export default {
         general: null,
       };
       let data = await restClient.updateStatusMaintenanceRequest(
-        _module.dialogs.requestId,
-        newStatus,
-        this.user().credentials.token,
+          _module.dialogs.requestId,
+          newStatus,
+          this.user().credentials.token
       );
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
-          (element) => element.requestID === _module.dialogs.requestId,
+            (element) => element.requestID === _module.dialogs.requestId
         );
         _module.maintenanceRequestsProcessed.splice(index, 1);
         if (
-          _module.approvalRequired.findIndex(
-            (element) => element.id === _module.dialogs.recordID,
-          ) &lt; 0
+            _module.approvalRequired.findIndex(
+                (element) => element.id === _module.dialogs.recordID
+            ) &lt; 0
         ) {
           if (
-            _module.maintenanceRequestsProcessed.findIndex(
-              (element) => element.id === _module.dialogs.recordID,
-            ) &lt; 0
+              _module.maintenanceRequestsProcessed.findIndex(
+                  (element) => element.id === _module.dialogs.recordID
+              ) &lt; 0
           ) {
             await _module.saveProcessingNotes(_module.dialogs.recordID, null);
           }
@@ -510,20 +543,20 @@ export default {
 
 &lt;style scoped>
 #text-curator-search-5
-  div.theme--light.v-input:not(.v-input--is-disabled)
-  input {
+div.theme--light.v-input:not(.v-input--is-disabled)
+input {
   color: #fff;
 }
 .testDialog {
   width: 600px !important;
 }
 
-:deep(.v-data-table-header tr th) {
+::v-deep .v-data-table-header tr th {
   white-space: nowrap;
 }
 .searchField {
   width: 100%;
-  max-width: 400px;
+  max-width: 400px
 }
 &lt;/style>
 </pre>
@@ -571,7 +604,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 14th 2025
+		on Mon Nov 17th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
@@ -84,13 +91,19 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
+            class="sunlight-highlight-javascript linenums">
+&lt;template>
   &lt;div class="d-flex ruleWrapper">
     &lt;select
       v-model="selectedPolicyRule"
       class="query-builder-group-slot__rule-selection"
     >
-      &lt;option disabled value="">Select a policy rule&lt;/option>
+      &lt;option
+        disabled
+        value=""
+      >
+        Select a policy rule
+      &lt;/option>
       &lt;option
         v-for="rule in policyQueryBuilderComponents()"
         :key="rule.identifier"
@@ -109,7 +122,7 @@
 &lt;/template>
 
 &lt;script>
-import { sortBy } from "lodash";
+import { sortBy } from "lodash"
 
 import {
   DataAvailabilityStatement,
@@ -127,16 +140,15 @@ import {
   RecommendsStandard,
   SharingResearchSoftware,
   SupportedCosts,
-  TimingOfDmp,
-  UpdatingOfDmp,
+  TimingOfDmp, UpdatingOfDmp
 } from "../index";
 export default {
   name: "PolicyRule",
   props: {
     groupCtrl: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data: () => {
     return {
@@ -144,124 +156,120 @@ export default {
     };
   },
 
-  methods: {
+  methods:{
     policyQueryBuilderComponents() {
       let policyRecordType = [
-        {
-          identifier: "policytype",
-          name: "Policy Record Type",
-          component: PolicyRecordType,
-          initialValue: () => [],
-        },
-      ];
-      return policyRecordType.concat(this.sortedArrayList());
+          {
+            identifier: "policytype",
+            name: "Policy Record Type",
+            component: PolicyRecordType,
+            initialValue: () => [],
+          },
+        ]
+      return policyRecordType.concat(this.sortedArrayList())
     },
 
     /**
      * Sort Array list by name
      */
-    sortedArrayList() {
-      return sortBy(
-        [
-          {
-            identifier: "dataAvailabilityStatement",
-            name: "Data Availability Statement",
-            component: DataAvailabilityStatement,
-            initialValue: "",
-          },
-          {
-            identifier: "dataProtection",
-            name: "Data Protection",
-            component: DataProtection,
-            initialValue: "",
-          },
-          {
-            identifier: "dataCitation",
-            name: "Data Citation",
-            component: DataCitation,
-            initialValue: "",
-          },
-          {
-            identifier: "dataPreservation",
-            name: "Data Preservation",
-            component: DataPreservation,
-            initialValue: "",
-          },
-          {
-            identifier: "exceptionsToDataSharing",
-            name: "Exceptions To Data Sharing",
-            component: ExceptionsToDataSharing,
-            initialValue: "",
-          },
-          {
-            identifier: "licencesForOutputs",
-            name: "Licences For Outputs",
-            component: LicencesForOutputs,
-            initialValue: "",
-          },
-          {
-            identifier: "supportedCosts",
-            name: "Supported Costs",
-            component: SupportedCosts,
-            initialValue: "",
-          },
-          {
-            identifier: "mandatedDataSharing",
-            name: "Mandated Data Sharing",
-            component: MandatedDataSharing,
-            initialValue: () => [],
-          },
-          {
-            identifier: "mandatedDmpCreation",
-            name: "Mandated DMP Creation",
-            component: MandatedDmpCreation,
-            initialValue: () => [],
-          },
-          {
-            identifier: "sharingResearchSoftware",
-            name: "Sharing Research Software",
-            component: SharingResearchSoftware,
-            initialValue: () => [],
-          },
-          {
-            identifier: "timingOfDmp",
-            name: "Timing Of DMP",
-            component: TimingOfDmp,
-            initialValue: () => [],
-          },
-          {
-            identifier: "guidanceToHelpEnableCompliance",
-            name: "Guidance To Help Enable Compliance",
-            component: GuidanceToHelpEnableCompliance,
-            initialValue: "",
-          },
-          {
-            identifier: "monitoringOfCompliance",
-            name: "Monitoring Of Compliance",
-            component: MonitoringOfCompliance,
-            initialValue: "",
-          },
-          {
-            identifier: "recommendsDatabase",
-            name: "Recommends At Least One Database",
-            component: RecommendsDatabase,
-            initialValue: "",
-          },
-          {
-            identifier: "recommendsStandard",
-            name: "Recommends At Least One Standard",
-            component: RecommendsStandard,
-            initialValue: "",
-          },
-          {
-            identifier: "updatingOfDmp",
-            name: "Updating of DMP",
-            component: UpdatingOfDmp,
-            initialValue: "",
-          },
-        ],
-        "name",
-      );
+    sortedArrayList(){
+      return sortBy([{
+        identifier: "dataAvailabilityStatement",
+        name: "Data Availability Statement",
+        component: DataAvailabilityStatement,
+        initialValue: "",
+      },
+        {
+          identifier: "dataProtection",
+          name: "Data Protection",
+          component: DataProtection,
+          initialValue: "",
+        },
+        {
+          identifier: "dataCitation",
+          name: "Data Citation",
+          component: DataCitation,
+          initialValue: "",
+        },
+        {
+          identifier: "dataPreservation",
+          name: "Data Preservation",
+          component: DataPreservation,
+          initialValue: "",
+        },
+        {
+          identifier: "exceptionsToDataSharing",
+          name: "Exceptions To Data Sharing",
+          component: ExceptionsToDataSharing,
+          initialValue: "",
+        },
+        {
+          identifier: "licencesForOutputs",
+          name: "Licences For Outputs",
+          component: LicencesForOutputs,
+          initialValue: "",
+        },
+        {
+          identifier: "supportedCosts",
+          name: "Supported Costs",
+          component: SupportedCosts,
+          initialValue: "",
+        },
+        {
+          identifier: "mandatedDataSharing",
+          name: "Mandated Data Sharing",
+          component: MandatedDataSharing,
+          initialValue: () => [],
+        },
+        {
+          identifier: "mandatedDmpCreation",
+          name: "Mandated DMP Creation",
+          component: MandatedDmpCreation,
+          initialValue: () => [],
+        },
+        {
+          identifier: "sharingResearchSoftware",
+          name: "Sharing Research Software",
+          component: SharingResearchSoftware,
+          initialValue: () => [],
+        },
+        {
+          identifier: "timingOfDmp",
+          name: "Timing Of DMP",
+          component: TimingOfDmp,
+          initialValue: () => [],
+        },
+        {
+          identifier: "guidanceToHelpEnableCompliance",
+          name: "Guidance To Help Enable Compliance",
+          component: GuidanceToHelpEnableCompliance,
+          initialValue: "",
+        },
+        {
+          identifier: "monitoringOfCompliance",
+          name: "Monitoring Of Compliance",
+          component: MonitoringOfCompliance,
+          initialValue: "",
+        },
+        {
+          identifier: "recommendsDatabase",
+          name: "Recommends At Least One Database",
+          component: RecommendsDatabase,
+          initialValue: "",
+        },
+        {
+          identifier: "recommendsStandard",
+          name: "Recommends At Least One Standard",
+          component: RecommendsStandard,
+          initialValue: "",
+        },
+        {
+          identifier: "updatingOfDmp",
+          name: "Updating of DMP",
+          component: UpdatingOfDmp,
+          initialValue: "",
+        },
+      ], "name")
     },
 
     /**
@@ -270,12 +278,13 @@ export default {
      * @param selectedRule - String
      */
     addNewRule(item, selectedRule) {
-      item.addRule(selectedRule);
-      this.selectedPolicyRule = "";
+      item.addRule(selectedRule)
+      this.selectedPolicyRule = ''
     },
-  },
+  }
 };
 &lt;/script>
+
 </pre>
     </article>
 </section>
@@ -321,7 +330,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 14th 2025
+		on Mon Nov 17th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
@@ -85,82 +92,85 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div>
-    &lt;!--Success -->
-    &lt;v-card v-if="getSaveSearchStatus" class="mx-auto rounded-t-0 pb-2">
-      &lt;v-card-title
-        class="justify-center text-white mb-4 text-center"
-        style="background-color: green"
-      >
-        Success !!
-      &lt;/v-card-title>
-      &lt;v-card-text class="pb-0 px-6">
-        &lt;p class="text-body-1">
-          Your search was saved successfully. Please check the saved search
-          table under profile page.
-        &lt;/p>
-      &lt;/v-card-text>
+  &lt;!--Success -->
+  &lt;v-card
+    v-if="getSaveSearchStatus"
+    class="mx-auto rounded-t-0 pb-2"
+  >
+    &lt;v-card-title
+      class="justify-center white--text mb-4"
+      style="background-color: green"
+    >
+      Success !!
+    &lt;/v-card-title>
+    &lt;v-card-text class="pb-0">
+      &lt;p class="text-body-1">
+        Your search was saved successfully. Please check the saved search table under profile page.
+      &lt;/p>
+    &lt;/v-card-text>
 
-      &lt;v-card-actions
-        class="flex-column flex-md-row justify-md-space-between my-3 px-6"
+    &lt;v-card-actions
+      class="flex-column flex-md-row justify-md-space-between my-3"
+    >
+      &lt;v-btn
+        class="white--text order-md-2"
+        :class="{
+          'mb-3': $vuetify.breakpoint.smAndDown,
+        }"
+        color="accent2"
+        to="/accounts/profile"
+        @click="resetSaveSearchDialog()"
       >
-        &lt;v-btn
-          class="text-white order-md-2"
-          :class="{
-            'mb-3': $vuetify.display.smAndDown,
-          }"
-          color="accent2"
-          variant="elevated"
-          to="/accounts/profile"
-          @click="resetSaveSearchDialog()"
-        >
-          Goto Profile page
-        &lt;/v-btn>
-        &lt;v-btn
-          class="text-white order-md-1"
-          color="accent3"
-          variant="elevated"
-          @click="closeStepperDialog"
-        >
-          Close
-        &lt;/v-btn>
-      &lt;/v-card-actions>
-    &lt;/v-card>
+        Goto Profile page
+      &lt;/v-btn>
+      &lt;v-btn
+        class="white--text order-md-1"
+        color="accent3"
+        @click="closeStepperDialog"
+      >
+        Close
+      &lt;/v-btn>
+    &lt;/v-card-actions>
+  &lt;/v-card>
 
-    &lt;!-- Error -->
-    &lt;v-card v-else-if="!getSaveSearchStatus" class="mx-auto pb-2">
-      &lt;v-card-title
-        class="justify-center text-white mb-4 text-center"
-        style="background-color: darkred"
+  &lt;!-- Error -->
+  &lt;v-card
+    v-else-if="!getSaveSearchStatus"
+    class="mx-auto pb-2"
+  >
+    &lt;v-card-title
+      class="justify-center white--text mb-4"
+      style="background-color: darkred"
+    >
+      Error
+    &lt;/v-card-title>
+    &lt;v-card-text class="pb-0">
+      &lt;p class="text-body-1">
+        Something went wrong. Please try again.
+      &lt;/p>
+    &lt;/v-card-text>
+    &lt;v-card-actions
+      class="flex-column flex-md-row justify-md-space-between my-3"
+    >
+      &lt;v-btn
+        class="white--text order-md-2"
+        :class="{
+          'mb-3': $vuetify.breakpoint.smAndDown,
+        }"
+        color="accent2"
+        @click="restartStepper"
       >
-        Error
-      &lt;/v-card-title>
-      &lt;v-card-text class="pb-0 px-6">
-        &lt;p class="text-body-1">Something went wrong. Please try again.&lt;/p>
-      &lt;/v-card-text>
-      &lt;v-card-actions
-        class="flex-column flex-md-row justify-md-space-between my-3 px-6"
+        Start Again
+      &lt;/v-btn>
+      &lt;v-btn
+        class="white--text order-md-1"
+        color="secondary"
+        @click="closeStepperDialog"
       >
-        &lt;v-btn
-          class="text-white order-md-2"
-          :class="{
-            'mb-3': $vuetify.display.smAndDown,
-          }"
-          color="accent2"
-          @click="restartStepper"
-        >
-          Start Again
-        &lt;/v-btn>
-        &lt;v-btn
-          class="text-white order-md-1"
-          color="secondary"
-          @click="closeStepperDialog"
-        >
-          Close
-        &lt;/v-btn>
-      &lt;/v-card-actions>
-    &lt;/v-card>
-  &lt;/div>
+        Close
+      &lt;/v-btn>
+    &lt;/v-card-actions>
+  &lt;/v-card>
 &lt;/template>
 
 &lt;script>
@@ -170,7 +180,6 @@ import saveSearch from "@/store";
 
 export default {
   name: "ResultCard",
-  emits: ["restartStepper"],
   data() {
     return {};
   },
@@ -200,7 +209,7 @@ export default {
       }
       saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
       this.resetSaveSearchDialog();
-      this.$emit("restartStepper", 0);
+      this.$emit("restartStepper", 1);
     },
   },
 };
@@ -250,7 +259,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 14th 2025
+		on Mon Nov 17th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

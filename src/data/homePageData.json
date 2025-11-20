@@ -205,21 +205,21 @@
     }
   },
   "blockCategories": {
-    "firstColumn":{
+    "firstColumn": {
       "title": "Recommendations",
       "description": "Standards and/or databases recommended by organisational data policies.",
       "icon": "recommended",
       "buttonTitle": "find",
       "link": "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard"
     },
-    "secondColumn":{
+    "secondColumn": {
       "title": "Collections",
       "description": "Standards and/or databases grouped by domain, species or organisation.",
       "icon": "collections",
       "buttonTitle": "discover",
       "link": "/search?fairsharingRegistry=collection&page=1"
     },
-    "thirdColumn":{
+    "thirdColumn": {
       "title": "Educational",
       "description": "Infographics and factsheets covering content and functionalities for all stakeholders.",
       "icon": "educational",
@@ -228,14 +228,14 @@
     }
   },
   "communityBlock": {
-    "firstColumn":{
+    "firstColumn": {
       "title": "Community Champions",
       "description": "Put your expertise into action and get credited by joining our Community Champions programme.",
       "icon": "users",
       "buttonTitle": "view and join in",
       "link": "/community_champions"
     },
-    "secondColumn":{
+    "secondColumn": {
       "title": "Adopters and Collaborators",
       "description": "Learn about the people and communities who contribute to and advocate for FAIRsharing.",
       "icon": "collaborators",
@@ -243,8 +243,7 @@
       "link": "/communities"
     }
   },
-  "blockLogos":
-  {
+  "blockLogos": {
     "singleImageSlider": [
       {
         "image": "assets/Community/elife.jpg",
@@ -336,7 +335,7 @@
         "image": "assets/Community/royal_society.png",
         "adopter": "The Royal Society Publishing"
       }
-    ] ,
+    ],
     "multipleImageSlider": [
       {
         "image": "assets/Community/LogoImageGroup/logo-group1.jpg"
@@ -362,17 +361,17 @@
     ]
   },
   "statisticsData": {
-    "firstColumn":{
+    "firstColumn": {
       "title": "Records",
       "description": "Descriptions of standards, databases and policies"
     },
-    "secondColumn":{
+    "secondColumn": {
       "title": "Contributors",
       "description": "Our community of record maintainers and curators"
     },
-    "thirdColumn":{
+    "thirdColumn": {
       "title": "Views",
       "description": "Page visits since 2015"
     }
-  }  
+  }
 }

@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import LicenceSearchStore from "@/store/AdvancedSearchComponents/licencesSearch";
 
-import LicencesSearchData from "../../../../tests/fixtures/getLicencesSearch.json";
+import LicencesSearchData from "../../../fixtures/getLicencesSearch.json";
 
 describe("LicencesSearch store methods", () => {
   const { actions, mutations, getters } = LicenceSearchStore;

@@ -1,42 +1,40 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="registryTypes"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="registryTypes"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Registry",
-  components: { SelectComponent, TooltipComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],
       itemValue: [],
-      toolTipText: "The FAIRsharing Registry to which this resource belongs, e.g. Standard, Database or Policy. Multiple selections will be joined with OR.",
+      toolTipText:
+        "The FAIRsharing Registry to which this resource belongs, e.g. Standard, Database or Policy. Multiple selections will be joined with OR.",
     };
   },
   computed: {
     ...mapGetters("recordTypes", ["getRecordTypes"]),
     registryTypes() {
       const registry = this.getRecordTypes.map(({ fairsharingRegistry }) =>
-        fairsharingRegistry["name"].toLowerCase()
+        fairsharingRegistry["name"].toLowerCase(),
       );
       return [...new Set(registry)];
     },

@@ -1,21 +1,17 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      @input="selectedValue"
-    />
-  </div>
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataCitation",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,
@@ -24,9 +20,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Related guidance should provide advice on how to cite a broader range of research outputs including data and software, as well as actors and enablers such as data managers, data stewards, funding bodies, research infrastructures and organisations.",
-
+      itemValue: "",
+      toolTipText:
+        "Related guidance should provide advice on how to cite a broader range of research outputs including data and software, as well as actors and enablers such as data managers, data stewards, funding bodies, research infrastructures and organisations.",
     };
   },
   computed: {

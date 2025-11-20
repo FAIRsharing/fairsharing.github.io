@@ -1,21 +1,18 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      @input="selectedValue"
-    />
-  </div>
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataPreservation",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,
@@ -24,9 +21,9 @@ export default {
   },
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "The policy should make clear the period of time beyond the life of the project that selected outputs must be retained. Links to relevant preservation policies and/or retention schedules should be provided.",
-
+      itemValue: "",
+      toolTipText:
+        "The policy should make clear the period of time beyond the life of the project that selected outputs must be retained. Links to relevant preservation policies and/or retention schedules should be provided.",
     };
   },
   computed: {

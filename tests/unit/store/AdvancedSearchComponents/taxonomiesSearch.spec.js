@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import TaxonomiesSearchStore from "@/store/AdvancedSearchComponents/taxonomiesSearch";
 
-import TaxonomiesSearchData from "../../../../tests/fixtures/getTaxonomiesSearch.json";
+import TaxonomiesSearchData from "../../../fixtures/getTaxonomiesSearch.json";
 
 describe("TaxonomiesSearchStore store methods", () => {
   const { actions, mutations, getters } = TaxonomiesSearchStore;

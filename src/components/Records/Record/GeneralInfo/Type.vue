@@ -26,7 +26,7 @@
         v-if="gupri()"
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
-        GUPRI
+        (GUPRI)
       </a>
     </p>
   </div>

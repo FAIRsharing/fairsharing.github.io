@@ -4,7 +4,7 @@
       <NotFound />
     </div>
     <v-row v-else>
-      <v-col cols="12" xs="12" sm="12" md="3" lg="3" xl="3" class="pt-0 mt-2">
+      <v-col class="pt-0 mt-2" cols="12" lg="3" md="3" sm="12" xl="3" xs="12">
         <v-card height="100%">
           <v-card-title class="bg-blue text-white">
             Legend and configuration
@@ -16,13 +16,13 @@
                   The graph's centre is shown in
                   <span class="text-red">red.</span>
                 </v-col>
-                <v-col cols="12">
+                <v-col class="mt-2" cols="12">
                   Click on any point to re-draw the graph with that point as the
                   centre. Click on the centre to view the record. Hover over to
                   view direct connections. Use the mouse/trackpad to scroll and
                   zoom.
                 </v-col>
-                <v-col cols="12">
+                <v-col class="mt-2" cols="12">
                   For more information, please see the
                   <a
                     href="https://fairsharing.gitbook.io/fairsharing/about-our-records/network-graphs"
@@ -32,7 +32,8 @@
                   >.
                 </v-col>
               </v-row>
-              <v-row no-gutters>
+
+              <v-row class="mt-3" no-gutters>
                 <v-col cols="12">
                   Relations between records are coloured as follows:
                 </v-col>
@@ -42,11 +43,11 @@
                       v-for="legendItem in networkGraph['legend']"
                       :key="legendItem['name']"
                     >
-                      <v-avatar>
-                        <v-icon :color="legendItem['color']">
-                          fa fa-long-arrow-alt-right
+                      <template #prepend>
+                        <v-icon :color="legendItem['color']" class="mr-2">
+                          fas fa-long-arrow-alt-right
                         </v-icon>
-                      </v-avatar>
+                      </template>
                       <v-list-item-title
                         class="font-weight-regular text-body-2"
                       >
@@ -56,45 +57,46 @@
                   </v-list>
                 </v-col>
               </v-row>
-              <v-divider />
-              <!-- Color definition meaning in NetworkGraph -->
+
+              <v-divider class="my-3" />
+
               <div>
                 <h3 class="mb-4">Registry</h3>
                 <v-row
-                  no-gutters
                   :class="{
                     'd-flex justify-space-around': $vuetify.display.smOnly,
                   }"
+                  no-gutters
                 >
                   <v-col
-                    cols="12"
-                    xs="12"
-                    sm="3"
-                    md="12"
-                    lg="12"
-                    xl="12"
-                    fluid
-                    class="d-flex justify-center"
                     :class="
                       $vuetify.display.smOnly
                         ? 'flex-row align-center flex-grow-0 flex-shrink-1'
                         : 'flex-column'
                     "
+                    class="d-flex justify-center"
+                    cols="12"
+                    fluid
+                    lg="12"
+                    md="12"
+                    sm="3"
+                    xl="12"
+                    xs="12"
                   >
                     <v-btn
                       v-for="registryItem in networkGraph['registry']"
                       :key="registryItem['name']"
-                      class="status_style mx-3 mb-2"
-                      :color="
-                        registryItem['active'] ? registryItem['color'] : 'gray'
-                      "
                       :class="[
                         $vuetify.display.xsOnly
                           ? 'full-width'
                           : 'button-filters',
                         registryItem['active'] ? 'text-white ' : 'black--text ',
                       ]"
+                      :color="
+                        registryItem['active'] ? registryItem['color'] : 'gray'
+                      "
                       :disabled="!buttonsActive"
+                      class="status_style mx-3 mb-2"
                       @click="toggleClick(registryItem)"
                     >
                       {{ registryItem["name"] }}
@@ -102,43 +104,45 @@
                   </v-col>
                 </v-row>
               </div>
-              <v-divider />
+
+              <v-divider class="my-3" />
+
               <div>
                 <!-- Color definition meaning in NetworkGraph -->
                 <h3 class="mb-4">Status (shown on mouseover)</h3>
                 <v-row
-                  no-gutters
                   :class="{
                     'd-flex justify-space-around': $vuetify.display.smOnly,
                   }"
+                  no-gutters
                 >
                   <v-col
-                    cols="12"
-                    xs="12"
-                    sm="3"
-                    md="12"
-                    lg="12"
-                    xl="12"
-                    fluid
-                    class="d-flex justify-center"
                     :class="
                       $vuetify.display.smOnly
                         ? 'flex-row align-center flex-grow-0 flex-shrink-1'
                         : 'flex-column'
                     "
+                    class="d-flex justify-center"
+                    cols="12"
+                    fluid
+                    lg="12"
+                    md="12"
+                    sm="3"
+                    xl="12"
+                    xs="12"
                   >
                     <v-btn
                       v-for="status in networkGraph['status']"
                       :key="status['name']"
-                      class="status_style mx-3 mb-2"
-                      :color="status['active'] ? status['color'] : 'gray'"
                       :class="[
                         $vuetify.display.xsOnly
                           ? 'full-width'
                           : 'button-filters',
                         status['active'] ? 'text-white ' : 'black--text ',
                       ]"
+                      :color="status['active'] ? status['color'] : 'gray'"
                       :disabled="!buttonsActive"
+                      class="status_style mx-3 mb-2"
                       @click="toggleClick(status)"
                     >
                       {{ status["name"] }}
@@ -151,39 +155,39 @@
                 <!-- buttons here -->
                 <h3 class="mb-4">Distance from centre</h3>
                 <v-row
-                  no-gutters
                   :class="{
                     'd-flex justify-space-around': $vuetify.display.smOnly,
                   }"
+                  no-gutters
                 >
                   <v-col
-                    cols="12"
-                    xs="12"
-                    sm="3"
-                    md="12"
-                    lg="12"
-                    xl="12"
-                    fluid
-                    class="d-flex justify-center"
                     :class="
                       $vuetify.display.smOnly
                         ? 'flex-row align-center flex-grow-0 flex-shrink-1'
                         : 'flex-column'
                     "
+                    class="d-flex justify-center"
+                    cols="12"
+                    fluid
+                    lg="12"
+                    md="12"
+                    sm="3"
+                    xl="12"
+                    xs="12"
                   >
                     <v-btn
                       v-for="distance in networkGraph['distance']"
                       :id="`distance_${distance['hops']}`"
                       :key="distance['name']"
-                      class="status_style mx-3 mb-2"
-                      :color="getLengthColour(distance['hops'])"
                       :class="[
                         $vuetify.display.xsOnly
                           ? 'full-width'
                           : 'button-filters',
                         distance['active'] ? 'text-white ' : 'black--text ',
                       ]"
+                      :color="getLengthColour(distance['hops'])"
                       :disabled="!buttonsActive"
+                      class="status_style mx-3 mb-2"
                       @click="lengthLimit(distance)"
                     >
                       {{ distance["name"] }}
@@ -195,8 +199,8 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" xs="12" sm="12" md="9" lg="9" xl="9" class="pt-0 mt-2">
-        <v-btn class="ml-2 my-2 bg-white" :to="`/${$route.params.id}`">
+      <v-col class="pt-0 mt-2" cols="12" lg="9" md="9" sm="12" xl="9" xs="12">
+        <v-btn :to="`/${$route.params.id}`" class="ml-2 my-2 bg-white">
           <v-icon :class="`text-primary`"> fa-arrow-left </v-icon>
           <span :class="`text-primary ml-3`"> Go to Record </span>
         </v-btn>
@@ -250,8 +254,10 @@
             <v-overlay
               v-model="layoutRendering"
               :absolute="false"
-              opacity="0.8"
               class="align-center justify-center"
+              opacity="0.8"
+              persistent
+              scroll-strategy="none"
             >
               <Loaders />
             </v-overlay>
@@ -265,7 +271,7 @@
 <script>
 import Graph from "graphology";
 import forceAtlas2 from "graphology-layout-forceatlas2";
-import FA2Layout from "graphology-layout-forceatlas2/worker";
+// import FA2Layout from "graphology-layout-forceatlas2/worker";
 import Sigma from "sigma";
 import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
 
@@ -274,7 +280,7 @@ import networkGraph from "@/data/networkGraph.json";
 import relationColors from "@/data/RelationsColors.json";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import graphQuery from "@/lib/GraphClient/queries/getGraphRelations.json";
-import NotFound from "@/views/Errors/404";
+import NotFound from "@/views/Errors/404.vue";
 
 const graphClient = new GraphClient();
 const graph = new Graph();
@@ -333,18 +339,19 @@ export default {
       },
       buttonsActive: false,
       networkGraph: networkGraph,
+      layoutRendering: false,
     };
   },
   computed: {
     currentRoute() {
       return this.target || this.$route.params["id"];
     },
-    layoutRendering() {
-      if (this.fa2Layout === undefined || this.fa2Layout === null) {
-        return false;
-      }
-      return this.fa2Layout.isRunning();
-    },
+    // layoutRendering() {
+    //   if (this.fa2Layout === undefined || this.fa2Layout === null) {
+    //     return false;
+    //   }
+    //   return this.fa2Layout.isRunning();
+    // },
   },
   watch: {
     async currentRoute() {
@@ -352,16 +359,16 @@ export default {
     },
     active: {
       async handler() {
-        let _module = this;
-        if (!_module.fa2Layout.isRunning()) {
-          _module.fa2Layout.start();
-          await new Promise((r) => setTimeout(r, 2000));
-          _module.fa2Layout.stop();
-        }
-        else {
-          await new Promise((r) => setTimeout(r, 2000));
-          _module.fa2Layout.stop();
-        }
+        // let _module = this;
+        // if (!_module.fa2Layout.isRunning()) {
+        //   _module.fa2Layout.start();
+        //   await new Promise((r) => setTimeout(r, 2000));
+        //   _module.fa2Layout.stop();
+        // }
+        // else {
+        //   await new Promise((r) => setTimeout(r, 2000));
+        //   _module.fa2Layout.stop();
+        // }
       },
       deep: true,
     },
@@ -383,7 +390,7 @@ export default {
   },
   async mounted() {
     let _module = this;
-    this.$nextTick(async function() {
+    this.$nextTick(async function () {
       await this.getData();
       if (_module.error) {
         return;
@@ -407,44 +414,52 @@ export default {
       /* A maxPathLength of 1-3 may be specified (API's default is 2).
        Higher values may make the resulting graph rather large... */
       graphQuery.queryParam = { id: parseInt(this.$route.params.id) };
-      const response = await graphClient.executeQuery(graphQuery);
-      //Check if response is array format
-      if (
-        Array.isArray(response) &&
-        response[0].message === "record not found"
-      ) {
+
+      try {
+        const response = await graphClient.executeQuery(graphQuery);
+
+        if (
+          Array.isArray(response) &&
+          response[0].message === "record not found"
+        ) {
+          this.error = true;
+        }
+        else if (
+          !response.fairsharingGraph ||
+          !response.fairsharingGraph.data ||
+          response.fairsharingGraph.data.length === 0 ||
+          Object.keys(response.fairsharingGraph.data).length === 0
+        ) {
+          this.loading = false;
+          this.noData = true;
+          this.registry = "N/A";
+          this.type = "N/A";
+          this.initialized = true;
+        }
+        else {
+          this.graphData = response.fairsharingGraph.data;
+          this.loading = false;
+          this.registry = this.graphData.registry;
+          this.type = this.graphData.type;
+        }
+      }
+      catch (e) {
+        console.error("Graph Data Error:", e);
         this.error = true;
-      }
-      //response is in object format
-      else if (
-        response.fairsharingGraph === undefined ||
-        response.fairsharingGraph.data === undefined ||
-        response.fairsharingGraph.data.length === 0 ||
-        Object.keys(response.fairsharingGraph.data).length === 0
-      ) {
         this.loading = false;
-        this.noData = true;
-        this.registry = "N/A";
-        this.type = "N/A";
-        this.initialized = true;
-      }
-      else {
-        this.graphData = response.fairsharingGraph.data;
-        this.loading = false;
-        this.registry = this.graphData.registry;
-        this.type = this.graphData.type;
       }
     },
     async plotGraph() {
       let _module = this;
+      _module.layoutRendering = true;
       graph.clear();
       graph.import(this.graphData);
 
       // Graphology implementation of Force Atlas 2 in a web worker
       _module.sensibleSettings = forceAtlas2.inferSettings(graph);
-      _module.fa2Layout = new FA2Layout(graph, {
+      forceAtlas2.assign(graph, {
         iterations: 50,
-        settings: _module.sensibleSettings,
+        settings: this.sensibleSettings,
       });
 
       // eslint-disable-next-line no-unused-vars
@@ -454,7 +469,7 @@ export default {
           image: getNodeProgramImage(),
         },
       });
-      _module.fa2Layout.start();
+      // _module.fa2Layout.start();
 
       // Attempt to highlight nodes on hover...
       renderer.on("enterNode", ({ node }) => {
@@ -529,8 +544,9 @@ export default {
       renderer.refresh();
 
       await new Promise((r) => setTimeout(r, 10000));
-      _module.fa2Layout.stop();
+      // _module.fa2Layout.stop();
       _module.buttonsActive = true;
+      _module.layoutRendering = false;
     },
     setClickedNode(node) {
       // node is the fairsharing_record_id
@@ -571,7 +587,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 #sigma-container {
   width: 100%;
   height: 100%;

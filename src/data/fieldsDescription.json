@@ -5,6 +5,7 @@
     "abbreviation": "If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank. ",
     "year": "The year in which the resource was created",
     "description": "Free text summary of the resource and its purpose.",
+    "gupri": "Identifier schemas in FAIRsharing must be, at a minimum, persistent and relevant to their community. If this identifier schema is globally unique and resolvable as well as being persistent, please tick this box.",
     "countries": " The country or countries in which the resource was developed and/or is currently maintained. As you type, you will be presented with a list of matching values. If the country provided does not match our approved country list, you will be asked to change the value supplied.",
     "deprecation_reason": "An explanation as to why this resource is no longer considered suitable for use.",
     "species": "The organismal taxonomies covered by this resource. Please use Latin names where possible; \"Not applicable\" (species are irrelevant) and \"All\" (all species accepted) are available. If you do not find the required species, contact us to have them added.",

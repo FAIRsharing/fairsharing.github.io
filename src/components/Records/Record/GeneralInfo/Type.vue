@@ -16,6 +16,12 @@
       :class="{ 'text-end': $vuetify.display.smAndDown }"
     >
       {{ $filters.capitalize(cleanString(getField("type"))) }}
+      <a
+        v-if="gupri()"
+        href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+      >
+        (GUPRI)
+      </a>
     </p>
   </div>
 </template>
@@ -30,6 +36,22 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("editor", ["recordTooltips"]),
+    ...mapState("record", ["currentRecord"]),
   },
-};
+  methods: {
+    // This value may be undefined in various places if the records have not
+    // had this field added.
+    gupri() {
+      try {
+        if (this.currentRecord.fairsharingRecord.metadata['gupri']) {
+          return true;
+        }
+        return false;
+      }
+      catch (e) {
+        return false;
+      }
+    }
+  }
+}
 </script>

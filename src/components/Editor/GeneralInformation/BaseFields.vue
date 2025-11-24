@@ -5,8 +5,8 @@
         <v-overlay
           v-model="logoLoading"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <Loaders />
         </v-overlay>
@@ -14,22 +14,22 @@
     </v-fade-transition>
 
     <v-row>
-      <v-col xl="4" lg="6" md="12" sm="12" xs="12" cols="12">
+      <v-col cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
         <!-- Upload (Logo) -->
         <!-- current logo to go here -->
         <span> A record logo is optional (png or jpeg, max. 3MB). </span>
         <v-file-input
           v-model="recordLogo"
-          :rules="[rules.isImage(), imageSizeCorrect]"
-          clearable
-          accept="image/png,image/jpeg"
-          label="Logo"
           :loading="logoLoading"
-          prepend-icon="fas fa-image"
+          :rules="[rules.isImage(), imageSizeCorrect]"
+          accept="image/png,image/jpeg"
+          clearable
           color="primary"
-          variant="underlined"
           counter
+          label="Logo"
+          prepend-icon="fas fa-image"
           show-size
+          variant="underlined"
         />
         <v-row>
           <v-img
@@ -49,12 +49,12 @@
         </v-row>
       </v-col>
 
-      <v-col xl="4" lg="6" md="12" sm="12" xs="12" cols="12">
+      <v-col cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
         <!-- name -->
         <v-text-field
           v-model="fields.metadata.name"
-          label="Record Name"
           :rules="[rules.isRequired()]"
+          label="Record Name"
           variant="outlined"
         >
           <template #prepend>
@@ -73,7 +73,7 @@
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
@@ -84,12 +84,12 @@
         <!-- homepage -->
         <v-text-field
           v-model="fields.metadata.homepage"
-          label="Homepage"
           :rules="[rules.isRequired(), rules.isUrl()]"
+          label="Homepage"
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
@@ -137,8 +137,8 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="bg-white text-black"
                 :disabled="submitAnywayDisabled"
+                class="bg-white text-black"
                 @click="submitAnyway"
               >
                 I know what I'm doing...
@@ -151,16 +151,16 @@
         </v-expand-transition>
       </v-col>
 
-      <v-col xl="4" lg="12" md="12" sm="12" xs="12" cols="12">
+      <v-col cols="12" lg="12" md="12" sm="12" xl="4" xs="12">
         <!-- creation year -->
         <v-select
           v-model="fields.metadata.year_creation"
-          label="Year of creation"
           :items="years()"
+          label="Year of creation"
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
@@ -171,17 +171,17 @@
         <!-- countries -->
         <v-select
           v-model="fields.countries"
-          label="Countries"
           :items="countries"
+          density="compact"
           item-title="name"
           item-value="name"
+          label="Countries"
           multiple
-          variant="outlined"
           return-object
-          density="compact"
+          variant="outlined"
         >
           <template #prepend>
-            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
@@ -207,13 +207,13 @@
                 <country-flag
                   v-if="item.raw.code !== null"
                   :country="item.raw.code"
-                  size="normal"
                   class="mr-1 mt-n2"
+                  size="normal"
                 />
                 <v-img
                   v-else
-                  src="@/assets/placeholders/country.png"
                   class="ml-4 mr-3"
+                  src="@/assets/placeholders/country.png"
                 />
               </template>
               <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -224,15 +224,15 @@
         <v-select
           ref="editRecordType"
           v-model="fields.type"
-          label="Registry and type"
-          :rules="[rules.isRequired()]"
+          :disabled="typeChangeDisabled()"
           :items="recordTypes"
+          :rules="[rules.isRequired()]"
+          density="compact"
           item-title="name"
           item-value="name"
-          variant="outlined"
+          label="Registry and type"
           return-object
-          density="compact"
-          :disabled="typeChangeDisabled()"
+          variant="outlined"
         >
           <template #chip="data">
             <v-chip
@@ -259,14 +259,14 @@
                   >
                   <v-list-item
                     v-if="item.raw.name"
-                    v-bind="props"
                     class="cursor-pointer registryList"
+                    v-bind="props"
                   >
                     <template #prepend>
                       <Icon
+                        :height="40"
                         :item="item.raw.name"
                         wrapper-class=""
-                        :height="40"
                       />
                     </template>
                     <div class="py-0 pl-4">
@@ -292,10 +292,10 @@
         <!-- status -->
         <v-autocomplete
           v-model="fields.status"
-          label="Status"
           :items="status"
           item-title="name"
           item-value="name"
+          label="Status"
           variant="outlined"
         >
           <!-- autocomplete selected -->
@@ -349,7 +349,7 @@
           class="mr-2"
         >
           <template #prepend>
-            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> fa-question-circle </v-icon>
               </template>
@@ -360,6 +360,30 @@
             <span class="v-label-white"
               >This database uses internal identifiers rather than a
               community-standard identifier schema.</span
+            >
+          </template>
+        </v-checkbox>
+        <v-checkbox
+          v-if="isIdentifierSchema()"
+          v-model="fields.metadata['gupri']"
+          class="mr-2"
+        >
+          <template #prepend>
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
+              <template #activator="{ props }">
+                <v-icon v-bind="props"> fa-question-circle </v-icon>
+              </template>
+              {{ tooltips["gupri"] }}
+            </v-tooltip>
+          </template>
+          <template #label>
+            <span class="v-label-white"
+              >Is this identifier schema a
+              <a
+                href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                >GUPRI</a
+              >
+              as defined by FAIRsharing?</span
             >
           </template>
         </v-checkbox>
@@ -376,9 +400,9 @@
           >
             <template #prepend>
               <v-tooltip
+                class="text-justify"
                 location="bottom"
                 max-width="300px"
-                class="text-justify"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle </v-icon>
@@ -394,12 +418,12 @@
       <v-col cols="12">
         <v-textarea
           v-model="fields.metadata.description"
-          label="Description"
           :rules="[rules.isRequired(), rules.isLongEnough(40)]"
+          label="Description"
           variant="outlined"
         >
           <template #prepend>
-            <v-tooltip location="bottom" max-width="300px" class="text-justify">
+            <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
                 <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
@@ -420,9 +444,9 @@
           >
             <template #prepend>
               <v-tooltip
+                class="text-justify"
                 location="bottom"
                 max-width="300px"
-                class="text-justify"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle </v-icon>
@@ -452,9 +476,9 @@
       <!-- create record button -->
       <v-card-actions v-if="createMode">
         <v-btn
-          class="bg-primary"
-          :loading="loading"
           :disabled="disableSubmit()"
+          :loading="loading"
+          class="bg-primary"
           @click="createNewRecord()"
         >
           Create Record
@@ -550,7 +574,8 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          } else {
+          }
+          else {
             _module.fields.logo = {};
           }
           return;
@@ -618,7 +643,8 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        } else {
+        }
+        else {
           return true;
         }
       }
@@ -635,6 +661,15 @@ export default {
         this.fields.type === "repository" ||
         this.fields.type === "knowledgebase" ||
         this.fields.type === "knowledgebase_and_repository"
+      ) {
+        return true;
+      }
+      return false;
+    },
+    isIdentifierSchema() {
+      if (
+        this.fields.type.name === "identifier_schema" ||
+        this.fields.type === "identifier_schema"
       ) {
         return true;
       }

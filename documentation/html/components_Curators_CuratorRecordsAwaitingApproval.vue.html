@@ -94,7 +94,10 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-card class="mb-2">
     &lt;v-card-text v-if="approvalRequiredProcessed">
-      &lt;v-card-title id="text-curator-search-0" class="bg-green text-white">
+      &lt;v-card-title
+        id="text-curator-search-0"
+        class="green white--text"
+      >
         &lt;b>CURATOR EDITS AWAITING APPROVAL&lt;/b>
         &lt;v-spacer />
         &lt;v-text-field
@@ -103,7 +106,7 @@
           color="white"
           single-line
           hide-details
-          variant="solo"
+          solo
           class="searchField"
           clearable
         />
@@ -122,7 +125,10 @@
         :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
-        &lt;template v-if="recordType" #item="props">
+        &lt;template
+          v-if="recordType"
+          #item="props"
+        >
           &lt;tr>
             &lt;td>
               {{ props.item.updatedAt }}
@@ -134,14 +140,15 @@
             &lt;/td>
             &lt;td>
               &lt;v-menu>
-                &lt;template #activator="{ props: menuProps }">
-                  &lt;v-tooltip location="bottom">
-                    &lt;template #activator="{ props: tooltipProps }">
+                &lt;template #activator="{ on: menu, attrs }">
+                  &lt;v-tooltip bottom>
+                    &lt;template #activator="{ on: tooltip }">
                       &lt;v-icon
                         class="clickable"
-                        size="small"
+                        small
                         color="nordnetBlue"
-                        v-bind="[menuProps, tooltipProps]"
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
                       >
                         {{ props.item.curator }}
                       &lt;/v-icon>
@@ -165,8 +172,16 @@
             &lt;/td>
             &lt;td>
               &lt;div class="d-flex align-center">
-                &lt;v-avatar v-if="props.item.type" class="mr-2" size="40">
-                  &lt;Icon :item="props.item.type" :height="40" wrapper-class="" />
+                &lt;v-avatar
+                  v-if="props.item.type"
+                  class="mr-2"
+                  :height="40"
+                >
+                  &lt;Icon
+                    :item="props.item.type"
+                    :height="40"
+                    wrapper-class=""
+                  />
                 &lt;/v-avatar>
                 &lt;a :href="'/' + props.item.id">
                   {{ props.item.recordName }}
@@ -185,7 +200,7 @@
             &lt;/td>
             &lt;td>
               &lt;v-edit-dialog
-                v-model:return-value="props.item.processingNotes"
+                :return-value.sync="props.item.processingNotes"
                 large
                 @save="
                   saveProcessingNotes(props.item.id, props.item.processingNotes)
@@ -194,12 +209,14 @@
                 {{ props.item.processingNotes }}
                 &lt;template #input>
                   &lt;div class="dialogProcNotesEdit">
-                    &lt;div class="mt-4 text-h6">Update Processing Notes&lt;/div>
+                    &lt;div class="mt-4 title">
+                      Update Processing Notes
+                    &lt;/div>
                     &lt;v-textarea
                       v-model="props.item.processingNotes"
                       width="1200px"
                       label="Edit (not long words)"
-                      variant="filled"
+                      filled
                     />
                   &lt;/div>
                 &lt;/template>
@@ -208,12 +225,13 @@
             &lt;td>
               &lt;v-icon
                 color="blue"
-                start
+                dark
+                left
                 @click.stop="
                   approveChangesMenu(
                     props.item.recordName,
                     props.item.id,
-                    props.item.hidden,
+                    props.item.hidden
                   )
                 "
               >
@@ -223,15 +241,18 @@
               &lt;v-icon
                 color="red"
                 dark
-                end
-                size="small"
+                right
+                small
                 @click="deleteRecordMenu(props.item.recordName, props.item.id)"
               >
                 fas fa-trash
               &lt;/v-icon>
-              &lt;v-tooltip location="bottom">
-                &lt;template #activator="{ props }">
-                  &lt;span v-bind="props">
+              &lt;v-tooltip bottom>
+                &lt;template #activator="{ on, attrs }">
+                  &lt;span
+                    v-bind="attrs"
+                    v-on="on"
+                  >
                     &lt;a
                       :href="'/' + props.item.id + '/edit'"
                       style="padding-left: 12px"
@@ -258,10 +279,16 @@
         &lt;/template>
       &lt;/v-data-table>
     &lt;/v-card-text>
-    &lt;v-layout row justify-center>
-      &lt;v-dialog v-model="dialogs.approveChanges" max-width="700px">
+    &lt;v-layout
+      row
+      justify-center
+    >
+      &lt;v-dialog
+        v-model="dialogs.approveChanges"
+        max-width="700px"
+      >
         &lt;v-card>
-          &lt;v-card-title class="text-h5">
+          &lt;v-card-title class="headline">
             Are you sure you want to
             &lt;span style="color: blue; padding-left: 5px; padding-right: 1px">
               ACCEPT/APPROVE CHANGES
@@ -277,15 +304,15 @@
             &lt;v-spacer />
             &lt;v-btn
               :disabled="dialogs.disableButton === true"
-              color="blue-darken-1"
-              variant="text"
+              color="blue darken-1"
+              text
               @click="closeApproveChangesMenu()"
             >
               Cancel
             &lt;/v-btn>
             &lt;v-btn
-              color="blue-darken-1"
-              variant="text"
+              color="blue darken-1"
+              text
               @click="confirmApproval()"
             >
               OK
@@ -307,10 +334,16 @@
         &lt;/v-card>
       &lt;/v-dialog>
     &lt;/v-layout>
-    &lt;v-layout row justify-center>
-      &lt;v-dialog v-model="dialogs.deleteRecord" max-width="700px">
+    &lt;v-layout
+      row
+      justify-center
+    >
+      &lt;v-dialog
+        v-model="dialogs.deleteRecord"
+        max-width="700px"
+      >
         &lt;v-card>
-          &lt;v-card-title class="text-h5">
+          &lt;v-card-title class="headline">
             Are you sure you want to
             &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
               DELETE
@@ -326,8 +359,8 @@
             &lt;v-spacer />
             &lt;v-btn
               :disabled="dialogs.disableButton === true"
-              color="blue-darken-1"
-              variant="text"
+              color="blue darken-1"
+              text
               @click="closeDeleteMenu()"
             >
               Cancel
@@ -335,10 +368,10 @@
             &lt;v-btn
               :disabled="
                 dialogs.disableDelButton === true ||
-                dialogs.disableButton === true
+                  dialogs.disableButton === true
               "
-              color="blue-darken-1"
-              variant="text"
+              color="blue darken-1"
+              text
               @click="confirmDelete()"
             >
               OK
@@ -410,7 +443,7 @@ export default {
   watch: {
     approvalRequired: function () {
       this.approvalRequiredProcessed = JSON.parse(
-        JSON.stringify(this.approvalRequired),
+        JSON.stringify(this.approvalRequired)
       );
     },
     "dialogs.approveChanges"(val) {
@@ -429,7 +462,7 @@ export default {
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(
-      JSON.stringify(this.approvalRequired),
+      JSON.stringify(this.approvalRequired)
     );
     this.loading = false;
   },
@@ -468,7 +501,7 @@ export default {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
-            (element) => element.id === rec.id,
+            (element) => element.id === rec.id
           );
           if (index >= 0) {
             object.hidden = true;
@@ -485,10 +518,10 @@ export default {
       this.approvalRequired.sort(this.compareRecordDescUpdate);
       for (let i = 0; i &lt; this.approvalRequired.length; i++) {
         this.approvalRequired[i].updatedAt = this.formatDate(
-          this.approvalRequired[i].updatedAt,
+          this.approvalRequired[i].updatedAt
         );
         this.approvalRequired[i].createdAt = this.formatDate(
-          this.approvalRequired[i].createdAt,
+          this.approvalRequired[i].createdAt
         );
       }
       let curators = listOfCurators.curatorList;
@@ -556,11 +589,11 @@ export default {
         _module.error.recordID = idRecord;
       }
       const index = _module.approvalRequiredProcessed.findIndex(
-        (element) => element.id === idRecord,
+        (element) => element.id === idRecord
       );
       _module.approvalRequiredProcessed[index].curator = nameUser.substring(
         0,
-        6,
+        6
       );
     },
 
@@ -597,7 +630,7 @@ export default {
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID,
+          (element) => element.id === _module.dialogs.recordID
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -610,14 +643,14 @@ export default {
       _module.dialogs.disableButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token,
+        this.user().credentials.token
       );
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID,
+          (element) => element.id === _module.dialogs.recordID
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -666,7 +699,7 @@ export default {
   overflow-y: auto;
 }
 
-:deep(.v-data-table-header tr th) {
+::v-deep .v-data-table-header tr th {
   white-space: nowrap;
 }
 .searchField {
@@ -719,7 +752,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Mon Nov 24th 2025
+		on Fri Nov 21st 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

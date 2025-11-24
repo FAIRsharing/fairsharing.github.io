@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Records/NetworkGraph.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Records/NetworkGraph.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-container fluid>
+    &lt;div v-if="error">
+      &lt;NotFound />
+    &lt;/div>
+    &lt;v-row v-else>
+      &lt;v-col class="pt-0 mt-2" cols="12" lg="3" md="3" sm="12" xl="3" xs="12">
+        &lt;v-card height="100%">
+          &lt;v-card-title class="bg-blue text-white">
+            Legend and configuration
+          &lt;/v-card-title>
+          &lt;v-card-text class="pt-3">
+            &lt;v-container fluid>
+              &lt;v-row no-gutters>
+                &lt;v-col cols="12">
+                  The graph's centre is shown in
+                  &lt;span class="text-red">red.&lt;/span>
+                &lt;/v-col>
+                &lt;v-col class="mt-2" cols="12">
+                  Click on any point to re-draw the graph with that point as the
+                  centre. Click on the centre to view the record. Hover over to
+                  view direct connections. Use the mouse/trackpad to scroll and
+                  zoom.
+                &lt;/v-col>
+                &lt;v-col class="mt-2" cols="12">
+                  For more information, please see the
+                  &lt;a
+                    href="https://fairsharing.gitbook.io/fairsharing/about-our-records/network-graphs"
+                    target="_blank"
+                  >
+                    documentation &lt;/a
+                  >.
+                &lt;/v-col>
+              &lt;/v-row>
+
+              &lt;v-row class="mt-3" no-gutters>
+                &lt;v-col cols="12">
+                  Relations between records are coloured as follows:
+                &lt;/v-col>
+                &lt;v-col cols="12">
+                  &lt;v-list density="compact">
+                    &lt;v-list-item
+                      v-for="legendItem in networkGraph['legend']"
+                      :key="legendItem['name']"
+                    >
+                      &lt;template #prepend>
+                        &lt;v-icon :color="legendItem['color']" class="mr-2">
+                          fas fa-long-arrow-alt-right
+                        &lt;/v-icon>
+                      &lt;/template>
+                      &lt;v-list-item-title
+                        class="font-weight-regular text-body-2"
+                      >
+                        {{ legendItem["name"] }}
+                      &lt;/v-list-item-title>
+                    &lt;/v-list-item>
+                  &lt;/v-list>
+                &lt;/v-col>
+              &lt;/v-row>
+
+              &lt;v-divider class="my-3" />
+
+              &lt;div>
+                &lt;h3 class="mb-4">Registry&lt;/h3>
+                &lt;v-row
+                  :class="{
+                    'd-flex justify-space-around': $vuetify.display.smOnly,
+                  }"
+                  no-gutters
+                >
+                  &lt;v-col
+                    :class="
+                      $vuetify.display.smOnly
+                        ? 'flex-row align-center flex-grow-0 flex-shrink-1'
+                        : 'flex-column'
+                    "
+                    class="d-flex justify-center"
+                    cols="12"
+                    fluid
+                    lg="12"
+                    md="12"
+                    sm="3"
+                    xl="12"
+                    xs="12"
+                  >
+                    &lt;v-btn
+                      v-for="registryItem in networkGraph['registry']"
+                      :key="registryItem['name']"
+                      :class="[
+                        $vuetify.display.xsOnly
+                          ? 'full-width'
+                          : 'button-filters',
+                        registryItem['active'] ? 'text-white' : 'text-black ',
+                      ]"
+                      :color="
+                        registryItem['active'] ? registryItem['color'] : 'gray'
+                      "
+                      :disabled="!buttonsActive"
+                      class="status_style mx-3 mb-2"
+                      @click="toggleClick(registryItem)"
+                    >
+                      {{ registryItem["name"] }}
+                    &lt;/v-btn>
+                  &lt;/v-col>
+                &lt;/v-row>
+              &lt;/div>
+
+              &lt;v-divider class="my-3" />
+
+              &lt;div>
+                &lt;!-- Color definition meaning in NetworkGraph -->
+                &lt;h3 class="mb-4">Status (shown on mouseover)&lt;/h3>
+                &lt;v-row
+                  :class="{
+                    'd-flex justify-space-around': $vuetify.display.smOnly,
+                  }"
+                  no-gutters
+                >
+                  &lt;v-col
+                    :class="
+                      $vuetify.display.smOnly
+                        ? 'flex-row align-center flex-grow-0 flex-shrink-1'
+                        : 'flex-column'
+                    "
+                    class="d-flex justify-center"
+                    cols="12"
+                    fluid
+                    lg="12"
+                    md="12"
+                    sm="3"
+                    xl="12"
+                    xs="12"
+                  >
+                    &lt;v-btn
+                      v-for="status in networkGraph['status']"
+                      :key="status['name']"
+                      :class="[
+                        $vuetify.display.xsOnly
+                          ? 'full-width'
+                          : 'button-filters',
+                        status['active'] ? 'text-white' : 'text-black',
+                      ]"
+                      :color="status['active'] ? status['color'] : 'gray'"
+                      :disabled="!buttonsActive"
+                      class="status_style mx-3 mb-2"
+                      @click="toggleClick(status)"
+                    >
+                      {{ status["name"] }}
+                    &lt;/v-btn>
+                  &lt;/v-col>
+                &lt;/v-row>
+              &lt;/div>
+              &lt;v-divider />
+              &lt;div>
+                &lt;!-- buttons here -->
+                &lt;h3 class="mb-4">Distance from centre&lt;/h3>
+                &lt;v-row
+                  :class="{
+                    'd-flex justify-space-around': $vuetify.display.smOnly,
+                  }"
+                  no-gutters
+                >
+                  &lt;v-col
+                    :class="
+                      $vuetify.display.smOnly
+                        ? 'flex-row align-center flex-grow-0 flex-shrink-1'
+                        : 'flex-column'
+                    "
+                    class="d-flex justify-center"
+                    cols="12"
+                    fluid
+                    lg="12"
+                    md="12"
+                    sm="3"
+                    xl="12"
+                    xs="12"
+                  >
+                    &lt;v-btn
+                      v-for="distance in networkGraph['distance']"
+                      :id="`distance_${distance['hops']}`"
+                      :key="distance['name']"
+                      :class="[
+                        $vuetify.display.xsOnly
+                          ? 'full-width'
+                          : 'button-filters',
+                        distance['active'] ? 'text-white ' : 'black--text ',
+                      ]"
+                      :color="getLengthColour(distance['hops'])"
+                      :disabled="!buttonsActive"
+                      class="status_style mx-3 mb-2"
+                      @click="lengthLimit(distance)"
+                    >
+                      {{ distance["name"] }}
+                    &lt;/v-btn>
+                  &lt;/v-col>
+                &lt;/v-row>
+              &lt;/div>
+            &lt;/v-container>
+          &lt;/v-card-text>
+        &lt;/v-card>
+      &lt;/v-col>
+      &lt;v-col class="pt-0 mt-2" cols="12" lg="9" md="9" sm="12" xl="9" xs="12">
+        &lt;v-btn :to="`/${$route.params.id}`" class="ml-2 my-2 bg-white">
+          &lt;v-icon :class="`text-primary`"> fas fa-arrow-left &lt;/v-icon>
+          &lt;span :class="`text-primary ml-3`"> Go to Record &lt;/span>
+        &lt;/v-btn>
+        &lt;div v-if="noData">
+          &lt;v-card-title class="bg-blue text-white">
+            No graph found!
+          &lt;/v-card-title>
+        &lt;/div>
+        &lt;div v-else>
+          &lt;v-card-title v-if="!loading" class="bg-blue text-white">
+            {{ graphData.name }} ({{ graphData.id }})
+          &lt;/v-card-title>
+          &lt;v-card-subtitle v-if="!loading" class="bg-blue text-white">
+            {{ registry }}/{{ type }}
+          &lt;/v-card-subtitle>
+        &lt;/div>
+
+        &lt;v-card height="100%">
+          &lt;div v-if="noData" height="100%">
+            &lt;v-card-text class="pt-3">
+              &lt;v-container fluid>
+                &lt;v-row no-gutters>
+                  &lt;v-col cols="12">
+                    &lt;p>
+                      No data were found showing links between this record and
+                      others. This could be because:
+                    &lt;/p>
+                    &lt;ul style="list-style-type: square">
+                      &lt;li>
+                        The record has just been created and the graph data are
+                        still being generated.
+                      &lt;/li>
+                      &lt;li>This record has no links to other records.&lt;/li>
+                      &lt;li>Something went wrong.&lt;/li>
+                    &lt;/ul>
+                    &lt;br />
+                    &lt;p>
+                      If you need assistance, please
+                      &lt;a href="mailto:contact@fairsharing.org">contact us&lt;/a>.
+                    &lt;/p>
+                  &lt;/v-col>
+                &lt;/v-row>
+              &lt;/v-container>
+            &lt;/v-card-text>
+          &lt;/div>
+          &lt;div id="sigma-container" />
+        &lt;/v-card>
+
+        &lt;v-fade-transition>
+          &lt;div>
+            &lt;v-overlay
+              v-model="layoutRendering"
+              :absolute="false"
+              class="align-center justify-center"
+              opacity="0.8"
+              persistent
+              scroll-strategy="none"
+            >
+              &lt;Loaders />
+            &lt;/v-overlay>
+          &lt;/div>
+        &lt;/v-fade-transition>
+      &lt;/v-col>
+    &lt;/v-row>
+  &lt;/v-container>
+&lt;/template>
+
+&lt;script>
+import Graph from "graphology";
+import forceAtlas2 from "graphology-layout-forceatlas2";
+// import FA2Layout from "graphology-layout-forceatlas2/worker";
+import Sigma from "sigma";
+import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
+
+import Loaders from "@/components/Navigation/Loaders";
+import networkGraph from "@/data/networkGraph.json";
+import relationColors from "@/data/RelationsColors.json";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import graphQuery from "@/lib/GraphClient/queries/getGraphRelations.json";
+import NotFound from "@/views/Errors/404.vue";
+
+const graphClient = new GraphClient();
+const graph = new Graph();
+let container;
+let renderer;
+
+export default {
+  name: "NetworkGraph",
+  components: {
+    Loaders,
+    NotFound,
+  },
+  data() {
+    return {
+      error: false,
+      loading: false,
+      noData: false,
+      initialized: false,
+      depth: [1, 2, 3],
+      registry: "unknown",
+      type: "unknown",
+      relations: null,
+      relations_colors: relationColors,
+      legend: {
+        relations: {},
+        types: {
+          circle: false,
+          square: false,
+          triangle: false,
+          diamond: false,
+        },
+      },
+      typesFound: [],
+      graphData: {},
+      chart: null,
+      cancelCurrentAnimation: null,
+      sensibleSettings: null,
+      fa2Layout: null,
+      highlighted: 0, // ID of currently-hovered node.
+      state: {},
+      selectedLengths: {
+        1: true,
+        2: false,
+        3: false,
+      },
+      active: {
+        database: true,
+        collection: true,
+        standard: true,
+        policy: true,
+        fairassist: true,
+        ready: true,
+        in_development: true,
+        uncertain: true,
+        deprecated: true,
+      },
+      buttonsActive: false,
+      networkGraph: networkGraph,
+      layoutRendering: false,
+    };
+  },
+  computed: {
+    currentRoute() {
+      return this.target || this.$route.params["id"];
+    },
+    // layoutRendering() {
+    //   if (this.fa2Layout === undefined || this.fa2Layout === null) {
+    //     return false;
+    //   }
+    //   return this.fa2Layout.isRunning();
+    // },
+  },
+  watch: {
+    async currentRoute() {
+      await this.getData();
+    },
+    active: {
+      async handler() {
+        this.toggleGraph();
+      },
+      deep: true,
+    },
+    selectedLengths: {
+      async handler() {
+        this.toggleGraph();
+      },
+      deep: true,
+    },
+  },
+  async mounted() {
+    let _module = this;
+    this.$nextTick(async function () {
+      await this.getData();
+      if (_module.error) {
+        return;
+      }
+      container = document.getElementById("sigma-container");
+      if (_module.fa2Layout &amp;&amp; _module.fa2Layout.isRunning()) {
+        _module.fa2Layout.kill();
+      }
+      await _module.plotGraph();
+    });
+  },
+  methods: {
+    async getData() {
+      this.loading = true;
+      this.legend.types = {
+        circle: false,
+        square: false,
+        triangle: false,
+        diamond: false,
+      };
+      /* A maxPathLength of 1-3 may be specified (API's default is 2).
+       Higher values may make the resulting graph rather large... */
+      graphQuery.queryParam = { id: parseInt(this.$route.params.id) };
+
+      try {
+        const response = await graphClient.executeQuery(graphQuery);
+
+        if (
+          Array.isArray(response) &amp;&amp;
+          response[0].message === "record not found"
+        ) {
+          this.error = true;
+        }
+        else if (
+          !response.fairsharingGraph ||
+          !response.fairsharingGraph.data ||
+          response.fairsharingGraph.data.length === 0 ||
+          Object.keys(response.fairsharingGraph.data).length === 0
+        ) {
+          this.loading = false;
+          this.noData = true;
+          this.registry = "N/A";
+          this.type = "N/A";
+          this.initialized = true;
+        }
+        else {
+          this.graphData = response.fairsharingGraph.data;
+          this.loading = false;
+          this.registry = this.graphData.registry;
+          this.type = this.graphData.type;
+        }
+      }
+      catch (e) {
+        console.error("Graph Data Error:", e);
+        this.error = true;
+        this.loading = false;
+      }
+    },
+    async plotGraph() {
+      let _module = this;
+      _module.layoutRendering = true;
+      graph.clear();
+      graph.import(this.graphData);
+
+      // Graphology implementation of Force Atlas 2 in a web worker
+      _module.sensibleSettings = forceAtlas2.inferSettings(graph);
+      forceAtlas2.assign(graph, {
+        iterations: 50,
+        settings: this.sensibleSettings,
+      });
+
+      // eslint-disable-next-line no-unused-vars
+      renderer = new Sigma(graph, container, {
+        allowInvalidContainer: true,
+        nodeProgramClasses: {
+          image: getNodeProgramImage(),
+        },
+      });
+      // _module.fa2Layout.start();
+
+      // Attempt to highlight nodes on hover...
+      renderer.on("enterNode", ({ node }) => {
+        _module.state.hoveredNode = node;
+        _module.state.hoveredNeighbors = new Set(graph.neighbors(node));
+        renderer.refresh();
+      });
+      renderer.on("leaveNode", () => {
+        _module.state.hoveredNode = undefined;
+        _module.state.hoveredNeighbors = undefined;
+        renderer.refresh();
+      });
+      renderer.setSetting("nodeReducer", (node, data) => {
+        const res = { ...data };
+
+        // This is for hiding everything except the node being hovered over.
+        if (
+          _module.state.hoveredNeighbors &amp;&amp;
+          !_module.state.hoveredNeighbors.has(node) &amp;&amp;
+          _module.state.hoveredNode !== node
+        ) {
+          if (parseInt(node) !== parseInt(_module.$route.params.id)) {
+            res.hidden = true;
+          }
+        }
+
+        if (_module.state.selectedNode === node) {
+          _module.res.highlighted = true;
+        }
+
+        // Hide nodes which are further away than the path length.
+        if (_module.selectedLengths[res.length] === false) {
+          res.hidden = true;
+        }
+
+        // Hide nodes when their registry is not selected
+        if (
+          !this.active[res.registry] &amp;&amp;
+          parseInt(_module.$route.params.id) !== parseInt(node)
+        ) {
+          res.hidden = true;
+        }
+
+        // Hide nodes when their status is not selected
+        if (
+          !this.active[res.status] &amp;&amp;
+          parseInt(_module.$route.params.id) !== parseInt(node)
+        ) {
+          res.hidden = true;
+        }
+
+        return res;
+      });
+
+      // This is for hiding everything except the node being hovered over.
+      renderer.setSetting("edgeReducer", (edge, data) => {
+        const res = { ...data };
+        if (
+          _module.state.hoveredNode &amp;&amp;
+          !graph.hasExtremity(edge, _module.state.hoveredNode)
+        ) {
+          res.hidden = true;
+        }
+        return res;
+      });
+
+      // This is to link to another record's graph.
+      renderer.on("clickNode", ({ node }) => {
+        this.setClickedNode(node);
+      });
+
+      renderer.refresh();
+
+      await new Promise((r) => setTimeout(r, 10000));
+      // _module.fa2Layout.stop();
+      _module.buttonsActive = true;
+      _module.layoutRendering = false;
+    },
+    setClickedNode(node) {
+      // node is the fairsharing_record_id
+      // TODO: This window.location.assign hackery is not great, but does at least cause
+      // TODO: the correct graph to load and render.
+      let _module = this;
+      if (parseInt(_module.$route.params.id) === parseInt(node)) {
+        this.loading = true;
+        window.location.assign("/" + node);
+        //this.loading = false;
+      }
+      else {
+        this.loading = true;
+        window.location.assign("/graph/" + node);
+        //this.loading = false;
+      }
+    },
+    lengthLimit(item) {
+      this.layoutRendering = true;
+      const itemLength = item.hops;
+      this.selectedLengths[itemLength] = !this.selectedLengths[itemLength];
+      item.active = !item.active;
+    },
+    getLengthColour(len) {
+      if (this.selectedLengths[len] === true) {
+        return "#27aae1";
+      }
+      else {
+        return "gray";
+      }
+    },
+    /**
+     * Toggles the graph rendering on button click.
+     * @param item
+     */
+    toggleClick(item) {
+      this.layoutRendering = true;
+      let itemName = item.name.toLowerCase();
+      if (itemName === "in development") itemName = "in_development";
+      this.active[itemName] = !this.active[itemName];
+      item.active = !item.active;
+    },
+
+    /**
+     * Toggles the graph rendering.
+     */
+    toggleGraph() {
+      graph.clear();
+      graph.import(this.graphData);
+
+      // Graphology implementation of Force Atlas 2 in a web worker
+      this.sensibleSettings = forceAtlas2.inferSettings(graph);
+      forceAtlas2.assign(graph, {
+        iterations: 50,
+        settings: this.sensibleSettings,
+      });
+      setTimeout(() => {
+        this.layoutRendering = false;
+      }, 2000);
+    },
+  },
+};
+&lt;/script>
+
+&lt;style lang="scss" scoped>
+#sigma-container {
+  width: 100%;
+  height: 100%;
+  min-height: 1000px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.button-filters {
+  width: 150px;
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
+	
+		on Mon Nov 24th 2025
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

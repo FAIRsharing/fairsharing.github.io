@@ -95,11 +95,9 @@
   &lt;v-container
     id="organisationPage"
     fluid
-    class="standard grey lighten-3 pb-10"
+    class="standard bg-grey-lighten-3 pb-10"
   >
-    &lt;Loaders
-      v-if="loading"
-    />
+    &lt;Loaders v-if="loading" />
     &lt;div v-if="error &amp;&amp; !loading">
       &lt;NotFound />
     &lt;/div>
@@ -107,7 +105,7 @@
       &lt;!-- new stuff below here -->
       &lt;v-card
         class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column"
-        outlined
+        border
         :color="$vuetify.theme.themes.bg_organisation_record_card"
         tile
         elevation="3"
@@ -121,9 +119,7 @@
           aspect-ratio="1"
           height="120px"
         />
-        &lt;h2
-          class="mt-3"
-        >
+        &lt;h2 class="mt-3">
           {{ organisation.name }}
         &lt;/h2>
         &lt;!-- alternative names -->
@@ -245,15 +241,12 @@
               class="ma-1"
               variant="elevated"
             >
-              &lt;a
-                class="black--text"
-                :href="search.url"
-              >
+              &lt;a class="text-black" :href="search.url">
                 {{ search.name }}
               &lt;/a>
               &lt;v-icon
-                v-if="user().is_super_curator? true:false"
-                right
+                v-if="user().is_super_curator ? true : false"
+                end
                 class="ml-4"
                 size="20"
                 color="error"
@@ -265,43 +258,27 @@
           &lt;/div>
         &lt;/div>
 
-        
         &lt;!-- ror link -->
         &lt;p
           v-if="organisation.rorLink"
           class="d-flex flex-row mt-4 mb-0 align-center"
         >
-          &lt;img
-            src="/assets/icons/ror-icon-rbg-32.png"
-            class="mr-1"
-          >
-          &lt;a
-            :href="organisation.rorLink"
-          >
+          &lt;img src="/assets/icons/ror-icon-rbg-32.png" class="mr-1" />
+          &lt;a :href="organisation.rorLink">
             {{ organisation.rorLink }}
           &lt;/a>
         &lt;/p>
 
         &lt;!-- edit -->
-        &lt;p
-          v-if="user().is_curator"
-          class="mt-4"
-        >
-          &lt;v-btn
-            class="warning"
-            @click="startEditing"
-          >
+        &lt;p v-if="user().is_curator" class="mt-4">
+          &lt;v-btn class="bg-warning" @click="startEditing">
             Edit Organisation
           &lt;/v-btn>
-          &lt;v-btn
-            class="error ml-2"
-            @click="confirmDeleteOrganisation"
-          >
+          &lt;v-btn class="bg-error ml-2" @click="confirmDeleteOrganisation">
             Delete Organisation
           &lt;/v-btn>
         &lt;/p>
       &lt;/v-card>
-
 
       &lt;SearchOrganisationRecords
         id="searchOrganisationRecords"
@@ -309,32 +286,26 @@
         :organisation="organisation"
       />
 
-      &lt;v-col
-        v-if="!loading"
-        cols="12"
-      >
-        &lt;v-container
-          fluid
-          class="py-0"
-        />
+      &lt;v-col v-if="!loading" cols="12">
+        &lt;v-container fluid class="py-0" />
 
         &lt;v-fade-transition>
-          &lt;v-overlay
-            v-if="loading"
-            :absolute="false"
-            opacity="0.8"
-          >
-            &lt;loaders />
-          &lt;/v-overlay>
+          &lt;div>
+            &lt;v-overlay
+              v-model="loading"
+              :absolute="false"
+              opacity="0.8"
+              class="align-center justify-center"
+            >
+              &lt;loaders />
+            &lt;/v-overlay>
+          &lt;/div>
         &lt;/v-fade-transition>
       &lt;/v-col>
     &lt;/div>
     &lt;!-- Edit existing organisation -->
     &lt;v-expand-transition>
-      &lt;v-dialog
-        v-model="showEditDialog"
-        height="100%"
-      >
+      &lt;v-dialog v-model="showEditDialog" height="100%">
         &lt;v-form
           id="editOrganisation"
           ref="editOrganisation"
@@ -344,46 +315,34 @@
             &lt;v-card-text>
               &lt;v-container fluid>
                 &lt;v-row>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-text-field
                       v-model="editedOrganisation.name"
                       label="Name"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired()]"
                     />
                   &lt;/v-col>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-text-field
                       v-model="editedOrganisation.homepage"
                       label="Homepage"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isRequired(), rules.isURL()]"
                     />
                   &lt;/v-col>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-text-field
                       v-model="editedOrganisation.rorLink"
                       label="ROR Link"
-                      outlined
+                      variant="outlined"
                       :rules="[rules.isURL()]"
                     />
                   &lt;/v-col>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-text-field
                       v-model="editedOrganisation.alternativeNames"
-                      outlined
+                      variant="outlined"
                       item-text="name"
                       item-value="id"
                       return-object
@@ -392,16 +351,13 @@
                     />
                   &lt;/v-col>
                   &lt;!-- TODO insert parent and child organisations here -->
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-autocomplete
                       v-model="editedOrganisation.types"
                       :items="organisationsTypes"
                       multiple
-                      outlined
-                      item-text="name"
+                      variant="outlined"
+                      item-title="name"
                       item-value="id"
                       return-object
                       label="Select an organisation type(s)"
@@ -410,8 +366,8 @@
                       &lt;!-- autocomplete selected -->
                       &lt;template #selection="data">
                         &lt;v-chip
-                          class="blue white--text removeStyle"
-                          close
+                          class="bg-blue text-white removeStyle"
+                          closable
                           @click:close="removeType(data.item)"
                         >
                           {{ data.item.name }}
@@ -419,43 +375,42 @@
                       &lt;/template>
                     &lt;/v-autocomplete>
                   &lt;/v-col>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-autocomplete
                       v-model="editedOrganisation.countries"
                       label="Countries"
                       :items="countries"
-                      item-text="name"
+                      item-title="name"
                       item-value="name"
                       multiple
-                      outlined
+                      variant="outlined"
                       return-object
-                      :rules="[editedOrganisation.countries &amp;&amp;
-                        !(editedOrganisation.countries === 0)]"
+                      :rules="[
+                        editedOrganisation.countries &amp;&amp;
+                          !(editedOrganisation.countries === 0),
+                      ]"
                     >
                       &lt;template #prepend>
                         &lt;v-tooltip
-                          bottom
+                          location="bottom"
                           max-width="300px"
                           class="text-justify"
                         >
-                          &lt;template #activator="{ on }">
-                            &lt;v-icon v-on="on">
-                              fa-question-circle
+                          &lt;template #activator="{ props }">
+                            &lt;v-icon v-bind="props">
+                              fas fa-question-circle
                             &lt;/v-icon>
                           &lt;/template>
-                          {{ tooltips['countries'] }}
+                          {{ tooltips["countries"] }}
                         &lt;/v-tooltip>
                       &lt;/template>
 
                       &lt;!-- autocomplete selected -->
                       &lt;template #selection="data">
                         &lt;v-chip
-                          class="blue white--text removeStyle"
-                          close
-                          @click:close="removeCountry( data.item )"
+                          class="bg-blue text-white removeStyle"
+                          closable
+                          @click:close="removeCountry(data.item)"
                         >
                           {{ data.item.name }}
                         &lt;/v-chip>
@@ -472,15 +427,12 @@
                           v-else
                           src="@/assets/placeholders/country.png"
                           class="ml-4 mr-3"
-                        >
-                        &lt;div> {{ data.item.name }} &lt;/div>
+                        />
+                        &lt;div>{{ data.item.name }}&lt;/div>
                       &lt;/template>
                     &lt;/v-autocomplete>
                   &lt;/v-col>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-file-input
                       v-model="editedOrganisation.logo"
                       :rules="[rules.isImage(), imageSizeCorrect]"
@@ -492,10 +444,7 @@
                     />
                     &lt;span>JPEG or PNG, max. file size 3MB.&lt;/span>
                   &lt;/v-col>
-                  &lt;v-col
-                    cols="12"
-                    class="pb-0"
-                  >
+                  &lt;v-col cols="12" class="pb-0">
                     &lt;v-img
                       v-if="logoUrl"
                       :src="logoUrl"
@@ -508,14 +457,11 @@
               &lt;/v-container>
             &lt;/v-card-text>
             &lt;v-card-actions>
-              &lt;v-btn
-                class="error"
-                @click="showEditDialog = false"
-              >
+              &lt;v-btn class="bg-error" @click="showEditDialog = false">
                 Cancel
               &lt;/v-btn>
               &lt;v-btn
-                class="success"
+                class="bg-success"
                 :disabled="!editFormValid || imageTooBig"
                 @click="editOrganisation()"
               >
@@ -527,35 +473,24 @@
       &lt;/v-dialog>
     &lt;/v-expand-transition>
     &lt;!-- Delete dialog box -->
-    &lt;v-dialog
-      v-model="confirmDelete"
-      max-width="700px"
-      persistent
-    >
+    &lt;v-dialog v-model="confirmDelete" max-width="700px" persistent>
       &lt;!-- Delete organisation -->
       &lt;v-card v-if="deleteOrganisationCard">
-        &lt;v-card-title
-          class="headline"
-        >
-          Deleting organisation!
-        &lt;/v-card-title>
+        &lt;v-card-title class="text-h5"> Deleting organisation! &lt;/v-card-title>
         &lt;v-card-text>
           &lt;p>
-            &lt;b>Are you sure you want to do that? It will be permanently deleted.&lt;/b>
+            &lt;b
+              >Are you sure you want to do that? It will be permanently
+              deleted.&lt;/b
+            >
           &lt;/p>
         &lt;/v-card-text>
         &lt;v-card-actions>
           &lt;v-spacer />
-          &lt;v-btn
-            class="info"
-            @click="deleteOrganisation(false)"
-          >
+          &lt;v-btn class="bg-info" @click="deleteOrganisation(false)">
             Cancel
           &lt;/v-btn>
-          &lt;v-btn
-            class="error"
-            @click="deleteOrganisation(true)"
-          >
+          &lt;v-btn class="bg-error" @click="deleteOrganisation(true)">
             Delete
           &lt;/v-btn>
           &lt;v-spacer />
@@ -563,21 +498,21 @@
       &lt;/v-card>
       &lt;!-- Unlink saved search -->
       &lt;v-card v-if="unlinkSavedSearchCard">
-        &lt;v-card-title class="text-h5">
-          Unlinking saved search
-        &lt;/v-card-title>
-        &lt;v-card-text>This is will unlink saved search from this organisaton&lt;/v-card-text>
+        &lt;v-card-title class="text-h5"> Unlinking saved search &lt;/v-card-title>
+        &lt;v-card-text
+          >This is will unlink saved search from this organisaton&lt;/v-card-text
+        >
         &lt;v-card-actions>
           &lt;v-spacer />
           &lt;v-btn
-            class="white--text"
+            class="text-white"
             color="accent3"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
           &lt;/v-btn>
           &lt;v-btn
-            class="white--text"
+            class="text-white"
             color="success"
             :loading="deleteLoader"
             @click="unlinkSavedSearch(true)"
@@ -592,28 +527,28 @@
 &lt;/template>
 
 &lt;script>
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json";
 import saveSearch from "@/store";
-import { isImage, isRequired, isUrl } from "@/utils/rules.js"
-import { cleanString } from "@/utils/stringUtils"
-import NotFound from "@/views/Errors/404"
+import { isImage, isRequired, isUrl } from "@/utils/rules.js";
+import stringUtils from "@/utils/stringUtils";
+import NotFound from "@/views/Errors/404";
 
 let graphClient = new GraphClient();
-import RestClient from "@/lib/Client/RESTClient.js"
-import {toBase64} from "@/utils/generalUtils";
+import RestClient from "@/lib/Client/RESTClient.js";
+import { toBase64 } from "@/utils/generalUtils";
 
 const restClient = new RestClient();
 
 export default {
   name: "Organisation",
-  components: {SearchOrganisationRecords, SectionTitle, NotFound, Loaders},
-  mixins: [cleanString],
+  components: { SearchOrganisationRecords, SectionTitle, NotFound, Loaders },
+  mixins: [stringUtils],
   data: () => {
     return {
       error: true,
@@ -624,11 +559,11 @@ export default {
         users: [],
         parentOrganisations: [],
         childOrganisations: [],
-        countries: []
+        countries: [],
       },
       editedOrganisation: {
-        name: '',
-        homepage: '',
+        name: "",
+        homepage: "",
         types: [],
         logo: null,
         countries: [],
@@ -641,49 +576,55 @@ export default {
       logoLoading: false,
       imageTooBig: true,
       perPage: 10,
-      footer: {'items-per-page-options': [10]},
+      footer: { "items-per-page-options": [10] },
       showOverlay: false,
       targetID: null,
       testEnvironment: false,
       headers: [
-        {text: 'Name', value: 'name', align: 'center'},
-        {text: 'Status', value: 'status', align: 'center'},
-        {text: 'Relation', value: 'relation', align: 'center'},
-        {text: 'Grant', value: 'grant', align: 'center'},
-        {text: 'Actions', value: 'actions', align: 'center', sortable: false}
+        { text: "Name", value: "name", align: "center" },
+        { text: "Status", value: "status", align: "center" },
+        { text: "Relation", value: "relation", align: "center" },
+        { text: "Grant", value: "grant", align: "center" },
+        { text: "Actions", value: "actions", align: "center", sortable: false },
       ],
       userHeaders: [
-        {text: 'Username', value: 'username', align: 'center'},
-        {text: 'Email address', value: 'email', align: 'center'},
-        {text: 'ORCID ID', value: 'orcid', align: 'center'},
-        {text: 'Twitter', value: 'twitter', align: 'center'},
+        { text: "Username", value: "username", align: "center" },
+        { text: "Email address", value: "email", align: "center" },
+        { text: "ORCID ID", value: "orcid", align: "center" },
+        { text: "Twitter", value: "twitter", align: "center" },
       ],
       showEditDialog: false,
       editFormValid: false,
       rules: {
-        isRequired: function(){return isRequired() },
-        isURL: function(){ return isUrl() },
-        isImage: function(){ return isImage() }
+        isRequired: function () {
+          return isRequired();
+        },
+        isURL: function () {
+          return isUrl();
+        },
+        isImage: function () {
+          return isImage();
+        },
       },
       confirmDelete: false,
       deleteOrganisationCard: false,
       unlinkSavedSearchCard: false,
       selectedItem: {},
-      deleteLoader: false
-    }
+      deleteLoader: false,
+    };
   },
   computed: {
-    ...mapState('users', ['user']),
+    ...mapState("users", ["user"]),
     ...mapState("editor", ["organisationsTypes", "countries", "tooltips"]),
     currentRoute() {
-      return this.$route.params['id'];
+      return this.$route.params["id"];
     },
     logoUrl() {
       if (this.organisation.urlForLogo) {
-        return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
+        return import.meta.env.VITE_API_ENDPOINT + this.organisation.urlForLogo;
       }
       return null;
-    }
+    },
   },
   watch: {
     async currentRoute() {
@@ -698,7 +639,8 @@ export default {
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
-        if (this.testEnvironment) throw new Error("an error occurred while fetching data")
+        if (this.testEnvironment)
+          throw new Error("an error occurred while fetching data");
         this.loading = true;
         getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
         let org = await graphClient.executeQuery(getOrganisationQuery);
@@ -708,7 +650,8 @@ export default {
           this.editedOrganisation.homepage = this.organisation.homepage;
           this.editedOrganisation.rorLink = this.organisation.rorLink;
           this.editedOrganisation.countries = this.organisation.countries;
-          this.editedOrganisation.alternativeNames = this.organisation.alternativeNames;
+          this.editedOrganisation.alternativeNames =
+            this.organisation.alternativeNames;
           this.error = false;
         }
         this.loading = false;
@@ -719,19 +662,18 @@ export default {
     async editOrganisation() {
       // TODO complete organisation input
       // A Ruby-style map would be better here. Please feel free to refactor if you know how! ;-)
-      let type_ids = []
+      let type_ids = [];
       this.editedOrganisation.types.forEach((type) => {
-        type_ids.push(type.id)
-      })
-      let country_ids = []
+        type_ids.push(type.id);
+      });
+      let country_ids = [];
       this.editedOrganisation.countries.forEach((country) => {
-        country_ids.push(country.id)
-      })
+        country_ids.push(country.id);
+      });
       let alt_names;
       try {
-        alt_names = this.editedOrganisation.alternativeNames.split(',');
-      }
-      catch {
+        alt_names = this.editedOrganisation.alternativeNames.split(",");
+      } catch {
         alt_names = [];
       }
       this.logoLoading = true;
@@ -741,17 +683,21 @@ export default {
         organisation_type_ids: type_ids,
         country_ids: country_ids,
         ror_link: this.editedOrganisation.rorLink,
-        alternative_names: alt_names
-      }
+        alternative_names: alt_names,
+      };
       if (this.editedOrganisation.logo) {
         let convertedFile = await toBase64(this.editedOrganisation.logo);
         organisationInput.logo = {
           filename: this.editedOrganisation.logo.name,
           content_type: this.editedOrganisation.logo.type,
-          data: convertedFile
-        }
+          data: convertedFile,
+        };
       }
-      let data = await restClient.editOrganisation(organisationInput, this.organisation.id, this.user().credentials.token);
+      let data = await restClient.editOrganisation(
+        organisationInput,
+        this.organisation.id,
+        this.user().credentials.token,
+      );
       if (!data.error) {
         // Reload to get the new data.
         await this.getOrganisation();
@@ -768,67 +714,69 @@ export default {
         this.imageTooBig = false;
         return true;
       }
-      this.$emit('imageTooBig', true);
+      this.$emit("imageTooBig", true);
       this.imageTooBig = true;
       return false;
     },
     goToEdit(id) {
-      this.$router.push({path: `/${id}/edit`})
+      this.$router.push({ path: `/${id}/edit` });
     },
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
     },
     goToRecord(id) {
-      window.open("/" + id, '_blank');
+      window.open("/" + id, "_blank");
     },
     hideOverlay() {
       this.showOverlay = false;
       this.targetID = null;
     },
     filterRecords() {
-      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase())}
+      const params = {
+        organisations: encodeURIComponent(this.organisation.name.toLowerCase()),
+      };
       this.$router.push({
-        name: 'search',
-        query: params
+        name: "search",
+        query: params,
       });
     },
     getAltNames(org) {
       if (org.alternativeNames.length > 0) {
-        return org.alternativeNames.join(', ');
+        return org.alternativeNames.join(", ");
       }
       return null;
     },
     formatUser(user) {
       if (user.orcid) {
-        return `${user.username} (${user.orcid})`
-      }
-      else {
+        return `${user.username} (${user.orcid})`;
+      } else {
         return user.username;
       }
     },
     getUserLink() {
-      return process.env.VUE_APP_HOSTNAME + 'users/'
+      return import.meta.env.VITE_HOSTNAME + "users/";
     },
     orgUrl() {
-      return process.env.VUE_APP_HOSTNAME + 'organisations/'
+      return import.meta.env.VITE_HOSTNAME + "organisations/";
     },
     removeType(type) {
-      this.editedOrganisation.types = this.editedOrganisation.types.filter(obj =>
-          obj.label !== type.name &amp;&amp; obj.id !== type.id
+      this.editedOrganisation.types = this.editedOrganisation.types.filter(
+        (obj) => obj.label !== type.name &amp;&amp; obj.id !== type.id,
       );
     },
     removeCountry(country) {
-      this.editedOrganisation.countries = this.editedOrganisation.countries.filter(obj =>
-          obj.label !== country.name &amp;&amp; obj.id !== country.id
-      );
+      this.editedOrganisation.countries =
+        this.editedOrganisation.countries.filter(
+          (obj) => obj.label !== country.name &amp;&amp; obj.id !== country.id,
+        );
     },
     async startEditing() {
       this.loading = true;
       this.showEditDialog = true;
       await this.getOrganisationsTypes();
-      this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
-          this.organisation.types.indexOf(obj.name) > -1
+      this.editedOrganisation.types = this.organisationsTypes.filter(
+        (obj) => this.organisation.types.indexOf(obj.name) > -1,
       );
       await this.getCountries();
       this.loading = false;
@@ -837,7 +785,7 @@ export default {
     /**
      * Confirmation dialog to delete the organisation
      */
-    confirmDeleteOrganisation(){
+    confirmDeleteOrganisation() {
       this.confirmDelete = true;
       this.deleteOrganisationCard = true;
       this.unlinkSavedSearchCard = false;
@@ -849,11 +797,14 @@ export default {
     async deleteOrganisation(del) {
       this.unlinkSavedSearchCard = false;
       if (del) {
-        let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
+        let data = await restClient.deleteOrganisation(
+          this.organisation.id,
+          this.user().credentials.token,
+        );
 
         if (!data.error) {
           // Redirects to organisations page.
-          window.location.pathname = '/organisations'
+          window.location.pathname = "/organisations";
         }
       }
       this.deleteOrganisationCard = false;
@@ -863,7 +814,7 @@ export default {
     /**
      * Confirmation dialog to unlink the saved search
      */
-    confirmUnlinkSavedSearch(item){
+    confirmUnlinkSavedSearch(item) {
       this.selectedItem = item;
       this.confirmDelete = true;
       this.deleteOrganisationCard = false;
@@ -878,32 +829,34 @@ export default {
       if (del) {
         this.deleteLoader = true;
         //Filter the currentOrganisation to unlink
-        let linkOrganisation = this.selectedItem.organisations
-            .filter(({id}) => id !== this.organisation.id);
+        let linkOrganisation = this.selectedItem.organisations.filter(
+          ({ id }) => id !== this.organisation.id,
+        );
 
         //Array of id of the remaining organisation
-        linkOrganisation = linkOrganisation.map(({id}) => id)
+        linkOrganisation = linkOrganisation.map(({ id }) => id);
         let saveSearchObj = {
           organisation_ids: linkOrganisation,
         };
 
         let updatedSearchResult = await restClient.updateSaveSearch(
-            this.selectedItem["id"],
-            saveSearchObj,
-            this.user().credentials.token
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token,
         );
         //Commit the updated result to store
-        saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
-          await this.getOrganisation();
+        saveSearch.commit(
+          "saveSearch/setSaveSearchResult",
+          updatedSearchResult,
+        );
+        await this.getOrganisation();
       }
       this.deleteLoader = false;
       this.unlinkSavedSearchCard = false;
       this.confirmDelete = false;
     },
   },
-
-
-}
+};
 &lt;/script>
 
 &lt;style scoped>
@@ -912,7 +865,8 @@ export default {
   overflow-x: scroll;
   overflow-y: hidden;
 }
-&lt;/style></pre>
+&lt;/style>
+</pre>
     </article>
 </section>
 
@@ -957,7 +911,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Nov 21st 2025
+		on Mon Nov 24th 2025
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

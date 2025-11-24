@@ -547,10 +547,12 @@ export default {
       }
     },
     lengthLimit(item) {
-      this.layoutRendering = true;
-      const itemLength = item.hops;
-      this.selectedLengths[itemLength] = !this.selectedLengths[itemLength];
       item.active = !item.active;
+      this.layoutRendering = true;
+      setTimeout(() => {
+        const itemLength = item.hops;
+        this.selectedLengths[itemLength] = !this.selectedLengths[itemLength];
+      }, 100);
     },
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
@@ -561,15 +563,17 @@ export default {
       }
     },
     /**
-     * Toggles the graph rendering on button click.
+     * Toggles the graph rendering on a button click.
      * @param item
      */
     toggleClick(item) {
-      this.layoutRendering = true;
-      let itemName = item.name.toLowerCase();
-      if (itemName === "in development") itemName = "in_development";
-      this.active[itemName] = !this.active[itemName];
       item.active = !item.active;
+      this.layoutRendering = true;
+      setTimeout(() => {
+        let itemName = item.name.toLowerCase();
+        if (itemName === "in development") itemName = "in_development";
+        this.active[itemName] = !this.active[itemName];
+      }, 100);
     },
 
     /**

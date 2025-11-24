@@ -347,6 +347,7 @@
           v-if="isDatabase()"
           v-model="fields.metadata['internal_identifiers']"
           class="mr-2"
+          color="primary"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -367,11 +368,12 @@
           v-if="isIdentifierSchema()"
           v-model="fields.metadata['gupri']"
           class="mr-2"
+          color="primary"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
               {{ tooltips["gupri"] }}
             </v-tooltip>
@@ -381,6 +383,7 @@
               >Is this identifier schema a
               <a
                 href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                target="_blank"
                 >GUPRI</a
               >
               as defined by FAIRsharing?</span
@@ -464,6 +467,7 @@
           v-if="user().is_curator"
           v-model="fields.isHidden"
           class="d-inline-block mr-2"
+          color="primary"
           label="hide record"
         >
           <template #label>

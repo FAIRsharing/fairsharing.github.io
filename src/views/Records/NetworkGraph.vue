@@ -90,7 +90,7 @@
                         $vuetify.display.xsOnly
                           ? 'full-width'
                           : 'button-filters',
-                        registryItem['active'] ? 'text-white ' : 'black--text ',
+                        registryItem['active'] ? 'text-white' : 'text-black ',
                       ]"
                       :color="
                         registryItem['active'] ? registryItem['color'] : 'gray'
@@ -138,7 +138,7 @@
                         $vuetify.display.xsOnly
                           ? 'full-width'
                           : 'button-filters',
-                        status['active'] ? 'text-white ' : 'black--text ',
+                        status['active'] ? 'text-white' : 'text-black',
                       ]"
                       :color="status['active'] ? status['color'] : 'gray'"
                       :disabled="!buttonsActive"
@@ -201,7 +201,7 @@
       </v-col>
       <v-col class="pt-0 mt-2" cols="12" lg="9" md="9" sm="12" xl="9" xs="12">
         <v-btn :to="`/${$route.params.id}`" class="ml-2 my-2 bg-white">
-          <v-icon :class="`text-primary`"> fa-arrow-left </v-icon>
+          <v-icon :class="`text-primary`"> fas fa-arrow-left </v-icon>
           <span :class="`text-primary ml-3`"> Go to Record </span>
         </v-btn>
         <div v-if="noData">
@@ -359,31 +359,13 @@ export default {
     },
     active: {
       async handler() {
-        // let _module = this;
-        // if (!_module.fa2Layout.isRunning()) {
-        //   _module.fa2Layout.start();
-        //   await new Promise((r) => setTimeout(r, 2000));
-        //   _module.fa2Layout.stop();
-        // }
-        // else {
-        //   await new Promise((r) => setTimeout(r, 2000));
-        //   _module.fa2Layout.stop();
-        // }
+        this.toggleGraph();
       },
       deep: true,
     },
     selectedLengths: {
       async handler() {
-        let _module = this;
-        if (!_module.fa2Layout.isRunning()) {
-          _module.fa2Layout.start();
-          await new Promise((r) => setTimeout(r, 2000));
-          _module.fa2Layout.stop();
-        }
-        else {
-          await new Promise((r) => setTimeout(r, 2000));
-          _module.fa2Layout.stop();
-        }
+        this.toggleGraph();
       },
       deep: true,
     },
@@ -565,6 +547,7 @@ export default {
       }
     },
     lengthLimit(item) {
+      this.layoutRendering = true;
       const itemLength = item.hops;
       this.selectedLengths[itemLength] = !this.selectedLengths[itemLength];
       item.active = !item.active;
@@ -577,11 +560,34 @@ export default {
         return "gray";
       }
     },
+    /**
+     * Toggles the graph rendering on button click.
+     * @param item
+     */
     toggleClick(item) {
+      this.layoutRendering = true;
       let itemName = item.name.toLowerCase();
       if (itemName === "in development") itemName = "in_development";
       this.active[itemName] = !this.active[itemName];
       item.active = !item.active;
+    },
+
+    /**
+     * Toggles the graph rendering.
+     */
+    toggleGraph() {
+      graph.clear();
+      graph.import(this.graphData);
+
+      // Graphology implementation of Force Atlas 2 in a web worker
+      this.sensibleSettings = forceAtlas2.inferSettings(graph);
+      forceAtlas2.assign(graph, {
+        iterations: 50,
+        settings: this.sensibleSettings,
+      });
+      setTimeout(() => {
+        this.layoutRendering = false;
+      }, 2000);
     },
   },
 };

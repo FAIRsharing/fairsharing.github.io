@@ -8,10 +8,9 @@
         <div class="d-flex flex-row align-center">
           <v-img
             v-if="currentRecord['fairsharingRecord'].urlForLogo"
-            :src="newImg.src"
             :max-width="finalImageWidth"
-            contain
-            class="mr-2"
+            :src="newImg.src"
+            class="mr-2 contain"
           />
           <h3
             :style="
@@ -26,26 +25,26 @@
             v-if="
               getField('abbreviation') && getField('registry') !== 'Collection'
             "
-            style="font-size: 16px"
             :style="
               currentRecord['fairsharingRecord'].status === 'deprecated'
                 ? 'text-decoration: line-through'
                 : 'text-decoration: inherit'
             "
             class="ml-2"
+            style="font-size: 16px"
           >
             ({{ getField("abbreviation") }})
           </b>
         </div>
         <div class="d-flex align-center mt-2">
           <div class="width-35">
-            <Icon item="DOI" :height="30" wrapper-class="" class="mr-2" />
+            <Icon :height="30" class="mr-2" item="DOI" wrapper-class="" />
           </div>
           <div v-if="getField('doi')" class="d-flex flex-row">
             <a
               :href="generateDoiLink(getField('doi'))"
-              target="_blank"
               class="underline-effect"
+              target="_blank"
             >
               {{ getField("doi") }}
             </a>
@@ -58,7 +57,7 @@
                   v-bind="props"
                   @click="copyURL"
                 >
-                  fa fa-copy
+                  {{ copyButtonStatus ? "fa-solid" : "fa-regular" }} fa-copy
                 </v-icon>
               </template>
               <span v-if="!copyButtonStatus"> Copy URL </span>
@@ -67,9 +66,9 @@
           </div>
           <span v-else>
             <a
+              class="underline-effect"
               href="https://fairsharing.gitbook.io/fairsharing/#getting-a-record-doi"
               target="_blank"
-              class="underline-effect"
             >
               {{ awaitingDoi() }}
             </a>
@@ -141,23 +140,28 @@ export default {
     generateDoiLink(doi) {
       return `https://doi.org/${doi}`;
     },
-    async copyURL() {
+    copyURL() {
       this.copyButtonStatus = true;
-      return this.generateDoiLink(this.currentRecord["fairsharingRecord"].doi);
+      let link = this.generateDoiLink(
+        this.currentRecord["fairsharingRecord"].doi,
+      );
+      navigator.clipboard.writeText(link);
     },
     awaitingDoi() {
       if (
         this.currentRecord["fairsharingRecord"].status.toLowerCase() === "ready"
       ) {
         return "Awaiting DOI";
-      } else if (
+      }
+      else if (
         this.currentRecord["fairsharingRecord"].status.toLowerCase() ===
           "uncertain" ||
         this.currentRecord["fairsharingRecord"].status.toLowerCase() ===
           "deprecated"
       ) {
         return "DOI will not be issued";
-      } else {
+      }
+      else {
         return "DOIs are only issued to records with 'Ready' status";
       }
     },

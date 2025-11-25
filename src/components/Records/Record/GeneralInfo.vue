@@ -1,10 +1,10 @@
 <template>
   <v-card
-    class="pa-4 d-flex flex-column overflow-initial"
-    border
     :color="backColor"
-    tile
+    border
+    class="pa-4 d-flex flex-column overflow-initial"
     elevation="3"
+    tile
   >
     <!-- General Info -->
     <SectionTitle title="General Information" />
@@ -72,11 +72,11 @@
           {{ recordTooltips["graph_button"] }}
         </v-tooltip>
         <v-btn
+          :disabled="graphButtonDisabled()"
           class="my-5"
           color="primary"
-          variant="outlined"
           style="max-width: 250px"
-          :disabled="graphButtonDisabled()"
+          variant="outlined"
           @click="loadGraph"
         >
           <v-icon size="small" start> fas fa-project-diagram </v-icon>

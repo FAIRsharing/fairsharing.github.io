@@ -7,9 +7,9 @@
       across all disciplines. We work together with our stakeholders to enable
       the
       <a
+        class="underline-effect"
         href="https://www.nature.com/articles/sdata201618"
         target="_blank"
-        class="underline-effect"
         >FAIR Principles</a
       >
       by promoting the value and the use of standards, databases and policies.
@@ -18,15 +18,15 @@
     <p class="text-h5">
       How to cite us: use the DOI for the
       <a
+        class="underline-effect"
         href="https://doi.org/10.25504/FAIRsharing.2abjs5"
         target="_blank"
-        class="underline-effect"
         >FAIRsharing record</a
       >, or our
       <a
+        class="underline-effect"
         href="https://doi.org/10.1038/s41587-019-0080-8"
         target="_blank"
-        class="underline-effect"
         >publication.</a
       >
     </p>
@@ -38,24 +38,24 @@
           v-for="(tab, index) in contentTabs"
           :key="tab.name + '_' + index"
           cols="12"
-          sm="12"
-          md="4"
           lg="4"
+          md="4"
+          sm="12"
         >
           <v-card
             class="mx-auto block-category__card cursor-pointer"
-            max-width="350"
             height="300"
+            max-width="350"
             @click="jumpToAnchor(tab.name.toLowerCase())"
           >
             <div
               class="text-white d-flex flex-column justify-center block-category__card__gradient"
             >
               <div
-                style="height: 136px"
                 class="d-flex justify-center align-center"
+                style="height: 136px"
               >
-                <v-icon size="80" color="white" style="opacity: 0.7">
+                <v-icon color="white" size="80" style="opacity: 0.7">
                   {{ customIcons.values[tab.icon].icon }}
                 </v-icon>
               </div>
@@ -123,8 +123,8 @@
         <v-btn class="ma-2 text-white">
           <router-link
             v-scroll-to="'#funders'"
-            to="#funders"
             text-color="white"
+            to="#funders"
           >
             Funders
           </router-link>
@@ -132,8 +132,8 @@
         <v-btn class="ma-2 text-white">
           <router-link
             v-scroll-to="'#publishers'"
-            to="#publishers"
             text-color="white"
+            to="#publishers"
           >
             Publishers
           </router-link>
@@ -141,14 +141,14 @@
         <v-btn class="ma-2 text-white">
           <router-link
             v-scroll-to="'#organisations'"
-            to="#organisations"
             text-color="white"
+            to="#organisations"
           >
             Organisations
           </router-link>
         </v-btn>
         <v-btn class="ma-2 text-white">
-          <router-link v-scroll-to="'#tools'" to="#tools" text-color="white">
+          <router-link v-scroll-to="'#tools'" text-color="white" to="#tools">
             Tools
           </router-link>
         </v-btn>
@@ -173,13 +173,13 @@
         <v-col
           v-for="(item, index) in externalLinks"
           :key="index + '_' + item.titleLink"
-          cols="12"
-          md="12"
-          lg="4"
           :class="[
             'pa-5 links',
             { 'max-width-32-percent': $vuetify.display.mdAndUp },
           ]"
+          cols="12"
+          lg="4"
+          md="12"
         >
           <a :href="item.titleLink" target="_blank">
             <p
@@ -219,21 +219,21 @@
         <v-col
           v-for="(item, index) in tables.adopterTable.data"
           :key="index + '_' + item.adopter"
-          cols="12"
-          md="12"
-          lg="4"
           :class="[
             'pa-5 links',
             { 'max-width-32-percent': $vuetify.display.mdAndUp },
           ]"
+          cols="12"
+          lg="4"
+          md="12"
         >
           <v-img
             v-if="item.image"
-            max-width="250px"
-            max-height="250px"
             :src="item.image"
-            height="120"
             class="contain"
+            height="120"
+            max-height="250px"
+            max-width="250px"
             style="filter: grayscale(1)"
           />
         </v-col>
@@ -258,16 +258,16 @@
             { 'max-width-24-percent': $vuetify.display.mdAndUp },
           ]"
           cols="12"
-          md="12"
           lg="4"
+          md="12"
         >
           <v-img
             v-if="item.image"
-            max-width="250px"
-            max-height="250px"
             :src="item.image"
-            height="120"
             class="contain"
+            height="120"
+            max-height="250px"
+            max-width="250px"
             style="filter: grayscale(1)"
           />
         </v-col>
@@ -300,9 +300,9 @@
         v-for="tool in tables.toolsTable.data"
         :key="tool.id"
         cols="12"
-        sm="12"
-        md="4"
         lg="3"
+        md="4"
+        sm="12"
         xl="2"
       >
         <v-card class="full-width">
@@ -312,14 +312,14 @@
                 ? `/assets/Community/tools/${tool.logo}`
                 : '/assets/Community/tools/toolplaceholder.png'
             "
-            class="text-white align-end"
-            gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
-            cover
             aspect-ratio="1"
+            class="text-white align-end"
+            cover
+            gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
           >
             <v-card-title>
               <h4 style="word-break: initial">
-                <a :id="tool.id" :href="tool.homepage">
+                <a :id="tool.id" :href="tool.homepage" target="_blank">
                   {{ tool.name }}
                 </a>
               </h4>
@@ -330,8 +330,6 @@
           </v-img>
 
           <v-card-text
-            class="text--primary"
-            style="height: 100%"
             :style="
               $vuetify.display.xl
                 ? 'height: 320px'
@@ -339,6 +337,8 @@
                   ? 'height: 350px'
                   : 'height: 100%'
             "
+            class="text--primary"
+            style="height: 100%"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
@@ -473,18 +473,18 @@
               :key="`${socialItem}_${socialIndex}`"
             >
               <a
-                class="pr-2"
                 :href="
                   socialItem.link.includes('@')
                     ? `mailto:${socialItem.link}`
                     : socialItem.link
                 "
+                class="pr-2"
                 target="_blank"
               >
                 <Icon
-                  class="mr-1"
                   :item="socialItem.icon"
-                  :height="25"
+                  class="mr-1"
+                  height="25"
                   size="30"
                   wrapper-class=""
                 />
@@ -533,18 +533,18 @@
                     <p class="ma-0" v-html="$sanitize(itemData.text)" />
                     <a
                       v-if="itemData.link"
-                      class="ml-2 pr-2"
                       :href="
                         itemData.link.toString().includes('@')
                           ? `mailto:${itemData.link}`
                           : itemData.link
                       "
+                      class="ml-2 pr-2"
                       target="_blank"
                     >
                       <Icon
                         class="mr-1"
+                        height="25"
                         item="Orcid"
-                        :height="25"
                         size="30"
                         wrapper-class=""
                       />
@@ -558,18 +558,18 @@
                   >
                     <p class="ma-0" v-html="$sanitize(itemDataArray.text)" />
                     <a
-                      class="ml-2 pr-2"
                       :href="
                         itemDataArray.link.toString().includes('@')
                           ? `mailto:${itemDataArray.link}`
                           : itemDataArray.link
                       "
+                      class="ml-2 pr-2"
                       target="_blank"
                     >
                       <Icon
                         class="mr-1"
+                        height="25"
                         item="Orcid"
-                        :height="25"
                         size="30"
                         wrapper-class=""
                       />
@@ -613,18 +613,18 @@
                   <p class="ma-0" v-html="$sanitize(itemData.text)" />
                   <a
                     v-if="itemData.link"
-                    class="ml-2 pr-2"
                     :href="
                       itemData.link.toString().includes('@')
                         ? `mailto:${itemData.link}`
                         : itemData.link
                     "
+                    class="ml-2 pr-2"
                     target="_blank"
                   >
                     <Icon
                       class="mr-1"
+                      height="25"
                       item="Orcid"
-                      :height="25"
                       size="30"
                       wrapper-class=""
                     />
@@ -654,12 +654,12 @@
           <a href="https://zulip.com/" target="_blank">
             <img
               height="27px"
-              width="27px"
               src="/assets/icons/zulip-icon.png"
+              width="27px"
             />
           </a>
           We'd like to thank
-          <a href="https://zulip.com/" target="_blank" class="underline-effect"
+          <a class="underline-effect" href="https://zulip.com/" target="_blank"
             >Zulip</a
           >
           for access to their community plan, which helps both our core team and
@@ -684,6 +684,16 @@ import Icon from "@/components/Icon";
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
+
+const handleScroll = () => {
+  // Check if we are at the top
+  // Only run this if there is actually a hash to remove
+  if (window.scrollY < 2 && window.location.hash) {
+    // We use replaceState so we don't clutter the history stack
+    history.replaceState(null, null, window.location.pathname);
+  }
+};
+
 /** This component handles the sign-up/register page
  * @memberOf Static
  * @name Community
@@ -723,18 +733,28 @@ export default {
   created() {
     this.$nextTick(() => {
       // update the UI padding and margin after DOM is fully loaded.
-      this.applyCss = true
-    })
+      this.applyCss = true;
+    });
+  },
+
+  mounted() {
+    window.addEventListener("scroll", handleScroll);
+  },
+  unmounted() {
+    //CRITICAL: If you skip this, the event listener keeps running forever in the background!
+    window.removeEventListener("scroll", handleScroll);
   },
   methods: {
     jumpToAnchor(selectedAnchor) {
+      let anchorElement = document.getElementById(selectedAnchor);
       if (selectedAnchor !== this.currentAnchor) {
-        this.$router.push({hash: `${selectedAnchor}`});
+        anchorElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.pushState(null, null, `#${selectedAnchor}`);
         this.currentAnchor = selectedAnchor;
       }
     },
-    isArray(input){
-      return isArray(input)
+    isArray(input) {
+      return isArray(input);
     },
     orgUrl(org) {
       if (org.id) {
@@ -743,12 +763,12 @@ export default {
       else {
         return org.url;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .links {
   border: 1px #d4d4d4 solid;
   margin: 2px;

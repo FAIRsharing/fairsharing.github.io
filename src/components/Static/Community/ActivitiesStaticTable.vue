@@ -10,7 +10,7 @@
       </thead>
       <tbody>
         <tr>
-          <td colspan="3" class="extra-header-row">
+          <td class="extra-header-row" colspan="3">
             <p id="activity_1" class="text-center ma-0 pa-0">
               CHANGE - focusing on priorities, policies and incentives for
               implementing FAIR
@@ -19,12 +19,12 @@
         </tr>
         <tr>
           <td rowspan="2">
-            <a id="activity_2">
+            <span id="activity_2" class="activity">
               <b
                 >1. Classify and align research data policies across publishers
                 and funders</b
               >
-            </a>
+            </span>
           </td>
           <td>
             FAIRsharing works within the
@@ -35,19 +35,19 @@
           </td>
           <td>
             <a
-              target="_blank"
               href="https://www.rd-alliance.org/groups/data-policy-standardisation-and-implementation-ig"
+              target="_blank"
               >RDA Policy IG</a
             >,
             <a
-              target="_blank"
               href="https://www.rd-alliance.org/groups/research-funders-and-stakeholders-open-research-and-data-management-policies-and-practices-ig"
+              target="_blank"
               >RDA Funders IG,</a
             >
             and
             <a
-              target="_blank"
               href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
               >RDA FAIRsharing WG</a
             >
           </td>
@@ -69,9 +69,9 @@
         </tr>
         <tr>
           <td>
-            <a id="activity_3">
+            <span id="activity_3" class="activity">
               <b>2. Moderate cross-publishers discussion on repositories</b>
-            </a>
+            </span>
           </td>
           <td>
             Through a collaboration with
@@ -150,12 +150,12 @@
         </tr>
         <tr>
           <td>
-            <a id="activity_4">
+            <span id="activity_4" class="activity">
               <b
                 >3. Register and improve publishers’ data policies to mandate
                 deposition of COVID-19 data</b
               >
-            </a>
+            </span>
           </td>
           <td>
             FAIRsharing works within the
@@ -184,15 +184,15 @@
           </td>
         </tr>
         <tr>
-          <td colspan="3" class="extra-header-row">
+          <td class="extra-header-row" colspan="3">
             BUILD - focussing on the technology needed to enable FAIR
           </td>
         </tr>
         <tr>
           <td rowspan="2">
-            <a id="activity_5">
+            <span id="activity_5" class="activity">
               <b>4. Define and register FAIR maturity indicators and metrics</b>
-            </a>
+            </span>
           </td>
           <td>
             Through a collaboration with
@@ -239,9 +239,9 @@
         </tr>
         <tr>
           <td rowspan="2">
-            <a id="activity_6">
+            <span id="activity_6" class="activity">
               <b>5. Power FAIR assessment and evaluation tools</b>
-            </a>
+            </span>
           </td>
           <td>
             FAIRsharing content powers
@@ -282,12 +282,12 @@
 
         <tr>
           <td>
-            <a id="activity_7">
+            <span id="activity_7" class="activity">
               <b
                 >6. Contribute to research and knowledge graphs, and data
                 discovery</b
               >
-            </a>
+            </span>
           </td>
           <td>
             FAIRsharing works with OpenAIRE to interconnect its content with
@@ -318,12 +318,12 @@
 
         <tr>
           <td rowspan="2">
-            <a id="activity_8">
+            <span id="activity_8" class="activity">
               <b
                 >7. Power tools for data stewardship and data management
                 plans</b
               >
-            </a>
+            </span>
           </td>
           <td>
             FAIRsharing content powers the
@@ -358,15 +358,15 @@
         </tr>
 
         <tr>
-          <td colspan="3" class="extra-header-row">
+          <td class="extra-header-row" colspan="3">
             TRAIN - focussing on FAIR awareness and skills development
           </td>
         </tr>
         <tr>
           <td>
-            <a id="activity_9">
+            <span id="activity_9" class="activity">
               <b>8. Define FAIR competencies, skills, and terminologies</b>
-            </a>
+            </span>
           </td>
           <td>
             Through a collaboration with
@@ -398,12 +398,12 @@
         </tr>
         <tr>
           <td rowspan="2">
-            <a id="activity_10">
+            <span id="activity_10" class="activity">
               <b
                 >9. Build guidance and training material on standards, databases
                 and policies</b
               >
-            </a>
+            </span>
           </td>
           <td>
             Through a participation in the
@@ -461,7 +461,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 a {
   &:hover,
   &:focus {
@@ -494,5 +494,9 @@ table td {
   vertical-align: center;
   text-align: center !important;
   border-left: none;
+}
+
+.activity {
+  color: #27aae1;
 }
 </style>

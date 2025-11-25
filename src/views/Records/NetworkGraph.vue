@@ -271,7 +271,6 @@
 <script>
 import Graph from "graphology";
 import forceAtlas2 from "graphology-layout-forceatlas2";
-// import FA2Layout from "graphology-layout-forceatlas2/worker";
 import Sigma from "sigma";
 import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
 
@@ -318,7 +317,6 @@ export default {
       chart: null,
       cancelCurrentAnimation: null,
       sensibleSettings: null,
-      fa2Layout: null,
       highlighted: 0, // ID of currently-hovered node.
       state: {},
       selectedLengths: {
@@ -346,12 +344,6 @@ export default {
     currentRoute() {
       return this.target || this.$route.params["id"];
     },
-    // layoutRendering() {
-    //   if (this.fa2Layout === undefined || this.fa2Layout === null) {
-    //     return false;
-    //   }
-    //   return this.fa2Layout.isRunning();
-    // },
   },
   watch: {
     async currentRoute() {
@@ -378,9 +370,6 @@ export default {
         return;
       }
       container = document.getElementById("sigma-container");
-      if (_module.fa2Layout && _module.fa2Layout.isRunning()) {
-        _module.fa2Layout.kill();
-      }
       await _module.plotGraph();
     });
   },
@@ -451,7 +440,6 @@ export default {
           image: getNodeProgramImage(),
         },
       });
-      // _module.fa2Layout.start();
 
       // Attempt to highlight nodes on hover...
       renderer.on("enterNode", ({ node }) => {
@@ -526,7 +514,6 @@ export default {
       renderer.refresh();
 
       await new Promise((r) => setTimeout(r, 10000));
-      // _module.fa2Layout.stop();
       _module.buttonsActive = true;
       _module.layoutRendering = false;
     },

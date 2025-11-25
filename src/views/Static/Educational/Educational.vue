@@ -2,40 +2,36 @@
   <main :class="applyCss ? 'pa-15 mb-10' : ''">
     <v-row
       v-if="infographics.length"
-      dense
-      class="mb-10"
       :class="{ 'justify-center': $vuetify.display.xlOnly }"
+      class="mb-10"
+      dense
     >
       <v-col
         v-for="infographic in infographics"
         :key="infographic.id"
-        cols="12"
-        sm="12"
-        md="4"
-        lg="3"
-        xl="2"
         class="ma-xl-4"
+        cols="12"
+        lg="3"
+        md="4"
+        sm="12"
+        xl="2"
       >
         <v-card class="full-width">
           <v-img
             :src="`/assets/Educational/Infographic/${infographic.logo}`"
-            class="align-end"
-            contain
             aspect-ratio="1"
+            class="align-end contain"
             position="top center"
           >
             <v-card-title class="justify-center">
               <div v-if="infographic.doi" class="d-flex align-center">
                 <Icon
-                  item="DOI"
-                  height="30"
-                  wrapper-class=""
                   class="mr-2 width-35"
+                  height="30"
+                  item="DOI"
+                  wrapper-class=""
                 />
                 <a
-                  :href="infographic.url"
-                  target="_blank"
-                  class="underline-effect font-weight-medium"
                   :class="{
                     'text-body-2 ': $vuetify.display.xs,
                     'text-subtitle-1': $vuetify.display.smOnly,
@@ -44,7 +40,10 @@
                     fontSize20: $vuetify.display.lg,
                     'text-h6': $vuetify.display.xlOnly,
                   }"
+                  :href="infographic.url"
+                  class="underline-effect font-weight-medium"
                   style="word-break: initial"
+                  target="_blank"
                 >
                   {{ infographic.doi }}
                 </a>
@@ -57,7 +56,12 @@
                         size="small"
                         v-bind="props"
                       >
-                        fa fa-copy
+                        {{
+                          infographic.copyButtonStatus
+                            ? "fa-solid"
+                            : "fa-regular"
+                        }}
+                        fa-copy
                       </v-icon>
                     </span>
                   </template>
@@ -67,8 +71,8 @@
               </div>
               <h3
                 v-else-if="infographic.text"
-                style="word-break: initial"
                 class="text-grey-darken-1"
+                style="word-break: initial"
               >
                 {{ infographic.text }}
               </h3>
@@ -137,9 +141,9 @@
     </p>
     <div class="d-flex justify-center">
       <img
-        src="/assets/Educational/educational.svg"
-        alt="educational"
         :width="$vuetify.display.lgAndDown ? '70%' : '60%'"
+        alt="educational"
+        src="/assets/Educational/educational.svg"
       />
     </div>
     <p
@@ -151,17 +155,17 @@
       FAIRsharing is a web-based, searchable portal of three interlinked
       registries, containing both in-house and crowd-sourced manually curated
       descriptions of
-      <router-link to="/standards" class="underline-effect">
+      <router-link class="underline-effect" to="/standards">
         standards </router-link
       >,
-      <router-link to="/databases" class="underline-effect">
+      <router-link class="underline-effect" to="/databases">
         databases
       </router-link>
       and data
-      <router-link to="/policies" class="underline-effect">
+      <router-link class="underline-effect" to="/policies">
         policies </router-link
       >, combined with an integrated view across all three types of
-      <router-link to="/search" class="underline-effect"> resource </router-link
+      <router-link class="underline-effect" to="/search"> resource </router-link
       >. By registering your resource on FAIRsharing, you not only gain credit
       for your work, but you increase its visibility outside of your direct
       domain, so reducing the potential for unnecessary reinvention and
@@ -174,7 +178,7 @@
       ]"
     >
       However, if you still cannot find what you are looking for, please
-      <a href="mailto:contact@fairsharing.org" class="underline-effect"
+      <a class="underline-effect" href="mailto:contact@fairsharing.org"
         >email</a
       >
       us with your question and we will add it to this page.
@@ -199,9 +203,8 @@
             </h3>
             <v-expansion-panels
               v-model="selectedExpansion[title_key]"
-              hover
-              variant="accordion"
               class="my-5"
+              variant="accordion"
             >
               <v-expansion-panel
                 v-for="(child_item, child_index) in item"
@@ -222,11 +225,11 @@
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
                   <p
-                    class="ma-0"
                     :class="[
                       'mb-2 lato-font-medium lato-text-sm',
                       { 'lato-text-md': $vuetify.display.xlOnly },
                     ]"
+                    class="ma-0"
                     v-html="$sanitize(child_item.desc)"
                   />
                 </v-expansion-panel-text>
@@ -250,7 +253,7 @@
           position="top center"
         >
           <v-card-actions class="justify-end closeInfoPopup">
-            <v-btn size="x-small" fab @click="closeDialog()">
+            <v-btn size="x-small" @click="closeDialog()">
               <v-icon> fa-times </v-icon>
             </v-btn>
           </v-card-actions>
@@ -258,16 +261,16 @@
         <v-card-title class="justify-center">
           <div v-if="infographicPopup.data.doi" class="d-flex align-center">
             <Icon
-              item="DOI"
-              height="30"
-              wrapper-class=""
               class="mr-2 width-35"
+              height="30"
+              item="DOI"
+              wrapper-class=""
             />
             <a
               :href="generateDoiLink(infographicPopup.data.doi)"
-              target="_blank"
               class="underline-effect font-weight-medium"
               style="word-break: initial"
+              target="_blank"
             >
               {{ infographicPopup.data.doi }}
             </a>
@@ -280,7 +283,12 @@
                     size="small"
                     v-bind="props"
                   >
-                    fa fa-copy
+                    {{
+                      infographicPopup.data.copyButtonStatus
+                        ? "fa-solid"
+                        : "fa-regular"
+                    }}
+                    fa-copy
                   </v-icon>
                 </span>
               </template>
@@ -292,8 +300,8 @@
           </div>
           <h3
             v-else-if="infographicPopup.data.text"
-            style="word-break: initial"
             class="text-grey-darken-1"
+            style="word-break: initial"
           >
             {{ infographicPopup.data.text }}
           </h3>
@@ -306,6 +314,7 @@
 <script>
 import Icon from "@/components/Icon";
 import educationData from "@/data/EducationData.json";
+
 export default {
   name: "Educational",
   components: {
@@ -405,7 +414,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 li {
   line-height: 1.6;
 }

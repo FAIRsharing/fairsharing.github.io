@@ -2,26 +2,26 @@
   <div :class="[wrapperClass, 'd-flex justify-center']">
     <v-icon
       v-if="!Object.keys(customIcons.values).includes(item)"
-      :size="size"
       :color="color"
+      :size="size"
     >
       {{ customIcons.values[fallback].icon }}
     </v-icon>
     <v-icon
       v-else-if="customIcons.values[item].type === 'icon'"
-      :size="size"
       :color="color"
       :icon="customIcons.values[item].icon"
+      :size="size"
     >
       {{ customIcons.values[item].icon }}
     </v-icon>
     <v-img
       v-else-if="customIcons.values[item].type === 'img'"
-      class="contain"
       :class="{ 'mt-0': wrapperClass !== '' }"
       :height="height"
-      :width="height"
       :src="customIcons.values[item].icon"
+      :width="height"
+      class="contain"
     />
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
     size: { default: "10", type: String },
     fallback: { default: "undefined", type: String },
     wrapperClass: { default: "icon-container", type: String },
-    height: { default: 45, type: Number },
+    height: { default: 45, type: String || Number },
     color: { default: null, type: String },
   },
   data() {

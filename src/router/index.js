@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 import { hackSearch } from "@/router/hackSearch";
 import store from "@/store";
@@ -44,7 +44,7 @@ import {
   Terms,
   Timeline,
   User,
-  UsersList,
+  UsersList
 } from "./routes.js";
 
 /*
@@ -770,23 +770,29 @@ export async function afterEach(to) {
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to) {
+  scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
-      return {
-        selector: to.hash,
-        behavior: "smooth",
-      };
+      // Return a Promise to delay the scroll
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(
+            {
+              el: to.hash,
+              behavior: "smooth",
+            },
+            500,
+          ); // Wait 500ms (adjust based on your data loading speed)
+        });
+      });
     }
+
+    if (savedPosition) {
+      return savedPosition;
+    }
+
     return false;
   },
 });
-
-// export function scrollBehavior(to) {
-//   if (to.hash) {
-//     return { selector: to.hash };
-//   }
-//   return false;
-// }
 
 export async function beforeEach(to, from, next, store) {
   if (to.path !== "/maintenance" && store.state.introspection.maintenanceMode) {

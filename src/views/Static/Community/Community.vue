@@ -690,7 +690,7 @@ const handleScroll = () => {
   // Only run this if there is actually a hash to remove
   if (window.scrollY < 2 && window.location.hash) {
     // We use replaceState so we don't clutter the history stack
-    history.replaceState(null, null, window.location.pathname);
+    history.replaceState(history.state, null, window.location.pathname);
   }
 };
 

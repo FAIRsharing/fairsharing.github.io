@@ -97,10 +97,13 @@ export const actions = {
       // attempt to fix single fields with brackets, as per:
       // https://github.com/FAIRsharing/fairsharing.github.io/issues/2648
       Object.keys(params).forEach((key) => {
-        if (String(params[key]).includes('(') || String(params[key]).includes(')')) {
+        if (
+          String(params[key]).includes("(") ||
+          String(params[key]).includes(")")
+        ) {
           params[key] = [params[key]];
         }
-      })
+      });
       // params['q'] needs to be sanitised here.
       if ("q" in params) {
         // TODO: Is it worth preserving foreign characters as discussed here?
@@ -151,8 +154,8 @@ export const getters = {
     if (state.facets.length > 0) {
       let currentFacet = JSON.parse(
         JSON.stringify(
-          state.facets.find((facet) => facet.filterName === facetName)
-        )
+          state.facets.find((facet) => facet.filterName === facetName),
+        ),
       );
       currentFacet["values"] = currentFacet["buckets"];
       return currentFacet;

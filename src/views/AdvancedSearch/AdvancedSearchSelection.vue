@@ -3,18 +3,15 @@
     elevation="3"
     :class="[
       'mx-2 full-width d-flex flex-column',
-      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
+      $vuetify.display.mdAndUp ? responsiveClassObject : 'fullHeight',
     ]"
   >
     <AdvancedSearchButtons />
-    <div
-      v-if="getAdvancedSearchText"
-      class="searchText chips-holder ma-2"
-    >
+    <div v-if="getAdvancedSearchText" class="searchText chips-holder ma-2">
       <v-chip
         class="ma-2 mt-2 text-capitalize"
         color="accent3"
-        text-color="white"
+        variant="flat"
         label
       >
         Search Text : {{ getAdvancedSearchText }}
@@ -34,7 +31,7 @@
           class="individualChips d-flex flex-column align-center"
         >
           <div
-            class="my-2 mx-1 text-capitalize primary px-3 py-1 white--text rounded d-flex"
+            class="my-2 mx-1 text-capitalize bg-primary px-3 py-1 text-white rounded d-flex"
             style="font-size: 14px"
           >
             <span>{{ printSelectionKeys(key) }} </span>
@@ -47,9 +44,8 @@
           <v-chip
             class="operatorChip"
             color="accent"
-            text-color="accent"
-            outlined
-            small
+            variant="outlined"
+            size="small"
           >
             {{ printSelectedOperator(item) }}
           </v-chip>
@@ -57,8 +53,8 @@
       </div>
       <v-chip
         color="accent2"
+        variant="flat"
         class="parentOperatorChip text-uppercase font-weight-medium"
-        text-color="white"
       >
         {{ printOperator(getAdvancedSearchQuery["operator"]) }}
       </v-chip>
@@ -119,13 +115,12 @@ export default {
     printSelectionValues(key, value) {
       let refinedValues = "";
       if (key !== "operator") {
-        if ((value === true) || (value[0] === "true"))  {
-          return "true"
+        if (value === true || value[0] === "true") {
+          return "true";
         }
-        if ((value === false) || (value[0] === "false"))  {
-          return "false"
-        }
-        else {
+        if (value === false || value[0] === "false") {
+          return "false";
+        } else {
           refinedValues = value
             .map((item) => this.cleanString(item))
             .join(" OR ");
@@ -167,7 +162,7 @@ export default {
       const re = new RegExp(find, "g");
       return str.replace(
         re,
-        "<span class='font-weight-medium'>" + find + "</span>"
+        "<span class='font-weight-medium'>" + find + "</span>",
       );
     },
   },
@@ -187,6 +182,7 @@ export default {
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+  overflow-y: scroll;
 }
 .filters-holder-after-scroll {
   overflow-x: hidden;
@@ -205,13 +201,14 @@ export default {
 }
 .selectionWrapper {
   .parentOperatorChip {
-    width: 50%;
-    display: block;
+    //width: 50%;
+    //display: block;
+    padding: 0 22%;
     margin: 0 auto;
     text-align: center;
     //font-weight: 500;
   }
-  &:last-child {
+  &:last-of-type {
     .parentOperatorChip {
       display: none;
     }

@@ -1,7 +1,5 @@
 {
   "queryName": "searchFairsharingRecords",
   "queryParam": null,
-  "fields": [
-    "aggregations"
-  ]
+  "fields": ["aggregations"]
 }

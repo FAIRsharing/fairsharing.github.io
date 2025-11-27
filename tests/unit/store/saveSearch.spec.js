@@ -3,12 +3,11 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import SaveSearchStore from "@/store/saveSearch.js";
 
-import SaveSearchData from '../../../tests/fixtures/getSaveSearch.json'
-
+import SaveSearchData from "../../fixtures/getSaveSearch.json";
 
 describe("SaveSearch store methods", () => {
   const { actions, mutations, getters } = SaveSearchStore;
-  const returnedVal = SaveSearchData
+  const returnedVal = SaveSearchData;
 
   let state = {
     loadingStatus: false,
@@ -51,62 +50,69 @@ describe("SaveSearch store methods", () => {
   });
 
   it("can check setSaveSearchResult mutations", () => {
-    const saveSearchResult =
-     {
-       id: 207,
-       name: "Test",
-       comments: "Test",
-       url: "http://www.test.com",
-       params: {
-         operator: "_and",
-         fields: [
-           {
-             operator: "_and",
-             registry: ["policy"]
-           }
-         ]
-       },
-       creator_id: 7339,
-       created_at: "2024-06-20T10:08:02.159Z",
-       updated_at: "2024-06-20T10:08:02.159Z"
-     }
+    const saveSearchResult = {
+      id: 207,
+      name: "Test",
+      comments: "Test",
+      url: "http://www.test.com",
+      params: {
+        operator: "_and",
+        fields: [
+          {
+            operator: "_and",
+            registry: ["policy"],
+          },
+        ],
+      },
+      creator_id: 7339,
+      created_at: "2024-06-20T10:08:02.159Z",
+      updated_at: "2024-06-20T10:08:02.159Z",
+    };
 
     mutations.setSaveSearchResult(state, saveSearchResult);
     expect(state.saveSearchResult).toStrictEqual([saveSearchResult]);
   });
 
   it("can check setPolicyRecords mutations", () => {
-    const policyRecords = [{
-      id: 1,
-      name: "Policy1"
-    }];
+    const policyRecords = [
+      {
+        id: 1,
+        name: "Policy1",
+      },
+    ];
     mutations.setPolicyRecords(state, policyRecords);
     expect(state.policyRecords).toBe(policyRecords);
   });
 
   it("can check setPolicySelected mutations", () => {
-    const policySelected = [{
-      id: 1,
-      name: "Policy1"
-    }];
+    const policySelected = [
+      {
+        id: 1,
+        name: "Policy1",
+      },
+    ];
     mutations.setPolicySelected(state, policySelected);
     expect(state.policySelected).toBe(policySelected);
   });
 
   it("can check setOrganisationSelected mutations", () => {
-    const organisationSelected = [{
-      id: 1,
-      name: "Organisation1"
-    }];
+    const organisationSelected = [
+      {
+        id: 1,
+        name: "Organisation1",
+      },
+    ];
     mutations.setOrganisationSelected(state, organisationSelected);
     expect(state.organisationSelected).toBe(organisationSelected);
   });
 
   it("can check setUserSelected mutations", () => {
-    const userSelected = [{
-      id: 1,
-      name: "User1"
-    }];
+    const userSelected = [
+      {
+        id: 1,
+        name: "User1",
+      },
+    ];
     mutations.setUserSelected(state, userSelected);
     expect(state.userSelected).toBe(userSelected);
   });
@@ -125,19 +131,19 @@ describe("SaveSearch store methods", () => {
   });
 
   it("can check setLoadingStatus mutations", () => {
-    const loadingStatus = true
+    const loadingStatus = true;
     mutations.setLoadingStatus(state, loadingStatus);
     expect(state.loadingStatus).toBe(loadingStatus);
   });
 
   it("can check setSaveSearchStatus mutations", () => {
-    const saveSearchStatus = true
+    const saveSearchStatus = true;
     mutations.setSaveSearchStatus(state, saveSearchStatus);
     expect(state.saveSearchStatus).toBe(saveSearchStatus);
   });
 
   it("can check setShowStepper mutations", () => {
-    const showStepper = true
+    const showStepper = true;
     mutations.setShowStepper(state, showStepper);
     expect(state.showStepper).toBe(showStepper);
   });
@@ -147,12 +153,14 @@ describe("SaveSearch store methods", () => {
       saveSearchStepperDialog: true,
     };
     const builtData = getters.getSaveSearchStepperDialog(getSaveSearchResult);
-    expect(builtData).toStrictEqual(getSaveSearchResult["saveSearchStepperDialog"]);
+    expect(builtData).toStrictEqual(
+      getSaveSearchResult["saveSearchStepperDialog"],
+    );
   });
 
   it("can check getSaveSearchResult getters", () => {
     const getSaveSearchResult = {
-        saveSearchResult: [
+      saveSearchResult: [
         {
           id: 207,
           name: "Test",
@@ -163,14 +171,14 @@ describe("SaveSearch store methods", () => {
             fields: [
               {
                 operator: "_and",
-                registry: ["policy"]
-              }
-            ]
+                registry: ["policy"],
+              },
+            ],
           },
           creator_id: 7339,
           created_at: "2024-06-20T10:08:02.159Z",
-          updated_at: "2024-06-20T10:08:02.159Z"
-        }
+          updated_at: "2024-06-20T10:08:02.159Z",
+        },
       ],
     };
     const builtData = getters.getSaveSearchResult(getSaveSearchResult);
@@ -182,8 +190,8 @@ describe("SaveSearch store methods", () => {
       policyRecords: [
         {
           id: 1,
-          name: "Policy1"
-        }
+          name: "Policy1",
+        },
       ],
     };
     const builtData = getters.getPolicyRecords(getSaveSearchResult);
@@ -195,8 +203,8 @@ describe("SaveSearch store methods", () => {
       policySelected: [
         {
           id: 1,
-          name: "Policy1"
-        }
+          name: "Policy1",
+        },
       ],
     };
     const builtData = getters.getPolicySelected(getSaveSearchResult);
@@ -208,12 +216,14 @@ describe("SaveSearch store methods", () => {
       organisationSelected: [
         {
           id: 1,
-          name: "Organisation1"
-        }
+          name: "Organisation1",
+        },
       ],
     };
     const builtData = getters.getOrganisationSelected(getSaveSearchResult);
-    expect(builtData).toStrictEqual(getSaveSearchResult["organisationSelected"]);
+    expect(builtData).toStrictEqual(
+      getSaveSearchResult["organisationSelected"],
+    );
   });
 
   it("can check getUserSelected getters", () => {
@@ -221,8 +231,8 @@ describe("SaveSearch store methods", () => {
       userSelected: [
         {
           id: 1,
-          name: "User1"
-        }
+          name: "User1",
+        },
       ],
     };
     const builtData = getters.getUserSelected(getSaveSearchResult);
@@ -234,8 +244,8 @@ describe("SaveSearch store methods", () => {
       userSelected: [
         {
           id: 1,
-          name: "User1"
-        }
+          name: "User1",
+        },
       ],
     };
     const builtData = getters.getUserSelected(getSaveSearchResult);
@@ -265,6 +275,4 @@ describe("SaveSearch store methods", () => {
     const builtData = getters.getShowStepper(getSaveSearchResult);
     expect(builtData).toStrictEqual(getSaveSearchResult["showStepper"]);
   });
-
 });
-

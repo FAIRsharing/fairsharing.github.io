@@ -1,24 +1,22 @@
-import { createLocalVue,shallowMount } from "@vue/test-utils"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 
 import AwardsTable from "@/components/Users/Profiles/Private/ViewAwards";
 const localVue = createLocalVue();
 
+describe("ViewAwards", () => {
+  let wrapper;
 
-describe('ViewAwards', () => {
-    let wrapper;
-
-    it("can be mounted", () => {
-        wrapper = shallowMount(AwardsTable, {
-            localVue,
-            propsData: {
-                organisations: [],
-            }
-        });
-        const title = "ViewAwards";
-        expect(wrapper.vm.$options.name).toMatch(title);
-        expect(wrapper.vm.perPage).toBe(5)
+  it("can be mounted", () => {
+    wrapper = shallowMount(AwardsTable, {
+      localVue,
+      propsData: {
+        organisations: [],
+      },
     });
+    const title = "ViewAwards";
+    expect(wrapper.vm.$options.name).toMatch(title);
+    expect(wrapper.vm.perPage).toBe(5);
+  });
 
-    // No other functions exist to be tested...
-
+  // No other functions exist to be tested...
 });

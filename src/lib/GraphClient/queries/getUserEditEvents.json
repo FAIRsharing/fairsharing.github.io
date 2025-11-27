@@ -13,11 +13,7 @@
         "editType",
         {
           "queryName": "fairsharingRecord",
-          "fields": [
-            "id",
-            "name",
-            "type"
-          ]
+          "fields": ["id", "name", "type"]
         }
       ]
     }

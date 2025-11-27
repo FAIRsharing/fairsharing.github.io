@@ -2,24 +2,23 @@
   <v-card
     v-if="
       Object.keys(getField('metadata')).includes(
-        'data_processes_and_conditions') ||
-        (getField('licences') && getField('licences').length) ||
-        (getField('metadata')['data_access_condition'] &&
-          Object.keys(getField('metadata')['data_access_condition'])
-            .length) ||
-        (getField('metadata')['data_curation'] &&
-          Object.keys(getField('metadata')['data_curation']).length) ||
-        (getField('metadata')['data_deposition_condition'] &&
-          Object.keys(getField('metadata')['data_deposition_condition'])
-            .length) ||
-        (getField('metadata')['data_preservation_policy'] &&
-          Object.keys(getField('metadata')['data_preservation_policy'])
-            .length) ||
-        (getField('metadata')['certifications_and_community_badges'] &&
-          getField('metadata')['certifications_and_community_badges'].length)
+        'data_processes_and_conditions',
+      ) ||
+      (getField('licences') && getField('licences').length) ||
+      (getField('metadata')['data_access_condition'] &&
+        Object.keys(getField('metadata')['data_access_condition']).length) ||
+      (getField('metadata')['data_curation'] &&
+        Object.keys(getField('metadata')['data_curation']).length) ||
+      (getField('metadata')['data_deposition_condition'] &&
+        Object.keys(getField('metadata')['data_deposition_condition'])
+          .length) ||
+      (getField('metadata')['data_preservation_policy'] &&
+        Object.keys(getField('metadata')['data_preservation_policy']).length) ||
+      (getField('metadata')['certifications_and_community_badges'] &&
+        getField('metadata')['certifications_and_community_badges'].length)
     "
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -32,9 +31,10 @@
         v-if="
           (getField('metadata')['data_processes_and_conditions'] &&
             getField('metadata')['data_processes_and_conditions'].length) ||
-            (getField('licences').length && getField('licences')) ||
-            (getField('metadata')['certifications_and_community_badges'] &&
-              getField('metadata')['certifications_and_community_badges'].length > 0)
+          (getField('licences').length && getField('licences')) ||
+          (getField('metadata')['certifications_and_community_badges'] &&
+            getField('metadata')['certifications_and_community_badges'].length >
+              0)
         "
       >
         <!-- DataProcessAndCondition component -->
@@ -43,30 +43,24 @@
         <v-card
           v-for="(item, key, index) in generateDataConditions()"
           :key="key + '_' + index"
-          class="pa-4 mt-15 d-flex flex-column"
-          outlined
+          class="pa-4 mt-15 d-flex flex-column overflow-initial"
+          border
           color="white"
           tile
           elevation="3"
         >
-          <Icon
-            :item="item.icon"
-            size="20"
-          />
+          <Icon :item="item.icon" size="20" class="pt-2" />
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ cleanString(key) | capitalize }}
+            {{ $filters.capitalize(cleanString(key)) }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <div v-if="key === 'licences'">
-              <p
-                v-if="currentRecord.fairsharingRecord.exhaustiveLicences"
-              >
+              <p v-if="currentRecord.fairsharingRecord.exhaustiveLicences">
                 This is a complete list of licences applicable to the resource.
               </p>
-              <p
-                v-else
-              >
-                This is a subset of licences recommended by the resource or most commonly used by its users.
+              <p v-else>
+                This is a subset of licences recommended by the resource or most
+                commonly used by its users.
               </p>
             </div>
             <v-card
@@ -74,56 +68,43 @@
               :key="subItem.name + '_' + subIndex"
               class="pa-4 mt-2 d-flex flex-column v-card-hover"
               flat
-              outlined
+              border
             >
-              <div
-                v-if="subItem.url"
-              >
-                <a
-                  :href="subItem.url"
-                  target="_blank"
-                  class="underline-effect"
-                >
+              <div v-if="subItem.url">
+                <a :href="subItem.url" target="_blank" class="underline-effect">
                   {{ subItem.name }}
                 </a>
                 <span v-if="subItem.spdxLink">
-                  <a
-                    :href="subItem.spdxLink"
-                    target="_blank"
-                  >
+                  <a :href="subItem.spdxLink" target="_blank">
                     <img
                       src="/assets/icons/logo_spdx_60.png"
                       alt="Icon for SPDX (System Package Data Exchange)"
-                      style="padding-bottom: 7px; padding-left: 3px;"
-                    >
+                      style="padding-bottom: 7px; padding-left: 3px"
+                    />
                   </a>
                 </span>
               </div>
-              <div
-                v-else
-                class="d-flex flex-column"
-              >
+              <div v-else class="d-flex flex-column">
                 <span>{{ subItem.name }}</span>
                 <span
                   v-if="
                     subItem.id &&
-                      subItem.id !== 'undefined' &&
-                      getLicenceRelation(subItem.id) !== 'undefined'
+                    subItem.id !== 'undefined' &&
+                    getLicenceRelation(subItem.id) !== 'undefined'
                   "
                 >
                   relationship:
-                  <strong>({{ cleanString(getLicenceRelation(subItem.id)) }})</strong>
+                  <strong
+                    >({{ cleanString(getLicenceRelation(subItem.id)) }})</strong
+                  >
                 </span>
                 <span v-if="subItem.spdxLink">
-                  <a
-                    :href="subItem.spdxLink"
-                    target="_blank"
-                  >
+                  <a :href="subItem.spdxLink" target="_blank">
                     <img
                       src="/assets/icons/logo_spdx_60.png"
                       alt="Icon for SPDX (System Package Data Exchange)"
-                      style="padding-bottom: 7px; padding-left: 3px;"
-                    >
+                      style="padding-bottom: 7px; padding-left: 3px"
+                    />
                   </a>
                 </span>
               </div>
@@ -137,14 +118,14 @@
           (getField('metadata')['data_access_condition'] &&
             Object.keys(getField('metadata')['data_access_condition'])
               .length) ||
-            (getField('metadata')['data_curation'] &&
-              Object.keys(getField('metadata')['data_curation']).length) ||
-            (getField('metadata')['data_deposition_condition'] &&
-              Object.keys(getField('metadata')['data_deposition_condition'])
-                .length) ||
-            (getField('metadata')['data_preservation_policy'] &&
-              Object.keys(getField('metadata')['data_preservation_policy'])
-                .length)
+          (getField('metadata')['data_curation'] &&
+            Object.keys(getField('metadata')['data_curation']).length) ||
+          (getField('metadata')['data_deposition_condition'] &&
+            Object.keys(getField('metadata')['data_deposition_condition'])
+              .length) ||
+          (getField('metadata')['data_preservation_policy'] &&
+            Object.keys(getField('metadata')['data_preservation_policy'])
+              .length)
         "
       >
         <OtherDataProcesses />
@@ -155,7 +136,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
@@ -180,7 +161,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
-    ...mapState('record', ["currentRecord"])
+    ...mapState("record", ["currentRecord"]),
   },
   methods: {
     generateDataConditions: function () {
@@ -197,12 +178,12 @@ export default {
         };
         community_badges.forEach((community_badge) => {
           processedData["certifications_and_community_badges"].data.push(
-            community_badge
+            community_badge,
           );
         });
       }
 
-      // adding licenses if available
+      //adding licenses if available
       if (licences.length) {
         processedData["licences"] = {
           data: [],
@@ -216,7 +197,7 @@ export default {
     },
     getLicenceRelation(licenceId) {
       return this.getField("licenceLinks").find(
-        (obj) => obj.licence.id === licenceId
+        (obj) => obj.licence.id === licenceId,
       ).relation;
     },
   },

@@ -3,9 +3,5 @@
   "queryParam": {
     "q": null
   },
-  "fields": [
-    "id",
-    "username",
-    "email"
-  ]
+  "fields": ["id", "username", "email"]
 }

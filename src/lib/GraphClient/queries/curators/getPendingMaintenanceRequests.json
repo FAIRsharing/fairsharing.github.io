@@ -13,19 +13,13 @@
         "processingNotes",
         {
           "queryName": "lastEditor",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         }
       ]
     },
     {
       "name": "user",
-      "fields": [
-        "username",
-        "id"
-      ]
+      "fields": ["username", "id"]
     }
   ]
 }

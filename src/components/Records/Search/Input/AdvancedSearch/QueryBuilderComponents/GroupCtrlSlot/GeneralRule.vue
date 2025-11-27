@@ -1,16 +1,10 @@
-
 <template>
   <div class="d-flex ruleWrapper">
     <select
       v-model="selectedGeneralRule"
       class="query-builder-group-slot__rule-selection"
     >
-      <option
-        disabled
-        value=""
-      >
-        Select a generic rule
-      </option>
+      <option disabled value="">Select a generic rule</option>
       <option
         v-for="rule in generalQueryBuilderComponents()"
         :key="rule.identifier"
@@ -40,15 +34,15 @@ import {
   Registry,
   Subject,
   Taxonomies,
-  UserDefinedTag
+  UserDefinedTag,
 } from "../index";
 export default {
   name: "GeneralRule",
   props: {
     groupCtrl: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data: () => {
     return {
@@ -56,7 +50,7 @@ export default {
     };
   },
 
-  methods:{
+  methods: {
     generalQueryBuilderComponents() {
       return [
         {
@@ -125,7 +119,7 @@ export default {
           component: ObjectTypes,
           initialValue: () => [],
         },
-      ]
+      ];
     },
 
     /**
@@ -134,10 +128,9 @@ export default {
      * @param selectedRule - String
      */
     addNewRule(item, selectedRule) {
-      item.addRule(selectedRule)
-      this.selectedGeneralRule = ''
+      item.addRule(selectedRule);
+      this.selectedGeneralRule = "";
     },
-  }
+  },
 };
 </script>
-

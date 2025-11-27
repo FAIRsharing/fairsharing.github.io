@@ -25,10 +25,20 @@ export default {
   },
   data: () => {
     return {
-      itemList: ["User interface", "REST", "OAI-PMH", "Bioschemas", "SOAP", "FTP", "SPARQL", "Other machine-accessible method"],
+      itemList: [
+        "User interface",
+        "REST",
+        "OAI-PMH",
+        "Bioschemas",
+        "SOAP",
+        "FTP",
+        "SPARQL",
+        "Other machine-accessible method",
+      ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "A user interface is any data access point intended for human consumption (e.g. a search page or data submission form). All other options describe the type of machine-accessible processes (such as REST APIs) that programmatic tools can use to access the resource. Multiple selections will be joined with OR.",
+      toolTipText:
+        "A user interface is any data access point intended for human consumption (e.g. a search page or data submission form). All other options describe the type of machine-accessible processes (such as REST APIs) that programmatic tools can use to access the resource. Multiple selections will be joined with OR.",
     };
   },
   computed: {

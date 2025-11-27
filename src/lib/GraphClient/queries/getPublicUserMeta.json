@@ -16,7 +16,7 @@
     "thirdParty",
     "awards",
     "role",
-    {"$ref": "maintainedRecords"},
+    { "$ref": "maintainedRecords" },
     {
       "name": "organisations",
       "fields": [
@@ -25,13 +25,11 @@
         "homepage",
         {
           "queryName": "organisationTypes",
-          "fields": [
-            "name"
-          ]
+          "fields": ["name"]
         }
       ]
     },
-    {"$ref": "createdSearches"},
-    {"$ref": "savedSearches"}
+    { "$ref": "createdSearches" },
+    { "$ref": "savedSearches" }
   ]
 }

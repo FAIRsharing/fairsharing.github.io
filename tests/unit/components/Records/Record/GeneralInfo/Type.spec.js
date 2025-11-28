@@ -25,6 +25,11 @@ Record.state.currentRecord["fairsharingRecord"] = {
     domains:[],
     taxonomies:[],
     userDefinedTags:[{label:'a'}],
+    metadata: {
+      globally_unique: 'true',
+      persistent: 'false',
+      resolvable: 'false'
+    }
 };
 const $store = new Vuex.Store({
     modules: {

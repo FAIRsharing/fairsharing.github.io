@@ -23,10 +23,46 @@
     >
       {{ cleanString(getField('type')) | capitalize }}
       <a
-        v-if="gupri()"
+        v-if="currentRecord.fairsharingRecord.metadata['globally_unique'] !== undefined"
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
-        (GUPRI)
+        <v-chip
+          label
+          color="primary"
+          variant="flat"
+          x-small
+          style="margin-right: 1px; margin-bottom: 1px;"
+        >
+          Globally Unique
+        </v-chip>
+      </a>
+      <a
+        v-if="currentRecord.fairsharingRecord.metadata['globally_unique'] !== undefined"
+        href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+      >
+        <v-chip
+          label
+          color="primary"
+          variant="flat"
+          x-small
+          style="margin-right: 1px; margin-bottom: 1px;"
+        >
+          Resolvable
+        </v-chip>
+      </a>
+      <a
+        v-if="currentRecord.fairsharingRecord.metadata['globally_unique'] !== undefined"
+        href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+      >
+        <v-chip
+          label
+          color="primary"
+          variant="flat"
+          x-small
+          style="margin-right: 1px; margin-bottom: 1px;"
+        >
+          Persistent
+        </v-chip>
       </a>
     </p>
   </div>
@@ -43,21 +79,6 @@ export default {
     ...mapGetters("record", ["getField"]),
     ...mapState("editor", ["recordTooltips"]),
     ...mapState("record", ["currentRecord"]),
-  },
-  methods: {
-    // This value may be undefined in various places if the records have not
-    // had this field added.
-    gupri() {
-      try {
-        if (this.currentRecord.fairsharingRecord.metadata['gupri']) {
-          return true;
-        }
-        return false;
-      }
-      catch (e) {
-        return false;
-      }
-    }
   }
 }
 </script>

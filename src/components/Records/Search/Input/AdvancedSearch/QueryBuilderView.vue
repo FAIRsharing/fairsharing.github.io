@@ -73,6 +73,7 @@ import {
   DataVersioning,
   Domain,
   ExceptionsToDataSharing,
+  GloballyUnique,
   GroupCtrlSlot,
   GuidanceToHelpEnableCompliance,
   HasPublication,
@@ -84,11 +85,13 @@ import {
   MonitoringOfCompliance,
   ObjectTypes,
   Organisations,
+  Persistent,
   PolicyRecordType,
   RecommendsDatabase,
   RecommendsStandard,
   RecordStatus,
   Registry,
+  Resolvable,
   ResourceSustainability,
   SharingResearchSoftware,
   StandardRecordType,
@@ -405,7 +408,24 @@ export default {
             component: MonitoringOfCompliance,
             initialValue: "",
           },
-
+          {
+            identifier: "globallyUnique",
+            name: "Globally Unique",
+            component: GloballyUnique,
+            initialValue: "",
+          },
+          {
+            identifier: "persistent",
+            name: "Persistent",
+            component: Persistent,
+            initialValue: "",
+          },
+          {
+            identifier: "resolvable",
+            name: "Resolvable",
+            component: Resolvable,
+            initialValue: "",
+          }
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };

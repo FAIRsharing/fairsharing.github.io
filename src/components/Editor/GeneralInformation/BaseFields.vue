@@ -428,29 +428,7 @@
               <span class="v-label-white">Is this identifier schema <a href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas">globally unique</a> as defined by FAIRsharing?</span>
             </template>
           </v-checkbox>
-          <!-- resolvable -->
-          <v-checkbox
-            v-model="fields.metadata['resolvable']"
-            class="mr-2 "
-          >
-            <template #prepend>
-              <v-tooltip
-                bottom
-                max-width="300px"
-                class="text-justify"
-              >
-                <template #activator="{ on }">
-                  <v-icon v-on="on">
-                    fa-question-circle
-                  </v-icon>
-                </template>
-                {{ tooltips['resolvable'] }}
-              </v-tooltip>
-            </template>
-            <template #label>
-              <span class="v-label-white">Is this identifier schema <a href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas">resolvable</a> as defined by FAIRsharing?</span>
-            </template>
-          </v-checkbox>
+
           <!-- persistent -->
           <v-checkbox
             v-model="fields.metadata['persistent']"
@@ -472,6 +450,30 @@
             </template>
             <template #label>
               <span class="v-label-white">Is this identifier schema <a href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas">persistent</a> as defined by FAIRsharing?</span>
+            </template>
+          </v-checkbox>
+
+          <!-- resolvable -->
+          <v-checkbox
+            v-model="fields.metadata['resolvable']"
+            class="mr-2 "
+          >
+            <template #prepend>
+              <v-tooltip
+                bottom
+                max-width="300px"
+                class="text-justify"
+              >
+                <template #activator="{ on }">
+                  <v-icon v-on="on">
+                    fa-question-circle
+                  </v-icon>
+                </template>
+                {{ tooltips['resolvable'] }}
+              </v-tooltip>
+            </template>
+            <template #label>
+              <span class="v-label-white">Is this identifier schema <a href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas">resolvable</a> as defined by FAIRsharing?</span>
             </template>
           </v-checkbox>
         </div>

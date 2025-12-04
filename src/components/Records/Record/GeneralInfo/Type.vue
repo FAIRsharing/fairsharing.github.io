@@ -31,23 +31,9 @@
           color="primary"
           variant="flat"
           x-small
-          style="margin-right: 1px; margin-bottom: 1px;"
+          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px;"
         >
-          Globally Unique
-        </v-chip>
-      </a>
-      <a
-        v-if="currentRecord.fairsharingRecord.metadata['resolvable'] !== undefined"
-        href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
-      >
-        <v-chip
-          label
-          color="primary"
-          variant="flat"
-          x-small
-          style="margin-right: 1px; margin-bottom: 1px;"
-        >
-          Resolvable
+          GLOBALLY UNIQUE
         </v-chip>
       </a>
       <a
@@ -59,9 +45,23 @@
           color="primary"
           variant="flat"
           x-small
-          style="margin-right: 1px; margin-bottom: 1px;"
+          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px;"
         >
-          Persistent
+          PERSISTENT
+        </v-chip>
+      </a>
+      <a
+        v-if="currentRecord.fairsharingRecord.metadata['resolvable'] !== undefined"
+        href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+      >
+        <v-chip
+          label
+          color="primary"
+          variant="flat"
+          x-small
+          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px;"
+        >
+          RESOLVABLE
         </v-chip>
       </a>
     </p>

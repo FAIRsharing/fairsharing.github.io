@@ -71,3 +71,9 @@ export const MonitoringOfCompliance = () =>
   import("./OtherBooleanComponents/MonitoringOfCompliance.vue");
 export const ObjectTypes = () =>
   import("./GeneralComponents/ObjectTypes.vue");
+export const GloballyUnique = () =>
+  import("./OtherBooleanComponents/GloballyUnique.vue");
+export const Persistent = () =>
+  import("./OtherBooleanComponents/Persistent.vue");
+export const Resolvable = () =>
+  import("./OtherBooleanComponents/Resolvable.vue");

@@ -192,9 +192,9 @@
         "id": 7667 ,
         "organisation": [
           {
-            "id": 3708,
-            "name": "ICM",
-            "tooltip": "Institute of Marine Sciences"
+            "id": 4757,
+            "name": "IMF-CSIC",
+            "tooltip": "Institución Milá y Fontanals de investigación en Humanidades"
           }
         ],
         "scope": "Earth Sciences",
@@ -226,6 +226,11 @@
             "id": 3831,
             "name": "SSHOC",
             "tooltip": "Social Sciences and Humanities Open Cloud"
+          },
+          {
+            "id": 649,
+            "name": "DDI",
+            "tooltip": "Data Documentation Initiative Alliance"
           }
         ],
         "scope": "Humanities and Social Science",
@@ -247,10 +252,6 @@
           {
             "id": 614,
             "name": "Cornell University"
-          },
-          {
-            "id": 3682,
-            "name": "American Economic Association"
           }
         ],
         "scope": "Economics",
@@ -525,6 +526,10 @@
           {
             "id": 4072,
             "name": "Fraunhofer ITMP"
+          },
+          {
+            "id": 863,
+            "name": "Enveda Therapeutics"
           }
         ],
         "scope": "Knowledge graphs and Chemoinformatics",
@@ -674,12 +679,7 @@
     {
       "name": "Alex Fraser",
       "id": 10490,
-      "organisation": [
-        {
-          "id": 3112,
-          "name": "University of Oxford"
-        }
-      ],
+      "organisation": [],
       "scope": "Developmental Cognitive Neruoscience and RDM",
       "subject_area": "",
       "orcid": "0000-0001-8809-8572",
@@ -823,6 +823,10 @@
       "id": 12756,
       "organisation": [
         {
+          "id": 3112,
+          "name": "University of Oxford"
+        },
+        {
           "id": 291,
           "name": "Bodleian Library"
         }
@@ -843,6 +847,10 @@
       "name": "Jason Partridge",
       "id": 10061,
       "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        },
         {
           "id": 291,
           "name": "Bodleian Library"
@@ -946,7 +954,12 @@
     {
       "name": "Joana Paupério",
       "id": 11091,
-      "organisation": [],
+      "organisation": [
+        {
+          "id": 908,
+          "name": "European Bioinformatics Institute"
+        }
+      ],
       "scope": "Biodiversity, Genomics, ELIXIR Biodiversity Community",
       "subject_area": "life_sciences",
       "orcid": "0000-0003-2569-0768",
@@ -962,7 +975,12 @@
     {
       "name": "Gábor Erdős",
       "id": 13165,
-      "organisation": [],
+      "organisation": [
+        {
+          "id": 1909,
+          "name": "MTA-ELTE Bioinformatics Research Group"
+        }
+      ],
       "scope": "Bioinformatics, ELIXIR Intrinsically Disordered Proteins Community",
       "subject_area": "life_sciences",
       "orcid": "000-0001-6218-5192",
@@ -999,14 +1017,9 @@
     {
       "name": "Catherine Conisbee",
       "id": 13519,
-      "organisation": [
-        {
-          "id": 291,
-          "name": "Bodleian Library"
-        }
-      ],
+      "organisation": [],
       "scope": "GLAM/Digital Humanities & Research Data Management",
-      "subject_area": "physics",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0009-0005-1881-5392",
       "early_adopter" : false,
       "show_more" : false,
@@ -1023,7 +1036,8 @@
       "organisation": [
         {
           "id": 959,
-          "name": "ESRF"
+          "name": "ESRF",
+          "tooltip": "European Synchrotron Radiation Facility"
         }
       ],
       "scope": "Open Data, PaNOSC",
@@ -1051,8 +1065,12 @@
           "name": "RDA Prof. Data Stew. IG"
         },
         {
-          "id": 4821,
-          "name": "ELIXIR-NL"
+          "id": 4822,
+          "name": "ELIXIR RDM Community"
+        },
+        {
+          "id": 4823,
+          "name": "ELIXIR Netherlands"
         }
       ],
       "scope": "ELIXIR Research Data Management Community",
@@ -1070,7 +1088,12 @@
     {
       "name": "Gavin Farrell",
       "id": 13310,
-      "organisation": [],
+      "organisation": [
+        {
+          "id": 3001,
+          "name": "University of Padua"
+        }
+      ],
       "scope": "Life Science and AI, ELIXIR AI Ecosystem Focus Group",
       "subject_area": "life_sciences",
       "orcid": "0000-0001-5166-8551",
@@ -1093,7 +1116,7 @@
         }
       ],
       "scope": "Benchmarks and metrics for the Social Sciences, CESSDA",
-      "subject_area": "Software Engineering",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0000-0002-4402-9644",
       "early_adopter" : false,
       "show_more" : false,
@@ -1109,7 +1132,7 @@
       "id": 15936,
       "organisation": [],
       "scope": "Metabolomics, ELIXIR Metabolomics Community",
-      "subject_area": "chemistry_and_life_sciences",
+      "subject_area": "chemistry",
       "orcid": "0000-0001-8449-1318",
       "early_adopter" : false,
       "show_more" : false,

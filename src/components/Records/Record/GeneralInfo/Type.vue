@@ -23,7 +23,7 @@
     >
       {{ cleanString(getField('type')) | capitalize }}
       <a
-        v-if="currentRecord.fairsharingRecord.metadata['globally_unique'] !== undefined"
+        v-if="currentRecord.fairsharingRecord.metadata['globally_unique']"
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
         <v-chip
@@ -37,7 +37,7 @@
         </v-chip>
       </a>
       <a
-        v-if="currentRecord.fairsharingRecord.metadata['persistent'] !== undefined"
+        v-if="currentRecord.fairsharingRecord.metadata['persistent']"
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
         <v-chip
@@ -51,7 +51,7 @@
         </v-chip>
       </a>
       <a
-        v-if="currentRecord.fairsharingRecord.metadata['resolvable'] !== undefined"
+        v-if="currentRecord.fairsharingRecord.metadata['resolvable']"
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
         <v-chip

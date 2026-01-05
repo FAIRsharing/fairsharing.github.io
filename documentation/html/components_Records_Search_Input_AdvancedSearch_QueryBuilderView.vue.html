@@ -92,38 +92,26 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;query-builder
-    v-model="query"
-    :config="config"
-  >
+  &lt;query-builder v-model="query" :config="config">
     &lt;!-- To use the custom text instead of default text 'Operator' -->
 
     &lt;template #groupOperator="props">
       &lt;div class="query-builder-group__group-selection">
         &lt;div class="tooltip">
-          &lt;v-icon
-            small
-            class="mr-1 white--text tooltipIcon"
-          >
-            fa-question-circle
+          &lt;v-icon size="small" class="mr-1 text-white tooltipIcon">
+            fas fa-question-circle
           &lt;/v-icon>
           &lt;span class="tooltiptext" />
         &lt;/div>
         &lt;span class="query-builder-group__group-operator">
           Select an Operator to apply across all groups
         &lt;/span>
-
         &lt;select
           class="operatorSelect"
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          &lt;option
-            disabled
-            value=""
-          >
-            Select an operator
-          &lt;/option>
+          &lt;option disabled value="">Select an operator&lt;/option>
           &lt;option
             v-for="operator in props.operators"
             :key="operator.identifier"
@@ -140,7 +128,7 @@
 &lt;/template>
 
 &lt;script>
-import QueryBuilder from "query-builder-vue";
+import QueryBuilder from "query-builder-vue-3";
 import { mapGetters } from "vuex";
 
 import advancedSearch from "@/store";
@@ -153,7 +141,8 @@ import {
   CitationToRelatedPublications,
   Countries,
   DataAccessCondition,
-  DataAccessForPrePublicationReview, DataAvailabilityStatement,
+  DataAccessForPrePublicationReview,
+  DataAvailabilityStatement,
   DatabaseRecordType,
   DataCitation,
   DataContactInformation,
@@ -194,8 +183,9 @@ import {
   TimingOfDmp,
   UpdatingOfDmp,
   UserDefinedTag,
-  UsesPersistentIdentifier
+  UsesPersistentIdentifier,
 } from "./QueryBuilderComponents";
+
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder, GroupCtrlSlot },
@@ -553,6 +543,7 @@ export default {
 
   watch: {
     query(newValue) {
+      newValue = JSON.parse(JSON.stringify(newValue));
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       //Updating edit advanced search only if newValue has some data
       if (newValue["children"] &amp;&amp; newValue["children"].length) {
@@ -560,7 +551,7 @@ export default {
           if (item["children"] &amp;&amp; item["children"].length) {
             advancedSearch.commit(
               "advancedSearch/setEditAdvancedSearch",
-              newValue
+              newValue,
             );
           }
         });
@@ -602,12 +593,12 @@ export default {
       immediate: true,
     },
   },
-
 };
 &lt;/script>
 &lt;style lang="scss" scoped>
-@import "~vuetify/src/styles/settings/_variables.scss";
-@import "@/styles/queryBuilderView";
+@use "vuetify/settings";
+//@use "@/styles/queryBuilderView";
+//@use "../../../styles/queryBuilderView.scss";
 &lt;/style>
 </pre>
     </article>

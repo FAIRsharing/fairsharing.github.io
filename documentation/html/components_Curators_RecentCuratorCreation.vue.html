@@ -95,10 +95,7 @@
   &lt;v-col cols12>
     &lt;v-card class="mb-2">
       &lt;v-card-text v-if="recordsCreatedCuratorsLastWeek">
-        &lt;v-card-title
-          id="text-curator-search-3"
-          class="green white--text"
-        >
+        &lt;v-card-title id="text-curator-search-3" class="bg-green text-white">
           &lt;b> RECORDS CREATED BY CURATORS IN THE PAST WEEK &lt;/b>
           &lt;v-spacer />
           &lt;v-text-field
@@ -107,7 +104,7 @@
             color="white"
             single-line
             hide-details
-            solo
+            variant="solo"
             class="searchField"
             clearable
           />
@@ -119,18 +116,11 @@
           :search="searches"
           :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
-          &lt;template
-            v-if="recordType"
-            #item="props"
-          >
+          &lt;template v-if="recordType" #item="props">
             &lt;tr>
               &lt;td>
                 &lt;div class="d-flex align-center">
-                  &lt;v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  &lt;v-avatar v-if="props.item.type" class="mr-2" :height="40">
                     &lt;Icon
                       :item="props.item.type"
                       :height="40"
@@ -168,7 +158,7 @@ import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json"
+import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json";
 import formatDate from "@/utils/generalUtils";
 
 const client = new GraphClient();
@@ -179,15 +169,15 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
     return {
-      recordsCreatedCuratorsLastWeek:[],
+      recordsCreatedCuratorsLastWeek: [],
       searches: "",
       recordType: {},
       loading: false,
@@ -201,12 +191,13 @@ export default {
     this.loading = true;
     client.setHeader(this.user().credentials.token);
     //Fetching hidden records
-    let recentCuratorCreations = await client.executeQuery(getRecentCuratorCreations);
-    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations)
+    let recentCuratorCreations = await client.executeQuery(
+      getRecentCuratorCreations,
+    );
+    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations);
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to fetch recent curator creation records
      * @param dataCuration
@@ -234,12 +225,12 @@ export default {
 &lt;/script>
 
 &lt;style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 &lt;/style>
 </pre>

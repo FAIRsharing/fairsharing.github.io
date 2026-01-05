@@ -364,32 +364,89 @@
             >
           </template>
         </v-checkbox>
-        <v-checkbox
-          v-if="isIdentifierSchema()"
-          v-model="fields.metadata['gupri']"
-          class="mr-2"
-          color="primary"
-        >
-          <template #prepend>
-            <v-tooltip class="text-justify" location="bottom" max-width="300px">
-              <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
-              </template>
-              {{ tooltips["gupri"] }}
-            </v-tooltip>
-          </template>
-          <template #label>
-            <span class="v-label-white"
-              >Is this identifier schema a
-              <a
-                href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
-                target="_blank"
-                >GUPRI</a
+        <!-- globally_unique -->
+        <div v-if="isIdentifierSchema()" class="checkboxes">
+          <v-checkbox
+            v-model="fields.metadata['globally_unique']"
+            class="mr-2"
+            color="primary"
+          >
+            <template #prepend>
+              <v-tooltip
+                location="bottom"
+                max-width="300px"
+                class="text-justify"
               >
-              as defined by FAIRsharing?</span
-            >
-          </template>
-        </v-checkbox>
+                <template #activator="{ props }">
+                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                </template>
+                {{ tooltips["globally_unique"] }}
+              </v-tooltip>
+            </template>
+            <template #label>
+              <span class="v-label-white"
+                >Is this identifier schema
+                <a
+                  href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  >globally unique</a
+                >
+                as defined by FAIRsharing?</span
+              >
+            </template>
+          </v-checkbox>
+
+          <!-- persistent -->
+          <v-checkbox v-model="fields.metadata['persistent']" class="mr-2">
+            <template #prepend>
+              <v-tooltip
+                location="bottom"
+                max-width="300px"
+                class="text-justify"
+              >
+                <template #activator="{ props }">
+                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                </template>
+                {{ tooltips["persistent"] }}
+              </v-tooltip>
+            </template>
+            <template #label>
+              <span class="v-label-white"
+                >Is this identifier schema
+                <a
+                  href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  >persistent</a
+                >
+                as defined by FAIRsharing?</span
+              >
+            </template>
+          </v-checkbox>
+
+          <!-- resolvable -->
+          <v-checkbox v-model="fields.metadata['resolvable']" class="mr-2">
+            <template #prepend>
+              <v-tooltip
+                location="bottom"
+                max-width="300px"
+                class="text-justify"
+              >
+                <template #activator="{ props }">
+                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                </template>
+                {{ tooltips["resolvable"] }}
+              </v-tooltip>
+            </template>
+            <template #label>
+              <span class="v-label-white"
+                >Is this identifier schema
+                <a
+                  href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  >resolvable</a
+                >
+                as defined by FAIRsharing?</span
+              >
+            </template>
+          </v-checkbox>
+        </div>
       </v-col>
 
       <!-- deprecation reasons -->
@@ -578,8 +635,7 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          }
-          else {
+          } else {
             _module.fields.logo = {};
           }
           return;
@@ -647,8 +703,7 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        }
-        else {
+        } else {
           return true;
         }
       }
@@ -698,5 +753,14 @@ export default {
   &__text {
     width: 100%;
   }
+}
+.checkboxes {
+  text-align:center;
+}
+.checkboxes input{
+  margin: 0px 0px 0px 0px;
+}
+.checkboxes label{
+  margin: 0px 20px 0px 3px;
 }
 </style>

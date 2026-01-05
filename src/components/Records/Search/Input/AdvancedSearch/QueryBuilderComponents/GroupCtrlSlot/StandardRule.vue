@@ -23,7 +23,13 @@
 </template>
 
 <script>
-import { IsImplemented, StandardRecordType } from "../index";
+
+import {
+  GloballyUnique,
+  IsImplemented,
+  Persistent,
+  Resolvable,
+  StandardRecordType} from "../index";
 export default {
   name: "StandardRule",
   props: {
@@ -53,7 +59,25 @@ export default {
           component: IsImplemented,
           initialValue: "",
         },
-      ];
+        {
+          identifier: "globallyUnique",
+          name: "Globally Unique",
+          component: GloballyUnique,
+          initialValue: "",
+        },
+        {
+          identifier: "persistent",
+          name: "Persistent",
+          component: Persistent,
+          initialValue: "",
+        },
+        {
+          identifier: "resolvable",
+          name: "Resolvable",
+          component: Resolvable,
+          initialValue: "",
+        }
+      ]
     },
 
     /**

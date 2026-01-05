@@ -44,3 +44,6 @@ export { default as UpdatingOfDmp } from "./OtherBooleanComponents/UpdatingOfDmp
 export { default as GuidanceToHelpEnableCompliance } from "./OtherBooleanComponents/GuidanceToHelpEnableCompliance.vue";
 export { default as MonitoringOfCompliance } from "./OtherBooleanComponents/MonitoringOfCompliance.vue";
 export { default as AccessMethods } from "./DatabaseComponents/AccessMethods.vue";
+export { default as GloballyUnique } from "./OtherBooleanComponents/GloballyUnique.vue";
+export { default as Persistent } from "./OtherBooleanComponents/Persistent.vue";
+export { default as Resolvable } from "./OtherBooleanComponents/Resolvable.vue";

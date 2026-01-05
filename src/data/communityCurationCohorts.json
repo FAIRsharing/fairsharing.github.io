@@ -1,685 +1,685 @@
 {
   "data": [
-    {
-      "name": "Kyle Copas",
-      "id": 5832,
-      "organisation": [
-        {
-          "id": 1166,
-          "name": "GBIF",
-          "tooltip": "Global Biodiversity Information Facility"
-        }
-      ],
-      "scope": "Biodiversity",
-      "subject_area": "life_sciences",
-      "orcid": "0000-0002-6590-599X",
-      "early_adopter": true,
-      "show_more": false,
-      "twitter": "kylecopas",
-      "linkedin": "kylecopas",
-      "mastodon": "scicomm.xyz/@kylecopas",
-      "logo": "kyle_copas.jpg",
-      "year_active": ["2022", "2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Annie Elkjær Ørum-Kristensen",
-      "id": 6182,
-      "organisation": [
-        {
-          "id": 1166,
-          "name": "GBIF",
-          "tooltip": "Global Biodiversity Information Facility"
-        }
-      ],
-      "scope": "Biodiversity",
-      "subject_area": "",
-      "orcid": "0000-0002-8326-5789",
-      "early_adopter": true,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "anniekristensen",
-      "mastodon": "",
-      "logo": "annie_kristensen.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Joe Miller",
-      "id": 6118,
-      "organisation": [
-        {
-          "id": 1166,
-          "name": "GBIF",
-          "tooltip": "Global Biodiversity Information Facility"
-        }
-      ],
-      "scope": "Biodiversity",
-      "subject_area": "",
-      "orcid": "0000-0002-5788-9010",
-      "early_adopter": true,
-      "show_more": false,
-      "twitter": "acaciaJoe",
-      "linkedin": "joe-miller-biodiversity",
-      "mastodon": "",
-      "logo": "joe_miller.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Lindsey Anderson",
-      "id": 5015,
-      "organisation": [
-        {
-          "id": 2284,
-          "name": "PNNL",
-          "tooltip": "Pacific Northwest National Laboratory"
-        }
-      ],
-      "scope": "Omics",
-      "subject_area": "life_sciences",
-      "orcid": "0000-0002-8741-7823",
-      "early_adopter": true,
-      "show_more": false,
-      "twitter": "lnanderscience",
-      "linkedin": "lnanderscience",
-      "mastodon": "fediscience.org/@lnanderscience",
-      "logo": "lindseyanderson.jpg",
-      "year_active": ["2022", "2023", "2024", "2025"],
-      "active": true,
-      "curator_expert": true
-    },
-    {
-      "name": "Malin Sandström",
-      "id": 464,
-      "organisation": [
-        {
-          "id": 2675,
-          "name": "Swedish Research Council",
-          "tooltip": "Swedish Research Council"
-        }
-      ],
-      "scope": "Neuroscience",
-      "subject_area": "",
-      "orcid": "0000-0002-8464-2494",
-      "early_adopter": true,
-      "show_more": false,
-      "twitter": "msandstr",
-      "linkedin": "malinsandstrom",
-      "mastodon": "fediscience.org/@msandstr",
-      "logo": "malin.jpg",
-      "year_active": ["2022", "2023", "2025"],
-      "active": true
-    },
-    {
-      "name": "Gabriel Pelletier",
-      "id": 7670,
-      "organisation": [
-        {
-          "id": 1802,
-          "name": "McGill",
-          "tooltip": "McGill University"
-        },
-        {
-          "id": 2840,
-          "name": "TOSI",
-          "tooltip": "Tanenbaum Open Science Institute (TOSI)"
-        },
-        {
-          "id": 1896,
-          "name": "The Neuro",
-          "tooltip": "The Montreal Neurological Institute and Hospital (The Neuro)"
-        }
-      ],
-      "scope": "Neuroscience",
-      "subject_area": "",
-      "orcid": "0000-0003-3257-0545",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "neuropelletier",
-      "linkedin": "gabrielpelletier",
-      "mastodon": "mastodon.online/@neuropelletier",
-      "logo": "gabriel_pelletier.jpg",
-      "year_active": ["2022", "2023", "2024"],
-      "active": false
-    },
-    {
-      "name": "Daniel Pereira Costa",
-      "id": 7754,
-      "organisation": [
-        {
-          "id": 3699,
-          "name": "CQE",
-          "tooltip": "Centro de Química Estrutural"
-        }
-      ],
-      "scope": "Catalysis",
-      "subject_area": "",
-      "orcid": "0000-0001-7271-430X",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "daniel-costa-64a54a1a3",
-      "mastodon": "",
-      "logo": "danielpereiracosta.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Deborah Thorpe",
-      "id": 7663,
-      "organisation": [
-        {
-          "id": 3677,
-          "name": "UCC",
-          "tooltip": "University College Cork"
-        }
-      ],
-      "scope": "Humanities",
-      "subject_area": "",
-      "orcid": "0000-0002-2307-8770",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "DebsEThorpe",
-      "linkedin": "deborah-thorpe-0245a392",
-      "mastodon": "hcommons.social/@debsethorpe",
-      "logo": "deborah_thorpe.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Enrique Wulff",
-      "id": 7667,
-      "organisation": [
-        {
-          "id": 3708,
-          "name": "ICM",
-          "tooltip": "Institute of Marine Sciences"
-        }
-      ],
-      "scope": "Earth Sciences",
-      "subject_area": "",
-      "orcid": "0000-0001-8104-6147",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "enrique-wulff-01814398",
-      "mastodon": "",
-      "logo": "enrique_wulff.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Geneviève Michaud",
-      "id": 2439,
-      "organisation": [
-        {
-          "id": 2521,
-          "name": "Sciences Po"
-        },
-        {
-          "id": 1974,
-          "name": "CNRS",
-          "tooltip": "The CNRS (National Center for Scientific Research)"
-        },
-        {
-          "id": 3831,
-          "name": "SSHOC",
-          "tooltip": "Social Sciences and Humanities Open Cloud"
-        }
-      ],
-      "scope": "Humanities and Social Science",
-      "subject_area": "",
-      "orcid": "0000-0001-9288-2888",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "GenevievMichaud",
-      "linkedin": "geneviève-michaud-12223746",
-      "mastodon": "mastodon.zaclys.com/@GenevievMichaud",
-      "logo": "genevievemichaud.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Lars Vilhuber",
-      "id": 5216,
-      "organisation": [
-        {
-          "id": 614,
-          "name": "Cornell University"
-        },
-        {
-          "id": 3682,
-          "name": "American Economic Association"
-        }
-      ],
-      "scope": "Economics",
-      "subject_area": "",
-      "orcid": "0000-0001-5733-8932",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "lars-vilhuber",
-      "mastodon": "",
-      "logo": "lars_vilhuber.jpg",
-      "year_active": ["2022"],
-      "active": false
-    },
-    {
-      "name": "Guillaume Gay",
-      "id": 7729,
-      "organisation": [
-        {
-          "id": 3101,
-          "name": "University of Montpellier"
-        },
-        {
-          "id": 873,
-          "name": "EOSC-Life",
-          "tooltip": "EOSC-Life"
-        }
-      ],
-      "scope": "Microscopy",
-      "subject_area": "",
-      "orcid": "0000-0002-5444-5246",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "MorphoLg",
-      "linkedin": "guillaume-gay-492a2227",
-      "mastodon": "biologists.social/@glyg",
-      "logo": "guillaumegay.jpg",
-      "year_active": ["2022"],
-      "active": false
-    },
-    {
-      "name": "Maja Dolinar",
-      "id": 7669,
-      "organisation": [
-        {
-          "id": 3710,
-          "name": "SSRI",
-          "tooltip": "Social Sciences Research Institute"
-        }
-      ],
-      "scope": "Humanities and Social Science",
-      "subject_area": "",
-      "orcid": "0000-0002-8307-6486",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "majadolinar",
-      "mastodon": "",
-      "logo": "maja_dolinar.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Mitrea Geta",
-      "id": 7660,
-      "organisation": [
-        {
-          "id": 3676,
-          "name": "USV",
-          "tooltip": "University Stefan cel Mare of Suceava"
-        }
-      ],
-      "scope": "Humanities and Social Science",
-      "subject_area": "social_sciences_and_humanities",
-      "orcid": "0000-0002-2411-1798",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "GetaMitreaRo",
-      "linkedin": "geta-mitrea",
-      "mastodon": "",
-      "logo": "getamitrea.jpg",
-      "year_active": ["2022", "2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Sara Espinoza",
-      "id": 7751,
-      "organisation": [
-        {
-          "id": 3711,
-          "name": "DECHEMA",
-          "tooltip": "Society for Chemical Engineering and Biotechnology"
-        }
-      ],
-      "scope": "Material sciences and catalysis",
-      "subject_area": "",
-      "orcid": "0000-0002-5902-650X",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "sara-espinoza",
-      "mastodon": "",
-      "logo": "sara_espinoza.jpg",
-      "year_active": ["2022", "2023"],
-      "active": false
-    },
-    {
-      "name": "Stephen Serjeant",
-      "id": 7735,
-      "organisation": [
-        {
-          "id": 2816,
-          "name": "OU",
-          "tooltip": "The Open University"
-        },
-        {
-          "id": 3829,
-          "name": "ESCAPE",
-          "tooltip": "European Science Cluster of Astronomy & Particle physics ESFRI research infrastructures"
-        }
-      ],
-      "scope": "Physics",
-      "subject_area": "",
-      "orcid": "0000-0002-0517-7943",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "StephenSerjeant",
-      "linkedin": "stephenserjeant",
-      "mastodon": "mas.to/@stephenserjeant",
-      "logo": "stephen_serjeant.jpg",
-      "year_active": ["2022", "2023", "2024"],
-      "active": false
-    },
-    {
-      "name": "Kay Burrows",
-      "id": 8056,
-      "organisation": [
-        {
-          "id": 2467,
-          "name": "RSC",
-          "tooltip": "Royal Society of Chemistry, UK"
-        }
-      ],
-      "scope": "Policies and Chemistry",
-      "subject_area": "chemistry",
-      "orcid": "0000-0002-5485-6256",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "PotassiumBee",
-      "linkedin": "kayeburrows",
-      "mastodon": "",
-      "logo": "kay_burrows.jpg",
-      "year_active": ["2022", "2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Francis P. Crawley",
-      "id": 8318,
-      "organisation": [
-        {
-          "id": 3835,
-          "name": "GCPA",
-          "tooltip": "Good Clinical Practice Alliance - Europe (GCPA)"
-        }
-      ],
-      "scope": "Ethics",
-      "subject_area": "social_sciences_and_humanities",
-      "orcid": "0000-0002-6893-5916",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "francispcrawley",
-      "mastodon": "",
-      "logo": "francis_crawley.jpg",
-      "year_active": ["2022", "2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Debora Drucker",
-      "id": 7877,
-      "organisation": [
-        {
-          "id": 3883,
-          "name": "Embrapa",
-          "tooltip": "Brazilian Agricultural Research Corporation"
-        }
-      ],
-      "scope": "Ecology and Agriculture",
-      "subject_area": "earth_sciences",
-      "orcid": "0000-0003-4177-1322",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "deboradrucker",
-      "linkedin": "debora-drucker",
-      "mastodon": "",
-      "logo": "debora_druker.jpeg",
-      "year_active": ["2022", "2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Yuhe Liang",
-      "id": 8448,
-      "organisation": [
-        {
-          "id": 2423,
-          "name": "RCSB",
-          "tooltip": "Research Collaboratory for Structural Bioinformatics"
-        }
-      ],
-      "scope": "Structural Biology, Biochemistry, Biophysics, Crystallography and Biocuration",
-      "subject_area": "life_sciences",
-      "orcid": "0000-0002-0574-2041",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "yu-he-liang-66650033",
-      "mastodon": "",
-      "logo": "yuhen.jpg",
-      "year_active": ["2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Adam Partridge",
-      "id": 9376,
-      "organisation": [
-        {
-          "id": 4066,
-          "name": "University of Sheffield"
-        },
-        {
-          "id": 4234,
-          "name": "UK Reproducibility Network"
-        }
-      ],
-      "scope": "Training, Policies and UKRN link",
-      "subject_area": "life_sciences",
-      "orcid": "0000-0002-0133-4155",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "dampartridge",
-      "linkedin": "",
-      "mastodon": "",
-      "logo": "adam_partridge.jpg",
-      "year_active": ["2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Kelly Cobey",
-      "id": 9389,
-      "organisation": [
-        {
-          "id": 4067,
-          "name": "University of Ottawa Heart Institute"
-        }
-      ],
-      "scope": "Open science and Medicine",
-      "subject_area": "",
-      "orcid": "0000-0003-2797-1686",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "kdcobey",
-      "linkedin": "kelly-cobey-b0a83b55",
-      "mastodon": "",
-      "logo": "k_cobey.jpg",
-      "year_active": ["2023", "2024"],
-      "active": false
-    },
-    {
-      "name": "Yojana Gadiya",
-      "id": 9417,
-      "organisation": [
-        {
-          "id": 4072,
-          "name": "Fraunhofer ITMP"
-        }
-      ],
-      "scope": "Knowledge graphs and Chemoinformatics",
-      "subject_area": "chemistry",
-      "orcid": "0000-0002-7683-0452",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "YojanaGadiya",
-      "linkedin": "yojana-gadiya-477739113",
-      "mastodon": "",
-      "logo": "y_gadiya.jpg",
-      "year_active": ["2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Joy Davidson",
-      "id": 2428,
-      "organisation": [
-        {
-          "id": 4074,
-          "name": "DCC",
-          "tooltip": "Digital Curation Centre"
-        }
-      ],
-      "scope": "Research Data Management",
-      "subject_area": "multi_disciplinary",
-      "orcid": "0000-0003-3484-7675",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "jd162a",
-      "linkedin": "joy-davidson",
-      "mastodon": "",
-      "logo": "Joy-Davidson.jpg",
-      "year_active": ["2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Richard Acton",
-      "id": 9832,
-      "organisation": [
-        {
-          "id": 183,
-          "name": "Babraham Institute",
-          "tooltip": "BBSRC Babraham Institute, Cambridge"
-        }
-      ],
-      "scope": "Bioinformatics",
-      "subject_area": "",
-      "orcid": "0000-0002-2574-9611",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "",
-      "mastodon": "fosstodon.org/@RichardJActon",
-      "logo": "r_acton.png",
-      "year_active": ["2023", "2024"],
-      "active": false
-    },
-    {
-      "name": "David Tomkins",
-      "id": 5491,
-      "organisation": [
-        {
-          "id": 2281,
-          "name": "Oxford e-Research Centre"
-        }
-      ],
-      "scope": "Research Data Management",
-      "subject_area": "social_sciences_and_humanities",
-      "orcid": "0009-0000-4679-676X",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "david-tomkins-83b92534",
-      "mastodon": "",
-      "logo": "d_tomkins.jpeg",
-      "year_active": ["2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Lyndon Zass",
-      "id": 9946,
-      "organisation": [
-        {
-          "id": 3039,
-          "name": "University of Cape Town"
-        },
-        {
-          "id": 1207,
-          "name": "H3ABioNet"
-        }
-      ],
-      "scope": "Research Data Management and Omics",
-      "subject_area": "life_sciences",
-      "orcid": "0000-0001-8862-1706",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "lj_zass",
-      "linkedin": "lyndon-zass-10b731145",
-      "mastodon": "",
-      "logo": "l_zass.png",
-      "year_active": ["2023", "2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Christian Bonatto Minella",
-      "id": 9795,
-      "organisation": [
-        {
-          "id": 1020,
-          "name": "FIZ Karlsruhe"
-        }
-      ],
-      "scope": "Chemistry",
-      "subject_area": "chemistry",
-      "orcid": "0000-0001-7696-7662",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "",
-      "linkedin": "christian-bonatto-minella-780b7710",
-      "mastodon": "",
-      "logo": "christian_bonatto.jpg",
-      "year_active": ["2024", "2025"],
-      "active": true
-    },
-    {
-      "name": "Priyadarshini Thirunavukkarasu",
-      "id": 10145,
-      "organisation": [
-        {
-          "id": 3573,
-          "name": "University of Basel "
-        }
-      ],
-      "scope": "Human genetics",
-      "subject_area": "",
-      "orcid": "0000-0002-3528-7721",
-      "early_adopter": false,
-      "show_more": false,
-      "twitter": "priya__arasu",
-      "linkedin": "priyadarshini-thirunavukkarasu-53107a25",
-      "mastodon": "",
-      "logo": "priyadarshini_large.jpg",
-      "year_active": ["2024"],
-      "active": false
-    },
+      {
+        "name": "Kyle Copas",
+        "id": 5832,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
+        "scope": "Biodiversity",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-6590-599X",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "kylecopas",
+        "linkedin" : "kylecopas",
+        "mastodon" : "scicomm.xyz/@kylecopas",
+        "logo": "kyle_copas.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Annie Elkjær Ørum-Kristensen",
+        "id": 6182,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
+        "scope": "Biodiversity",
+        "subject_area": "",
+        "orcid": "0000-0002-8326-5789",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "anniekristensen",
+        "mastodon" : "",
+        "logo": "annie_kristensen.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Joe Miller",
+        "id": 6118,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
+        "scope": "Biodiversity",
+        "subject_area": "",
+        "orcid": "0000-0002-5788-9010",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "acaciaJoe",
+        "linkedin" : "joe-miller-biodiversity",
+        "mastodon" : "",
+        "logo": "joe_miller.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Lindsey Anderson",
+        "id": 5015,
+        "organisation": [
+          {
+            "id": 2284,
+            "name": "PNNL",
+            "tooltip": "Pacific Northwest National Laboratory"
+          }
+        ],
+        "scope": "Omics",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-8741-7823",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "lnanderscience",
+        "linkedin" : "lnanderscience",
+        "mastodon" : "fediscience.org/@lnanderscience",
+        "logo": "lindseyanderson.jpg",
+        "year_active": ["2022", "2023", "2024", "2025", "2026"],
+        "active": true,
+        "curator_expert" : true
+      },
+      {
+        "name": "Malin Sandström",
+        "id": 464,
+        "organisation": [
+          {
+            "id": 2675,
+            "name": "Swedish Research Council",
+            "tooltip": "Swedish Research Council"
+          }
+        ],
+        "scope": "Neuroscience",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-8464-2494",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "msandstr",
+        "linkedin" : "malinsandstrom",
+        "mastodon" : "fediscience.org/@msandstr",
+        "logo": "malin.jpg",
+        "year_active": ["2022", "2023", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Gabriel Pelletier",
+        "id": 7670,
+        "organisation": [
+          {
+            "id": 1802,
+            "name": "McGill",
+            "tooltip": "McGill University"
+          },
+          {
+            "id": 2840,
+            "name": "TOSI",
+            "tooltip": "Tanenbaum Open Science Institute (TOSI)"
+          },
+          {
+            "id": 1896,
+            "name": "The Neuro",
+            "tooltip": "The Montreal Neurological Institute and Hospital (The Neuro)"
+          }
+        ],
+        "scope": "Neuroscience",
+        "subject_area": "",
+        "orcid": "0000-0003-3257-0545",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "neuropelletier",
+        "linkedin" : "gabrielpelletier",
+        "mastodon" : "mastodon.online/@neuropelletier",
+        "logo": "gabriel_pelletier.jpg",
+        "year_active": ["2022", "2023", "2024"],
+        "active": false
+      },
+      {
+        "name": "Daniel Pereira Costa",
+        "id": 7754 ,
+        "organisation": [
+          {
+            "id": 3699,
+            "name": "CQE",
+            "tooltip": "Centro de Química Estrutural"
+          }
+        ],
+        "scope": "Catalysis",
+        "subject_area": "",
+        "orcid": "0000-0001-7271-430X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "daniel-costa-64a54a1a3",
+        "mastodon" : "",
+        "logo": "danielpereiracosta.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Deborah Thorpe",
+        "id": 7663 ,
+        "organisation": [
+          {
+            "id": 3677,
+            "name": "UCC",
+            "tooltip": "University College Cork"
+          }
+        ],
+        "scope": "Humanities",
+        "subject_area": "",
+        "orcid": "0000-0002-2307-8770",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "DebsEThorpe",
+        "linkedin" : "deborah-thorpe-0245a392",
+        "mastodon" : "hcommons.social/@debsethorpe",
+        "logo": "deborah_thorpe.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Enrique Wulff",
+        "id": 7667 ,
+        "organisation": [
+          {
+            "id": 4757,
+            "name": "IMF-CSIC",
+            "tooltip": "Institución Milá y Fontanals de investigación en Humanidades"
+          }
+        ],
+        "scope": "Earth Sciences",
+        "subject_area": "",
+        "orcid": "0000-0001-8104-6147",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "enrique-wulff-01814398",
+        "mastodon" : "",
+        "logo": "enrique_wulff.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Geneviève Michaud",
+        "id": 2439 ,
+        "organisation": [
+          {
+            "id": 2521,
+            "name": "Sciences Po"
+          },
+          {
+            "id": 1974,
+            "name": "CNRS",
+            "tooltip": "The CNRS (National Center for Scientific Research)"
+          },
+          {
+            "id": 3831,
+            "name": "SSHOC",
+            "tooltip": "Social Sciences and Humanities Open Cloud"
+          },
+          {
+            "id": 649,
+            "name": "DDI",
+            "tooltip": "Data Documentation Initiative Alliance"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "subject_area": "",
+        "orcid": "0000-0001-9288-2888",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "GenevievMichaud",
+        "linkedin" : "geneviève-michaud-12223746",
+        "mastodon" : "mastodon.zaclys.com/@GenevievMichaud",
+        "logo": "genevievemichaud.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Lars Vilhuber",
+        "id": 5216 ,
+        "organisation": [
+          {
+            "id": 614,
+            "name": "Cornell University"
+          }
+        ],
+        "scope": "Economics",
+        "subject_area": "",
+        "orcid": "0000-0001-5733-8932",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "lars-vilhuber",
+        "mastodon" : "",
+        "logo": "lars_vilhuber.jpg",
+        "year_active": ["2022"],
+        "active": false
+      },
+      {
+        "name": "Guillaume Gay",
+        "id": 7729 ,
+        "organisation": [
+          {
+            "id": 3101,
+            "name": "University of Montpellier"
+          },
+          {
+            "id": 873,
+            "name": "EOSC-Life",
+            "tooltip": "EOSC-Life"
+          }
+        ],
+        "scope": "Microscopy",
+        "subject_area": "",
+        "orcid": "0000-0002-5444-5246",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "MorphoLg",
+        "linkedin" : "guillaume-gay-492a2227",
+        "mastodon" : "biologists.social/@glyg",
+        "logo": "guillaumegay.jpg",
+        "year_active": ["2022"],
+        "active": false
+      },
+      {
+        "name": "Maja Dolinar",
+        "id": 7669 ,
+        "organisation": [
+          {
+            "id": 3710,
+            "name": "SSRI",
+            "tooltip": "Social Sciences Research Institute"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "subject_area": "",
+        "orcid": "0000-0002-8307-6486",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "majadolinar",
+        "mastodon" : "",
+        "logo": "maja_dolinar.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Mitrea Geta",
+        "id": 7660 ,
+        "organisation": [
+          {
+            "id": 3676,
+            "name": "USV",
+            "tooltip": "University Stefan cel Mare of Suceava"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "subject_area": "social_sciences_and_humanities",
+        "orcid": "0000-0002-2411-1798",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "GetaMitreaRo",
+        "linkedin" : "geta-mitrea",
+        "mastodon" : "",
+        "logo": "getamitrea.jpg",
+        "year_active": ["2022", "2023", "2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Sara Espinoza",
+        "id": 7751 ,
+        "organisation": [
+          {
+            "id": 3711,
+            "name": "DECHEMA",
+            "tooltip": "Society for Chemical Engineering and Biotechnology"
+          }
+        ],
+        "scope": "Material sciences and catalysis",
+        "subject_area": "",
+        "orcid": "0000-0002-5902-650X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "sara-espinoza",
+        "mastodon" : "",
+        "logo": "sara_espinoza.jpg",
+        "year_active": ["2022", "2023"],
+        "active": false
+      },
+      {
+        "name": "Stephen Serjeant",
+        "id": 7735,
+        "organisation": [
+          {
+            "id": 2816,
+            "name": "OU",
+            "tooltip": "The Open University"
+          },
+          {
+            "id": 3829,
+            "name": "ESCAPE",
+            "tooltip": "European Science Cluster of Astronomy & Particle physics ESFRI research infrastructures"
+          }
+        ],
+        "scope": "Physics",
+        "subject_area": "",
+        "orcid": "0000-0002-0517-7943",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "StephenSerjeant",
+        "linkedin" : "stephenserjeant",
+        "mastodon" : "mas.to/@stephenserjeant",
+        "logo": "stephen_serjeant.jpg",
+        "year_active": ["2022", "2023", "2024"],
+        "active": false
+      },
+      {
+        "name": "Kay Burrows",
+        "id": 8056,
+        "organisation": [
+          {
+            "id": 2467,
+            "name": "RSC",
+            "tooltip": "Royal Society of Chemistry, UK"
+          }
+        ],
+        "scope": "Policies and Chemistry",
+        "subject_area": "chemistry",
+        "orcid": "0000-0002-5485-6256",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "PotassiumBee",
+        "linkedin" : "kayeburrows",
+        "mastodon" : "",
+        "logo": "kay_burrows.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Francis P. Crawley",
+        "id": 8318,
+        "organisation": [
+          {
+            "id": 3835,
+            "name": "GCPA",
+            "tooltip": "Good Clinical Practice Alliance - Europe (GCPA)"
+          }
+        ],
+        "scope": "Ethics",
+        "subject_area": "social_sciences_and_humanities",
+        "orcid": "0000-0002-6893-5916",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "francispcrawley",
+        "mastodon" : "",
+        "logo": "francis_crawley.jpg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Debora Drucker",
+        "id": 7877,
+        "organisation": [
+          {
+            "id": 3883,
+            "name": "Embrapa",
+            "tooltip": "Brazilian Agricultural Research Corporation"
+          }
+        ],
+        "scope": "Ecology and Agriculture",
+        "subject_area": "earth_sciences",
+        "orcid": "0000-0003-4177-1322",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "deboradrucker",
+        "linkedin" : "debora-drucker",
+        "mastodon" : "",
+        "logo": "debora_druker.jpeg",
+        "year_active": ["2022", "2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Yuhe Liang",
+        "id": 8448,
+        "organisation": [
+          {
+            "id": 2423,
+            "name": "RCSB",
+            "tooltip": "Research Collaboratory for Structural Bioinformatics"
+          }
+        ],
+        "scope": "Structural Biology, Biochemistry, Biophysics, Crystallography and Biocuration",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-0574-2041",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "yu-he-liang-66650033",
+        "mastodon" : "",
+        "logo": "yuhen.jpg",
+        "year_active": ["2023", "2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Adam Partridge",
+        "id": 9376,
+        "organisation": [
+          {
+            "id": 4066,
+            "name": "University of Sheffield"
+          },
+          {
+            "id": 4234,
+            "name": "UK Reproducibility Network"
+          }
+        ],
+        "scope": "Brain Stimulation and Open Research",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0002-0133-4155",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "dampartridge",
+        "linkedin" : "",
+        "mastodon" : "",
+        "logo": "adam_partridge.jpg",
+        "year_active": ["2023", "2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Kelly Cobey",
+        "id": 9389,
+        "organisation": [
+          {
+            "id": 4067,
+            "name": "University of Ottawa Heart Institute"
+          }
+        ],
+        "scope": "Open science and Medicine",
+        "subject_area": "",
+        "orcid": "0000-0003-2797-1686",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "kdcobey",
+        "linkedin" : "kelly-cobey-b0a83b55",
+        "mastodon" : "",
+        "logo": "k_cobey.jpg",
+        "year_active": ["2023", "2024"],
+        "active": false
+      },
+      {
+        "name": "Yojana Gadiya",
+        "id": 9417,
+        "organisation": [
+          {
+            "id": 4072,
+            "name": "Fraunhofer ITMP"
+          },
+          {
+            "id": 863,
+            "name": "Enveda Therapeutics"
+          }
+        ],
+        "scope": "Knowledge graphs and Chemoinformatics",
+        "subject_area": "chemistry",
+        "orcid": "0000-0002-7683-0452",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "YojanaGadiya",
+        "linkedin" : "yojana-gadiya-477739113",
+        "mastodon" : "",
+        "logo": "y_gadiya.jpg",
+        "year_active": ["2023", "2024", "2025"],
+        "active": true
+      },
+      {
+        "name": "Joy Davidson",
+        "id": 2428,
+        "organisation": [
+          {
+            "id": 4074,
+            "name": "DCC",
+            "tooltip": "Digital Curation Centre"
+          }
+        ],
+        "scope": "Research Data Management",
+        "subject_area": "multi_disciplinary",
+        "orcid": "0000-0003-3484-7675",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "jd162a",
+        "linkedin" : "joy-davidson",
+        "mastodon" : "",
+        "logo": "Joy-Davidson.jpg",
+        "year_active": ["2023", "2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Richard Acton",
+        "id": 9832,
+        "organisation": [
+          {
+            "id": 183,
+            "name": "Babraham Institute",
+            "tooltip": "BBSRC Babraham Institute, Cambridge"
+          }
+        ],
+        "scope": "Bioinformatics",
+        "subject_area": "",
+        "orcid": "0000-0002-2574-9611",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "mastodon" : "fosstodon.org/@RichardJActon",
+        "logo": "r_acton.png",
+        "year_active": ["2023", "2024"],
+        "active": false
+      },
+      {
+        "name": "David Tomkins",
+        "id": 5491,
+        "organisation": [
+          {
+            "id": 2281,
+            "name": "Oxford e-Research Centre"
+          }
+        ],
+        "scope": "Research Data Management",
+        "subject_area": "social_sciences_and_humanities",
+        "orcid": "0009-0000-4679-676X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "david-tomkins-83b92534",
+        "mastodon" : "",
+        "logo": "d_tomkins.jpeg",
+        "year_active": ["2023", "2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Lyndon Zass",
+        "id": 9946,
+        "organisation": [
+          {
+            "id": 3039,
+            "name": "University of Cape Town"
+          },
+          {
+            "id": 1207,
+            "name": "H3ABioNet"
+          }
+        ],
+        "scope": "Research Data Management and Omics",
+        "subject_area": "life_sciences",
+        "orcid": "0000-0001-8862-1706",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "lj_zass",
+        "linkedin" : "lyndon-zass-10b731145",
+        "mastodon" : "",
+        "logo": "l_zass.png",
+        "year_active": ["2023", "2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Christian Bonatto Minella",
+        "id": 9795,
+        "organisation": [
+          {
+            "id": 1020,
+            "name": "FIZ Karlsruhe"
+          }
+        ],
+        "scope": "Chemistry, Nanosafety and Humanities",
+        "subject_area": "chemistry",
+        "orcid": "0000-0001-7696-7662",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "christian-bonatto-minella-780b7710",
+        "mastodon" : "",
+        "logo": "christian_bonatto.jpg",
+        "year_active": ["2024", "2025", "2026"],
+        "active": true
+      },
+      {
+        "name": "Priyadarshini Thirunavukkarasu",
+        "id": 10145,
+        "organisation": [
+          {
+            "id": 3573,
+            "name": "University of Basel "
+          }
+        ],
+        "scope": "Human genetics",
+        "subject_area": "",
+        "orcid": "0000-0002-3528-7721",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "priya__arasu",
+        "linkedin" : "priyadarshini-thirunavukkarasu-53107a25",
+        "mastodon" : "",
+        "logo": "priyadarshini_large.jpg",
+        "year_active": ["2024"],
+        "active": false
+      },
     {
       "name": "Alex Fraser",
       "id": 10490,
-      "organisation": [
-        {
-          "id": 3112,
-          "name": "University of Oxford"
-        }
-      ],
+      "organisation": [],
       "scope": "Developmental Cognitive Neruoscience and RDM",
       "subject_area": "",
       "orcid": "0000-0001-8809-8572",
@@ -689,7 +689,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "alex_fraser.jpg",
-      "year_active": ["2024"],
+      "year_active": ["2025", "2026"],
       "active": false
     },
     {
@@ -731,7 +731,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "tim_gamble_turner.jpg",
-      "year_active": ["2024", "2025"],
+      "year_active": ["2024", "2025", "2026"],
       "active": true
     },
     {
@@ -752,7 +752,7 @@
       "linkedin": "hugh-shanahan-340b343/",
       "mastodon": "mastodon.ie/@HughShanahan",
       "logo": "hugh_shanahan.jpeg",
-      "year_active": ["2024", "2025"],
+      "year_active": ["2024", "2025", "2026"],
       "active": true
     },
     {
@@ -815,13 +815,17 @@
       "linkedin" : "",
       "mastodon" : "digipres.club/@bethknazook",
       "logo": "beth_knazook.jpg",
-      "year_active": ["2024", "2025"],
+      "year_active": ["2024", "2025", "2026"],
       "active": true
     },
     {
       "name": "Mark McKerracher",
       "id": 12756,
       "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        },
         {
           "id": 291,
           "name": "Bodleian Library"
@@ -836,13 +840,17 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "mark_mckerracher.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
       "name": "Jason Partridge",
       "id": 10061,
       "organisation": [
+        {
+          "id": 3112,
+          "name": "University of Oxford"
+        },
         {
           "id": 291,
           "name": "Bodleian Library"
@@ -857,7 +865,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "jason_partridge.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -869,7 +877,7 @@
           "name": "Observatoire de Paris"
         }
       ],
-      "scope": "Planetary sciences and heliophysics",
+      "scope": "Astronomy, Planetary sciences and heliophysics, ESCAPE",
       "subject_area": "physics",
       "orcid": "0000-0001-7915-5571",
       "early_adopter": false,
@@ -878,7 +886,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "baptiste_cecconi.png",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -890,7 +898,7 @@
           "name": "Bodleian Library"
         }
       ],
-      "scope": "Research Data Management",
+      "scope": "Clinical Trials and Research Data Management",
       "subject_area": "multi_disciplinary",
       "orcid": "0000-0003-4975-5773",
       "early_adopter": false,
@@ -899,7 +907,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "alexandra_rooney.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -940,13 +948,18 @@
       "linkedin" : "in/romain-david-ph-d-77181b32/",
       "mastodon" : "mastouille.fr/@RomainD",
       "logo": "david_romain.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
       "name": "Joana Paupério",
       "id": 11091,
-      "organisation": [],
+      "organisation": [
+        {
+          "id": 908,
+          "name": "European Bioinformatics Institute"
+        }
+      ],
       "scope": "Biodiversity, Genomics, ELIXIR Biodiversity Community",
       "subject_area": "life_sciences",
       "orcid": "0000-0003-2569-0768",
@@ -956,13 +969,18 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "joana_pauperio.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
       "name": "Gábor Erdős",
       "id": 13165,
-      "organisation": [],
+      "organisation": [
+        {
+          "id": 1909,
+          "name": "MTA-ELTE Bioinformatics Research Group"
+        }
+      ],
       "scope": "Bioinformatics, ELIXIR Intrinsically Disordered Proteins Community",
       "subject_area": "life_sciences",
       "orcid": "000-0001-6218-5192",
@@ -972,7 +990,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "gabor_erdos.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -993,7 +1011,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "federico_bianchini.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1005,8 +1023,8 @@
           "name": "Bodleian Library"
         }
       ],
-      "scope": "ELIXIR Research Data Management Community",
-      "subject_area": "physics",
+      "scope": "GLAM/Digital Humanities & Research Data Management",
+      "subject_area": "social_sciences_and_humanities",
       "orcid": "0009-0005-1881-5392",
       "early_adopter": false,
       "show_more": false,
@@ -1014,7 +1032,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "catherine_conisbee.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1023,10 +1041,11 @@
       "organisation": [
         {
           "id": 959,
-          "name": "ESRF"
+          "name": "ESRF",
+          "tooltip": "European Synchrotron Radiation Facility"
         }
       ],
-      "scope": "Repository for Digital Objects",
+      "scope": "Open Data, PaNOSC",
       "subject_area": "physics",
       "orcid": "0000-0002-9909-1074",
       "early_adopter": false,
@@ -1035,7 +1054,7 @@
       "linkedin": "",
       "mastodon": "",
       "logo": "rduyme.png",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1051,11 +1070,15 @@
           "name": "RDA Prof. Data Stew. IG"
         },
         {
-          "id": 4821,
-          "name": "ELIXIR-NL"
+          "id": 4822,
+          "name": "ELIXIR RDM Community"
+        },
+        {
+          "id": 4923,
+          "name": "ELIXIR Netherlands"
         }
       ],
-      "scope": "Data Stewardship",
+      "scope": "ELIXIR Research Data Management Community",
       "subject_area": "multi_disciplinary",
       "orcid": "0000-0001-9114-2896",
       "early_adopter": false,
@@ -1064,7 +1087,85 @@
       "linkedin": "in/mijke-jetten-21336917",
       "mastodon": "",
       "logo": "mijke.jetten.png",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
+      "active": true
+    },
+    {
+      "name": "Gavin Farrell",
+      "id": 13310,
+      "organisation": [
+        {
+          "id": 3001,
+          "name": "University of Padua"
+        }
+      ],
+      "scope": "Life Science and AI, ELIXIR AI Ecosystem Focus Group",
+      "subject_area": "life_sciences",
+      "orcid": "0000-0001-5166-8551",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "gavin_farrell.jpg",
+      "year_active": ["2026"],
+      "active": true
+    },
+    {
+      "name": "John Shepherdson",
+      "id": 15990,
+      "organisation": [
+        {
+          "id": 602,
+          "name":  "Consortium of European Social Science Data Archives"
+        }
+      ],
+      "scope": "Benchmarks and metrics for the Social Sciences, CESSDA",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-4402-9644",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "john_shepherdson.jpg",
+      "year_active": ["2026"],
+      "active": true
+    },
+    {
+      "name":  "Denise Slenter",
+      "id": 15936,
+      "organisation": [],
+      "scope": "Metabolomics, ELIXIR Metabolomics Community",
+      "subject_area": "chemistry",
+      "orcid": "0000-0001-8449-1318",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "logo": "denise_slenter.jpg",
+      "year_active": ["2026"],
+      "active": true
+    },
+    {
+      "name":  "Iulianna van der Lek",
+      "id": 15392,
+      "organisation": [
+        {
+          "id": 566,
+          "name":  "CLARIN ERIC"
+        }
+      ],
+      "scope": "Linguistics, CLARIN",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-0736-0311",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "year_active": ["2026"],
       "active": true
     }
   ],

@@ -26,8 +26,8 @@
             <v-card-title class="justify-center">
               <div v-if="infographic.doi" class="d-flex align-center">
                 <Icon
+                  :height="30"
                   class="mr-2 width-35"
-                  height="30"
                   item="DOI"
                   wrapper-class=""
                 />
@@ -261,8 +261,8 @@
         <v-card-title class="justify-center">
           <div v-if="infographicPopup.data.doi" class="d-flex align-center">
             <Icon
+              :height="30"
               class="mr-2 width-35"
-              height="30"
               item="DOI"
               wrapper-class=""
             />

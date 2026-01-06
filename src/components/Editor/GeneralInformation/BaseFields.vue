@@ -352,7 +352,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
               </template>
               {{ tooltips["internal_identifiers"] }}
             </v-tooltip>
@@ -373,9 +373,9 @@
           >
             <template #prepend>
               <v-tooltip
+                class="text-justify"
                 location="bottom"
                 max-width="300px"
-                class="text-justify"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle </v-icon>
@@ -399,9 +399,9 @@
           <v-checkbox v-model="fields.metadata['persistent']" class="mr-2">
             <template #prepend>
               <v-tooltip
+                class="text-justify"
                 location="bottom"
                 max-width="300px"
-                class="text-justify"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle </v-icon>
@@ -425,9 +425,9 @@
           <v-checkbox v-model="fields.metadata['resolvable']" class="mr-2">
             <template #prepend>
               <v-tooltip
+                class="text-justify"
                 location="bottom"
                 max-width="300px"
-                class="text-justify"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle </v-icon>
@@ -635,7 +635,8 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          } else {
+          }
+          else {
             _module.fields.logo = {};
           }
           return;
@@ -703,7 +704,8 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        } else {
+        }
+        else {
           return true;
         }
       }
@@ -755,12 +757,12 @@ export default {
   }
 }
 .checkboxes {
-  text-align:center;
+  text-align: center;
 }
-.checkboxes input{
+.checkboxes input {
   margin: 0px 0px 0px 0px;
 }
-.checkboxes label{
+.checkboxes label {
   margin: 0px 20px 0px 3px;
 }
 </style>

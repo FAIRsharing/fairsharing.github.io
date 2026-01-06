@@ -10,11 +10,11 @@
       <!-- forms -->
       <v-row justify="center">
         <v-col
+          :lg="!popUp ? '8' : '12'"
+          :md="!popUp ? '8' : '12'"
+          :xl="!popUp ? '5' : '12'"
           cols="12"
           sm="12"
-          :md="!popUp ? '8' : '12'"
-          :lg="!popUp ? '8' : '12'"
-          :xl="!popUp ? '5' : '12'"
         >
           <v-card :flat="popUp">
             <v-card-title
@@ -58,14 +58,14 @@
                   :key="'provider_' + providerIndex"
                 >
                   <v-btn
-                    width="250px"
                     :class="provider.color"
-                    class="text-left"
                     :href="provider.callback + getCurrentLocation()"
+                    class="text-left"
                     elevation="3"
+                    width="250px"
                   >
                     <v-layout width="100%">
-                      <v-icon start class="mr-5">
+                      <v-icon class="mr-5" start>
                         {{ "fab fa-" + provider.name.toLowerCase() }}
                       </v-icon>
                       <v-layout>with {{ provider.name }}</v-layout>
@@ -81,10 +81,10 @@
                 <!-- account -->
                 <v-text-field
                   v-model="loginData.name"
+                  :rules="[rules.isRequired()]"
                   label="Username or email"
                   required
                   variant="outlined"
-                  :rules="[rules.isRequired()]"
                   @keyup.enter="logUser()"
                 />
 
@@ -92,12 +92,13 @@
                 <v-text-field
                   v-model="loginData.password"
                   :append-inner-icon="show1 ? 'fas fa-eye' : 'fas fa-eye-slash'"
+                  :rules="[rules.isRequired()]"
                   :type="show1 ? 'text' : 'password'"
-                  label="Password"
+                  autocomplete="off"
                   counter
+                  label="Password"
                   required
                   variant="outlined"
-                  :rules="[rules.isRequired()]"
                   @click:append-inner="show1 = !show1"
                   @keyup.enter="logUser()"
                 />
@@ -142,8 +143,8 @@
 
                 <v-card-actions class="mt-2 justify-center">
                   <v-btn
-                    class="px-4 bg-primary"
                     :disabled="!formValid"
+                    class="px-4 bg-primary"
                     elevation="2"
                     @click="logUser()"
                   >
@@ -237,7 +238,8 @@ export default {
         if (_module.messages().login.message === confirmationError) {
           _module.resendButton = true;
         }
-      } else {
+      }
+      else {
         const goTo = _module.$route.query.goTo;
         let target = {};
         if (_module.redirect) {
@@ -264,12 +266,14 @@ export default {
                 path: url[0],
                 query: target,
               });
-            } else {
+            }
+            else {
               _module.$router.push({
                 path: goTo,
               });
             }
-          } else {
+          }
+          else {
             _module.$router.push({
               path: "/accounts/profile",
             });
@@ -295,7 +299,8 @@ export default {
       let origin;
       if (params.length > 0) {
         origin = encodeURI(`${loc}`);
-      } else {
+      }
+      else {
         origin = encodeURI(`${loc}?${query}`);
       }
       return `?origin=${origin}`;

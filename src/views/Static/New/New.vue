@@ -7,8 +7,8 @@
       <p style="font-size: 1.2rem">
         The
         <a
-          href="https://fairsharing.org/communities#governance"
           class="underline-effect"
+          href="/communities#governance"
           target="blank"
         >
           FAIRsharing Team</a
@@ -20,16 +20,16 @@
         records and help us keep your standard, database or policy description
         up to date. If we already describe your resource,
         <a
+          class="underline-effect"
           href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record"
           target="_blank"
-          class="underline-effect"
           >claim</a
         >
         and then
         <a
+          class="underline-effect"
           href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record"
           target="_blank"
-          class="underline-effect"
           >update</a
         >
         it as necessary. If your resource is missing, please keep reading to
@@ -43,23 +43,23 @@
             v-for="(item, index) in newData.firstBlock.items"
             :key="item + '_' + index"
             cols="12"
-            sm="12"
-            md="4"
             lg="3"
+            md="4"
+            sm="12"
           >
             <v-card
               class="mx-auto block-category__card"
-              max-width="350"
               height="100%"
+              max-width="350"
             >
               <div
                 class="text-white d-flex flex-column justify-center block-category__card__gradiant"
               >
-                <div style="height: 136px" class="d-flex justify-center">
+                <div class="d-flex justify-center" style="height: 136px">
                   <v-img
+                    :src="customIcons.values[item.icon].icon"
                     class="mt-5 contain"
                     height="100px"
-                    :src="$vuetify.icons.values[item.icon].icon"
                   />
                 </div>
                 <v-card-title
@@ -82,22 +82,22 @@
           <v-img src="/assets/icons/nodatasets.png" width="100" />
         </div>
         <div class="text-center">
-          <v-chip class="ma-2" color="white" @click="translate('de')">
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('de')">
             DE
           </v-chip>
-          <v-chip class="ma-2" color="white" @click="translate('es')">
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('es')">
             ES
           </v-chip>
-          <v-chip class="ma-2" color="white" @click="translate('fr')">
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('fr')">
             FR
           </v-chip>
-          <v-chip class="ma-2" color="white" @click="translate('it')">
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('it')">
             IT
           </v-chip>
-          <v-chip class="ma-2" color="white" @click="translate('jp')">
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('jp')">
             JP
           </v-chip>
-          <v-chip class="ma-2" color="white" @click="translate('zh')">
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('zh')">
             ZH
           </v-chip>
         </div>
@@ -138,16 +138,14 @@
                   If you would like to find a home for your data, try browsing
                   our complete
                   <a
-                    href="https://fairsharing.org/browse/subject"
                     class="underline-effect font-weight-black text-white"
-                    target="_blank"
+                    href="/browse/subject"
                     >subject hierarchy</a
                   >
                   or searching our
                   <a
-                    href="https://fairsharing.org/databases"
                     class="underline-effect font-weight-black text-white"
-                    target="_blank"
+                    href="/databases"
                     >database records</a
                   >
                   to find an appropriate database for your data type.
@@ -157,25 +155,22 @@
                 <span>
                   Alternatively, you could look at our collection of
                   <a
-                    href="https://fairsharing.org/GeneralRepositoryComparison"
                     class="underline-effect font-weight-black text-white"
-                    target="_blank"
+                    href="/GeneralRepositoryComparison"
                     >Generalist Repositories</a
                   >
                   or browse all
                   <a
-                    href="https://fairsharing.org/browse/subject?term=Subject%2520Agnostic"
                     class="underline-effect font-weight-black text-white"
-                    target="_blank"
+                    href="/browse/subject?term=Subject%2520Agnostic"
                     >subject-agnostic records</a
                   >, which may provide you with a location to store data from a
                   wider range of research areas. If you are submitting to a
                   particular journal, you can also search for that journal or
                   its publisher; if they are registered with us, then their
                   <a
-                    href="https://fairsharing.org/search?fairsharingRegistry=Policy"
                     class="underline-effect font-weight-black text-white"
-                    target="_blank"
+                    href="/search?fairsharingRegistry=Policy"
                     >FAIRsharing data policy record(s)</a
                   >
                   may contain a list of recommended databases and/or standards.
@@ -194,23 +189,23 @@
         <p style="font-size: 1.2rem">
           If you have not already done so, you may wish to
           <a
+            class="underline-effect font-weight-black text-white"
             href="https://fairsharing.gitbook.io/fairsharing/"
             target="_blank"
-            class="underline-effect font-weight-black text-white"
             >create an account.</a
           >
         </p>
         <p style="font-size: 1.2rem">
           Any questions? Don't hesitate to
           <a
-            href="mailto:contact@fairsharing.org"
             class="font-weight-black text-white underline-effect"
+            href="mailto:contact@fairsharing.org"
             >contact us</a
           >
           or to
           <a
-            href="https://fairsharing.gitbook.io/fairsharing/"
             class="font-weight-black text-white underline-effect"
+            href="https://fairsharing.gitbook.io/fairsharing/"
           >
             consult our documentation.
           </a>
@@ -219,7 +214,7 @@
       </v-sheet>
     </div>
     <!-- eslint-enable vue/no-v-html -->
-    <v-layout row justify-center>
+    <v-layout justify-center row>
       <v-dialog v-model="showTranslation" max-width="700px">
         <v-card>
           <v-card-title>
@@ -232,7 +227,7 @@
             <v-spacer />
             <v-btn
               color="blue-darken-1"
-              variant="text"
+              variant="elevated"
               @click="showTranslation = false"
             >
               {{ closeButton }}
@@ -248,6 +243,8 @@
 <script>
 import newData from "@/data/NewStaticPageData.json";
 import noDatasetsPlease from "@/data/noDatasetsPlease.json";
+import customIcons from "@/plugins/icons";
+
 export default {
   name: "New",
   data: () => {
@@ -256,6 +253,7 @@ export default {
       showTranslation: false,
       translatedText: "",
       closeButton: "",
+      customIcons: customIcons,
     };
   },
   methods: {
@@ -268,7 +266,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .block-category {
   &__card {
     transition: all 0.2ms ease;

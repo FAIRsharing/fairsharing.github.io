@@ -6,9 +6,9 @@
       class="mb-2"
     >
       <v-btn
-        width="100%"
         :color="button.color"
         :variant="!button.active ? 'outlined' : undefined"
+        width="100%"
         @click="goTo(button)"
       >
         <span
@@ -24,8 +24,8 @@
     <div style="flex-grow: 1">
       <v-btn
         v-if="!user().isLoggedIn"
-        color="accent3 text-white"
         class="mr-1 mt-10"
+        color="accent3 text-white"
         width="100%"
         @click="goToLogin()"
       >
@@ -48,7 +48,7 @@
     </div>
     <div>
       <router-link to="/">
-        <v-img src="/assets/fairsharing-logo.svg" height="70" class="contain" />
+        <v-img class="contain" height="70" src="/assets/fairsharing-logo.svg" />
       </router-link>
     </div>
   </div>
@@ -56,6 +56,7 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "NavigationDrawer",
   data() {
@@ -104,7 +105,7 @@ export default {
         {
           name: "Add content",
           path: "new",
-          query: undefined,
+          query: { fairsharingRegistry: undefined },
           color: "primary",
           active: false,
           primary: false,
@@ -112,7 +113,7 @@ export default {
         {
           name: "Stats",
           path: "summary-statistics",
-          query: undefined,
+          query: { fairsharingRegistry: undefined },
           color: "primary",
           active: false,
           primary: false,

@@ -85,7 +85,7 @@
         "linkedin" : "lnanderscience",
         "mastodon" : "fediscience.org/@lnanderscience",
         "logo": "lindseyanderson.jpg",
-        "year_active": ["2022", "2023", "2024", "2025"],
+        "year_active": ["2022", "2023", "2024", "2025", "2026"],
         "active": true,
         "curator_expert" : true
       },
@@ -108,7 +108,7 @@
         "linkedin" : "malinsandstrom",
         "mastodon" : "fediscience.org/@msandstr",
         "logo": "malin.jpg",
-        "year_active": ["2022", "2023", "2025"],
+        "year_active": ["2022", "2023", "2025", "2026"],
         "active": true
       },
       {
@@ -333,7 +333,7 @@
         "linkedin" : "geta-mitrea",
         "mastodon" : "",
         "logo": "getamitrea.jpg",
-        "year_active": ["2022", "2023", "2024", "2025"],
+        "year_active": ["2022", "2023", "2024", "2025", "2026"],
         "active": true
       },
       {
@@ -470,7 +470,7 @@
         "linkedin" : "yu-he-liang-66650033",
         "mastodon" : "",
         "logo": "yuhen.jpg",
-        "year_active": ["2023", "2024", "2025"],
+        "year_active": ["2023", "2024", "2025", "2026"],
         "active": true
       },
       {
@@ -495,7 +495,7 @@
         "linkedin" : "",
         "mastodon" : "",
         "logo": "adam_partridge.jpg",
-        "year_active": ["2023", "2024", "2025"],
+        "year_active": ["2023", "2024", "2025", "2026"],
         "active": true
       },
       {
@@ -563,7 +563,7 @@
         "linkedin" : "joy-davidson",
         "mastodon" : "",
         "logo": "Joy-Davidson.jpg",
-        "year_active": ["2023", "2024", "2025"],
+        "year_active": ["2023", "2024", "2025", "2026"],
         "active": true
       },
       {
@@ -606,7 +606,7 @@
         "linkedin" : "david-tomkins-83b92534",
         "mastodon" : "",
         "logo": "d_tomkins.jpeg",
-        "year_active": ["2023", "2024", "2025"],
+        "year_active": ["2023", "2024", "2025", "2026"],
         "active": true
       },
       {
@@ -631,7 +631,7 @@
         "linkedin" : "lyndon-zass-10b731145",
         "mastodon" : "",
         "logo": "l_zass.png",
-        "year_active": ["2023", "2024", "2025"],
+        "year_active": ["2023", "2024", "2025", "2026"],
         "active": true
       },
       {
@@ -652,7 +652,7 @@
         "linkedin" : "christian-bonatto-minella-780b7710",
         "mastodon" : "",
         "logo": "christian_bonatto.jpg",
-        "year_active": ["2024", "2025"],
+        "year_active": ["2024", "2025", "2026"],
         "active": true
       },
       {
@@ -689,7 +689,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "alex_fraser.jpg",
-      "year_active": ["2024"],
+      "year_active": ["2025", "2026"],
       "active": false
     },
     {
@@ -731,7 +731,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "tim_gamble_turner.jpg",
-      "year_active": ["2024", "2025"],
+      "year_active": ["2024", "2025", "2026"],
       "active": true
     },
     {
@@ -752,7 +752,7 @@
       "linkedin" : "hugh-shanahan-340b343/",
       "mastodon" : "mastodon.ie/@HughShanahan",
       "logo": "hugh_shanahan.jpeg",
-      "year_active": ["2024", "2025"],
+      "year_active": ["2024", "2025", "2026"],
       "active": true
     },
     {
@@ -815,7 +815,7 @@
       "linkedin" : "",
       "mastodon" : "digipres.club/@bethknazook",
       "logo": "beth_knazook.jpg",
-      "year_active": ["2024", "2025"],
+      "year_active": ["2024", "2025", "2026"],
       "active": true
     },
     {
@@ -840,7 +840,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "mark_mckerracher.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -865,7 +865,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "jason_partridge.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -886,7 +886,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "baptiste_cecconi.png",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -907,7 +907,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "alexandra_rooney.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -948,7 +948,7 @@
       "linkedin" : "in/romain-david-ph-d-77181b32/",
       "mastodon" : "mastouille.fr/@RomainD",
       "logo": "david_romain.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -969,7 +969,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "joana_pauperio.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -990,7 +990,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "gabor_erdos.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1011,7 +1011,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "federico_bianchini.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1032,7 +1032,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "catherine_conisbee.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1054,7 +1054,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "rduyme.png",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1087,7 +1087,7 @@
       "linkedin" : "in/mijke-jetten-21336917",
       "mastodon" : "",
       "logo": "mijke.jetten.png",
-      "year_active": ["2025"],
+      "year_active": ["2025", "2026"],
       "active": true
     },
     {
@@ -1108,7 +1108,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "gavin_farrell.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2026"],
       "active": true
     },
     {
@@ -1129,7 +1129,7 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "john_shepherdson.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2026"],
       "active": true
     },
     {
@@ -1145,7 +1145,27 @@
       "linkedin" : "",
       "mastodon" : "",
       "logo": "denise_slenter.jpg",
-      "year_active": ["2025"],
+      "year_active": ["2026"],
+      "active": true
+    },
+    {
+      "name":  "Iulianna van der Lek",
+      "id": 15392,
+      "organisation": [
+        {
+          "id": 566,
+          "name":  "CLARIN ERIC"
+        }
+      ],
+      "scope": "Linguistics, CLARIN",
+      "subject_area": "social_sciences_and_humanities",
+      "orcid": "0000-0002-0736-0311",
+      "early_adopter" : false,
+      "show_more" : false,
+      "twitter": "",
+      "linkedin" : "",
+      "mastodon" : "",
+      "year_active": ["2026"],
       "active": true
     }
   ],

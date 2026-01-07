@@ -14,7 +14,7 @@
     </v-fade-transition>
 
     <v-row>
-      <v-col cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
+      <v-col cols="12" lg="6" md="12" sm="12" xl="6" xs="12">
         <!-- Upload (Logo) -->
         <!-- current logo to go here -->
         <span> A record logo is optional (png or jpeg, max. 3MB). </span>
@@ -49,7 +49,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
+      <v-col cols="12" lg="6" md="12" sm="12" xl="6" xs="12">
         <!-- name -->
         <v-text-field
           v-model="fields.metadata.name"
@@ -151,7 +151,7 @@
         </v-expand-transition>
       </v-col>
 
-      <v-col cols="12" lg="12" md="12" sm="12" xl="4" xs="12">
+      <v-col cols="12">
         <!-- creation year -->
         <v-select
           v-model="fields.metadata.year_creation"
@@ -172,7 +172,7 @@
         <v-select
           v-model="fields.countries"
           :items="countries"
-          density="compact"
+          class="editFormSelect"
           item-title="name"
           item-value="name"
           label="Countries"
@@ -216,7 +216,7 @@
                   src="@/assets/placeholders/country.png"
                 />
               </template>
-              <v-list-item-title>{{ item.name }}</v-list-item-title>
+              <span>{{ item.raw.name }}</span>
             </v-list-item>
           </template>
         </v-select>
@@ -227,22 +227,21 @@
           :disabled="typeChangeDisabled()"
           :items="recordTypes"
           :rules="[rules.isRequired()]"
-          density="compact"
+          class="editFormSelect"
           item-title="name"
           item-value="name"
           label="Registry and type"
           return-object
           variant="outlined"
         >
+          <!-- Item selected -->
           <template #chip="data">
             <v-chip
               v-if="data.item.raw.name"
               class="bg-blue text-white text-capitalize"
+              closable
             >
               {{ data.item.raw.name.replace(/_/g, " ") }}
-            </v-chip>
-            <v-chip v-else class="bg-blue text-white text-capitalize">
-              {{ data.item.raw.replace(/_/g, " ") }}
             </v-chip>
           </template>
           <!-- select list data -->
@@ -292,36 +291,48 @@
         <!-- status -->
         <v-autocomplete
           v-model="fields.status"
-          :items="status"
+          :items="recordStatus"
+          class="editFormSelect"
           item-title="name"
           item-value="name"
           label="Status"
           variant="outlined"
         >
-          <!-- autocomplete selected -->
-          <template #selection="{ item }">
-            {{ item.raw.name.replace(/_/g, " ") }}
+          <!-- Item selected -->
+          <template #chip="data">
+            <v-chip
+              v-if="data.item.raw.name"
+              class="bg-blue text-white text-capitalize"
+              closable
+            >
+              {{ data.item.raw.name.replace(/_/g, " ") }}
+            </v-chip>
           </template>
 
           <!-- autocomplete data -->
-          <template #item="data">
-            <v-tooltip location="left">
-              <template #activator="{ props }">
-                <v-list-item class="registryList" v-bind="props">
-                  <v-list-item>
-                    <status-pills :status="data.item.name" />
-                  </v-list-item>
-                  <v-list-item-title>
-                    <b
-                      >{{ data.item.name.replace(/_/g, " ").toUpperCase() }}
-                    </b></v-list-item-title
+          <template #item="{ props, item }">
+            <v-tooltip location="bottom">
+              <template #activator="{ props: activatorProps }">
+                <v-list>
+                  <v-list-item
+                    class="registryList cursor-pointer"
+                    v-bind="props"
                   >
-                  <v-list-item-subtitle>
-                    {{ data.item.description }}
-                  </v-list-item-subtitle>
-                </v-list-item>
+                    <template #prepend>
+                      <status-pills :status="item.raw.name" />
+                    </template>
+                    <div v-bind="activatorProps">
+                      <span class="font-weight-bold">
+                        {{ item.raw.name.replace(/_/g, " ").toUpperCase() }}
+                      </span>
+                      <v-list-item-subtitle>
+                        {{ item.raw.description }}
+                      </v-list-item-subtitle>
+                    </div>
+                  </v-list-item>
+                </v-list>
               </template>
-              <span> {{ data.item.description }} </span>
+              <span>{{ item.raw.description }}</span>
             </v-tooltip>
           </template>
         </v-autocomplete>
@@ -388,6 +399,7 @@
                 >Is this identifier schema
                 <a
                   href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  target="_blank"
                   >globally unique</a
                 >
                 as defined by FAIRsharing?</span
@@ -396,7 +408,11 @@
           </v-checkbox>
 
           <!-- persistent -->
-          <v-checkbox v-model="fields.metadata['persistent']" class="mr-2">
+          <v-checkbox
+            v-model="fields.metadata['persistent']"
+            class="mr-2"
+            color="primary"
+          >
             <template #prepend>
               <v-tooltip
                 class="text-justify"
@@ -414,6 +430,7 @@
                 >Is this identifier schema
                 <a
                   href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  target="_blank"
                   >persistent</a
                 >
                 as defined by FAIRsharing?</span
@@ -422,7 +439,11 @@
           </v-checkbox>
 
           <!-- resolvable -->
-          <v-checkbox v-model="fields.metadata['resolvable']" class="mr-2">
+          <v-checkbox
+            v-model="fields.metadata['resolvable']"
+            class="mr-2"
+            color="primary"
+          >
             <template #prepend>
               <v-tooltip
                 class="text-justify"
@@ -440,6 +461,7 @@
                 >Is this identifier schema
                 <a
                   href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  target="_blank"
                   >resolvable</a
                 >
                 as defined by FAIRsharing?</span
@@ -625,6 +647,9 @@ export default {
       this.$emit("imageTooBig", true);
       return false;
     },
+    recordStatus() {
+      return this.status;
+    },
   },
   watch: {
     recordLogo: {
@@ -764,5 +789,8 @@ export default {
 }
 .checkboxes label {
   margin: 0px 20px 0px 3px;
+}
+.editFormSelect :deep(.v-field__input) {
+  padding: 0 0 0 6px;
 }
 </style>

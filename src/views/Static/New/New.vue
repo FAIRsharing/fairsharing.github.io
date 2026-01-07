@@ -186,7 +186,7 @@
         elevation="3"
       >
         <h3 class="text-h4">Get Started!</h3>
-        <p style="font-size: 1.2rem">
+        <p class="text-left" style="font-size: 1.2rem">
           If you have not already done so, you may wish to
           <a
             class="underline-effect font-weight-black text-white"
@@ -195,7 +195,7 @@
             >create an account.</a
           >
         </p>
-        <p style="font-size: 1.2rem">
+        <p class="text-left" style="font-size: 1.2rem">
           Any questions? Don't hesitate to
           <a
             class="font-weight-black text-white underline-effect"

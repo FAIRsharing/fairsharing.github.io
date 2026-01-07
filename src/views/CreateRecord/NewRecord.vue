@@ -19,16 +19,14 @@
             </v-card-text>
             <v-card-text class="pt-3">
               <v-container fluid>
-                <v-row>
-                  <base-fields
-                    :create-mode="true"
-                    :submit-record="submitAnyway"
-                    :loading="loading"
-                    @submission="setSubmitAnyway()"
-                    @clearing="tryAgain()"
-                    @createnewrecord="createRecord()"
-                  />
-                </v-row>
+                <base-fields
+                  :create-mode="true"
+                  :loading="loading"
+                  :submit-record="submitAnyway"
+                  @clearing="tryAgain()"
+                  @createnewrecord="createRecord()"
+                  @submission="setSubmitAnyway()"
+                />
               </v-container>
             </v-card-text>
           </v-card>
@@ -38,8 +36,8 @@
               <v-overlay
                 v-if="!loaded"
                 :absolute="false"
-                opacity="0.8"
                 class="align-center justify-center"
+                opacity="0.8"
               >
                 <loaders />
               </v-overlay>
@@ -172,10 +170,12 @@ export default {
       if (this.submitAnyway) {
         if (this.possibleDuplicates.length > 0) {
           record.dups_suspected = true;
-        } else {
+        }
+        else {
           record.dups_suspected = false;
         }
-      } else {
+      }
+      else {
         if (this.possibleDuplicates.length > 0) {
           return;
         }
@@ -200,7 +200,8 @@ export default {
           error: true,
           value: new_record.error,
         };
-      } else {
+      }
+      else {
         this.recordCreated = true;
         this.newRecord = new_record;
       }

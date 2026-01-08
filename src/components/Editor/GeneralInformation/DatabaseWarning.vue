@@ -1,64 +1,72 @@
 <template>
   <div>
     <v-expand-transition>
-      <v-overlay v-if="showOverlay" :dark="false" opacity="0.8">
-        <v-card width="1000px">
-          <v-card-title
-            class="text-white"
-            :class="{ red: answered, info: !answered }"
-          >
-            <span v-if="!answered">Before you begin...</span>
-            <span v-else>
-              FAIRsharing does not allow the uploading of dataset records!
-            </span>
-          </v-card-title>
-          <v-card-text class="pt-4">
-            <v-slide-x-transition>
-              <div v-if="!answered">
-                <h2 class="mb-2">
-                  Please take a moment to answer the following question.
-                </h2>
-                <div>Is your record for a dataset?</div>
-              </div>
-              <div v-if="answered">
-                <div>
-                  FAIRsharing records describe community resources such as
-                  databases, standards and policies and are not used to describe
-                  or store experimental data. For more information, please see
-                  the 'Adding Database Records' section within our new record
-                  documentation. <br />
-                  FAIRsharing can help you find a repository for you to store
-                  your data via our Wizard or Advanced Search pages. If you are
-                  still unsure as to how to proceed then you may contact us.
-                </div>
-              </div>
-            </v-slide-x-transition>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn v-if="!answered" class="bg-success" @click="pressYes()">
-              Yes
-            </v-btn>
-            <v-btn v-if="!answered" class="bg-warning" @click="pressNo()">
-              <span>No</span>
-            </v-btn>
-            <v-btn v-else class="bg-error" @click="closeMenu()">
-              <span>Go back</span>
-            </v-btn>
-            <v-btn
-              class="bg-info"
-              href="mailto:contact@fairsharing.org?subject=Creating/editing a record in FAIRsharing"
+      <div>
+        <v-overlay
+          v-model="showOverlay"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <v-card width="1000px">
+            <v-card-title
+              :class="{ 'bg-red': answered, 'bg-info': !answered }"
+              class="text-white"
             >
-              Ask a question
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-overlay>
+              <span v-if="!answered">Before you begin...</span>
+              <span v-else>
+                FAIRsharing does not allow the uploading of dataset records!
+              </span>
+            </v-card-title>
+            <v-card-text class="pt-4">
+              <v-slide-x-transition>
+                <div v-if="!answered">
+                  <h2 class="mb-2">
+                    Please take a moment to answer the following question.
+                  </h2>
+                  <div>Is your record for a dataset?</div>
+                </div>
+                <div v-if="answered">
+                  <div>
+                    FAIRsharing records describe community resources such as
+                    databases, standards and policies and are not used to
+                    describe or store experimental data. For more information,
+                    please see the 'Adding Database Records' section within our
+                    new record documentation. <br />
+                    FAIRsharing can help you find a repository for you to store
+                    your data via our Wizard or Advanced Search pages. If you
+                    are still unsure as to how to proceed then you may contact
+                    us.
+                  </div>
+                </div>
+              </v-slide-x-transition>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn v-if="!answered" class="bg-success" @click="pressYes()">
+                Yes
+              </v-btn>
+              <v-btn v-if="!answered" class="bg-warning" @click="pressNo()">
+                <span>No</span>
+              </v-btn>
+              <v-btn v-else class="bg-error" @click="closeMenu()">
+                <span>Go back</span>
+              </v-btn>
+              <v-btn
+                class="bg-info"
+                href="mailto:contact@fairsharing.org?subject=Creating/editing a record in FAIRsharing"
+              >
+                Ask a question
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-overlay>
+      </div>
     </v-expand-transition>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 export default {
   name: "DatabaseWarning",

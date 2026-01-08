@@ -263,16 +263,16 @@
                   >
                     <template #prepend>
                       <Icon
-                        :height="40"
                         :item="item.raw.name"
+                        height="40"
                         wrapper-class=""
                       />
                     </template>
                     <div class="py-0 pl-4">
                       <div v-bind="activatorProps">
-                        <b>{{
+                        <span v-if="item.raw.name" class="font-weight-bold">{{
                           item.raw.name.replace(/_/g, " ").toUpperCase()
-                        }}</b>
+                        }}</span>
                       </div>
                       <v-list-item-subtitle>
                         {{ item.raw.description }}

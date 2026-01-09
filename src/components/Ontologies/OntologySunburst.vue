@@ -8,7 +8,15 @@ import { useTheme } from "vuetify";
 import Sunburst from "highcharts/modules/sunburst";
 import Highcharts from "highcharts";
 
-Sunburst(Highcharts);
+
+//Implement Sunburst module for Highcharts
+// check if Sunburst is a function, if not try .default
+if (typeof Sunburst === "function") {
+  Sunburst(Highcharts);
+}
+else if (typeof Sunburst.default === "function") {
+  Sunburst.default(Highcharts);
+}
 
 export default {
   name: "OntologySunburst",
@@ -171,7 +179,8 @@ export default {
             query: { term: encodeURIComponent(node.name) },
           });
         }
-      } else {
+      }
+      else {
         if (node.name !== "Subject") {
           let ancestors = this.getAncestors()(node.identifier);
           if (node["innerArcLength"] === 0)

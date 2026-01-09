@@ -17,22 +17,23 @@ import VueCodeHighlight from "vue-code-highlight";
 import VueGtag from "vue-gtag";
 /* import linkify to turn url within text into an actual url link */
 import linkify from "vue-3-linkify";
-import { createMetaManager } from "vue-meta";
+import {createMetaManager} from "vue-meta";
 // import VueMoment from "vue-moment";
 import Vue3Sanitize from "vue-3-sanitize";
 import VueScrollTo from "vue-scrollto";
 import Particles from "@tsparticles/vue3";
 
 import App from "./App.vue";
-import router from "./router";
-import { afterEach, beforeEach } from "./router";
+import router, {afterEach, beforeEach} from "./router";
 import store from "./store";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "vue-json-pretty/lib/styles.css";
-import { createApp } from "vue";
+import {createApp} from "vue";
 import createVuetify from "../src/plugins/vuetify";
-import { loadFull } from "tsparticles";
+import {loadFull} from "tsparticles";
+import Highcharts from "highcharts";
+import accessibilityInit from "highcharts/modules/accessibility";
 
 // Variablepie(Highcharts);
 // More(Highcharts);
@@ -54,10 +55,12 @@ async function bootstrapApp() {
     await store.dispatch("introspection/fetchParameters");
     await store.dispatch("searchFilters/assembleFilters");
     await store.dispatch("messages/setMessages");
-  } catch (error) {
+  }
+  catch (error) {
     if (error.response && error.response.status === 503) {
       store.commit("introspection/setMaintenanceMode");
-    } else {
+    }
+    else {
       await router.replace("/error/500");
     }
   }
@@ -66,6 +69,15 @@ async function bootstrapApp() {
 // configureCompat({
 //   MODE: 3,
 // });
+
+//Implement accessibility module for Highcharts
+// check if accessibilityInit is a function, if not try .default
+if (typeof accessibilityInit === "function") {
+  accessibilityInit(Highcharts);
+}
+else if (typeof accessibilityInit.default === "function") {
+  accessibilityInit.default(Highcharts);
+}
 
 const app = createApp(App)
   .use(createVuetify)

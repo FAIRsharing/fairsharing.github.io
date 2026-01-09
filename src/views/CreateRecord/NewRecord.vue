@@ -67,8 +67,8 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            color="blue-darken-1"
-            variant="text"
+            class="bg-primary"
+            variant="elevated"
             @click="redirectToEdit(newRecord)"
           >
             OK

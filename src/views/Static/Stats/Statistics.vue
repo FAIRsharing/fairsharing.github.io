@@ -1,40 +1,36 @@
 <template>
   <v-main>
     <v-container fluid>
-      <v-card-title primary-title class="justify-center">
-        <div align="center">
-          <h3 class="text-h5 text--accent-2">Summary Statistics</h3>
+      <v-card-title class="justify-center" primary-title>
+        <div class="text-center mb-4">
+          <h3 class="text-h5 accent-2-text">Summary Statistics</h3>
           <small>(click on pie sectors or bars to access specific data)</small>
         </div>
       </v-card-title>
       <v-row align="center" justify="space-around">
         <v-btn
-          variant="flat"
-          :variant="activeChart !== 0 ? 'outlined' : undefined"
+          :variant="activeChart !== 0 ? 'outlined' : 'flat'"
           color="primary"
           @click="chartSelection(0)"
         >
           All
         </v-btn>
         <v-btn
-          variant="flat"
-          :variant="activeChart !== 1 ? 'outlined' : undefined"
+          :variant="activeChart !== 1 ? 'outlined' : 'flat'"
           color="primary"
           @click="chartSelection(1)"
         >
           Standards
         </v-btn>
         <v-btn
-          variant="flat"
-          :variant="activeChart !== 2 ? 'outlined' : undefined"
+          :variant="activeChart !== 2 ? 'outlined' : 'flat'"
           color="primary"
           @click="chartSelection(2)"
         >
           Databases
         </v-btn>
         <v-btn
-          variant="flat"
-          :variant="activeChart !== 3 ? 'outlined' : undefined"
+          :variant="activeChart !== 3 ? 'outlined' : 'flat'"
           color="primary"
           @click="chartSelection(3)"
         >
@@ -44,298 +40,298 @@
       <v-divider class="mx-4" vertical />
       <v-container v-if="activeChart === 0" fluid>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartRegistries" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartRegistries" border class="pa-2" tile>
               <PieChart
-                ref-name="pieRegistries"
                 :fields-chart="chartRegistries"
+                ref-name="pieRegistries"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartSubjects['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartSubjects['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barSubjectsStand"
                 :fields-chart="chartSubjects['standard']"
+                ref-name="barSubjectsStand"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartSubjects['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartSubjects['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barSubjectsDB"
                 :fields-chart="chartSubjects['database']"
+                ref-name="barSubjectsDB"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartSubjects['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartSubjects['policy']" border class="pa-2" tile>
               <BarChart
-                ref-name="barSubjectsPol"
                 :fields-chart="chartSubjects['policy']"
+                ref-name="barSubjectsPol"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartCountriesAll" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartCountriesAll" border class="pa-2" tile>
               <BarChart
-                ref-name="barCountriesAll"
                 :fields-chart="chartCountriesAll"
+                ref-name="barCountriesAll"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartCountries['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartCountries['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barCountriesStand"
                 :fields-chart="chartCountries['standard']"
+                ref-name="barCountriesStand"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartCountries['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartCountries['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barCountriesDB"
                 :fields-chart="chartCountries['database']"
+                ref-name="barCountriesDB"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartCountries['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartCountries['policy']" border class="pa-2" tile>
               <BarChart
-                ref-name="barCountriesPol"
                 :fields-chart="chartCountries['policy']"
+                ref-name="barCountriesPol"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartSpecies['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartSpecies['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barSpeciesStand"
                 :fields-chart="chartSpecies['standard']"
+                ref-name="barSpeciesStand"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartSpecies['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartSpecies['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barSpeciesDB"
                 :fields-chart="chartSpecies['database']"
+                ref-name="barSpeciesDB"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartSpecies['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartSpecies['policy']" border class="pa-2" tile>
               <BarChart
-                ref-name="barSpeciesPol"
                 :fields-chart="chartSpecies['policy']"
+                ref-name="barSpeciesPol"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartImplements['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartImplements['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barImplementsStand"
                 :fields-chart="chartImplements['standard']"
                 :show-percent="false"
+                ref-name="barImplementsStand"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartImplements['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartImplements['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barImplementsDB"
                 :fields-chart="chartImplements['database']"
                 :show-percent="false"
+                ref-name="barImplementsDB"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartLinkPie['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartLinkPie['standard']" border class="pa-2" tile>
               <PieChart
-                ref-name="pieLinkStand"
                 :fields-chart="chartLinkPie['standard']"
                 :link-work="false"
+                ref-name="pieLinkStand"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartLinkPie['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartLinkPie['database']" border class="pa-2" tile>
               <PieChart
-                ref-name="pieLinkDB"
                 :fields-chart="chartLinkPie['database']"
                 :link-work="false"
+                ref-name="pieLinkDB"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartLinkPie['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartLinkPie['policy']" border class="pa-2" tile>
               <PieChart
-                ref-name="pieLinkPol"
                 :fields-chart="chartLinkPie['policy']"
                 :link-work="false"
+                ref-name="pieLinkPol"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartJournals['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartJournals['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barJourStand"
                 :fields-chart="chartJournals['standard']"
                 :show-percent="false"
+                ref-name="barJourStand"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartJournals['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartJournals['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barJourDB"
                 :fields-chart="chartJournals['database']"
                 :show-percent="false"
+                ref-name="barJourDB"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartLicences['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartLicences['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barLicenseStand"
                 :fields-chart="chartLicences['standard']"
+                ref-name="barLicenseStand"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartLicences['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartLicences['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barLicenseDB"
                 :fields-chart="chartLicences['database']"
+                ref-name="barLicenseDB"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartFunders['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartFunders['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barFundStand"
                 :fields-chart="chartFunders['standard']"
+                ref-name="barFundStand"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartFunders['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartFunders['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barFundDB"
                 :fields-chart="chartFunders['database']"
+                ref-name="barFundDB"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartFunders['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartFunders['policy']" border class="pa-2" tile>
               <BarChart
-                ref-name="barFundPol"
                 :fields-chart="chartFunders['policy']"
+                ref-name="barFundPol"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartNonFunders['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartNonFunders['standard']" border class="pa-2" tile>
               <BarChart
-                ref-name="barNonFundStand"
                 :fields-chart="chartNonFunders['standard']"
+                ref-name="barNonFundStand"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartNonFunders['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartNonFunders['database']" border class="pa-2" tile>
               <BarChart
-                ref-name="barNonFundDB"
                 :fields-chart="chartNonFunders['database']"
+                ref-name="barNonFundDB"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartNonFunders['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartNonFunders['policy']" border class="pa-2" tile>
               <BarChart
-                ref-name="barNonFundPol"
                 :fields-chart="chartNonFunders['policy']"
+                ref-name="barNonFundPol"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartMaintainer['standard']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartMaintainer['standard']" border class="pa-2" tile>
               <PieChart
-                ref-name="pieMaintainerStand"
                 :fields-chart="chartMaintainer['standard']"
+                ref-name="pieMaintainerStand"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartMaintainer['database']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartMaintainer['database']" border class="pa-2" tile>
               <PieChart
-                ref-name="pieMaintainerDB"
                 :fields-chart="chartMaintainer['database']"
+                ref-name="pieMaintainerDB"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
-            <v-card v-if="chartMaintainer['policy']" class="pa-2" border tile>
+          <v-col cols="12" lg="6" md="12" sm="12">
+            <v-card v-if="chartMaintainer['policy']" border class="pa-2" tile>
               <PieChart
-                ref-name="pieMaintainerPol"
                 :fields-chart="chartMaintainer['policy']"
+                ref-name="pieMaintainerPol"
               />
             </v-card>
           </v-col>
-          <v-col md="12" sm="12" lg="6">
+          <v-col cols="12" lg="6" md="12" sm="12">
             <v-card
               v-if="chartHavePublication['standard']"
-              class="pa-2"
               border
+              class="pa-2"
               tile
             >
               <PieChart
-                ref-name="piePublicationStand"
                 :fields-chart="chartHavePublication['standard']"
+                ref-name="piePublicationStand"
               />
             </v-card>
           </v-col>
         </v-row>
         <v-row>
-          <v-col md="12" sm="12" lg="6">
+          <v-col cols="12" lg="6" md="12" sm="12">
             <v-card
               v-if="chartHavePublication['database']"
-              class="pa-2"
               border
+              class="pa-2"
               tile
             >
               <PieChart
-                ref-name="piePublicationDB"
                 :fields-chart="chartHavePublication['database']"
+                ref-name="piePublicationDB"
               />
             </v-card>
           </v-col>
@@ -343,43 +339,43 @@
       </v-container>
       <v-container v-else-if="activeChart === 1" fluid>
         <StatsStandard
-          :chart-subjects="chartSubjects['standard']"
           :chart-countries="chartCountries['standard']"
-          :chart-species="chartSpecies['standard']"
+          :chart-funders="chartFunders['standard']"
           :chart-implements="chartImplements['standard']"
-          :chart-links="chartLinkPie['standard']"
           :chart-journals="chartJournals['standard']"
           :chart-licences="chartLicences['standard']"
-          :chart-funders="chartFunders['standard']"
-          :chart-non-funders="chartNonFunders['standard']"
+          :chart-links="chartLinkPie['standard']"
           :chart-maintainers="chartMaintainer['standard']"
+          :chart-non-funders="chartNonFunders['standard']"
           :chart-publication="chartHavePublication['standard']"
+          :chart-species="chartSpecies['standard']"
+          :chart-subjects="chartSubjects['standard']"
         />
       </v-container>
       <v-container v-else-if="activeChart === 2" fluid>
         <StatsDB
-          :chart-subjects="chartSubjects['database']"
           :chart-countries="chartCountries['database']"
-          :chart-species="chartSpecies['database']"
+          :chart-funders="chartFunders['database']"
           :chart-implements="chartImplements['database']"
-          :chart-links="chartLinkPie['database']"
           :chart-journals="chartJournals['database']"
           :chart-licences="chartLicences['database']"
-          :chart-funders="chartFunders['database']"
-          :chart-non-funders="chartNonFunders['database']"
+          :chart-links="chartLinkPie['database']"
           :chart-maintainers="chartMaintainer['database']"
+          :chart-non-funders="chartNonFunders['database']"
           :chart-publication="chartHavePublication['database']"
+          :chart-species="chartSpecies['database']"
+          :chart-subjects="chartSubjects['database']"
         />
       </v-container>
       <v-container v-else-if="activeChart === 3" fluid>
         <StatsPolicy
-          :chart-subjects="chartSubjects['policy']"
           :chart-countries="chartCountries['policy']"
-          :chart-species="chartSpecies['policy']"
-          :chart-links="chartLinkPie['policy']"
           :chart-funders="chartFunders['policy']"
-          :chart-non-funders="chartNonFunders['policy']"
+          :chart-links="chartLinkPie['policy']"
           :chart-maintainers="chartMaintainer['policy']"
+          :chart-non-funders="chartNonFunders['policy']"
+          :chart-species="chartSpecies['policy']"
+          :chart-subjects="chartSubjects['policy']"
         />
       </v-container>
     </v-container>
@@ -388,8 +384,8 @@
         <v-overlay
           v-model="isLoading"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <Loaders />
         </v-overlay>
@@ -410,6 +406,7 @@ import StatsPolicy from "@/components/Static/Statistics/StatsPolicy.vue";
 import StatsStandard from "@/components/Static/Statistics/StatsStandard.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import getRecordStats from "@/lib/GraphClient/queries/getRecordStats.json";
+
 const client = new GraphClient();
 
 export default {
@@ -646,7 +643,8 @@ export default {
       let textPlural = "";
       if (text === "policy") {
         textPlural = "policies";
-      } else {
+      }
+      else {
         textPlural = text + "s";
       }
       chartField.title = "Top 10 ontologies subjects covered by " + textPlural;
@@ -693,7 +691,8 @@ export default {
       let searchText = "";
       if (text === "record") {
         chartField.title = "Top 10 countries by content";
-      } else {
+      }
+      else {
         chartField.title = "Top 10 " + text + " producing countries";
         searchText = "&fairsharingRegistry=" + text;
       }
@@ -711,7 +710,8 @@ export default {
       regBucket.forEach((item) => {
         if (item.key in nameMap) {
           nameC = nameMap[item.key];
-        } else {
+        }
+        else {
           nameC = item.key[0].toUpperCase() + item.key.substring(1);
         }
         let vectItem = {
@@ -741,7 +741,8 @@ export default {
       let textPlural = "";
       if (text === "policy") {
         textPlural = "policies";
-      } else {
+      }
+      else {
         textPlural = text + "s";
       }
       chartField.title = "Top 10 species covered by " + textPlural;
@@ -783,7 +784,8 @@ export default {
     prepareLicences(data, chartField, text) {
       if (text === "database") {
         chartField.title = "Top 10 licenses for database content";
-      } else {
+      }
+      else {
         chartField.title = "Top 10 licenses for standards";
       }
       chartField.textYAxis = "Number of " + text + "s";
@@ -835,7 +837,8 @@ export default {
       regBucket.forEach((item) => {
         if (item.key in nameMap) {
           nameC = nameMap[item.key];
-        } else {
+        }
+        else {
           nameC = item.key[0].toUpperCase() + item.key.substring(1);
         }
         let vectItem = {
@@ -890,13 +893,15 @@ export default {
         chartField.title = "Top 10 standards recommended by policies";
         chartField.textYAxis = "Number of policies";
         chartField.textXAxis = "Standards";
-      } else {
+      }
+      else {
         chartField.textYAxis = "Number of policy recommendations";
         if (type === "journalStand") {
           chartField.title =
             "Top 10 standards recommended by journal publishers";
           chartField.textXAxis = "Standards";
-        } else {
+        }
+        else {
           chartField.title =
             "Top 10 databases recommended by journal publishers";
           chartField.textXAxis = "Databases";
@@ -971,12 +976,14 @@ export default {
       let textPlural = "";
       if (type === "policy") {
         textPlural = "policies";
-      } else {
+      }
+      else {
         textPlural = type + "s";
       }
       if (funder) {
         chartField.title = "Top 10 funders of " + textPlural;
-      } else {
+      }
+      else {
         chartField.title =
           "Top 10 organisations (excluding funders) of " + textPlural;
       }
@@ -991,11 +998,13 @@ export default {
         let par = key.indexOf("(");
         if (par >= 0) {
           nameC = key.substring(par + 1, key.indexOf(")"));
-        } else {
+        }
+        else {
           let comm = key.split(",");
           if (comm.length > 2) {
             nameC = comm[0] + "," + comm[comm.length - 1];
-          } else {
+          }
+          else {
             nameC = key;
           }
         }

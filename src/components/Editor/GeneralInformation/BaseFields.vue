@@ -562,6 +562,7 @@
           :disabled="disableSubmit()"
           :loading="loading"
           class="bg-primary"
+          variant="elevated"
           @click="createNewRecord()"
         >
           Create Record

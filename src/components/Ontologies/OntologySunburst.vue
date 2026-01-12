@@ -8,7 +8,6 @@ import { useTheme } from "vuetify";
 import Sunburst from "highcharts/modules/sunburst";
 import Highcharts from "highcharts";
 
-
 //Implement Sunburst module for Highcharts
 // check if Sunburst is a function, if not try .default
 if (typeof Sunburst === "function") {
@@ -31,7 +30,7 @@ export default {
           borderWidth: 0,
           borderColor: "#DD7920",
           backgroundColor: "#F9F9F9",
-          height: this.getWidth(),
+          height: "100%",
         },
         title: {
           text: "Subject Browser",
@@ -188,9 +187,6 @@ export default {
           this.openTerms(ancestors);
         }
       }
-    },
-    getWidth() {
-      return this.$vuetify.display.xlOnly ? "60%" : "100%";
     },
     getTooltip(point) {
       return point.name === "Subjects"

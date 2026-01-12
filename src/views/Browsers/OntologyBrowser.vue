@@ -1,64 +1,77 @@
 <template>
   <main>
-    <v-container fluid class="py-0 mb-10">
+    <v-container class="py-0 mb-10" fluid>
       <NotFound v-if="error" />
       <v-row v-else no-gutters>
         <v-col
           id="ontologyBrowser"
-          xs="12"
-          sm="12"
-          md="12"
+          class="border-e"
+          cols="12"
           lg="4"
+          md="12"
+          sm="12"
           xl="3"
-          col="12"
-          class="border-right"
+          xs="12"
         >
-          <div v-if="tree.length > 0" id="searchOntology" class="pr-2">
+          <div v-if="tree.length > 0" id="searchOntology" class="pr-2 mt-6">
             <v-autocomplete
               v-model="search"
+              :color="color"
               :items="flattenedTree"
               :label="`Search ${selectedOntology}s`"
-              variant="outlined"
-              hide-details
-              :color="color"
-              item-title="name"
               clearable
+              hide-details
+              item-title="name"
+              variant="outlined"
             />
-            <v-divider class="mb-2" />
+            <v-divider class="mb-2 opacity-100" />
           </div>
           <v-treeview
-            v-model:open="open"
-            :items="tree"
+            v-model:opened="open"
             :color="color"
+            :items="tree"
             :search="search"
+            activatable
             class="tree pb-3 px-3"
             hoverable
+            item-title="name"
+            item-value="identifier"
           >
-            <template #label="{ item }">
+            <template #title="{ item }">
               <div
                 class="d-flex flex-row justify-center align-center cursor-pointer"
                 @click="searchTerm(item)"
               >
                 <v-chip
                   :class="
-                    !activeTerms.includes(item.identifier)
-                      ? `white ${color}--text ${color}--border`
-                      : `${color} text-white`
+                    !activeTerms.includes((item.raw || item).identifier)
+                      ? `text-${color} border-${color}`
+                      : `bg-${color} text-white`
                   "
-                  class="cursor-pointer"
+                  :variant="
+                    !activeTerms.includes((item.raw || item).identifier)
+                      ? 'outlined'
+                      : 'flat'
+                  "
+                  class="cursor-pointer rounded-xl"
+                  label
                 >
-                  {{ item.name }}
+                  {{ (item.raw || item).name }}
                 </v-chip>
                 <v-spacer />
                 <div
                   :class="
-                    activeTerms.includes(item.identifier)
-                      ? `${color} text-white`
-                      : `white ${color}--text ${color}--border`
+                    activeTerms.includes((item.raw || item).identifier)
+                      ? `bg-${color} text-white`
+                      : `bg-white text-${color} border-${color} border border-solid border-opacity-100`
                   "
                   class="d-flex justify-center align-center hits"
                 >
-                  {{ item.records_count ? item.records_count : 0 }}
+                  {{
+                    (item.raw || item).records_count
+                      ? (item.raw || item).records_count
+                      : 0
+                  }}
                 </div>
               </div>
             </template>
@@ -66,13 +79,13 @@
         </v-col>
         <v-col
           id="termDisplay"
-          xs="12"
-          sm="12"
-          md="12"
-          lg="8"
-          xl="9"
-          col="12"
           class="py-0 my-0"
+          cols="12"
+          lg="8"
+          md="12"
+          sm="12"
+          xl="9"
+          xs="12"
         >
           <div v-if="!loadingData && tree.length > 0">
             <TermDetails
@@ -93,8 +106,8 @@
         <v-overlay
           v-model="loadingData"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <Loaders />
         </v-overlay>
@@ -167,7 +180,8 @@ export default {
         let parents = [...new Set(this.getAncestors()(newVal.identifier))];
         await this.activateTerms(newVal);
         this.open = parents;
-      } else await this.activateTerms();
+      }
+      else await this.activateTerms();
     },
     search(newTerm) {
       this.openTerms(this.getAncestors()(newTerm, "id", "name"));

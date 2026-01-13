@@ -26,64 +26,62 @@
             />
             <v-divider class="mb-2 opacity-100" />
           </div>
-          <v-treeview
-            v-model:opened="open"
-            :color="color"
-            :items="tree"
-            :search="search"
-            activatable
+          <!--Replacing v-tree-view with v-virtual-scroll for smooth behavior and performance-->
+          <v-virtual-scroll
+            :height="'70vh'"
+            :items="visibleNodes"
             class="tree pb-3 px-3"
-            item-title="name"
-            item-value="name_identifier"
           >
-            <template #prepend="{ item }">
-              <!-- If no children, add a spacer to maintain alignment -->
-              <v-list-item-action
-                v-if="!item.children || !item.children.length"
-              >
-                <div class="noArrow"></div>
-              </v-list-item-action>
-            </template>
-            <template #title="{ item }">
-              <!-- Check if the item has children -->
+            <template #default="{ item }">
               <div
-                class="d-flex flex-row justify-center align-center cursor-pointer"
-                @click="searchTerm(item)"
+                :style="{ paddingLeft: `${item.depth * 24}px` }"
+                class="d-flex align-center py-1 cursor-pointer hover-bg"
+                @click="toggleNode(item)"
               >
-                <v-chip
-                  :class="
-                    !activeTerms.includes((item.raw || item).identifier)
-                      ? `text-${color} border-${color}`
-                      : `bg-${color} text-white`
-                  "
-                  :variant="
-                    !activeTerms.includes((item.raw || item).identifier)
-                      ? 'outlined'
-                      : 'flat'
-                  "
-                  class="cursor-pointer rounded-xl"
-                  label
-                >
-                  {{ (item.raw || item).name }}
-                </v-chip>
-                <v-spacer />
+                <div class="d-flex justify-center" style="width: 24px">
+                  <v-icon
+                    v-if="item.hasChildren"
+                    :icon="
+                      openedTerms.includes(item.identifier)
+                        ? 'fas fa-caret-down'
+                        : 'fas fa-caret-right'
+                    "
+                    size="small"
+                    @click.stop="toggleNode(item)"
+                  />
+                </div>
+
                 <div
-                  :class="
-                    activeTerms.includes((item.raw || item).identifier)
-                      ? `bg-${color} text-white`
-                      : `bg-white text-${color} border-${color} border border-solid border-opacity-100`
-                  "
-                  class="d-flex justify-center align-center hits"
+                  class="d-flex flex-row justify-center align-center flex-grow-1"
+                  @click.stop="searchTerm(item)"
                 >
-                  {{
-                    (item.raw || item).records_count
-                      ? (item.raw || item).records_count
-                      : 0
-                  }}
+                  <span
+                    :class="
+                      !activeTerms.includes(item.identifier)
+                        ? `text-${color} border-${color}`
+                        : `bg-${color} text-white`
+                    "
+                    class="chip-mimic mr-2"
+                  >
+                    {{ item.name }}
+                  </span>
+
+                  <v-spacer />
+
+                  <div
+                    :class="
+                      activeTerms.includes(item.identifier)
+                        ? `bg-${color} text-white`
+                        : `bg-white text-${color} border-${color} border border-solid border-opacity-100`
+                    "
+                    class="hits d-flex justify-center align-center"
+                  >
+                    {{ item.records_count || 0 }}
+                  </div>
                 </div>
               </div>
             </template>
-          </v-treeview>
+          </v-virtual-scroll>
         </v-col>
         <v-col
           id="termDisplay"
@@ -180,6 +178,31 @@ export default {
       "selectedTerm",
       "openedTerms",
     ]),
+    visibleNodes() {
+      const result = [];
+
+      // Recursive function to flatten visible parts of tree
+      const traverse = (nodes, depth = 0) => {
+        for (const node of nodes) {
+          // Add basic metadata for the UI
+          const hasChildren = node.children && node.children.length > 0;
+
+          result.push({
+            ...node, // copy node data
+            depth, // add depth for indentation
+            hasChildren,
+          });
+
+          // Only traverse children if this node's ID is in 'openedTerms'
+          if (hasChildren && this.openedTerms.includes(node.identifier)) {
+            traverse(node.children, depth + 1);
+          }
+        }
+      };
+
+      traverse(this.tree);
+      return result;
+    },
   },
   watch: {
     async term(newVal) {
@@ -220,6 +243,23 @@ export default {
       "leavePage",
     ]),
     ...mapGetters("ontologyBrowser", ["getAncestors"]),
+    toggleNode(item) {
+      if (!item.hasChildren) return;
+
+      const isOpen = this.openedTerms.includes(item.identifier);
+      let newOpened = [...this.openedTerms];
+
+      if (isOpen) {
+        // Close: Remove ID from array
+        newOpened = newOpened.filter((id) => id !== item.identifier);
+      } else {
+        // Open: Add ID to array
+        newOpened.push(item.identifier);
+      }
+
+      // Sync with your Vuex or local state
+      this.openTerms(newOpened);
+    },
   },
 };
 </script>
@@ -271,10 +311,18 @@ export default {
   cursor: pointer !important;
 }
 
-//Hide the list arrow if that item has no children using child class 'noArrow' and targeting the parent class
-:deep(.v-list-item__prepend) {
-  &:has(.noArrow) {
-    visibility: hidden;
-  }
+.chip-mimic {
+  border: 1px solid;
+  border-radius: 18px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Hover effect for the row */
+.hover-bg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
 </style>

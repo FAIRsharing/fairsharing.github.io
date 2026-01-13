@@ -33,11 +33,19 @@
             :search="search"
             activatable
             class="tree pb-3 px-3"
-            hoverable
             item-title="name"
-            item-value="identifier"
+            item-value="name_identifier"
           >
+            <template #prepend="{ item }">
+              <!-- If no children, add a spacer to maintain alignment -->
+              <v-list-item-action
+                v-if="!item.children || !item.children.length"
+              >
+                <div class="noArrow"></div>
+              </v-list-item-action>
+            </template>
             <template #title="{ item }">
+              <!-- Check if the item has children -->
               <div
                 class="d-flex flex-row justify-center align-center cursor-pointer"
                 @click="searchTerm(item)"
@@ -117,7 +125,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import OntologySunburst from "@/components/Ontologies/OntologySunburst";
@@ -180,8 +188,7 @@ export default {
         let parents = [...new Set(this.getAncestors()(newVal.identifier))];
         await this.activateTerms(newVal);
         this.open = parents;
-      }
-      else await this.activateTerms();
+      } else await this.activateTerms();
     },
     search(newTerm) {
       this.openTerms(this.getAncestors()(newTerm, "id", "name"));
@@ -217,7 +224,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .subject_color--border {
   border: 1px solid;
   border-color: #e67e22 !important;
@@ -262,5 +269,12 @@ export default {
 
 .cursor-pointer {
   cursor: pointer !important;
+}
+
+//Hide the list arrow if that item has no children using child class 'noArrow' and targeting the parent class
+:deep(.v-list-item__prepend) {
+  &:has(.noArrow) {
+    visibility: hidden;
+  }
 }
 </style>

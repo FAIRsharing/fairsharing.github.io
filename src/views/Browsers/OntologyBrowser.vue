@@ -22,15 +22,20 @@
               clearable
               hide-details
               item-title="name"
+              item-value="id"
+              return-object
               variant="outlined"
+              @update:model-value="onAutocompleteSelect"
             />
             <v-divider class="mb-2 opacity-100" />
           </div>
-          <!--Replacing v-tree-view with v-virtual-scroll for smooth behavior and performance-->
+          <!-- Replacing v-tree-view with v-virtual-scroll for smooth behavior and performance -->
           <v-virtual-scroll
+            ref="virtualScroll"
             :height="'70vh'"
             :items="visibleNodes"
             class="tree pb-3 px-3"
+            scrollToIndex="3"
           >
             <template #default="{ item }">
               <div
@@ -215,6 +220,9 @@ export default {
     },
     search(newTerm) {
       this.openTerms(this.getAncestors()(newTerm, "id", "name"));
+      if (newTerm) {
+        this.onAutocompleteSelect(newTerm);
+      }
     },
   },
   async mounted() {
@@ -260,19 +268,79 @@ export default {
       // Sync with your Vuex or local state
       this.openTerms(newOpened);
     },
+
+    getAncestorsPath(tree, targetId) {
+      for (const node of tree) {
+        // 1. Base Case: Found the node? Return its ID (or empty if you only want parents)
+        if (node.identifier === targetId) {
+          return [node.identifier];
+        }
+
+        // 2. Recursive Step: Check children
+        if (node.children && node.children.length > 0) {
+          const path = this.getAncestorsPath(node.children, targetId);
+
+          // If the child returned a path, it means the target is down this branch
+          if (path) {
+            // Prepend current node to the path
+            return [node.identifier, ...path];
+          }
+        }
+      }
+      // Target not found in this branch
+      return null;
+    },
+
+    async onAutocompleteSelect(selectedItem) {
+      if (!selectedItem) return;
+      const fullPath =
+        this.getAncestorsPath(this.tree, selectedItem.identifier) || [];
+      const ancestors = fullPath.slice(0, -1);
+      if (ancestors.length === 0 && fullPath.length === 0) {
+        console.warn("Node not found in tree!", selectedItem.identifier);
+        return;
+      }
+      const newOpened = [...new Set([...this.openedTerms, ...ancestors])];
+      this.openTerms(newOpened);
+      await this.$nextTick();
+      const index = this.visibleNodes.findIndex(
+        (node) => node.identifier === selectedItem.identifier,
+      );
+
+      if (index !== -1 && this.$refs.virtualScroll) {
+        this.$refs.virtualScroll.scrollToIndex(index);
+      } else {
+        console.warn("Item not found in visible list after expansion.");
+      }
+    },
+
+    getAllIndexesOfTerm(termId) {
+      // reduce is cleaner than a for-loop for collecting multiple matches
+      return this.visibleNodes.reduce((indexes, node, i) => {
+        if (node.identifier === termId) {
+          indexes.push(i);
+        }
+        return indexes;
+      }, []);
+    },
+
+    // Example usage: Print them to console
+    logMatches(term) {
+      const matches = this.getAllIndexesOfTerm(term.identifier);
+      console.log(`Term found at indexes: ${matches.join(", ")}`);
+      return matches;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .subject_color--border {
-  border: 1px solid;
-  border-color: #e67e22 !important;
+  border: 1px solid #e67e22 !important;
 }
 
 .domain_color--border {
-  border: 1px solid;
-  border-color: #712727 !important;
+  border: 1px solid #712727 !important;
 }
 
 .hits {

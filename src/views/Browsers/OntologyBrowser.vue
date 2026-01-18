@@ -25,7 +25,6 @@
               item-value="id"
               return-object
               variant="outlined"
-              @update:model-value="onAutocompleteSelect"
             />
             <v-divider class="mb-2 opacity-100" />
           </div>
@@ -35,7 +34,6 @@
             :height="'70vh'"
             :items="visibleNodes"
             class="tree pb-3 px-3"
-            scrollToIndex="3"
           >
             <template #default="{ item }">
               <div
@@ -45,28 +43,38 @@
               >
                 <div class="d-flex justify-center" style="width: 24px">
                   <v-icon
-                    v-if="item.hasChildren"
+                    v-if="!search && item.hasChildren"
                     :icon="
                       openedTerms.includes(item.identifier)
                         ? 'fas fa-caret-down'
                         : 'fas fa-caret-right'
                     "
                     size="small"
-                    @click.stop="toggleNode(item)"
+                  />
+                  <v-icon
+                    v-else-if="search && item.identifier !== search.identifier"
+                    color="grey-lighten-1"
+                    icon="fas fa-caret-down"
+                    size="x-small"
+                  />
+                  <v-icon
+                    v-else-if="search && item.identifier === search.identifier"
+                    color="primary"
+                    icon="fas fa-caret-right"
+                    size="small"
                   />
                 </div>
 
                 <div
                   class="d-flex flex-row justify-center align-center flex-grow-1"
-                  @click.stop="searchTerm(item)"
                 >
                   <span
-                    :class="
-                      !activeTerms.includes(item.identifier)
-                        ? `text-${color} border-${color}`
-                        : `bg-${color} text-white`
-                    "
-                    class="chip-mimic mr-2"
+                    :class="[
+                      'chip-mimic mr-2',
+                      item.identifier === (search && search.identifier)
+                        ? 'bg-primary text-white font-weight-bold elevation-2' /* Target Style */
+                        : 'text-grey-darken-2 border-grey' /* Parent/Path Style */,
+                    ]"
                   >
                     {{ item.name }}
                   </span>
@@ -128,7 +136,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import OntologySunburst from "@/components/Ontologies/OntologySunburst";
@@ -142,6 +150,8 @@ export default {
     return {
       allowedOntologies: ["domain", "subject"],
       search: null,
+      foundIndexes: [], // Stores all row indexes: [5, 42, 108]
+      currentMatchIndex: 0, // Tracks which instance we are viewing
     };
   },
   computed: {
@@ -184,6 +194,37 @@ export default {
       "openedTerms",
     ]),
     visibleNodes() {
+      // MODE 1: FILTERED (Show ALL paths to the selected item)
+      if (this.search && this.search.identifier) {
+        // 1. Create a temporary "Pruned Tree" containing only relevant branches
+        const prunedTree = this.pruneTree(this.tree, this.search.identifier);
+
+        // 2. Flatten it completely (Ignore 'openedTerms' so everything shows)
+        const result = [];
+        const flattenAll = (nodes, depth = 0) => {
+          for (const node of nodes) {
+            // In search mode, we usually don't want to expand the target's own children,
+            // just show the path TO the target.
+            // Check if this node matches the target to stop recursion if desired.
+            const isTarget = node.identifier === this.search.identifier;
+
+            result.push({
+              ...node,
+              depth,
+              hasChildren: false, // Hide expand toggles in this view
+              isTarget: isTarget, // Helper for styling
+            });
+
+            // Recurse if there are children in our pruned tree
+            if (node.children && node.children.length > 0) {
+              flattenAll(node.children, depth + 1);
+            }
+          }
+        };
+
+        flattenAll(prunedTree);
+        return result;
+      }
       const result = [];
 
       // Recursive function to flatten visible parts of tree
@@ -216,13 +257,11 @@ export default {
         let parents = [...new Set(this.getAncestors()(newVal.identifier))];
         await this.activateTerms(newVal);
         this.open = parents;
-      } else await this.activateTerms();
+      }
+      else await this.activateTerms();
     },
     search(newTerm) {
       this.openTerms(this.getAncestors()(newTerm, "id", "name"));
-      if (newTerm) {
-        this.onAutocompleteSelect(newTerm);
-      }
     },
   },
   async mounted() {
@@ -260,7 +299,8 @@ export default {
       if (isOpen) {
         // Close: Remove ID from array
         newOpened = newOpened.filter((id) => id !== item.identifier);
-      } else {
+      }
+      else {
         // Open: Add ID to array
         newOpened.push(item.identifier);
       }
@@ -269,66 +309,33 @@ export default {
       this.openTerms(newOpened);
     },
 
-    getAncestorsPath(tree, targetId) {
-      for (const node of tree) {
-        // 1. Base Case: Found the node? Return its ID (or empty if you only want parents)
+    /**
+     * RECURSIVE HELPER: Returns a new tree structure containing ONLY
+     * nodes that are the target OR ancestors of the target.
+     */
+    pruneTree(nodes, targetId) {
+      const filteredNodes = [];
+
+      for (const node of nodes) {
+        // 1. If this node IS the target, keep it.
+        // (We optionally clear its children if you only want to see parents -> target)
         if (node.identifier === targetId) {
-          return [node.identifier];
+          filteredNodes.push({ ...node, children: [] });
+          continue;
         }
 
-        // 2. Recursive Step: Check children
+        // 2. If node has children, recurse down
         if (node.children && node.children.length > 0) {
-          const path = this.getAncestorsPath(node.children, targetId);
+          const matchingChildren = this.pruneTree(node.children, targetId);
 
-          // If the child returned a path, it means the target is down this branch
-          if (path) {
-            // Prepend current node to the path
-            return [node.identifier, ...path];
+          // 3. If any children matched, this node is a PARENT of the target. Keep it.
+          if (matchingChildren.length > 0) {
+            filteredNodes.push({ ...node, children: matchingChildren });
           }
         }
       }
-      // Target not found in this branch
-      return null;
-    },
 
-    async onAutocompleteSelect(selectedItem) {
-      if (!selectedItem) return;
-      const fullPath =
-        this.getAncestorsPath(this.tree, selectedItem.identifier) || [];
-      const ancestors = fullPath.slice(0, -1);
-      if (ancestors.length === 0 && fullPath.length === 0) {
-        console.warn("Node not found in tree!", selectedItem.identifier);
-        return;
-      }
-      const newOpened = [...new Set([...this.openedTerms, ...ancestors])];
-      this.openTerms(newOpened);
-      await this.$nextTick();
-      const index = this.visibleNodes.findIndex(
-        (node) => node.identifier === selectedItem.identifier,
-      );
-
-      if (index !== -1 && this.$refs.virtualScroll) {
-        this.$refs.virtualScroll.scrollToIndex(index);
-      } else {
-        console.warn("Item not found in visible list after expansion.");
-      }
-    },
-
-    getAllIndexesOfTerm(termId) {
-      // reduce is cleaner than a for-loop for collecting multiple matches
-      return this.visibleNodes.reduce((indexes, node, i) => {
-        if (node.identifier === termId) {
-          indexes.push(i);
-        }
-        return indexes;
-      }, []);
-    },
-
-    // Example usage: Print them to console
-    logMatches(term) {
-      const matches = this.getAllIndexesOfTerm(term.identifier);
-      console.log(`Term found at indexes: ${matches.join(", ")}`);
-      return matches;
+      return filteredNodes;
     },
   },
 };

@@ -155,31 +155,17 @@ export const getters = {
     (state) =>
       (value, field = "id") => {
         let ancestors = [];
-        // let subjectName;
-        // console.log("value::", value);
-        //Since the value is in the format of "identifier-name" we need to split it to get the identifier and name separately
-        // if (value !== undefined && value.indexOf("-") > -1) {
-        //   subjectName = value.split("-");
-        //   subjectName = subjectName[1].trim();
-        // }
-        // console.log(
-        //   "state::",
-        //   state.flattenedTree.filter((obj) => obj["name"] === value["name"]),
-        // );
         state.flattenedTree
           .filter((obj) => obj["name"] === value["name"])
           .forEach((node) => {
-          // console.log("node::", node);
             node.ancestors.forEach((ancestorID) => {
               state.flattenedTree
                 .filter((obj) => obj.identifier === ancestorID)
                 .forEach((ancestor) => {
-                // console.log("ancestor[field]::", ancestor[field]);
                   ancestors.push(ancestor[field]);
                 });
             });
           });
-        // console.log("ancestors::", ancestors);
         return [...new Set(ancestors)];
       },
   getCurrentPage: (state) => {

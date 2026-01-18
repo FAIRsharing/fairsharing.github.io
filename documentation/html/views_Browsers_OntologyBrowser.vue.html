@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Browsers/OntologyBrowser.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Browsers/OntologyBrowser.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;main>
+    &lt;v-container class="py-0 mb-10" fluid>
+      &lt;NotFound v-if="error" />
+      &lt;v-row v-else no-gutters>
+        &lt;v-col
+          id="ontologyBrowser"
+          class="border-e"
+          cols="12"
+          lg="4"
+          md="12"
+          sm="12"
+          xl="3"
+          xs="12"
+        >
+          &lt;div v-if="tree.length > 0" id="searchOntology" class="pr-2 mt-6">
+            &lt;v-autocomplete
+              v-model="search"
+              :color="color"
+              :items="flattenedTree"
+              :label="`Search ${selectedOntology}s`"
+              clearable
+              hide-details
+              item-title="name"
+              item-value="id"
+              return-object
+              variant="outlined"
+            />
+            &lt;v-divider class="mb-2 opacity-100" />
+          &lt;/div>
+          &lt;!-- Replacing v-tree-view with v-virtual-scroll for smooth behavior and performance -->
+          &lt;v-virtual-scroll
+            ref="virtualScroll"
+            :height="'70vh'"
+            :items="visibleNodes"
+            class="tree pb-3 px-3"
+          >
+            &lt;template #default="{ item }">
+              &lt;div
+                :style="{ paddingLeft: `${item.depth * 24}px` }"
+                class="d-flex align-center py-1 cursor-pointer hover-bg"
+                @click="toggleNode(item)"
+              >
+                &lt;div class="d-flex justify-center" style="width: 24px">
+                  &lt;v-icon
+                    v-if="!search &amp;&amp; item.hasChildren"
+                    :icon="
+                      openedTerms.includes(item.identifier)
+                        ? 'fas fa-caret-down'
+                        : 'fas fa-caret-right'
+                    "
+                    size="small"
+                  />
+                  &lt;v-icon
+                    v-else-if="search &amp;&amp; item.identifier !== search.identifier"
+                    color="grey-lighten-1"
+                    icon="fas fa-caret-down"
+                    size="x-small"
+                  />
+                  &lt;v-icon
+                    v-else-if="search &amp;&amp; item.identifier === search.identifier"
+                    color="primary"
+                    icon="fas fa-caret-right"
+                    size="small"
+                  />
+                &lt;/div>
+
+                &lt;div
+                  class="d-flex flex-row justify-center align-center flex-grow-1"
+                >
+                  &lt;span
+                    :class="[
+                      'chip-mimic mr-2',
+                      item.identifier === (search &amp;&amp; search.identifier)
+                        ? 'bg-primary text-white font-weight-bold elevation-2' /* Target Style */
+                        : 'text-grey-darken-2 border-grey' /* Parent/Path Style */,
+                    ]"
+                  >
+                    {{ item.name }}
+                  &lt;/span>
+
+                  &lt;v-spacer />
+
+                  &lt;div
+                    :class="
+                      activeTerms.includes(item.identifier)
+                        ? `bg-${color} text-white`
+                        : `bg-white text-${color} border-${color} border border-solid border-opacity-100`
+                    "
+                    class="hits d-flex justify-center align-center"
+                  >
+                    {{ item.records_count || 0 }}
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+            &lt;/template>
+          &lt;/v-virtual-scroll>
+        &lt;/v-col>
+        &lt;v-col
+          id="termDisplay"
+          class="py-0 my-0"
+          cols="12"
+          lg="8"
+          md="12"
+          sm="12"
+          xl="9"
+          xs="12"
+        >
+          &lt;div v-if="!loadingData &amp;&amp; tree.length > 0">
+            &lt;TermDetails
+              v-if="records &amp;&amp; selectedTerm"
+              :selected-ontology="selectedOntology"
+            />
+            &lt;v-card v-else class="pa-0" flat>
+              &lt;v-card-text class="pa-0">
+                &lt;OntologySunburst />
+              &lt;/v-card-text>
+            &lt;/v-card>
+          &lt;/div>
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+    &lt;v-fade-transition>
+      &lt;div>
+        &lt;v-overlay
+          v-model="loadingData"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          &lt;Loaders />
+        &lt;/v-overlay>
+      &lt;/div>
+    &lt;/v-fade-transition>
+  &lt;/main>
+&lt;/template>
+
+&lt;script>
+import { mapActions, mapGetters, mapState } from "vuex";
+
+import Loaders from "@/components/Navigation/Loaders";
+import OntologySunburst from "@/components/Ontologies/OntologySunburst";
+import TermDetails from "@/components/Ontologies/TermDetails";
+import NotFound from "@/views/Errors/404";
+
+export default {
+  name: "OntologyBrowser",
+  components: { Loaders, NotFound, TermDetails, OntologySunburst },
+  data() {
+    return {
+      allowedOntologies: ["domain", "subject"],
+      search: null,
+      foundIndexes: [], // Stores all row indexes: [5, 42, 108]
+      currentMatchIndex: 0, // Tracks which instance we are viewing
+    };
+  },
+  computed: {
+    selectedOntology() {
+      return this.$route.params.id;
+    },
+    error() {
+      return !this.allowedOntologies.includes(this.selectedOntology);
+    },
+    color() {
+      return this.colors[this.selectedOntology];
+    },
+    term() {
+      return this.flattenedTree.find((currentNode) => {
+        if (this.$route.query["term"]) {
+          return (
+            currentNode.name.toLowerCase() ===
+            decodeURIComponent(this.$route.query["term"]).toLowerCase()
+          );
+        }
+      });
+    },
+    open: {
+      get() {
+        return this.openedTerms;
+      },
+      set(val) {
+        this.openTerms(val);
+      },
+    },
+    ...mapState("editor", ["colors"]),
+    ...mapState("ontologyBrowser", [
+      "tree",
+      "records",
+      "loadingData",
+      "flattenedTree",
+      "pagination",
+      "activeTerms",
+      "selectedTerm",
+      "openedTerms",
+    ]),
+    visibleNodes() {
+      // MODE 1: FILTERED (Show ALL paths to the selected item)
+      if (this.search &amp;&amp; this.search.identifier) {
+        // 1. Create a temporary "Pruned Tree" containing only relevant branches
+        const prunedTree = this.pruneTree(this.tree, this.search.identifier);
+
+        // 2. Flatten it completely (Ignore 'openedTerms' so everything shows)
+        const result = [];
+        const flattenAll = (nodes, depth = 0) => {
+          for (const node of nodes) {
+            // In search mode, we usually don't want to expand the target's own children,
+            // just show the path TO the target.
+            // Check if this node matches the target to stop recursion if desired.
+            const isTarget = node.identifier === this.search.identifier;
+
+            result.push({
+              ...node,
+              depth,
+              hasChildren: false, // Hide expand toggles in this view
+              isTarget: isTarget, // Helper for styling
+            });
+
+            // Recurse if there are children in our pruned tree
+            if (node.children &amp;&amp; node.children.length > 0) {
+              flattenAll(node.children, depth + 1);
+            }
+          }
+        };
+
+        flattenAll(prunedTree);
+        return result;
+      }
+      const result = [];
+
+      // Recursive function to flatten visible parts of tree
+      const traverse = (nodes, depth = 0) => {
+        for (const node of nodes) {
+          // Add basic metadata for the UI
+          const hasChildren = node.children &amp;&amp; node.children.length > 0;
+
+          result.push({
+            ...node, // copy node data
+            depth, // add depth for indentation
+            hasChildren,
+          });
+
+          // Only traverse children if this node's ID is in 'openedTerms'
+          if (hasChildren &amp;&amp; this.openedTerms.includes(node.identifier)) {
+            traverse(node.children, depth + 1);
+          }
+        }
+      };
+
+      traverse(this.tree);
+      return result;
+    },
+  },
+  watch: {
+    async term(newVal) {
+      /* istanbul ignore else */
+      if (newVal) {
+        let parents = [...new Set(this.getAncestors()(newVal.identifier))];
+        await this.activateTerms(newVal);
+        this.open = parents;
+      }
+      else await this.activateTerms();
+    },
+    search(newTerm) {
+      this.openTerms(this.getAncestors()(newTerm, "id", "name"));
+    },
+  },
+  async mounted() {
+    await this.fetchTerms();
+  },
+  unmounted() {
+    this.leavePage();
+  },
+  methods: {
+    searchTerm(term) {
+      this.resetPagination();
+      if (this.activeTerms.includes(term.identifier))
+        this.$router.push({ path: this.$route.path });
+      else
+        this.$router.push({
+          path: this.$route.path,
+          query: { term: encodeURIComponent(term.name) },
+        });
+    },
+    ...mapActions("ontologyBrowser", [
+      "fetchTerms",
+      "fetchRecords",
+      "resetPagination",
+      "activateTerms",
+      "openTerms",
+      "leavePage",
+    ]),
+    ...mapGetters("ontologyBrowser", ["getAncestors"]),
+    toggleNode(item) {
+      if (!item.hasChildren) return;
+
+      const isOpen = this.openedTerms.includes(item.identifier);
+      let newOpened = [...this.openedTerms];
+
+      if (isOpen) {
+        // Close: Remove ID from array
+        newOpened = newOpened.filter((id) => id !== item.identifier);
+      }
+      else {
+        // Open: Add ID to array
+        newOpened.push(item.identifier);
+      }
+
+      // Sync with your Vuex or local state
+      this.openTerms(newOpened);
+    },
+
+    /**
+     * RECURSIVE HELPER: Returns a new tree structure containing ONLY
+     * nodes that are the target OR ancestors of the target.
+     */
+    pruneTree(nodes, targetId) {
+      const filteredNodes = [];
+
+      for (const node of nodes) {
+        // 1. If this node IS the target, keep it.
+        // (We optionally clear its children if you only want to see parents -> target)
+        if (node.identifier === targetId) {
+          filteredNodes.push({ ...node, children: [] });
+          continue;
+        }
+
+        // 2. If node has children, recurse down
+        if (node.children &amp;&amp; node.children.length > 0) {
+          const matchingChildren = this.pruneTree(node.children, targetId);
+
+          // 3. If any children matched, this node is a PARENT of the target. Keep it.
+          if (matchingChildren.length > 0) {
+            filteredNodes.push({ ...node, children: matchingChildren });
+          }
+        }
+      }
+
+      return filteredNodes;
+    },
+  },
+};
+&lt;/script>
+
+&lt;style lang="scss" scoped>
+.subject_color--border {
+  border: 1px solid #e67e22 !important;
+}
+
+.domain_color--border {
+  border: 1px solid #712727 !important;
+}
+
+.hits {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+#ontologyBrowser,
+#termDisplay {
+  display: flex;
+  flex-direction: column;
+}
+
+.tree {
+  overflow-y: scroll;
+  flex-grow: 1;
+  height: 70vh;
+}
+
+@media (max-width: 1263px) {
+  #ontologyBrowser {
+    height: auto;
+  }
+  .tree {
+    max-height: 40vh;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.col {
+  flex-basis: initial !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.chip-mimic {
+  border: 1px solid;
+  border-radius: 18px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Hover effect for the row */
+.hover-bg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
+	
+		on Sun Jan 18th 2026
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

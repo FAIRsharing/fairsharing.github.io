@@ -110,7 +110,7 @@
             &lt;v-autocomplete
               v-model="search"
               :color="color"
-              :items="flattenedTree"
+              :items="uniqueSearchItems"
               :label="`Search ${selectedOntology}s`"
               clearable
               hide-details
@@ -154,8 +154,8 @@
                     :class="[
                       'chip-mimic mr-2',
                       item.isTarget
-                        ? 'bg-primary text-white font-weight-bold elevation-2'
-                        : 'text-grey-darken-2 border-grey',
+                        ? `bg-${color} text-white font-weight-bold elevation-2 border-0`
+                        : `text-${color} border-${color}`,
                     ]"
                   >
                     {{ item.name }}
@@ -236,25 +236,6 @@ export default {
     };
   },
   computed: {
-    selectedOntology() {
-      return this.$route.params.id;
-    },
-    error() {
-      return !this.allowedOntologies.includes(this.selectedOntology);
-    },
-    color() {
-      return this.colors[this.selectedOntology];
-    },
-
-    term() {
-      const qTerm = this.$route.query["term"];
-      if (!qTerm) return null;
-      return this.flattenedTree.find(
-        (node) =>
-          node.name.toLowerCase() === decodeURIComponent(qTerm).toLowerCase(),
-      );
-    },
-
     ...mapState("editor", ["colors"]),
     // We do NOT map activeTerms/openedTerms directly to avoid undefined errors
     ...mapState("ontologyBrowser", [
@@ -265,7 +246,23 @@ export default {
       "pagination",
       "selectedTerm",
     ]),
-
+    selectedOntology() {
+      return this.$route.params.id;
+    },
+    error() {
+      return !this.allowedOntologies.includes(this.selectedOntology);
+    },
+    color() {
+      return this.colors[this.selectedOntology];
+    },
+    term() {
+      const qTerm = this.$route.query["term"];
+      if (!qTerm) return null;
+      return this.flattenedTree.find(
+        (node) =>
+          node.name.toLowerCase() === decodeURIComponent(qTerm).toLowerCase(),
+      );
+    },
     // Manual State mapping with Safety Checks
     activeTerms() {
       return this.$store.state.ontologyBrowser.activeTerms || [];
@@ -326,6 +323,25 @@ export default {
 
       traverse(sourceTree);
       return result;
+    },
+
+    /**
+     * UNIQUE SEARCH ITEMS
+     * Filters the flattenedTree to ensure each term ID appears only once
+     * in the Autocomplete dropdown.
+     */
+    uniqueSearchItems() {
+      const items = this.flattenedTree || [];
+      const seen = new Set();
+
+      return items.filter((item) => {
+        const id = item.identifier;
+        if (seen.has(id)) {
+          return false; // Duplicate found, skip it
+        }
+        seen.add(id);
+        return true; // New item, keep it
+      });
     },
   },
   watch: {

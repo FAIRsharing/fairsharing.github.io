@@ -206,13 +206,13 @@ export default {
             // In search mode, we usually don't want to expand the target's own children,
             // just show the path TO the target.
             // Check if this node matches the target to stop recursion if desired.
-            const isTarget = node.identifier === this.search.identifier;
+            // const isTarget = node.identifier === this.search.identifier;
 
             result.push({
               ...node,
               depth,
-              hasChildren: false, // Hide expand toggles in this view
-              isTarget: isTarget, // Helper for styling
+              hasChildren: true, // Hide expand toggles in this view
+              // isTarget: isTarget, // Helper for styling
             });
 
             // Recurse if there are children in our pruned tree
@@ -229,6 +229,8 @@ export default {
 
       // Recursive function to flatten visible parts of tree
       const traverse = (nodes, depth = 0) => {
+        // Safety check to prevent crashing on empty children
+        if (!nodes || nodes.length === 0) return;
         for (const node of nodes) {
           // Add basic metadata for the UI
           const hasChildren = node.children && node.children.length > 0;
@@ -261,7 +263,7 @@ export default {
       else await this.activateTerms();
     },
     search(newTerm) {
-      this.openTerms(this.getAncestors()(newTerm, "id", "name"));
+      this.openTerms(this.getAncestors()(newTerm, "identifier", "name"));
     },
   },
   async mounted() {
@@ -292,13 +294,13 @@ export default {
     ...mapGetters("ontologyBrowser", ["getAncestors"]),
     toggleNode(item) {
       if (!item.hasChildren) return;
-
       const isOpen = this.openedTerms.includes(item.identifier);
       let newOpened = [...this.openedTerms];
-
       if (isOpen) {
         // Close: Remove ID from array
-        newOpened = newOpened.filter((id) => id !== item.identifier);
+        newOpened = newOpened.filter(
+          (identifier) => identifier !== item.identifier,
+        );
       }
       else {
         // Open: Add ID to array
@@ -315,12 +317,14 @@ export default {
      */
     pruneTree(nodes, targetId) {
       const filteredNodes = [];
-
       for (const node of nodes) {
         // 1. If this node IS the target, keep it.
         // (We optionally clear its children if you only want to see parents -> target)
         if (node.identifier === targetId) {
-          filteredNodes.push({ ...node, children: [] });
+          filteredNodes.push({
+            ...node,
+            // children: node.children ? [...node.children] : [],
+          });
           continue;
         }
 

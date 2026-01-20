@@ -39,28 +39,28 @@
               <div
                 :style="{ paddingLeft: `${item.depth * 24}px` }"
                 class="d-flex align-center py-1 cursor-pointer hover-bg"
-                @click="toggleNode(item)"
               >
                 <div class="d-flex justify-center" style="width: 24px">
                   <v-icon
                     v-if="item.hasChildren"
                     :icon="
-                      openedTerms.includes(item.identifier)
+                      isOpen(item.identifier)
                         ? 'fas fa-caret-down'
                         : 'fas fa-caret-right'
                     "
                     size="small"
-                    @click.stop="toggleNode(item)"
+                    @click="toggleNode(item)"
                   />
                 </div>
 
                 <div
                   class="d-flex flex-row justify-center align-center flex-grow-1"
+                  @click="searchTerm(item)"
                 >
                   <span
                     :class="[
                       'chip-mimic mr-2',
-                      item.isTarget
+                      item.isTarget || activeTerms.includes(item.identifier)
                         ? `bg-${color} text-white font-weight-bold elevation-2 border-0`
                         : `text-${color} border-${color}`,
                     ]"
@@ -344,6 +344,21 @@ export default {
       "openTerms",
       "leavePage",
     ]),
+    /**
+     * Give the result of the term selected
+     * @param term
+     */
+
+    searchTerm(term) {
+      this.resetPagination();
+      if (this.activeTerms.includes(term.identifier))
+        this.$router.push({ path: this.$route.path });
+      else
+        this.$router.push({
+          path: this.$route.path,
+          query: { term: encodeURIComponent(term.name) },
+        });
+    },
 
     // --- UPDATED HELPER: Find ALL Paths ---
     // Returns Array of Arrays: [[Root, Child, Target], [Root, OtherChild, Target]]
@@ -425,6 +440,15 @@ export default {
         }
       }
       return filtered;
+    },
+
+    /**
+     * SAFE CHECK: Checks if a node is open regardless of ID type (String/Number)
+     */
+    isOpen(identifier) {
+      if (!this.openedTerms) return false;
+      // Convert everything to String for comparison
+      return this.openedTerms.map(String).includes(String(identifier));
     },
   },
 };

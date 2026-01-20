@@ -28,7 +28,7 @@
             />
             <v-divider class="mb-2 opacity-100" />
           </div>
-          <!-- Replacing v-tree-view with v-virtual-scroll for smooth behavior and performance -->
+
           <v-virtual-scroll
             ref="virtualScroll"
             :height="'70vh'"
@@ -43,25 +43,14 @@
               >
                 <div class="d-flex justify-center" style="width: 24px">
                   <v-icon
-                    v-if="!search && item.hasChildren"
+                    v-if="item.hasChildren"
                     :icon="
                       openedTerms.includes(item.identifier)
                         ? 'fas fa-caret-down'
                         : 'fas fa-caret-right'
                     "
                     size="small"
-                  />
-                  <v-icon
-                    v-else-if="search && item.identifier !== search.identifier"
-                    color="grey-lighten-1"
-                    icon="fas fa-caret-down"
-                    size="x-small"
-                  />
-                  <v-icon
-                    v-else-if="search && item.identifier === search.identifier"
-                    color="primary"
-                    icon="fas fa-caret-right"
-                    size="small"
+                    @click.stop="toggleNode(item)"
                   />
                 </div>
 
@@ -71,9 +60,9 @@
                   <span
                     :class="[
                       'chip-mimic mr-2',
-                      item.identifier === (search && search.identifier)
-                        ? 'bg-primary text-white font-weight-bold elevation-2' /* Target Style */
-                        : 'text-grey-darken-2 border-grey' /* Parent/Path Style */,
+                      item.isTarget
+                        ? 'bg-primary text-white font-weight-bold elevation-2'
+                        : 'text-grey-darken-2 border-grey',
                     ]"
                   >
                     {{ item.name }}
@@ -96,6 +85,7 @@
             </template>
           </v-virtual-scroll>
         </v-col>
+
         <v-col
           id="termDisplay"
           class="py-0 my-0"
@@ -120,6 +110,7 @@
         </v-col>
       </v-row>
     </v-container>
+
     <v-fade-transition>
       <div>
         <v-overlay
@@ -136,8 +127,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
-
+import { mapActions, mapState } from "vuex";
 import Loaders from "@/components/Navigation/Loaders";
 import OntologySunburst from "@/components/Ontologies/OntologySunburst";
 import TermDetails from "@/components/Ontologies/TermDetails";
@@ -150,8 +140,6 @@ export default {
     return {
       allowedOntologies: ["domain", "subject"],
       search: null,
-      foundIndexes: [], // Stores all row indexes: [5, 42, 108]
-      currentMatchIndex: 0, // Tracks which instance we are viewing
     };
   },
   computed: {
@@ -164,106 +152,165 @@ export default {
     color() {
       return this.colors[this.selectedOntology];
     },
+
     term() {
-      return this.flattenedTree.find((currentNode) => {
-        if (this.$route.query["term"]) {
-          return (
-            currentNode.name.toLowerCase() ===
-            decodeURIComponent(this.$route.query["term"]).toLowerCase()
-          );
-        }
-      });
+      const qTerm = this.$route.query["term"];
+      if (!qTerm) return null;
+      return this.flattenedTree.find(
+        (node) =>
+          node.name.toLowerCase() === decodeURIComponent(qTerm).toLowerCase(),
+      );
     },
-    open: {
-      get() {
-        return this.openedTerms;
-      },
-      set(val) {
-        this.openTerms(val);
-      },
-    },
+
     ...mapState("editor", ["colors"]),
+    // We do NOT map activeTerms/openedTerms directly to avoid undefined errors
     ...mapState("ontologyBrowser", [
       "tree",
       "records",
       "loadingData",
       "flattenedTree",
       "pagination",
-      "activeTerms",
       "selectedTerm",
-      "openedTerms",
     ]),
+
+    // Manual State mapping with Safety Checks
+    activeTerms() {
+      return this.$store.state.ontologyBrowser.activeTerms || [];
+    },
+    openedTerms() {
+      return this.$store.state.ontologyBrowser.openedTerms || [];
+    },
+
+    /**
+     * VISIBLE NODES
+     * Combines Pruning (Search) + Flattening (Expansion)
+     */
     visibleNodes() {
-      // MODE 1: FILTERED (Show ALL paths to the selected item)
+      let sourceTree = this.tree || [];
+
+      // 1. If Searching, use a Pruned Tree (Supports Multiple Instances)
       if (this.search && this.search.identifier) {
-        // 1. Create a temporary "Pruned Tree" containing only relevant branches
-        const prunedTree = this.pruneTree(this.tree, this.search.identifier);
-
-        // 2. Flatten it completely (Ignore 'openedTerms' so everything shows)
-        const result = [];
-        const flattenAll = (nodes, depth = 0) => {
-          for (const node of nodes) {
-            // In search mode, we usually don't want to expand the target's own children,
-            // just show the path TO the target.
-            // Check if this node matches the target to stop recursion if desired.
-            // const isTarget = node.identifier === this.search.identifier;
-
-            result.push({
-              ...node,
-              depth,
-              hasChildren: true, // Hide expand toggles in this view
-              // isTarget: isTarget, // Helper for styling
-            });
-
-            // Recurse if there are children in our pruned tree
-            if (node.children && node.children.length > 0) {
-              flattenAll(node.children, depth + 1);
-            }
-          }
-        };
-
-        flattenAll(prunedTree);
-        return result;
+        const pruned = this.pruneTreeWithChildren(
+          this.tree,
+          this.search.identifier,
+        );
+        if (pruned.length > 0) sourceTree = pruned;
       }
-      const result = [];
 
-      // Recursive function to flatten visible parts of tree
+      const result = [];
+      const searchId = this.search?.identifier
+        ? String(this.search.identifier)
+        : null;
+
+      // Safety: Ensure we have an array of Strings for comparison
+      const currentOpenTerms = (this.openedTerms || []).map(String);
+
       const traverse = (nodes, depth = 0) => {
-        // Safety check to prevent crashing on empty children
         if (!nodes || nodes.length === 0) return;
+
         for (const node of nodes) {
-          // Add basic metadata for the UI
           const hasChildren = node.children && node.children.length > 0;
+          const strId = String(node.identifier);
+          const isTarget = strId === searchId;
+
+          // Check if this node is Open
+          const isOpen = currentOpenTerms.includes(strId);
 
           result.push({
-            ...node, // copy node data
-            depth, // add depth for indentation
+            ...node,
+            depth,
             hasChildren,
+            isTarget,
           });
 
-          // Only traverse children if this node's ID is in 'openedTerms'
-          if (hasChildren && this.openedTerms.includes(node.identifier)) {
+          // Expand logic:
+          // We only descend if the node has children AND is marked as Open
+          if (hasChildren && isOpen) {
             traverse(node.children, depth + 1);
           }
         }
       };
 
-      traverse(this.tree);
+      traverse(sourceTree);
       return result;
     },
   },
   watch: {
+    // URL Term Watcher
     async term(newVal) {
-      /* istanbul ignore else */
       if (newVal) {
-        let parents = [...new Set(this.getAncestors()(newVal.identifier))];
         await this.activateTerms(newVal);
-        this.open = parents;
+
+        // Find ALL paths to this term (in case it exists in multiple places)
+        const allPaths = this.findAllPaths(this.tree, newVal.identifier);
+        const parentsToOpen = new Set();
+
+        allPaths.forEach((path) => {
+          path.forEach((id) => {
+            if (String(id) !== String(newVal.identifier)) {
+              parentsToOpen.add(String(id));
+            }
+          });
+        });
+
+        this.openTerms(Array.from(parentsToOpen));
       }
-      else await this.activateTerms();
+      else {
+        await this.activateTerms();
+      }
     },
+
+    // --- SEARCH WATCHER (Handles Multiple Instances) ---
     search(newTerm) {
-      this.openTerms(this.getAncestors()(newTerm, "identifier", "name"));
+      // CASE 1: Search Cleared
+      if (!newTerm) {
+        // Reset to full tree by clearing the "open" list
+        this.openTerms([]);
+        return;
+      }
+
+      // CASE 2: Active Search
+      const targetId = newTerm.identifier || newTerm;
+      const strTargetId = String(targetId);
+
+      // 1. Find ALL paths to the target node
+      const allPaths = this.findAllPaths(this.tree, targetId);
+
+      // 2. Collect ALL parent IDs from ALL paths
+      const allIdsToOpen = new Set();
+
+      allPaths.forEach((path) => {
+        path.forEach((id) => {
+          // Add ID to open set ONLY if it is NOT the target itself
+          // (We want the parents open, but the target closed)
+          if (String(id) !== strTargetId) {
+            allIdsToOpen.add(String(id));
+          }
+        });
+      });
+
+      // 3. Update Vuex State
+      this.openTerms(Array.from(allIdsToOpen));
+
+      // 4. Scroll to FIRST Instance
+      setTimeout(() => {
+        if (!this.$refs.virtualScroll) return;
+
+        // Find index of the FIRST occurrence in the visible list
+        const index = this.visibleNodes.findIndex(
+          (x) => String(x.identifier) === strTargetId,
+        );
+
+        if (index !== -1) {
+          if (this.$refs.virtualScroll.scrollToIndex) {
+            this.$refs.virtualScroll.scrollToIndex(index);
+          }
+          else {
+            // Fallback: 50px is the estimated item height
+            this.$refs.virtualScroll.$el.scrollTop = index * 50;
+          }
+        }
+      }, 300);
     },
   },
   async mounted() {
@@ -273,16 +320,6 @@ export default {
     this.leavePage();
   },
   methods: {
-    searchTerm(term) {
-      this.resetPagination();
-      if (this.activeTerms.includes(term.identifier))
-        this.$router.push({ path: this.$route.path });
-      else
-        this.$router.push({
-          path: this.$route.path,
-          query: { term: encodeURIComponent(term.name) },
-        });
-    },
     ...mapActions("ontologyBrowser", [
       "fetchTerms",
       "fetchRecords",
@@ -291,55 +328,87 @@ export default {
       "openTerms",
       "leavePage",
     ]),
-    ...mapGetters("ontologyBrowser", ["getAncestors"]),
+
+    // --- UPDATED HELPER: Find ALL Paths ---
+    // Returns Array of Arrays: [[Root, Child, Target], [Root, OtherChild, Target]]
+    findAllPaths(nodes, targetId, currentPath = [], results = []) {
+      const strTarget = String(targetId);
+
+      for (const node of nodes) {
+        const strNode = String(node.identifier);
+
+        // Create a new path array for this branch
+        const newPath = [...currentPath, node.identifier];
+
+        // Match Found: Add this full path to results
+        if (strNode === strTarget) {
+          results.push(newPath);
+        }
+
+        // Continue searching deeper even if match found (in case of nested weirdness),
+        // but primarily to find matches in OTHER branches.
+        if (node.children && node.children.length > 0) {
+          this.findAllPaths(node.children, targetId, newPath, results);
+        }
+      }
+
+      return results;
+    },
+
     toggleNode(item) {
       if (!item.hasChildren) return;
-      const isOpen = this.openedTerms.includes(item.identifier);
-      let newOpened = [...this.openedTerms];
+
+      const strId = String(item.identifier);
+      const currentOpenTerms = (this.openedTerms || []).map(String);
+      const isOpen = currentOpenTerms.includes(strId);
+
+      let newOpened = [...(this.openedTerms || [])];
+
       if (isOpen) {
-        // Close: Remove ID from array
-        newOpened = newOpened.filter(
-          (identifier) => identifier !== item.identifier,
-        );
+        // Close: Remove strict match
+        newOpened = newOpened.filter((id) => String(id) !== strId);
       }
       else {
-        // Open: Add ID to array
+        // Open: Add original ID
         newOpened.push(item.identifier);
       }
 
-      // Sync with your Vuex or local state
       this.openTerms(newOpened);
     },
 
-    /**
-     * RECURSIVE HELPER: Returns a new tree structure containing ONLY
-     * nodes that are the target OR ancestors of the target.
-     */
-    pruneTree(nodes, targetId) {
-      const filteredNodes = [];
+    // Prune logic that supports multiple matches
+    pruneTreeWithChildren(nodes, targetId) {
+      const filtered = [];
+      const strTarget = String(targetId);
+
       for (const node of nodes) {
-        // 1. If this node IS the target, keep it.
-        // (We optionally clear its children if you only want to see parents -> target)
-        if (node.identifier === targetId) {
-          filteredNodes.push({
+        const strNode = String(node.identifier);
+
+        // CASE 1: Found the target
+        if (strNode === strTarget) {
+          filtered.push({
             ...node,
-            // children: node.children ? [...node.children] : [],
+            children: node.children ? [...node.children] : [],
           });
+          // We do NOT 'continue' here because a child might ALSO contain the target
+          // (unlikely in standard ontology but possible in graph structures)
+          // Actually, for standard tree display, if we found it, we show it.
+          // If the term appears AGAIN inside itself, recursion handles it.
           continue;
         }
 
-        // 2. If node has children, recurse down
+        // CASE 2: Look in children
         if (node.children && node.children.length > 0) {
-          const matchingChildren = this.pruneTree(node.children, targetId);
-
-          // 3. If any children matched, this node is a PARENT of the target. Keep it.
+          const matchingChildren = this.pruneTreeWithChildren(
+            node.children,
+            targetId,
+          );
           if (matchingChildren.length > 0) {
-            filteredNodes.push({ ...node, children: matchingChildren });
+            filtered.push({ ...node, children: matchingChildren });
           }
         }
       }
-
-      return filteredNodes;
+      return filtered;
     },
   },
 };
@@ -349,7 +418,6 @@ export default {
 .subject_color--border {
   border: 1px solid #e67e22 !important;
 }
-
 .domain_color--border {
   border: 1px solid #712727 !important;
 }
@@ -367,7 +435,7 @@ export default {
 }
 
 .tree {
-  overflow-y: scroll;
+  /* overflow-y handled by virtual-scroll, but we keep this for flex layout */
   flex-grow: 1;
   height: 70vh;
 }
@@ -385,9 +453,11 @@ export default {
 .col {
   flex-basis: initial !important;
 }
-
 .cursor-pointer {
   cursor: pointer !important;
+}
+.hover-bg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 .chip-mimic {
@@ -398,10 +468,5 @@ export default {
   line-height: 1.8;
   display: inline-block;
   white-space: nowrap;
-}
-
-/* Hover effect for the row */
-.hover-bg:hover {
-  background-color: rgba(0, 0, 0, 0.04);
 }
 </style>

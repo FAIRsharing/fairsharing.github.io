@@ -112,7 +112,7 @@
           class="fixedHeight d-block"
           hide-default-footer
           items-per-page="-1"
-          mobile-breakpoint="760"
+          mobile-breakpoint="sm"
           text-center
         >
           <template #[`item.name`]="{ item }">
@@ -160,13 +160,13 @@ export default {
   data() {
     return {
       headers: [
-        { text: "Record name", value: "name", align: "center" },
+        { title: "Record name", value: "name", align: "center" },
         {
-          text: "Record registry and type",
+          title: "Record registry and type",
           value: "registry",
           align: "center",
         },
-        { text: "Record status", value: "status", align: "center" },
+        { title: "Record status", value: "status", align: "center" },
       ],
     };
   },

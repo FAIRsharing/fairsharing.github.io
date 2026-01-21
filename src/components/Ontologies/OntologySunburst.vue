@@ -1,5 +1,5 @@
 <template>
-  <highcharts v-if="!loadingData" :options="sunburstOptions" />
+  <highcharts v-if="!loadingData" :options="sunburstOptions" class="mt-6" />
 </template>
 
 <script>
@@ -12,8 +12,7 @@ import Highcharts from "highcharts";
 // check if Sunburst is a function, if not try .default
 if (typeof Sunburst === "function") {
   Sunburst(Highcharts);
-}
-else if (typeof Sunburst.default === "function") {
+} else if (typeof Sunburst.default === "function") {
   Sunburst.default(Highcharts);
 }
 
@@ -178,8 +177,7 @@ export default {
             query: { term: encodeURIComponent(node.name) },
           });
         }
-      }
-      else {
+      } else {
         if (node.name !== "Subject") {
           let ancestors = this.getAncestors()(node.identifier);
           if (node["innerArcLength"] === 0)

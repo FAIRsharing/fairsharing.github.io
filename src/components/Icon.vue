@@ -36,7 +36,7 @@ export default {
     size: { default: "10", type: String },
     fallback: { default: "undefined", type: String },
     wrapperClass: { default: "icon-container", type: String },
-    height: { default: 45, type: String || Number },
+    height: { default: 45 },
     color: { default: null, type: String },
   },
   data() {
@@ -61,6 +61,7 @@ export default {
   cursor: help;
   color: #0000008a;
 }
+
 .alt-container {
   position: absolute;
   background: white;

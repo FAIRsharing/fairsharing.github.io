@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <div>
     <div
       v-if="recordType && !showOnlyStatus"
@@ -6,8 +6,8 @@
     >
       <v-tooltip location="end" offset="25">
         <template #activator="{ props }">
-          <v-avatar size="80" :alt="getRecordStatus.title" v-bind="props">
-            <Icon :item="record.type" wrapper-class="" :height="80" />
+          <v-avatar :alt="getRecordStatus.title" size="80" v-bind="props">
+            <Icon :height="80" :item="record.type" wrapper-class="" />
           </v-avatar>
         </template>
         <span v-if="recordType[record.type]">{{
@@ -18,8 +18,8 @@
       <v-tooltip v-if="showStatus" location="right">
         <template #activator="{ props }">
           <span
-            class="text-white text-h5 circle"
             :style="getRecordStatus.backColor"
+            class="text-white text-h5 circle"
             v-bind="props"
             ><p>{{ getRecordStatus.title }}</p></span
           >
@@ -35,8 +35,8 @@
       <v-tooltip v-if="showStatus" location="top">
         <template #activator="{ props }">
           <p
-            class="text-white text-h5 circle text-center d-flex align-center justify-center mb-0"
             :style="getRecordStatus.backColor"
+            class="text-white text-h5 circle text-center d-flex align-center justify-center mb-0"
             v-bind="props"
           >
             <span>{{ getRecordStatus.title }}</span>
@@ -50,8 +50,7 @@
 
 <script>
 import Icon from "@/components/Icon";
-import { useTheme } from "vuetify";
-// Lighten or darken the color using javascript
+import { useTheme } from "vuetify"; // Lighten or darken the color using javascript
 import { LightenDarkenColor } from "@/utils/generalUtils";
 import customIcons from "@/plugins/icons";
 
@@ -121,7 +120,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .circle-container {
   position: relative;
   border: #b3b3b3 dotted 3px;
@@ -171,6 +170,7 @@ export default {
   -webkit-border-radius: 50%;
   width: 86px;
   height: 87px;
+
   .circle {
     position: absolute;
     left: 26%;
@@ -190,6 +190,7 @@ export default {
   border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
+
   .circle {
     height: 36px;
     width: 36px;

@@ -82,16 +82,15 @@ describe("Educational.vue", function(){
             mocks: {$route},
             stubs: ['router-link', 'router-view']
         })
-        const selectedInfoGraphic =
-            {
-                "id": "nutshell",
-                "logo": "nutshell.png",
-                "text": "",
-                "doi": "10.5281/zenodo.8191958",
-                "url": "https://zenodo.org/record/8191958/files/0%20-%20FAIRsharing%20in%20a%20nutshell%20V1.1.pdf?download=1",
-                "copyButtonStatus": true,
-                "hash": "nutshell"
-            }
+        const selectedInfoGraphic = {
+          id: "nutshell",
+          logo: "nutshell.png",
+          text: "",
+          doi: "10.5281/zenodo.7737366",
+          url: "https://zenodo.org/record/8191958/files/0%20-%20FAIRsharing%20in%20a%20nutshell%20V1.1.pdf?download=1",
+          copyButtonStatus: true,
+          hash: "nutshell",
+        };
         wrapper.vm.$route.hash
         wrapper.vm.infographicPopup.data = {};
         wrapper.vm.infographicPopup.show = false;

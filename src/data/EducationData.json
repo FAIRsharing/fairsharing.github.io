@@ -276,7 +276,7 @@
         "id": "nutshell",
         "logo": "nutshell.png",
         "text": "",
-        "doi": "10.5281/zenodo.8191958",
+        "doi": "10.5281/zenodo.7737366",
         "url": "https://zenodo.org/record/8191958/files/0%20-%20FAIRsharing%20in%20a%20nutshell%20V1.1.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "nutshell"
@@ -285,7 +285,7 @@
         "id": "standards_overview",
         "logo": "standards_overview.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186982",
+        "doi": "10.5281/zenodo.7737795",
         "url": "https://zenodo.org/record/8186982/files/0%20-%20FAIRsharing%20content_%20standards%20overview%20V1.1.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "standards"
@@ -294,7 +294,7 @@
         "id": "databases_overview",
         "logo": "databases_overview.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186961",
+        "doi": "10.5281/zenodo.7737841",
         "url": "https://zenodo.org/record/8186961/files/0%20-%20FAIRsharing%20content_%20databases%20overview%20V1.1.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "databases"
@@ -303,8 +303,8 @@
         "id": "policies_overview",
         "logo": "policies_overview.png",
         "text": "",
-        "doi": "10.5281/zenodo.11059819",
-        "url": "https://zenodo.org/records/11059819/files/FAIRsharing%20content_%20policies%20overview%20V1.0.pdf?download=1",
+        "doi": "10.5281/zenodo.11059818",
+        "url": "https://zenodo.org/records/12515451/files/FAIRsharing%20content_%20policies%20overview%20(en)%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "policies"
       },
@@ -320,7 +320,7 @@
         "id": "researchers",
         "logo": "researchers.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186952",
+        "doi": "10.5281/zenodo.7733025",
         "url": "https://zenodo.org/record/8186952/files/0%20-%20FAIRsharing%20for%20you_%20researchers%20V1.1.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "researchers"
@@ -329,7 +329,7 @@
         "id": "journal_publishers",
         "logo": "journal_publishers.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186640",
+        "doi": "10.5281/zenodo.7737417",
         "url": "https://zenodo.org/record/8186640/files/0%20-%20FAIRsharing%20for%20you_%20journal%20publishers%20V1.1.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "publishers"
@@ -338,7 +338,7 @@
         "id": "funders",
         "logo": "funders.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186623",
+        "doi": "10.5281/zenodo.7737551",
         "url": "https://zenodo.org/record/8186623/files/0%20-%20FAIRsharing%20for%20you_%20funders%20V1.1.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "funders"
@@ -347,7 +347,7 @@
         "id": "societies_and_alliances",
         "logo": "societies_and_alliances.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186504",
+        "doi": "10.5281/zenodo.8186503",
         "url": "https://zenodo.org/record/8186504/files/FAIRsharing%20for%20you_%20societies%20and%20alliances.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "societies"
@@ -356,7 +356,7 @@
         "id": "librarians_and_trainers",
         "logo": "librarians_and_trainers.png",
         "text": "",
-        "doi": "10.5281/zenodo.8186609",
+        "doi": "10.5281/zenodo.8186608",
         "url": "https://zenodo.org/record/8186609/files/FAIRsharing%20for%20you_%20librarians%20and%20trainers.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "trainers"
@@ -365,7 +365,7 @@
         "id": "developers_and_curators",
         "logo": "developers_and_curators.png",
         "text": "Coming Soon",
-        "doi": "10.5281/zenodo.8186594",
+        "doi": "10.5281/zenodo.8186593",
         "url": "https://zenodo.org/record/8186594/files/FAIRsharing%20for%20you_%20developers%20and%20curators.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "developers"

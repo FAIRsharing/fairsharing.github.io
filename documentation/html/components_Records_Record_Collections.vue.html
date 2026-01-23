@@ -94,8 +94,8 @@
             class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   &lt;v-card
     v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column overflow-initial"
-    border
+    class="pa-4 d-flex flex-column"
+    outlined
     :color="backColor"
     tile
     elevation="3"
@@ -107,18 +107,15 @@
         &lt;v-autocomplete
           v-if="!tabsDataExist"
           v-model="selectedValues"
-          :disabled="
-            tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data
-              .length &lt; 5
-          "
+          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
           :items="getValues"
-          variant="solo"
-          :menu-props="{ attach: true }"
-          density="compact"
+          solo
+          :attach="true"
+          dense
           clearable
-          prepend-inner-icon="fas fa-search"
+          prepend-inner-icon="fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-title="name"
+          item-text="name"
           item-value="name"
         >
           &lt;template #item="data">
@@ -132,48 +129,36 @@
       &lt;v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.display.mdAndDown"
-        bg-color="transparent"
+        :show-arrows="$vuetify.breakpoint.mdAndDown"
+        background-color="transparent"
         grow
         color="accent3"
         slider-color="accent3"
         class="mb-5"
-        :hide-slider="
-          tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
-            .type === 'conforming_resources'
-            ? !currentRecord['fairsharingRecord'].savedSearches.length
-            : tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
-                .data.length === 0
-        "
+        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].type === 'conforming_resources'? !currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
       >
         &lt;v-tab
-          v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
-          :key="tabName + '_' + tabIndex"
-          :disabled="
-            tabName === 'conforming_resources'
-              ? !currentRecord['fairsharingRecord'].savedSearches.length
-              : tabsData.tabs[tabName].data.length === 0
-          "
-          @group:selected="selectedValues = null"
+          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
+          :key="tabName+'_'+tabIndex"
+          :disabled="tabName === 'conforming_resources' ? !currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[tabName].data.length===0"
+          @change="selectedValues=null"
         >
-          {{ cleanString(tabName) }} ({{
-            tabName === "conforming_resources"
-              ? currentRecord["fairsharingRecord"].savedSearches.length
-              : tabsData.tabs[tabName].count
-          }})
+          {{ cleanString(tabName) }} ({{ tabName === 'conforming_resources' ? currentRecord['fairsharingRecord'].savedSearches.length : tabsData.tabs[tabName].count }})
         &lt;/v-tab>
       &lt;/v-tabs>
       &lt;!--  tab content  -->
-      &lt;v-tabs-window
+      &lt;v-tabs-items
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :class="['transparent', tabsDataExist]"
+        :class="['transparent',tabsDataExist]"
       >
-        &lt;v-tabs-window-item
-          v-for="(tabItem, tabItemIndex) in filterList"
-          :key="tabItem + '_' + tabItemIndex"
+        &lt;v-tab-item
+          v-for="(tabItem,tabItemIndex) in filterList"
+          :key="tabItem+'_'+tabItemIndex"
         >
-          &lt;SavedSearches v-if="tabItem.type === 'conforming_resources'" />
+          &lt;SavedSearches
+            v-if="tabItem.type === 'conforming_resources'"
+          />
 
           &lt;v-virtual-scroll
             v-else
@@ -182,38 +167,38 @@
             item-height="130"
             class="ma-4 overflow-x-hidden"
           >
-            &lt;template #default="{ item, index }">
+            &lt;template #default="{ item,index }">
               &lt;router-link
-                :to="'/' + item.id"
-                @click="() => $scrollTo('body', 0, {})"
+                :to="'/'+item.id"
+                @click.native="()=>$scrollTo('body',0,{})"
               >
                 &lt;v-card
                   :key="item.id + '_' + index"
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  border
+                  outlined
                 >
                   &lt;div class="d-flex align-center">
-                    &lt;record-status :record="item" :show-status="false" />
-                    &lt;div
-                      class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
-                    >
+                    &lt;record-status
+                      :record="item"
+                      :show-status="false"
+                    />
+                    &lt;div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
                       {{ item.name }}
                     &lt;/div>
                   &lt;/div>
-                  &lt;p
-                    class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
-                  >
+                  &lt;p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
                     {{ item.object }}
-                    &lt;v-tooltip location="top">
-                      &lt;template #activator="{ props }">
-                        &lt;span class="text-red mouse-info" v-bind="props">
+                    &lt;v-tooltip top>
+                      &lt;template #activator="{ on }">
+                        &lt;span
+                          class="red--text mouse-info"
+                          v-on="on"
+                        >
                           {{ item.recordAssociationLabel }}
                         &lt;/span>
                       &lt;/template>
-                      &lt;span>{{
-                        relationDefinition[item.recordAssociationLabel]
-                      }}&lt;/span>
+                      &lt;span>{{ relationDefinition[item.recordAssociationLabel] }}&lt;/span>
                     &lt;/v-tooltip>
                     {{ item.subject }}
                   &lt;/p>
@@ -221,35 +206,35 @@
               &lt;/router-link>
             &lt;/template>
           &lt;/v-virtual-scroll>
-        &lt;/v-tabs-window-item>
-      &lt;/v-tabs-window>
+        &lt;/v-tab-item>
+      &lt;/v-tabs-items>
     &lt;/div>
   &lt;/v-card>
 &lt;/template>
 
 &lt;script>
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
-import SavedSearches from "@/components/Records/Record/GeneralInfo/SavedSearches";
-import SectionTitle from "@/components/Records/Record/SectionTitle";
+import SavedSearches from '@/components/Records/Record/GeneralInfo/SavedSearches'
+import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 import recordTabUtils from "@/utils/recordTabUtils";
-import stringUtils from "@/utils/stringUtils";
+import stringUtils from "@/utils/stringUtils"
 
 export default {
   name: "Collections",
   components: {
     RecordStatus,
     SectionTitle,
-    SavedSearches,
+    SavedSearches
   },
   mixins: [stringUtils, recordTabUtils],
-  props: {
-    backColor: {
-      default: null,
+  props:{
+    backColor:{
+      default:null,
       type: String,
-    },
+    }
   },
   data: () => {
     return {
@@ -258,152 +243,124 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          in_collections: { relation: "collects", data: [], count: 0 },
-        },
+          in_collections: {relation: 'collects', data: [], count:0}
+        }
       },
-    };
+    }
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
   },
-  watch: {
+  watch:{
     currentRecord() {
-      let _module = this;
-      Object.keys(_module.tabsData.tabs).forEach((tabName) => {
+      let _module = this
+      Object.keys(_module.tabsData.tabs).forEach(tabName => {
         //Update the count of the conforming resources after unlinking saved search
-        if (tabName === "conforming_resources") {
-          _module.tabsData.tabs[tabName].count =
-            _module.currentRecord["fairsharingRecord"].savedSearches.length;
+        if (tabName === 'conforming_resources') {
+          _module.tabsData.tabs[tabName].count = _module.currentRecord['fairsharingRecord'].savedSearches.length;
         }
         //If no saved search is available in conforming resources tab
-        if (!_module.currentRecord["fairsharingRecord"].savedSearches.length) {
+        if(!_module.currentRecord['fairsharingRecord'].savedSearches.length) {
           //If no conforming resources is available then shift focus to Related Policies tab
-          if (tabName === "related_policies") {
-            if (_module.tabsData.tabs[tabName].data.length) {
-              this.tabsData.selectedTab = 1;
+          if(tabName === "related_policies") {
+            if(_module.tabsData.tabs[tabName].data.length) {
+              this.tabsData.selectedTab = 1
             }
           }
           //If no related policies is available then shift focus to In collections tab
-          else if (tabName === "in_collections") {
-            if (_module.tabsData.tabs[tabName].data.length) {
-              this.tabsData.selectedTab = 0;
+          else if(tabName === "in_collections") {
+            if(_module.tabsData.tabs[tabName].data.length) {
+              this.tabsData.selectedTab = 0
             }
           }
           //If nothing is available make all tabs section disabled with its initial value i.e null
           else {
-            this.selectedValues = null;
+            this.selectedValues = null
           }
         }
-      });
-    },
+      })
+    }
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
       // There are different tabs for policies vs. other registries.
-      if (_module.currentRecord["fairsharingRecord"].registry === "Policy") {
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
         _module.tabsData.tabs.related_policies = {
-          registry: ["Policy"],
+          registry: ['Policy'],
           data: [],
-          count: 0,
-        };
+          count:0
+        }
         _module.tabsData.tabs.conforming_resources = {
-          registry: ["Policy"],
+          registry: ['Policy'],
           data: [],
-          count: 0,
-          type: "conforming_resources",
-        };
-      } else {
-        _module.tabsData.tabs.in_policies = {
-          relation: "recommends",
-          data: [],
-          count: 0,
-        };
+          count:0,
+          type:'conforming_resources'
+        }
       }
-      if (
-        Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
-          "recordAssociations",
-        ) ||
-        Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
-          "reverseRecordAssociations",
-        )
-      ) {
+      else {
+        _module.tabsData.tabs.in_policies = {
+          relation: 'recommends',
+          data: [],
+          count:0
+        }
+      }
+      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
+          Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         /*
          * In this case the related_policies tab could have relations going either way.
          */
-        if (_module.currentRecord["fairsharingRecord"].registry === "Policy") {
-          Object.keys(_module.tabsData.tabs).forEach((tabName) => {
+        if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
+          Object.keys(_module.tabsData.tabs).forEach(tabName => {
             // All policy relations, incoming or outgoing.
-            if (tabName === "related_policies") {
-              _module.tabsData.tabs[tabName].data = _module
-                .prepareAssociations(
-                  _module.currentRecord["fairsharingRecord"].recordAssociations,
-                  _module.currentRecord["fairsharingRecord"]
-                    .reverseRecordAssociations,
-                )
-                .filter((item) =>
-                  _module.tabsData.tabs[tabName].registry.includes(
-                    item.registry,
-                  ),
-                )
-                .filter((item) => item.recordAssociationLabel !== "collects");
-              _module.tabsData.tabs[tabName].count =
-                _module.tabsData.tabs[tabName].data.length;
+            if (tabName === 'related_policies') {
+              _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
+                  _module.currentRecord['fairsharingRecord'].recordAssociations,
+                  _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
+              ).filter(
+                  item => _module.tabsData.tabs[tabName].registry.includes(item.registry)
+              ).filter(
+                  item => item.recordAssociationLabel !== 'collects'
+              )
+              _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
             }
             //Save searches for the policy
-            else if (tabName === "conforming_resources") {
+            else if (tabName === 'conforming_resources') {
               _module.tabsData.tabs[tabName].data =
-                _module.currentRecord["fairsharingRecord"].savedSearches;
+                  _module.currentRecord['fairsharingRecord'].savedSearches
 
-              _module.tabsData.tabs[tabName].count =
-                _module.currentRecord["fairsharingRecord"].savedSearches.length;
+              _module.tabsData.tabs[tabName].count = _module.currentRecord['fairsharingRecord'].savedSearches.length;
             }
             // All incoming collections.
             else {
-              _module.tabsData.tabs[tabName].data = _module
-                .prepareAssociations(
+              _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
                   [],
-                  _module.currentRecord["fairsharingRecord"][
-                    "reverseRecordAssociations"
-                  ],
-                )
-                .filter(
-                  (item) =>
-                    item.recordAssociationLabel ===
-                    _module.tabsData.tabs[tabName].relation,
-                );
-              _module.tabsData.tabs[tabName].count =
-                _module.tabsData.tabs[tabName].data.length;
+                  _module.currentRecord['fairsharingRecord']['reverseRecordAssociations']
+              ).filter(item => item.recordAssociationLabel === _module.tabsData.tabs[tabName].relation);
+              _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
             }
-          });
-        } else {
-          /*
-           * Here, only incoming recommends or collects relations are expected.
-           */
-          Object.keys(_module.tabsData.tabs).forEach((tabName) => {
-            _module.tabsData.tabs[tabName].data = _module
-              .prepareAssociations(
-                [],
-                _module.currentRecord["fairsharingRecord"][
-                  "reverseRecordAssociations"
-                ],
-              )
-              .filter(
-                (item) =>
-                  item.recordAssociationLabel ===
-                  _module.tabsData.tabs[tabName].relation,
-              );
-            _module.tabsData.tabs[tabName].count =
-              _module.tabsData.tabs[tabName].data.length;
-          });
+          })
         }
-      } else {
-        return false;
+        /*
+         * Here, only incoming recommends or collects relations are expected.
+         */
+        else {
+          Object.keys(_module.tabsData.tabs).forEach(tabName => {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
+                [],
+                _module.currentRecord['fairsharingRecord']['reverseRecordAssociations']
+            ).filter(item => item.recordAssociationLabel === _module.tabsData.tabs[tabName].relation);
+            _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
+          })
+        }
+      }
+      else {
+        return false
       }
     },
-  },
-};
+  }
+}
 &lt;/script>
 </pre>
     </article>
@@ -450,7 +407,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Wed Jan 21st 2026
+		on Thu Jan 22nd 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

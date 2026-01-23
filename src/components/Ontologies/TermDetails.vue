@@ -5,7 +5,7 @@
       <v-chip
         :class="`text-${color} border-${color} border border-solid border-opacity-100 mb-3 cursor-pointer bg-white`"
         variant="elevated"
-        @click="$router.push({ path: '/browse/subject' })"
+        @click="backToGraph()"
       >
         <v-icon :class="`text-${color}`"> fas fa-arrow-left</v-icon>
         <span :class="`text-${color} ml-3`"> GO BACK TO GRAPH </span>
@@ -157,6 +157,7 @@ export default {
   components: { Icon, StatusPills },
   mixins: [stringUtils],
   props: { selectedOntology: { required: true, type: String } },
+  emits: ["clearSelection"],
   data() {
     return {
       headers: [
@@ -215,7 +216,16 @@ export default {
       "getCurrentPage",
       "getAncestors",
     ]),
-    ...mapActions("ontologyBrowser", ["fetchNewPage", "changePerPage"]),
+    ...mapActions("ontologyBrowser", [
+      "fetchNewPage",
+      "changePerPage",
+      "openTerms",
+    ]),
+    backToGraph() {
+      this.$emit("clearSelection", true);
+      this.openTerms([]);
+      this.$router.push({ path: "/browse/subject" });
+    },
   },
 };
 </script>

@@ -18,6 +18,10 @@ if (typeof Sunburst === "function") {
 
 export default {
   name: "OntologySunburst",
+  props: {
+    itemClicked: { default: null, type: Object },
+  },
+  emits: ["subjectNode"],
   setup() {
     const theme = useTheme();
     return { theme };
@@ -142,6 +146,8 @@ export default {
           filename: "SRAO-Sunburst",
         },
       },
+      subjectsArrList: [],
+      nodeClicked: "",
     };
   },
   computed: {
@@ -163,29 +169,90 @@ export default {
       };
       return options;
     },
-    ...mapState("ontologyBrowser", ["sunburstData", "loadingData", "tree"]),
+    ...mapState("ontologyBrowser", [
+      "sunburstData",
+      "loadingData",
+      "tree",
+      "flattenedTree",
+    ]),
+  },
+  mounted() {
+    this.flattenedOriginalTree(this.tree);
   },
   methods: {
-    processClickEvent(node) {
-      if (node.descendants_count === 0) {
-        let currentTerm = this.$route.query.term
-          ? decodeURIComponent(this.$route.query.term)
-          : null;
-        if (!currentTerm || currentTerm !== node.name) {
-          this.$router.push({
-            path: this.$route.path,
-            query: { term: encodeURIComponent(node.name) },
-          });
+    /**
+     * Recursively flattens a hierarchical tree structure into a single array of nodes.
+     * Each node is added to the `subjectsArrList` array. If a node has children,
+     * the method is called recursively on the children.
+     *
+     * @param {Array<Object>} tree - The hierarchical tree structure to be flattened. Each node may have a `children` property containing an array of child nodes.
+     * @return {void} This method does not return a value. It modifies the `subjectsArrList` array in place.
+     */
+    flattenedOriginalTree(tree) {
+      tree.forEach((item) => {
+        this.subjectsArrList.push(item);
+        if (item["children"] && item["children"].length) {
+          this.flattenedOriginalTree(item["children"]);
         }
-      } else {
-        if (node.name !== "Subject") {
-          let ancestors = this.getAncestors()(node.identifier);
-          if (node["innerArcLength"] === 0)
-            ancestors = ancestors.concat(node.id);
-          this.openTerms(ancestors);
+      });
+    },
+
+    /**
+     * Handles click events on a node and performs routing or emits a selected subject node to the parent component.
+     *
+     * @param {Object} node - The node object that was clicked. This object contains properties such as `descendants_count`,`name`, `identifier`, and `ancestors` which are used in processing the click event.
+     * @return {void} This method does not return any value. It performs routing or emits an event based on the clicked node.
+     */
+    processClickEvent(node) {
+      if (node.name !== "Subject") {
+        if (node.descendants_count === 0) {
+          let currentTerm = this.$route.query.term
+            ? decodeURIComponent(this.$route.query.term)
+            : null;
+          if (!currentTerm || currentTerm !== node.name) {
+            this.$router.push({
+              path: this.$route.path,
+              query: { term: encodeURIComponent(node.name) },
+            });
+          }
+        }
+
+        //If the node is clicked for the first time emit node, if the same node is clicked second time while it is active this means that node was already open.
+        //Hence it's ancestor should be passed.
+        if (node["ancestors"] && !node["ancestors"].length) {
+          this.$emit("subjectNode", []);
+        } else {
+          if (this.nodeClicked !== node["identifier"]) {
+            this.nodeClicked = node["identifier"];
+          } else {
+            let nodeAncestor = node["ancestors"].pop();
+            this.nodeClicked = nodeAncestor;
+          }
+
+          //Filter the selected subject from the arrayList and emit to the parent component
+          let selectedSubject = this.subjectsArrList.filter(
+            (n) => n.identifier === this.nodeClicked,
+          );
+
+          //Adding key-value pair
+          if (
+            selectedSubject[0]["children"] &&
+            selectedSubject[0]["children"].length
+          ) {
+            selectedSubject[0]["hasChildren"] = true;
+            selectedSubject[0]["isSunburst"] = true;
+          }
+
+          this.$emit("subjectNode", selectedSubject);
         }
       }
     },
+
+    /**
+     * Get ToolTip
+     * @param point
+     * @return {boolean|string}
+     */
     getTooltip(point) {
       return point.name === "Subjects"
         ? false

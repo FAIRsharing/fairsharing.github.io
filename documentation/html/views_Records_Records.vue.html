@@ -93,17 +93,11 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-main>
-    &lt;transition name="fade">
-      &lt;jump-to-top v-if="scrollStatus" />
-    &lt;/transition>
-    &lt;v-container
-      fluid
-      class="pa-0"
-    >
+    &lt;v-container fluid class="pa-0">
       &lt;!--  Content  -->
       &lt;v-row no-gutters>
         &lt;v-col
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.display.lgAndUp"
           cols="12"
           lg="4"
           md="4"
@@ -114,29 +108,18 @@
             :class="[
               'search-input-mb',
               {
-                'left-panel-fixed-lg': stickToTop &amp;&amp; $vuetify.breakpoint.xlOnly,
-                'left-panel-default-lg':
-                  !stickToTop &amp;&amp; $vuetify.breakpoint.xlOnly,
-                'left-panel-default':
-                  !stickToTop &amp;&amp; !$vuetify.breakpoint.xlOnly,
-                'left-panel-fixed': stickToTop &amp;&amp; !$vuetify.breakpoint.xlOnly,
+                'left-panel-fixed-lg': stickToTop &amp;&amp; $vuetify.display.xlOnly,
+                'left-panel-default-lg': !stickToTop &amp;&amp; $vuetify.display.xlOnly,
+                'left-panel-default': !stickToTop &amp;&amp; !$vuetify.display.xlOnly,
+                'left-panel-fixed': stickToTop &amp;&amp; !$vuetify.display.xlOnly,
               },
             ]"
           />
         &lt;/v-col>
-        &lt;v-col
-          v-else
-          cols="12"
-          class="ml-3 mt-2"
-        >
-          &lt;v-btn
-            class="info"
-            @click="showFiltersSM = true"
-          >
+        &lt;v-col v-else cols="12" class="ml-3 mt-2">
+          &lt;v-btn class="bg-info" @click="showFiltersSM = true">
             &lt;span class="mr-2">Show filters&lt;/span>
-            &lt;v-icon small>
-              fa-filter
-            &lt;/v-icon>
+            &lt;v-icon size="small"> fas fa-filter &lt;/v-icon>
           &lt;/v-btn>
         &lt;/v-col>
 
@@ -147,37 +130,33 @@
     &lt;/v-container>
 
     &lt;v-fade-transition>
-      &lt;v-dialog
-        v-model="showFiltersSM"
-        fullscreen
-        hide-overlay
-        scrollable
-      >
-        &lt;v-card>
-          &lt;v-card-title class="primary white--text pb-5">
-            Add a filter
-            &lt;v-spacer />
-            &lt;v-btn
-              fab
-              x-small
-              @click="showFiltersSM = false"
-            >
-              &lt;v-icon>fa-times&lt;/v-icon>
-            &lt;/v-btn>
-          &lt;/v-card-title>
-          &lt;SearchInput class="pa-5" />
-        &lt;/v-card>
-      &lt;/v-dialog>
+      &lt;div>
+        &lt;v-dialog v-model="showFiltersSM" fullscreen :scrim="false" scrollable>
+          &lt;v-card>
+            &lt;v-card-title class="bg-primary text-white pb-5">
+              Add a filter
+              &lt;v-spacer />
+              &lt;v-btn size="x-small" @click="showFiltersSM = false">
+                &lt;v-icon>fas fa-times&lt;/v-icon>
+              &lt;/v-btn>
+            &lt;/v-card-title>
+            &lt;SearchInput class="pa-5" />
+          &lt;/v-card>
+        &lt;/v-dialog>
+      &lt;/div>
     &lt;/v-fade-transition>
 
     &lt;v-fade-transition>
-      &lt;v-overlay
-        v-if="isLoading"
-        :absolute="false"
-        opacity="0.8"
-      >
-        &lt;Loaders />
-      &lt;/v-overlay>
+      &lt;div>
+        &lt;v-overlay
+          v-model="isLoading"
+          :absolute="false"
+          opacity="0.8"
+          class="align-center justify-center"
+        >
+          &lt;Loaders />
+        &lt;/v-overlay>
+      &lt;/div>
     &lt;/v-fade-transition>
   &lt;/v-main>
 &lt;/template>
@@ -185,7 +164,6 @@
 &lt;script>
 import { mapActions, mapMutations, mapState } from "vuex";
 
-import JumpToTop from "@/components/Navigation/jumpToTop";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
@@ -195,7 +173,7 @@ import onScrollUtil from "@/utils/onScrollUtil";
 
 export default {
   name: "Records",
-  components: { Loaders, JumpToTop, SearchOutput, SearchInput },
+  components: { Loaders, SearchOutput, SearchInput },
   mixins: [filterChipsUtils, onScrollUtil],
   data: () => ({
     searchTerm: "",
@@ -218,20 +196,20 @@ export default {
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
         (obj, [key, value]) => ({ ...obj, [value]: key }),
-        {}
+        {},
       );
       let title = "Search";
       /* istanbul ignore else */
       if (
         Object.prototype.hasOwnProperty.call(
           this.$route.query,
-          "fairsharingRegistry"
+          "fairsharingRegistry",
         )
       ) {
         if (
           Object.prototype.hasOwnProperty.call(
             flipRecordTypes,
-            this.$route.query.fairsharingRegistry
+            this.$route.query.fairsharingRegistry,
           )
         ) {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
@@ -240,6 +218,7 @@ export default {
       return title;
     },
     currentPath: function () {
+      document.title = "FAIRsharing | " + this.getTitle; // Setting up the metaInfo of the page
       let title = this.$route.path.replace("/", "");
       const client = this;
       let queryParams = {};
@@ -281,10 +260,10 @@ export default {
       }
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanRecordsStore();
   },
-  destroyed() {
+  unmounted() {
     this.$scrollTo("body", 50, {});
     window.removeEventListener("scroll", () => {
       this.onScroll(this.records);
@@ -308,6 +287,7 @@ export default {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.query;
+
         /* istanbul ignore else */
         if (query &amp;&amp; query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
@@ -335,15 +315,14 @@ export default {
       // To make sure that any lingering values from having viewed a collection are cleared out.
       // See SummaryDownload.vue for the code which looks for collection IDs when downloading a
       // summary of search results.
-      this.$store.commit('records/setCollectionIdsParam', []);
+      this.$store.commit("records/setCollectionIdsParam", []);
       try {
         this.showFiltersSM = false;
         let token;
-        if(this.user().credentials !== undefined) {
-          token = this.user().credentials.token
-        }
-        else {
-          token = ""
+        if (this.user().credentials !== undefined) {
+          token = this.user().credentials.token;
+        } else {
+          token = "";
         }
         await _module.fetchRecords({
           params: this.getParameters(),
@@ -361,18 +340,9 @@ export default {
      */
     getParameters: function () {
       return this.$store.getters["introspection/buildQueryParameters"](
-        this.currentPath
+        this.currentPath,
       );
     },
-  },
-  /**
-   * Setting up the metaInfo of the page
-   * @returns {{title: String}}
-   * */
-  metaInfo() {
-    return {
-      title: "FAIRsharing | " + this.getTitle,
-    };
   },
 };
 &lt;/script>
@@ -468,7 +438,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Thu Jan 22nd 2026
+		on Mon Jan 26th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

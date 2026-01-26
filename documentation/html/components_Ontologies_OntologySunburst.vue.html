@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Ontologies/OntologySunburst.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Ontologies/OntologySunburst.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;highcharts v-if="!loadingData" :options="sunburstOptions" class="mt-6" />
+&lt;/template>
+
+&lt;script>
+import { mapActions, mapGetters, mapState } from "vuex";
+import { useTheme } from "vuetify";
+import Sunburst from "highcharts/modules/sunburst";
+import Highcharts from "highcharts";
+
+//Implement Sunburst module for Highcharts
+// check if Sunburst is a function, if not try .default
+if (typeof Sunburst === "function") {
+  Sunburst(Highcharts);
+} else if (typeof Sunburst.default === "function") {
+  Sunburst.default(Highcharts);
+}
+
+export default {
+  name: "OntologySunburst",
+  props: {
+    itemClicked: { default: null, type: Object },
+  },
+  emits: ["subjectNode"],
+  setup() {
+    const theme = useTheme();
+    return { theme };
+  },
+  data() {
+    return {
+      options: {
+        chart: {
+          borderWidth: 0,
+          borderColor: "#DD7920",
+          backgroundColor: "#F9F9F9",
+          height: "100%",
+        },
+        title: {
+          text: "Subject Browser",
+          style: { color: "#DD7920", fontSize: "26px" },
+        },
+        subtitle: {
+          text:
+            "Clicking a term will drilldown the children terms and adjust the levels in the left panel. " +
+            "If a term has no children it will display information about that term.",
+          style: { fontSize: "18px" },
+        },
+        series: [
+          {
+            stickyTracking: false,
+            turboThreshold: 2000,
+            colors: [
+              "white",
+              this.theme.computedThemes.value.fairSharingTheme.colors
+                .subject_topLevel_3, // here
+              "white",
+              "white",
+              this.theme.computedThemes.value.fairSharingTheme.colors
+                .subject_topLevel_1, // here
+              "white",
+              "white",
+              "white",
+              this.theme.computedThemes.value.fairSharingTheme.colors
+                .subject_topLevel_2, // here
+            ],
+            type: "sunburst",
+            allowDrillToNode: true,
+            cursor: "pointer",
+            color: "transparent",
+            dataLabels: {
+              format: "{point.name}",
+              filter: {
+                property: "innerArcLength",
+                operator: ">",
+                value: 16,
+              },
+              rotationMode: "circular",
+            },
+            levels: [
+              {
+                level: 1,
+                levelIsConstant: false,
+                dataLabels: {
+                  filter: {
+                    property: "outerArcLength",
+                    operator: ">",
+                    value: 64,
+                  },
+                },
+                levelSize: { value: 2.3 },
+              },
+              {
+                level: 2,
+                colorByPoint: true,
+                levelSize: { value: 3 },
+              },
+              {
+                level: 3,
+                colorVariation: { key: "brightness", to: -0.5 },
+                levelSize: { value: 3 },
+              },
+              {
+                level: 4,
+                colorVariation: { key: "brightness", to: 0.2 },
+                levelSize: { value: 3 },
+              },
+              {
+                level: 5,
+                colorVariation: { key: "brightness", to: 0.5 },
+                levelSize: { value: 2 },
+              },
+              {
+                level: 6,
+                colorVariation: {
+                  key: "brightness",
+                  to: 0.2,
+                },
+              },
+              {
+                level: 7,
+                colorVariation: {
+                  key: "brightness",
+                  to: 0.5,
+                },
+              },
+              {
+                level: 8,
+                colorVariation: {
+                  key: "brightness",
+                  to: 0.5,
+                },
+              },
+            ],
+          },
+        ],
+        tooltip: {
+          hideDelay: 1,
+          followPointer: true,
+          useHTML: true,
+          backgroundColor: "white",
+        },
+        exporting: {
+          sourceWidth: 1500,
+          sourceHeight: 1600,
+          scale: 1,
+          filename: "SRAO-Sunburst",
+        },
+      },
+      subjectsArrList: [],
+      nodeClicked: "",
+    };
+  },
+  computed: {
+    sunburstOptions() {
+      const _client = this;
+      let options = { ..._client.options };
+      options.series[0].data = _client.sunburstData;
+      /* istanbul ignore next */
+      options.series[0].point = {
+        events: {
+          click: function () {
+            _client.processClickEvent(this);
+          },
+        },
+      };
+      /* istanbul ignore next */
+      options.tooltip.formatter = function () {
+        return _client.getTooltip(this.point);
+      };
+      return options;
+    },
+    ...mapState("ontologyBrowser", [
+      "sunburstData",
+      "loadingData",
+      "tree",
+      "flattenedTree",
+    ]),
+  },
+  mounted() {
+    this.flattenedOriginalTree(this.tree);
+  },
+  methods: {
+    /**
+     * Recursively flattens a hierarchical tree structure into a single array of nodes.
+     * Each node is added to the `subjectsArrList` array. If a node has children,
+     * the method is called recursively on the children.
+     *
+     * @param {Array&lt;Object>} tree - The hierarchical tree structure to be flattened. Each node may have a `children` property containing an array of child nodes.
+     * @return {void} This method does not return a value. It modifies the `subjectsArrList` array in place.
+     */
+    flattenedOriginalTree(tree) {
+      tree.forEach((item) => {
+        this.subjectsArrList.push(item);
+        if (item["children"] &amp;&amp; item["children"].length) {
+          this.flattenedOriginalTree(item["children"]);
+        }
+      });
+    },
+
+    /**
+     * Handles click events on a node and performs routing or emits a selected subject node to the parent component.
+     *
+     * @param {Object} node - The node object that was clicked. This object contains properties such as `descendants_count`,`name`, `identifier`, and `ancestors` which are used in processing the click event.
+     * @return {void} This method does not return any value. It performs routing or emits an event based on the clicked node.
+     */
+    processClickEvent(node) {
+      if (node.name !== "Subject") {
+        if (node.descendants_count === 0) {
+          let currentTerm = this.$route.query.term
+            ? decodeURIComponent(this.$route.query.term)
+            : null;
+          if (!currentTerm || currentTerm !== node.name) {
+            this.$router.push({
+              path: this.$route.path,
+              query: { term: encodeURIComponent(node.name) },
+            });
+          }
+        }
+
+        //If the node is clicked for the first time emit node, if the same node is clicked second time while it is active this means that node was already open.
+        //Hence it's ancestor should be passed.
+        if (node["ancestors"] &amp;&amp; !node["ancestors"].length) {
+          this.$emit("subjectNode", []);
+        } else {
+          if (this.nodeClicked !== node["identifier"]) {
+            this.nodeClicked = node["identifier"];
+          } else {
+            let nodeAncestor = node["ancestors"].pop();
+            this.nodeClicked = nodeAncestor;
+          }
+
+          //Filter the selected subject from the arrayList and emit to the parent component
+          let selectedSubject = this.subjectsArrList.filter(
+            (n) => n.identifier === this.nodeClicked,
+          );
+
+          //Adding key-value pair
+          if (
+            selectedSubject[0]["children"] &amp;&amp;
+            selectedSubject[0]["children"].length
+          ) {
+            selectedSubject[0]["hasChildren"] = true;
+            selectedSubject[0]["isSunburst"] = true;
+          }
+
+          this.$emit("subjectNode", selectedSubject);
+        }
+      }
+    },
+
+    /**
+     * Get ToolTip
+     * @param point
+     * @return {boolean|string}
+     */
+    getTooltip(point) {
+      return point.name === "Subjects"
+        ? false
+        : '&lt;div class="HC-tooltip">' + point.name + "&lt;/div>";
+    },
+    ...mapActions("ontologyBrowser", ["openTerms"]),
+    ...mapGetters("ontologyBrowser", ["getAncestors"]),
+  },
+};
+&lt;/script>
+
+&lt;style>
+.HC-tooltip {
+  min-width: 100px;
+  text-align: justify;
+  font-size: 20px;
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
+	
+		on Mon Jan 26th 2026
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

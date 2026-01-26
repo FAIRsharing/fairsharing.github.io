@@ -5,6 +5,7 @@
 <script>
 import Highcharts from "highcharts";
 import { Chart } from "highcharts-vue"; //Pie (Highcharts);
+import Exporting from "highcharts/modules/exporting";
 
 //Pie (Highcharts);
 const colourPalete = [
@@ -23,10 +24,14 @@ Highcharts.setOptions({
   lang: {
     thousandsSep: ",",
   },
-});
-Highcharts.setOptions({
   colors: colourPalete,
 });
+
+if (typeof Exporting === "function") {
+  Exporting(Highcharts);
+} else if (typeof Exporting.default === "function") {
+  Exporting.default(Highcharts);
+}
 
 export default {
   name: "PieChart",
@@ -56,6 +61,9 @@ export default {
           plotBorderWidth: null,
           plotShadow: false,
           type: "pie",
+          style: {
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          },
         },
         title: {
           text: "", //The title text of the chart
@@ -91,8 +99,7 @@ export default {
                   function (e) {
                     if (this.options.url) {
                       location.href = this.options.url;
-                    }
-                    else {
+                    } else {
                       e.stopPropagation();
                     }
                   },
@@ -100,6 +107,20 @@ export default {
             },
           },
         ],
+        exporting: {
+          enabled: true, // explicit enable
+          sourceWidth: 1500,
+          sourceHeight: 1600,
+          scale: 1,
+          filename: "FAIRsharing PieChart",
+          buttons: {
+            contextButton: {
+              // You can customize the menu symbol or position here if needed
+              // symbol: 'menu',
+              // align: 'right',
+            },
+          },
+        },
       },
     };
   },

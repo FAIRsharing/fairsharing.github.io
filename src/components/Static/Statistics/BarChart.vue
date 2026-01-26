@@ -7,6 +7,7 @@
 <script>
 import Highcharts from "highcharts";
 import { Chart } from "highcharts-vue";
+import Exporting from "highcharts/modules/exporting";
 
 const colourPalete = [
   "#aec7e8",
@@ -24,10 +25,13 @@ Highcharts.setOptions({
   lang: {
     thousandsSep: ",",
   },
-});
-Highcharts.setOptions({
   colors: colourPalete,
 });
+if (typeof Exporting === "function") {
+  Exporting(Highcharts);
+} else if (typeof Exporting.default === "function") {
+  Exporting.default(Highcharts);
+}
 
 export default {
   name: "BarChart",
@@ -94,6 +98,20 @@ export default {
           alignColumns: false,
         },
         series: [],
+        exporting: {
+          enabled: true, // explicit enable
+          sourceWidth: 1500,
+          sourceHeight: 1600,
+          scale: 1,
+          filename: "FAIRsharing BarChart",
+          buttons: {
+            contextButton: {
+              // You can customize the menu symbol or position here if needed
+              // symbol: 'menu',
+              // align: 'right',
+            },
+          },
+        },
       },
     };
   },

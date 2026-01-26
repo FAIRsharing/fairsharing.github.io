@@ -1,5 +1,5 @@
 <template>
-  <highcharts v-if="!loadingData" :options="sunburstOptions" class="mt-6" />
+  <highcharts v-if="!loadingData" :options="sunburstOptions" />
 </template>
 
 <script>
@@ -41,10 +41,16 @@ export default {
           borderColor: "#DD7920",
           backgroundColor: "#F9F9F9",
           height: "100%",
+          style: {
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          },
+        },
+        breadcrumbs: {
+          enabled: false,
         },
         title: {
           text: "Subject Browser",
-          style: { color: "#DD7920", fontSize: "26px" },
+          style: { color: "#DD7920", fontSize: "26px", fontWeight: 500 },
         },
         subtitle: {
           text:
@@ -290,5 +296,10 @@ export default {
   min-width: 100px;
   text-align: justify;
   font-size: 20px;
+}
+
+.highcharts-breadcrumbs-group,
+.highcharts-button-traverse-up {
+  display: none !important;
 }
 </style>

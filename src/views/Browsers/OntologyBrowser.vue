@@ -288,7 +288,6 @@ export default {
       // CASE 2: Active Search
       const targetId = newTerm.identifier || newTerm;
       const strTargetId = String(targetId);
-
       // 1. Find ALL paths to the target node
       const allPaths = this.findAllPaths(this.tree, targetId);
 
@@ -431,7 +430,7 @@ export default {
      * Prune logic that supports multiple matches
      * @param nodes
      * @param targetId
-     * @return {*[]}
+     * @return Array
      */
     pruneTreeWithChildren(nodes, targetId) {
       const filtered = [];
@@ -470,7 +469,7 @@ export default {
     /**
      * SAFE CHECK: Checks if a node is open regardless of ID type (String/Number)
      * @param identifier
-     * @return {*|boolean}
+     * @return Boolean
      */
     isOpen(identifier) {
       if (!this.openedTerms) return false;
@@ -482,7 +481,6 @@ export default {
      * Updates the search property with the first element of the provided value array
      * and calls the toggleNode method with the same element.
      * @param {Array} value - An array where the first element is used to update the search property and passed to the toggleNode method.
-     * @return {void}
      */
     subjectNode(value) {
       if (value && value.length) {

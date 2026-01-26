@@ -14,12 +14,12 @@
     <div class="d-flex full-width flex-wrap ml-md-12 ml-8">
       <div
         v-if="getField('maintainers').length === 0"
-        class="d-flex flex-wrap"
         :class="{ 'justify-end': $vuetify.display.smAndDown }"
+        class="d-flex flex-wrap"
       >
         <p
-          class="ma-0 mr-1"
           :class="{ 'text-end': $vuetify.display.smAndDown }"
+          class="ma-0 mr-1"
         >
           This record is in need of a maintainer.
         </p>
@@ -27,8 +27,8 @@
           v-if="
             (canClaim && user().isLoggedIn) || (!canClaim && !user().isLoggedIn)
           "
-          class="ma-0 mr-1"
           :class="{ 'text-end': $vuetify.display.smAndDown }"
+          class="ma-0 mr-1"
         >
           If you are affiliated with this project,
         </p>
@@ -42,15 +42,15 @@
         </a>
         <p
           v-if="!canClaim && !user().isLoggedIn"
-          class="ma-0 mr-1"
           :class="{ 'text-end': $vuetify.display.smAndDown }"
+          class="ma-0 mr-1"
         >
           and claim it now!
         </p>
         <p
           v-if="canClaim"
-          class="underline-effect text-blue"
           :class="{ 'text-end': $vuetify.display.smAndDown }"
+          class="underline-effect text-blue"
           @click="
             () => {
               $emit('requestOwnership');
@@ -78,8 +78,8 @@
           </router-link>
           <a
             v-if="maintainer.orcid"
-            class="mr-2"
             :href="`https://orcid.org/${maintainer.orcid}`"
+            class="mr-2"
             target="_blank"
           >
             <Icon :height="27" item="Orcid" wrapper-class="" />
@@ -97,6 +97,7 @@
 import { mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
+
 export default {
   name: "Maintainers",
   components: { Icon },
@@ -108,11 +109,11 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
-    ...mapState('users', ["user"]),
-    ...mapState('editor', ['recordTooltips']),
+    ...mapState("users", ["user"]),
+    ...mapState("editor", ["recordTooltips"]),
     serverLink: function () {
-      return process.env.VUE_APP_HOSTNAME;
-    }
-  }
-}
+      return import.meta.env.VITE_HOSTNAME;
+    },
+  },
+};
 </script>

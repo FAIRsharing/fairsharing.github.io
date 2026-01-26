@@ -193,10 +193,11 @@
             &lt;TermDetails
               v-if="records &amp;&amp; selectedTerm"
               :selected-ontology="selectedOntology"
+              @clear-selection="noSelection"
             />
             &lt;v-card v-else class="pa-0" flat>
               &lt;v-card-text class="pa-0">
-                &lt;OntologySunburst />
+                &lt;OntologySunburst @subject-node="subjectNode" />
               &lt;/v-card-text>
             &lt;/v-card>
           &lt;/div>
@@ -246,6 +247,7 @@ export default {
       "pagination",
       "selectedTerm",
     ]),
+
     selectedOntology() {
       return this.$route.params.id;
     },
@@ -363,8 +365,7 @@ export default {
         });
 
         this.openTerms(Array.from(parentsToOpen));
-      }
-      else {
+      } else {
         await this.activateTerms();
       }
     },
@@ -377,11 +378,9 @@ export default {
         this.openTerms([]);
         return;
       }
-
       // CASE 2: Active Search
       const targetId = newTerm.identifier || newTerm;
       const strTargetId = String(targetId);
-
       // 1. Find ALL paths to the target node
       const allPaths = this.findAllPaths(this.tree, targetId);
 
@@ -392,7 +391,14 @@ export default {
         path.forEach((id) => {
           // Add ID to open set ONLY if it is NOT the target itself
           // (We want the parents open, but the target closed)
-          if (String(id) !== strTargetId) {
+          if (
+            String(id) !== strTargetId &amp;&amp;
+            !Object.keys(newTerm).includes("isSunburst")
+          ) {
+            allIdsToOpen.add(String(id));
+          }
+          //Target is open because the selection is from Sunburst
+          else if (newTerm["isSunburst"]) {
             allIdsToOpen.add(String(id));
           }
         });
@@ -413,8 +419,7 @@ export default {
         if (index !== -1) {
           if (this.$refs.virtualScroll.scrollToIndex) {
             this.$refs.virtualScroll.scrollToIndex(index);
-          }
-          else {
+          } else {
             // Fallback: 50px is the estimated item height
             this.$refs.virtualScroll.$el.scrollTop = index * 50;
           }
@@ -437,11 +442,15 @@ export default {
       "openTerms",
       "leavePage",
     ]),
-    /**
-     * Give the result of the term selected
-     * @param term
-     */
 
+    /**
+     * Searches for a term and updates the route based on its presence in the active terms list.
+     *
+     * @param {Object} term - The term object to be searched.
+     * @param {string} term.identifier - The unique identifier of the term.
+     * @param {string} term.name - The name of the term to encode and include in the query parameters if not already active.
+     * @return {void} This method does not return a value.
+     */
     searchTerm(term) {
       this.resetPagination();
       if (this.activeTerms.includes(term.identifier))
@@ -479,6 +488,15 @@ export default {
       return results;
     },
 
+    /**
+     * Toggles the open or closed state of a node in the hierarchy.
+     * Updates the list of currently opened nodes based on the given item's identifier.
+     *
+     * @param {Object} item - The node object to be toggled.
+     * @param {boolean} item.hasChildren - Indicates if the node has child items.
+     * @param {number|string} item.identifier - The unique identifier of the node.
+     * @return {void} This method does not return a value.
+     */
     toggleNode(item) {
       if (!item.hasChildren) return;
 
@@ -491,16 +509,22 @@ export default {
       if (isOpen) {
         // Close: Remove strict match
         newOpened = newOpened.filter((id) => String(id) !== strId);
-      }
-      else {
+      } else {
         // Open: Add original ID
         newOpened.push(item.identifier);
       }
-
+      newOpened = newOpened.map((item) =>
+        typeof item === "string" ? Number(item) : item,
+      );
       this.openTerms(newOpened);
     },
 
-    // Prune logic that supports multiple matches
+    /**
+     * Prune logic that supports multiple matches
+     * @param nodes
+     * @param targetId
+     * @return Array
+     */
     pruneTreeWithChildren(nodes, targetId) {
       const filtered = [];
       const strTarget = String(targetId);
@@ -537,11 +561,33 @@ export default {
 
     /**
      * SAFE CHECK: Checks if a node is open regardless of ID type (String/Number)
+     * @param identifier
+     * @return Boolean
      */
     isOpen(identifier) {
       if (!this.openedTerms) return false;
       // Convert everything to String for comparison
       return this.openedTerms.map(String).includes(String(identifier));
+    },
+
+    /**
+     * Updates the search property with the first element of the provided value array
+     * and calls the toggleNode method with the same element.
+     * @param {Array} value - An array where the first element is used to update the search property and passed to the toggleNode method.
+     */
+    subjectNode(value) {
+      if (value &amp;&amp; value.length) {
+        this.search = value[0];
+        this.toggleNode(value[0]);
+      } else {
+        this.search = null;
+      }
+    },
+
+    noSelection(value) {
+      if (value) {
+        this.search = null;
+      }
     },
   },
 };
@@ -551,6 +597,7 @@ export default {
 .subject_color--border {
   border: 1px solid #e67e22 !important;
 }
+
 .domain_color--border {
   border: 1px solid #712727 !important;
 }
@@ -586,9 +633,11 @@ export default {
 .col {
   flex-basis: initial !important;
 }
+
 .cursor-pointer {
   cursor: pointer !important;
 }
+
 .hover-bg:hover {
   background-color: rgba(0, 0, 0, 0.04);
 }
@@ -648,7 +697,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Wed Jan 21st 2026
+		on Mon Jan 26th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

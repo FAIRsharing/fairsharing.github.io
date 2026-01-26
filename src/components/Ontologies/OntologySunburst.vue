@@ -5,8 +5,9 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 import { useTheme } from "vuetify";
-import Sunburst from "highcharts/modules/sunburst";
 import Highcharts from "highcharts";
+import Sunburst from "highcharts/modules/sunburst";
+import Exporting from "highcharts/modules/exporting";
 
 //Implement Sunburst module for Highcharts
 // check if Sunburst is a function, if not try .default
@@ -14,6 +15,12 @@ if (typeof Sunburst === "function") {
   Sunburst(Highcharts);
 } else if (typeof Sunburst.default === "function") {
   Sunburst.default(Highcharts);
+}
+
+if (typeof Exporting === "function") {
+  Exporting(Highcharts);
+} else if (typeof Exporting.default === "function") {
+  Exporting.default(Highcharts);
 }
 
 export default {
@@ -144,6 +151,20 @@ export default {
           sourceHeight: 1600,
           scale: 1,
           filename: "SRAO-Sunburst",
+        },
+      },
+      exporting: {
+        enabled: true, // explicit enable
+        sourceWidth: 1500,
+        sourceHeight: 1600,
+        scale: 1,
+        filename: "SRAO-Sunburst",
+        buttons: {
+          contextButton: {
+            // You can customize the menu symbol or position here if needed
+            // symbol: 'menu',
+            // align: 'right',
+          },
         },
       },
       subjectsArrList: [],

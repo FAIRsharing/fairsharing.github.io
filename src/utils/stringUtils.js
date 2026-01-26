@@ -14,6 +14,13 @@ const stringUtils = {
     truncate(str, n) {
       return str.length > n ? str.substr(0, n - 1) + "..." : str;
     },
+    toHyperLink(str) {
+      let pattern1 =
+        /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
+      let link = str.replace(pattern1, "<a href='$1'>$1</a>");
+
+      return link;
+    },
   },
   filters: {
     capitalize(str) {

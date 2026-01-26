@@ -60,7 +60,7 @@
           <template #prepend>
             <v-tooltip location="bottom">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["name"] }}
             </v-tooltip>
@@ -75,7 +75,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["abbreviation"] }}
             </v-tooltip>
@@ -91,7 +91,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["homepage"] }}
             </v-tooltip>
@@ -162,7 +162,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["year"] }}
             </v-tooltip>
@@ -183,7 +183,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["countries"] }}
             </v-tooltip>
@@ -237,11 +237,11 @@
           <!-- Item selected -->
           <template #chip="data">
             <v-chip
-              v-if="data.item.raw.name"
+              v-if="data.item.title"
               class="bg-blue text-white text-capitalize"
               closable
             >
-              {{ data.item.raw.name.replace(/_/g, " ") }}
+              {{ data.item.title.replace(/_/g, " ") }}
             </v-chip>
           </template>
           <!-- select list data -->
@@ -363,7 +363,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["internal_identifiers"] }}
             </v-tooltip>
@@ -389,7 +389,7 @@
                 max-width="300px"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle</v-icon>
                 </template>
                 {{ tooltips["globally_unique"] }}
               </v-tooltip>
@@ -420,7 +420,7 @@
                 max-width="300px"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle</v-icon>
                 </template>
                 {{ tooltips["persistent"] }}
               </v-tooltip>
@@ -451,7 +451,7 @@
                 max-width="300px"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle</v-icon>
                 </template>
                 {{ tooltips["resolvable"] }}
               </v-tooltip>
@@ -487,7 +487,7 @@
                 max-width="300px"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle</v-icon>
                 </template>
                 {{ tooltips["deprecation_reason"] }}
               </v-tooltip>
@@ -507,7 +507,7 @@
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
               <template #activator="{ props }">
-                <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                <v-icon v-bind="props"> fas fa-question-circle</v-icon>
               </template>
               {{ tooltips["description"] }}
             </v-tooltip>
@@ -531,7 +531,7 @@
                 max-width="300px"
               >
                 <template #activator="{ props }">
-                  <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                  <v-icon v-bind="props"> fas fa-question-circle</v-icon>
                 </template>
                 {{ tooltips["curator_notes"] }}
               </v-tooltip>
@@ -661,8 +661,7 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          }
-          else {
+          } else {
             _module.fields.logo = {};
           }
           return;
@@ -730,8 +729,7 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        }
-        else {
+        } else {
           return true;
         }
       }
@@ -770,27 +768,34 @@ export default {
 .registryList {
   max-width: 780px;
 }
+
 .removeStyle button {
   color: white !important;
   margin-left: 12px !important;
 }
+
 :deep(.v-list-item-title) {
   display: none;
 }
+
 :deep .v-list-subheader {
   &__text {
     width: 100%;
   }
 }
+
 .checkboxes {
   text-align: center;
 }
+
 .checkboxes input {
   margin: 0px 0px 0px 0px;
 }
+
 .checkboxes label {
   margin: 0px 20px 0px 3px;
 }
+
 .editFormSelect :deep(.v-field__input) {
   padding: 0 0 0 6px;
 }

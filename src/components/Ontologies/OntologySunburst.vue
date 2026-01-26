@@ -45,6 +45,9 @@ export default {
             fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
           },
         },
+        credits: {
+          enabled: false,
+        },
         breadcrumbs: {
           enabled: false,
         },

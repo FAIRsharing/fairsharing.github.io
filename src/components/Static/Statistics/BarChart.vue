@@ -69,7 +69,7 @@ export default {
           },
         },
         credits: {
-          enabled: true,
+          enabled: false,
         },
         yAxis: {
           min: 0,

@@ -10,19 +10,19 @@
       <v-chip
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
-        class="pr-3 my-1 mr-2 ml-0"
         :class="[
           !isNew(contact) ? 'text-white blue' : 'text-blue white borderBlue',
         ]"
-        variant="flat"
+        class="pr-3 my-1 mr-2 ml-0"
         color="blue"
+        variant="flat"
       >
         <div>
           <v-tooltip location="top">
             <template #activator="{ props }">
               <v-icon
-                size="small"
                 class="mr-2 text-white"
+                size="small"
                 v-bind="props"
                 @click="editContact(contact, index)"
               >
@@ -58,7 +58,7 @@
         class="bg-green text-white pr-5 shadowChip"
         @click="createNewContact()"
       >
-        <v-icon size="small" class="mr-3 text-white">
+        <v-icon class="mr-3 text-white" size="small">
           fas fa-plus-circle
         </v-icon>
         Add a new contact point
@@ -76,34 +76,34 @@
         <v-card-text class="pt-4">
           <v-text-field
             v-model="menu.content['contact_name']"
-            label="Contact Name"
             :rules="[rules.isRequired()]"
+            label="Contact Name"
             variant="outlined"
           />
           <v-text-field
             v-model="menu.content['contact_email']"
-            label="Contact Email"
             :rules="[rules.isRequired(), rules.isEmail()]"
+            label="Contact Email"
             variant="outlined"
           />
           <v-text-field
             v-model="menu.content['contact_orcid']"
-            label="Contact ORCID"
             :rules="[rules.isOrcid(false)]"
+            label="Contact ORCID"
             placeholder="0000-0000-0000-0000"
             variant="outlined"
           />
         </v-card-text>
         <v-card-actions>
           <v-btn
-            class="bg-success"
             :disabled="!formValid"
+            class="bg-success"
             type="submit"
             @click="addItem()"
           >
             {{ menu.label }}
           </v-btn>
-          <v-btn class="bg-error" @click="menu.show = false"> Cancel </v-btn>
+          <v-btn class="bg-error" @click="menu.show = false"> Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-overlay>
@@ -189,9 +189,9 @@ export default {
     addItem() {
       if (this.formValid && !this.submitted) {
         if (this.menu.index || this.menu.index === 0) {
-          this.$set(this.contacts, this.menu.index, this.menu.content);
+          this.contacts[this.menu.index] = this.menu.content;
         } else {
-          this.$set(this.contacts, this.contacts.length, this.menu.content);
+          this.contacts[this.contacts.length] = this.menu.content;
         }
         this.menu.show = false;
         this.submitted = true;
@@ -208,14 +208,17 @@ export default {
 #editContact .v-overlay__content {
   min-width: 700px;
 }
+
 #editContact .borderBlue {
   border: 1px solid #2a9af4 !important;
   background-color: white !important;
   border-color: #2a9af4 !important;
 }
+
 #editContact .v-chip.white {
   border-color: #2a9af4 !important;
 }
+
 #editContact .borderBlue * {
   color: #2a9af4 !important;
 }

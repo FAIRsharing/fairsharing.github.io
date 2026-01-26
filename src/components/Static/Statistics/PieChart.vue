@@ -69,7 +69,7 @@ export default {
           text: "", //The title text of the chart
         },
         credits: {
-          enabled: true,
+          enabled: false,
         },
         tooltip: {
           pointFormat:

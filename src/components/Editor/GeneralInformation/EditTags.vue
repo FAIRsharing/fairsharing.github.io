@@ -11,12 +11,12 @@
               @click="showMenu()"
             >
               <td
-                class="text-white py-2 px-4 titleCell"
                 :class="'bg-' + section.color"
+                class="text-white py-2 px-4 titleCell"
               >
                 <v-tooltip location="right">
                   <template #activator="{ props }">
-                    <v-icon size="small" class="text-white mr-1" v-bind="props">
+                    <v-icon class="text-white mr-1" size="small" v-bind="props">
                       fas fa-question-circle
                     </v-icon>
                   </template>
@@ -31,25 +31,25 @@
                     :key="'section_' + sectionIndex + '_tag_' + tagIndex"
                     :class="[
                       !isNew(tag, sectionName)
-                        ? 'text-' + section.color
-                        : section.color + ' text-white whiteBorder',
+                        ? 'bg-white'
+                        : 'bg-' + section.color,
                     ]"
+                    :color="!isNew(tag, sectionName) ? section.color : 'white'"
+                    class="pr-3 my-1 mr-2 ml-0"
                     variant="outlined"
-                    :color="section.color"
-                    class="bg-white pr-3 my-1 mr-2 ml-0"
                     @click.stop
                   >
                     <KeywordTooltip :keyword="tag" />
                     <v-tooltip location="bottom">
                       <template #activator="{ props }">
                         <v-icon
-                          size="small"
-                          class="ml-1"
                           :class="[
                             !isNew(tag, sectionName)
-                              ? section.color + '--text white'
-                              : ' text-white',
+                              ? 'text-' + section.color
+                              : 'text-white',
                           ]"
+                          class="ml-1"
+                          size="small"
                           v-bind="props"
                           @click="removeTag(section.items, tagIndex)"
                           @click.stop
@@ -69,11 +69,11 @@
       <v-row class="pr-5">
         <v-spacer />
         <v-chip
-          class="text-white bg-green pr-5 ml-3 mb-3 shadowChip"
           :disabled="loading"
+          class="text-white bg-green pr-5 ml-3 mb-3 shadowChip"
           @click="showMenu()"
         >
-          <v-icon size="small" class="mr-3 text-white">
+          <v-icon class="mr-3 text-white" size="small">
             {{ buttonIcon }}
           </v-icon>
           {{ buttonLabel }}
@@ -82,16 +82,16 @@
     </v-container>
 
     <v-expand-transition class="ma-5">
-      <v-container v-if="menu.show" fluid class="py-0">
+      <v-container v-if="menu.show" class="py-0" fluid>
         <v-row justify="center" no-gutters>
           <v-col cols="12">
             <v-text-field
               id="searchString"
               v-model="searchString"
               append-inner-icon="fas fa-search"
+              hide-details
               label="Search names and synonyms"
               variant="outlined"
-              hide-details
             >
               <template #prepend>
                 <v-menu :close-on-content-click="false">
@@ -109,15 +109,15 @@
                         <v-list-item-action>
                           <v-switch
                             v-model="showTypes.taxonomy"
-                            inset
                             :color="colors.taxonomy"
-                            hide-details
                             class="mr-2"
+                            hide-details
+                            inset
                           />
                         </v-list-item-action>
                         <v-list-item-title
-                          >Show taxonomic range</v-list-item-title
-                        >
+                          >Show taxonomic range
+                        </v-list-item-title>
                       </div>
                     </v-list-item>
                     <v-divider class="my-1" opacity="80" />
@@ -126,10 +126,10 @@
                         <v-list-item-action>
                           <v-switch
                             v-model="showTypes.subject"
-                            inset
                             :color="colors.subject"
-                            hide-details
                             class="mr-2"
+                            hide-details
+                            inset
                           />
                         </v-list-item-action>
                         <v-list-item-title>Show subjects</v-list-item-title>
@@ -142,10 +142,10 @@
                         <v-list-item-action>
                           <v-switch
                             v-model="showTypes.domain"
-                            inset
                             :color="colors.domain"
-                            hide-details
                             class="mr-2"
+                            hide-details
+                            inset
                           />
                         </v-list-item-action>
                         <v-list-item-title>Show domains</v-list-item-title>
@@ -157,15 +157,15 @@
                         <v-list-item-action>
                           <v-switch
                             v-model="showTypes.user_defined_tag"
-                            inset
                             :color="colors.user_defined_tag"
-                            hide-details
                             class="mr-2"
+                            hide-details
+                            inset
                           />
                         </v-list-item-action>
                         <v-list-item-title
-                          >Show user defined tags</v-list-item-title
-                        >
+                          >Show user defined tags
+                        </v-list-item-title>
                       </div>
                     </v-list-item>
                     <v-divider class="my-1" opacity="80" />
@@ -174,10 +174,10 @@
                         <v-list-item-action>
                           <v-switch
                             v-model="showTypes.object_type"
-                            inset
                             :color="colors.object_type"
-                            hide-details
                             class="mr-2"
+                            hide-details
+                            inset
                           />
                         </v-list-item-action>
                         <v-list-item-title>Show object types</v-list-item-title>
@@ -190,17 +190,18 @@
             <v-data-table
               v-model="recordTags"
               v-model:search-input="searchString"
+              :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
               :headers="headers"
               :items="tags"
               :items-per-page="10"
-              :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
-              item-key="label"
-              class="elevation-1"
-              show-select
-              calculate-widths
-              mobile-breakpoint="900"
               :loading="loading"
+              calculate-widths
+              class="elevation-1"
+              item-key="label"
               loading-text="Please wait, tags are loading"
+              mobile-breakpoint="900"
+              return-object
+              show-select
             >
               <template #[`item.model`]="{ item }">
                 <div :class="'text-' + colors[item.model]" class="noBreak">
@@ -382,8 +383,9 @@ export default {
             user_defined_tag: [],
             object_type: [],
           };
-          for (let selectedTag of val)
+          for (let selectedTag of val) {
             tags[selectedTag.model].push(selectedTag);
+          }
           this.$store.commit("record/setTags", {
             value: tags.domain,
             target: "domains",

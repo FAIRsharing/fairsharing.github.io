@@ -1,31 +1,31 @@
 <template>
-  <v-container id="editPublications" fluid class="standard">
+  <v-container id="editPublications" class="standard" fluid>
     <v-card id="editPublications">
       <v-card-title class="bg-grey-lighten-4 text-blue">
         Add/Remove Publications
       </v-card-title>
       <Alerts target="publications" />
       <v-card-text>
-        <v-container fluid class="pb-0">
+        <v-container class="pb-0" fluid>
           <v-row>
             <v-col
               v-for="(publication, pubIndex) in publications"
               :key="'selected_' + pubIndex"
               class="col-3"
               cols="12"
-              sm="12"
-              xs="12"
-              md="6"
               lg="4"
+              md="6"
+              sm="12"
               xl="3"
+              xs="12"
             >
-              <v-card height="100%" class="d-flex flex-column">
+              <v-card class="d-flex flex-column" height="100%">
                 <v-card-title
-                  class="text-white"
                   :class="{
                     'bg-grey': !publication.isCitation,
                     'bg-green': publication.isCitation,
                   }"
+                  class="text-white"
                 >
                   Publication
                   <span v-if="publication.doi" class="ml-2">
@@ -70,7 +70,7 @@
                         v-bind="props"
                         @click="editPublication(publication, pubIndex)"
                       >
-                        <v-icon size="small"> fas fa-pen </v-icon>
+                        <v-icon size="small"> fas fa-pen</v-icon>
                       </v-btn>
                     </template>
                     <span>Edit this publication</span>
@@ -80,11 +80,11 @@
                       <v-btn
                         class="bg-red text-white"
                         icon
-                        v-bind="props"
                         size="small"
+                        v-bind="props"
                         @click="removePublication(pubIndex)"
                       >
-                        <v-icon size="small"> fas fa-trash </v-icon>
+                        <v-icon size="small"> fas fa-trash</v-icon>
                       </v-btn>
                     </template>
                     <span>Remove this publication</span>
@@ -97,11 +97,11 @@
           <v-row>
             <v-col class="col-12">
               <v-alert
-                width="100%"
-                type="info"
                 closable
-                icon="fas fa-info-circle"
                 close-icon="fas fa-solid fa-circle-xmark"
+                icon="fas fa-info-circle"
+                type="info"
+                width="100%"
               >
                 Please use the search bar below to check if we already have your
                 publication in FAIRsharing. If not, you can add it using the
@@ -115,28 +115,29 @@
             <v-text-field
               v-model="search"
               append-inner-icon="fas fa-search"
+              clearable
+              color="primary"
+              hide-details
               label="Search existing publications"
               variant="outlined"
-              hide-details
-              color="primary"
-              clearable
             />
             <v-data-table
               v-model="publications"
-              :items="availablePublications"
               :headers="headers"
-              :search="search"
-              :loading="loading"
-              class="elevation-1"
-              show-select
+              :items="availablePublications"
               :items-per-page="9"
+              :loading="loading"
+              :search="search"
+              class="elevation-1"
               item-key="title"
+              return-object
+              show-select
             />
 
             <div class="noPublications">
               <v-tooltip location="top">
                 <template #activator="{ props }">
-                  <v-icon v-bind="props" class="d-inline-block mr-2">
+                  <v-icon class="d-inline-block mr-2" v-bind="props">
                     fas fa-question-circle
                   </v-icon>
                 </template>
@@ -145,15 +146,15 @@
                 DOI import button.
               </v-tooltip>
               <v-btn
-                class="bg-green text-white my-3"
                 :loading="doiLoader"
+                class="bg-green text-white my-3"
                 @click="getDOI()"
               >
                 Import from DOI / Zenodo
               </v-btn>
               <v-btn
-                class="bg-green text-white my-3 ml-3"
                 :loading="loadingPub"
+                class="bg-green text-white my-3 ml-3"
                 @click="getPMID()"
               >
                 Import from PUBMED ID
@@ -167,15 +168,15 @@
             </div>
           </v-col>
         </v-row>
-        <v-alert v-if="errors.doi" type="error"> DOI not found ! </v-alert>
+        <v-alert v-if="errors.doi" type="error"> DOI not found !</v-alert>
         <v-alert v-if="errors.pmid" type="error">
           PubMed ID not found !
         </v-alert>
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="bg-primary"
           :loading="continueLoader"
+          class="bg-primary"
           variant="elevated"
           @click="saveRecord(false, $event.target)"
         >
@@ -192,12 +193,12 @@
       </v-card-actions>
       <v-dialog
         :model-value="openEditor"
-        max-width="1000px"
         class="pa-0"
-        persistent
+        max-width="1000px"
         no-click-animation
+        persistent
       >
-        <v-container fluid class="py-0">
+        <v-container class="py-0" fluid>
           <v-form
             id="editPublication"
             ref="editPublication"
@@ -235,9 +236,9 @@
                     <v-col class="col-12">
                       <v-text-field
                         v-model="newPublication.title"
+                        :rules="[rules.isRequired()]"
                         label="Title"
                         variant="outlined"
-                        :rules="[rules.isRequired()]"
                       />
                     </v-col>
                   </v-row>
@@ -245,25 +246,25 @@
                     <v-col class="col-4">
                       <v-text-field
                         v-model="newPublication.authors"
+                        :rules="[rules.isRequired()]"
                         label="Authors"
                         variant="outlined"
-                        :rules="[rules.isRequired()]"
                       />
                     </v-col>
                     <v-col class="col-4">
                       <v-text-field
                         v-model="newPublication.journal"
+                        :rules="[rules.isRequired()]"
                         label="Journal"
                         variant="outlined"
-                        :rules="[rules.isRequired()]"
                       />
                     </v-col>
                     <v-col class="col-4">
                       <v-text-field
                         v-model="newPublication.year"
+                        :rules="[rules.isRequired()]"
                         label="Publication Year"
                         variant="outlined"
-                        :rules="[rules.isRequired()]"
                       />
                     </v-col>
                   </v-row>
@@ -271,9 +272,9 @@
                     <v-col class="col-12">
                       <v-text-field
                         v-model="newPublication.url"
+                        :rules="[rules.isRequired()]"
                         label="URL"
                         variant="outlined"
-                        :rules="[rules.isRequired()]"
                       />
                     </v-col>
                   </v-row>
@@ -281,8 +282,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                  class="bg-green text-white"
                   :disabled="!subFormValid"
+                  class="bg-green text-white"
                   @click="addPublication()"
                 >
                   Edit or add a new publication
@@ -298,16 +299,16 @@
     </v-card>
     <v-dialog v-model="showEmptySearch" width="auto">
       <v-card>
-        <v-card-title> Search Term Missing </v-card-title>
+        <v-card-title> Search Term Missing</v-card-title>
         <v-card-text>
           Please paste or type a value (e.g. a DOI or Pubmed ID) into the search
           box above.
         </v-card-text>
         <v-card-actions class="mx-auto full-width" style="max-width: 250px">
           <v-btn
+            block
             color="primary"
             variant="elevated"
-            block
             @click="showEmptySearch = false"
           >
             OK
@@ -326,9 +327,9 @@ import Alerts from "@/components/Editor/Alerts";
 import PublicationClient from "@/lib/Client/ExternalClients.js";
 import RestClient from "@/lib/Client/RESTClient.js";
 import { isRequired } from "@/utils/rules.js";
+
 const pubClient = new PublicationClient();
 const restClient = new RestClient();
-import record from "@/store";
 
 export default {
   name: "EditPublications",
@@ -416,8 +417,7 @@ export default {
         return this.getSection("publications").data;
       },
       set(newValue) {
-        // this.$store.commit("record/setPublications", newValue);
-        record.commit("record/setPublications", newValue);
+        this.$store.commit("record/setPublications", newValue);
       },
     },
     metadata() {
@@ -454,11 +454,7 @@ export default {
               if (!isEqual(isFound, copy)) changes += 1;
             }
           });
-          // this.$store.commit("record/setChanges", {
-          //   section: "publications",
-          //   value: changes,
-          // });
-          record.commit("record/setChanges", {
+          this.$store.commit("record/setChanges", {
             section: "publications",
             value: changes,
           });
@@ -721,11 +717,7 @@ export default {
       });
       this.continueLoader = false;
       this.exitLoader = false;
-      // this.$store.commit("record/setChanges", {
-      //   section: "publications",
-      //   value: 0,
-      // });
-      record.commit("record/setChanges", {
+      this.$store.commit("record/setChanges", {
         section: "publications",
         value: 0,
       });

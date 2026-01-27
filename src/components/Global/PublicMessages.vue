@@ -6,8 +6,9 @@
         v-for="(messageObj, index) in publicMessages"
         :key="messageObj.message + '_' + index"
         class="mt-2 mb-2 mx-2 flex-grow-1 text-center"
+        color="warning"
         density="compact"
-        type="warning"
+        type="info"
         v-html="`${moment(messageObj.updatedAt)}: ${messageObj.message}`"
       />
       <!-- eslint-enable vue/no-v-html -->
@@ -16,10 +17,11 @@
       <v-alert
         key="localhost_warning"
         class="mt-2 mb-2 mx-2 flex-grow-1 text-center"
+        color="warning"
         density="compact"
-        type="warning"
+        type="info"
       >
-        You are using dev-api.fairsharing.org; changes will not appear in
+        You are using dev-api.fairsharing.org. Changes will not appear in
         production and will be lost when this server is updated.
       </v-alert>
     </div>
@@ -27,10 +29,11 @@
       <v-alert
         key="dev_server_warning"
         class="mt-2 mb-2 mx-2 flex-grow-1 text-center"
+        color="warning"
         density="compact"
-        type="warning"
+        type="info"
       >
-        You are using localhost; changes will not appear in production and will
+        You are using localhost. Changes will not appear in production and will
         be lost when this server is updated.
       </v-alert>
     </div>

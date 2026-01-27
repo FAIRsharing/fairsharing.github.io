@@ -1,5 +1,5 @@
 <template>
-  <v-scroll-x-transition>
+  <div>
     <v-card-text v-if="message.value" class="pt-3 mb-0 pb-0">
       <v-alert :type="message.type()" class="mb-0">
         <span v-if="!message.error">
@@ -8,9 +8,9 @@
         <vue-json-pretty
           v-else
           :data="message.value.response.data"
-          :show-double-quotes="false"
           :deep="5"
           :highlight-mouseover-node="true"
+          :show-double-quotes="false"
         />
         <span v-if="message.error">
           <br />
@@ -20,7 +20,7 @@
         </span>
       </v-alert>
     </v-card-text>
-  </v-scroll-x-transition>
+  </div>
 </template>
 
 <script>
@@ -57,6 +57,7 @@ export default {
 .vjs-value__string {
   color: #e6ee1b !important;
 }
+
 .vjs-value__boolean,
 .vjs-value__number {
   color: #9ac2e5;

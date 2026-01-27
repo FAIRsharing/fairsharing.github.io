@@ -1,8 +1,8 @@
 <template>
   <v-form id="editOrganisations" ref="editOrganisations" v-model="formValid">
-    <v-container fluid class="pa-0">
+    <v-container class="pa-0" fluid>
       <v-row>
-        <v-col cols="12" class="pa-0">
+        <v-col class="pa-0" cols="12">
           <v-card>
             <v-card-title class="bg-grey-lighten-4 text-blue">
               Edit Organisations & Grants
@@ -35,7 +35,6 @@
                     >
                       <v-card-text class="py-1" style="flex-grow: 1">
                         <v-list
-                          class="px-0"
                           :class="[
                             'px-0',
                             {
@@ -43,6 +42,7 @@
                               'bg-green-lighten-3': link.isLead,
                             },
                           ]"
+                          class="px-0"
                         >
                           <v-list-item class="px-0">
                             <v-list-item-title class="font-weight-bold">
@@ -80,31 +80,31 @@
                       <v-card-actions style="border-top: 1px solid #ccc">
                         <v-spacer />
                         <v-btn
-                          icon
                           class="bg-green text-white"
+                          icon
                           @click="showEditOverlay(linkIndex)"
                         >
-                          <v-icon size="small"> fas fa-pen </v-icon>
+                          <v-icon size="small"> fas fa-pen</v-icon>
                         </v-btn>
                         <v-btn
-                          icon
                           class="bg-red text-white"
+                          icon
                           @click="removeRelation(linkIndex)"
                         >
-                          <v-icon size="small"> fas fa-trash </v-icon>
+                          <v-icon size="small"> fas fa-trash</v-icon>
                         </v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-col>
                   <v-col cols="12" lg="6" xl="3">
                     <v-card
-                      height="100%"
                       class="newRel text-green"
-                      style="cursor: pointer"
+                      height="100%"
                       min-height="190px"
+                      style="cursor: pointer"
                       @click="showEditOverlay(null)"
                     >
-                      <v-icon size="40" class="text-green mb-4">
+                      <v-icon class="text-green mb-4" size="40">
                         fas fa-plus-circle
                       </v-icon>
 
@@ -118,16 +118,16 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="bg-primary"
                 :loading="continueLoader"
+                class="bg-primary"
                 variant="elevated"
                 @click="saveRecord(false, $event.target)"
               >
                 Save and continue
               </v-btn>
               <v-btn
-                class="bg-primary"
                 :loading="exitLoader"
+                class="bg-primary"
                 variant="elevated"
                 @click="saveRecord(true, $event.target)"
               >
@@ -144,8 +144,8 @@
         <v-overlay
           v-model="loading"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <loaders />
         </v-overlay>

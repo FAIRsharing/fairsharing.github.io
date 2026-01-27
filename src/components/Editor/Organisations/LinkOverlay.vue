@@ -2,8 +2,8 @@
   <v-overlay
     v-model="editOrganisationLink.showOverlay"
     :absolute="false"
-    opacity="0.8"
     class="align-center justify-center"
+    opacity="0.8"
   >
     <v-form
       id="editOrganisationLink"
@@ -13,13 +13,13 @@
     >
       <v-card
         key="edit"
-        class="flexCard text-black full-width"
-        height="100%"
-        width="1000"
         :class="{
           'bg-grey-lighten-0': menus.show,
           'bg-grey-lighten-3': !menus.show,
         }"
+        class="flexCard text-black full-width"
+        height="100%"
+        width="1000"
       >
         <v-card-title class="bg-green text-white">
           <span v-if="editOrganisationLink.id > -1"> Edit relationship </span>
@@ -29,36 +29,36 @@
           <!-- ORGANISATIONS -->
           <div>
             <v-card
-              class="d-flex flex-row bg-transparent elevation-0"
               :disabled="!!menus.show"
+              class="d-flex flex-row bg-transparent elevation-0"
             >
               <v-autocomplete
                 v-model="editOrganisationLink.data.organisation"
-                :items="organisations"
                 :custom-filter="customFilter"
+                :items="organisations"
+                :rules="[rules.isRequired()]"
+                chips
+                class="text-capitalize mt-2"
+                color="primary"
                 item-title="name"
                 item-value="id"
-                variant="outlined"
-                color="primary"
-                return-object
-                class="text-capitalize mt-2"
-                chips
                 label="Select an organisation"
-                :rules="[rules.isRequired()]"
+                return-object
+                variant="outlined"
               >
                 <template #chip="{ props, item }">
                   <v-chip
-                    v-bind="props"
                     :text="item.raw.name"
                     color="blue"
+                    v-bind="props"
                     variant="flat"
                   ></v-chip>
                 </template>
                 <template #item="{ props, item }">
                   <v-list-item
-                    v-bind="props"
                     class="mb-2"
                     style="max-width: 870px"
+                    v-bind="props"
                   >
                     <template #prepend>
                       <v-avatar class="mr-4">
@@ -66,7 +66,7 @@
                           v-if="item.raw['urlForLogo']"
                           :src="fairSharingEndpoint + item.raw['urlForLogo']"
                         />
-                        <v-icon v-else> fas fa-sitemap </v-icon>
+                        <v-icon v-else> fas fa-sitemap</v-icon>
                       </v-avatar>
                     </template>
                     <v-list-item-subtitle>
@@ -83,7 +83,7 @@
                   class="bg-green text-white mt-2"
                   @click="addNewOrganisation"
                 >
-                  <v-icon size="medium"> fas fa-plus </v-icon>
+                  <v-icon size="medium"> fas fa-plus</v-icon>
                   <span class="ml-1">Add New</span>
                 </v-btn>
               </div>
@@ -95,17 +95,17 @@
             >
               <v-card-title>Create a new organisation</v-card-title>
               <v-card-text v-if="menus.newOrganisation.error" class="mb-0 pb-0">
-                <v-alert type="error" class="mb-0">
+                <v-alert class="mb-0" type="error">
                   {{ menus.newOrganisation.error.response.data }}
                 </v-alert>
               </v-card-text>
               <v-card-text v-if="!validName" class="mb-0 pb-0">
-                <v-alert type="error" class="mb-0">
+                <v-alert class="mb-0" type="error">
                   No matching organisation found.
                 </v-alert>
               </v-card-text>
               <v-card-text v-if="!enterName" class="mb-0 pb-0">
-                <v-alert type="success" class="mb-0">
+                <v-alert class="mb-0" type="success">
                   Select an organisation
                 </v-alert>
               </v-card-text>
@@ -118,59 +118,59 @@
                 >
                   <v-container fluid>
                     <v-row>
-                      <v-col cols="12" class="pb-0">
+                      <v-col class="pb-0" cols="12">
                         <!-- Enter name of organisation -->
                         <v-text-field
                           v-if="enterName"
                           v-model="menus.newOrganisation.data.name"
+                          :rules="[rules.isRequired()]"
                           label="Organisation Name"
                           variant="outlined"
-                          :rules="[rules.isRequired()]"
                           @keydown="validName = true"
                         />
                         <v-autocomplete
                           v-else
                           v-model="menus.newOrganisation.selectOrganisation"
                           :items="organisationsList"
-                          variant="outlined"
+                          :rules="[rules.isRequired()]"
                           item-title="name"
                           item-value="id"
-                          return-object
                           label="Select an organisation"
-                          :rules="[rules.isRequired()]"
+                          return-object
+                          variant="outlined"
                           @update:model-value="selectOrganisationFromList()"
                         />
                       </v-col>
-                      <v-col cols="12" class="pb-0">
+                      <v-col class="pb-0" cols="12">
                         <v-text-field
                           v-model="menus.newOrganisation.data.homepage"
+                          :rules="[rules.isRequired(), rules.isURL()]"
                           label="Organisation Homepage"
                           variant="outlined"
-                          :rules="[rules.isRequired(), rules.isURL()]"
                         />
                       </v-col>
-                      <v-col cols="12" class="pb-0">
+                      <v-col class="pb-0" cols="12">
                         <v-autocomplete
                           v-model="
                             menus.newOrganisation.data.organisation_type_ids
                           "
                           :items="organisationsTypes"
-                          multiple
-                          variant="outlined"
-                          item-title="name"
-                          item-value="id"
-                          return-object
-                          label="Select an organisation type(s)"
                           :rules="[rules.isRequired()]"
+                          chips
                           clearable
                           closable-chips
-                          chips
+                          item-title="name"
+                          item-value="id"
+                          label="Select an organisation type(s)"
+                          multiple
+                          return-object
+                          variant="outlined"
                         >
                           <template #chip="{ props, item }">
                             <v-chip
-                              v-bind="props"
                               :text="item.raw.title"
                               color="blue"
+                              v-bind="props"
                               variant="flat"
                             ></v-chip>
                           </template>
@@ -179,14 +179,14 @@
                       <v-col cols="12">
                         <v-file-input
                           v-model="menus.newOrganisation.data.logo"
-                          :rules="[rules.isImage(), imageSizeCorrect]"
-                          clearable
                           :loading="logoLoading"
+                          :rules="[rules.isImage(), imageSizeCorrect]"
                           accept="image/png,image/jpeg"
-                          label="Organisation Logo"
-                          show-size
+                          clearable
                           counter
+                          label="Organisation Logo"
                           prepend-inner-icon="fas fa-image"
+                          show-size
                           variant="outlined"
                         />
                         <span class="ml-10"
@@ -194,19 +194,10 @@
                         >
                       </v-col>
                       <!-- countries -->
-                      <v-col cols="12" class="pb-0">
+                      <v-col class="pb-0" cols="12">
                         <v-autocomplete
                           v-model="menus.newOrganisation.data.country_ids"
-                          label="Countries"
-                          chips
-                          clearable
-                          closable-chips
                           :items="countries"
-                          item-title="name"
-                          item-value="name"
-                          multiple
-                          variant="outlined"
-                          return-object
                           :rules="[
                             menus.newOrganisation.data.country_ids &&
                               !(
@@ -214,12 +205,21 @@
                                   .length === 0
                               ),
                           ]"
+                          chips
+                          clearable
+                          closable-chips
+                          item-title="name"
+                          item-value="name"
+                          label="Countries"
+                          multiple
+                          return-object
+                          variant="outlined"
                         >
                           <template #prepend>
                             <v-tooltip
+                              class="text-justify"
                               location="bottom"
                               max-width="300px"
-                              class="text-justify"
                             >
                               <template #activator="{ props }">
                                 <v-icon v-bind="props">
@@ -232,9 +232,9 @@
                           <!-- autocomplete selected -->
                           <template #chip="{ props, item }">
                             <v-chip
-                              v-bind="props"
                               :text="item.raw.name"
                               color="blue"
+                              v-bind="props"
                               variant="flat"
                             ></v-chip>
                           </template>
@@ -267,9 +267,9 @@
                 <v-tooltip location="bottom">
                   <template #activator="{ props }">
                     <v-btn
-                      class="bg-green"
                       :disabled="importROR"
                       :loading="menus.newOrganisation.rorLoader"
+                      class="bg-green"
                       v-bind="props"
                       variant="elevated"
                       @click="getOrganisations()"
@@ -288,10 +288,10 @@
                   Clear Form
                 </v-btn>
                 <v-btn
-                  class="bg-success"
-                  variant="elevated"
                   :disabled="!menus.newOrganisation.formValid"
                   :loading="menus.newOrganisation.loading"
+                  class="bg-success"
+                  variant="elevated"
                   @click="createNewOrganisation()"
                 >
                   Save new organisation
@@ -310,53 +310,52 @@
           <!-- RELATIONSHIP -->
           <div class="mb-3">
             <v-card
-              class="d-flex flex-row bg-transparent elevation-0"
               :disabled="!!menus.show"
+              class="d-flex flex-row bg-transparent elevation-0"
             >
               <v-autocomplete
-                v-model="editOrganisationLink.data.relation"
-                :items="organisationsRelations"
-                variant="outlined"
-                label="Select a type of relationship"
+                v-model="relationValue"
                 :disabled="!!menus.show"
-                class="mt-4"
-                chips
-                color="primary"
+                :items="organisationsRelations"
                 :rules="[rules.isRequired()]"
+                chips
+                class="mt-4"
+                color="primary"
+                label="Select a type of relationship"
+                variant="outlined"
               >
                 <template #chip="{ props, item }">
                   <v-chip
-                    v-bind="props"
-                    :text="cleanString(item.title)"
+                    :text="item.title"
                     color="blue"
+                    v-bind="props"
                     variant="flat"
-                    class="text-capitalize"
                   ></v-chip>
                 </template>
               </v-autocomplete>
             </v-card>
           </div>
           <!-- GRANT -->
-          <div v-if="editOrganisationLink.data.relation === 'funds'">
+          <div v-if="relationValue === 'funds'">
             <v-card
-              class="d-flex flex-row bg-transparent elevation-0 align-center"
               :disabled="!!menus.show"
+              class="d-flex flex-row bg-transparent elevation-0 align-center"
             >
               <v-autocomplete
                 v-model="editOrganisationLink.data.grant"
                 :items="grants"
+                class="mt-2"
                 item-title="name"
                 item-value="id"
-                variant="outlined"
-                return-object
-                class="mt-2"
                 label="Select an optional grant for funding organisations"
+                return-object
+                variant="outlined"
               >
                 <template #chip="{ props, item }">
                   <v-chip
-                    v-bind="props"
                     :text="item.raw.name"
                     color="blue"
+                    v-bind="props"
                     variant="flat"
                   ></v-chip>
                 </template>
@@ -377,7 +376,7 @@
                 class="bg-green text-white mt-n4 ml-2"
                 @click="menus.show = 'grant'"
               >
-                <v-icon size="small"> fas fa-plus </v-icon>
+                <v-icon size="small"> fas fa-plus</v-icon>
               </v-btn>
             </v-card>
             <v-card
@@ -387,7 +386,7 @@
             >
               <v-card-title>Create a new grant</v-card-title>
               <v-card-text v-if="menus.newGrant.error" class="mb-0 pb-0">
-                <v-alert type="error" class="mb-0">
+                <v-alert class="mb-0" type="error">
                   {{ menus.newGrant.error.response.data }}
                 </v-alert>
               </v-card-text>
@@ -399,9 +398,9 @@
                 >
                   <v-text-field
                     v-model="menus.newGrant.data.name"
+                    :rules="[rules.isRequired()]"
                     label="Grant Name"
                     variant="outlined"
-                    :rules="[rules.isRequired()]"
                   />
                   <v-text-field
                     v-model="menus.newGrant.data.description"
@@ -413,9 +412,9 @@
               <v-card-actions>
                 <v-spacer />
                 <v-btn
-                  class="bg-success"
                   :disabled="!menus.newGrant.formValid"
                   :loading="menus.newGrant.loading"
+                  class="bg-success"
                   @click="createNewGrant()"
                 >
                   Save new grant
@@ -430,13 +429,13 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="bg-success"
             :disabled="!!menus.show || !formValid"
+            class="bg-success"
             @click="confirmModifications()"
           >
             Confirm
           </v-btn>
-          <v-btn class="bg-error" @click="hideMenu()"> Cancel </v-btn>
+          <v-btn class="bg-error" @click="hideMenu()"> Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -452,9 +451,10 @@ import RestClient from "@/lib/Client/RESTClient.js";
 import { toBase64 } from "@/utils/generalUtils";
 import { isImage, isRequired, isUrl } from "@/utils/rules.js";
 import { capitalize } from "lodash";
+import stringUtils from "@/utils/stringUtils";
+
 const restClient = new RestClient();
 const pubClient = new PublicationClient();
-import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "LinkOverlay",
@@ -533,6 +533,17 @@ export default {
       return this.organisationsRelations.map((item) =>
         capitalize(this.cleanString(item)),
       );
+    },
+    relationValue: {
+      get() {
+        return this.editOrganisationLink.data.relation;
+      },
+      set(val) {
+        this.editOrganisationLink.data.relation = val;
+        if (val !== "funds") {
+          delete this.editOrganisationLink.data.grant;
+        }
+      },
     },
   },
   watch: {
@@ -687,7 +698,9 @@ export default {
       let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
       if (this.editOrganisationLink.id > -1) {
         this.organisationLinks[this.editOrganisationLink.id] = data;
-      } else this.organisationLinks[this.organisationLinks.length] = data;
+      } else {
+        this.organisationLinks[this.organisationLinks.length] = data;
+      }
       this.editOrganisationLink.showOverlay = false;
     },
     customFilter(item, queryText) {

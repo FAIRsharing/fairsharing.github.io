@@ -54,7 +54,7 @@
     "vue-country-flag-next": "^2.3.2",
     "vue-eslint-parser": "^9.4.3",
     "vue-gtag": "^2.1.0",
-    "vue-json-pretty": "^1.7.1",
+    "vue-json-pretty": "^2.6.0",
     "vue-loader": "^17.4.2",
     "vue-meta": "^3.0.0-alpha.10",
     "vue-moment": "^4.1.0",

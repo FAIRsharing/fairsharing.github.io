@@ -20,6 +20,10 @@ const $store = new Vuex.Store({
 describe("PublicMessages.vue", () => {
     let wrapper;
 
+    beforeAll(() => {
+      process.env.VUE_APP_API_ENDPOINT = "https://dev-api.fairsharing.org";
+    });
+
     it("can be instantiated", () => {
             wrapper = shallowMount(PublicMessages, {
             localVue,

@@ -24,10 +24,13 @@ describe("stringUtils.js", function () {
     expect(stringUtils.methods.prettifyList("one,two")).toBe("one, two");
   });
 
-  it("prettifies a login error string", () => {
-    // This is an odd result; all is as expected in the browser, though.
-    expect(stringUtils.filters.pretty('{"this":"that"}')).toBe(
-      "\\this\\: \\that\\",
-    );
-  });
-});
+    it("prettifies a login error string", () => {
+        // This is an odd result; all is as expected in the browser, though.
+        expect(stringUtils.filters.pretty('{"this":"that"}')).toBe("\\this\\: \\that\\");
+    })
+
+    it("converts text in strings to urls", () => {
+      expect(stringUtils.methods.toHyperLink('link to https://sirwilliamhope.org')).toBe("link to <a href='https://sirwilliamhope.org'>https://sirwilliamhope.org</a>");
+    })
+
+})

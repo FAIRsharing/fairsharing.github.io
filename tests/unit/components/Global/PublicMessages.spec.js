@@ -20,14 +20,18 @@ const $store = new Vuex.Store({
 describe("PublicMessages.vue", () => {
   let wrapper;
 
-  it("can be instantiated", () => {
-    wrapper = shallowMount(PublicMessages, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+    beforeAll(() => {
+      process.env.VUE_APP_API_ENDPOINT = "https://dev-api.fairsharing.org";
     });
-    expect(wrapper.vm.$options.name).toMatch("PublicMessages");
-  });
+
+    it("can be instantiated", () => {
+            wrapper = shallowMount(PublicMessages, {
+            localVue,
+            vuetify,
+            mocks:{$store}
+        });
+        expect(wrapper.vm.$options.name).toMatch("PublicMessages");
+    })
 
   it("can be check moment method", () => {
     const momentifiedDate = wrapper.vm.moment("2021-08-26T14:24:46");

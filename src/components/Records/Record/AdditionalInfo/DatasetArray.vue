@@ -16,7 +16,10 @@
       {{ getDescription("head") }}
     </v-tooltip>
     <b class="text-h6 text-capitalize">{{ setTitle(cleanString(title)) }}</b>
-    <div v-for="(item, index) in currentField" :key="item.name + '_' + index">
+    <div
+      v-for="(item, index) in currentField"
+      :key="item.name + '_' + index"
+    >
       <!--  URLs    -->
       <div
         v-for="(key, keyindex) in Object.keys(item)"
@@ -36,18 +39,12 @@
           <b class="width-200 text-capitalize">{{
             setTitle(cleanString(key))
           }}</b>
+          <!-- eslint-disable vue/no-v-html -->
           <div
-            v-if="checkRegex(item[key])"
             class="d-flex full-width ml-md-12 ml-13"
-          >
-            <!-- See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2021 -->
-            <a class="underline-effect" :href="item[key]" target="_blank">
-              {{ item[key] }}
-            </a>
-          </div>
-          <div v-else class="d-flex full-width ml-md-12 ml-13">
-            {{ item[key] }}
-          </div>
+            v-html="toHyperLink(item[key])"
+          />
+          <!-- eslint-enable vue/no-v-html -->
         </div>
       </div>
 

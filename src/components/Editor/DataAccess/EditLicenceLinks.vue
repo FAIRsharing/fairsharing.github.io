@@ -1,6 +1,6 @@
 <template>
   <div id="editLicences">
-    <v-container fluid class="pt-3">
+    <v-container class="pt-3" fluid>
       <v-row>
         <b class="text-uppercase mb-2">Licences</b>
       </v-row>
@@ -12,15 +12,15 @@
           <v-chip
             v-for="(licenceLink, index) in currentLicences"
             :key="'licence_' + index"
+            :class="[!isNew(licenceLink) ? 'bg-blue' : 'bg-white borderBlue']"
             class="pr-5"
             variant="flat"
-            :class="[!isNew(licenceLink) ? 'bg-blue' : 'bg-white borderBlue']"
           >
             <v-tooltip location="bottom">
               <template #activator="{ props }">
                 <v-icon
-                  size="small"
                   class="mr-2 text-white"
+                  size="small"
                   v-bind="props"
                   @click="showEditItem(index)"
                 >
@@ -35,15 +35,15 @@
                 v-if="
                   licenceLink.relation && licenceLink.relation !== 'undefined'
                 "
-                class="ml-1 text-capitalize"
-                >({{ cleanString(licenceLink.relation) }})</span
+                class="ml-1"
+                >({{ licenceLink.relation }})</span
               >
             </div>
             <v-tooltip location="bottom">
               <template #activator="{ props }">
                 <v-icon
-                  size="small"
                   class="ml-3 text-white"
+                  size="small"
                   v-bind="props"
                   @click="removeLicenceLink(index)"
                 >
@@ -59,7 +59,7 @@
             class="bg-green text-white pr-5 shadowChip"
             @click="showEditItem()"
           >
-            <v-icon size="small" class="text-white mr-3">
+            <v-icon class="text-white mr-3" size="small">
               fas fa-plus-circle
             </v-icon>
             Add a new licence
@@ -74,15 +74,15 @@
       persistent
       width="700px"
     >
-      <v-container v-if="edit.template" fluid class="py-0">
+      <v-container v-if="edit.template" class="py-0" fluid>
         <v-row justify="center">
           <v-card
-            class="flexCard text-black"
-            width="100%"
             :class="{
               'bg-grey-lighten-0': showCreator,
               'bg-grey-lighten-3': !showCreator,
             }"
+            class="flexCard text-black"
+            width="100%"
           >
             <v-card-title class="bg-green text-white">
               <span v-if="edit.id">Edit</span>
@@ -93,39 +93,39 @@
               <v-form id="editLink" ref="editLink" v-model="formValid.link">
                 <!-- LICENCE -->
                 <v-card
-                  class="d-flex flex-row bg-transparent elevation-0"
                   :disabled="!!showCreator"
+                  class="d-flex flex-row bg-transparent elevation-0"
                 >
                   <v-autocomplete
                     v-model="edit.template.licence"
                     :items="availableLicences"
-                    item-value="id"
-                    item-title="name"
-                    variant="outlined"
-                    return-object
-                    label="Select the Licence name"
                     :rules="[rules.isRequired()]"
                     chips
+                    class="mt-2"
                     closable-chips
                     color="primary"
-                    class="mt-2"
+                    item-title="name"
+                    item-value="id"
+                    label="Select the Licence name"
+                    return-object
+                    variant="outlined"
                   >
                     <template #chip="{ props, item }">
                       <v-chip
-                        v-bind="props"
                         :text="item.raw.name"
                         color="blue"
+                        v-bind="props"
                         variant="flat"
                       ></v-chip>
                     </template>
                   </v-autocomplete>
                   <v-btn
-                    size="small"
                     class="bg-green text-white mt-2 ml-2"
                     icon=""
+                    size="small"
                     @click="showCreator = true"
                   >
-                    <v-icon size="large"> fas fa-plus </v-icon>
+                    <v-icon size="large"> fas fa-plus</v-icon>
                   </v-btn>
                 </v-card>
                 <!-- NEW LICENCE -->
@@ -141,15 +141,15 @@
                     <v-card-text class="pt-6">
                       <v-text-field
                         v-model="newLicence.name"
-                        variant="outlined"
-                        label="Licence's name"
                         :rules="[rules.isRequired()]"
+                        label="Licence's name"
+                        variant="outlined"
                       />
                       <v-text-field
                         v-model="newLicence.url"
-                        variant="outlined"
-                        label="Licence's URL"
                         :rules="[rules.isRequired(), rules.isUrl()]"
+                        label="Licence's URL"
+                        variant="outlined"
                       />
                     </v-card-text>
                     <v-card-actions>
@@ -169,33 +169,33 @@
                 </v-form>
                 <!-- RELATION -->
                 <v-card
-                  class="d-flex flex-row bg-transparent elevation-0"
                   :disabled="!!showCreator"
+                  class="d-flex flex-row bg-transparent elevation-0"
                 >
                   <v-autocomplete
                     v-model="edit.template.relation"
                     :items="cleanTextList"
-                    variant="outlined"
-                    return-object
-                    label="Select the Licence relation"
                     :rules="[rules.isRequired()]"
                     auto-select-first
                     class="mt-2"
+                    label="Select the Licence relation"
+                    return-object
+                    variant="outlined"
                   />
                 </v-card>
               </v-form>
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="bg-success"
                 :disabled="showCreator || !formValid.link"
+                class="bg-success"
                 @click="updateLink()"
               >
                 <span v-if="edit.id">Edit</span>
                 <span v-else>Submit</span>
                 <span class="ml-1">licence link</span>
               </v-btn>
-              <v-btn class="bg-error" @click="hideEdit()"> Cancel </v-btn>
+              <v-btn class="bg-error" @click="hideEdit()"> Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-row>
@@ -323,12 +323,12 @@ export default {
       if (id !== null) {
         let link = this.sections.dataAccess.data.licences[id];
         link.licence = newLink.licence;
-        link.relation = newLink.relation;
+        link.relation = newLink.relation.replace(/ /g, "_").toLowerCase();
       } else {
         let createLink = {
           fairsharingRecord: { id: this.$route.params["id"] },
           licence: newLink.licence,
-          relation: newLink.relation,
+          relation: newLink.relation.replace(/ /g, "_").toLowerCase(),
         };
         this.sections.dataAccess.data.licences.push(createLink);
       }

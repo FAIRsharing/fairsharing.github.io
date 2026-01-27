@@ -1,5 +1,5 @@
 <template>
-  <v-container id="editSupportLinks" fluid class="pt-3">
+  <v-container id="editSupportLinks" class="pt-3" fluid>
     <v-row>
       <b class="text-uppercase mb-2">Support links</b>
     </v-row>
@@ -7,14 +7,14 @@
       <v-col col="12">
         <v-data-table
           id="supportLinksTable"
-          :items="recordData"
-          :headers="headers"
           :group-by="[{ key: 'type', order: 'asc' }]"
-          show-group-by
+          :headers="headers"
+          :items="recordData"
           class="elevation-1"
-          hide-default-header
           disable-pagination
           hide-default-footer
+          hide-default-header
+          show-group-by
         >
           <template #bottom>
             <div class="tableFooter py-3 px-2">
@@ -22,7 +22,7 @@
                 class="bg-green text-white pr-5 shadowChip"
                 @click="newLink()"
               >
-                <v-icon size="small" class="text-white mr-3">
+                <v-icon class="text-white mr-3" size="small">
                   fas fa-plus-circle
                 </v-icon>
                 Add a support link
@@ -32,7 +32,7 @@
           <template #group-header="{ item }">
             <div>
               <div class="bg-grey-lighten-3">
-                <v-avatar size="35" class="mr-2">
+                <v-avatar class="mr-2" size="35">
                   <Icon
                     :item="getIconName(item.value)"
                     size="small"
@@ -41,22 +41,22 @@
                 </v-avatar>
                 <b class="pt-1">{{ item.value }}</b>
               </div>
-              <v-chip-group column class="mb-5 px-4 large">
+              <v-chip-group class="mb-5 px-4 large" column>
                 <v-chip
                   v-for="(links, key) in item.items"
                   :key="key"
-                  class="pr-5"
-                  style="cursor: pointer"
-                  variant="flat"
                   :class="[
                     !isNew(links.raw) ? 'bg-blue' : 'bg-white borderBlue',
                   ]"
+                  class="pr-5"
+                  style="cursor: pointer"
+                  variant="flat"
                 >
                   <v-tooltip location="bottom">
                     <template #activator="{ props }">
                       <v-icon
-                        size="small"
                         class="mr-2 text-white"
+                        size="small"
                         v-bind="props"
                         @click="editLink(getLinkIndex(links.raw))"
                       >
@@ -76,8 +76,8 @@
                   <v-tooltip location="bottom">
                     <template #activator="{ props }">
                       <v-icon
-                        size="small"
                         class="ml-3 text-white"
+                        size="small"
                         v-bind="props"
                         @click="removeLink(getLinkIndex(links.raw))"
                       >
@@ -99,13 +99,13 @@
 
     <v-dialog
       v-model="edit.show"
-      class="py-0"
       :dark="false"
+      class="py-0"
       opacity="0.8"
       persistent
       width="700px"
     >
-      <v-container v-if="edit.template" fluid class="py-0">
+      <v-container v-if="edit.template" class="py-0" fluid>
         <v-row justify="center">
           <v-card class="flexCard bg-grey-lighten-3 text-black" width="100%">
             <v-form
@@ -122,56 +122,56 @@
                 <v-select
                   v-model="edit.template.type"
                   :items="Object.keys(supportLinksTypes)"
+                  :menu-props="{ bottom: true, offsetY: true }"
+                  :rules="[rules.isRequired()]"
+                  label="Select the support link type"
                   return-object
                   variant="outlined"
-                  label="Select the support link type"
-                  :rules="[rules.isRequired()]"
-                  :menu-props="{ bottom: true, offsetY: true }"
                 />
                 <v-text-field
                   v-if="rule === 'url'"
                   v-model="edit.template.url.url"
-                  variant="outlined"
-                  placeholder="Enter a URL"
-                  label="Support link URL"
                   :rules="[rules.isRequired(), rules.isUrl()]"
+                  label="Support link URL"
+                  placeholder="Enter a URL"
+                  variant="outlined"
                 />
                 <v-text-field
                   v-if="rule === 'email'"
                   v-model="edit.template.url.url"
-                  variant="outlined"
-                  placeholder="Enter an email"
-                  label="Support link email"
                   :rules="[rules.isRequired(), rules.isEmail()]"
+                  label="Support link email"
+                  placeholder="Enter an email"
+                  variant="outlined"
                 />
                 <v-text-field
                   v-if="rule === 'email/url'"
                   v-model="edit.template.url.url"
-                  variant="outlined"
-                  placeholder="Enter an email or url"
-                  label="Support link email or url"
                   :rules="[rules.isRequired(), rules.isEmailOrUrl()]"
+                  label="Support link email or url"
+                  placeholder="Enter an email or url"
+                  variant="outlined"
                 />
                 <v-text-field
                   v-if="
                     rule === 'email' || rule === 'url' || rule === 'email/url'
                   "
                   v-model="edit.template.url.title"
-                  variant="outlined"
-                  placeholder="Enter a resource name"
                   label="Support link name"
+                  placeholder="Enter a resource name"
+                  variant="outlined"
                 />
                 <v-autocomplete
                   v-if="rule === 'api'"
                   v-model="edit.template.url"
                   v-model:search-input="search"
                   :items="tessRecords"
-                  variant="outlined"
+                  :loading="loadingTessRecords"
+                  :rules="[rules.isRequired()]"
                   item-title="title"
                   item-value="title"
                   return-object
-                  :rules="[rules.isRequired()]"
-                  :loading="loadingTessRecords"
+                  variant="outlined"
                 />
               </v-card-text>
               <v-card-actions>
@@ -182,7 +182,7 @@
                 >
                   Submit support link
                 </v-btn>
-                <v-btn class="bg-error" @click="hideOverlay()"> Cancel </v-btn>
+                <v-btn class="bg-error" @click="hideOverlay()"> Cancel</v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
@@ -326,9 +326,11 @@ export default {
         newLink.title = newLink.url.title;
       }
       if (id !== null) {
-        this.sections.dataAccess.data.support_links.id = newLink;
+        this.sections.dataAccess.data.support_links[id] = newLink;
       } else {
-        this.sections.dataAccess.data.support_links.push(newLink);
+        this.sections.dataAccess.data.support_links[
+          this.sections.dataAccess.data.support_links.length
+        ] = newLink;
       }
       this.edit = {
         show: false,

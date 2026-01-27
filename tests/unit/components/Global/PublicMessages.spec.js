@@ -20,6 +20,10 @@ const $store = new Vuex.Store({
 describe("PublicMessages.vue", () => {
     let wrapper;
 
+    beforeAll(() => {
+      process.env.VUE_APP_API_ENDPOINT = "https://dev-api.fairsharing.org";
+    });
+
     it("can be instantiated", () => {
             wrapper = shallowMount(PublicMessages, {
             localVue,
@@ -30,7 +34,6 @@ describe("PublicMessages.vue", () => {
     })
 
     it("can be check moment method", () => {
-        process.env.VUE_APP_API_ENDPOINT = "https://dev-api.fairsharing.org";
         const momentifiedDate = wrapper.vm.moment('2021-08-26T14:24:46');
         expect(momentifiedDate).toBe('Thursday, August 26th 2021, 14:24')
     });

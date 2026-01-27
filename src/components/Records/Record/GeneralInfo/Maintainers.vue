@@ -37,13 +37,13 @@
           If you are affiliated with this project,
         </p>
 
-        <router-link
+        <a
           v-if="!canClaim && !user().isLoggedIn"
-          :to="`accounts/login?goTo=%2F${$route.params.id}`"
+          :href="`${serverLink}accounts/login?goTo=%2F${$route.params.id}`"
           class="mr-1"
         >
           login
-        </router-link>
+        </a>
         <p
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
@@ -111,7 +111,10 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState('users', ["user"]),
-    ...mapState('editor', ['recordTooltips'])
+    ...mapState('editor', ['recordTooltips']),
+    serverLink: function () {
+      return process.env.VUE_APP_HOSTNAME;
+    }
   }
 }
 </script>

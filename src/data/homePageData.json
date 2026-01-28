@@ -41,6 +41,13 @@
       "header": "Funders & data policy makers",
       "description": "Recommend FAIRsharing to your awardees to inform the development of their data management plan, and select the appropriate resources to recommend in your data policy...",
       "title": "Funders"
+    },
+    {
+      "link": "https://doi.org/10.5281/zenodo.18336945",
+      "image": "assets/Home/Tabs/everyone.svg",
+      "header": "Everyone",
+      "description": "Pivot to video! Watch our totally-awesome webinar to learn more about how FAIRsharing website can help YOU.",
+      "title": "Everyone"
     }
   ],
   "blockInfo": {
@@ -228,14 +235,14 @@
     }
   },
   "communityBlock": {
-    "firstColumn":{
+    "firstColumn": {
       "title": "Community Champions",
       "description": "Put your expertise into action and get credited by joining our Community Champions programme.",
       "icon": "users",
       "buttonTitle": "view and join in",
       "link": "/community_champions"
     },
-    "secondColumn":{
+    "secondColumn": {
       "title": "Adopters and Collaborators",
       "description": "Learn about the people and communities who contribute to and advocate for FAIRsharing.",
       "icon": "collaborators",

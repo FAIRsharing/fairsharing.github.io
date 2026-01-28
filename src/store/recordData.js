@@ -1,6 +1,5 @@
 import { isEmpty, isEqual } from "lodash";
 // import Vue from "vue";
-
 import RESTClient from "@/lib/Client/RESTClient.js";
 
 import Client from "../lib/GraphClient/GraphClient.js";
@@ -136,8 +135,9 @@ let recordStore = {
             additionalInformation.fieldName
           ]
         ) {
-          state.sections.additionalInformation.data.additionalInformation.fieldName =
-            [];
+          state.sections.additionalInformation.data[
+            additionalInformation.fieldName
+          ] = [];
         }
         try {
           state.sections.additionalInformation.data[
@@ -715,6 +715,7 @@ let recordStore = {
     },
   },
 };
+
 function prepareLicence(rawLicence) {
   let preparedLicence = { relation: rawLicence.relation };
   preparedLicence.fairsharing_record_id = rawLicence.fairsharingRecord

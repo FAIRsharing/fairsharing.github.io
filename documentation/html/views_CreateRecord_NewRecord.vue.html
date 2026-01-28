@@ -105,8 +105,8 @@
             &lt;/v-card-title>
             &lt;v-card-text v-if="message.error" class="pt-4">
               &lt;v-alert type="error">
-                {{ message.value
-                }}&lt;v-icon class="px-3"> fa-arrow-right &lt;/v-icon>
+                {{ message.value }}
+                &lt;v-icon class="px-3">fas fa-arrow-right&lt;/v-icon>
                 {{ message.value.response.data }}
               &lt;/v-alert>
             &lt;/v-card-text>
@@ -263,12 +263,10 @@ export default {
       if (this.submitAnyway) {
         if (this.possibleDuplicates.length > 0) {
           record.dups_suspected = true;
-        }
-        else {
+        } else {
           record.dups_suspected = false;
         }
-      }
-      else {
+      } else {
         if (this.possibleDuplicates.length > 0) {
           return;
         }
@@ -293,8 +291,7 @@ export default {
           error: true,
           value: new_record.error,
         };
-      }
-      else {
+      } else {
         this.recordCreated = true;
         this.newRecord = new_record;
       }

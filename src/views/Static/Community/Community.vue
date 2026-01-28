@@ -120,35 +120,35 @@
       </p>
 
       <div class="text-center">
-        <v-btn class="ma-2 text-white">
+        <v-btn class="ma-2" color="primary" variant="elevated">
           <router-link
             v-scroll-to="'#funders'"
-            text-color="white"
+            style="color: white"
             to="#funders"
           >
             Funders
           </router-link>
         </v-btn>
-        <v-btn class="ma-2 text-white">
+        <v-btn class="ma-2" color="primary" variant="elevated">
           <router-link
             v-scroll-to="'#publishers'"
-            text-color="white"
+            style="color: white"
             to="#publishers"
           >
             Publishers
           </router-link>
         </v-btn>
-        <v-btn class="ma-2 text-white">
+        <v-btn class="ma-2" color="primary" variant="elevated">
           <router-link
             v-scroll-to="'#organisations'"
-            text-color="white"
+            style="color: white"
             to="#organisations"
           >
             Organisations
           </router-link>
         </v-btn>
-        <v-btn class="ma-2 text-white">
-          <router-link v-scroll-to="'#tools'" text-color="white" to="#tools">
+        <v-btn class="ma-2" color="primary" variant="elevated">
+          <router-link v-scroll-to="'#tools'" style="color: white" to="#tools">
             Tools
           </router-link>
         </v-btn>
@@ -759,8 +759,7 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      }
-      else {
+      } else {
         return org.url;
       }
     },
@@ -839,6 +838,7 @@ a:hover {
     -o-transform: scale(1.1);
   }
 }
+
 td {
   font-size: 1rem !important;
 }

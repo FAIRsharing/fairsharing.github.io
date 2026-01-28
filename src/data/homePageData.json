@@ -1,6 +1,13 @@
 {
   "blockTabs": [
     {
+      "link": "educational#webinar",
+      "image": "assets/Home/Tabs/fairsharing-logo.svg",
+      "header": "Everyone",
+      "description": "Watch our webinar to learn how FAIRsharing has grown in scope, connectivity and reuse, and how we support data management, FAIR assessment, policy implementation and more.",
+      "title": "Everyone"
+    },
+    {
       "link": "educational#researchers",
       "image": "assets/Home/Tabs/researcher.svg",
       "header": "Researchers in academia, industry and government",
@@ -228,14 +235,14 @@
     }
   },
   "communityBlock": {
-    "firstColumn":{
+    "firstColumn": {
       "title": "Community Champions",
       "description": "Put your expertise into action and get credited by joining our Community Champions programme.",
       "icon": "users",
       "buttonTitle": "view and join in",
       "link": "/community_champions"
     },
-    "secondColumn":{
+    "secondColumn": {
       "title": "Adopters and Collaborators",
       "description": "Learn about the people and communities who contribute to and advocate for FAIRsharing.",
       "icon": "collaborators",

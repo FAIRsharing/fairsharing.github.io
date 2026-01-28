@@ -14,7 +14,13 @@
           width="350"
         >
           <div
-            :style="{ backgroundImage: 'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' + 'assets/Home/BlockHero/pattern-orange.png',backgroundSize:'100%',backgroundBlendMode:'color'}"
+            :style="{
+              backgroundImage:
+                'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' +
+                'assets/Home/BlockHero/pattern-orange.png',
+              backgroundSize: '100%',
+              backgroundBlendMode: 'color',
+            }"
             class="white--text d-flex flex-column justify-center block-category__card__gradient__2"
           >
             <div
@@ -24,9 +30,11 @@
               <v-icon
                 size="80"
                 color="white"
-                style="opacity: .7"
+                style="opacity: 0.7"
               >
-                {{ $vuetify.icons.values[communityBlock.firstColumn.icon].icon }}
+                {{
+                  $vuetify.icons.values[communityBlock.firstColumn.icon].icon
+                }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -34,7 +42,7 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary height-75">
-            {{ truncate(communityBlock.firstColumn.description,100) }}
+            {{ truncate(communityBlock.firstColumn.description, 100) }}
           </v-card-text>
           <v-card-actions class="text-center d-block">
             <router-link :to="communityBlock.firstColumn.link">
@@ -61,8 +69,14 @@
           width="350"
         >
           <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, #7d7d7d, #868686, #8f8f8f, #989898, #a1a1a1, #aaaaaa, #b4b4b4, #bdbdbd),url(' + 'assets/Home/BlockHero/pattern-gray.png',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center  block-category__card__gradient__1"
+            :style="{
+              backgroundImage:
+                'linear-gradient(180deg, #7d7d7d, #868686, #8f8f8f, #989898, #a1a1a1, #aaaaaa, #b4b4b4, #bdbdbd),url(' +
+                'assets/Home/BlockHero/pattern-gray.png',
+              backgroundSize: '300px',
+              backgroundBlendMode: 'lighten',
+            }"
+            class="white--text d-flex flex-column justify-center block-category__card__gradient__1"
           >
             <div
               style="height: 136px"
@@ -71,9 +85,11 @@
               <v-icon
                 size="80"
                 color="white"
-                style="opacity: .7"
+                style="opacity: 0.7"
               >
-                {{ $vuetify.icons.values[communityBlock.secondColumn.icon].icon }}
+                {{
+                  $vuetify.icons.values[communityBlock.secondColumn.icon].icon
+                }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -81,7 +97,7 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary height-75">
-            {{ truncate(communityBlock.secondColumn.description,150) }}
+            {{ truncate(communityBlock.secondColumn.description, 150) }}
           </v-card-text>
           <v-card-actions class="text-center d-block">
             <router-link :to="communityBlock.secondColumn.link">
@@ -100,31 +116,31 @@
 </template>
 
 <script>
-import homePageData from "@/data/homePageData.json"
-import {truncate} from "@/utils/stringUtils";
+import homePageData from "@/data/homePageData.json";
+import { truncate } from "@/utils/stringUtils";
 export default {
   name: "CommunityBlock",
-  mixins: [ truncate ],
+  mixins: [truncate],
   data: () => {
     return {
-        communityBlock: homePageData.communityBlock
-    }
-  }
-}
+      communityBlock: homePageData.communityBlock,
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
 .block-category {
   &__card {
     border-radius: 200px;
-    transition: all .2ms ease;
-    -webkit-transition: all .2s ease;
-    -moz-transition: all .2s ease;
-    -o-transition: all .2s ease;
-    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    transition: all 0.2ms ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
     &:hover {
       transform: scale(1.05);
       -moz-transform: scale(1.05);
@@ -135,19 +151,51 @@ export default {
     &__gradient__1 {
       height: 200px;
       background: rgb(37, 52, 66);
-      background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-      background: -webkit-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-      background: -o-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-      background: -ms-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
+      background: linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgba(39, 170, 225, 1) 100%
+      );
+      background: -webkit-linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgba(39, 170, 225, 1) 100%
+      );
+      background: -o-linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgba(39, 170, 225, 1) 100%
+      );
+      background: -ms-linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgba(39, 170, 225, 1) 100%
+      );
     }
 
     &__gradient__2 {
       height: 200px;
       background: rgb(37, 52, 66);
-      background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-      background: -webkit-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-      background: -o-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-      background: -ms-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
+      background: linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgb(26, 110, 27) 100%
+      );
+      background: -webkit-linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgb(26, 110, 27) 100%
+      );
+      background: -o-linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgb(26, 110, 27) 100%
+      );
+      background: -ms-linear-gradient(
+        180deg,
+        rgba(37, 52, 66, 1) 0%,
+        rgb(26, 110, 27) 100%
+      );
     }
   }
 }

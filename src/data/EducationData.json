@@ -264,6 +264,15 @@
   "infographics": {
     "data": [
       {
+        "id": "webinar",
+        "logo": "public_webinar.png",
+        "text": "",
+        "doi": "10.5281/zenodo.18336945",
+        "url": "https://doi.org/10.5281/zenodo.18336945",
+        "copyButtonStatus": false,
+        "hash": "webinar"
+      },
+      {
         "id": "principles",
         "logo": "fair_principles_nutshell.png",
         "text": "",
@@ -309,14 +318,6 @@
         "hash": "policies"
       },
       {
-        "id": "collections_overview",
-        "logo": "collections_overview.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
-      },
-      {
         "id": "researchers",
         "logo": "researchers.png",
         "text": "",
@@ -360,55 +361,6 @@
         "url": "https://zenodo.org/record/8186609/files/FAIRsharing%20for%20you_%20librarians%20and%20trainers.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "trainers"
-      },
-      {
-        "id": "developers_and_curators",
-        "logo": "developers_and_curators.png",
-        "text": "Coming Soon",
-        "doi": "10.5281/zenodo.8186593",
-        "url": "https://zenodo.org/record/8186594/files/FAIRsharing%20for%20you_%20developers%20and%20curators.pdf?download=1",
-        "copyButtonStatus": false,
-        "hash": "developers"
-      },
-      {
-        "id": "searching",
-        "logo": "searching.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
-      },
-      {
-        "id": "create_a_view_using_collection",
-        "logo": "create_a_view_using_collection.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
-      },
-      {
-        "id": "capturing_the_resource_life_cycle",
-        "logo": "capturing_the_resource_life_cycle.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
-      },
-      {
-        "id": "the_fairness_of_fairsharing",
-        "logo": "the_fairness_of_fairsharing.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
-      },
-      {
-        "id": "categorizing_the_content",
-        "logo": "categorizing_the_content.png",
-        "text": "Coming Soon",
-        "doi": "",
-        "url": "",
-        "copyButtonStatus": false
       }
     ]
   }

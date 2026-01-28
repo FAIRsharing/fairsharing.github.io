@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getErrorStatus" fluid class="pa-0">
+  <div v-if="getErrorStatus" class="pa-0" fluid>
     <ErrorPage />
   </div>
   <div v-else class="pa-5 mb-15">
@@ -17,43 +17,43 @@
       <SaveSearchButton />
     </div>
     <p class="text-body-2 mb-0 mt-4">
-      <v-icon size="small" class="mr-1"> fa fa-info-circle </v-icon>Find out
-      more about our Advanced Search in our
+      <v-icon class="mr-1" size="small"> fas fa-info-circle</v-icon>
+      Find out more about our Advanced Search in our
       <a
+        class="text-decoration-underline"
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
         target="_blank"
-        class="text-decoration-underline"
         >gitbook documentation</a
       >
-      <v-icon size="x-small"> fa fa-link </v-icon>
+      <v-icon size="x-small"> fas fa-link</v-icon>
     </p>
     <v-data-iterator
-      :items-per-page="itemsPerPage"
-      :page="page"
       :items="getAdvancedSearchResponse"
+      :items-per-page="itemsPerPage"
+      :loading="getLoadingStatus"
+      :page="page"
       :search="search"
       :sort-by="sortData"
       multi-sort
-      :loading="getLoadingStatus"
     >
       <!-- headers start -->
       <template #header="{ pagination, options, updateOptions }">
         <v-data-table-footer
           v-if="!noPagination"
-          :pagination="pagination"
           :options="options"
+          :pagination="pagination"
           items-per-page-text="Records per page:"
           @update:options="updateOptions"
         />
-        <v-toolbar dark color="blue-lighten-1" class="mb-5 px-4 py-1">
+        <v-toolbar class="mb-5 px-4 py-1" color="blue-lighten-1" dark>
           <v-text-field
             :model-value="search"
             clearable
             flat
-            variant="solo"
             hide-details
-            prepend-inner-icon="fa fa-solid fa-filter"
             label="Filter these results"
+            prepend-inner-icon="fas fa-solid fa-filter"
+            variant="solo"
             width="125"
             @update:model-value="search = $event"
           />
@@ -61,12 +61,12 @@
             <v-spacer />
             <v-select
               v-model="sortBy"
-              flat
-              variant="solo"
-              hide-details
               :items="keys"
-              prepend-inner-icon="fa fa-solid fa-arrow-up-short-wide"
+              flat
+              hide-details
               label="Sort by"
+              prepend-inner-icon="fas fa-solid fa-arrow-up-short-wide"
+              variant="solo"
               width="125"
             />
             <v-spacer />
@@ -75,11 +75,11 @@
               mandatory
               @update:model-value="sortDesc = $event"
             >
-              <v-btn size="large" variant="flat" color="blue" :value="false">
-                <v-icon icon="fa fa-solid fa-arrow-up" />
+              <v-btn :value="false" color="blue" size="large" variant="flat">
+                <v-icon icon="fas fa-solid fa-arrow-up" />
               </v-btn>
-              <v-btn size="large" variant="flat" color="blue" :value="true">
-                <v-icon icon="fa fa-solid fa-arrow-down" />
+              <v-btn :value="true" color="blue" size="large" variant="flat">
+                <v-icon icon="fas fa-solid fa-arrow-down" />
               </v-btn>
             </v-btn-toggle>
           </template>
@@ -97,9 +97,9 @@
                 <RecordStatus :record="item.raw" />
                 <a
                   :href="fairSharingURL + getRecordLink(item.raw)"
-                  target="_blank"
                   class="ml-10"
                   style="white-space: normal"
+                  target="_blank"
                 >
                   {{ item.raw.name }}
                 </a>
@@ -124,14 +124,14 @@
         #footer="{ pagination, options, updateOptions }"
       >
         <v-data-table-footer
-          :pagination="pagination"
           :options="options"
+          :pagination="pagination"
           items-per-page-text="Records per page:"
           @update:options="updateOptions"
         />
       </template>
       <!-- footer ends -->
-      <template #no-data> No results found. </template>
+      <template #no-data> No results found.</template>
     </v-data-iterator>
   </div>
 </template>
@@ -144,6 +144,7 @@ import TagChips from "@/components/Records/Shared/TagChips.vue";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
+
 export default {
   name: "AdvancedSearchResultTable",
   components: { RecordStatus, ErrorPage, TagChips, SaveSearchButton },
@@ -306,6 +307,7 @@ export default {
 <style lang="scss" scoped>
 .buttonWrapper {
   position: relative;
+
   .saveSearchResults {
     position: absolute;
     left: 40%;

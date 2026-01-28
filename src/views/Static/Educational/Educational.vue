@@ -58,10 +58,10 @@
                       >
                         {{
                           infographic.copyButtonStatus
-                            ? "fa-solid"
-                            : "fa-regular"
+                            ? "fas fa-solid"
+                            : "fas fa-regular"
                         }}
-                        fa-copy
+                        fas fa-copy
                       </v-icon>
                     </span>
                   </template>
@@ -156,17 +156,21 @@
       registries, containing both in-house and crowd-sourced manually curated
       descriptions of
       <router-link class="underline-effect" to="/standards">
-        standards </router-link
-      >,
+        standards
+      </router-link>
+      ,
       <router-link class="underline-effect" to="/databases">
         databases
       </router-link>
       and data
       <router-link class="underline-effect" to="/policies">
-        policies </router-link
-      >, combined with an integrated view across all three types of
-      <router-link class="underline-effect" to="/search"> resource </router-link
-      >. By registering your resource on FAIRsharing, you not only gain credit
+        policies
+      </router-link>
+      , combined with an integrated view across all three types of
+      <router-link class="underline-effect" to="/search">
+        resource
+      </router-link>
+      . By registering your resource on FAIRsharing, you not only gain credit
       for your work, but you increase its visibility outside of your direct
       domain, so reducing the potential for unnecessary reinvention and
       proliferation of standards and databases.
@@ -254,7 +258,7 @@
         >
           <v-card-actions class="justify-end closeInfoPopup">
             <v-btn size="x-small" @click="closeDialog()">
-              <v-icon> fa-times </v-icon>
+              <v-icon> fas fa-times</v-icon>
             </v-btn>
           </v-card-actions>
         </v-img>
@@ -285,10 +289,10 @@
                   >
                     {{
                       infographicPopup.data.copyButtonStatus
-                        ? "fa-solid"
-                        : "fa-regular"
+                        ? "fas fa-solid"
+                        : "fas fa-regular"
                     }}
-                    fa-copy
+                    fas fa-copy
                   </v-icon>
                 </span>
               </template>
@@ -423,6 +427,7 @@ ul,
 li {
   padding: 0;
 }
+
 .hardcoded-ul {
   li::before {
     display: inline-block;
@@ -454,6 +459,7 @@ P {
 .v-expansion-panel-header {
   min-height: 0;
 }
+
 .fontSize20 {
   font-size: 20px;
 }
@@ -467,6 +473,7 @@ P {
   top: 0;
   right: 0;
 }
+
 .infographicPopupImage {
   height: 100%;
 }

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col cols="12" sm="12" md="8" lg="8" xl="6">
+      <v-col cols="12" lg="8" md="8" sm="12" xl="6">
         <v-card>
           <v-card-title class="bg-primary text-white">
             <h2>Edit your profile</h2>
@@ -42,10 +42,10 @@
                     <div v-if="field.type === 'select'">
                       <v-select
                         v-model="formData[field.name]"
-                        variant="outlined"
-                        :label="field.label"
                         :items="data[field.data]"
+                        :label="field.label"
                         :rules="field.rules"
+                        variant="outlined"
                       />
                     </div>
                     <div v-else-if="field.type === 'input'">
@@ -54,13 +54,13 @@
                       </span>
                       <v-text-field
                         v-model="formData[field.name]"
-                        :label="field.label"
-                        variant="outlined"
-                        :type="field.type"
                         :disabled="isDisabled(field.name)"
-                        :rules="field.rules"
                         :hint="field.hint"
+                        :label="field.label"
+                        :rules="field.rules"
+                        :type="field.type"
                         class="pa-0"
+                        variant="outlined"
                       />
                     </div>
                     <div v-else-if="field.type === 'checkbox'">
@@ -74,16 +74,16 @@
                     <div v-else-if="field.type === 'autocomplete'">
                       <v-autocomplete
                         v-model="userOrganisations"
-                        multiple
                         :items="data[field.data]"
                         :label="field.label"
+                        :loading="loading"
                         :rules="field.rules"
-                        item-title="name"
-                        variant="outlined"
-                        return-object
                         chips
                         closable-chips
-                        :loading="loading"
+                        item-title="name"
+                        multiple
+                        return-object
+                        variant="outlined"
                       >
                         <template #prepend>
                           <v-tooltip location="top">
@@ -126,9 +126,9 @@
                 <v-row>
                   <v-col cols="12">
                     <v-btn
-                      color="success"
-                      class="mr-4"
                       :loading="loading"
+                      class="mr-4"
+                      color="success"
                       @click="updateProfile()"
                     >
                       Update profile
@@ -157,7 +157,7 @@
           "
           width="800px"
         >
-          <v-card-title class="mb-4"> Create a new organisation </v-card-title>
+          <v-card-title class="mb-4"> Create a new organisation</v-card-title>
           <v-card-text>
             <v-alert v-if="newOrganisation.error" type="error">
               {{ newOrganisation.error }}
@@ -169,59 +169,59 @@
             >
               <v-text-field
                 v-model="newOrganisation.data.name"
-                label="Organisation name"
-                variant="outlined"
                 :rules="[rules.isRequired()]"
                 class="mb-2"
+                label="Organisation name"
+                variant="outlined"
               />
               <v-text-field
                 v-model="newOrganisation.data.homepage"
-                label="Organisation homepage"
-                variant="outlined"
                 :rules="[rules.isRequired(), rules.isURL()]"
                 class="mb-2"
+                label="Organisation homepage"
+                variant="outlined"
               />
 
               <v-autocomplete
                 v-model="newOrganisation.data.organisation_type_ids"
                 :items="organisationsTypes"
-                multiple
-                variant="outlined"
-                item-title="name"
-                item-value="id"
-                label="Select the organisation type(s)"
                 :rules="[rules.isRequired(), rules.isLongEnough(1)]"
                 chips
                 closable-chips
+                item-title="name"
+                item-value="id"
+                label="Select the organisation type(s)"
+                multiple
+                variant="outlined"
               />
               <div>
                 <v-file-input
                   v-model="newOrganisation.data.logo"
-                  :rules="[rules.isImage(), imageSizeCorrect]"
-                  clearable
                   :loading="logoLoading"
+                  :rules="[rules.isImage(), imageSizeCorrect]"
                   accept="image/png,image/jpeg"
-                  label="Organisation Logo"
-                  prepend-icon="fa-image"
-                  show-size
+                  clearable
                   counter
+                  label="Organisation Logo"
+                  prepend-icon="fas fa-image"
+                  show-size
                 />
                 <div class="mt-n3 mb-3">JPEG or PNG, max. file size 3MB.</div>
               </div>
 
               <v-autocomplete
                 v-model="newOrganisation.data.country_ids"
-                label="Countries"
                 :items="countries"
-                item-title="name"
-                item-value="name"
-                multiple
-                variant="outlined"
-                return-object
                 :rules="[
                   newOrganisation.data.country_ids &&
                     !(newOrganisation.data.country_ids.length === 0),
                 ]"
+                item-title="name"
+                item-value="name"
+                label="Countries"
+                multiple
+                return-object
+                variant="outlined"
               >
                 <!-- autocomplete selected -->
                 <template #selection="cnameData">
@@ -243,8 +243,8 @@
                   />
                   <img
                     v-else
-                    src="@/assets/placeholders/country.png"
                     class="ml-4 mr-3"
+                    src="@/assets/placeholders/country.png"
                   />
                   <div>{{ ccodeData.item.name }}</div>
                 </template>
@@ -253,9 +253,9 @@
           </v-card-text>
           <v-card-actions>
             <v-btn
-              class="bg-success"
               :disabled="!newOrganisation.formValid"
               :loading="newOrganisation.loading"
+              class="bg-success"
               @click="createOrganisation()"
             >
               Save new organisation
@@ -598,11 +598,13 @@ export default {
 #edit_hide_email label {
   margin-bottom: 0 !important;
 }
+
 #edit_organisations .v-chip,
 #edit_organisations .fa-times-circle {
   background: #27aae1;
   color: white;
 }
+
 .menuable__content__active.v-autocomplete__content .v-list-item__content {
   max-width: 1000px;
 }

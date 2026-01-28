@@ -1,7 +1,7 @@
 <template>
   <div
-    class="d-flex full-width py-2 px-5 justify-center"
     :class="{ 'flex-column': $vuetify.display.smAndDown }"
+    class="d-flex full-width py-2 px-5 justify-center"
   >
     <v-btn
       :class="$vuetify.display.smAndDown ? 'full-width' : 'mx-2 button-width'"
@@ -9,21 +9,21 @@
       elevation="2"
       @click="editAdvancedSearch()"
     >
-      <v-icon size="small" class="mr-1"> fa-solid fa-pen </v-icon>
+      <v-icon class="mr-1" size="small"> fas fa-solid fa-pen</v-icon>
       <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }">{{
         $vuetify.display.mdAndDown ? "Show/Edit" : "Edit"
       }}</span>
     </v-btn>
     <v-btn
-      class="text-white"
       :class="
         $vuetify.display.smAndDown ? 'mt-3 full-width' : 'mx-2 button-width'
       "
+      class="text-white"
       color="secondary"
       elevation="2"
       @click="openAdvancedSearch()"
     >
-      <v-icon size="small" class="mr-1"> fa-solid fa-reply </v-icon>
+      <v-icon class="mr-1" size="small"> fas fa-solid fa-reply</v-icon>
       <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }"
         >Restart</span
       >
@@ -50,9 +50,10 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .button-width {
   width: 50%;
+
   .button-text-size {
     font-size: 12px;
   }

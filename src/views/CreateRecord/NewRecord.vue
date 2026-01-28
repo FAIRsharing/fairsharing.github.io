@@ -12,8 +12,8 @@
             </v-card-title>
             <v-card-text v-if="message.error" class="pt-4">
               <v-alert type="error">
-                {{ message.value
-                }}<v-icon class="px-3"> fa-arrow-right </v-icon>
+                {{ message.value }}
+                <v-icon class="px-3">fas fa-arrow-right</v-icon>
                 {{ message.value.response.data }}
               </v-alert>
             </v-card-text>
@@ -170,12 +170,10 @@ export default {
       if (this.submitAnyway) {
         if (this.possibleDuplicates.length > 0) {
           record.dups_suspected = true;
-        }
-        else {
+        } else {
           record.dups_suspected = false;
         }
-      }
-      else {
+      } else {
         if (this.possibleDuplicates.length > 0) {
           return;
         }
@@ -200,8 +198,7 @@ export default {
           error: true,
           value: new_record.error,
         };
-      }
-      else {
+      } else {
         this.recordCreated = true;
         this.newRecord = new_record;
       }

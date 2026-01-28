@@ -1,9 +1,9 @@
 <template>
   <v-avatar style="height: auto !important">
-    <v-menu transition="scale-transition" origin="top center 0">
+    <v-menu origin="top center 0" transition="scale-transition">
       <template #activator="{ props }">
         <v-btn icon v-bind="props">
-          <v-icon class="text-white"> fa fa-bars </v-icon>
+          <v-icon class="text-white"> fas fa-bars</v-icon>
         </v-btn>
       </template>
       <v-list>

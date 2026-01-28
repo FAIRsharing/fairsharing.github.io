@@ -1,6 +1,13 @@
 {
   "blockTabs": [
     {
+      "link": "educational#webinar",
+      "image": "assets/Home/Tabs/fairsharing-logo.svg",
+      "header": "Everyone",
+      "description": "Pivot to video! Watch our totally-awesome webinar to learn more about how the FAIRsharing website can help YOU.",
+      "title": "Everyone"
+    },
+    {
       "link": "educational#researchers",
       "image": "assets/Home/Tabs/researcher.svg",
       "header": "Researchers in academia, industry and government",
@@ -41,13 +48,6 @@
       "header": "Funders & data policy makers",
       "description": "Recommend FAIRsharing to your awardees to inform the development of their data management plan, and select the appropriate resources to recommend in your data policy...",
       "title": "Funders"
-    },
-    {
-      "link": "https://doi.org/10.5281/zenodo.18336945",
-      "image": "assets/Home/Tabs/everyone.svg",
-      "header": "Everyone",
-      "description": "Pivot to video! Watch our totally-awesome webinar to learn more about how FAIRsharing website can help YOU.",
-      "title": "Everyone"
     }
   ],
   "blockInfo": {

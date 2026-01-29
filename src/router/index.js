@@ -44,20 +44,8 @@ import {
   Terms,
   Timeline,
   User,
-  UsersList
+  UsersList,
 } from "./routes.js";
-
-/*
-  Added to catch NavigationDuplicated router error
-*/
-
-// const originalPush = VueRouter.prototype.push;
-// /* istanbul ignore next */
-// VueRouter.prototype.push = function push(location) {
-//   return originalPush.call(this, location).catch((err) => err);
-// };
-//
-// Vue.use(VueRouter);
 
 let routes = [
   {
@@ -114,8 +102,7 @@ let routes = [
       let [query, modified] = hackSearch(to.query);
       if (modified) {
         next({ name: "search", query: query });
-      }
-      else {
+      } else {
         next();
       }
     },
@@ -157,8 +144,7 @@ let routes = [
             page: 1,
           },
         };
-      }
-      else if (to.params.name === "live_list_databases_in_policies") {
+      } else if (to.params.name === "live_list_databases_in_policies") {
         return {
           name: "search",
           query: {
@@ -167,8 +153,7 @@ let routes = [
             page: 1,
           },
         };
-      }
-      else if (to.params.name === "live_list_journal_policies") {
+      } else if (to.params.name === "live_list_journal_policies") {
         return {
           name: "search",
           query: {
@@ -177,8 +162,7 @@ let routes = [
             page: 1,
           },
         };
-      }
-      else {
+      } else {
         return { path: "/" };
       }
     },
@@ -220,13 +204,11 @@ let routes = [
         window.location.assign(
           "https://github.com/FAIRsharing/subject-ontology",
         );
-      }
-      else if (to.params.name.toLowerCase() === "drao") {
+      } else if (to.params.name.toLowerCase() === "drao") {
         window.location.assign(
           "https://github.com/FAIRsharing/domain-ontology",
         );
-      }
-      else {
+      } else {
         return { path: "/" };
       }
     },
@@ -268,10 +250,10 @@ let routes = [
     path: "/recommendations",
     redirect: () => {
       /*
-                  This hack is necessary because simply redirecting to a search URL causes it to be interpreted as a
-                  record name rather than parsed, and passing parameters means the searchAnd parameter isn't recognised
-                  until the page refreshes (it's not at all clear why).
-                   */
+                        This hack is necessary because simply redirecting to a search URL causes it to be interpreted as a
+                        record name rather than parsed, and passing parameters means the searchAnd parameter isn't recognised
+                        until the page refreshes (it's not at all clear why).
+                         */
       window.location.assign(
         [
           import.meta.env.VITE_HOSTNAME,
@@ -713,9 +695,9 @@ let routes = [
   },
 
   /*
-    Careful, this has to be the very last base path  !!!!
-    This component's page title is handled in the component itself as it needs the :id param
-    */
+      Careful, this has to be the very last base path  !!!!
+      This component's page title is handled in the component itself as it needs the :id param
+      */
   {
     name: "Edit Content",
     path: "/:id/edit",
@@ -817,8 +799,7 @@ export async function beforeEach(to, from, next, store) {
 export function isLoggedIn(to, from, next, store) {
   if (store.state.users.user().isLoggedIn) {
     next();
-  }
-  else {
+  } else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //
@@ -830,8 +811,7 @@ export function isLoggedIn(to, from, next, store) {
 export function isNotLoggedIn(to, from, next, store) {
   if (!store.state.users.user().isLoggedIn) {
     next();
-  }
-  else {
+  } else {
     next(from);
   }
 }
@@ -839,8 +819,7 @@ export function isNotLoggedIn(to, from, next, store) {
 export function isSuperCurator(to, from, next, store) {
   if (store.state.users.user().is_super_curator) {
     next();
-  }
-  else {
+  } else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //

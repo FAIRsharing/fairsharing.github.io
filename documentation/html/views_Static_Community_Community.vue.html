@@ -213,35 +213,35 @@
       &lt;/p>
 
       &lt;div class="text-center">
-        &lt;v-btn class="ma-2 text-white">
+        &lt;v-btn class="ma-2" color="primary" variant="elevated">
           &lt;router-link
             v-scroll-to="'#funders'"
-            text-color="white"
+            style="color: white"
             to="#funders"
           >
             Funders
           &lt;/router-link>
         &lt;/v-btn>
-        &lt;v-btn class="ma-2 text-white">
+        &lt;v-btn class="ma-2" color="primary" variant="elevated">
           &lt;router-link
             v-scroll-to="'#publishers'"
-            text-color="white"
+            style="color: white"
             to="#publishers"
           >
             Publishers
           &lt;/router-link>
         &lt;/v-btn>
-        &lt;v-btn class="ma-2 text-white">
+        &lt;v-btn class="ma-2" color="primary" variant="elevated">
           &lt;router-link
             v-scroll-to="'#organisations'"
-            text-color="white"
+            style="color: white"
             to="#organisations"
           >
             Organisations
           &lt;/router-link>
         &lt;/v-btn>
-        &lt;v-btn class="ma-2 text-white">
-          &lt;router-link v-scroll-to="'#tools'" text-color="white" to="#tools">
+        &lt;v-btn class="ma-2" color="primary" variant="elevated">
+          &lt;router-link v-scroll-to="'#tools'" style="color: white" to="#tools">
             Tools
           &lt;/router-link>
         &lt;/v-btn>
@@ -852,8 +852,7 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      }
-      else {
+      } else {
         return org.url;
       }
     },
@@ -932,6 +931,7 @@ a:hover {
     -o-transform: scale(1.1);
   }
 }
+
 td {
   font-size: 1rem !important;
 }

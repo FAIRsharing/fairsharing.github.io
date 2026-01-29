@@ -4,13 +4,13 @@
       <v-card-text>
         <v-card-title id="download-curator-summary" class="bg-green text-white">
           RECORD EDITS BY MONTH
-          <v-btn class="bg-info ml-5" :loading="loading">
+          <v-btn :loading="loading" class="bg-info ml-5">
             <a
               v-if="downloadEditsByMonth"
               :href="downloadEditsByMonth"
               download="editsPerformedByMonth.txt"
             >
-              <v-icon color="white" class="mr-1"> fa fa-download </v-icon>
+              <v-icon class="mr-1" color="white"> fas fa-download</v-icon>
               <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
@@ -24,6 +24,7 @@
 import { mapState } from "vuex";
 
 import RestClient from "@/lib/Client/RESTClient";
+
 const restClient = new RestClient();
 
 export default {

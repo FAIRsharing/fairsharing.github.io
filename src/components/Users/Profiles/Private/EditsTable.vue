@@ -1,19 +1,19 @@
 <template>
   <div>
     <v-data-table
-      class="userProfileEditsTable"
-      :items="edits"
-      :headers="headers"
-      :items-per-page="perPage"
       :footer-props="footer"
+      :headers="headers"
+      :items="edits"
+      :items-per-page="perPage"
       calculate-widths
+      class="userProfileEditsTable"
     >
       <template #[`item.fairsharingRecord.name`]="{ item }">
         <div class="d-flex justify-start align-center">
           <v-avatar size="30">
             <Icon
-              :item="item.fairsharingRecord.type"
               :height="30"
+              :item="item.fairsharingRecord.type"
               wrapper-class=""
             />
           </v-avatar>
@@ -50,20 +50,20 @@
       <template #[`item.actions`]="{ item }">
         <v-menu>
           <template #activator="{ props }">
-            <v-icon v-bind="props"> fas fa-ellipsis-v </v-icon>
+            <v-icon v-bind="props"> fas fa-ellipsis-v</v-icon>
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.fairsharingRecord.id)">
               <template #prepend>
                 <v-icon>fas fa-eye</v-icon>
               </template>
-              <v-list-item-title> Preview record </v-list-item-title>
+              <v-list-item-title> Preview record</v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
               <template #prepend>
                 <v-icon>fas fa-newspaper</v-icon>
               </template>
-              <v-list-item-title> Go to record </v-list-item-title>
+              <v-list-item-title> Go to record</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -71,14 +71,14 @@
 
       <template #no-data>
         <v-btn
+          :disabled="loading"
           class="ma-1 text-white"
           color="orange"
-          :disabled="loading"
           @click="loadEditEvents"
         >
           <v-progress-circular
-            :size="25"
             :class="'pa-1' + [loading ? 'd-flex' : ' d-none']"
+            :size="25"
             color="white"
             indeterminate
           />
@@ -92,7 +92,7 @@
       <v-btn
         v-if="closeButton"
         class="text-black absolute"
-        icon="fa fa-xmark fa-solid"
+        icon="fas fa-xmark fa-solid"
         @click="hideOverlay()"
       >
         <v-icon size="30" />

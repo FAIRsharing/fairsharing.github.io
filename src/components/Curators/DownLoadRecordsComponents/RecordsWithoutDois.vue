@@ -5,13 +5,13 @@
       <v-card-text>
         <v-card-title id="text-curator-search-1" class="bg-green text-white">
           RECORDS WITHOUT DOIS
-          <v-btn class="bg-info ml-5" :loading="loading">
+          <v-btn :loading="loading" class="bg-info ml-5">
             <a
               v-if="downloadContent"
               :href="downloadContent"
               download="recordWithoutDOIs.txt"
             >
-              <v-icon color="white" class="mr-1"> fa fa-download </v-icon>
+              <v-icon class="mr-1" color="white"> fas fa-download</v-icon>
               <span class="text-white">Obtain file</span>
             </a>
           </v-btn>

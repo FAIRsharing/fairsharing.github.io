@@ -3,12 +3,12 @@
     <h2 class="text-center">Save Your Search</h2>
 
     <v-btn
+      elevation="0"
       icon
       style="position: absolute; top: 10px; right: 15px"
-      elevation="0"
     >
       <v-icon
-        icon="fa fa-xmark fa-solid"
+        icon="fas fa-xmark fa-solid"
         size="40px"
         @click="closeStepperDialog()"
       />

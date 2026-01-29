@@ -9,16 +9,16 @@
           <v-card-title id="system-messages" class="bg-green text-white">
             SYSTEM MESSAGES
             <v-btn class="bg-info ml-5" @click.stop="showAddMessage()">
-              <v-icon color="white" class="mr-1"> fa fa-plus </v-icon>
+              <v-icon class="mr-1" color="white"> fas fa-plus</v-icon>
               <span class="text-white">Add message</span>
             </v-btn>
             <v-spacer />
           </v-card-title>
           <v-data-table
-            :loading="loading"
+            :footer-props="{ 'items-per-page-options': [5, 10, 20, 25, 30] }"
             :headers="headerItems"
             :items="systemMessages"
-            :footer-props="{ 'items-per-page-options': [5, 10, 20, 25, 30] }"
+            :loading="loading"
           >
             <template v-if="systemMessages" #item="props">
               <tr>
@@ -37,9 +37,9 @@
                         <div class="mt-4 text-h6">Update Message</div>
                         <v-textarea
                           v-model="props.item.message"
-                          width="1200px"
                           label="Edit away!"
                           variant="filled"
+                          width="1200px"
                         />
                       </div>
                     </template>
@@ -71,18 +71,18 @@
     <!-- this shouldn't appear as an unauthorised user shouldn't be here -->
     <v-row>
       <!-- dialogs -->
-      <v-layout row justify-center>
+      <v-layout justify-center row>
         <v-dialog v-model="dialogs.addMessage" max-width="700px">
           <v-card>
-            <v-card-title class="text-h5"> Add new message </v-card-title>
+            <v-card-title class="text-h5"> Add new message</v-card-title>
             <v-card-text>
               <v-textarea
                 v-model="dialogs.newMessage"
-                name="new-message-field"
+                clearable
                 label="New message"
+                name="new-message-field"
                 placeholder="Type a message here..."
                 regular
-                clearable
               />
             </v-card-text>
             <v-card-actions>
@@ -95,9 +95,9 @@
                 Cancel
               </v-btn>
               <v-btn
+                :disabled="!dialogs.newMessage"
                 color="blue-darken-1"
                 variant="text"
-                :disabled="!dialogs.newMessage"
                 @click="addMessage()"
               >
                 OK
@@ -107,7 +107,7 @@
           </v-card>
         </v-dialog>
       </v-layout>
-      <v-layout row justify-center>
+      <v-layout justify-center row>
         <v-dialog v-model="dialogs.deleteMessage" max-width="700px">
           <v-card>
             <v-card-title class="text-h5">

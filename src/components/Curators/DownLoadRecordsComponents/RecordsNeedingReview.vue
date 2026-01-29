@@ -4,13 +4,13 @@
       <v-card-text>
         <v-card-title id="download-review-needed" class="bg-green text-white">
           RECORDS NEEDING REVIEW
-          <v-btn class="bg-info ml-5" :loading="loading">
+          <v-btn :loading="loading" class="bg-info ml-5">
             <a
               v-if="downloadReviewContent"
               :href="downloadReviewContent"
               download="recordsNeedingReview.txt"
             >
-              <v-icon color="white" class="mr-1"> fa fa-download </v-icon>
+              <v-icon class="mr-1" color="white"> fas fa-download</v-icon>
               <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
@@ -25,6 +25,7 @@ import { mapState } from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getNeedsReview from "@/lib/GraphClient/queries/curators/getNeedsReview.json";
+
 const client = new GraphClient();
 
 export default {

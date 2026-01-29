@@ -1,12 +1,12 @@
 <template>
   <v-app-bar
     id="mainHeader"
-    height="150px"
-    class="header-container"
     :class="[
       { largeScreen: $vuetify.display.xl },
       { smallScreen: $vuetify.display.mdAndDown },
     ]"
+    class="header-container"
+    height="150px"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.display.mdAndDown"
@@ -14,17 +14,17 @@
     />
     <!-- First Level Menu -->
     <div
-      class="navFirst d-flex"
       :class="{ 'full-width': $vuetify.display.mdAndDown }"
+      class="navFirst d-flex"
     >
       <router-link to="/">
-        <img src="/assets/fairsharing-logo.svg" alt="FAIRsharing logo" />
+        <img alt="FAIRsharing logo" src="/assets/fairsharing-logo.svg" />
       </router-link>
       <div class="d-flex justify-start align-center custom-width">
         <string-search
           v-if="$vuetify.display.sm || $vuetify.display.mdAndUp"
-          placeholder="search through all content"
           :class="$vuetify.display.lgAndDown ? 'flex-grow-1' : 'full-width'"
+          placeholder="search through all content"
         />
         <nav>
           <ul
@@ -34,10 +34,10 @@
             <!-- LOGIN -->
             <v-menu
               v-if="!user().isLoggedIn"
-              transition="slide-y-transition"
               :close-on-content-click="closeMenuStatus"
               class="mt-5"
               max-height="90vh"
+              transition="slide-y-transition"
             >
               <template #activator="{ props }">
                 <v-btn
@@ -49,17 +49,17 @@
                         : undefined
                   "
                   class="mr-1 mt-sm-1 bg-accent3"
-                  v-bind="props"
                   elevation="3"
+                  v-bind="props"
                   @click="closePopup(false)"
                 >
                   Login
-                  <v-icon class="ml-1" size="small"> fa fa-sign-in-alt </v-icon>
+                  <v-icon class="ml-1" size="small"> fas fa-sign-in-alt</v-icon>
                 </v-btn>
               </template>
               <Login
-                :redirect="false"
                 :pop-up="true"
+                :redirect="false"
                 @close-popup="closePopup"
               />
             </v-menu>
@@ -73,10 +73,10 @@
                     : undefined
               "
               class="mr-1 mt-sm-1 bg-green"
-              to="/accounts/profile"
               elevation="2"
+              to="/accounts/profile"
             >
-              <v-icon color="white" class="mr-1"> fas fa-user-circle </v-icon>
+              <v-icon class="mr-1" color="white"> fas fa-user-circle</v-icon>
 
               <span class="text-white ellipse-150">{{
                 user().credentials.username
@@ -101,6 +101,8 @@
             :key="'navBarTopMenuItem_' + itemIndex"
           >
             <v-btn
+              :class="{ 'px-2': $vuetify.display.lgAndDown }"
+              :color="item.color"
               :size="
                 $vuetify.display.xl
                   ? 'x-large'
@@ -108,14 +110,12 @@
                     ? 'small'
                     : undefined
               "
-              class="mr-1 mt-sm-1 menuLinks"
-              :class="{ 'px-2': $vuetify.display.lgAndDown }"
-              :color="item.color"
-              :variant="!item.active ? 'outlined' : 'elevated'"
               :to="item.link"
-              width="100%"
-              min-width="167px"
+              :variant="!item.active ? 'outlined' : 'elevated'"
+              class="mr-1 mt-sm-1 menuLinks"
               max-width="184px"
+              min-width="167px"
+              width="100%"
             >
               <span
                 :class="[
@@ -248,7 +248,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 header {
   padding-right: 0.5rem;
 }

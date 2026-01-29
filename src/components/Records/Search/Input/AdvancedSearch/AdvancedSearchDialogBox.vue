@@ -2,35 +2,35 @@
   <v-row justify="center">
     <v-dialog
       :model-value="dialog"
+      :retain-focus="false"
       fullscreen
       persistent
-      :retain-focus="false"
       @keydown.esc="closeDialog()"
     >
       <v-card>
         <div
-          class="d-flex pt-6 px-6 justify-space-between"
           :class="{
             'flex-column align-end': $vuetify.display.smAndDown,
           }"
+          class="d-flex pt-6 px-6 justify-space-between"
         >
           <!--Close Button -->
           <div class="order-md-3" style="padding-left: 14.4%">
             <v-btn icon @click="closeDialog()">
-              <v-icon icon="fa fa-xmark fa-solid" size="40" />
+              <v-icon icon="fas fa-xmark fa-solid" size="40" />
             </v-btn>
           </div>
           <!--FAIRsharing Logo -->
           <router-link
-            to="/"
-            class="mt-n5 order-md-1"
             :class="{
               'mt-n15 mx-auto': $vuetify.display.smAndDown,
             }"
+            class="mt-n5 order-md-1"
+            to="/"
           >
             <img
-              src="/assets/fairsharing-logo.svg"
               alt="FAIRsharing logo"
+              src="/assets/fairsharing-logo.svg"
               @click="closeDialog()"
             />
           </router-link>
@@ -45,11 +45,12 @@
             <p style="text-align: center">
               Find out more about our Advanced Search in our
               <a
+                class="text-decoration-underline"
                 href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                 target="_blank"
-                class="text-decoration-underline"
-                >gitbook documentation<v-icon size="x-small">
-                  {{ "fa fa-link" }}
+                >gitbook documentation
+                <v-icon size="x-small">
+                  {{ "fas fa-link" }}
                 </v-icon>
               </a>
             </p>
@@ -73,19 +74,19 @@
               ref="inputRef"
               class="text-h5 full-width"
               clearable
-              variant="outlined"
               hide-details
               label="Add Search text"
+              variant="outlined"
               @update:model-value="updateSearchText($event)"
             />
             <v-text-field
               v-else
+              :model-value="updatedAdvancedSearchText"
               class="text-h5 full-width"
               clearable
-              variant="outlined"
               hide-details
               label="Add Search text"
-              :model-value="updatedAdvancedSearchText"
+              variant="outlined"
               @update:model-value="updateSearchText($event)"
             />
           </div>
@@ -94,29 +95,29 @@
           <QueryBuilderView :is-dialog="dialog" />
         </v-card-text>
         <v-card-actions
-          class="px-6 justify-space-between"
           :class="{
             'flex-column align-center': $vuetify.display.smAndDown,
           }"
+          class="px-6 justify-space-between"
         >
           <v-btn
-            variant="text"
-            class="text-white order-md-2 bg-green"
             :class="{
               'mb-3': $vuetify.display.smAndDown,
             }"
             :disabled="isContinue"
             :width="$vuetify.display.smAndDown ? '100%' : '250'"
+            class="text-white order-md-2 bg-green"
             elevation="2"
+            variant="text"
             @click="goToAdvancedSearch()"
           >
             Proceed
           </v-btn>
           <v-btn
-            variant="text"
-            class="order-md-1 ml-0 bg-accent3"
             :width="$vuetify.display.smAndDown ? '100%' : '250'"
+            class="order-md-1 ml-0 bg-accent3"
             elevation="2"
+            variant="text"
             @click="closeDialog()"
           >
             Close

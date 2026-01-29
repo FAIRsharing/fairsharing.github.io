@@ -30,7 +30,7 @@
         @click="goToLogin()"
       >
         Login
-        <v-icon class="ml-1" size="small"> fa fa-sign-in-alt </v-icon>
+        <v-icon class="ml-1" size="small"> fas fa-sign-in-alt</v-icon>
       </v-btn>
       <v-btn
         v-else
@@ -39,7 +39,7 @@
         width="100%"
       >
         <v-avatar>
-          <v-icon color="white"> fas fa-user-circle </v-icon>
+          <v-icon color="white"> fas fa-user-circle</v-icon>
         </v-avatar>
         <span class="text-white ellipse-150">{{
           user().credentials.username

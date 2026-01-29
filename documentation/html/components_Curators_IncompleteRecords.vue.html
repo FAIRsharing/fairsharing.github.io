@@ -94,7 +94,7 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-col cols12>
     &lt;div>
-      &lt;v-layout row justify-center>
+      &lt;v-layout justify-center row>
         &lt;v-dialog v-model="dialogs.deleteRecord" max-width="700px">
           &lt;v-card>
             &lt;v-card-title class="text-h5">
@@ -138,30 +138,30 @@
           &lt;v-spacer />
           &lt;v-text-field
             v-model="searches"
-            label="Search"
-            color="white"
-            single-line
-            hide-details
-            variant="solo"
             class="searchField"
             clearable
+            color="white"
+            hide-details
+            label="Search"
+            single-line
+            variant="solo"
           />
         &lt;/v-card-title>
         &lt;v-data-table
-          :loading="loading"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="incompleteRecords"
+          :loading="loading"
           :search="searches"
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
           &lt;template v-if="recordType" #item="props">
             &lt;tr>
               &lt;td>
                 &lt;div class="d-flex align-center">
-                  &lt;v-avatar v-if="props.item.type" class="mr-2" :height="40">
+                  &lt;v-avatar v-if="props.item.type" class="mr-2" size="40">
                     &lt;Icon
-                      :item="props.item.type"
                       :height="40"
+                      :item="props.item.type"
                       wrapper-class=""
                     />
                   &lt;/v-avatar>
@@ -185,7 +185,6 @@
               &lt;td>
                 &lt;v-icon
                   color="red"
-                  dark
                   end
                   size="small"
                   @click="deleteRecordMenu(props.item.id)"
@@ -323,9 +322,10 @@ export default {
 &lt;/script>
 
 &lt;style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

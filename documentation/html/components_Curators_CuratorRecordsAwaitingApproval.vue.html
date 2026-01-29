@@ -99,13 +99,13 @@
         &lt;v-spacer />
         &lt;v-text-field
           v-model="searches"
-          label="Search"
-          color="white"
-          single-line
-          hide-details
-          variant="solo"
           class="searchField"
           clearable
+          color="white"
+          hide-details
+          label="Search"
+          single-line
+          variant="solo"
         />
       &lt;/v-card-title>
       &lt;v-card-text v-if="error.general">
@@ -115,11 +115,11 @@
         &lt;/v-alert>
       &lt;/v-card-text>
       &lt;v-data-table
-        :loading="loading"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         :headers="headerItems"
         :items="approvalRequiredProcessed"
+        :loading="loading"
         :search="searches"
-        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
         &lt;template v-if="recordType" #item="props">
@@ -139,8 +139,8 @@
                     &lt;template #activator="{ props: tooltipProps }">
                       &lt;v-icon
                         class="clickable"
-                        size="small"
                         color="nordnetBlue"
+                        size="small"
                         v-bind="[menuProps, tooltipProps]"
                       >
                         {{ props.item.curator }}
@@ -166,7 +166,7 @@
             &lt;td>
               &lt;div class="d-flex align-center">
                 &lt;v-avatar v-if="props.item.type" class="mr-2" size="40">
-                  &lt;Icon :item="props.item.type" :height="40" wrapper-class="" />
+                  &lt;Icon :height="40" :item="props.item.type" wrapper-class="" />
                 &lt;/v-avatar>
                 &lt;a :href="'/' + props.item.id">
                   {{ props.item.recordName }}
@@ -197,9 +197,9 @@
                     &lt;div class="mt-4 text-h6">Update Processing Notes&lt;/div>
                     &lt;v-textarea
                       v-model="props.item.processingNotes"
-                      width="1200px"
                       label="Edit (not long words)"
                       variant="filled"
+                      width="1200px"
                     />
                   &lt;/div>
                 &lt;/template>
@@ -222,7 +222,6 @@
               {{ props.item.actions }}
               &lt;v-icon
                 color="red"
-                dark
                 end
                 size="small"
                 @click="deleteRecordMenu(props.item.recordName, props.item.id)"
@@ -258,7 +257,7 @@
         &lt;/template>
       &lt;/v-data-table>
     &lt;/v-card-text>
-    &lt;v-layout row justify-center>
+    &lt;v-layout justify-center row>
       &lt;v-dialog v-model="dialogs.approveChanges" max-width="700px">
         &lt;v-card>
           &lt;v-card-title class="text-h5">
@@ -293,9 +292,9 @@
             &lt;v-spacer />
             &lt;v-switch
               v-model="dialogs.createReview"
+              class="pr-3"
               color="green"
               label="Create Review"
-              class="pr-3"
             />
             &lt;v-switch
               v-model="dialogs.recordHidden"
@@ -307,7 +306,7 @@
         &lt;/v-card>
       &lt;/v-dialog>
     &lt;/v-layout>
-    &lt;v-layout row justify-center>
+    &lt;v-layout justify-center row>
       &lt;v-dialog v-model="dialogs.deleteRecord" max-width="700px">
         &lt;v-card>
           &lt;v-card-title class="text-h5">
@@ -669,6 +668,7 @@ export default {
 :deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

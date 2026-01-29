@@ -74,8 +74,12 @@
         </v-toolbar>
         <v-tabs
           v-model="selectedTab"
+          align-tabs="center"
           bg-color="black"
+          center-active
+          grow
           selected-class="tabSelected"
+          show-arrows
           slider-color="primary"
         >
           <v-tab

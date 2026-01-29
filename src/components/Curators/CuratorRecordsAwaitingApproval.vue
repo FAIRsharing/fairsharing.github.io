@@ -6,13 +6,13 @@
         <v-spacer />
         <v-text-field
           v-model="searches"
-          label="Search"
-          color="white"
-          single-line
-          hide-details
-          variant="solo"
           class="searchField"
           clearable
+          color="white"
+          hide-details
+          label="Search"
+          single-line
+          variant="solo"
         />
       </v-card-title>
       <v-card-text v-if="error.general">
@@ -22,11 +22,11 @@
         </v-alert>
       </v-card-text>
       <v-data-table
-        :loading="loading"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         :headers="headerItems"
         :items="approvalRequiredProcessed"
+        :loading="loading"
         :search="searches"
-        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
         <template v-if="recordType" #item="props">
@@ -46,8 +46,8 @@
                     <template #activator="{ props: tooltipProps }">
                       <v-icon
                         class="clickable"
-                        size="small"
                         color="nordnetBlue"
+                        size="small"
                         v-bind="[menuProps, tooltipProps]"
                       >
                         {{ props.item.curator }}
@@ -73,7 +73,7 @@
             <td>
               <div class="d-flex align-center">
                 <v-avatar v-if="props.item.type" class="mr-2" size="40">
-                  <Icon :item="props.item.type" :height="40" wrapper-class="" />
+                  <Icon :height="40" :item="props.item.type" wrapper-class="" />
                 </v-avatar>
                 <a :href="'/' + props.item.id">
                   {{ props.item.recordName }}
@@ -104,9 +104,9 @@
                     <div class="mt-4 text-h6">Update Processing Notes</div>
                     <v-textarea
                       v-model="props.item.processingNotes"
-                      width="1200px"
                       label="Edit (not long words)"
                       variant="filled"
+                      width="1200px"
                     />
                   </div>
                 </template>
@@ -129,7 +129,6 @@
               {{ props.item.actions }}
               <v-icon
                 color="red"
-                dark
                 end
                 size="small"
                 @click="deleteRecordMenu(props.item.recordName, props.item.id)"
@@ -165,7 +164,7 @@
         </template>
       </v-data-table>
     </v-card-text>
-    <v-layout row justify-center>
+    <v-layout justify-center row>
       <v-dialog v-model="dialogs.approveChanges" max-width="700px">
         <v-card>
           <v-card-title class="text-h5">
@@ -200,9 +199,9 @@
             <v-spacer />
             <v-switch
               v-model="dialogs.createReview"
+              class="pr-3"
               color="green"
               label="Create Review"
-              class="pr-3"
             />
             <v-switch
               v-model="dialogs.recordHidden"
@@ -214,7 +213,7 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout row justify-center>
+    <v-layout justify-center row>
       <v-dialog v-model="dialogs.deleteRecord" max-width="700px">
         <v-card>
           <v-card-title class="text-h5">
@@ -576,6 +575,7 @@ export default {
 :deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

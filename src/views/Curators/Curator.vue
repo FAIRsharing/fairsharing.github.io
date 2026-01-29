@@ -1,16 +1,16 @@
 <template>
-  <v-container id="curatorPage" fluid class="standard">
+  <v-container id="curatorPage" class="standard" fluid>
     <v-row
       v-if="user().role === 'super_curator' || user().role === 'developer'"
     >
       <v-col cols12>
         <v-banner
           v-if="!messages()['getUser'].error"
+          :stacked="false"
+          class="text-white mb-2 text-h5"
           color="info"
           lines="one"
           text="white"
-          :stacked="false"
-          class="text-white mb-2 text-h5"
         >
           Welcome, curator {{ user().credentials.username }}
         </v-banner>
@@ -27,10 +27,9 @@
         <!--Tabs-->
         <v-tabs
           v-model="selectedTab"
-          dark
+          show-arrows
           slider-color="primary"
           slider-size="5"
-          show-arrows
         >
           <v-tab v-for="tab in tabs" :key="'tab_' + tab.name">
             <div>{{ tab.name }}</div>

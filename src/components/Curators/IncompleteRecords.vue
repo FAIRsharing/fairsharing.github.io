@@ -1,7 +1,7 @@
 <template>
   <v-col cols12>
     <div>
-      <v-layout row justify-center>
+      <v-layout justify-center row>
         <v-dialog v-model="dialogs.deleteRecord" max-width="700px">
           <v-card>
             <v-card-title class="text-h5">
@@ -45,30 +45,30 @@
           <v-spacer />
           <v-text-field
             v-model="searches"
-            label="Search"
-            color="white"
-            single-line
-            hide-details
-            variant="solo"
             class="searchField"
             clearable
+            color="white"
+            hide-details
+            label="Search"
+            single-line
+            variant="solo"
           />
         </v-card-title>
         <v-data-table
-          :loading="loading"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="incompleteRecords"
+          :loading="loading"
           :search="searches"
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
           <template v-if="recordType" #item="props">
             <tr>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
+                  <v-avatar v-if="props.item.type" class="mr-2" size="40">
                     <Icon
-                      :item="props.item.type"
                       :height="40"
+                      :item="props.item.type"
                       wrapper-class=""
                     />
                   </v-avatar>
@@ -92,7 +92,6 @@
               <td>
                 <v-icon
                   color="red"
-                  dark
                   end
                   size="small"
                   @click="deleteRecordMenu(props.item.id)"
@@ -230,9 +229,10 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

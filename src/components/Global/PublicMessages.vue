@@ -9,8 +9,9 @@
         color="warning"
         density="compact"
         type="info"
-        v-html="`${moment(messageObj.updatedAt)}: ${messageObj.message}`"
-      />
+        ><span
+          v-html="`${moment(messageObj.updatedAt)}: ${messageObj.message}`"
+      /></v-alert>
       <!-- eslint-enable vue/no-v-html -->
     </div>
     <div v-if="is_development()">

@@ -1,6 +1,6 @@
 <template>
   <v-container id="recordEditor" fluid>
-    <v-alert density="compact" fluid type="info" class="mb-0 flex-grow-1">
+    <v-alert class="mb-0 flex-grow-1" density="compact" fluid type="info">
       <span class="doclink"
         >For more information on editing FAIRsharing records, please see our
         <a
@@ -49,8 +49,8 @@
       </v-col>
 
       <v-col v-else>
-        <v-toolbar flat color="primary" dark class="py-1 px-4">
-          <v-toolbar-title>
+        <v-toolbar class="py-1 px-4" color="primary" dark flat>
+          <v-toolbar-title class="toolBarTitle">
             Edit Record -
             {{ sections.generalInformation.initialData.metadata.name }} ({{
               recordId
@@ -69,14 +69,14 @@
             {{ panelData.name }}
           </v-btn>
           <router-link :to="'/' + $route.params.id" class="ml-2">
-            <v-btn color="black" variant="elevated"> Exit editing </v-btn>
+            <v-btn color="black" variant="elevated"> Exit editing</v-btn>
           </router-link>
         </v-toolbar>
         <v-tabs
           v-model="selectedTab"
-          slider-color="primary"
           bg-color="black"
           selected-class="tabSelected"
+          slider-color="primary"
         >
           <v-tab
             v-for="tab in tabs"
@@ -334,5 +334,10 @@ export default {
 
 :deep(.tabSelected .v-tab__slider) {
   height: 5px;
+}
+
+:deep(.toolBarTitle .v-toolbar-title__placeholder) {
+  text-overflow: unset;
+  overflow: unset;
 }
 </style>

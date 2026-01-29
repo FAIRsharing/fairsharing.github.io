@@ -12,8 +12,8 @@
       <b>Type</b>
     </span>
     <p
-      class="ma-0 full-width ml-md-12 ml-8"
       :class="{ 'text-end': $vuetify.display.smAndDown }"
+      class="ma-0 full-width ml-md-12 ml-8"
     >
       {{ $filters.capitalize(cleanString(getField("type"))) }}
       <a
@@ -21,11 +21,11 @@
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
         <v-chip
-          label
           color="primary"
+          label
+          size="x-small"
+          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px"
           variant="flat"
-          x-small
-          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px;"
         >
           GLOBALLY UNIQUE
         </v-chip>
@@ -35,11 +35,11 @@
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
         <v-chip
-          label
           color="primary"
+          label
+          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px"
           variant="flat"
-          x-small
-          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px;"
+          size="x-small"
         >
           PERSISTENT
         </v-chip>
@@ -49,11 +49,11 @@
         href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
       >
         <v-chip
-          label
           color="primary"
+          label
+          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px"
           variant="flat"
-          x-small
-          style="margin-right: 1px; margin-bottom: 1px; padding-top: 1px;"
+          size="x-small"
         >
           RESOLVABLE
         </v-chip>
@@ -66,6 +66,7 @@
 import { mapGetters, mapState } from "vuex";
 
 import stringUtils from "@/utils/stringUtils";
+
 export default {
   name: "Type",
   mixins: [stringUtils],
@@ -73,6 +74,6 @@ export default {
     ...mapGetters("record", ["getField"]),
     ...mapState("editor", ["recordTooltips"]),
     ...mapState("record", ["currentRecord"]),
-  }
-}
+  },
+};
 </script>

@@ -5,21 +5,18 @@
   >
     <v-tooltip
       v-if="getDescription('head')"
-      location="bottom"
       class="d-inline-block mr-2"
+      location="bottom"
     >
       <template #activator="{ props }">
-        <v-icon size="15" class="mb-1" v-bind="props">
+        <v-icon class="mb-1" size="15" v-bind="props">
           fas fa-question-circle
         </v-icon>
       </template>
       {{ getDescription("head") }}
     </v-tooltip>
     <b class="text-h6 text-capitalize">{{ setTitle(cleanString(title)) }}</b>
-    <div
-      v-for="(item, index) in currentField"
-      :key="item.name + '_' + index"
-    >
+    <div v-for="(item, index) in currentField" :key="item.name + '_' + index">
       <!--  URLs    -->
       <div
         v-for="(key, keyindex) in Object.keys(item)"
@@ -28,11 +25,11 @@
         <div class="d-flex flex-row align-center min-height-40">
           <v-tooltip
             v-if="getDescription(item[key])"
-            location="bottom"
             class="d-inline-block mr-2"
+            location="bottom"
           >
             <template #activator="{ props }">
-              <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+              <v-icon v-bind="props"> fas fa-question-circle</v-icon>
             </template>
             {{ getDescription(item[key]) }}
           </v-tooltip>
@@ -63,7 +60,10 @@ export default {
     title: { default: null, type: String },
     currentField: { default: () => [], type: Array },
     currentKey: { default: null, type: String },
-    currentTooltips: { default: () => {}, type: Object },
+    currentTooltips: {
+      default: () => {},
+      type: Object,
+    },
   },
   computed: {
     getCurrentKey() {

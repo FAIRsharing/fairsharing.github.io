@@ -1,11 +1,11 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-card
     v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column overflow-initial"
-    border
     :color="backColor"
-    tile
+    border
+    class="pa-4 d-flex flex-column overflow-initial"
     elevation="3"
+    tile
   >
     <SectionTitle title="Collections &amp; Recommendations" />
     <div class="d-flex flex-column ml-2 min-height-40">
@@ -19,14 +19,14 @@
               .length < 5
           "
           :items="getValues"
-          variant="solo"
           :menu-props="{ attach: true }"
-          density="compact"
-          clearable
-          prepend-inner-icon="fas fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
+          clearable
+          density="compact"
           item-title="name"
           item-value="name"
+          prepend-inner-icon="fas fa-search"
+          variant="solo"
         >
           <template #item="data">
             <span class="filterValueName">
@@ -39,12 +39,6 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.display.mdAndDown"
-        bg-color="transparent"
-        grow
-        color="accent3"
-        slider-color="accent3"
-        class="mb-5"
         :hide-slider="
           tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
             .type === 'conforming_resources'
@@ -52,6 +46,12 @@
             : tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
                 .data.length === 0
         "
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
+        class="mb-5"
+        color="accent3"
+        grow
+        slider-color="accent3"
       >
         <v-tab
           v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
@@ -85,9 +85,9 @@
           <v-virtual-scroll
             v-else
             :items="tabItem.data"
+            class="ma-4 overflow-x-hidden"
             height="400"
             item-height="130"
-            class="ma-4 overflow-x-hidden"
           >
             <template #default="{ item, index }">
               <router-link
@@ -96,9 +96,9 @@
               >
                 <v-card
                   :key="item.id + '_' + index"
+                  border
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  border
                 >
                   <div class="d-flex align-center">
                     <record-status :record="item" :show-status="false" />

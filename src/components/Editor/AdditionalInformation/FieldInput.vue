@@ -1,48 +1,48 @@
 <template>
   <div
     v-if="fieldName"
-    class="d-flex flex-row"
     :class="{ reposition: !isSwitch }"
+    class="d-flex flex-row"
   >
     <v-tooltip
       v-if="fieldProps.description"
-      location="bottom"
       class="d-inline-block mr-2"
+      location="bottom"
     >
       <template #activator="{ props }">
-        <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+        <v-icon v-bind="props"> fas fa-question-circle</v-icon>
       </template>
       {{ fieldProps.description }}
     </v-tooltip>
 
     <v-text-field
       v-if="!fieldProps.enum"
-      :model-value="target()"
       :label="getName"
-      variant="outlined"
-      class="textField"
-      width="80%"
+      :model-value="target()"
       :rules="rules"
+      class="textField"
+      variant="outlined"
+      width="80%"
       @update:model-value="setField($event)"
     />
 
     <v-autocomplete
       v-else-if="!isSwitch"
-      :model-value="target()"
-      :label="getName"
       :items="fieldProps.enum"
-      variant="outlined"
+      :label="getName"
+      :model-value="target()"
       class="field"
+      variant="outlined"
       @update:model-value="setField($event)"
     />
 
     <v-switch
       v-if="isSwitch && !subfieldName"
       v-model="fields[fieldName]"
-      inset
       class="field ml-3 switch"
-      true-value="yes"
       false-value="no"
+      inset
+      true-value="yes"
       @update:model-value="setField($event)"
     >
       <template #label>
@@ -66,10 +66,10 @@
     <v-switch
       v-if="isSwitch && subfieldName"
       v-model="fieldCheck()[subfieldName]"
-      inset
       class="field ml-3 switch"
-      true-value="yes"
       false-value="no"
+      inset
+      true-value="yes"
       @update:model-value="setField($event)"
     >
       <template #label>

@@ -7,13 +7,13 @@
           <v-spacer />
           <v-text-field
             v-model="searches"
-            label="Search"
-            color="white"
-            single-line
-            hide-details
-            variant="solo"
             class="searchField"
             clearable
+            color="white"
+            hide-details
+            label="Search"
+            single-line
+            variant="solo"
           />
         </v-card-title>
         <v-card-text v-if="error.general">
@@ -23,11 +23,11 @@
           </v-alert>
         </v-card-text>
         <v-data-table
-          :loading="loading"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="maintenanceRequestsProcessed"
+          :loading="loading"
           :search="searches"
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           sort-by=""
         >
           <template v-if="recordType" #item="props">
@@ -37,10 +37,10 @@
               </td>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
+                  <v-avatar v-if="props.item.type" class="mr-2" size="40">
                     <Icon
-                      :item="props.item.type"
                       :height="40"
+                      :item="props.item.type"
                       wrapper-class=""
                     />
                   </v-avatar>
@@ -71,9 +71,9 @@
                       <div class="mt-4 text-h6">Update Processing Notes</div>
                       <v-textarea
                         v-model="props.item.processingNotes"
-                        width="1200px"
                         label="Edit (not long words)"
                         variant="filled"
+                        width="1200px"
                       />
                     </div>
                   </template>
@@ -82,7 +82,6 @@
               <td>
                 <v-icon
                   color="blue"
-                  dark
                   start
                   @click.stop="
                     assignMaintenanceOwner(
@@ -98,7 +97,6 @@
                 {{ props.item.actions }}
                 <v-icon
                   color="red"
-                  dark
                   end
                   @click="
                     rejectMaintenanceOwner(
@@ -116,7 +114,7 @@
           </template>
         </v-data-table>
       </v-card-text>
-      <v-layout row justify-center>
+      <v-layout justify-center row>
         <v-dialog
           v-model="dialogs.confirmAssignment"
           max-width="700px"
@@ -145,8 +143,8 @@
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
                 color="blue-darken-1"
-                variant="text"
                 persistent
+                variant="text"
                 @click="closeMaintenanceAssign()"
               >
                 Cancel
@@ -154,8 +152,8 @@
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
                 color="blue-darken-1"
-                variant="text"
                 persistent
+                variant="text"
                 @click="assignMaintenanceOwnConfirm('approved')"
               >
                 OK
@@ -165,7 +163,7 @@
           </v-card>
         </v-dialog>
       </v-layout>
-      <v-layout row justify-center>
+      <v-layout justify-center row>
         <v-dialog
           v-model="dialogs.rejectAssignment"
           max-width="700px"
@@ -194,8 +192,8 @@
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
                 color="blue-darken-1"
-                variant="text"
                 persistent
+                variant="text"
                 @click="closeMaintenanceReject()"
               >
                 Cancel
@@ -203,8 +201,8 @@
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
                 color="blue-darken-1"
-                variant="text"
                 persistent
+                variant="text"
                 @click="assignMaintenanceOwnConfirm('rejected')"
               >
                 OK
@@ -428,6 +426,7 @@ export default {
   input {
   color: #fff;
 }
+
 .testDialog {
   width: 600px !important;
 }
@@ -435,6 +434,7 @@ export default {
 :deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

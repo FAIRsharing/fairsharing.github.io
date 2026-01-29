@@ -54,7 +54,6 @@
                 <td>
                   <v-icon
                     color="red"
-                    dark
                     end
                     size="small"
                     @click="deleteMessage(props.item.id)"

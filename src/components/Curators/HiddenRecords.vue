@@ -7,30 +7,30 @@
           <v-spacer />
           <v-text-field
             v-model="searches"
-            label="Search"
-            color="white"
-            single-line
-            hide-details
-            variant="solo"
             class="searchField"
             clearable
+            color="white"
+            hide-details
+            label="Search"
+            single-line
+            variant="solo"
           />
         </v-card-title>
         <v-data-table
-          :loading="loading"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="hiddenRecords"
+          :loading="loading"
           :search="searches"
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
           <template v-if="recordType" #item="props">
             <tr>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar v-if="props.item.type" class="mr-2" :height="40">
+                  <v-avatar v-if="props.item.type" class="mr-2" size="40">
                     <Icon
-                      :item="props.item.type"
                       :height="40"
+                      :item="props.item.type"
                       wrapper-class=""
                     />
                   </v-avatar>
@@ -141,6 +141,7 @@ export default {
 :deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

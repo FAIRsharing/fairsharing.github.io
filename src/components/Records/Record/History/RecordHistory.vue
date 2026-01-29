@@ -1,24 +1,24 @@
 <template>
   <div id="recordHistoryContent">
-    <v-tabs v-model="selectedTab" dark slider-color="primary" slider-size="5">
-      <v-tab> View history logs </v-tab>
-      <v-tab> View legacy logs </v-tab>
+    <v-tabs v-model="selectedTab" slider-color="primary" slider-size="5">
+      <v-tab> View history logs</v-tab>
+      <v-tab> View legacy logs</v-tab>
 
       <v-tabs-window v-model="selectedTab">
         <v-tabs-window-item>
           <div v-if="selectedTab === 0" class="my-3">
             <v-tabs
               v-model="subTab"
+              direction="vertical"
               slider-color="secondary"
               slider-size="5"
-              direction="vertical"
             >
               <v-tab
                 v-for="(subTabContent, subTabIndex) in history"
                 :key="'subTab_' + subTabIndex"
+                class="bg-primary text-white mb-2"
                 dense
                 style="width: 150px; height: 80px"
-                class="bg-primary text-white mb-2"
                 @click="page = 1"
               >
                 {{ subTabContent[0] }}
@@ -48,20 +48,16 @@
                         />
                         <v-switch
                           v-model="reverseDate"
-                          inset
-                          color="primary"
                           :label="
                             reverseDate ? 'Descending date' : 'Ascending date'
                           "
+                          color="primary"
+                          inset
                         />
                       </div>
 
                       <!-- CONTENT -->
-                      <v-expansion-panels
-                        v-model="currentPanel"
-                        focusable
-                        multiple
-                      >
+                      <v-expansion-panels v-model="currentPanel" multiple>
                         <v-expansion-panel
                           v-for="(entry, entryIndex) in reverse(
                             subTabContent[1],
@@ -89,15 +85,15 @@
                           <v-expansion-panel-text class="pt-3">
                             <vue-json-pretty
                               :data="entry"
-                              :show-double-quotes="false"
                               :deep="5"
                               :highlight-mouseover-node="true"
+                              :show-double-quotes="false"
                             />
                           </v-expansion-panel-text>
                         </v-expansion-panel>
                       </v-expansion-panels>
                     </v-card-text>
-                    <v-card-text v-else> No data. </v-card-text>
+                    <v-card-text v-else> No data.</v-card-text>
                   </v-card>
                 </v-tabs-window-item>
               </v-tabs-window>
@@ -125,7 +121,7 @@
               >
                 <v-expansion-panel-title>
                   <h3 class="my-3">
-                    <v-icon class="mr-3"> far fa-calendar-check </v-icon>
+                    <v-icon class="mr-3"> far fa-calendar-check</v-icon>
                     <span style="position: relative; top: 3px">{{
                       entry["when"] | moment(dateFormat)
                     }}</span>
@@ -135,9 +131,9 @@
                   <b>By {{ entry.username }}</b>
                   <vue-json-pretty
                     :data="entry.diff"
-                    :show-double-quotes="false"
                     :deep="5"
                     :highlight-mouseover-node="true"
+                    :show-double-quotes="false"
                   />
                 </v-expansion-panel-text>
               </v-expansion-panel>

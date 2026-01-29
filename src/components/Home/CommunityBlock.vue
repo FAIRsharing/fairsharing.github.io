@@ -9,14 +9,8 @@
           width="350"
         >
           <div
-            :style="{
-              backgroundImage:
-                'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' +
-                'assets/Home/BlockHero/pattern-orange.png',
-              backgroundSize: '100%',
-              backgroundBlendMode: 'color',
-            }"
-            class="text-white d-flex flex-column justify-center block-category__card__gradient__2"
+            :style="{ backgroundImage: 'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' + 'assets/Home/BlockHero/pattern-orange.png',backgroundSize:'100%',backgroundBlendMode:'color'}"
+            class="white--text d-flex flex-column justify-center block-category__card__gradient__2"
           >
             <div
               style="height: 136px"

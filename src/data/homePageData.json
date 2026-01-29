@@ -1,6 +1,13 @@
 {
   "blockTabs": [
     {
+      "link": "educational#webinar",
+      "image": "assets/Home/Tabs/fairsharing-logo.svg",
+      "header": "Everyone",
+      "description": "Watch our webinar to learn how FAIRsharing has grown in scope, connectivity and reuse, and how we support data management, FAIR assessment, policy implementation and more.",
+      "title": "Everyone"
+    },
+    {
       "link": "educational#researchers",
       "image": "assets/Home/Tabs/researcher.svg",
       "header": "Researchers in academia, industry and government",

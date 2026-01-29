@@ -201,8 +201,8 @@
       </v-col>
       <v-col class="pt-0 mt-2" cols="12" lg="9" md="9" sm="12" xl="9" xs="12">
         <v-btn :to="`/${$route.params.id}`" class="ml-2 my-2 bg-white">
-          <v-icon :class="`text-primary`"> fas fa-arrow-left </v-icon>
-          <span :class="`text-primary ml-3`"> Go to Record </span>
+          <v-icon :class="`text-primary`"> fas fa-arrow-left</v-icon>
+          <span :class="`text-primary ml-3`"> Go to Record</span>
         </v-btn>
         <div v-if="noData">
           <v-card-title class="bg-blue text-white">
@@ -210,10 +210,13 @@
           </v-card-title>
         </div>
         <div v-else>
-          <v-card-title v-if="!loading" class="bg-blue text-white">
+          <v-card-title v-if="!loading" class="bg-blue text-white pb-0 pt-4">
             {{ graphData.name }} ({{ graphData.id }})
           </v-card-title>
-          <v-card-subtitle v-if="!loading" class="bg-blue text-white">
+          <v-card-subtitle
+            v-if="!loading"
+            class="bg-blue text-white opacity-100 pb-4"
+          >
             {{ registry }}/{{ type }}
           </v-card-subtitle>
         </div>
@@ -394,8 +397,7 @@ export default {
           response[0].message === "record not found"
         ) {
           this.error = true;
-        }
-        else if (
+        } else if (
           !response.fairsharingGraph ||
           !response.fairsharingGraph.data ||
           response.fairsharingGraph.data.length === 0 ||
@@ -406,15 +408,13 @@ export default {
           this.registry = "N/A";
           this.type = "N/A";
           this.initialized = true;
-        }
-        else {
+        } else {
           this.graphData = response.fairsharingGraph.data;
           this.loading = false;
           this.registry = this.graphData.registry;
           this.type = this.graphData.type;
         }
-      }
-      catch (e) {
+      } catch (e) {
         console.error("Graph Data Error:", e);
         this.error = true;
         this.loading = false;
@@ -526,8 +526,7 @@ export default {
         this.loading = true;
         window.location.assign("/" + node);
         //this.loading = false;
-      }
-      else {
+      } else {
         this.loading = true;
         window.location.assign("/graph/" + node);
         //this.loading = false;
@@ -544,8 +543,7 @@ export default {
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
         return "#27aae1";
-      }
-      else {
+      } else {
         return "gray";
       }
     },
@@ -593,6 +591,7 @@ export default {
   padding: 0;
   overflow: hidden;
 }
+
 .button-filters {
   width: 150px;
 }

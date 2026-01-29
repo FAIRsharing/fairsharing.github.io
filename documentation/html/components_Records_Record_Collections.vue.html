@@ -91,14 +91,14 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+            class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-card
     v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column overflow-initial"
-    border
     :color="backColor"
-    tile
+    border
+    class="pa-4 d-flex flex-column overflow-initial"
     elevation="3"
+    tile
   >
     &lt;SectionTitle title="Collections &amp;amp; Recommendations" />
     &lt;div class="d-flex flex-column ml-2 min-height-40">
@@ -112,14 +112,14 @@
               .length &lt; 5
           "
           :items="getValues"
-          variant="solo"
           :menu-props="{ attach: true }"
-          density="compact"
-          clearable
-          prepend-inner-icon="fas fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
+          clearable
+          density="compact"
           item-title="name"
           item-value="name"
+          prepend-inner-icon="fas fa-search"
+          variant="solo"
         >
           &lt;template #item="data">
             &lt;span class="filterValueName">
@@ -132,12 +132,6 @@
       &lt;v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.display.mdAndDown"
-        bg-color="transparent"
-        grow
-        color="accent3"
-        slider-color="accent3"
-        class="mb-5"
         :hide-slider="
           tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
             .type === 'conforming_resources'
@@ -145,6 +139,12 @@
             : tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
                 .data.length === 0
         "
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
+        class="mb-5"
+        color="accent3"
+        grow
+        slider-color="accent3"
       >
         &lt;v-tab
           v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
@@ -178,9 +178,9 @@
           &lt;v-virtual-scroll
             v-else
             :items="tabItem.data"
+            class="ma-4 overflow-x-hidden"
             height="400"
             item-height="130"
-            class="ma-4 overflow-x-hidden"
           >
             &lt;template #default="{ item, index }">
               &lt;router-link
@@ -189,9 +189,9 @@
               >
                 &lt;v-card
                   :key="item.id + '_' + index"
+                  border
                   class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
-                  border
                 >
                   &lt;div class="d-flex align-center">
                     &lt;record-status :record="item" :show-status="false" />

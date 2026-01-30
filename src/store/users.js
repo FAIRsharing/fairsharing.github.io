@@ -286,7 +286,7 @@ export const actions = {
   async getUser(state) {
     try {
       const userMetadata = await client.getUser(
-        state.state.user().credentials.token
+        state.state.user().credentials.token,
       );
       if (userMetadata.error) {
         this.commit("users/setError", {
@@ -359,7 +359,7 @@ export const actions = {
     try {
       let { user } = await client.getPublicUser(
         state.state.user().credentials.token,
-        id
+        id,
       );
       this.commit("users/setCurrentPublicUser", user);
     } catch (e) {
@@ -371,14 +371,17 @@ export const actions = {
   },
   async updatePublicUser(state, user) {
     try {
-      let message = await client.editPublicUser(user, state.state.user().credentials.token);
+      let message = await client.editPublicUser(
+        user,
+        state.state.user().credentials.token,
+      );
       if (message.error) {
         this.commit("users/setError", {
           field: "updateProfile",
-          message: "Update failed! Please email contact@fairsharing.org for assistance.",
+          message:
+            "Update failed! Please email contact@fairsharing.org for assistance.",
         });
-      }
-      else {
+      } else {
         this.commit("users/setMessage", {
           field: "updateProfile",
           message: "Update successful!",
@@ -395,7 +398,7 @@ export const actions = {
     try {
       await client.deletePublicUser(
         userId,
-        state.state.user().credentials.token
+        state.state.user().credentials.token,
       );
       this.commit("users/setMessage", {
         field: "deletePublicUser",
@@ -430,7 +433,7 @@ export const actions = {
     try {
       let response = await client.editUser(
         user,
-        state.state.user().credentials.token
+        state.state.user().credentials.token,
       );
       if (response.error) {
         this.commit("users/setError", {
@@ -454,7 +457,7 @@ export const actions = {
     let response = await client.changeWatcher(
       data.recordID,
       data.operation,
-      state.state.user().credentials.token
+      state.state.user().credentials.token,
     );
     return response;
   },
@@ -487,7 +490,7 @@ export const actions = {
     try {
       let response = await client.resetPasswordWithoutToken(
         state.state.user().credentials.token,
-        user
+        user,
       );
       if (response.error) {
         this.commit("users/setError", {
@@ -510,7 +513,7 @@ export const actions = {
   },
   async validateUserToken(state) {
     let validity = await client.validateToken(
-      state.state.user().credentials.token
+      state.state.user().credentials.token,
     );
     if (!validity.success) {
       this.commit("users/logout");

@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import SubjectSearchStore from "@/store/AdvancedSearchComponents/subjectSearch";
 
-import SubjectSearchData from "../../../../tests/fixtures/getSubjectSearch.json";
+import SubjectSearchData from "../../../fixtures/getSubjectSearch.json";
 
 describe("SubjectSearch store methods", () => {
   const { actions, mutations, getters } = SubjectSearchStore;

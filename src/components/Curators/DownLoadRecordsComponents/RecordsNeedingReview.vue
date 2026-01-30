@@ -2,25 +2,16 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text>
-        <v-card-title
-          id="download-review-needed"
-          class="green white--text"
-        >
+        <v-card-title id="download-review-needed" class="bg-green text-white">
           RECORDS NEEDING REVIEW
-          <v-btn
-            class="info ml-5"
-            :loading="loading"
-          >
+          <v-btn :loading="loading" class="bg-info ml-5">
             <a
               v-if="downloadReviewContent"
               :href="downloadReviewContent"
               download="recordsNeedingReview.txt"
             >
-              <v-icon
-                color="white"
-                class="mr-1"
-              > fa fa-download </v-icon>
-              <span class="white--text">Obtain file</span>
+              <v-icon class="mr-1" color="white"> fas fa-download</v-icon>
+              <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
         </v-card-title>
@@ -33,7 +24,8 @@
 import { mapState } from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getNeedsReview from "@/lib/GraphClient/queries/curators/getNeedsReview.json"
+import getNeedsReview from "@/lib/GraphClient/queries/curators/getNeedsReview.json";
+
 const client = new GraphClient();
 
 export default {
@@ -57,7 +49,6 @@ export default {
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to download file having records which needs to be
      * reviewed
@@ -65,7 +56,7 @@ export default {
     async obtainFileRecordsNeedTOBeReviewed(data) {
       let review = data.needsReview || [];
       this.downloadReviewContent =
-          "data:text/json;charset=utf-8," + encodeURIComponent(review.join("\n"));
+        "data:text/json;charset=utf-8," + encodeURIComponent(review.join("\n"));
     },
   },
 };

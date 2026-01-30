@@ -3,7 +3,8 @@
     v-if="getField('communityCurators').length > 0"
     class="d-flex flex-row flex-wrap align-center mt-4 min-height-40"
   >
-    <b class="mr-2">The following community champions have contributed to this record:
+    <b class="mr-2"
+      >The following community champions have contributed to this record:
     </b>
     <div
       v-for="(curator, index) in getField('communityCurators')"
@@ -24,17 +25,10 @@
           :href="`https://orcid.org/${curator.orcid}`"
           target="_blank"
         >
-          <Icon
-            :height="27"
-            item="Orcid"
-            wrapper-class=""
-          />
+          <Icon :height="27" item="Orcid" wrapper-class="" />
         </a>
       </div>
-      <span
-        class="mr-1"
-        style="margin-left: -6px"
-      >{{
+      <span class="mr-1" style="margin-left: -6px">{{
         index !== getField("communityCurators").length - 1 ? "," : ""
       }}</span>
     </div>

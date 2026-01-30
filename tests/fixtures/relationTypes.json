@@ -27,7 +27,7 @@
     "id": 2,
     "name": "accepts",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 3,
@@ -40,7 +40,7 @@
     "id": 3,
     "name": "outputs",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 3,
@@ -112,7 +112,7 @@
     "id": 5,
     "name": "shares_code_with",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 1,
@@ -125,7 +125,7 @@
     "id": 6,
     "name": "shares_data_with",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 1,
@@ -138,7 +138,7 @@
     "id": 7,
     "name": "profiles",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 4,
@@ -151,7 +151,7 @@
     "id": 8,
     "name": "extends",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 1,
@@ -174,7 +174,7 @@
     "id": 9,
     "name": "deprecates",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 1,
@@ -202,7 +202,7 @@
     "id": 10,
     "name": "collects",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 9,
@@ -230,7 +230,7 @@
     "id": 11,
     "name": "recommends",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 7,
@@ -253,7 +253,7 @@
     "id": 12,
     "name": "part_of",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 14,
@@ -271,7 +271,7 @@
     "id": 13,
     "name": "measures_principle",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 17,
@@ -284,7 +284,7 @@
     "id": 14,
     "name": "has_associated_metric",
     "description": null,
-    "children": [ ],
+    "children": [],
     "allowed_associations": [
       {
         "id": 18,

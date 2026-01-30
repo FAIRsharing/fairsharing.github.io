@@ -20,7 +20,7 @@ const actions = {
     //Only label/name is passed to field so that while clicking on the Edit Advanced Search button the field should be pre-filled with the selection
     if (response["searchTaxonomies"] && response["searchTaxonomies"].length) {
       const taxonomiesList = response["searchTaxonomies"].map(
-        ({ label }) => label
+        ({ label }) => label,
       );
       commit("setSearchTaxonomies", taxonomiesList);
     }

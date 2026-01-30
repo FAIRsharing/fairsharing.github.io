@@ -1,0 +1,33 @@
+name: Test and Coverage
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - name: Install Dependencies
+        run: npm install
+      # 1. Run the test script
+      - name: Run Tests with Coverage
+        run: npm run test
+      # 2. Upload to Coveralls
+      # This uses the official Codacy Action
+      - name: Update coverage to coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: './coverage/lcov.info'
+      # 3. Upload to Codacy
+      # This uses the official Codacy Action
+      - name: Run Codacy Coverage Reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: coverage/lcov.info

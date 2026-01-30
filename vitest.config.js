@@ -1,10 +1,10 @@
-import { fileURLToPath } from "node:url";
+import {fileURLToPath} from "node:url";
 
-import { URL } from "url";
-import { defineConfig,mergeConfig } from "vite";
-import { configDefaults } from "vitest/config";
+import {URL} from "url";
+import {defineConfig, mergeConfig} from "vite";
 
 import viteConfig from "./vite.config.mjs";
+import {configDefaults} from "vitest/config";
 
 export default mergeConfig(
   viteConfig,
@@ -16,11 +16,14 @@ export default mergeConfig(
         },
       },
       environment: "happy-dom",
+      globals: true,
+      setupFiles: ['./tests/setup.js'],
       exclude: [...configDefaults.exclude, "e2e/*"],
       root: fileURLToPath(new URL("./", import.meta.url)),
       transformMode: {
         web: [/\.[jt]sx$/],
       },
+      include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
       coverage: {
         provider: "v8", // or 'istanbul'
         ignoreEmptyLines: true,
@@ -47,8 +50,6 @@ export default mergeConfig(
           "src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
           "src/components/Records/Search/SaveSearch/StepperComponents/index.js",
           "src/components/Curators/index.js",
-          "src/*",
-          "tests/*"
         ],
         reporter: ["html", "lcov", "text"],
         reportOnFailure: true,

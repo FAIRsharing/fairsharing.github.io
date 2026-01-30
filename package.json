@@ -122,6 +122,9 @@
   "optionalDependencies": {
     "fsevents": "^2.3.2"
   },
+  "overrides": {
+    "rollup": "^4.0.0"
+  },
   "browserslist": [
     "> 0.25%",
     "last 2 versions",

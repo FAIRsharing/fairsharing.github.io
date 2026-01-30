@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   base: "./",
-  server:{
+  server: {
     host: true,
     open: true,
     port: 8080
@@ -26,12 +26,8 @@ export default defineConfig({
     open: true,
     port: 8081,
   },
-  test: {
-    environment: "jsdom",
-    globals: true,
-  },
   plugins: [
-    vue({ template: { transformAssetUrls } }),
+    vue({template: {transformAssetUrls}}),
     vuetify({
       autoImport: true,
     }),
@@ -42,7 +38,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
-      "source-map-js": "source-map"
+      "source-map-js": "source-map",
+      'query-builder-vue-3': path.resolve(__dirname, 'node_modules/query-builder-vue-3/dist/query-builder-vue-3.js'),
     },
     extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue", ".svg"],
   },
@@ -67,9 +64,9 @@ export default defineConfig({
     target: 'es2015',
     cssCodeSplit: true,
     chunkSizeWarningLimit: 1250,
-    commonjsOptions: { transformMixedEsModules: true },
+    commonjsOptions: {transformMixedEsModules: true},
     rollupOptions: {
-      input:path.resolve(__dirname, "index.html"),
+      input: path.resolve(__dirname, "index.html"),
       output: {
         dir: "dist",
         format: "es"

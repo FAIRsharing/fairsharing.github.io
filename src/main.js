@@ -32,7 +32,7 @@ router.beforeEach(
 
 router.afterEach(async (to) => await afterEach(to));
 
-async function bootstrapApp() {
+export async function bootstrapApp() {
   try {
     await store.dispatch("users/login");
     await store.dispatch("introspection/fetchParameters");
@@ -46,6 +46,21 @@ async function bootstrapApp() {
     }
   }
 }
+
+export const globalFilters = {
+  cleanString(str) {
+    return str
+      .replace(/_/g, " ")
+      .replace(/([A-Z])/g, "$1") // Note: This replacement currently keeps the char as-is. Did you mean " $1" to add a space?
+      .replace(/^./, function (str) {
+        return str.toUpperCase();
+      });
+  },
+  capitalize(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  },
+};
 
 //Implement accessibility module for Highcharts
 // check if accessibilityInit is a function, if not try .default
@@ -78,17 +93,4 @@ const app = createApp(App)
   });
 app.directive("linkified", linkify);
 app.mount("#app");
-app.config.globalProperties.$filters = {
-  cleanString(str) {
-    return str
-      .replace(/_/g, " ")
-      .replace(/([A-Z])/g, "$1")
-      .replace(/^./, function (str) {
-        return str.toUpperCase();
-      });
-  },
-  capitalize(str) {
-    if (!str) return "";
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  },
-};
+app.config.globalProperties.$filters = globalFilters;

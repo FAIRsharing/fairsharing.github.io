@@ -1,11 +1,5 @@
 <template>
   <v-app id="app">
-    <!--    <div-->
-    <!--      v-if="loading"-->
-    <!--      style="height:100vh; color: white"-->
-    <!--    >-->
-    <!--      loading-hidden-->
-    <!--    </div>-->
     <v-navigation-drawer
       v-if="$vuetify.display.mdAndDown"
       v-model="UIGeneralStatus.drawerVisibilityState"
@@ -47,7 +41,6 @@ export default {
   data() {
     return {
       title: null,
-      // loading:true,
       subtitle: null,
     };
   },
@@ -59,7 +52,6 @@ export default {
   async updated() {
     // very important line of code which prevents layout shifting which is considered as one negative point for SEO
     await this.$nextTick();
-    // this.loading = false;
   },
   /* v8 ignore stop*/
 };

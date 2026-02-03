@@ -61,9 +61,7 @@ const recordsCardUtils = {
       records["registry"] = record.registry.toLowerCase();
       record["recordAssociations"].forEach(function (association) {
         type = association["linkedRecord"].registry.toLowerCase();
-        /* istanbul ignore else */
         if (type !== "collection") {
-          /* istanbul ignore else */
           if (!link_records[type].includes(association["linkedRecord"].id)) {
             link_records[type].push(association["linkedRecord"].id);
             records["registryNumber"][type].val += 1;
@@ -72,9 +70,7 @@ const recordsCardUtils = {
       });
       record["reverseRecordAssociations"].forEach(function (association) {
         type = association["fairsharingRecord"].registry.toLowerCase();
-        /* istanbul ignore else */
         if (type !== "collection") {
-          /* istanbul ignore else */
           if (
             !link_records[type].includes(association["fairsharingRecord"].id)
           ) {
@@ -91,14 +87,12 @@ const recordsCardUtils = {
       _module.remainTagCount = 0;
       _module.chips = [];
       order.forEach((node) => {
-        /* istanbul ignore else */
         if (record[node]) {
           record[node].remainTagCount = 0;
           _module.organizeChips(record, node, _module.getMaxItemShown);
         }
       });
       for (let i = 0; i < order.length; i++) {
-        /* istanbul ignore else */
         if (record[order[i]]) {
           _module.remainTagCount += record[order[i]].remainTagCount;
         }
@@ -106,10 +100,8 @@ const recordsCardUtils = {
     },
     organizeChips(record, node, max_item_shown) {
       const _module = this;
-      /* istanbul ignore else */
       if (record[node]) {
         record[node].forEach(function (item, index) {
-          /* istanbul ignore else */
           if (index < max_item_shown) {
             item.type = node;
             _module.chips.push(item);

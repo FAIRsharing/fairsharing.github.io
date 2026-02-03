@@ -1,11 +1,8 @@
-let lodash = require("lodash");
-
+import { describe, expect, it } from "vitest";
 // import recordTypesStore from "@/store/AdvancedSearchComponents/recordTypes";
-import {
-  // recordTypes,
-  removeItem,
-  uniqueValues,
-} from "@/utils/advancedSearchUtils.js";
+import { removeItem, uniqueValues } from "@/utils/advancedSearchUtils.js";
+
+let lodash = require("lodash");
 
 describe("advancedSearchUtils.js", function () {
   it("method uniqueValues should result unique array without duplicate values", function () {

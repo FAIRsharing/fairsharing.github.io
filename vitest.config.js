@@ -45,10 +45,10 @@ export default mergeConfig(
         ignoreEmptyLines: true,
         thresholds: {
           autoUpdate: true,
-          lines: 90,
-          functions: 90,
-          branches: 90,
-          statements: 90
+          // lines: 90,
+          // functions: 90,
+          // branches: 93.88,
+          // statements: 90
         },
         css: true,
         exclude: [

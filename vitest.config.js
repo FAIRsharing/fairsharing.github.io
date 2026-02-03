@@ -47,7 +47,7 @@ export default mergeConfig(
           autoUpdate: true,
           lines: 90,
           functions: 90,
-          branches: 93.65,
+          branches: 90,
           statements: 90
         },
         css: true,

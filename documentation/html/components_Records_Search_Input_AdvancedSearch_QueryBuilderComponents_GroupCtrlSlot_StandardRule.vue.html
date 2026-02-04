@@ -91,19 +91,13 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">
-&lt;template>
+            class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div class="d-flex ruleWrapper">
     &lt;select
       v-model="selectedStandardRule"
       class="query-builder-group-slot__rule-selection"
     >
-      &lt;option
-        disabled
-        value=""
-      >
-        Select a standards rule
-      &lt;/option>
+      &lt;option disabled value="">Select a standards rule&lt;/option>
       &lt;option
         v-for="rule in standardQueryBuilderComponents()"
         :key="rule.identifier"
@@ -134,8 +128,8 @@ export default {
   props: {
     groupCtrl: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data: () => {
     return {
@@ -143,7 +137,7 @@ export default {
     };
   },
 
-  methods:{
+  methods: {
     standardQueryBuilderComponents() {
       return [
         {
@@ -185,13 +179,12 @@ export default {
      * @param selectedRule - String
      */
     addNewRule(item, selectedRule) {
-      item.addRule(selectedRule)
-      this.selectedStandardRule = ''
+      item.addRule(selectedRule);
+      this.selectedStandardRule = "";
     },
-  }
+  },
 };
 &lt;/script>
-
 </pre>
     </article>
 </section>

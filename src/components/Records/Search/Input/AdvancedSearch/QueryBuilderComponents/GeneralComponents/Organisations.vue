@@ -2,7 +2,7 @@
   <AutoCompleteComponent
     v-model="model"
     :item-value="itemValue"
-    :item-list="getSearchOrganisations"
+    :item-list="orgNames"
     :loading="getLoadingStatus"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
@@ -33,7 +33,6 @@ export default {
         "Organisations related to this record. Multiple selections will be joined with OR. Start typing to see Organisations.",
     };
   },
-
   computed: {
     ...mapGetters("organisationSearch", [
       "getSearchOrganisations",
@@ -49,6 +48,9 @@ export default {
         this.$emit("input", value);
       },
     },
+    orgNames() {
+      return this.getSearchOrganisations.map(({ name }) => name);
+    }
   },
   watch: {
     itemSelected(newValue) {

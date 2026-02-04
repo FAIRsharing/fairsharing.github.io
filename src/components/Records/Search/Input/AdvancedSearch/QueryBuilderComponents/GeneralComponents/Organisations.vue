@@ -49,7 +49,7 @@ export default {
       },
     },
     orgNames() {
-      return this.getSearchOrganisations.map(function(org) { return org.name; });
+      return this.getSearchOrganisations.map(({ name }) => name);
     }
   },
   watch: {

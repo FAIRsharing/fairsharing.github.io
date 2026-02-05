@@ -180,6 +180,7 @@ export default {
         _module.$set(_module.tabsData.tabs, 'related_collections', {registry: ["Collection"], data: [], count:0});
       }
       if (_module.currentRecord['fairsharingRecord'].registry === 'FAIRassist' ||
+          _module.currentRecord['fairsharingRecord'].registry === 'Database' ||
           _module.currentRecord['fairsharingRecord'].registry === 'Standard') {
         _module.$set(_module.tabsData.tabs, 'related_fairassist_components', {registry: ["FAIRassist"], data: [], count:0});
       }
@@ -192,7 +193,7 @@ export default {
           ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
-          // 0. This hack is related to this comment:
+          // 0. This hack is related to this commenthttps://www.jcmilitaria.com/search_stock.asp?start=0&offset=8:
           // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
           if (tabName === 'related_collections') {
             _module.tabsData.tabs['related_collections'].data =  _module.tabsData.tabs['related_collections'].data

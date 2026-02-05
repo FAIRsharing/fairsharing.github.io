@@ -1,25 +1,41 @@
 <template>
-  <v-avatar style="height: auto !important">
-    <v-menu origin="top center 0" transition="scale-transition">
-      <template #activator="{ props }">
-        <v-btn icon v-bind="props">
-          <v-icon class="text-white"> fas fa-bars</v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in menuItems"
-          :key="item.name + '_' + index"
-          :disabled="item.isDisabled"
-          @click="item.action()"
-        >
-          <v-list-item-title>
-            {{ item.name }}
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </v-avatar>
+  <v-menu origin="top center 0" transition="scale-transition">
+    <template #activator="{ props }">
+      <div class="mr-4" v-bind="props">
+        <v-icon
+          v-if="!overlay"
+          id="menu-activator"
+          class="hamburgerIcon"
+          color="white"
+          icon="fas fa-bars"
+          size="40"
+          @click="overlay = true"
+        />
+        <v-icon
+          v-else
+          id="menu-activator"
+          class="hamburgerIcon"
+          color="white"
+          icon="fas fa-xmark"
+          size="40"
+          @click="overlay = false"
+        />
+      </div>
+    </template>
+
+    <v-list>
+      <v-list-item
+        v-for="(item, index) in menuItems"
+        :key="item.name + '_' + index"
+        :disabled="item.isDisabled"
+        @click="item.action()"
+      >
+        <v-list-item-title>
+          {{ item.name }}
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
 </template>
 
 <script>
@@ -37,6 +53,7 @@ export default {
   data: () => {
     return {
       dialog: false,
+      overlay: false,
     };
   },
   computed: {

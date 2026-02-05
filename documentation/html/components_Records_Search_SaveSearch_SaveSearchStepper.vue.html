@@ -95,26 +95,26 @@
   &lt;v-row justify="center">
     &lt;v-dialog
       :model-value="stepperDialog"
-      width="900"
-      persistent
       :retain-focus="false"
+      persistent
+      width="900"
       @keydown.esc="closeStepperDialog()"
     >
       &lt;!--Dialog Header -->
       &lt;StepperDialogHeader @restart-stepper="restartStepper" />
       &lt;!--Stepper Form -->
       &lt;div v-if="getShowStepper">
-        &lt;v-stepper :model-value="steps" non-linear class="rounded-t-0">
+        &lt;v-stepper :model-value="steps" class="rounded-t-0" non-linear>
           &lt;!--Stepper Header -->
           &lt;v-stepper-header class="rounded-0">
             &lt;!--Header 1 -->
             &lt;v-stepper-item
+              :complete="steps > 1"
+              :value="1"
               editable
-              :complete="steps > 0"
-              value="1"
-              title="Create Policy Link"
               subtitle="Optional"
-              @click="steps = 0"
+              title="Create Policy Link"
+              @click="steps = 1"
             >
             &lt;/v-stepper-item>
 
@@ -122,12 +122,12 @@
             &lt;!--Header 2 -->
             &lt;v-stepper-item
               v-if="user().is_super_curator"
+              :complete="steps > 2"
+              :value="2"
               editable
-              :complete="steps > 1"
-              value="2"
-              title="Create Organisation Link"
               subtitle="Optional"
-              @click="steps = 1"
+              title="Create Organisation Link"
+              @click="steps = 2"
             >
             &lt;/v-stepper-item>
 
@@ -135,20 +135,20 @@
             &lt;!--Header 3 -->
             &lt;v-stepper-item
               v-if="user().is_super_curator"
+              :complete="steps > 3"
+              :value="3"
               editable
-              :complete="steps > 2"
-              value="3"
-              title="Create User Link"
               subtitle="Optional"
-              @click="steps = 2"
+              title="Create User Link"
+              @click="steps = 3"
             >
             &lt;/v-stepper-item>
 
             &lt;v-divider v-if="user().is_super_curator" />
             &lt;!--Header 4 -->
             &lt;v-stepper-item
-              editable
               :value="user().is_super_curator ? 4 : 2"
+              editable
               @click="steps = user().is_super_curator ? 3 : 1"
             >
               Save Search
@@ -156,62 +156,33 @@
           &lt;/v-stepper-header>
 
           &lt;!--Stepper Body -->
-          &lt;v-stepper-window>
+          &lt;v-window :model-value="steps" class="ma-6">
             &lt;!--Stepper Content 1 Policy List-->
-            &lt;v-stepper-window-item value="1">
+            &lt;v-window-item :value="1">
               &lt;PolicyStepper />
               &lt;v-btn
-                class="float-md-right my-3"
                 :class="{ 'full-width': $vuetify.display.smAndDown }"
+                class="float-md-right my-3"
                 color="primary"
                 variant="elevated"
-                @click="steps = 1"
+                @click="steps = 2"
               >
                 Continue
               &lt;/v-btn>
-            &lt;/v-stepper-window-item>
+            &lt;/v-window-item>
 
             &lt;!--Stepper Content 2 Organisation List-->
-            &lt;v-stepper-window-item v-if="user().is_super_curator" value="2">
+            &lt;v-window-item v-if="user().is_super_curator" :value="2">
               &lt;OrganisationStepper />
 
               &lt;div
                 class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
                 &lt;v-btn
-                  class="order-md-2"
                   :class="{
                     'mb-3': $vuetify.display.smAndDown,
                   }"
-                  color="primary"
-                  variant="elevated"
-                  @click="steps = 2"
-                >
-                  Continue
-                &lt;/v-btn>
-                &lt;v-btn
-                  class="text-white order-md-1"
-                  color="accent3"
-                  variant="elevated"
-                  @click="steps = 0"
-                >
-                  Back
-                &lt;/v-btn>
-              &lt;/div>
-            &lt;/v-stepper-window-item>
-
-            &lt;!--Stepper Content 3 Save Search Form-->
-            &lt;v-stepper-window-item v-if="user().is_super_curator" value="3">
-              &lt;UserStepper />
-
-              &lt;div
-                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
-              >
-                &lt;v-btn
                   class="order-md-2"
-                  :class="{
-                    'mb-3': $vuetify.display.smAndDown,
-                  }"
                   color="primary"
                   variant="elevated"
                   @click="steps = 3"
@@ -227,34 +198,63 @@
                   Back
                 &lt;/v-btn>
               &lt;/div>
-            &lt;/v-stepper-window-item>
+            &lt;/v-window-item>
+
+            &lt;!--Stepper Content 3 Save Search Form-->
+            &lt;v-window-item v-if="user().is_super_curator" :value="3">
+              &lt;UserStepper />
+
+              &lt;div
+                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
+              >
+                &lt;v-btn
+                  :class="{
+                    'mb-3': $vuetify.display.smAndDown,
+                  }"
+                  class="order-md-2"
+                  color="primary"
+                  variant="elevated"
+                  @click="steps = 4"
+                >
+                  Continue
+                &lt;/v-btn>
+                &lt;v-btn
+                  class="text-white order-md-1"
+                  color="accent3"
+                  variant="elevated"
+                  @click="steps = 2"
+                >
+                  Back
+                &lt;/v-btn>
+              &lt;/div>
+            &lt;/v-window-item>
 
             &lt;!--Stepper Content 4 Save Search Form-->
-            &lt;v-stepper-window-item :value="user().is_super_curator ? 4 : 2">
+            &lt;v-window-item :value="user().is_super_curator ? 4 : 2">
               &lt;v-form ref="searchFormRef" v-model="searchForm">
                 &lt;v-text-field
                   v-model="searchName"
-                  label="Search Name"
                   :rules="[isRequired()]"
+                  label="Search Name"
                 />
                 &lt;v-text-field
                   v-model="searchComment"
                   :counter="100"
-                  maxlength="100"
                   label="Comments"
+                  maxlength="100"
                 />
               &lt;/v-form>
               &lt;div
                 class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
                 &lt;v-btn
-                  class="order-md-2"
                   :class="{
                     'mb-3': $vuetify.display.smAndDown,
                   }"
-                  color="success order-md-1"
                   :disabled="!searchForm"
                   :loading="loading"
+                  class="order-md-2"
+                  color="success order-md-1"
                   variant="elevated"
                   @click="saveSearch"
                 >
@@ -264,13 +264,13 @@
                   class="text-white"
                   color="accent3"
                   variant="elevated"
-                  @click="steps = user().is_super_curator ? 2 : 0"
+                  @click="steps = user().is_super_curator ? 3 : 1"
                 >
                   Back
                 &lt;/v-btn>
               &lt;/div>
-            &lt;/v-stepper-window-item>
-          &lt;/v-stepper-window>
+            &lt;/v-window-item>
+          &lt;/v-window>
         &lt;/v-stepper>
       &lt;/div>
       &lt;ResultCard v-else @restart-stepper="restartStepper" />
@@ -464,7 +464,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Wed Feb 4th 2026
+		on Thu Feb 5th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

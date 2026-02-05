@@ -222,7 +222,6 @@ export default {
     ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
 
     closeDialog() {
-      this.dialog = false;
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
@@ -232,6 +231,8 @@ export default {
       if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
         this.$router.push("/");
       }
+
+      this.dialog = false;
     },
 
     isAdvancedSearchTerm(queryString) {
@@ -260,12 +261,13 @@ export default {
       } else {
         this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       }
-      this.closeDialog();
+
       //Clear search text field flag
       this.$emit("clearSearchField", true);
 
       this.advancedSearchQueryString();
       this.advancedSearchNavigation(this.queryString);
+      this.closeDialog();
     },
 
     /**

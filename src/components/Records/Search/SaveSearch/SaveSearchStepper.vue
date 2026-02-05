@@ -2,26 +2,26 @@
   <v-row justify="center">
     <v-dialog
       :model-value="stepperDialog"
-      width="900"
-      persistent
       :retain-focus="false"
+      persistent
+      width="900"
       @keydown.esc="closeStepperDialog()"
     >
       <!--Dialog Header -->
       <StepperDialogHeader @restart-stepper="restartStepper" />
       <!--Stepper Form -->
       <div v-if="getShowStepper">
-        <v-stepper :model-value="steps" non-linear class="rounded-t-0">
+        <v-stepper :model-value="steps" class="rounded-t-0" non-linear>
           <!--Stepper Header -->
           <v-stepper-header class="rounded-0">
             <!--Header 1 -->
             <v-stepper-item
+              :complete="steps > 1"
+              :value="1"
               editable
-              :complete="steps > 0"
-              value="1"
-              title="Create Policy Link"
               subtitle="Optional"
-              @click="steps = 0"
+              title="Create Policy Link"
+              @click="steps = 1"
             >
             </v-stepper-item>
 
@@ -29,12 +29,12 @@
             <!--Header 2 -->
             <v-stepper-item
               v-if="user().is_super_curator"
+              :complete="steps > 2"
+              :value="2"
               editable
-              :complete="steps > 1"
-              value="2"
-              title="Create Organisation Link"
               subtitle="Optional"
-              @click="steps = 1"
+              title="Create Organisation Link"
+              @click="steps = 2"
             >
             </v-stepper-item>
 
@@ -42,20 +42,20 @@
             <!--Header 3 -->
             <v-stepper-item
               v-if="user().is_super_curator"
+              :complete="steps > 3"
+              :value="3"
               editable
-              :complete="steps > 2"
-              value="3"
-              title="Create User Link"
               subtitle="Optional"
-              @click="steps = 2"
+              title="Create User Link"
+              @click="steps = 3"
             >
             </v-stepper-item>
 
             <v-divider v-if="user().is_super_curator" />
             <!--Header 4 -->
             <v-stepper-item
-              editable
               :value="user().is_super_curator ? 4 : 2"
+              editable
               @click="steps = user().is_super_curator ? 3 : 1"
             >
               Save Search
@@ -63,62 +63,33 @@
           </v-stepper-header>
 
           <!--Stepper Body -->
-          <v-stepper-window>
+          <v-window :model-value="steps" class="ma-6">
             <!--Stepper Content 1 Policy List-->
-            <v-stepper-window-item value="1">
+            <v-window-item :value="1">
               <PolicyStepper />
               <v-btn
-                class="float-md-right my-3"
                 :class="{ 'full-width': $vuetify.display.smAndDown }"
+                class="float-md-right my-3"
                 color="primary"
                 variant="elevated"
-                @click="steps = 1"
+                @click="steps = 2"
               >
                 Continue
               </v-btn>
-            </v-stepper-window-item>
+            </v-window-item>
 
             <!--Stepper Content 2 Organisation List-->
-            <v-stepper-window-item v-if="user().is_super_curator" value="2">
+            <v-window-item v-if="user().is_super_curator" :value="2">
               <OrganisationStepper />
 
               <div
                 class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
                 <v-btn
-                  class="order-md-2"
                   :class="{
                     'mb-3': $vuetify.display.smAndDown,
                   }"
-                  color="primary"
-                  variant="elevated"
-                  @click="steps = 2"
-                >
-                  Continue
-                </v-btn>
-                <v-btn
-                  class="text-white order-md-1"
-                  color="accent3"
-                  variant="elevated"
-                  @click="steps = 0"
-                >
-                  Back
-                </v-btn>
-              </div>
-            </v-stepper-window-item>
-
-            <!--Stepper Content 3 Save Search Form-->
-            <v-stepper-window-item v-if="user().is_super_curator" value="3">
-              <UserStepper />
-
-              <div
-                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
-              >
-                <v-btn
                   class="order-md-2"
-                  :class="{
-                    'mb-3': $vuetify.display.smAndDown,
-                  }"
                   color="primary"
                   variant="elevated"
                   @click="steps = 3"
@@ -134,34 +105,63 @@
                   Back
                 </v-btn>
               </div>
-            </v-stepper-window-item>
+            </v-window-item>
+
+            <!--Stepper Content 3 Save Search Form-->
+            <v-window-item v-if="user().is_super_curator" :value="3">
+              <UserStepper />
+
+              <div
+                class="d-flex flex-column flex-md-row justify-md-space-between my-3"
+              >
+                <v-btn
+                  :class="{
+                    'mb-3': $vuetify.display.smAndDown,
+                  }"
+                  class="order-md-2"
+                  color="primary"
+                  variant="elevated"
+                  @click="steps = 4"
+                >
+                  Continue
+                </v-btn>
+                <v-btn
+                  class="text-white order-md-1"
+                  color="accent3"
+                  variant="elevated"
+                  @click="steps = 2"
+                >
+                  Back
+                </v-btn>
+              </div>
+            </v-window-item>
 
             <!--Stepper Content 4 Save Search Form-->
-            <v-stepper-window-item :value="user().is_super_curator ? 4 : 2">
+            <v-window-item :value="user().is_super_curator ? 4 : 2">
               <v-form ref="searchFormRef" v-model="searchForm">
                 <v-text-field
                   v-model="searchName"
-                  label="Search Name"
                   :rules="[isRequired()]"
+                  label="Search Name"
                 />
                 <v-text-field
                   v-model="searchComment"
                   :counter="100"
-                  maxlength="100"
                   label="Comments"
+                  maxlength="100"
                 />
               </v-form>
               <div
                 class="d-flex flex-column flex-md-row justify-md-space-between my-3"
               >
                 <v-btn
-                  class="order-md-2"
                   :class="{
                     'mb-3': $vuetify.display.smAndDown,
                   }"
-                  color="success order-md-1"
                   :disabled="!searchForm"
                   :loading="loading"
+                  class="order-md-2"
+                  color="success order-md-1"
                   variant="elevated"
                   @click="saveSearch"
                 >
@@ -171,13 +171,13 @@
                   class="text-white"
                   color="accent3"
                   variant="elevated"
-                  @click="steps = user().is_super_curator ? 2 : 0"
+                  @click="steps = user().is_super_curator ? 3 : 1"
                 >
                   Back
                 </v-btn>
               </div>
-            </v-stepper-window-item>
-          </v-stepper-window>
+            </v-window-item>
+          </v-window>
         </v-stepper>
       </div>
       <ResultCard v-else @restart-stepper="restartStepper" />

@@ -5,31 +5,19 @@
         v-model="organisationSelected"
         v-model:search="searchOrganisation"
         :items="getSearchOrganisations"
-        class="mb-7 full-width stepperField"
         :loading="getLoadingStatus"
-        hide-details="auto"
-        flat
-        multiple
         chips
+        class="mb-7 full-width stepperField"
         closable-chips
-        item-value="id"
-        item-title="name"
         color="primary"
-        variant="underlined"
+        flat
+        hide-details="auto"
+        item-title="name"
+        item-value="id"
         label="Enter text to search for organisation(s) to associate with this saved search"
+        multiple
+        variant="underlined"
       >
-        <!--Chip slot is not required anymore-->
-        <!--        <template #chip="data">-->
-        <!--          <v-chip-->
-        <!--            v-bind="data.attrs"-->
-        <!--            :model-value="data.item['id']"-->
-        <!--            closable-->
-        <!--            @click="data.select"-->
-        <!--            @click:close="remove(data.item['id'])"-->
-        <!--          >-->
-        <!--            {{ data.item["name"] }}-->
-        <!--          </v-chip>-->
-        <!--        </template>-->
         <template #no-data>
           <div v-show="!getLoadingStatus" class="py-3 px-4">
             No organisation found
@@ -42,9 +30,9 @@
       <v-progress-linear
         :active="loading"
         :indeterminate="loading"
+        color="primary"
         height="6"
         rounded
-        color="primary"
       />
       <template v-if="organisationList && organisationList.length">
         <v-checkbox

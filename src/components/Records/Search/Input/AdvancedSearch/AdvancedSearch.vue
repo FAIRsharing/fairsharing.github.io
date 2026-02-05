@@ -3,27 +3,27 @@
     <!--  On Search Block  -->
     <v-btn
       v-if="showHomeSearch"
-      color="primary"
-      class="mb-13 px-6"
       :class="[
         'mt-1',
         $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
       ]"
+      class="mb-13 px-6"
+      color="primary"
       @click="openAdvanceSearch()"
     >
-      <v-icon size="small" class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
       <span>Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
     <v-btn
       v-else
       :size="$vuetify.display.xl ? 'x-large' : undefined"
+      button-size
       class="mr-10 bg-primary"
       elevation="2"
-      button-size
       @click="openAdvanceSearch()"
     >
-      <v-icon size="small" class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -74,6 +74,7 @@ export default {
   top: 0;
   border-radius: unset;
 }
+
 .button-text-size {
   font-size: 13px;
 }

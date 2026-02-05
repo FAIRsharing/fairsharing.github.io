@@ -63,25 +63,40 @@
                 @close-popup="closePopup"
               />
             </v-menu>
-            <v-btn
-              v-else
-              :size="
-                $vuetify.display.xl
-                  ? 'x-large'
-                  : $vuetify.display.mdAndDown
-                    ? 'small'
-                    : undefined
-              "
-              class="mr-1 mt-sm-1 bg-green"
-              elevation="2"
-              to="/accounts/profile"
-            >
-              <v-icon class="mr-1" color="white"> fas fa-user-circle</v-icon>
+            <div v-else class="d-flex align-center">
+              <v-btn
+                :size="
+                  $vuetify.display.xl
+                    ? 'x-large'
+                    : $vuetify.display.mdAndDown
+                      ? 'small'
+                      : undefined
+                "
+                class="mr-1 mt-sm-1 bg-green"
+                elevation="2"
+                to="/accounts/profile"
+              >
+                <v-icon class="mr-1" color="white"> fas fa-user-circle</v-icon>
 
-              <span class="text-white ellipse-150">{{
-                user().credentials.username
-              }}</span>
-            </v-btn>
+                <span class="text-white ellipse-150">{{
+                  user().credentials.username
+                }}</span>
+              </v-btn>
+              <v-btn
+                class="bg-red mt-1"
+                height="30"
+                size="x-small"
+                variant="elevated"
+                width="30"
+              >
+                <v-icon
+                  color="white"
+                  icon="fas fa-power-off"
+                  size="20"
+                  @click="logoutUser()"
+                />
+              </v-btn>
+            </div>
           </ul>
         </nav>
       </div>
@@ -135,7 +150,7 @@
 
 <script>
 import { isEmpty } from "lodash";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import Login from "@/views/Users/Login/Login";
@@ -229,6 +244,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("users", ["logout"]),
     toggleDrawerLeft: function () {
       this.drawerLeft = !this.UIGeneralStatus.drawerVisibilityState;
       this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -243,6 +259,11 @@ export default {
       this.links.map((link) => {
         link.name === newValue ? (link.active = true) : (link.active = false);
       });
+    },
+
+    async logoutUser() {
+      await this.logout();
+      await this.$router.push({ name: "Login" });
     },
   },
 };

@@ -56,7 +56,7 @@
             <v-stepper-item
               :value="user().is_super_curator ? 4 : 2"
               editable
-              @click="steps = user().is_super_curator ? 3 : 1"
+              @click="steps = user().is_super_curator ? 4 : 2"
             >
               Save Search
             </v-stepper-item>

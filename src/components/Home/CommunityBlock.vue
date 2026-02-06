@@ -1,26 +1,32 @@
 <template>
   <v-container>
     <v-row class="block-category justify-center">
-      <v-col cols="12" sm="12" md="6" lg="4">
+      <v-col cols="12" lg="4" md="6" sm="12">
         <v-card
           class="mx-auto block-category__card"
-          max-width="350"
           height="350px"
+          max-width="350"
           width="350"
         >
           <div
-            :style="{ backgroundImage: 'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' + 'assets/Home/BlockHero/pattern-orange.png',backgroundSize:'100%',backgroundBlendMode:'color'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradient__2"
+            :style="{
+              backgroundImage:
+                'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' +
+                'assets/Home/BlockHero/pattern-orange.png',
+              backgroundSize: '100%',
+              backgroundBlendMode: 'color',
+            }"
+            class="text-white d-flex flex-column justify-center block-category__card__gradient__2"
           >
             <div
-              style="height: 136px"
               class="d-flex justify-center align-center"
+              style="height: 136px"
             >
               <v-icon
-                size="80"
-                color="white"
-                style="opacity: 0.7"
                 class="d-inline-flex"
+                color="white"
+                size="80"
+                style="opacity: 0.7"
               >
                 {{ customIcons.values[communityBlock.firstColumn.icon].icon }}
               </v-icon>
@@ -41,11 +47,11 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="6" lg="4">
+      <v-col cols="12" lg="4" md="6" sm="12">
         <v-card
           class="mx-auto block-category__card"
-          max-width="350"
           height="350px"
+          max-width="350"
           width="350"
         >
           <div
@@ -59,14 +65,14 @@
             class="text-white d-flex flex-column justify-center block-category__card__gradient__1"
           >
             <div
-              style="height: 136px"
               class="d-flex justify-center align-center"
+              style="height: 136px"
             >
               <v-icon
-                size="80"
-                color="white"
-                style="opacity: 0.7"
                 class="d-inline-flex"
+                color="white"
+                size="80"
+                style="opacity: 0.7"
               >
                 {{ customIcons.values[communityBlock.secondColumn.icon].icon }}
               </v-icon>
@@ -95,6 +101,7 @@
 import homePageData from "@/data/homePageData.json";
 import { truncate } from "@/utils/stringUtils";
 import customIcons from "@/plugins/icons";
+
 export default {
   name: "CommunityBlock",
   mixins: [truncate],
@@ -107,7 +114,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .block-category {
   &__card {
     border-radius: 200px;
@@ -119,6 +126,7 @@ export default {
     -webkit-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
     -moz-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
     -o-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+
     &:hover {
       transform: scale(1.05);
       -moz-transform: scale(1.05);

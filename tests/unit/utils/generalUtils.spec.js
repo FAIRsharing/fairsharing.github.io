@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import generalUtils, {
   LightenDarkenColor,
   toBase64,
@@ -6,22 +6,40 @@ import generalUtils, {
 
 describe("generalUtils.js", function () {
   it("can check getHostName method", function () {
-    process.env.VUE_APP_HOSTNAME = "https://api.fairsharing.org";
-    expect(generalUtils.methods.getHostname()).toBe(
-      "https://api.fairsharing.org",
-    );
+    import.meta.env.VITE_HOSTNAME = "https://test.com";
+    expect(generalUtils.methods.getHostname()).toBe("https://test.com");
   });
 
   it("can check getAPIEndPoint method", function () {
-    process.env.VUE_APP_API_ENDPOINT = "https://dev-api.fairsharing.org";
-    expect(generalUtils.methods.getAPIEndPoint()).toBe(
-      "https://dev-api.fairsharing.org",
-    );
+    import.meta.env.VITE_API_ENDPOINT = "https://test.com";
+    expect(generalUtils.methods.getAPIEndPoint()).toBe("https://test.com");
+  });
+  it("can sortObj method sorts object keys alphabetically", () => {
+    const input = {
+      zebra: 1,
+      apple: 2,
+      monkey: 3,
+    };
+
+    const result = generalUtils.methods.sortObj(input);
+    const keys = Object.keys(result);
+
+    // Verify the order is strictly alphabetical
+    expect(keys).toEqual(["apple", "monkey", "zebra"]);
+
+    // Verify values are preserved correctly
+    expect(result.apple).toBe(2);
+    expect(result.zebra).toBe(1);
   });
 
   it("can check formatDate method", function () {
     let dummyDate = "2020-10-27T09:34:54Z";
     expect(generalUtils.methods.formatDate(dummyDate)).toBe("Oct 27, 2020");
+  });
+
+  it("can check formatDateIso method", function () {
+    let dummyDate = "2020-10-27T09:34:54Z";
+    expect(generalUtils.methods.formatDateIso(dummyDate)).toBe("Oct 27, 2020");
   });
 
   it("can check compareRecordDescUpdate method", function () {
@@ -53,7 +71,7 @@ describe("generalUtils.js", function () {
       type: "image/jpeg",
     });
     const dummy = {
-      readAsDataURL: jest.fn(),
+      readAsDataURL: vi.fn(),
       onload: () =>
         new Promise((resolve) => {
           resolve();
@@ -64,7 +82,7 @@ describe("generalUtils.js", function () {
         }),
       result: "vv",
     };
-    window.FileReader = jest.fn(() => dummy);
+    window.FileReader = vi.fn(() => dummy);
     toBase64(mFile);
     dummy.onload();
     dummy.onerror("a");

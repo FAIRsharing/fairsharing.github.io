@@ -91,7 +91,7 @@
               </div>
             </td>
             <td>
-              <v-edit-dialog
+              <v-confirm-edit
                 v-model:return-value="props.item.processingNotes"
                 large
                 @save="
@@ -110,7 +110,7 @@
                     />
                   </div>
                 </template>
-              </v-edit-dialog>
+              </v-confirm-edit>
             </td>
             <td>
               <v-icon
@@ -376,6 +376,7 @@ export default {
           const index = hiddenRecords.hiddenRecords.findIndex(
             (element) => element.id === rec.id,
           );
+          /* v8 ignore next 3 */
           if (index >= 0) {
             object.hidden = true;
           }

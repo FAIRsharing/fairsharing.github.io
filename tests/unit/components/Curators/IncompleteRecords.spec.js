@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import IncompleteRecords from "@/components/Curators/IncompleteRecords.vue";
@@ -11,27 +11,25 @@ import usersStore from "@/store/users";
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
 let curationDataSummary = dataDashboard.curationSummary;
-const localVue = createLocalVue();
-localVue.use(Vuex);
 let header = [
   {
-    text: "Record name (id)",
+    title: "Record name (id)",
     value: "recordNameID",
   },
   {
-    text: "Date created",
+    title: "Date created",
     value: "createdAt",
   },
   {
-    text: "Missing required",
+    title: "Missing required",
     value: "required",
   },
   {
-    text: "Missing recommended",
+    title: "Missing recommended",
     value: "recommended",
   },
   {
-    text: "Missing optional",
+    title: "Missing optional",
     value: "optional",
   },
 ];
@@ -48,8 +46,7 @@ const $store = new Vuex.Store({
   },
 });
 
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("Curator -> IncompleteRecords.vue", () => {
   let restStub, wrapper, graphStub;
@@ -63,10 +60,11 @@ describe("Curator -> IncompleteRecords.vue", () => {
       },
     });
     wrapper = shallowMount(IncompleteRecords, {
-      localVue,
-      router,
-      mocks: { $store, $router },
-      propsData: {
+      global: {
+        plugins: [$store],
+        mocks: { $router },
+      },
+      props: {
         headerItems: header,
       },
     });
@@ -95,5 +93,69 @@ describe("Curator -> IncompleteRecords.vue", () => {
       optional: "",
     };
     expect(wrapper.vm.incompleteRecords[0]).toStrictEqual(output);
+  });
+
+  it("can check for confirmDelete method when deleteRecord throws error", async () => {
+    vi.spyOn(Client.prototype, "deleteRecord").mockResolvedValue({
+      error: true,
+    });
+
+    await wrapper.setData({
+      dialogs: {
+        recordID: 55,
+        deleteRecord: true,
+      },
+      error: {},
+    });
+
+    await wrapper.vm.confirmDelete();
+    expect(wrapper.vm.error.general).toBe("error deleting record");
+    expect(wrapper.vm.error.recordID).toBe(55);
+  });
+
+  it("can check for confirmDelete method when deleteRecord does not have error", async () => {
+    vi.spyOn(Client.prototype, "deleteRecord").mockResolvedValue({
+      error: false,
+    });
+    await wrapper.setData({
+      incompleteRecords: [
+        { id: 10, name: "Keep Me" },
+        { id: 55, name: "Delete Me" },
+        { id: 90, name: "Keep Me Too" },
+      ],
+      dialogs: {
+        recordID: 55,
+        deleteRecord: true,
+      },
+    });
+
+    await wrapper.vm.confirmDelete();
+    expect(wrapper.vm.incompleteRecords.length).toBe(2);
+    expect(
+      wrapper.vm.incompleteRecords.find((r) => r.id === 55),
+    ).toBeUndefined();
+
+    expect(wrapper.vm.incompleteRecords[0].id).toBe(10);
+    expect(wrapper.vm.incompleteRecords[1].id).toBe(90);
+
+    expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
+  });
+
+  it("can check for deleteRecordMenu method", () => {
+    vi.useFakeTimers();
+    wrapper.vm.deleteRecordMenu(1);
+    expect(wrapper.vm.dialogs.disableButton).toBe(false);
+    expect(wrapper.vm.dialogs.disableDelButton).toBe(true);
+    expect(wrapper.vm.dialogs.recordID).toBe(1);
+    expect(wrapper.vm.dialogs.deleteRecord).toBe(true);
+    vi.advanceTimersByTime(5000);
+    expect(wrapper.vm.dialogs.disableDelButton).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it("can check for closeDeleteMenu method", () => {
+    wrapper.vm.closeDeleteMenu();
+    expect(wrapper.vm.dialogs.disableButton).toBe(true);
+    expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
   });
 });

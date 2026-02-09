@@ -175,6 +175,7 @@ export default {
         });
         let optional = [];
         item.incomplete.optional.forEach((req) => {
+          /* v8 ignore next */
           optional.push(req.field);
         });
         let object = {

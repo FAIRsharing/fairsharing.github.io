@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import HiddenRecords from "@/components/Curators/HiddenRecords.vue";
@@ -11,8 +11,7 @@ import usersStore from "@/store/users";
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
 let curationDataSummary = dataDashboard.curationSummary;
-const localVue = createLocalVue();
-localVue.use(Vuex);
+
 let header = [
   {
     text: "Record name (id)",
@@ -44,8 +43,7 @@ const $store = new Vuex.Store({
   },
 });
 
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("Curator -> HiddenRecords.vue", () => {
   let restStub, wrapper, graphStub;
@@ -59,10 +57,11 @@ describe("Curator -> HiddenRecords.vue", () => {
       },
     });
     wrapper = shallowMount(HiddenRecords, {
-      localVue,
-      router,
-      mocks: { $store, $router },
-      propsData: {
+      global: {
+        plugins: [$store],
+        mocks: { $router },
+      },
+      props: {
         headerItems: header,
       },
     });

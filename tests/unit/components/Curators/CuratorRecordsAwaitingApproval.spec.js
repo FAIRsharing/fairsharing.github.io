@@ -61,10 +61,9 @@ const store = new Vuex.Store({
 // Mock Router
 const $router = { push: vi.fn() };
 
-describe("Curator -> CuratorRecordsAwaitingApproval.vue", () => {
+describe("CuratorRecordsAwaitingApproval.vue", () => {
   let wrapper;
   let restSpy;
-  // let graphSpy;
 
   beforeEach(() => {
     // Setup Spies

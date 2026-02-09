@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import DownloadRecords from "@/components/Curators/DownloadRecords.vue";
 import Client from "@/lib/Client/RESTClient.js";
 import usersStore from "@/store/users";
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 usersStore.state.user = function () {
   return {
@@ -16,13 +14,14 @@ usersStore.state.user = function () {
   };
 };
 
-const $store = new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
     users: usersStore,
   },
 });
 
-const router = new VueRouter();
+// Mock Router
+const router = { push: vi.fn() };
 
 describe("Curator -> DownloadRecords.vue", () => {
   let restStub, wrapper;
@@ -33,9 +32,8 @@ describe("Curator -> DownloadRecords.vue", () => {
       },
     });
     wrapper = shallowMount(DownloadRecords, {
-      localVue,
-      router,
-      mocks: { $store },
+      plugins: [store],
+      mocks: { router },
     });
   });
   afterEach(() => {

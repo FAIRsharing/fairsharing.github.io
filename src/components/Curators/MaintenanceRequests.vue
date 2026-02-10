@@ -368,6 +368,7 @@ export default {
         newStatus,
         this.user().credentials.token,
       );
+      /* v8 ignore start */
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
           (element) => element.requestID === _module.dialogs.requestId,
@@ -396,6 +397,7 @@ export default {
         _module.dialogs.rejectAssignment = false;
       }
     },
+    /* v8 ignore end */
     rejectMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;

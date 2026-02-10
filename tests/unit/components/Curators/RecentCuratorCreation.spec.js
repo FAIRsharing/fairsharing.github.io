@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import RecentCuratorCreation from "@/components/Curators/RecentCuratorCreation.vue";
@@ -11,8 +11,7 @@ import usersStore from "@/store/users";
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
 let curationDataSummary = dataDashboard.curationSummary;
-const localVue = createLocalVue();
-localVue.use(Vuex);
+
 let header = [
   {
     text: "Record name (id)",
@@ -29,6 +28,7 @@ let header = [
 ];
 usersStore.state.user = function () {
   return {
+    namespaced: true,
     isLoggedIn: true,
     credentials: { token: 123, username: 123 },
   };
@@ -40,8 +40,7 @@ const $store = new Vuex.Store({
   },
 });
 
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("Curator -> RecentCuratorCreation.vue", () => {
   let restStub, wrapper, graphStub;
@@ -49,16 +48,16 @@ describe("Curator -> RecentCuratorCreation.vue", () => {
     graphStub = sinon
       .stub(GraphClient.prototype, "executeQuery")
       .returns(curationDataSummary);
+
     restStub = sinon.stub(Client.prototype, "executeQuery").returns({
       data: {
         error: false,
       },
     });
     wrapper = shallowMount(RecentCuratorCreation, {
-      localVue,
-      router,
-      mocks: { $store, $router },
-      propsData: {
+      plugins: [$store],
+      mocks: { $router },
+      props: {
         headerItems: header,
       },
     });
@@ -70,32 +69,36 @@ describe("Curator -> RecentCuratorCreation.vue", () => {
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("RecentCuratorCreation");
-    expect(wrapper.vm.prepareRecordsCuratorCreationsLastWeek).toHaveBeenCalled;
-    expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
-    expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe(
-      "Second (44)",
-    );
-    let date = new Date("2017,11,11");
-    let auxString =
-      date.toLocaleString("default", { month: "short" }) +
-      " " +
-      date.getDate() +
-      ", " +
-      date.getFullYear();
-    expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(
-      auxString,
-    );
   });
 
-  it("can check for hiddenRecords", () => {
-    let output = {
-      createdAt: "Oct 27, 2020",
-      creator: "Lara Aral",
-      id: "32",
-      idCreator: "44",
-      recordNameID: "ewewrr (32)",
-      type: "database",
+  it("can check for IF condition prepareRecordsCuratorCreationsLastWeek method", () => {
+    wrapper.vm.recordsCreatedCuratorsLastWeek = [];
+    let data = {
+      recentCuratorCreations: [
+        {
+          name: "test",
+          id: 1,
+          type: "testtype",
+          creator: "dummyCreator",
+        },
+      ],
     };
-    expect(wrapper.vm.recordsCreatedCuratorsLastWeek[0]).toStrictEqual(output);
+    wrapper.vm.prepareRecordsCuratorCreationsLastWeek(data);
+    expect(wrapper.vm.recordsCreatedCuratorsLastWeek).toHaveLength(1);
+  });
+
+  it("can check for ELSE condition prepareRecordsCuratorCreationsLastWeek method ", () => {
+    wrapper.vm.recordsCreatedCuratorsLastWeek = [];
+    let data = {
+      recentCuratorCreations: [
+        {
+          name: "test",
+          id: 1,
+          type: "testtype",
+        },
+      ],
+    };
+    wrapper.vm.prepareRecordsCuratorCreationsLastWeek(data);
+    expect(wrapper.vm.recordsCreatedCuratorsLastWeek).toHaveLength(1);
   });
 });

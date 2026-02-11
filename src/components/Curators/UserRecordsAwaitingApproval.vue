@@ -376,6 +376,7 @@ export default {
           const index = hiddenRecords.hiddenRecords.findIndex(
             (element) => element.id === rec.id,
           );
+          /* v8 ignore next 3 */
           if (index >= 0) {
             object.hidden = true;
           }

@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import UserRecordsAwaitingApproval from "@/components/Curators/UserRecordsAwaitingApproval.vue";
@@ -13,47 +13,45 @@ import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
 let curationDataSummary = dataDashboard.curationSummary;
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 let header = [
   {
-    text: "Date last edit",
+    title: "Date last edit",
     value: "updatedAt",
     width: 90,
   },
   {
-    text: "",
+    title: "",
     value: "priority",
     width: 40,
   },
   {
-    text: "Curator",
+    title: "Curator",
     value: "curator",
     width: 50,
   },
   {
-    text: "Record name (id)",
+    title: "Record name (id)",
     value: "recordName",
     width: 400,
   },
   {
-    text: "Last editor",
+    title: "Last editor",
     value: "lastEditor",
     width: 120,
   },
   {
-    text: "Processing Notes",
+    title: "Processing Notes",
     value: "processingNotes",
     sortable: false,
   },
   {
-    text: "Accept record/edit?",
+    title: "Accept record/edit?",
     value: "actions",
     sortable: false,
     width: 130,
   },
   {
-    text: "Creation date & user",
+    title: "Creation date & user",
     value: "createdAt",
     width: 90,
   },
@@ -83,8 +81,7 @@ const $store = new Vuex.Store({
   },
 });
 
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   let restStub;
@@ -99,10 +96,11 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     restStub.returns({ data: { error: false } });
 
     wrapper = await shallowMount(UserRecordsAwaitingApproval, {
-      localVue,
-      router,
-      mocks: { $store, $router },
-      propsData: {
+      global: {
+        plugins: [$store],
+        mocks: { $router },
+      },
+      props: {
         headerItems: header,
       },
     });
@@ -139,9 +137,9 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.dialogs.approveChanges).toBe(true);
     wrapper.vm.closeApproveChangesMenu();
     expect(wrapper.vm.dialogs.approveChanges).toBe(false);
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     wrapper.vm.deleteRecordMenu("Record4 (100)", 100);
-    jest.advanceTimersByTime(5000);
+    vi.advanceTimersByTime(5000);
     expect(wrapper.vm.dialogs.disableDelButton).toBe(false);
     expect(wrapper.vm.dialogs.recordName).toMatch("Record4 (100)");
     expect(wrapper.vm.dialogs.recordID).toBe(100);
@@ -173,6 +171,8 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     restStub.returns({ data: { error: { response: "Im an error" } } });
     await wrapper.vm.assignCurator(11, 1, "Michael Smith");
     expect(wrapper.vm.error.recordID).toBe(11);
+
+    await wrapper.vm.assignCurator(11, 1, "none");
   });
 
   it("can approve a record", async () => {
@@ -244,5 +244,21 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch(
       "Radi (11)",
     );
+  });
+
+  it("calls closeApproveChangesMenu for dialogs.approveChanges watcher", async () => {
+    const closeSpy = vi.spyOn(wrapper.vm, "closeApproveChangesMenu");
+    await wrapper.setData({ dialogs: { approveChanges: true } });
+    expect(closeSpy).not.toHaveBeenCalled();
+    await wrapper.setData({ dialogs: { approveChanges: false } });
+    expect(closeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("calls closeDeleteMenu for dialogs.deleteRecord watcher", async () => {
+    const closeSpy = vi.spyOn(wrapper.vm, "closeDeleteMenu");
+    await wrapper.setData({ dialogs: { deleteRecord: true } });
+    expect(closeSpy).not.toHaveBeenCalled();
+    await wrapper.setData({ dialogs: { deleteRecord: false } });
+    expect(closeSpy).toHaveBeenCalledTimes(1);
   });
 });

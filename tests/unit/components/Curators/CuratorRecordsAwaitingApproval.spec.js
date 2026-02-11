@@ -234,27 +234,17 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
     );
   });
   it("calls closeApproveChangesMenu for dialogs.approveChanges watcher", async () => {
-    // 1. Spy on the method we expect to be called
     const closeSpy = vi.spyOn(wrapper.vm, "closeApproveChangesMenu");
-
-    // 2. Set to TRUE (Opening dialog) - Should NOT trigger close
     await wrapper.setData({ dialogs: { approveChanges: true } });
     expect(closeSpy).not.toHaveBeenCalled();
-
-    // 3. Set to FALSE (Closing dialog) - Should trigger close logic
     await wrapper.setData({ dialogs: { approveChanges: false } });
     expect(closeSpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls closeDeleteMenu for dialogs.deleteRecord watcher", async () => {
-    // 1. Spy on the method we expect to be called
     const closeSpy = vi.spyOn(wrapper.vm, "closeDeleteMenu");
-
-    // 2. Set to TRUE (Opening dialog) - Should NOT trigger close
     await wrapper.setData({ dialogs: { deleteRecord: true } });
     expect(closeSpy).not.toHaveBeenCalled();
-
-    // 3. Set to FALSE (Closing dialog) - Should trigger close logic
     await wrapper.setData({ dialogs: { deleteRecord: false } });
     expect(closeSpy).toHaveBeenCalledTimes(1);
   });

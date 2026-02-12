@@ -244,7 +244,7 @@ export default {
             );
           // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
           // least readable (well, by this non-javascript-programmer).
-          // 0. This hack is related to this comment:
+          // 0. This hack is related to this commenthttps://www.jcmilitaria.com/search_stock.asp?start=0&offset=8:
           // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
           if (tabName === "related_collections") {
             _module.tabsData.tabs["related_collections"].data =

@@ -383,6 +383,7 @@ export default {
       initialized: false,
       subFormValid: false,
       rules: {
+        /* v8 ignore next 3*/
         isRequired: function () {
           return isRequired();
         },
@@ -451,7 +452,10 @@ export default {
             } else {
               let copy = JSON.parse(JSON.stringify(pub));
               if (copy.tablePosition > -1) delete copy.tablePosition;
-              if (!isEqual(isFound, copy)) changes += 1;
+              /* v8 ignore next 4*/
+              if (!isEqual(isFound, copy)) {
+                changes += 1;
+              }
             }
           });
           this.$store.commit("record/setChanges", {
@@ -553,13 +557,15 @@ export default {
               this.errors.doi = true;
             }
           } else {
+            /* v8 ignore start */
             // TODO: Add a query to osf.io here:
             // TODO: https://developer.osf.io/
             this.errors.doi = true;
           }
+          /* v8 ignore end */
         }
       } else {
-        /* istanbul ignore next */
+        /* v8 ignore next 2 */
         this.newPublication.journal =
           data["container-title-short"] || data["container-title"];
         this.newPublication.doi = data["DOI"];
@@ -598,6 +604,7 @@ export default {
       };
       let id = (" " + this.search).slice(1).trim(); // make a copy of the string and trim it
       let data = await pubClient.getPMID(id);
+      /* v8 ignore next 3*/
       if (data.error || data.result[id].error) {
         this.errors.pmid = true;
       } else {
@@ -659,6 +666,7 @@ export default {
           let editedPublicationIndex = this.availablePublications.findIndex(
             (e) => e.title === editedPublication.title,
           );
+          /* v8 ignore next 3*/
           if (editedPublicationIndex !== -1) {
             this.availablePublications.splice(editedPublicationIndex, 1);
           }

@@ -1,6 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import editPublications from "@/components/Editor/EditPublications.vue";
@@ -10,14 +9,8 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+
 const sinon = require("sinon");
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
-
-const VueScrollTo = require("vue-scrollto");
-localVue.use(VueScrollTo);
 
 let pubs = [
   {
@@ -62,8 +55,8 @@ const $store = new Vuex.Store({
   },
 });
 let $route = { path: "/123/edit", params: { id: 123 } };
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+// const router = new VueRouter();
+const $router = { push: vi.fn() };
 
 let graphStub;
 let restStub;
@@ -185,10 +178,10 @@ describe("EditPublications.vue", function () {
       ],
     });
     wrapper = shallowMount(editPublications, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [$store],
+        mocks: { $route, $router },
+      },
       stubs: { "v-form": formValidation },
     });
   });
@@ -204,10 +197,16 @@ describe("EditPublications.vue", function () {
     expect(wrapper.vm.metadata).toStrictEqual(
       recordStore.state.sections.generalInformation.data.metadata,
     );
-    expect(wrapper.vm.message.type()).toBe("success");
+  });
+
+  it("can check computed message() when error is true", () => {
     recordStore.state.sections.publications.error = true;
     expect(wrapper.vm.message.type()).toBe("error");
+  });
+
+  it("can check computed message() when error is false", () => {
     recordStore.state.sections.publications.error = false;
+    expect(wrapper.vm.message.type()).toBe("success");
   });
 
   it("can get a DOI from https://dx.doi.org/", async () => {
@@ -229,7 +228,7 @@ describe("EditPublications.vue", function () {
     fetchStub.restore();
   });
 
-  it("When getting a DOI can process errors from calls", async () => {
+  it("When getting a DOI can process errors from calls 2", async () => {
     fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
     fetchStub.returns({
       data: { error: { response: { data: "Im an error" } } },
@@ -265,6 +264,12 @@ describe("EditPublications.vue", function () {
     expect(wrapper.vm.errors.doi).toBe(true);
     fetchStub.restore();
     restStub.restore();
+  });
+
+  it("can check for showEmptySearch in getDOI method", async () => {
+    wrapper.vm.search = null;
+    await wrapper.vm.getDOI();
+    expect(wrapper.vm.showEmptySearch).toBe(true);
   });
 
   it("can get a DOI from zenodo returning one element with journal title", async () => {
@@ -370,6 +375,7 @@ describe("EditPublications.vue", function () {
     };
     wrapper.vm.search = "test";
     await wrapper.vm.getPMID();
+    expect(wrapper.vm.showEmptySearch).toBe(true);
     expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
     fetchStub.restore();
 
@@ -393,6 +399,12 @@ describe("EditPublications.vue", function () {
     await wrapper.vm.getPMID();
     expect(wrapper.vm.errors.pmid).toBe(true);
     fetchStub.restore();
+  });
+
+  it("can check for showEmptySearch in getPMID method", async () => {
+    wrapper.vm.search = null;
+    await wrapper.vm.getPMID();
+    expect(wrapper.vm.showEmptySearch).toBe(true);
   });
 
   it("can add/remove a publication to the array of publications", async () => {
@@ -483,7 +495,7 @@ describe("EditPublications.vue", function () {
   });
 
   it("can update a record", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     recordStore.state.sections.publications.changes = 0;
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: { id: 123 } });
@@ -502,7 +514,7 @@ describe("EditPublications.vue", function () {
       response: { data: "error" },
     });
     restStub.restore();
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("can toggle a citation", () => {
@@ -527,5 +539,18 @@ describe("EditPublications.vue", function () {
     expect(wrapper.vm.publications[0].isCitation).toBe(false);
     wrapper.vm.toggleCitation(0);
     expect(wrapper.vm.publications[0].isCitation).toBe(true);
+  });
+
+  it("can check for saveRecord method when saves record changes and stays on page", async () => {
+    const mockEvent = { target: { textContent: "Save and continue" } };
+    await wrapper.vm.saveRecord(false, mockEvent.target);
+    expect(wrapper.vm.continueLoader).toBe(true);
+    expect(wrapper.vm.exitLoader).toBe(false);
+  });
+
+  it("can check for saveRecord method when saves record changes and exits", async () => {
+    const mockEvent = { target: { textContent: "Save and exit" } };
+    await wrapper.vm.saveRecord(true, mockEvent.target);
+    expect(wrapper.vm.exitLoader).toBe(true);
   });
 });

@@ -4,6 +4,7 @@
       <span class="doclink"
         >For more information on editing FAIRsharing records, please see our
         <a
+          class="text-white text-decoration-underline"
           href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record"
           target="_blank"
         >
@@ -325,11 +326,6 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.doclink a {
-  color: #0f5e66;
-  border-bottom: #0f5e66 0.125em solid;
 }
 
 .tabSelected {

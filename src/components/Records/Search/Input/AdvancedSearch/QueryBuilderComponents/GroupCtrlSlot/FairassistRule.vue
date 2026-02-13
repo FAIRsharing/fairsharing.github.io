@@ -26,9 +26,12 @@
 import { sortBy } from "lodash";
 
 import {
+  AssociatedTests,
   AssociatedTools,
-  FairassistRecordType
-} from "../index";
+  FairassistRecordType,
+  IndeterminateExamples,
+  NegativeExamples,
+  PositiveExamples} from "../index";
 export default {
   name: "FairassistRule",
   props: {
@@ -63,13 +66,36 @@ export default {
     sortedArrayList() {
       return sortBy(
         [
-
           {
             identifier: "associatedTools",
             name: "Associated Tools",
             component: AssociatedTools,
             initialValue: "",
-          }
+          },
+          {
+            identifier: "associatedTests",
+            name: "Associated Tests",
+            component: AssociatedTests,
+            initialValue: "",
+          },
+          {
+            identifier: "positiveExamples",
+            name: "Positive Examples",
+            component: PositiveExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "negativeExamples",
+            name: "Negative Examples",
+            component: NegativeExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "indeterminateExamples",
+            name: "Indeterminate Examples",
+            component: IndeterminateExamples,
+            initialValue: "",
+          },
         ],
         "name"
       );

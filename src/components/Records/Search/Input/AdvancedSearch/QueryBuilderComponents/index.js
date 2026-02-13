@@ -79,3 +79,11 @@ export const Persistent = () =>
   import("./OtherBooleanComponents/Persistent.vue");
 export const Resolvable = () =>
   import("./OtherBooleanComponents/Resolvable.vue");
+export const AssociatedTests = () =>
+  import("./FairassistComponents/AssociatedTests.vue");
+export const PositiveExamples = () =>
+  import("./FairassistComponents/PositiveExamples.vue");
+export const NegativeExamples = () =>
+  import("./FairassistComponents/NegativeExamples.vue");
+export const IndeterminateExamples = () =>
+  import("./FairassistComponents/IndeterminateExamples.vue");

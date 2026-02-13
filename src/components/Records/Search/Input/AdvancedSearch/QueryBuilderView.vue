@@ -1,11 +1,17 @@
 <template>
-  <query-builder v-model="query" :config="config">
+  <query-builder
+    v-model="query"
+    :config="config"
+  >
     <!-- To use the custom text instead of default text 'Operator' -->
 
     <template #groupOperator="props">
       <div class="query-builder-group__group-selection">
         <div class="tooltip">
-          <v-icon small class="mr-1 white--text tooltipIcon">
+          <v-icon
+            small
+            class="mr-1 white--text tooltipIcon"
+          >
             fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
@@ -19,7 +25,12 @@
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          <option disabled value="">Select an operator</option>
+          <option
+            disabled
+            value=""
+          >
+            Select an operator
+          </option>
           <option
             v-for="operator in props.operators"
             :key="operator.identifier"

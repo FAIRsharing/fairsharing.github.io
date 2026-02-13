@@ -17,6 +17,8 @@ export const Countries = () => import("./GeneralComponents/Countries.vue")
 export const GroupCtrlSlot = () => import("./GroupCtrlSlot/GroupCtrlSlot.vue")
 export const DatabaseRecordType = () =>
   import("./DatabaseComponents/DatabaseRecordType.vue");
+export const FairassistRecordType = () =>
+  import("./FairassistComponents/FairassistRecordType.vue");
 export const DataCuration = () => import("./DatabaseComponents/DataCuration.vue");
 export const DataDepositionCondition = () =>
   import("./DatabaseComponents/DataDepositionCondition.vue");

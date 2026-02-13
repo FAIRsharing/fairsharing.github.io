@@ -1,17 +1,11 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  >
+  <query-builder v-model="query" :config="config">
     <!-- To use the custom text instead of default text 'Operator' -->
 
     <template #groupOperator="props">
       <div class="query-builder-group__group-selection">
         <div class="tooltip">
-          <v-icon
-            small
-            class="mr-1 white--text tooltipIcon"
-          >
+          <v-icon small class="mr-1 white--text tooltipIcon">
             fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
@@ -25,12 +19,7 @@
           :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          <option
-            disabled
-            value=""
-          >
-            Select an operator
-          </option>
+          <option disabled value="">Select an operator</option>
           <option
             v-for="operator in props.operators"
             :key="operator.identifier"
@@ -60,7 +49,8 @@ import {
   CitationToRelatedPublications,
   Countries,
   DataAccessCondition,
-  DataAccessForPrePublicationReview, DataAvailabilityStatement,
+  DataAccessForPrePublicationReview,
+  DataAvailabilityStatement,
   DatabaseRecordType,
   DataCitation,
   DataContactInformation,
@@ -73,6 +63,7 @@ import {
   DataVersioning,
   Domain,
   ExceptionsToDataSharing,
+  FairassistRecordType,
   GloballyUnique,
   GroupCtrlSlot,
   GuidanceToHelpEnableCompliance,
@@ -101,7 +92,7 @@ import {
   TimingOfDmp,
   UpdatingOfDmp,
   UserDefinedTag,
-  UsesPersistentIdentifier
+  UsesPersistentIdentifier,
 } from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
@@ -220,6 +211,12 @@ export default {
             identifier: "databasetype",
             name: "Database Record Type",
             component: DatabaseRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "fairassisttype",
+            name: "FAIRassist Record Type",
+            component: FairassistRecordType,
             initialValue: () => [],
           },
           {
@@ -425,7 +422,7 @@ export default {
             name: "Resolvable",
             component: Resolvable,
             initialValue: "",
-          }
+          },
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };
@@ -509,7 +506,6 @@ export default {
       immediate: true,
     },
   },
-
 };
 </script>
 <style lang="scss" scoped>

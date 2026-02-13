@@ -6,5 +6,9 @@ export const DatabaseRule = () =>
 
 export const PolicyRule = () =>
   import("./PolicyRule.vue");
+
 export const StandardRule = () =>
   import("./StandardRule.vue");
+
+export const FairassistRule = () =>
+  import("./FairassistRule.vue");

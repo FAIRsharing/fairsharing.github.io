@@ -97,7 +97,12 @@
       v-model="selectedFairassistRule"
       class="query-builder-group-slot__rule-selection"
     >
-      &lt;option disabled value="">Select a FAIRassist rule&lt;/option>
+      &lt;option
+        disabled
+        value=""
+      >
+        Select a FAIRassist rule
+      &lt;/option>
       &lt;option
         v-for="rule in fairassistQueryBuilderComponents()"
         :key="rule.identifier"

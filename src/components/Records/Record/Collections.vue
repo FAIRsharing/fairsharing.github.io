@@ -1,115 +1,120 @@
 <template>
   <v-card
-    v-if="!tabsDataExist"
-    :color="backColor"
-    border
-    class="pa-4 d-flex flex-column overflow-initial"
-    elevation="3"
-    tile
+      v-if="!tabsDataExist"
+      :color="backColor"
+      border
+      class="pa-4 d-flex flex-column overflow-initial"
+      elevation="3"
+      tile
   >
-    <SectionTitle title="Collections &amp; Recommendations" />
+    <SectionTitle title="Collections &amp; Recommendations"/>
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->
         <v-autocomplete
-          v-if="!tabsDataExist"
-          v-model="selectedValues"
-          :disabled="
+            v-if="!tabsDataExist"
+            v-model="selectedValues"
+            :disabled="
             tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data
               .length < 5
           "
-          :items="getValues"
-          :menu-props="{ attach: true }"
-          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          clearable
-          density="compact"
-          item-title="name"
-          item-value="name"
-          prepend-inner-icon="fas fa-search"
-          variant="solo"
+            :items="getValues"
+            :menu-props="{ attach: true }"
+            :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
+            clearable
+            density="compact"
+            item-title="name"
+            item-value="name"
+            prepend-inner-icon="fas fa-search"
+            style="z-index: 2"
+            variant="solo"
         >
-          <template #item="data">
-            <span class="filterValueName">
-              {{ data.item.name }}
-            </span>
+          <template #item="{ props, item }">
+            <v-list class="cursor-pointer pl-5 item-name">
+              <div v-bind="props">
+               <span>
+                {{ item.raw.name }}
+              </span>
+              </div>
+            </v-list>
           </template>
         </v-autocomplete>
       </div>
       <!--  tabs    -->
       <v-tabs
-        v-if="!tabsDataExist"
-        v-model="tabsData.selectedTab"
-        :hide-slider="
+          v-if="!tabsDataExist"
+          v-model="tabsData.selectedTab"
+          :hide-slider="
           tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
             .type === 'conforming_resources'
             ? !currentRecord['fairsharingRecord'].savedSearches.length
             : tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]]
                 .data.length === 0
         "
-        :show-arrows="$vuetify.display.mdAndDown"
-        bg-color="transparent"
-        class="mb-5"
-        color="accent3"
-        grow
-        slider-color="accent3"
+          :show-arrows="$vuetify.display.mdAndDown"
+          bg-color="transparent"
+          class="mb-5"
+          color="accent3"
+          grow
+          slider-color="accent3"
       >
         <v-tab
-          v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
-          :key="tabName + '_' + tabIndex"
-          :disabled="
+            v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
+            :key="tabName + '_' + tabIndex"
+            :disabled="
             tabName === 'conforming_resources'
               ? !currentRecord['fairsharingRecord'].savedSearches.length
               : tabsData.tabs[tabName].data.length === 0
           "
-          @group:selected="selectedValues = null"
+            @group:selected="selectedValues = null"
         >
           {{ cleanString(tabName) }} ({{
             tabName === "conforming_resources"
-              ? currentRecord["fairsharingRecord"].savedSearches.length
-              : tabsData.tabs[tabName].count
+                ? currentRecord["fairsharingRecord"].savedSearches.length
+                : tabsData.tabs[tabName].count
           }})
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
       <v-tabs-window
-        v-if="!tabsDataExist"
-        v-model="tabsData.selectedTab"
-        :class="['transparent', tabsDataExist]"
+          v-if="!tabsDataExist"
+          v-model="tabsData.selectedTab"
+          :class="['transparent', tabsDataExist]"
       >
         <v-tabs-window-item
-          v-for="(tabItem, tabItemIndex) in filterList"
-          :key="tabItem + '_' + tabItemIndex"
+            v-for="(tabItem, tabItemIndex) in filterList"
+            :key="tabItem + '_' + tabItemIndex"
         >
-          <SavedSearches v-if="tabItem.type === 'conforming_resources'" />
+          <SavedSearches v-if="tabItem.type === 'conforming_resources'"/>
 
           <v-virtual-scroll
-            v-else
-            :items="tabItem.data"
-            class="ma-4 overflow-x-hidden"
-            height="400"
-            item-height="130"
+              v-else
+              :items="tabItem.data"
+              class="ma-4 overflow-x-hidden"
+              height="400"
+              item-height="130"
           >
             <template #default="{ item, index }">
               <router-link
-                :to="'/' + item.id"
-                @click="() => $scrollTo('body', 0, {})"
+                  :to="'/' + item.id"
+                  @click="() => $scrollTo('body', 0, {})"
               >
                 <v-card
-                  :key="item.id + '_' + index"
-                  border
-                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                  flat
+                    :key="item.id + '_' + index"
+                    border
+                    class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                    flat
                 >
                   <div class="d-flex align-center">
-                    <record-status :record="item" :show-status="false" />
+                    <record-status :record="item" :show-status="false"/>
                     <div
-                      class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+                        class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
                     >
                       {{ item.name }}
                     </div>
                   </div>
                   <p
-                    class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
+                      class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
                   >
                     {{ item.object }}
                     <v-tooltip location="top">
@@ -119,8 +124,8 @@
                         </span>
                       </template>
                       <span>{{
-                        relationDefinition[item.recordAssociationLabel]
-                      }}</span>
+                          relationDefinition[item.recordAssociationLabel]
+                        }}</span>
                     </v-tooltip>
                     {{ item.subject }}
                   </p>
@@ -135,7 +140,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 import SavedSearches from "@/components/Records/Record/GeneralInfo/SavedSearches";
 import SectionTitle from "@/components/Records/Record/SectionTitle";
@@ -165,7 +170,7 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          in_collections: { relation: "collects", data: [], count: 0 },
+          in_collections: {relation: "collects", data: [], count: 0},
         },
       },
     };
@@ -180,7 +185,7 @@ export default {
         //Update the count of the conforming resources after unlinking saved search
         if (tabName === "conforming_resources") {
           _module.tabsData.tabs[tabName].count =
-            _module.currentRecord["fairsharingRecord"].savedSearches.length;
+              _module.currentRecord["fairsharingRecord"].savedSearches.length;
         }
         //If no saved search is available in conforming resources tab
         if (!_module.currentRecord["fairsharingRecord"].savedSearches.length) {
@@ -221,7 +226,8 @@ export default {
           count: 0,
           type: "conforming_resources",
         };
-      } else {
+      }
+      else {
         _module.tabsData.tabs.in_policies = {
           relation: "recommends",
           data: [],
@@ -232,9 +238,9 @@ export default {
         Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
           "recordAssociations",
         ) ||
-        Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
-          "reverseRecordAssociations",
-        )
+          Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
+            "reverseRecordAssociations",
+          )
       ) {
         /*
          * In this case the related_policies tab could have relations going either way.
@@ -256,15 +262,15 @@ export default {
                 )
                 .filter((item) => item.recordAssociationLabel !== "collects");
               _module.tabsData.tabs[tabName].count =
-                _module.tabsData.tabs[tabName].data.length;
+                  _module.tabsData.tabs[tabName].data.length;
             }
             //Save searches for the policy
             else if (tabName === "conforming_resources") {
               _module.tabsData.tabs[tabName].data =
-                _module.currentRecord["fairsharingRecord"].savedSearches;
+                  _module.currentRecord["fairsharingRecord"].savedSearches;
 
               _module.tabsData.tabs[tabName].count =
-                _module.currentRecord["fairsharingRecord"].savedSearches.length;
+                  _module.currentRecord["fairsharingRecord"].savedSearches.length;
             }
             // All incoming collections.
             else {
@@ -278,13 +284,14 @@ export default {
                 .filter(
                   (item) =>
                     item.recordAssociationLabel ===
-                    _module.tabsData.tabs[tabName].relation,
+                          _module.tabsData.tabs[tabName].relation,
                 );
               _module.tabsData.tabs[tabName].count =
-                _module.tabsData.tabs[tabName].data.length;
+                  _module.tabsData.tabs[tabName].data.length;
             }
           });
-        } else {
+        }
+        else {
           /*
            * Here, only incoming recommends or collects relations are expected.
            */
@@ -299,16 +306,24 @@ export default {
               .filter(
                 (item) =>
                   item.recordAssociationLabel ===
-                  _module.tabsData.tabs[tabName].relation,
+                        _module.tabsData.tabs[tabName].relation,
               );
             _module.tabsData.tabs[tabName].count =
-              _module.tabsData.tabs[tabName].data.length;
+                _module.tabsData.tabs[tabName].data.length;
           });
         }
-      } else {
+      }
+      else {
         return false;
       }
     },
   },
 };
 </script>
+<style lang="scss" scoped>
+.item-name {
+  &:hover {
+    background-color: #00000008
+  }
+}
+</style>

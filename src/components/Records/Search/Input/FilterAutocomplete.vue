@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel
-    v-if="filter.filterName"
-    :id="filter.filterName + 'AutocompleteList'"
+      v-if="filter.filterName"
+      :id="filter.filterName + 'AutocompleteList'"
   >
     <v-expansion-panel-title> {{ filter.filterLabel }}</v-expansion-panel-title>
 
@@ -9,25 +9,25 @@
       <v-row no-gutters>
         <v-col cols="12">
           <div
-            :class="['d-flex', { 'flex-column': $vuetify.display.mdAndDown }]"
+              :class="['d-flex', { 'flex-column': $vuetify.display.mdAndDown }]"
           >
             <v-combobox
-              v-model="selectedValues"
-              :items="getValues"
-              :item-props="itemProps"
-              hide-no-data
-              hide-details="auto"
-              chips
-              multiple
-              closable-chips
-              variant="solo"
-              density="compact"
-              color="primary"
-              class="text-capitalize"
-              prepend-inner-icon="fas fa-search"
-              :placeholder="`Search`"
-              @focus="scrollTo(filter.filterName)"
-              @click:clear="reset(filter)"
+                v-model="selectedValues"
+                :item-props="itemProps"
+                :items="getValues"
+                :placeholder="`Search`"
+                chips
+                class="text-capitalize"
+                closable-chips
+                color="primary"
+                density="compact"
+                hide-details="auto"
+                hide-no-data
+                multiple
+                prepend-inner-icon="fas fa-search"
+                variant="solo"
+                @focus="scrollTo(filter.filterName)"
+                @click:clear="reset(filter)"
             >
               <!--          <template #selection="data">-->
               <!--            <v-chip class="bg-blue text-white mb-1">-->
@@ -44,9 +44,9 @@
               <!--          </template>-->
             </v-combobox>
             <v-btn
-              color="primary"
-              class="ml-lg-2 custom-btn"
-              @click="applyFilters(filter)"
+                class="ml-lg-2 custom-btn"
+                color="primary"
+                @click="applyFilters(filter)"
             >
               Apply
             </v-btn>
@@ -58,17 +58,17 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 import clearString from "@/utils/stringUtils";
-import { capitalize } from "lodash";
+import {capitalize} from "lodash";
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: { default: null, type: Object },
-    lastItem: { default: false, type: Boolean },
+    filter: {default: null, type: Object},
+    lastItem: {default: false, type: Boolean},
   },
   data: () => {
     return {
@@ -96,17 +96,18 @@ export default {
       let filterName = _module.filter.filterName;
       let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
 
-      _module.selectedValues = _module.selectedValues.map(({ key }) => key);
+      _module.selectedValues = _module.selectedValues.map(({key}) => key);
       if (Object.keys(currentParams).indexOf(filterName) === -1) {
         if (
           _module.selectedValues !== null &&
-          _module.selectedValues.length > 0
+            _module.selectedValues.length > 0
         ) {
           if (_module.selectedValues.length === 1) {
             currentParams[filterName] = encodeURIComponent(
               _module.selectedValues.join(","),
             );
-          } else {
+          }
+          else {
             let newParam = [];
             _module.selectedValues.forEach(function (val) {
               newParam.push(encodeURIComponent(val));
@@ -119,10 +120,11 @@ export default {
             query: currentParams,
           });
         }
-      } else {
+      }
+      else {
         if (
           _module.selectedValues === null ||
-          _module.selectedValues.length === 0
+            _module.selectedValues.length === 0
         ) {
           delete currentParams[_module.filter.filterName];
           currentParams["page"] = 1;
@@ -130,10 +132,11 @@ export default {
             name: _module.$route.name,
             query: currentParams,
           });
-        } else {
+        }
+        else {
           let newParams = [];
           let existingValues =
-            currentParams[_module.filter.filterName].split(",");
+              currentParams[_module.filter.filterName].split(",");
           _module.selectedValues.forEach(function (selectedValue) {
             const filterVal = encodeURIComponent(selectedValue);
             if (existingValues.indexOf(filterVal) === -1) {

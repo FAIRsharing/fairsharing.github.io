@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/ResultCard.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/FairassistRule.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,130 +86,122 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/ResultCard.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GroupCtrlSlot/FairassistRule.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;!--Success -->
-  &lt;v-card
-    v-if="getSaveSearchStatus"
-    class="mx-auto rounded-t-0 pb-2"
-  >
-    &lt;v-card-title
-      class="justify-center white--text mb-4"
-      style="background-color: green"
+  &lt;div class="d-flex ruleWrapper">
+    &lt;select
+      v-model="selectedFairassistRule"
+      class="query-builder-group-slot__rule-selection"
     >
-      Success !!
-    &lt;/v-card-title>
-    &lt;v-card-text class="pb-0">
-      &lt;p class="text-body-1">
-        Your search was saved successfully. Please check the saved search table under profile page.
-      &lt;/p>
-    &lt;/v-card-text>
-
-    &lt;v-card-actions
-      class="flex-column flex-md-row justify-md-space-between my-3"
+      &lt;option disabled value="">Select a FAIRassist rule&lt;/option>
+      &lt;option
+        v-for="rule in fairassistQueryBuilderComponents()"
+        :key="rule.identifier"
+        :value="rule.identifier"
+        v-text="rule.name"
+      />
+    &lt;/select>
+    &lt;button
+      :disabled="selectedFairassistRule === ''"
+      class="query-builder-group-slot__rule-adding-button ml-3"
+      @click="addNewRule(groupCtrl, selectedFairassistRule)"
     >
-      &lt;v-btn
-        class="white--text order-md-2"
-        :class="{
-          'mb-3': $vuetify.breakpoint.smAndDown,
-        }"
-        color="accent2"
-        to="/accounts/profile"
-        @click="resetSaveSearchDialog()"
-      >
-        Goto Profile page
-      &lt;/v-btn>
-      &lt;v-btn
-        class="white--text order-md-1"
-        color="accent3"
-        @click="closeStepperDialog"
-      >
-        Close
-      &lt;/v-btn>
-    &lt;/v-card-actions>
-  &lt;/v-card>
-
-  &lt;!-- Error -->
-  &lt;v-card
-    v-else-if="!getSaveSearchStatus"
-    class="mx-auto pb-2"
-  >
-    &lt;v-card-title
-      class="justify-center white--text mb-4"
-      style="background-color: darkred"
-    >
-      Error
-    &lt;/v-card-title>
-    &lt;v-card-text class="pb-0">
-      &lt;p class="text-body-1">
-        Something went wrong. Please try again.
-      &lt;/p>
-    &lt;/v-card-text>
-    &lt;v-card-actions
-      class="flex-column flex-md-row justify-md-space-between my-3"
-    >
-      &lt;v-btn
-        class="white--text order-md-2"
-        :class="{
-          'mb-3': $vuetify.breakpoint.smAndDown,
-        }"
-        color="accent2"
-        @click="restartStepper"
-      >
-        Start Again
-      &lt;/v-btn>
-      &lt;v-btn
-        class="white--text order-md-1"
-        color="secondary"
-        @click="closeStepperDialog"
-      >
-        Close
-      &lt;/v-btn>
-    &lt;/v-card-actions>
-  &lt;/v-card>
+      Add Rule
+    &lt;/button>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-import { mapActions, mapGetters } from "vuex";
+import { sortBy } from "lodash";
 
-import saveSearch from "@/store";
-
+import {
+  AssociatedTests,
+  AssociatedTools,
+  FairassistRecordType,
+  IndeterminateExamples,
+  NegativeExamples,
+  PositiveExamples} from "../index";
 export default {
-  name: "ResultCard",
-  data() {
-    return {};
+  name: "FairassistRule",
+  props: {
+    groupCtrl: {
+      type: Object,
+      default: null,
+    },
   },
-  computed: {
-    ...mapGetters("saveSearch", ["getSaveSearchStatus"]),
+  data: () => {
+    return {
+      selectedFairassistRule: "",
+    };
   },
 
   methods: {
-    ...mapActions("saveSearch", ["resetSaveSearchDialog"]),
+    fairassistQueryBuilderComponents() {
+      let fairassistRecordType = [
+        {
+          identifier: "fairassisttype",
+          name: "FAIRassist Record Type",
+          component: FairassistRecordType,
+          initialValue: () => [],
+        },
+      ];
 
-    /**
-     * Open &amp; restart Stepper Dialog Box method
-     */
-    restartStepper() {
-      this.resetSaveSearchDialog();
-      this.$emit("restartStepper", 1);
-      saveSearch.commit("saveSearch/setShowStepper", true);
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", true);
+      return fairassistRecordType.concat(this.sortedArrayList());
     },
 
     /**
-     * Close Stepper Dialog Box method
+     * Sort Array list by name
      */
-    closeStepperDialog() {
-      if (this.getSaveSearchStatus) {
-        this.resetSaveSearchDialog();
-      }
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
-      this.resetSaveSearchDialog();
-      this.$emit("restartStepper", 1);
+    sortedArrayList() {
+      return sortBy(
+        [
+          {
+            identifier: "associatedTools",
+            name: "Associated Tools",
+            component: AssociatedTools,
+            initialValue: "",
+          },
+          {
+            identifier: "associatedTests",
+            name: "Associated Tests",
+            component: AssociatedTests,
+            initialValue: "",
+          },
+          {
+            identifier: "positiveExamples",
+            name: "Positive Examples",
+            component: PositiveExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "negativeExamples",
+            name: "Negative Examples",
+            component: NegativeExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "indeterminateExamples",
+            name: "Indeterminate Examples",
+            component: IndeterminateExamples,
+            initialValue: "",
+          },
+        ],
+        "name"
+      );
+    },
+
+    /**
+     * Add rule to query builder
+     * @param item - Object
+     * @param selectedRule - String
+     */
+    addNewRule(item, selectedRule) {
+      item.addRule(selectedRule);
+      this.selectedFairassistRule = "";
     },
   },
 };

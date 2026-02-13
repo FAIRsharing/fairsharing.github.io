@@ -49,7 +49,8 @@ const actions = {
             if (
               fieldKey === "databasetype" ||
               fieldKey === "standardtype" ||
-              fieldKey === "policytype"
+              fieldKey === "policytype" ||
+              fieldKey === "fairassisttype"
             ) {
               fieldKey = "type";
               fieldTypeValue.push(params["value"]);

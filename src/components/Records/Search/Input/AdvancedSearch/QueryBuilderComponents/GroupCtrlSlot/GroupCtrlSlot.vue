@@ -1,8 +1,7 @@
-
 <template>
   <div
     class="query-builder-group-slot__group-control pa-4 d-flex"
-    :class="{'flex-column': $vuetify.breakpoint.smAndDown}"
+    :class="{ 'flex-column': $vuetify.breakpoint.smAndDown }"
   >
     <!-- General Component -->
     <GeneralRule :group-ctrl="groupCtrl" />
@@ -15,6 +14,8 @@
     <div class="slotSpacer" />
     <!-- Other Boolean/Standard Component -->
     <StandardRule :group-ctrl="groupCtrl" />
+    <div class="slotSpacer" />
+    <FairassistRule :group-ctrl="groupCtrl" />
     <div class="query-builder-group-slot__spacer" />
     <button
       class="query-builder-group-slot__group-adding-button"
@@ -26,26 +27,37 @@
 </template>
 
 <script>
-import { DatabaseRule, GeneralRule, PolicyRule,StandardRule } from "./index";
+import {
+  DatabaseRule,
+  FairassistRule,
+  GeneralRule,
+  PolicyRule,
+  StandardRule,
+} from "./index";
 export default {
   name: "GroupCtrlSlot",
-  components:{GeneralRule, StandardRule, DatabaseRule, PolicyRule},
+  components: {
+    GeneralRule,
+    StandardRule,
+    DatabaseRule,
+    PolicyRule,
+    FairassistRule,
+  },
   props: {
     groupCtrl: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 
-  methods:{
+  methods: {
     /**
      * Add group to query builder
      * @param item - Object
      */
     addNewGroup(item) {
-      item.newGroup()
+      item.newGroup();
     },
-  }
+  },
 };
 </script>
-

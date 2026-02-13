@@ -55,12 +55,14 @@ import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
   AccessMethods,
+  AssociatedTests,
   AssociatedTools,
   CertificationsAndCommunityBadges,
   CitationToRelatedPublications,
   Countries,
   DataAccessCondition,
-  DataAccessForPrePublicationReview, DataAvailabilityStatement,
+  DataAccessForPrePublicationReview,
+  DataAvailabilityStatement,
   DatabaseRecordType,
   DataCitation,
   DataContactInformation,
@@ -73,20 +75,24 @@ import {
   DataVersioning,
   Domain,
   ExceptionsToDataSharing,
+  FairassistRecordType,
   GloballyUnique,
   GroupCtrlSlot,
   GuidanceToHelpEnableCompliance,
   HasPublication,
+  IndeterminateExamples,
   IsImplemented,
   Licences,
   LicencesForOutputs,
   MandatedDataSharing,
   MandatedDmpCreation,
   MonitoringOfCompliance,
+  NegativeExamples,
   ObjectTypes,
   Organisations,
   Persistent,
   PolicyRecordType,
+  PositiveExamples,
   RecommendsDatabase,
   RecommendsStandard,
   RecordStatus,
@@ -101,7 +107,7 @@ import {
   TimingOfDmp,
   UpdatingOfDmp,
   UserDefinedTag,
-  UsesPersistentIdentifier
+  UsesPersistentIdentifier,
 } from "./QueryBuilderComponents";
 export default {
   name: "QueryBuilderView",
@@ -220,6 +226,12 @@ export default {
             identifier: "databasetype",
             name: "Database Record Type",
             component: DatabaseRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "fairassisttype",
+            name: "FAIRassist Record Type",
+            component: FairassistRecordType,
             initialValue: () => [],
           },
           {
@@ -425,7 +437,31 @@ export default {
             name: "Resolvable",
             component: Resolvable,
             initialValue: "",
-          }
+          },
+          {
+            identifier: "associatedTests",
+            name: "Associated Tests",
+            component: AssociatedTests,
+            initialValue: "",
+          },
+          {
+            identifier: "positiveExamples",
+            name: "Positive Examples",
+            component: PositiveExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "negativeExamples",
+            name: "Negative Examples",
+            component: NegativeExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "indeterminateExamples",
+            name: "Indeterminate Examples",
+            component: IndeterminateExamples,
+            initialValue: "",
+          },
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };
@@ -509,7 +545,6 @@ export default {
       immediate: true,
     },
   },
-
 };
 </script>
 <style lang="scss" scoped>

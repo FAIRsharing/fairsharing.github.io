@@ -72,7 +72,7 @@
                 >
                   <RecordStatus :record="item.raw" />
                   <a
-                    :href="fairSharingURL + item.id"
+                    :href="fairSharingURL + item.raw.id"
                     class="ml-10"
                     style="white-space: normal"
                     target="_blank"

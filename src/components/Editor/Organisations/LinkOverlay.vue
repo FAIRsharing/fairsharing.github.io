@@ -556,7 +556,8 @@ export default {
           // submits with no image uploaded.
           if (_module.organisations.urlForLogo) {
             _module.menus.newOrganisation.delete("logoData");
-          } else {
+          }
+          else {
             _module.menus.newOrganisation.logoData = {};
           }
           return;
@@ -667,7 +668,8 @@ export default {
           organisation_type_ids: [],
           country_ids: [],
         };
-      } else {
+      }
+      else {
         this.menus.newOrganisation.error = data.error;
       }
       this.menus.newOrganisation.loading = false;
@@ -689,7 +691,8 @@ export default {
         this.grants[this.grants.length] = newGrant;
         this.menus.show = null;
         this.menus.newGrant.data = {};
-      } else {
+      }
+      else {
         this.menus.newGrant.error = data.error;
       }
       this.menus.newGrant.loading = false;
@@ -698,7 +701,8 @@ export default {
       let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
       if (this.editOrganisationLink.id > -1) {
         this.organisationLinks[this.editOrganisationLink.id] = data;
-      } else {
+      }
+      else {
         this.organisationLinks[this.organisationLinks.length] = data;
       }
       this.editOrganisationLink.showOverlay = false;
@@ -737,14 +741,16 @@ export default {
             if (e.types.includes("ror_display")) {
               it.name = e.value;
               return false;
-            } else {
+            }
+            else {
               return true;
             }
           });
         });
         this.organisationsList = data.items;
         this.organisationsNameList = data.items.map((item) => item.name);
-      } else {
+      }
+      else {
         this.enterName = true;
         this.importROR = false;
         this.validName = false;
@@ -805,36 +811,37 @@ export default {
       );
       if (matchedType && matchedType.length) {
         this.menus.newOrganisation.data.organisation_type_ids = matchedType;
-      } else {
+      }
+      else {
         switch (selectedType.toLowerCase()) {
-          case "government":
-            this.menus.newOrganisation.data.organisation_type_ids = [
-              this.organisationsTypes[0],
-            ];
-            break;
-          case "nonprofit":
-            this.menus.newOrganisation.data.organisation_type_ids = [
-              this.organisationsTypes[1],
-            ];
-            break;
-          case "education":
-            this.menus.newOrganisation.data.organisation_type_ids = [
-              this.organisationsTypes[2],
-            ];
-            break;
-          case "company":
-            this.menus.newOrganisation.data.organisation_type_ids = [
-              this.organisationsTypes[5],
-            ];
-            break;
-          case "healthcare":
-          case "archive":
-          case "facility":
-          case "other":
-          default:
-            this.menus.newOrganisation.data.organisation_type_ids = [
-              this.organisationsTypes[8],
-            ];
+        case "government":
+          this.menus.newOrganisation.data.organisation_type_ids = [
+            this.organisationsTypes[0],
+          ];
+          break;
+        case "nonprofit":
+          this.menus.newOrganisation.data.organisation_type_ids = [
+            this.organisationsTypes[1],
+          ];
+          break;
+        case "education":
+          this.menus.newOrganisation.data.organisation_type_ids = [
+            this.organisationsTypes[2],
+          ];
+          break;
+        case "company":
+          this.menus.newOrganisation.data.organisation_type_ids = [
+            this.organisationsTypes[5],
+          ];
+          break;
+        case "healthcare":
+        case "archive":
+        case "facility":
+        case "other":
+        default:
+          this.menus.newOrganisation.data.organisation_type_ids = [
+            this.organisationsTypes[8],
+          ];
         }
       }
     },

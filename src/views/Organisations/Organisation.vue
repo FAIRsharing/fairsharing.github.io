@@ -4,7 +4,18 @@
     class="standard bg-grey-lighten-3 pb-10"
     fluid
   >
-    <Loaders v-if="loading" />
+    <v-fade-transition>
+      <div>
+        <v-overlay
+          v-model="loading"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <loaders />
+        </v-overlay>
+      </div>
+    </v-fade-transition>
     <div v-if="error && !loading">
       <NotFound />
     </div>
@@ -12,10 +23,11 @@
       <!-- new stuff below here -->
       <v-card
         :color="$vuetify.theme.themes.bg_organisation_record_card"
-        border
         class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column overflow-initial"
         elevation="3"
+        rounded="0"
         tile
+        variant="outlined"
       >
         <SectionTitle title="Organisation" />
         <!-- TODO: This image refuses to go anywhere but centrally on the page -->
@@ -283,68 +295,68 @@
                     </template>
                   </v-autocomplete>
                 </v-col>
-                <!--                <v-col class="pb-0" cols="12">-->
-                <!--                  <v-autocomplete-->
-                <!--                      v-model="editedOrganisation.countries"-->
-                <!--                      :items="countries"-->
-                <!--                      :rules="[-->
-                <!--                        editedOrganisation.countries &&-->
-                <!--                          !(editedOrganisation.countries === 0),-->
-                <!--                      ]"-->
-                <!--                      item-title="name"-->
-                <!--                      item-value="name"-->
-                <!--                      label="Countries"-->
-                <!--                      multiple-->
-                <!--                      return-object-->
-                <!--                      variant="outlined"-->
-                <!--                  >-->
-                <!--                    <template #prepend>-->
-                <!--                      <v-tooltip-->
-                <!--                          class="text-justify"-->
-                <!--                          location="bottom"-->
-                <!--                          max-width="300px"-->
-                <!--                      >-->
-                <!--                        <template #activator="{ props }">-->
-                <!--                          <v-icon v-bind="props">-->
-                <!--                            fas fa-question-circle-->
-                <!--                          </v-icon>-->
-                <!--                        </template>-->
-                <!--                        {{ tooltips["countries"] }}-->
-                <!--                      </v-tooltip>-->
-                <!--                    </template>-->
+                <v-col class="pb-0" cols="12">
+                  <v-autocomplete
+                    v-model="editedOrganisation.countries"
+                    :items="countries"
+                    :rules="[
+                      editedOrganisation.countries &&
+                        !(editedOrganisation.countries === 0),
+                    ]"
+                    item-title="name"
+                    item-value="name"
+                    label="Countries"
+                    multiple
+                    return-object
+                    variant="outlined"
+                  >
+                    <template #prepend>
+                      <v-tooltip
+                        class="text-justify"
+                        location="bottom"
+                        max-width="300px"
+                      >
+                        <template #activator="{ props }">
+                          <v-icon v-bind="props">
+                            fas fa-question-circle
+                          </v-icon>
+                        </template>
+                        {{ tooltips["countries"] }}
+                      </v-tooltip>
+                    </template>
 
-                <!--                    &lt;!&ndash; Item selected &ndash;&gt;-->
-                <!--                    <template #chip="data">-->
-                <!--                      <v-chip-->
-                <!--                          class="bg-blue text-white removeStyle"-->
-                <!--                          closable-->
-                <!--                          @click:close="removeCountry(data.item.raw)"-->
-                <!--                      >-->
-                <!--                        {{ data.item.raw.name }}-->
-                <!--                      </v-chip>-->
-                <!--                    </template>-->
+                    <!-- Item selected -->
+                    <template #chip="data">
+                      <v-chip
+                        class="bg-blue text-white removeStyle"
+                        closable
+                        @click:close="removeCountry(data.item.raw)"
+                      >
+                        {{ data.item.raw.name }}
+                      </v-chip>
+                    </template>
 
-                <!--                    &lt;!&ndash; autocomplete data &ndash;&gt;-->
-                <!--                    <template #item="{ props, item }">-->
-                <!--                      <v-list-item v-bind="props">-->
-                <!--                        <template #prepend>-->
-                <!--                          <country-flag-->
-                <!--                              v-if="item.raw.code !== null"-->
-                <!--                              :country="item.raw.code"-->
-                <!--                              class="mr-1 mt-n2"-->
-                <!--                              size="normal"-->
-                <!--                          />-->
-                <!--                          <v-img-->
-                <!--                              v-else-->
-                <!--                              class="ml-4 mr-3"-->
-                <!--                              src="@/assets/placeholders/country.png"-->
-                <!--                          />-->
-                <!--                        </template>-->
-                <!--                        <span>{{ item.raw.name }}</span>-->
-                <!--                      </v-list-item>-->
-                <!--                    </template>-->
-                <!--                  </v-autocomplete>-->
-                <!--                </v-col>-->
+                    <!-- autocomplete data -->
+                    <template #item="{ props, item }">
+                      <v-list-item v-bind="props">
+                        <template #prepend>
+                          <country-flag
+                            v-if="item.raw.code !== null"
+                            :country="item.raw.code"
+                            class="mr-1 mt-n2"
+                            size="normal"
+                          />
+                          <v-img
+                            v-else
+                            class="ml-4 mr-3"
+                            src="@/assets/placeholders/country.png"
+                          />
+                        </template>
+                        <span>{{ item.raw.name }}</span>
+                      </v-list-item>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
                 <v-col class="pb-0" cols="12">
                   <v-file-input
                     v-model="editedOrganisation.logo"
@@ -369,13 +381,20 @@
               </v-row>
             </v-container>
           </v-card-text>
-          <v-card-actions>
-            <v-btn class="bg-error" @click="showEditDialog = false">
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="bg-error"
+              variant="elevated"
+              width="200"
+              @click="showEditDialog = false"
+            >
               Cancel
             </v-btn>
             <v-btn
               :disabled="!editFormValid || imageTooBig"
               class="bg-success"
+              variant="elevated"
+              width="200"
               @click="editOrganisation()"
             >
               Save
@@ -385,7 +404,7 @@
       </v-form>
     </v-dialog>
     <!-- Delete dialog box -->
-    <v-dialog v-model="confirmDelete" max-width="700px" persistent>
+    <v-dialog v-model="confirmDelete" max-width="500px" persistent>
       <!-- Delete organisation -->
       <v-card v-if="deleteOrganisationCard">
         <v-card-title class="text-h5 font-weight-bold">
@@ -397,14 +416,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="bg-info"
+            class="bg-info text-white"
             variant="elevated"
             @click="deleteOrganisation(false)"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="bg-error"
+            class="bg-error text-white"
             variant="elevated"
             @click="deleteOrganisation(true)"
           >
@@ -417,21 +436,19 @@
       <v-card v-if="unlinkSavedSearchCard">
         <v-card-title class="text-h5"> Unlinking saved search</v-card-title>
         <v-card-text
-          >This is will unlink saved search from this organisaton
+          >This will unlink the saved search from this organisation.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="text-white"
-            color="accent3"
+            class="bg-grey-darken-1 text-white"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
           </v-btn>
           <v-btn
             :loading="deleteLoader"
-            class="text-white"
-            color="success"
+            class="bg-success text-white"
             @click="unlinkSavedSearch(true)"
           >
             OK
@@ -505,17 +522,22 @@ export default {
       targetID: null,
       testEnvironment: false,
       headers: [
-        { text: "Name", value: "name", align: "center" },
-        { text: "Status", value: "status", align: "center" },
-        { text: "Relation", value: "relation", align: "center" },
-        { text: "Grant", value: "grant", align: "center" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { title: "Name", value: "name", align: "center" },
+        { title: "Status", value: "status", align: "center" },
+        { title: "Relation", value: "relation", align: "center" },
+        { title: "Grant", value: "grant", align: "center" },
+        {
+          title: "Actions",
+          value: "actions",
+          align: "center",
+          sortable: false,
+        },
       ],
       userHeaders: [
-        { text: "Username", value: "username", align: "center" },
-        { text: "Email address", value: "email", align: "center" },
-        { text: "ORCID ID", value: "orcid", align: "center" },
-        { text: "Twitter", value: "twitter", align: "center" },
+        { title: "Username", value: "username", align: "center" },
+        { title: "Email address", value: "email", align: "center" },
+        { title: "ORCID ID", value: "orcid", align: "center" },
+        { title: "Twitter", value: "twitter", align: "center" },
       ],
       showEditDialog: false,
       editFormValid: false,
@@ -558,6 +580,12 @@ export default {
   async created() {
     await this.getOrganisation();
   },
+  async mounted() {
+    await Promise.all([
+      await this.getOrganisationsTypes(),
+      await this.getCountries(),
+    ]);
+  },
   methods: {
     ...mapActions("editor", ["getOrganisationsTypes", "getCountries"]),
     async getOrganisation() {
@@ -574,14 +602,19 @@ export default {
           this.editedOrganisation.homepage = this.organisation.homepage;
           this.editedOrganisation.rorLink = this.organisation.rorLink;
           this.editedOrganisation.countries = this.organisation.countries;
-          this.editedOrganisation.alternativeNames =
-            this.organisation.alternativeNames;
+          // In Vuetify 3, text fields usually expect a string, not an array of objects
+          this.editedOrganisation.alternativeNames = this.organisation
+            .alternativeNames
+            ? this.organisation.alternativeNames.join(", ")
+            : "";
+          this.error = false;
           this.error = false;
         }
         this.loading = false;
       }
       catch (e) {
         this.errors = e.message;
+        this.loading = false;
       }
     },
     async editOrganisation() {
@@ -592,12 +625,16 @@ export default {
         type_ids.push(type.id);
       });
       let country_ids = [];
-      this.editedOrganisation.countries.forEach((country) => {
-        country_ids.push(country.id);
-      });
+      if (this.editedOrganisation.countries) {
+        this.editedOrganisation.countries.forEach((country) => {
+          country_ids.push(country.id);
+        });
+      }
       let alt_names;
       try {
-        alt_names = this.editedOrganisation.alternativeNames.split(",");
+        alt_names = this.editedOrganisation.alternativeNames
+          .split(",")
+          .map((item) => item.trim());
       }
       catch {
         alt_names = [];
@@ -611,6 +648,7 @@ export default {
         ror_link: this.editedOrganisation.rorLink,
         alternative_names: alt_names,
       };
+
       if (this.editedOrganisation.logo) {
         let convertedFile = await toBase64(this.editedOrganisation.logo);
         organisationInput.logo = {
@@ -642,7 +680,7 @@ export default {
       }
       this.$emit("imageTooBig", true);
       this.imageTooBig = true;
-      return false;
+      return "Image is too large (max 3MB).";
     },
     goToEdit(id) {
       this.$router.push({ path: `/${id}/edit` });
@@ -668,7 +706,7 @@ export default {
       });
     },
     getAltNames(org) {
-      if (org.alternativeNames.length > 0) {
+      if (org.alternativeNames && org.alternativeNames.length > 0) {
         return org.alternativeNames.join(", ");
       }
       return null;
@@ -701,11 +739,11 @@ export default {
     async startEditing() {
       this.loading = true;
       this.showEditDialog = true;
-      await this.getOrganisationsTypes();
+      // await this.getOrganisationsTypes();
       this.editedOrganisation.types = this.organisationsTypes.filter(
         (obj) => this.organisation.types.indexOf(obj.name) > -1,
       );
-      await this.getCountries();
+      // await this.getCountries();
       this.loading = false;
     },
 
@@ -786,10 +824,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .card-class {
   min-width: 500px;
   overflow-x: scroll;
   overflow-y: hidden;
+}
+
+:deep(.v-list-item-title) {
+  display: none;
 }
 </style>

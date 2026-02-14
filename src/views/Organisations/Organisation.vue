@@ -13,7 +13,7 @@
       <v-card
         :color="$vuetify.theme.themes.bg_organisation_record_card"
         border
-        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column"
+        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column overflow-initial"
         elevation="3"
         tile
       >
@@ -23,7 +23,7 @@
           v-if="logoUrl"
           :src="logoUrl"
           aspect-ratio="1"
-          contain
+          class="contain"
           height="120px"
         />
         <h2 class="mt-3">
@@ -54,7 +54,7 @@
               v-for="type in organisation.types"
               :key="type + '_type'"
               class="ma-1"
-              variant="elevated"
+              variant="flat"
             >
               {{ type }}
             </v-chip>
@@ -128,7 +128,7 @@
               v-for="country in organisation.countries"
               :key="'country_' + country.id"
               class="ma-1"
-              variant="elevated"
+              variant="flat"
             >
               {{ country.name }}
             </v-chip>
@@ -211,193 +211,203 @@
       </v-col>
     </div>
     <!-- Edit existing organisation -->
-    <v-expand-transition>
-      <v-dialog v-model="showEditDialog" height="100%">
-        <v-form
-          id="editOrganisation"
-          ref="editOrganisation"
-          v-model="editFormValid"
-        >
-          <v-card>
-            <v-card-text>
-              <v-container fluid>
-                <v-row>
-                  <v-col class="pb-0" cols="12">
-                    <v-text-field
-                      v-model="editedOrganisation.name"
-                      :rules="[rules.isRequired()]"
-                      label="Name"
-                      variant="outlined"
-                    />
-                  </v-col>
-                  <v-col class="pb-0" cols="12">
-                    <v-text-field
-                      v-model="editedOrganisation.homepage"
-                      :rules="[rules.isRequired(), rules.isURL()]"
-                      label="Homepage"
-                      variant="outlined"
-                    />
-                  </v-col>
-                  <v-col class="pb-0" cols="12">
-                    <v-text-field
-                      v-model="editedOrganisation.rorLink"
-                      :rules="[rules.isURL()]"
-                      label="ROR Link"
-                      variant="outlined"
-                    />
-                  </v-col>
-                  <v-col class="pb-0" cols="12">
-                    <v-text-field
-                      v-model="editedOrganisation.alternativeNames"
-                      :rules="[]"
-                      item-text="name"
-                      item-value="id"
-                      label="Alternative names"
-                      return-object
-                      variant="outlined"
-                    />
-                  </v-col>
-                  <!-- TODO insert parent and child organisations here -->
-                  <v-col class="pb-0" cols="12">
-                    <v-autocomplete
-                      v-model="editedOrganisation.types"
-                      :items="organisationsTypes"
-                      :rules="[rules.isRequired()]"
-                      item-title="name"
-                      item-value="id"
-                      label="Select an organisation type(s)"
-                      multiple
-                      return-object
-                      variant="outlined"
-                    >
-                      <!-- autocomplete selected -->
-                      <template #selection="data">
-                        <v-chip
-                          class="bg-blue text-white removeStyle"
-                          closable
-                          @click:close="removeType(data.item)"
-                        >
-                          {{ data.item.name }}
-                        </v-chip>
-                      </template>
-                    </v-autocomplete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12">
-                    <v-autocomplete
-                      v-model="editedOrganisation.countries"
-                      :items="countries"
-                      :rules="[
-                        editedOrganisation.countries &&
-                          !(editedOrganisation.countries === 0),
-                      ]"
-                      item-title="name"
-                      item-value="name"
-                      label="Countries"
-                      multiple
-                      return-object
-                      variant="outlined"
-                    >
-                      <template #prepend>
-                        <v-tooltip
-                          class="text-justify"
-                          location="bottom"
-                          max-width="300px"
-                        >
-                          <template #activator="{ props }">
-                            <v-icon v-bind="props">
-                              fas fa-question-circle
-                            </v-icon>
-                          </template>
-                          {{ tooltips["countries"] }}
-                        </v-tooltip>
-                      </template>
+    <v-dialog v-model="showEditDialog" height="100%">
+      <v-form
+        id="editOrganisation"
+        ref="editOrganisation"
+        v-model="editFormValid"
+      >
+        <v-card>
+          <v-card-text>
+            <v-container fluid>
+              <v-row>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.name"
+                    :rules="[rules.isRequired()]"
+                    label="Name"
+                    variant="outlined"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.homepage"
+                    :rules="[rules.isRequired(), rules.isURL()]"
+                    label="Homepage"
+                    variant="outlined"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.rorLink"
+                    :rules="[rules.isURL()]"
+                    label="ROR Link"
+                    variant="outlined"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.alternativeNames"
+                    :rules="[]"
+                    item-text="name"
+                    item-value="id"
+                    label="Alternative names"
+                    return-object
+                    variant="outlined"
+                  />
+                </v-col>
+                <!-- TODO insert parent and child organisations here -->
+                <v-col class="pb-0" cols="12">
+                  <v-autocomplete
+                    v-model="editedOrganisation.types"
+                    :items="organisationsTypes"
+                    :rules="[rules.isRequired()]"
+                    chips
+                    clearable
+                    closable-chips
+                    item-title="name"
+                    item-value="id"
+                    label="Select an organisation type(s)"
+                    multiple
+                    return-object
+                    variant="outlined"
+                  >
+                    <!-- autocomplete selected -->
+                    <template #chip="{ props, item }">
+                      <v-chip
+                        :text="item.raw.name"
+                        color="blue"
+                        v-bind="props"
+                        variant="flat"
+                      ></v-chip>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+                <!--                <v-col class="pb-0" cols="12">-->
+                <!--                  <v-autocomplete-->
+                <!--                      v-model="editedOrganisation.countries"-->
+                <!--                      :items="countries"-->
+                <!--                      :rules="[-->
+                <!--                        editedOrganisation.countries &&-->
+                <!--                          !(editedOrganisation.countries === 0),-->
+                <!--                      ]"-->
+                <!--                      item-title="name"-->
+                <!--                      item-value="name"-->
+                <!--                      label="Countries"-->
+                <!--                      multiple-->
+                <!--                      return-object-->
+                <!--                      variant="outlined"-->
+                <!--                  >-->
+                <!--                    <template #prepend>-->
+                <!--                      <v-tooltip-->
+                <!--                          class="text-justify"-->
+                <!--                          location="bottom"-->
+                <!--                          max-width="300px"-->
+                <!--                      >-->
+                <!--                        <template #activator="{ props }">-->
+                <!--                          <v-icon v-bind="props">-->
+                <!--                            fas fa-question-circle-->
+                <!--                          </v-icon>-->
+                <!--                        </template>-->
+                <!--                        {{ tooltips["countries"] }}-->
+                <!--                      </v-tooltip>-->
+                <!--                    </template>-->
 
-                      <!-- autocomplete selected -->
-                      <template #selection="data">
-                        <v-chip
-                          class="bg-blue text-white removeStyle"
-                          closable
-                          @click:close="removeCountry(data.item)"
-                        >
-                          {{ data.item.name }}
-                        </v-chip>
-                      </template>
+                <!--                    &lt;!&ndash; Item selected &ndash;&gt;-->
+                <!--                    <template #chip="data">-->
+                <!--                      <v-chip-->
+                <!--                          class="bg-blue text-white removeStyle"-->
+                <!--                          closable-->
+                <!--                          @click:close="removeCountry(data.item.raw)"-->
+                <!--                      >-->
+                <!--                        {{ data.item.raw.name }}-->
+                <!--                      </v-chip>-->
+                <!--                    </template>-->
 
-                      <!-- autocomplete data -->
-                      <template #item="data">
-                        <country-flag
-                          v-if="data.item.code !== null"
-                          :country="data.item.code"
-                          size="normal"
-                        />
-                        <img
-                          v-else
-                          class="ml-4 mr-3"
-                          src="@/assets/placeholders/country.png"
-                        />
-                        <div>{{ data.item.name }}</div>
-                      </template>
-                    </v-autocomplete>
-                  </v-col>
-                  <v-col class="pb-0" cols="12">
-                    <v-file-input
-                      v-model="editedOrganisation.logo"
-                      :loading="logoLoading"
-                      :rules="[rules.isImage(), imageSizeCorrect]"
-                      accept="image/png,image/jpeg"
-                      clearable
-                      label="Logo"
-                      prepend-icon="fas fa-image"
-                    />
-                    <span>JPEG or PNG, max. file size 3MB.</span>
-                  </v-col>
-                  <v-col class="pb-0" cols="12">
-                    <v-img
-                      v-if="logoUrl"
-                      :src="logoUrl"
-                      aspect-ratio="1"
-                      contain
-                      height="120px"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn class="bg-error" @click="showEditDialog = false">
-                Cancel
-              </v-btn>
-              <v-btn
-                :disabled="!editFormValid || imageTooBig"
-                class="bg-success"
-                @click="editOrganisation()"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-dialog>
-    </v-expand-transition>
+                <!--                    &lt;!&ndash; autocomplete data &ndash;&gt;-->
+                <!--                    <template #item="{ props, item }">-->
+                <!--                      <v-list-item v-bind="props">-->
+                <!--                        <template #prepend>-->
+                <!--                          <country-flag-->
+                <!--                              v-if="item.raw.code !== null"-->
+                <!--                              :country="item.raw.code"-->
+                <!--                              class="mr-1 mt-n2"-->
+                <!--                              size="normal"-->
+                <!--                          />-->
+                <!--                          <v-img-->
+                <!--                              v-else-->
+                <!--                              class="ml-4 mr-3"-->
+                <!--                              src="@/assets/placeholders/country.png"-->
+                <!--                          />-->
+                <!--                        </template>-->
+                <!--                        <span>{{ item.raw.name }}</span>-->
+                <!--                      </v-list-item>-->
+                <!--                    </template>-->
+                <!--                  </v-autocomplete>-->
+                <!--                </v-col>-->
+                <v-col class="pb-0" cols="12">
+                  <v-file-input
+                    v-model="editedOrganisation.logo"
+                    :loading="logoLoading"
+                    :rules="[rules.isImage(), imageSizeCorrect]"
+                    accept="image/png,image/jpeg"
+                    clearable
+                    label="Logo"
+                    prepend-icon="fas fa-image"
+                  />
+                  <span>JPEG or PNG, max. file size 3MB.</span>
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-img
+                    v-if="logoUrl"
+                    :src="logoUrl"
+                    aspect-ratio="1"
+                    class="contain"
+                    height="120px"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn class="bg-error" @click="showEditDialog = false">
+              Cancel
+            </v-btn>
+            <v-btn
+              :disabled="!editFormValid || imageTooBig"
+              class="bg-success"
+              @click="editOrganisation()"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </v-dialog>
     <!-- Delete dialog box -->
     <v-dialog v-model="confirmDelete" max-width="700px" persistent>
       <!-- Delete organisation -->
       <v-card v-if="deleteOrganisationCard">
-        <v-card-title class="text-h5"> Deleting organisation!</v-card-title>
-        <v-card-text>
-          <p>
-            <b
-              >Are you sure you want to do that? It will be permanently
-              deleted.</b
-            >
-          </p>
+        <v-card-title class="text-h5 font-weight-bold">
+          Deleting organisation!</v-card-title
+        >
+        <v-card-text class="font-weight-bold">
+          Are you sure you want to do that? It will be permanently deleted.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn class="bg-info" @click="deleteOrganisation(false)">
+          <v-btn
+            class="bg-info"
+            variant="elevated"
+            @click="deleteOrganisation(false)"
+          >
             Cancel
           </v-btn>
-          <v-btn class="bg-error" @click="deleteOrganisation(true)">
+          <v-btn
+            class="bg-error"
+            variant="elevated"
+            @click="deleteOrganisation(true)"
+          >
             Delete
           </v-btn>
           <v-spacer />
@@ -447,6 +457,7 @@ import stringUtils from "@/utils/stringUtils";
 import NotFound from "@/views/Errors/404";
 import RestClient from "@/lib/Client/RESTClient.js";
 import { toBase64 } from "@/utils/generalUtils";
+import CountryFlag from "vue-country-flag-next";
 
 let graphClient = new GraphClient();
 
@@ -454,7 +465,13 @@ const restClient = new RestClient();
 
 export default {
   name: "Organisation",
-  components: { SearchOrganisationRecords, SectionTitle, NotFound, Loaders },
+  components: {
+    CountryFlag,
+    SearchOrganisationRecords,
+    SectionTitle,
+    NotFound,
+    Loaders,
+  },
   mixins: [stringUtils],
   data: () => {
     return {
@@ -562,7 +579,8 @@ export default {
           this.error = false;
         }
         this.loading = false;
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
     },
@@ -580,7 +598,8 @@ export default {
       let alt_names;
       try {
         alt_names = this.editedOrganisation.alternativeNames.split(",");
-      } catch {
+      }
+      catch {
         alt_names = [];
       }
       this.logoLoading = true;
@@ -657,7 +676,8 @@ export default {
     formatUser(user) {
       if (user.orcid) {
         return `${user.username} (${user.orcid})`;
-      } else {
+      }
+      else {
         return user.username;
       }
     },

@@ -10,11 +10,13 @@
       <v-chip
         v-for="(maintainer, index) in maintainers"
         :key="'maintainer_' + index"
-        class="pr-3"
         :class="[
-          !isNew(maintainer) ? 'text-white blue' : 'text-blue white borderBlue',
+          !isNew(maintainer)
+            ? 'text-white bg-blue'
+            : 'text-blue bg-white borderBlue',
         ]"
-        variant="outlined"
+        class="pr-3 my-1 mr-2 ml-0"
+        variant="flat"
       >
         <div>
           {{ maintainer["username"] }} ({{ maintainer["id"] }})
@@ -34,12 +36,12 @@
         </div>
       </v-chip>
       <v-spacer />
-      <!--ADD NEW CONTACT -->
+      <!--ADD NEW MAINTAINER -->
       <v-chip
         class="bg-green text-white pr-5 shadowChip"
         @click="selectMaintainers()"
       >
-        <v-icon size="small" class="mr-3 text-white">
+        <v-icon class="mr-3 text-white" size="small">
           fas fa-plus-circle
         </v-icon>
         Add a maintainer
@@ -47,8 +49,8 @@
     </v-chip-group>
     <v-overlay
       v-model="menu['show']"
-      opacity="0.8"
       class="align-center justify-center"
+      opacity="0.8"
     >
       <v-card width="800px">
         <v-card-title class="bg-green text-white d-flex align-center">
@@ -58,28 +60,28 @@
             id="searchString"
             v-model="searchString"
             append-inner-icon="fas fa-search"
+            bg-color="white"
+            clearable
+            hide-details
             label="Search"
+            rounded="60"
             single-line
             variant="solo"
-            hide-details
-            bg-color="white"
-            rounded="60"
-            clearable
           />
         </v-card-title>
         <v-card-text>
           <v-data-table
             :headers="headers"
             :items="usersList"
-            :search="search"
             :loading="loading"
+            :search="search"
             loading-text="Loading... Please wait"
           >
             <template #[`item.username`]="{ item }">
               {{ item.username }}
             </template>
             <template #[`item.id`]="{ item }">
-              <router-link class="underline-effect" :to="`/users/${item.id}`">
+              <router-link :to="`/users/${item.id}`" class="underline-effect">
                 {{ `https://fairsharing.org/users/${item.id}` }}
               </router-link>
             </template>
@@ -93,12 +95,18 @@
             </template>
           </v-data-table>
         </v-card-text>
-        <v-card-actions>
-          <v-btn class="bg-warning" @click="menu.show = false"> Close </v-btn>
+        <v-card-actions class="justify-center">
+          <v-btn
+            class="bg-warning"
+            variant="elevated"
+            @click="menu.show = false"
+          >
+            Close
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-overlay>
-    <v-layout row justify-center>
+    <v-layout justify-center row>
       <v-dialog v-model="showRemoveWatcher" max-width="700px">
         <v-card>
           <v-card-title class="text-h5">

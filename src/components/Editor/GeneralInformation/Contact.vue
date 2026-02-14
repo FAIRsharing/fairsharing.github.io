@@ -6,15 +6,16 @@
     @submit.prevent="addItem()"
   >
     <div>Edit Contact information:</div>
-    <div class="mb-5 px-4 bg-grey-lighten-3 pt-1 pb-2">
+    <v-chip-group class="mb-5 px-4 bg-grey-lighten-3 pt-1 pb-2" column>
       <v-chip
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
         :class="[
-          !isNew(contact) ? 'text-white blue' : 'text-blue white borderBlue',
+          !isNew(contact)
+            ? 'text-white bg-blue'
+            : 'text-blue bg-white borderBlue',
         ]"
         class="pr-3 my-1 mr-2 ml-0"
-        color="blue"
         variant="flat"
       >
         <div>
@@ -63,7 +64,7 @@
         </v-icon>
         Add a new contact point
       </v-chip>
-    </div>
+    </v-chip-group>
     <v-overlay
       v-model="menu.show"
       class="align-center justify-center"
@@ -190,7 +191,8 @@ export default {
       if (this.formValid && !this.submitted) {
         if (this.menu.index || this.menu.index === 0) {
           this.contacts[this.menu.index] = this.menu.content;
-        } else {
+        }
+        else {
           this.contacts[this.contacts.length] = this.menu.content;
         }
         this.menu.show = false;

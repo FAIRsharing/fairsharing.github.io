@@ -1,15 +1,13 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchTaxonomies"
-      :loading="getLoadingStatus"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
-  </div>
+  <AutoCompleteComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="getSearchTaxonomies"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -17,11 +15,10 @@ import { mapActions, mapGetters } from "vuex";
 import taxonomiesSearch from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Taxonomies",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,
@@ -38,7 +35,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("taxonomiesSearch", ["getSearchTaxonomies", "getLoadingStatus"]),
+    ...mapGetters("taxonomiesSearch", [
+      "getSearchTaxonomies",
+      "getLoadingStatus",
+    ]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -64,7 +64,7 @@ export default {
           if (this.value && this.value.length) {
             taxonomiesSearch.commit(
               "taxonomiesSearch/setSearchTaxonomies",
-              this.value
+              this.value,
             );
           }
         }

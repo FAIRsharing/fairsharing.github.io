@@ -1,20 +1,21 @@
 <template>
   <v-card
-    v-if="getField('publications').length!==0 && (getField('publications')!==undefined && getField('publications')!==null)"
-    class="pa-4 d-flex flex-column"
-    outlined
+    v-if="
+      getField('publications').length !== 0 &&
+      getField('publications') !== undefined &&
+      getField('publications') !== null
+    "
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
   >
     <SectionTitle title="Publications" />
-    <v-row
-      dense
-      class="ml-1 min-height-40"
-    >
+    <v-row dense class="ml-1 min-height-40">
       <v-col
-        v-for="(publication,index) in getField('publications')"
-        :key="publication.title+'_'+index"
+        v-for="(publication, index) in getField('publications')"
+        :key="publication.title + '_' + index"
         class="mt-1"
         cols="12"
         sm="12"
@@ -24,32 +25,28 @@
       >
         <v-card
           class="pa-4 d-flex flex-column v-card-hover"
-          outlined
+          border
           color="white"
           tile
           elevation="1"
         >
           <!-- title -->
-          <v-card-text
-            class="pa-0 text-ellipses-height-3lines min-height-68"
-          >
+          <v-card-text class="pa-0 text-ellipses-height-3lines min-height-68">
             {{ publication.title }}
           </v-card-text>
 
           <!-- authors -->
           <div v-if="publication.authors">
             <p class="ma-0">
-              {{ truncate(prettifyList(publication.authors),50) }}
+              {{ truncate(prettifyList(publication.authors), 50) }}
             </p>
           </div>
 
           <!-- Journals -->
-          <div
-            v-if="publication.journal"
-            class="min-height-68"
-          >
+          <div v-if="publication.journal" class="min-height-68">
             <strong class="ma-0">
-              {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
+              {{ publication.journal
+              }}<span v-if="publication.year">, {{ publication.year }}</span>
             </strong>
           </div>
 
@@ -57,13 +54,14 @@
             <!-- pubmed -->
             <v-btn
               v-if="checkLinkValue(publication.pubmedId)"
-              text
-              outlined
-              small
-              class="mr-1"
+              variant="outlined"
+              color="primary"
+              size="small"
             >
               <a
-                :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
+                :href="
+                  'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId
+                "
                 target="_blank"
                 class="underline-effect ma-1"
               >
@@ -73,31 +71,23 @@
             <!-- doi -->
             <v-btn
               v-if="checkLinkValue(publication.doi)"
-              text
-              outlined
-              small
+              variant="outlined"
+              color="primary"
+              size="small"
               class="ma-1"
             >
-              <a
-                :href="'https://doi.org/' + publication.doi"
-                target="_blank"
-              >
+              <a :href="'https://doi.org/' + publication.doi" target="_blank">
                 View Publication
               </a>
             </v-btn>
             <v-btn
               v-if="checkLinkValue(publication.url)"
-              text
-              outlined
-              small
-              :class="{'mt-2':$vuetify.breakpoint.width<540}"
+              variant="outlined"
+              color="primary"
+              size="small"
+              :class="{ 'mt-2': $vuetify.display.width < 540 }"
             >
-              <a
-                :href="publication.url"
-                target="_blank"
-              >
-                Publication Link
-              </a>
+              <a :href="publication.url" target="_blank"> Publication Link </a>
             </v-btn>
           </div>
         </v-card>
@@ -107,35 +97,39 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
-    import SectionTitle from '@/components/Records/Record/SectionTitle';
-    import stringUtils from '@/utils/stringUtils';
+import SectionTitle from "@/components/Records/Record/SectionTitle";
+import stringUtils from "@/utils/stringUtils";
 
-    export default {
-        name: "Publications",
-        components: {
-            SectionTitle
-        },
-        mixins: [stringUtils],
-        props: {
-          backColor:{
-            default:null,
-            type: String,
-          }
-        },
-        computed: {
-            ...mapGetters("record", ["getField"])
-        },
-        methods: {
-          checkLinkValue: (link) => {
-            if (!link) {
-              return false;
-            } else if ((link.toLowerCase() === 'missing') || link === 0 || link === "0") {
-              return false;
-            }
-            return true;
-          }
-        }
-    }
+export default {
+  name: "Publications",
+  components: {
+    SectionTitle,
+  },
+  mixins: [stringUtils],
+  props: {
+    backColor: {
+      default: null,
+      type: String,
+    },
+  },
+  computed: {
+    ...mapGetters("record", ["getField"]),
+  },
+  methods: {
+    checkLinkValue: (link) => {
+      if (!link) {
+        return false;
+      } else if (
+        link.toLowerCase() === "missing" ||
+        link === 0 ||
+        link === "0"
+      ) {
+        return false;
+      }
+      return true;
+    },
+  },
+};
 </script>

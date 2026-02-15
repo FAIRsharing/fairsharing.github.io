@@ -1,13 +1,12 @@
 <template>
   <v-tooltip
-    v-if="abbreviation!==null && abbreviation.length > 40"
-    bottom
+    v-if="abbreviation !== null && abbreviation.length > 40"
+    location="bottom"
   >
-    <template #activator="{ on, attrs }">
+    <template #activator="{ props }">
       <h2
-        v-bind="attrs"
         class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25 ellipse-width-600"
-        v-on="on"
+        v-bind="props"
       >
         {{ abbreviation }}
       </h2>
@@ -17,7 +16,7 @@
     </div>
   </v-tooltip>
   <h2
-    v-else-if="abbreviation!==null"
+    v-else-if="abbreviation !== null"
     class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25 ellipse-width-600"
   >
     {{ abbreviation }}
@@ -31,11 +30,11 @@
 
 <script>
 export default {
-name: "AbbreviationTooltip",
+  name: "AbbreviationTooltip",
   props: {
-    abbreviation: {default: null, type: String}
-  }
-}
+    abbreviation: { default: null, type: String },
+  },
+};
 </script>
 
 <style scoped>

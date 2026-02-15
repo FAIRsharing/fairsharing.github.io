@@ -125,9 +125,10 @@ describe("Records.vue", () => {
     await wrapper.vm.$store.dispatch("introspection/fetchParameters");
     Client.prototype.getData.restore();
     const path = wrapper.vm.currentPath;
-    const queryParameters = await wrapper.vm.$store.getters[
-      "introspection/buildQueryParameters"
-    ](path);
+    const queryParameters =
+      await wrapper.vm.$store.getters["introspection/buildQueryParameters"](
+        path,
+      );
     expect(queryParameters).toStrictEqual({
       test: "abc",
       test2: "abcdef",

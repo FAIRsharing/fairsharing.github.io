@@ -22,32 +22,28 @@
 </template>
 
 <script>
-
 export default {
   name: "ViewAwards",
   props: {
-    awards: { type: Array, default: null }
+    awards: { type: Array, default: null },
   },
   computed: {
     headers() {
       let headers = [
-        {text: 'Role', value: 'role', align: 'center'},
-        {text: 'Start Date', value: 'start_date', align: 'center'},
-        {text: 'End Date', value: 'end_date', align: 'center'},
+        { title: "Role", value: "role", align: "center" },
+        { title: "Start Date", value: "start_date", align: "center" },
+        { title: "End Date", value: "end_date", align: "center" },
       ];
       return headers;
     },
-    perPage(){
+    perPage() {
       return 5;
     },
-    footer(){
-      return {'items-per-page-options': [5]}
-    }
+    footer() {
+      return { "items-per-page-options": [5] };
+    },
   },
-}
-
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

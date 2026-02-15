@@ -1,23 +1,20 @@
 <template>
   <v-card
-    v-if="(allowedFields.properties)"
-    class="pa-4 mt-15 d-flex flex-column"
+    v-if="allowedFields.properties"
+    class="pa-4 mt-15 d-flex flex-column overflow-initial"
     elevation="3"
-    outlined
+    border
     color="white"
     tile
   >
-    <Icon
-      item="createdAt"
-      size="20"
-    />
+    <Icon item="createdAt" size="20" class="pt-2" />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Attributes and Conditions
     </v-card-title>
     <div class="mt-0 pt-8">
       <OtherDatasetArray
-        v-for="(item,key,index) in finalData"
-        :key="item.name+'_'+index+'_'+key"
+        v-for="(item, key, index) in finalData"
+        :key="item.name + '_' + index + '_' + key"
         :title="key"
         :current-item="finalData[key]"
         :current-key="key"
@@ -35,53 +32,63 @@
 </template>
 
 <script>
-import {isArray} from "lodash";
-import {mapActions, mapGetters, mapState} from "vuex";
+import { isArray } from "lodash";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
 import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray";
-import clearString from '@/utils/stringUtils'
+import clearString from "@/utils/stringUtils";
 
 export default {
   name: "OtherDataProcesses",
   components: {
     OtherDatasetArray,
     DatasetBoolean,
-    Icon
+    Icon,
   },
   mixins: [clearString],
 
   data: () => {
     return {
       otherDataConditions: {},
-      finalData:{},
-    }
+      finalData: {},
+    };
   },
   computed: {
-    ...mapState('editor', ["allowedFields"]),
-    ...mapGetters("record", ["getField",'getRecordType']),
+    ...mapState("editor", ["allowedFields"]),
+    ...mapGetters("record", ["getField", "getRecordType"]),
   },
   async mounted() {
     await this.getAllowedFields({
-      type: this.getRecordType
+      type: this.getRecordType,
     });
-    await this.getOtherData()
+    await this.getOtherData();
     this.finalData = this.otherDataConditions;
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
 
-    async getOtherData () {
-      const other_data_info = [ 'data_access_condition', 'data_curation', 'resource_sustainability', 'data_deposition_condition', 'data_preservation_policy'];
+    async getOtherData() {
+      const other_data_info = [
+        "data_access_condition",
+        "data_curation",
+        "resource_sustainability",
+        "data_deposition_condition",
+        "data_preservation_policy",
+      ];
       // adding data access condition if available
       if (this.allowedFields.properties !== undefined) {
-        const otherDataTypes = Object.keys(this.allowedFields.properties).filter(key => other_data_info.includes(key));
+        const otherDataTypes = Object.keys(
+          this.allowedFields.properties,
+        ).filter((key) => other_data_info.includes(key));
 
         for (const key of otherDataTypes) {
-          if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
-            if (Object.keys(this.getField('metadata')[key]).length) {
-              this.setAvailableData(this.getField('metadata')[key], key);
+          if (
+            Object.prototype.hasOwnProperty.call(this.getField("metadata"), key)
+          ) {
+            if (Object.keys(this.getField("metadata")[key]).length) {
+              this.setAvailableData(this.getField("metadata")[key], key);
             }
           }
         }
@@ -91,23 +98,22 @@ export default {
     setAvailableData(selectedNode, key) {
       // if received node is not an array
       if (!isArray(selectedNode)) {
-        this.otherDataConditions[key] =  {...selectedNode}
+        this.otherDataConditions[key] = { ...selectedNode };
       }
       // if received node is an array
       Object.keys(selectedNode).forEach((item) => {
         if (Object.keys(selectedNode[item]).length) {
           if (Object.keys(this.otherDataConditions).includes(key)) {
-            this.otherDataConditions[key][item] = selectedNode[item]
-          }
-          else {
-            this.otherDataConditions[key] = {}
-            this.otherDataConditions[key][item] = selectedNode[item]
+            this.otherDataConditions[key][item] = selectedNode[item];
+          } else {
+            this.otherDataConditions[key] = {};
+            this.otherDataConditions[key][item] = selectedNode[item];
           }
         }
-      })
+      });
     },
   },
-}
+};
 </script>
 
 <style scoped>

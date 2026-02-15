@@ -3,36 +3,27 @@
     <!--  On Search Block  -->
     <v-btn
       v-if="showHomeSearch"
-      color="primary"
-      class="mb-13"
       :class="[
         'mt-1',
-        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+        $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
       ]"
+      class="mb-13 px-6"
+      color="primary"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
       <span>Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
     <v-btn
       v-else
-      color="primary"
-      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
-      class="mr-10"
+      :size="$vuetify.display.xl ? 'x-large' : undefined"
+      button-size
+      class="mr-10 bg-primary"
+      elevation="2"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -62,14 +53,14 @@ export default {
     openAdvanceSearch() {
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home-search-bt {
   height: 40px !important;
   right: 0;
@@ -83,6 +74,7 @@ export default {
   top: 0;
   border-radius: unset;
 }
+
 .button-text-size {
   font-size: 13px;
 }

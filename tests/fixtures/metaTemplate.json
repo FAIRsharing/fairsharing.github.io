@@ -9,9 +9,11 @@
       "year_creation": 2020,
       "homepage": "",
       "description": "",
-      "citations": [{
-        "publication_id": 1
-      }],
+      "citations": [
+        {
+          "publication_id": 1
+        }
+      ],
       "support_links": [
         {
           "name": "test",

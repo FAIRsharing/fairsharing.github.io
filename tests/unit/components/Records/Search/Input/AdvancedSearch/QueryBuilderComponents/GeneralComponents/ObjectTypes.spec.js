@@ -20,7 +20,7 @@ describe("ObjectTypes.vue", () => {
     objectTypes.getters = {
       getObjectTypes: () => {
         return ["Test", "Abc"];
-      }
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

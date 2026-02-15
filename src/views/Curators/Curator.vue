@@ -1,28 +1,21 @@
 <template>
-  <v-container
-    id="curatorPage"
-    fluid
-    class="standard"
-  >
+  <v-container id="curatorPage" class="standard" fluid>
     <v-row
       v-if="user().role === 'super_curator' || user().role === 'developer'"
     >
       <v-col cols12>
         <v-banner
           v-if="!messages()['getUser'].error"
+          :stacked="false"
+          class="text-white mb-2 text-h5"
           color="info"
           lines="one"
           text="white"
-          :stacked="false"
-          class="white--text mb-2 text-h5"
         >
           Welcome, curator {{ user().credentials.username }}
         </v-banner>
         <!-- least recently updated -->
-        <v-card
-          v-if="leastRecentlyDetails"
-          class="mb-2"
-        >
+        <v-card v-if="leastRecentlyDetails" class="mb-2">
           <v-card-text>
             The record least recently updated is:
             <a :href="getHostname() + leastRecentlyDetails.id">
@@ -34,29 +27,22 @@
         <!--Tabs-->
         <v-tabs
           v-model="selectedTab"
-          dark
+          show-arrows
           slider-color="primary"
           slider-size="5"
-          show-arrows
         >
-          <v-tab
-            v-for="tab in tabs"
-            :key="'tab_' + tab.name"
-          >
+          <v-tab v-for="tab in tabs" :key="'tab_' + tab.name">
             <div>{{ tab.name }}</div>
           </v-tab>
-          <v-tabs-items v-model="selectedTab">
-            <v-tab-item
+          <v-tabs-window v-model="selectedTab">
+            <v-tabs-window-item
               v-for="(tab, tabIndex) in tabs"
               :key="tab + '_' + tabIndex"
               class="px-1 py-3"
             >
-              <component
-                :is="tab.component"
-                :header-items="tab.headers"
-              />
-            </v-tab-item>
-          </v-tabs-items>
+              <component :is="tab.component" :header-items="tab.headers" />
+            </v-tabs-window-item>
+          </v-tabs-window>
         </v-tabs>
       </v-col>
     </v-row>
@@ -172,7 +158,7 @@ export default {
   watch: {
     "dialogs.deleteRecord"(val) {
       val || this.closeDeleteMenu();
-    }
+    },
   },
   created() {
     this.$nextTick(function () {
@@ -192,7 +178,7 @@ export default {
       }
       client.setHeader(this.user().credentials.token);
       let leastRecentlyUpdatedData = await client.executeQuery(
-        getLeastRecentlyUpdated
+        getLeastRecentlyUpdated,
       );
       this.leastRecentlyDetails =
         leastRecentlyUpdatedData["leastRecentlyUpdated"];

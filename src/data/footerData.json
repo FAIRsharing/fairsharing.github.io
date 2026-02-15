@@ -68,7 +68,7 @@
       },
       {
         "title": "Activities",
-        "url": "/communities#activities ",
+        "url": "/communities#activities",
         "urlType": "internal"
       }
     ]
@@ -118,5 +118,4 @@
       }
     ]
   }
-
 }

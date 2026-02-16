@@ -17,14 +17,19 @@
     <!--  On Header Block  -->
     <v-btn
       v-else
-      :size="$vuetify.display.xl ? 'x-large' : undefined"
-      button-size
+      :size="
+        $vuetify.display.xl
+          ? 'x-large'
+          : $vuetify.display.mdAndDown
+            ? 'small'
+            : undefined
+      "
       class="mr-10 bg-primary"
       elevation="2"
       @click="openAdvanceSearch()"
     >
       <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
-      <span class="button-text-size">Advanced Search</span>
+      <span style="fontsize: revert">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
     <AdvancedSearchDialogBox />

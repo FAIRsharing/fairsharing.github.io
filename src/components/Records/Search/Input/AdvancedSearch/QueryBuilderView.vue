@@ -5,7 +5,7 @@
     <template #groupOperator="props">
       <div class="query-builder-group__group-selection">
         <div class="tooltip">
-          <v-icon size="small" class="mr-1 text-white tooltipIcon">
+          <v-icon class="mr-1 text-white tooltipIcon" size="small">
             fas fa-question-circle
           </v-icon>
           <span class="tooltiptext" />
@@ -14,8 +14,8 @@
           Select an Operator to apply across all groups
         </span>
         <select
-          class="operatorSelect"
           :value="props.currentOperator"
+          class="operatorSelect"
           @input="props.updateCurrentOperator($event.target.value)"
         >
           <option disabled value="">Select an operator</option>
@@ -415,7 +415,7 @@ export default {
             name: "Resolvable",
             component: Resolvable,
             initialValue: "",
-          }
+          },
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };
@@ -504,6 +504,4 @@ export default {
 </script>
 <style lang="scss" scoped>
 @use "vuetify/settings";
-//@use "@/styles/queryBuilderView";
-//@use "../../../styles/queryBuilderView.scss";
 </style>

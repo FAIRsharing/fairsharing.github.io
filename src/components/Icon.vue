@@ -60,6 +60,7 @@ export default {
   height: 45px;
   cursor: help;
   color: #0000008a;
+  cursor: default;
 }
 
 .alt-container {

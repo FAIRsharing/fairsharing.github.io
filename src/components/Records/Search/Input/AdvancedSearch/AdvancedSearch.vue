@@ -17,11 +17,12 @@
     <!--  On Header Block  -->
     <v-btn
       v-else
+      :class="$vuetify.display.xl ? 'advancedTextXl' : 'advancedTextMd'"
       :size="
         $vuetify.display.xl
           ? 'x-large'
           : $vuetify.display.mdAndDown
-            ? 'small'
+            ? 'large'
             : undefined
       "
       class="mr-10 bg-primary"
@@ -29,7 +30,7 @@
       @click="openAdvanceSearch()"
     >
       <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
-      <span style="fontsize: revert">Advanced Search</span>
+      <span>Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
     <AdvancedSearchDialogBox />
@@ -82,5 +83,9 @@ export default {
 
 .button-text-size {
   font-size: 13px;
+}
+
+.advancedTextMd {
+  font-size: 14px;
 }
 </style>

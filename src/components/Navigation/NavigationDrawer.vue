@@ -38,9 +38,7 @@
         to="/accounts/profile"
         width="100%"
       >
-        <v-avatar>
-          <v-icon color="white"> fas fa-user-circle</v-icon>
-        </v-avatar>
+        <v-icon class="mr-1" color="white"> fas fa-user-circle</v-icon>
         <span class="text-white ellipse-150">{{
           user().credentials.username
         }}</span>

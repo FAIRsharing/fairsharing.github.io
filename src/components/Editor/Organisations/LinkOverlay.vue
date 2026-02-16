@@ -707,16 +707,14 @@ export default {
       }
       this.editOrganisationLink.showOverlay = false;
     },
-    customFilter(item, queryText) {
-      let textToSearch = item.name;
+    customFilter(itemTitle, queryText, item) {
+      let textToSearch = item.raw.name;
       // A newly-created organisation in memory may have no alternativeNames.
       // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1799
-      /* istanbul ignore else */
-      if (item.alternativeNames) {
-        textToSearch = textToSearch + " " + item.alternativeNames.join(" ");
+      if (item.raw.alternativeNames) {
+        textToSearch = textToSearch + " " + item.raw.alternativeNames.join(" ");
       }
       const searchText = queryText.toLowerCase();
-
       return textToSearch.toLowerCase().indexOf(searchText) > -1;
     },
 

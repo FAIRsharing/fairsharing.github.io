@@ -4,6 +4,7 @@ import "vue-code-highlight/themes/window.css";
 import 'core-js/stable'
 import 'regenerator-runtime/runtime';
 
+import Particles from "@tsparticles/vue2";
 // import 'prism-es6/components/prism-ruby.min';
 // import 'prism-es6/components/prism-python.min';
 import Highcharts from 'highcharts'
@@ -27,7 +28,6 @@ import VueMeta from "vue-meta";
 import VueMoment from 'vue-moment';
 import VueSanitize from "vue-sanitize";
 import VueScrollTo from 'vue-scrollto';
-import Particles from "vue2-particles";
 
 import App from "./App.vue";
 import vuetify from './plugins/vuetify'

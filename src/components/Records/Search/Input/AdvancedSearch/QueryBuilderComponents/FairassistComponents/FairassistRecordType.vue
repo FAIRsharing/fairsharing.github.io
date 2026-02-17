@@ -1,13 +1,11 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="filteredRecordTypes('FAIRassist')"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-list="filteredRecordTypes('FAIRassist')"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 <script>
 import { mapActions } from "vuex";
@@ -15,11 +13,10 @@ import { mapActions } from "vuex";
 import { recordTypes } from "@/utils/advancedSearchUtils";
 
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "FairassistRecordType",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   mixins: [recordTypes],
   props: {
     value: {

@@ -92,26 +92,38 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;query-builder v-model="query" :config="config">
+  &lt;query-builder
+    v-model="query"
+    :config="config"
+  >
     &lt;!-- To use the custom text instead of default text 'Operator' -->
 
     &lt;template #groupOperator="props">
       &lt;div class="query-builder-group__group-selection">
         &lt;div class="tooltip">
-          &lt;v-icon class="mr-1 text-white tooltipIcon" size="small">
-            fas fa-question-circle
+          &lt;v-icon
+            small
+            class="mr-1 white--text tooltipIcon"
+          >
+            fa-question-circle
           &lt;/v-icon>
           &lt;span class="tooltiptext" />
         &lt;/div>
         &lt;span class="query-builder-group__group-operator">
           Select an Operator to apply across all groups
         &lt;/span>
+
         &lt;select
-          :value="props.currentOperator"
           class="operatorSelect"
+          :value="props.currentOperator"
           @input="props.updateCurrentOperator($event.target.value)"
         >
-          &lt;option disabled value="">Select an operator&lt;/option>
+          &lt;option
+            disabled
+            value=""
+          >
+            Select an operator
+          &lt;/option>
           &lt;option
             v-for="operator in props.operators"
             :key="operator.identifier"
@@ -128,7 +140,7 @@
 &lt;/template>
 
 &lt;script>
-import QueryBuilder from "query-builder-vue-3";
+import QueryBuilder from "query-builder-vue";
 import { mapGetters } from "vuex";
 
 import advancedSearch from "@/store";
@@ -136,6 +148,7 @@ import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
   AccessMethods,
+  AssociatedTests,
   AssociatedTools,
   CertificationsAndCommunityBadges,
   CitationToRelatedPublications,
@@ -155,20 +168,24 @@ import {
   DataVersioning,
   Domain,
   ExceptionsToDataSharing,
+  FairassistRecordType,
   GloballyUnique,
   GroupCtrlSlot,
   GuidanceToHelpEnableCompliance,
   HasPublication,
+  IndeterminateExamples,
   IsImplemented,
   Licences,
   LicencesForOutputs,
   MandatedDataSharing,
   MandatedDmpCreation,
   MonitoringOfCompliance,
+  NegativeExamples,
   ObjectTypes,
   Organisations,
   Persistent,
   PolicyRecordType,
+  PositiveExamples,
   RecommendsDatabase,
   RecommendsStandard,
   RecordStatus,
@@ -185,7 +202,6 @@ import {
   UserDefinedTag,
   UsesPersistentIdentifier,
 } from "./QueryBuilderComponents";
-
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder, GroupCtrlSlot },
@@ -303,6 +319,12 @@ export default {
             identifier: "databasetype",
             name: "Database Record Type",
             component: DatabaseRecordType,
+            initialValue: () => [],
+          },
+          {
+            identifier: "fairassisttype",
+            name: "FAIRassist Record Type",
+            component: FairassistRecordType,
             initialValue: () => [],
           },
           {
@@ -509,6 +531,30 @@ export default {
             component: Resolvable,
             initialValue: "",
           },
+          {
+            identifier: "associatedTests",
+            name: "Associated Tests",
+            component: AssociatedTests,
+            initialValue: "",
+          },
+          {
+            identifier: "positiveExamples",
+            name: "Positive Examples",
+            component: PositiveExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "negativeExamples",
+            name: "Negative Examples",
+            component: NegativeExamples,
+            initialValue: "",
+          },
+          {
+            identifier: "indeterminateExamples",
+            name: "Indeterminate Examples",
+            component: IndeterminateExamples,
+            initialValue: "",
+          },
         ],
         colors: ["#599C0F", "#CB9221", "#A04545"],
       };
@@ -543,7 +589,6 @@ export default {
 
   watch: {
     query(newValue) {
-      newValue = JSON.parse(JSON.stringify(newValue));
       advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
       //Updating edit advanced search only if newValue has some data
       if (newValue["children"] &amp;&amp; newValue["children"].length) {
@@ -551,7 +596,7 @@ export default {
           if (item["children"] &amp;&amp; item["children"].length) {
             advancedSearch.commit(
               "advancedSearch/setEditAdvancedSearch",
-              newValue,
+              newValue
             );
           }
         });
@@ -596,7 +641,8 @@ export default {
 };
 &lt;/script>
 &lt;style lang="scss" scoped>
-@use "vuetify/settings";
+@import "~vuetify/src/styles/settings/_variables.scss";
+@import "@/styles/queryBuilderView";
 &lt;/style>
 </pre>
     </article>
@@ -643,7 +689,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Mon Feb 16th 2026
+		on Tue Feb 17th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

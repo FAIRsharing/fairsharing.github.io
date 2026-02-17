@@ -47,3 +47,8 @@ export { default as AccessMethods } from "./DatabaseComponents/AccessMethods.vue
 export { default as GloballyUnique } from "./OtherBooleanComponents/GloballyUnique.vue";
 export { default as Persistent } from "./OtherBooleanComponents/Persistent.vue";
 export { default as Resolvable } from "./OtherBooleanComponents/Resolvable.vue";
+export { default as FairassistRecordType } from "./FairassistComponents/FairassistRecordType.vue";
+export { default as AssociatedTests } from "./FairassistComponents/AssociatedTests.vue";
+export { default as PositiveExamples } from "./FairassistComponents/PositiveExamples.vue";
+export { default as NegativeExamples } from "./FairassistComponents/NegativeExamples.vue";
+export { default as IndeterminateExamples } from "./FairassistComponents/IndeterminateExamples.vue";

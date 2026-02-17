@@ -73,7 +73,6 @@ export default {
   top: 0;
   border-radius: unset;
 }
-
 .home-search-bt-xl {
   height: 50px !important;
   right: 0;

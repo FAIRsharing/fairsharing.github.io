@@ -28,6 +28,6 @@ module.exports = {
     ".*\\.(vue)$": "vue-jest",
   },
   transformIgnorePatterns: [
-    "node_modules/(?!vue-router|@babel|vuetify|vue2-particles)",
+    "node_modules/(?!vue-router|@babel|vuetify|@tsparticles/vue2)",
   ],
 };

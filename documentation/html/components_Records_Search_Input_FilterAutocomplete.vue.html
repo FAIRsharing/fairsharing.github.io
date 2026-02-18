@@ -93,8 +93,8 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-expansion-panel
-      v-if="filter.filterName"
-      :id="filter.filterName + 'AutocompleteList'"
+    v-if="filter.filterName"
+    :id="filter.filterName + 'AutocompleteList'"
   >
     &lt;v-expansion-panel-title> {{ filter.filterLabel }}&lt;/v-expansion-panel-title>
 
@@ -102,44 +102,66 @@
       &lt;v-row no-gutters>
         &lt;v-col cols="12">
           &lt;div
-              :class="['d-flex', { 'flex-column': $vuetify.display.mdAndDown }]"
+            :class="['d-flex', { 'flex-column': $vuetify.display.mdAndDown }]"
           >
             &lt;v-combobox
-                v-model="selectedValues"
-                :item-props="itemProps"
-                :items="getValues"
-                :placeholder="`Search`"
-                chips
-                class="text-capitalize"
-                closable-chips
-                color="primary"
-                density="compact"
-                hide-details="auto"
-                hide-no-data
-                multiple
-                prepend-inner-icon="fas fa-search"
-                variant="solo"
-                @focus="scrollTo(filter.filterName)"
-                @click:clear="reset(filter)"
+              v-model="selectedValues"
+              :items="getValues"
+              :menu-props="{ maxWidth: '50' }"
+              chips
+              class="text-capitalize"
+              clearable
+              closable-chips
+              color="primary"
+              density="compact"
+              hide-details="auto"
+              hide-no-data
+              item-title="key"
+              item-value="key"
+              multiple
+              placeholder="Search"
+              prepend-inner-icon="fas fa-search"
+              return-object
+              variant="solo"
+              @focus="scrollTo(filter.filterName)"
+              @click:clear="reset(filter)"
             >
-              &lt;!--          &lt;template #selection="data">-->
-              &lt;!--            &lt;v-chip class="bg-blue text-white mb-1">-->
-              &lt;!--              &lt;span class="chipsValueName">-->
-              &lt;!--                {{ cleanString(data.item.raw.key) }}-->
-              &lt;!--              &lt;/span>-->
-              &lt;!--            &lt;/v-chip>-->
-              &lt;!--          &lt;/template>-->
-              &lt;!--          &lt;template #item="data">-->
-              &lt;!--            &lt;div class="d-flex full-width">-->
-              &lt;!--              &lt;span class="filterValueName"> {{ cleanString(data.item.raw.key) }}&lt;/span>-->
-              &lt;!--              &lt;span class="filterValueCount"> {{ data.item.raw['doc_count'] }}&lt;/span>-->
-              &lt;!--            &lt;/div>-->
-              &lt;!--          &lt;/template>-->
+              &lt;template #chip="{ props, item }">
+                &lt;v-chip color="blue" v-bind="props" variant="flat">
+                  {{ item.title.replace(/_/g, " ") }}
+                  &lt;v-tooltip activator="parent" location="bottom">
+                    {{ item.title.replace(/_/g, " ") }}
+                  &lt;/v-tooltip>
+                &lt;/v-chip>
+              &lt;/template>
+
+              &lt;template #item="{ props, item }">
+                &lt;v-list-item v-bind="props">
+                  &lt;template #prepend="{ isActive }">
+                    &lt;v-list-item-action start>
+                      &lt;v-checkbox-btn
+                        :model-value="isActive"
+                        readonly
+                      >&lt;/v-checkbox-btn>
+                    &lt;/v-list-item-action>
+                  &lt;/template>
+
+                  &lt;span v-if="item.raw.key" class="text-capitalize">
+                    {{ item.raw.key.replace(/_/g, " ") }}
+                  &lt;/span>
+
+                  &lt;template #append>
+                    &lt;span class="filterValueCount">{{
+                      item.raw.doc_count
+                    }}&lt;/span>
+                  &lt;/template>
+                &lt;/v-list-item>
+              &lt;/template>
             &lt;/v-combobox>
             &lt;v-btn
-                class="ml-lg-2 custom-btn"
-                color="primary"
-                @click="applyFilters(filter)"
+              class="ml-lg-2 custom-btn"
+              color="primary"
+              @click="applyFilters(filter)"
             >
               Apply
             &lt;/v-btn>
@@ -151,17 +173,17 @@
 &lt;/template>
 
 &lt;script>
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import clearString from "@/utils/stringUtils";
-import {capitalize} from "lodash";
+import { capitalize } from "lodash";
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: {default: null, type: Object},
-    lastItem: {default: false, type: Boolean},
+    filter: { default: null, type: Object },
+    lastItem: { default: false, type: Boolean },
   },
   data: () => {
     return {
@@ -189,11 +211,11 @@ export default {
       let filterName = _module.filter.filterName;
       let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
 
-      _module.selectedValues = _module.selectedValues.map(({key}) => key);
+      _module.selectedValues = _module.selectedValues.map(({ key }) => key);
       if (Object.keys(currentParams).indexOf(filterName) === -1) {
         if (
           _module.selectedValues !== null &amp;&amp;
-            _module.selectedValues.length > 0
+          _module.selectedValues.length > 0
         ) {
           if (_module.selectedValues.length === 1) {
             currentParams[filterName] = encodeURIComponent(
@@ -217,7 +239,7 @@ export default {
       else {
         if (
           _module.selectedValues === null ||
-            _module.selectedValues.length === 0
+          _module.selectedValues.length === 0
         ) {
           delete currentParams[_module.filter.filterName];
           currentParams["page"] = 1;
@@ -229,7 +251,7 @@ export default {
         else {
           let newParams = [];
           let existingValues =
-              currentParams[_module.filter.filterName].split(",");
+            currentParams[_module.filter.filterName].split(",");
           _module.selectedValues.forEach(function (selectedValue) {
             const filterVal = encodeURIComponent(selectedValue);
             if (existingValues.indexOf(filterVal) === -1) {
@@ -274,7 +296,7 @@ export default {
 };
 &lt;/script>
 
-&lt;style scoped>
+&lt;style lang="scss" scoped>
 .filterValueName {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -297,6 +319,16 @@ export default {
 
 .custom-btn {
   height: 38px;
+}
+
+.v-field {
+  .v-chip {
+    height: inherit;
+  }
+}
+
+:deep(.v-list-item-title) {
+  display: none;
 }
 &lt;/style>
 </pre>

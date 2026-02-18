@@ -3,12 +3,12 @@
     <v-fade-transition>
       <div>
         <v-overlay
-            v-model="logoLoading"
-            :absolute="false"
-            class="align-center justify-center"
-            opacity="0.8"
+          v-model="logoLoading"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
         >
-          <Loaders/>
+          <Loaders />
         </v-overlay>
       </div>
     </v-fade-transition>
@@ -19,30 +19,30 @@
         <!-- current logo to go here -->
         <span> A record logo is optional (png or jpeg, max. 3MB). </span>
         <v-file-input
-            v-model="recordLogo"
-            :loading="logoLoading"
-            :rules="[rules.isImage(), imageSizeCorrect]"
-            accept="image/png,image/jpeg"
-            clearable
-            color="primary"
-            counter
-            label="Logo"
-            prepend-icon="fas fa-image"
-            show-size
-            variant="underlined"
+          v-model="recordLogo"
+          :loading="logoLoading"
+          :rules="[rules.isImage(), imageSizeCorrect]"
+          accept="image/png,image/jpeg"
+          clearable
+          color="primary"
+          counter
+          label="Logo"
+          prepend-icon="fas fa-image"
+          show-size
+          variant="underlined"
         />
         <v-row>
           <v-img
-              v-if="currentLogo"
-              :src="getAPIEndPoint() + currentRecord.fairsharingRecord.urlForLogo"
-              max-height="300"
-              max-width="500"
+            v-if="currentLogo"
+            :src="getAPIEndPoint() + currentRecord.fairsharingRecord.urlForLogo"
+            max-height="300"
+            max-width="500"
           />
           <v-btn
-              v-if="currentLogo"
-              class="bg-red text-white ma-1"
-              size="small"
-              @click="deleteLogo"
+            v-if="currentLogo"
+            class="bg-red text-white ma-1"
+            size="small"
+            @click="deleteLogo"
           >
             Delete logo
           </v-btn>
@@ -52,10 +52,10 @@
       <v-col cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
         <!-- name -->
         <v-text-field
-            v-model="fields.metadata.name"
-            :rules="[rules.isRequired()]"
-            label="Record Name"
-            variant="outlined"
+          v-model="fields.metadata.name"
+          :rules="[rules.isRequired()]"
+          label="Record Name"
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip location="bottom">
@@ -68,9 +68,9 @@
         </v-text-field>
         <!-- abbreviation -->
         <v-text-field
-            v-model="fields.metadata.abbreviation"
-            label="Abbreviation"
-            variant="outlined"
+          v-model="fields.metadata.abbreviation"
+          label="Abbreviation"
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -83,10 +83,10 @@
         </v-text-field>
         <!-- homepage -->
         <v-text-field
-            v-model="fields.metadata.homepage"
-            :rules="[rules.isRequired(), rules.isUrl()]"
-            label="Homepage"
-            variant="outlined"
+          v-model="fields.metadata.homepage"
+          :rules="[rules.isRequired(), rules.isUrl()]"
+          label="Homepage"
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -103,9 +103,9 @@
       <v-col v-if="possibleDuplicates.length > 0" cols="12">
         <v-expand-transition>
           <v-card
-              v-if="possibleDuplicates.length > 0"
-              class="mx-auto bg-deep-orange-darken-4 mb-5"
-              dark
+            v-if="possibleDuplicates.length > 0"
+            class="mx-auto bg-deep-orange-darken-4 mb-5"
+            dark
           >
             <v-card-title>
               <span class="text-h5 font-weight-bold">
@@ -119,8 +119,8 @@
               </p>
               <ul>
                 <li
-                    v-for="(dup, dupIndex) in possibleDuplicates"
-                    :key="'dup_' + dupIndex"
+                  v-for="(dup, dupIndex) in possibleDuplicates"
+                  :key="'dup_' + dupIndex"
                 >
                   <a :href="'/' + dup.id" target="_blank">
                     {{ dup.name }}
@@ -137,9 +137,9 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                  :disabled="submitAnywayDisabled"
-                  class="bg-white text-black"
-                  @click="submitAnyway"
+                :disabled="submitAnywayDisabled"
+                class="bg-white text-black"
+                @click="submitAnyway"
               >
                 I know what I'm doing...
               </v-btn>
@@ -151,20 +151,13 @@
         </v-expand-transition>
       </v-col>
 
-      <v-col
-          cols="12"
-          lg="12"
-          md="12"
-          sm="12"
-          xl="4"
-          xs="12"
-      >
+      <v-col cols="12" lg="12" md="12" sm="12" xl="4" xs="12">
         <!-- creation year -->
-        <v-select
-            v-model="fields.metadata.year_creation"
-            :items="years()"
-            label="Year of creation"
-            variant="outlined"
+        <v-autocomplete
+          v-model="fields.metadata.year_creation"
+          :items="years()"
+          label="Year of creation"
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -174,18 +167,18 @@
               {{ tooltips["year"] }}
             </v-tooltip>
           </template>
-        </v-select>
+        </v-autocomplete>
         <!-- countries -->
-        <v-select
-            v-model="fields.countries"
-            :items="countries"
-            class="editFormSelect"
-            item-title="name"
-            item-value="name"
-            label="Countries"
-            multiple
-            return-object
-            variant="outlined"
+        <v-autocomplete
+          v-model="fields.countries"
+          :items="countries"
+          class="editFormSelect"
+          item-title="name"
+          item-value="name"
+          label="Countries"
+          multiple
+          return-object
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -199,9 +192,9 @@
           <!-- Item selected -->
           <template #chip="data">
             <v-chip
-                class="bg-blue text-white removeStyle"
-                closable
-                @click:close="removeCountry(data.item.raw)"
+              class="bg-blue text-white removeStyle"
+              closable
+              @click:close="removeCountry(data.item.raw)"
             >
               {{ data.item.raw.name }}
             </v-chip>
@@ -212,41 +205,41 @@
             <v-list-item v-bind="props">
               <template #prepend>
                 <country-flag
-                    v-if="item.raw.code !== null"
-                    :country="item.raw.code"
-                    class="mr-1 mt-n2"
-                    size="normal"
+                  v-if="item.raw.code !== null"
+                  :country="item.raw.code"
+                  class="mr-1 mt-n2"
+                  size="normal"
                 />
                 <v-img
-                    v-else
-                    class="ml-4 mr-3"
-                    src="@/assets/placeholders/country.png"
+                  v-else
+                  class="ml-4 mr-3"
+                  src="@/assets/placeholders/country.png"
                 />
               </template>
               <span>{{ item.raw.name }}</span>
             </v-list-item>
           </template>
-        </v-select>
+        </v-autocomplete>
         <!-- registry -->
-        <v-select
-            ref="editRecordType"
-            v-model="fields.type"
-            :disabled="typeChangeDisabled()"
-            :items="recordTypes"
-            :rules="[rules.isRequired()]"
-            class="editFormSelect"
-            item-title="name"
-            item-value="name"
-            label="Registry and type"
-            return-object
-            variant="outlined"
+        <v-autocomplete
+          ref="editRecordType"
+          v-model="fields.type"
+          :disabled="typeChangeDisabled()"
+          :items="recordTypes"
+          :rules="[rules.isRequired()]"
+          class="editFormSelect"
+          item-title="name"
+          item-value="name"
+          label="Registry and type"
+          return-object
+          variant="outlined"
         >
           <!-- Item selected -->
           <template #chip="data">
             <v-chip
-                v-if="data.item.title"
-                class="bg-blue text-white text-capitalize"
-                closable
+              v-if="data.item.title"
+              class="bg-blue text-white text-capitalize"
+              closable
             >
               {{ data.item.title.replace(/_/g, " ") }}
             </v-chip>
@@ -258,28 +251,28 @@
                 <v-list>
                   <v-list-subheader v-if="item.raw.header" class="full-width">
                     <v-divider
-                        v-if="item.raw.header !== 'Collection'"
-                        class="ma-0 opacity-100 full-width pb-7"
+                      v-if="item.raw.header !== 'Collection'"
+                      class="ma-0 opacity-100 full-width pb-7"
                     />
                     <span>{{ item.raw.header }}</span></v-list-subheader
                   >
                   <v-list-item
-                      v-if="item.raw.name"
-                      class="cursor-pointer registryList"
-                      v-bind="props"
+                    v-if="item.raw.name"
+                    class="cursor-pointer registryList"
+                    v-bind="props"
                   >
                     <template #prepend>
                       <Icon
-                          :item="item.raw.name"
-                          height="40"
-                          wrapper-class=""
+                        :item="item.raw.name"
+                        height="40"
+                        wrapper-class=""
                       />
                     </template>
                     <div class="py-0 pl-4">
                       <div v-bind="activatorProps">
                         <span v-if="item.raw.name" class="font-weight-bold">{{
-                            item.raw.name.replace(/_/g, " ").toUpperCase()
-                          }}</span>
+                          item.raw.name.replace(/_/g, " ").toUpperCase()
+                        }}</span>
                       </div>
                       <v-list-item-subtitle>
                         {{ item.raw.description }}
@@ -291,26 +284,26 @@
               <span>{{ item.raw.description }}</span>
             </v-tooltip>
           </template>
-        </v-select>
+        </v-autocomplete>
       </v-col>
 
       <v-col cols="12">
         <!-- status -->
         <v-autocomplete
-            v-model="fields.status"
-            :items="recordStatus"
-            class="editFormSelect"
-            item-title="name"
-            item-value="name"
-            label="Status"
-            variant="outlined"
+          v-model="fields.status"
+          :items="recordStatus"
+          class="editFormSelect"
+          item-title="name"
+          item-value="name"
+          label="Status"
+          variant="outlined"
         >
           <!-- Item selected -->
           <template #chip="data">
             <v-chip
-                v-if="data.item.raw.name"
-                class="bg-blue text-white text-capitalize"
-                closable
+              v-if="data.item.raw.name"
+              class="bg-blue text-white text-capitalize"
+              closable
             >
               {{ data.item.raw.name.replace(/_/g, " ") }}
             </v-chip>
@@ -322,11 +315,11 @@
               <template #activator="{ props: activatorProps }">
                 <v-list>
                   <v-list-item
-                      class="registryList cursor-pointer"
-                      v-bind="props"
+                    class="registryList cursor-pointer"
+                    v-bind="props"
                   >
                     <template #prepend>
-                      <status-pills :status="item.raw.name"/>
+                      <status-pills :status="item.raw.name" />
                     </template>
                     <div v-bind="activatorProps">
                       <span class="font-weight-bold">
@@ -354,18 +347,18 @@
           below that confirms that the database instead uses an internal
           identifier schema. More information is available in our
           <a
-              href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/identifier-type"
-              target="_blank"
+            href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/identifier-type"
+            target="_blank"
           >
             identifier type
           </a>
           documentation.
         </p>
         <v-checkbox
-            v-if="isDatabase()"
-            v-model="fields.metadata['internal_identifiers']"
-            class="mr-2"
-            color="primary"
+          v-if="isDatabase()"
+          v-model="fields.metadata['internal_identifiers']"
+          class="mr-2"
+          color="primary"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -377,7 +370,7 @@
           </template>
           <template #label>
             <span class="v-label-white"
-            >This database uses internal identifiers rather than a
+              >This database uses internal identifiers rather than a
               community-standard identifier schema.</span
             >
           </template>
@@ -385,15 +378,15 @@
         <!-- globally_unique -->
         <div v-if="isIdentifierSchema()" class="checkboxes">
           <v-checkbox
-              v-model="fields.metadata['globally_unique']"
-              class="mr-2"
-              color="primary"
+            v-model="fields.metadata['globally_unique']"
+            class="mr-2"
+            color="primary"
           >
             <template #prepend>
               <v-tooltip
-                  class="text-justify"
-                  location="bottom"
-                  max-width="300px"
+                class="text-justify"
+                location="bottom"
+                max-width="300px"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle</v-icon>
@@ -403,11 +396,11 @@
             </template>
             <template #label>
               <span class="v-label-white"
-              >Is this identifier schema
+                >Is this identifier schema
                 <a
-                    href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
-                    target="_blank"
-                >globally unique</a
+                  href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  target="_blank"
+                  >globally unique</a
                 >
                 as defined by FAIRsharing?</span
               >
@@ -416,15 +409,15 @@
 
           <!-- persistent -->
           <v-checkbox
-              v-model="fields.metadata['persistent']"
-              class="mr-2"
-              color="primary"
+            v-model="fields.metadata['persistent']"
+            class="mr-2"
+            color="primary"
           >
             <template #prepend>
               <v-tooltip
-                  class="text-justify"
-                  location="bottom"
-                  max-width="300px"
+                class="text-justify"
+                location="bottom"
+                max-width="300px"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle</v-icon>
@@ -434,11 +427,11 @@
             </template>
             <template #label>
               <span class="v-label-white"
-              >Is this identifier schema
+                >Is this identifier schema
                 <a
-                    href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
-                    target="_blank"
-                >persistent</a
+                  href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  target="_blank"
+                  >persistent</a
                 >
                 as defined by FAIRsharing?</span
               >
@@ -447,15 +440,15 @@
 
           <!-- resolvable -->
           <v-checkbox
-              v-model="fields.metadata['resolvable']"
-              class="mr-2"
-              color="primary"
+            v-model="fields.metadata['resolvable']"
+            class="mr-2"
+            color="primary"
           >
             <template #prepend>
               <v-tooltip
-                  class="text-justify"
-                  location="bottom"
-                  max-width="300px"
+                class="text-justify"
+                location="bottom"
+                max-width="300px"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle</v-icon>
@@ -465,11 +458,11 @@
             </template>
             <template #label>
               <span class="v-label-white"
-              >Is this identifier schema
+                >Is this identifier schema
                 <a
-                    href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
-                    target="_blank"
-                >resolvable</a
+                  href="https://fairsharing.gitbook.io/fairsharing/additional-information/globally-unique-persistent-and-resolvable-identifier-schemas"
+                  target="_blank"
+                  >resolvable</a
                 >
                 as defined by FAIRsharing?</span
               >
@@ -482,16 +475,16 @@
       <v-col v-if="fields.status === 'deprecated'" cols="12">
         <v-expand-transition>
           <v-textarea
-              v-if="fields.status === 'deprecated'"
-              v-model="fields.metadata['deprecation_reason']"
-              label="Reason for deprecation"
-              variant="outlined"
+            v-if="fields.status === 'deprecated'"
+            v-model="fields.metadata['deprecation_reason']"
+            label="Reason for deprecation"
+            variant="outlined"
           >
             <template #prepend>
               <v-tooltip
-                  class="text-justify"
-                  location="bottom"
-                  max-width="300px"
+                class="text-justify"
+                location="bottom"
+                max-width="300px"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle</v-icon>
@@ -506,10 +499,10 @@
       <!-- description -->
       <v-col cols="12">
         <v-textarea
-            v-model="fields.metadata.description"
-            :rules="[rules.isRequired(), rules.isLongEnough(40)]"
-            label="Description"
-            variant="outlined"
+          v-model="fields.metadata.description"
+          :rules="[rules.isRequired(), rules.isLongEnough(40)]"
+          label="Description"
+          variant="outlined"
         >
           <template #prepend>
             <v-tooltip class="text-justify" location="bottom" max-width="300px">
@@ -526,16 +519,16 @@
       <v-col cols="12">
         <v-expand-transition>
           <v-textarea
-              v-if="user().is_curator"
-              v-model="fields.curator_notes"
-              label="Curator notes"
-              variant="outlined"
+            v-if="user().is_curator"
+            v-model="fields.curator_notes"
+            label="Curator notes"
+            variant="outlined"
           >
             <template #prepend>
               <v-tooltip
-                  class="text-justify"
-                  location="bottom"
-                  max-width="300px"
+                class="text-justify"
+                location="bottom"
+                max-width="300px"
               >
                 <template #activator="{ props }">
                   <v-icon v-bind="props"> fas fa-question-circle</v-icon>
@@ -550,11 +543,11 @@
       <!-- isHidden -->
       <v-col cols="12">
         <v-checkbox
-            v-if="user().is_curator"
-            v-model="fields.isHidden"
-            class="d-inline-block mr-2"
-            color="primary"
-            label="hide record"
+          v-if="user().is_curator"
+          v-model="fields.isHidden"
+          class="d-inline-block mr-2"
+          color="primary"
+          label="hide record"
         >
           <template #label>
             <span class="v-label-white">Hidden if selected.</span>
@@ -562,15 +555,15 @@
         </v-checkbox>
       </v-col>
 
-      <database-warning/>
+      <database-warning />
       <!-- create record button -->
       <v-card-actions v-if="createMode">
         <v-btn
-            :disabled="disableSubmit()"
-            :loading="loading"
-            class="bg-primary"
-            variant="elevated"
-            @click="createNewRecord()"
+          :disabled="disableSubmit()"
+          :loading="loading"
+          class="bg-primary"
+          variant="elevated"
+          @click="createNewRecord()"
         >
           Create Record
         </v-btn>
@@ -581,14 +574,14 @@
 
 <script>
 import CountryFlag from "vue-country-flag-next";
-import {mapGetters, mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import Loaders from "@/components/Navigation/Loaders.vue";
 import StatusPills from "@/components/Records/Shared/StatusPills";
 import RESTClient from "@/lib/Client/RESTClient";
-import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
-import {isImage, isLongEnough, isRequired, isUrl} from "@/utils/rules.js";
+import getAPIEndPoint, { toBase64 } from "@/utils/generalUtils";
+import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js";
 
 import DatabaseWarning from "./DatabaseWarning";
 
@@ -596,12 +589,12 @@ let restClient = new RESTClient();
 
 export default {
   name: "BaseFields",
-  components: {DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders},
+  components: { DatabaseWarning, CountryFlag, StatusPills, Icon, Loaders },
   mixins: [getAPIEndPoint],
   props: {
-    createMode: {type: Boolean, default: false},
-    submitRecord: {type: Boolean, default: false},
-    loading: {type: Boolean, default: false},
+    createMode: { type: Boolean, default: false },
+    submitRecord: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -689,7 +682,7 @@ export default {
     this.$refs.form.validate();
     if (
       this.$router.currentRoute.path !== "/create" &&
-        this.currentRecord.fairsharingRecord.urlForLogo
+      this.currentRecord.fairsharingRecord.urlForLogo
     ) {
       this.currentLogo = this.currentRecord.fairsharingRecord.urlForLogo;
     }
@@ -750,11 +743,11 @@ export default {
     isDatabase() {
       if (
         this.fields.type.name === "repository" ||
-          this.fields.type.name === "knowledgebase" ||
-          this.fields.type.name === "knowledgebase_and_repository" ||
-          this.fields.type === "repository" ||
-          this.fields.type === "knowledgebase" ||
-          this.fields.type === "knowledgebase_and_repository"
+        this.fields.type.name === "knowledgebase" ||
+        this.fields.type.name === "knowledgebase_and_repository" ||
+        this.fields.type === "repository" ||
+        this.fields.type === "knowledgebase" ||
+        this.fields.type === "knowledgebase_and_repository"
       ) {
         return true;
       }
@@ -763,7 +756,7 @@ export default {
     isIdentifierSchema() {
       if (
         this.fields.type.name === "identifier_schema" ||
-          this.fields.type === "identifier_schema"
+        this.fields.type === "identifier_schema"
       ) {
         return true;
       }

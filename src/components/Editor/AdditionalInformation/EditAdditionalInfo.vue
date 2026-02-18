@@ -32,7 +32,7 @@
                   location="bottom"
                 >
                   <template #activator="{ props }">
-                    <v-icon v-bind="props" color="grey">
+                    <v-icon color="grey" v-bind="props">
                       fas fa-question-circle
                     </v-icon>
                   </template>
@@ -42,11 +42,11 @@
                   {{ cleanString(fieldName).toUpperCase() }}
                 </b>
 
-                <v-tooltip location="bottom" class="d-inline-block mr-2">
+                <v-tooltip class="d-inline-block mr-2" location="bottom">
                   <template #activator="{ props }">
                     <v-icon
-                      size="small"
                       class="text-blue bg-white ml-2 iconReposition"
+                      size="small"
                       v-bind="props"
                       @click="
                         createItem(
@@ -77,17 +77,17 @@
                     v-for="(item, itemIndex) in fields[fieldName]"
                     :key="'arrayField_' + itemIndex"
                     cols="12"
-                    xs="12"
-                    sm="12"
-                    md="6"
                     lg="4"
+                    md="6"
+                    sm="12"
                     xl="3"
+                    xs="12"
                   >
                     <v-card
-                      height="100%"
                       class="d-flex flex-column bg-grey-lighten-4"
+                      height="100%"
                     >
-                      <v-card-text style="flex-grow: 1" class="pb-0">
+                      <v-card-text class="pb-0" style="flex-grow: 1">
                         <div
                           v-for="(
                             subField, subfieldName, subfieldIndex
@@ -101,9 +101,9 @@
                       <v-card-actions>
                         <v-spacer />
                         <v-btn
+                          class="bg-success"
                           icon
                           size="small"
-                          class="bg-success"
                           @click="
                             showOverlay(
                               itemIndex,
@@ -121,9 +121,9 @@
                           <v-icon size="small"> fas fa-pen </v-icon>
                         </v-btn>
                         <v-btn
+                          class="bg-error"
                           icon
                           size="small"
-                          class="bg-error"
                           @click="removeItem(fieldName, itemIndex)"
                         >
                           <v-icon size="small"> fas fa-trash </v-icon>
@@ -141,18 +141,18 @@
               v-for="(field, fieldName, fieldIndex) in getFields('object')"
               :key="'objectField_' + fieldIndex"
               cols="12"
-              xs="12"
-              sm="12"
-              md="12"
               lg="6"
+              md="12"
+              sm="12"
               xl="3"
+              xs="12"
             >
               <v-card class="bg-grey-lighten-4" height="100%">
                 <v-card-title>
                   <v-tooltip
                     v-if="getFields('object')[fieldName]['description']"
-                    location="bottom"
                     class="d-inline-block mr-2"
+                    location="bottom"
                   >
                     <template #activator="{ props }">
                       <v-icon v-bind="props"> fas fa-question-circle </v-icon>
@@ -184,7 +184,7 @@
             <v-col cols="12">
               <b class="text-body-1 text-blue"> BASE FIELDS: </b>
             </v-col>
-            <v-col xs="12" sm="12" md="12" lg="4" xl="2" class="pt-0">
+            <v-col class="pt-0" lg="4" md="12" sm="12" xl="2" xs="12">
               <FieldInput
                 v-for="(field, fieldName, fieldIndex) in getFields('enum')"
                 :key="'switchField_' + fieldIndex"
@@ -199,11 +199,11 @@
               v-for="(field, fieldName, fieldIndex) in getFields('string')"
               :key="'stringField_' + fieldIndex"
               cols="12"
-              xs="12"
-              sm="12"
-              md="12"
               lg="8"
+              md="12"
+              sm="12"
               xl="10"
+              xs="12"
             >
               <FieldInput :field-name="fieldName" :field-props="field" />
             </v-col>
@@ -212,16 +212,16 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="bg-primary"
           :loading="continueLoader"
+          class="bg-primary"
           variant="elevated"
           @click="saveRecord(false, $event.target)"
         >
           Save and continue
         </v-btn>
         <v-btn
-          class="bg-primary"
           :loading="exitLoader"
+          class="bg-primary"
           variant="elevated"
           @click="saveRecord(true, $event.target)"
         >
@@ -232,10 +232,10 @@
     <v-fade-transition>
       <div>
         <v-overlay
-          :model-value="overlay.show"
           :absolute="false"
-          opacity="0.8"
+          :model-value="overlay.show"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <v-card width="800px">
             <v-form
@@ -254,11 +254,11 @@
                 >
                   <v-tooltip
                     v-if="overlay.template[fieldName].description"
-                    location="bottom"
                     class="d-inline-block mr-2"
+                    location="bottom"
                   >
                     <template #activator="{ props }">
-                      <v-icon v-bind="props" class="mt-5 mr-3">
+                      <v-icon class="mt-5 mr-3" v-bind="props">
                         fas fa-question-circle
                       </v-icon>
                     </template>
@@ -268,20 +268,20 @@
                     v-if="!field.enum"
                     v-model="overlay.fields[fieldName]"
                     :label="fieldName"
-                    variant="outlined"
+                    :rules="rules(fieldName, overlay.required)"
                     class="field mt-2"
                     color="primary"
-                    :rules="rules(fieldName, overlay.required)"
+                    variant="outlined"
                   />
                   <v-autocomplete
                     v-else
                     v-model="overlay.fields[fieldName]"
-                    :label="fieldName"
-                    variant="outlined"
                     :items="field.enum"
+                    :label="fieldName"
+                    :rules="rules(fieldName, overlay.required)"
                     class="field"
                     color="primary"
-                    :rules="rules(fieldName, overlay.required)"
+                    variant="outlined"
                   />
                 </div>
               </v-card-text>
@@ -289,11 +289,18 @@
                 <v-btn
                   :disabled="!subFormValid"
                   class="bg-success"
+                  variant="elevated"
                   @click="addItem()"
                 >
                   Submit item
                 </v-btn>
-                <v-btn class="bg-error" @click="hideOverlay()"> Cancel </v-btn>
+                <v-btn
+                  class="bg-error"
+                  variant="elevated"
+                  @click="hideOverlay()"
+                >
+                  Cancel
+                </v-btn>
               </v-card-actions>
             </v-form>
           </v-card>
@@ -389,7 +396,8 @@ export default {
               !this.allowedFields.properties[fieldName].enum
             ) {
               output[fieldName] = this.allowedFields.properties[fieldName];
-            } else if (
+            }
+            else if (
               type === "string" &&
               this.allowedFields.properties[fieldName].enum
             ) {
@@ -496,7 +504,8 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      } else if (item.textContent.trim() === "Save and exit") {
+      }
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }
@@ -509,7 +518,8 @@ export default {
       this.exitLoader = false;
       if (this.message.error || !redirect) {
         this.$scrollTo("#mainHeader");
-      } else {
+      }
+      else {
         await this.$router.push({ path: "/" + this.$route.params.id });
       }
     },

@@ -1,16 +1,19 @@
 <template>
-  <v-row class="mr-2 ml-2 pb-3">
+  <v-row class="mr-2 ml-2 align-center">
     <v-chip
       v-if="getChips.length"
-      class="ma-2 mt-5 bg-red text-white"
+      class="text-white mr-4"
+      color="red"
+      variant="flat"
       @click="removeAllParams"
     >
       Clear All
     </v-chip>
     <v-chip-group v-for="chip in getChips" :key="'Chips_' + chip.paramVal">
       <v-chip
-        class="ma-2 mt-5 bg-white text-secondary"
+        class="bg-white text-secondary"
         closable
+        variant="outlined"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
         {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1">
@@ -93,7 +96,8 @@ export default {
       Object.keys(_module.$route.query).forEach(function (queryParam) {
         if (queryParam !== paramName) {
           query[queryParam] = _module.$route.query[queryParam];
-        } else {
+        }
+        else {
           if (_module.$route.query[queryParam].includes(",")) {
             let currentValues = _module.$route.query[queryParam].split(",");
             if (currentValues.includes(paramVal)) {

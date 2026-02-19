@@ -108,5 +108,33 @@ describe("AlertBuilder", () => {
         expect(Object.keys(resp.alerts).length).toBe(0);
     });
 
+    it("can show required components missing", () => {
+      alertBuilder = new AlertBuilder(
+        {
+          fairsharingRecord: {
+            incomplete: {
+              required: [
+                {
+                  url: "http://notagoat.cx",
+                  field: "field_name"
+                }
+              ]
+            }
+          }
+        },
+      );
+      resp = alertBuilder.isIncomplete();
+      expect(Object.keys(resp.alerts).length).toBe(1);
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          incomplete: {
+            required: [],
+          },
+        },
+      });
+      resp = alertBuilder.isIncomplete();
+      expect(Object.keys(resp.alerts).length).toBe(0);
+    })
+
 
 });

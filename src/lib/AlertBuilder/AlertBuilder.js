@@ -89,6 +89,29 @@ class AlertBuilder {
         return this;
     }
 
+    isIncomplete() {
+      if (!this.currentRecord.fairsharingRecord.incomplete) {
+        return this;
+      }
+      if ( this.currentRecord.fairsharingRecord.incomplete.required.length > 0 ) {
+        let final = [];
+        this.currentRecord.fairsharingRecord.incomplete.required.forEach(
+          (missing) => {
+            final.push(
+              `<a class="white--text text-decoration-underline" href="${missing.url}">${missing.field}</a>`
+            );
+          }
+        );
+        this.alerts["isIncomplete"] = {
+          type: "info",
+          message: `This record is incomplete and will not be issued with a DOI until at least all required fields have been completed. Still missing: ${final.join(
+            ", "
+          )}.`,
+        };
+      }
+      return this;
+    }
+
     //--end of banners only for curators and super curators
     //-----------------------------------------------------------------
 

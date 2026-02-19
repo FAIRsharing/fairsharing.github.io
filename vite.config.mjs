@@ -1,13 +1,13 @@
-import {defineConfig} from "vite";
-import {fileURLToPath, URL} from "url";
+import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "url";
 import vue from "@vitejs/plugin-vue";
-import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import dns from "node:dns";
 import eslintPlugin from "vite-plugin-eslint";
-import path from 'path'
-import {nodePolyfills} from 'vite-plugin-node-polyfills';
-import autoprefixer from 'autoprefixer'
-import viteCompression from 'vite-plugin-compression';
+import path from "path";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
+import autoprefixer from "autoprefixer";
+import viteCompression from "vite-plugin-compression";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  base: "./",
+  base: "/",
   server: {
     host: true,
     open: true,

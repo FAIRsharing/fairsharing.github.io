@@ -12,11 +12,7 @@
         "description",
         {
           "queryName": "recordTypes",
-          "fields": [
-            "id",
-            "name",
-            "description"
-          ]
+          "fields": ["id", "name", "description"]
         }
       ]
     }

@@ -1,22 +1,19 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-list="itemList"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "AccessMethods",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
@@ -25,10 +22,20 @@ export default {
   },
   data: () => {
     return {
-      itemList: ["User interface", "REST", "OAI-PMH", "Bioschemas", "SOAP", "FTP", "SPARQL", "Other machine-accessible method"],
+      itemList: [
+        "User interface",
+        "REST",
+        "OAI-PMH",
+        "Bioschemas",
+        "SOAP",
+        "FTP",
+        "SPARQL",
+        "Other machine-accessible method",
+      ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "A user interface is any data access point intended for human consumption (e.g. a search page or data submission form). All other options describe the type of machine-accessible processes (such as REST APIs) that programmatic tools can use to access the resource. Multiple selections will be joined with OR.",
+      toolTipText:
+        "A user interface is any data access point intended for human consumption (e.g. a search page or data submission form). All other options describe the type of machine-accessible processes (such as REST APIs) that programmatic tools can use to access the resource. Multiple selections will be joined with OR.",
     };
   },
   computed: {

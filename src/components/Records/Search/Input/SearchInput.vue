@@ -1,8 +1,11 @@
 <template>
   <v-card
     id="scrollable-holder"
-    :class="['pa-2', ($vuetify.breakpoint.mdAndUp) ? responsiveClassObject : 'fullHeight']"
-    outlined
+    :class="[
+      'pa-2 overflow-auto',
+      $vuetify.display.mdAndUp ? responsiveClassObject : 'fullHeight',
+    ]"
+    border
     tile
     elevation="3"
     width="100%"
@@ -15,22 +18,18 @@
       placeholder="Search through current results."
     />
 
-    <hr
-      v-if="showSearchBox"
-      class="mb-3 mr-2 ml-2 custom-hr"
-    >
+    <hr v-if="showSearchBox" class="mb-3 mr-2 ml-2 custom-hr" />
 
     <!-- Filter Buttons     -->
     <FilterButtons />
 
     <!-- expansion Panels    -->
     <v-expansion-panels
-      v-if="getFilters.length>0"
+      v-if="getFilters.length > 0"
       v-model="panel"
       multiple
       flat
-      hover
-      accordion
+      variant="accordion"
     >
       <filter-autocomplete
         v-for="filter in setup"
@@ -42,7 +41,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
+import { mapGetters, mapState } from "vuex";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import filterMapping from "@/data/FiltersLabelMapping.json";
@@ -52,20 +51,20 @@ import FilterButtons from "./FilterButtons";
 
 export default {
   name: "SearchInput",
-  components: {StringSearch, FilterButtons, FilterAutocomplete},
-  props:{
-    showSearchBox: {default: true, type: Boolean},
-    searchPath: {default: '/search', type: String}
+  components: { StringSearch, FilterButtons, FilterAutocomplete },
+  props: {
+    showSearchBox: { default: true, type: Boolean },
+    searchPath: { default: "/search", type: String },
   },
   data() {
     return {
       panel: [],
       filterSelected: {},
-      sortOrder: filterMapping['sort_order'],
-    }
+      sortOrder: filterMapping["sort_order"],
+    };
   },
   computed: {
-    ...mapState('uiController', ['UIGeneralStatus']),
+    ...mapState("uiController", ["UIGeneralStatus"]),
     ...mapGetters("searchFilters", ["getFilters"]),
     setup() {
       let _module = this;
@@ -75,20 +74,21 @@ export default {
     },
     responsiveClassObject: function () {
       return {
-        'filters-holder-default': this.UIGeneralStatus.headerVisibilityState,
-        'filters-holder-after-scroll': !this.UIGeneralStatus.headerVisibilityState,
-      }
-    }
+        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
+        "filters-holder-after-scroll":
+          !this.UIGeneralStatus.headerVisibilityState,
+      };
+    },
   },
   methods: {
     setPanel() {
-      this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
+      this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i);
     },
     resetPanel() {
-      this.panel = []
+      this.panel = [];
     },
     createIndexForFilters: function () {
-      this.getFilters.forEach(item => {
+      this.getFilters.forEach((item) => {
         this.filterSelected[item.filterName] = [];
       });
     },
@@ -97,10 +97,10 @@ export default {
      * users' preferences. But, some terms may not be in the list, so they are given the index of 100 to force
      * them to appear later.
      */
-    compareLabels: function(a, b) {
+    compareLabels: function (a, b) {
       let _module = this;
-      const aIndex = _module.sortOrder.indexOf(a['filterName']);
-      const bIndex = _module.sortOrder.indexOf(b['filterName']);
+      const aIndex = _module.sortOrder.indexOf(a["filterName"]);
+      const bIndex = _module.sortOrder.indexOf(b["filterName"]);
       const aOrder = aIndex === -1 ? 100 : aIndex;
       const bOrder = bIndex === -1 ? 100 : bIndex;
       let comparison = -1;
@@ -108,9 +108,9 @@ export default {
         comparison = 1;
       }
       return comparison;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -124,7 +124,7 @@ export default {
   top: 0;
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
-  scrollbar-width:thin;
+  scrollbar-width: thin;
 }
 .filters-holder-after-scroll {
   border-radius: 0;
@@ -136,14 +136,13 @@ export default {
   top: 0;
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
-  scrollbar-width:thin;
+  scrollbar-width: thin;
 }
 .custom-hr {
-  opacity: .5;
+  opacity: 0.5;
 }
 .fullHeight {
   height: 90vh;
   overflow: scroll;
 }
-
 </style>

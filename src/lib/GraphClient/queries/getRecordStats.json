@@ -1,7 +1,5 @@
 {
   "queryName": "latestStats",
   "queryParam": null,
-  "fields": [
-    "data"
-  ]
+  "fields": ["data"]
 }

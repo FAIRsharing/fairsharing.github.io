@@ -1,84 +1,84 @@
 {
-    "autocomplete": {
-        "licences": {
-            "filterName": "licences",
-            "filterLabel": "Licence(s)",
-            "type": "String"
-        },
-        "taxonomies": {
-            "filterName": "taxonomies",
-            "filterLabel": "Species",
-            "type": "String"
-        },
-        "organisations": {
-            "filterName": "organisations",
-            "filterLabel": "Organisation(s)",
-            "type": "String"
-        },
-        "countries": {
-            "filterName": "countries",
-            "filterLabel": "Countries",
-            "type": "String"
-        },
-        "domains": {
-            "filterName": "domains",
-            "filterLabel": "Domains",
-            "type": "String"
-        },
-        "subjects": {
-            "filterName": "subjects",
-            "filterLabel": "Subjects",
-            "type": "String"
-        },
-        "user_defined_tags": {
-            "filterName": "userDefinedTags",
-            "filterLabel": "User defined tags",
-            "type": "String"
-        },
-        "object_types": {
-            "filterName": "objectTypes",
-            "filterLabel": "Object types",
-            "type": "String"
-        },
-        "fairsharing_registry": {
-            "filterName": "fairsharingRegistry",
-            "filterLabel": "Registry",
-            "type": "String"
-        },
-        "is_recommended": {
-            "filterName": "isRecommended",
-            "filterLabel": "Recommended",
-            "type": "Boolean"
-        },
-        "record_type": {
-            "filterName": "recordType",
-            "filterLabel": "Record Type",
-            "type": "String"
-        },
-        "status": {
-            "filterName": "status",
-            "filterLabel": "Output status",
-            "type": "String"
-        },
-        "is_maintained": {
-            "filterName": "isMaintained",
-            "filterLabel": "Maintained",
-            "type": "Boolean"
-        }
+  "autocomplete": {
+    "licences": {
+      "filterName": "licences",
+      "filterLabel": "Licence(s)",
+      "type": "String"
     },
-    "sort_order": [
-        "fairsharingRegistry",
-        "recordType",
-        "object_types",
-        "subjects",
-        "domains",
-        "user_defined_tags",
-        "licences",
-        "organisations",
-        "countries",
-        "taxonomies",
-        "isRecommended",
-        "status",
-        "isMaintained"
-    ]
+    "taxonomies": {
+      "filterName": "taxonomies",
+      "filterLabel": "Species",
+      "type": "String"
+    },
+    "organisations": {
+      "filterName": "organisations",
+      "filterLabel": "Organisation(s)",
+      "type": "String"
+    },
+    "countries": {
+      "filterName": "countries",
+      "filterLabel": "Countries",
+      "type": "String"
+    },
+    "domains": {
+      "filterName": "domains",
+      "filterLabel": "Domains",
+      "type": "String"
+    },
+    "subjects": {
+      "filterName": "subjects",
+      "filterLabel": "Subjects",
+      "type": "String"
+    },
+    "user_defined_tags": {
+      "filterName": "userDefinedTags",
+      "filterLabel": "User defined tags",
+      "type": "String"
+    },
+    "object_types": {
+      "filterName": "objectTypes",
+      "filterLabel": "Object types",
+      "type": "String"
+    },
+    "fairsharing_registry": {
+      "filterName": "fairsharingRegistry",
+      "filterLabel": "Registry",
+      "type": "String"
+    },
+    "is_recommended": {
+      "filterName": "isRecommended",
+      "filterLabel": "Recommended",
+      "type": "Boolean"
+    },
+    "record_type": {
+      "filterName": "recordType",
+      "filterLabel": "Record Type",
+      "type": "String"
+    },
+    "status": {
+      "filterName": "status",
+      "filterLabel": "Output status",
+      "type": "String"
+    },
+    "is_maintained": {
+      "filterName": "isMaintained",
+      "filterLabel": "Maintained",
+      "type": "Boolean"
+    }
+  },
+  "sort_order": [
+    "fairsharingRegistry",
+    "recordType",
+    "object_types",
+    "subjects",
+    "domains",
+    "user_defined_tags",
+    "licences",
+    "organisations",
+    "countries",
+    "taxonomies",
+    "isRecommended",
+    "status",
+    "isMaintained"
+  ]
 }

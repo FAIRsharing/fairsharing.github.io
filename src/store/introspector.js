@@ -1,103 +1,127 @@
-import {isEqual} from 'lodash'
+import { isEqual } from "lodash";
 
-import Client from "../lib/GraphClient/GraphClient.js"
-import introspectionQuery from "../lib/GraphClient/queries/introspection.json"
+import Client from "../lib/GraphClient/GraphClient.js";
+import introspectionQuery from "../lib/GraphClient/queries/introspection.json";
 
 let client = new Client();
 export const mutations = {
-    setParameters(state, data) {
-        try {
-            if (Object.keys(data).includes("errors")) {
-                state.error = data.errors[0].message
-            }
-            else {
-                localStorage.introspectionQuery = JSON.stringify(data);
-                let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
-                state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
-                if (!localStorage.searchQueryParameters) {
-                    localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                }
-                else {
-                    if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
-                        localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                    }
-                    else {
-                        state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
-                    }
-                }
-            }
+  setParameters(state, data) {
+    try {
+      if (Object.keys(data).includes("errors")) {
+        state.error = data.errors[0].message;
+      } else {
+        localStorage.introspectionQuery = JSON.stringify(data);
+        let queryParams = data.data["__schema"]["types"].filter(
+          (param) => param.name === "Query",
+        )[0];
+        state.searchQueryParameters = queryParams.fields.filter(
+          (param) => param.name === "searchFairsharingRecords",
+        )[0];
+        if (!localStorage.searchQueryParameters) {
+          localStorage.searchQueryParameters = JSON.stringify(
+            state.searchQueryParameters,
+          );
+        } else {
+          if (
+            !isEqual(
+              JSON.parse(localStorage.searchQueryParameters),
+              JSON.parse(JSON.stringify(state.searchQueryParameters)),
+            )
+          ) {
+            localStorage.searchQueryParameters = JSON.stringify(
+              state.searchQueryParameters,
+            );
+          } else {
+            state.searchQueryParameters = JSON.parse(
+              localStorage.searchQueryParameters,
+            );
+          }
         }
-        catch (e) {
-            state.error = "Can't initialize application"
-        }
-    },
-    setLocalStorageExpiryTime: function () {
-        let now = new Date();
-        localStorage.expiryDate = now;
-        return now;
-    },
-    setMaintenanceMode(state){
-        state.maintenanceMode = true;
-    },
-    setReadOnlyMode(state){
-        state.readOnlyMode = true;
+      }
+    } catch (e) {
+      state.error = "Can't initialize application";
     }
+  },
+  setLocalStorageExpiryTime: function () {
+    let now = new Date();
+    localStorage.expiryDate = now;
+    return now;
+  },
+  setMaintenanceMode(state) {
+    state.maintenanceMode = true;
+  },
+  setReadOnlyMode(state) {
+    state.readOnlyMode = true;
+  },
 };
 
 export const actions = {
-    async fetchParameters(state, timer) {
-        let expirationTimer = (timer) ? timer : 24;
-        let data = await client.getData(introspectionQuery);
-        if (localStorage.expiryDate) {
-            const expiration = paramsAreExpired(localStorage.expiryDate, expirationTimer);
-            if (expiration) {
-                this.commit("introspection/setLocalStorageExpiryTime");
-                this.commit("introspection/setParameters", data.data);
-            }
-            else {
-                this.commit("introspection/setParameters", JSON.parse(localStorage.introspectionQuery));
-            }
-        }
-        if (!localStorage.introspectionQuery) {
-            this.commit("introspection/setLocalStorageExpiryTime");
-            this.commit("introspection/setParameters", data.data);
-        }
-        if (data.headers['maintenance'] === "true") this.commit("introspection/setMaintenanceMode");
-        if (data.headers['read-only'] === "true") this.commit("introspection/setReadOnlyMode");
-        // temp!
-        // this.commit("introspection/setMaintenanceMode");
-        // this.commit("introspection/setReadOnlyMode");
+  async fetchParameters(state, timer) {
+    let expirationTimer = timer ? timer : 24;
+    let data = await client.getData(introspectionQuery);
+    if (localStorage.expiryDate) {
+      const expiration = paramsAreExpired(
+        localStorage.expiryDate,
+        expirationTimer,
+      );
+      if (expiration) {
+        this.commit("introspection/setLocalStorageExpiryTime");
+        this.commit("introspection/setParameters", data.data);
+      } else {
+        this.commit(
+          "introspection/setParameters",
+          JSON.parse(localStorage.introspectionQuery),
+        );
+      }
     }
+    if (!localStorage.introspectionQuery) {
+      this.commit("introspection/setLocalStorageExpiryTime");
+      this.commit("introspection/setParameters", data.data);
+    }
+    if (data.headers["maintenance"] === "true")
+      this.commit("introspection/setMaintenanceMode");
+    if (data.headers["read-only"] === "true")
+      this.commit("introspection/setReadOnlyMode");
+    // temp!
+    // this.commit("introspection/setMaintenanceMode");
+    // this.commit("introspection/setReadOnlyMode");
+  },
 };
 export const getters = {
-    buildQueryParameters: (state) => (params) => {
-        let queryParameters = {};
-        Object.keys(params[1]).forEach(function (param) {
-            let expectedTypeObject = null;
-            if(state.searchQueryParameters.args === undefined) return;
-            let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
-            if(currentParam === undefined) return;
-            expectedTypeObject = currentParam.type;
-            if (expectedTypeObject.kind !== "LIST") {
-                queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
-            }
-            else {
-                const currentVal = params[1][param];
-                const expectedType = expectedTypeObject["ofType"]["ofType"].name;
-                queryParameters[param] = [];
-                if (currentVal.indexOf(",") > 0) {
-                    currentVal.split(",").forEach(function (val) {
-                        queryParameters[param].push(decodeURIComponent(parseParam(expectedType, val)))
-                    });
-
-                }
-                else {
-                    queryParameters[param] = decodeURIComponent(parseParam(expectedType, currentVal))
-                }
-            }
-        });
-        return queryParameters;
-    }
+  buildQueryParameters: (state) => (params) => {
+    let queryParameters = {};
+    Object.keys(params[1]).forEach(function (param) {
+      let expectedTypeObject = null;
+      if (state.searchQueryParameters.args === undefined) return;
+      let currentParam = state.searchQueryParameters.args.filter(
+        (arg) => arg.name === param,
+      )[0];
+      if (currentParam === undefined) return;
+      expectedTypeObject = currentParam.type;
+      if (expectedTypeObject.kind !== "LIST") {
+        queryParameters[param] = parseParam(
+          expectedTypeObject,
+          params[1][param],
+        );
+      } else {
+        const currentVal = params[1][param];
+        const expectedType = expectedTypeObject["ofType"]["ofType"].name;
+        queryParameters[param] = [];
+        if (currentVal.indexOf(",") > 0) {
+          currentVal.split(",").forEach(function (val) {
+            queryParameters[param].push(
+              decodeURIComponent(parseParam(expectedType, val)),
+            );
+          });
+        } else {
+          queryParameters[param] = decodeURIComponent(
+            parseParam(expectedType, currentVal),
+          );
+        }
+      }
+    });
+    return queryParameters;
+  },
 };
 
 /**
@@ -105,23 +129,23 @@ export const getters = {
  * @type {Object}
  * */
 let introspectionStore = {
-    namespaced: true,
-    /**
-     * @name states
-     * @type {Object}
-     * @property {String} errors - collects errors while introspecting.
-     * @property {object} searchQueryParameters -  filters query parameters object coming from API.
-     */
-    state: {
-        errors: String,
-        searchQueryParameters: {},
-        maintenanceMode: false,
-        readOnlyMode: false
-    },
-    modules: {},
-    mutations: mutations,
-    actions: actions,
-    getters: getters
+  namespaced: true,
+  /**
+   * @name states
+   * @type {Object}
+   * @property {String} errors - collects errors while introspecting.
+   * @property {object} searchQueryParameters -  filters query parameters object coming from API.
+   */
+  state: {
+    errors: String,
+    searchQueryParameters: {},
+    maintenanceMode: false,
+    readOnlyMode: false,
+  },
+  modules: {},
+  mutations: mutations,
+  actions: actions,
+  getters: getters,
 };
 export default introspectionStore;
 
@@ -135,13 +159,12 @@ export default introspectionStore;
  *  // return True
  */
 const parseParam = function (param, paramVal) {
-    if (param.name === "Int") {
-        return parseFloat(paramVal)
-    }
-    else if (param.name === "Boolean") {
-        return JSON.parse(paramVal)
-    }
-    return paramVal;
+  if (param.name === "Int") {
+    return parseFloat(paramVal);
+  } else if (param.name === "Boolean") {
+    return JSON.parse(paramVal);
+  }
+  return paramVal;
 };
 
 /**
@@ -151,8 +174,8 @@ const parseParam = function (param, paramVal) {
  * @returns {boolean} - is the data expired or not
  */
 export const paramsAreExpired = function (expiryDate, expirationTimer) {
-    const limit = expirationTimer * 3600;
-    const expiration = new Date(expiryDate);
-    const now = new Date();
-    return ((now - expiration) - limit) >= 0
+  const limit = expirationTimer * 3600;
+  const expiration = new Date(expiryDate);
+  const now = new Date();
+  return now - expiration - limit >= 0;
 };

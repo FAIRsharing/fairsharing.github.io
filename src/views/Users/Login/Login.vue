@@ -3,25 +3,28 @@
     id="loginPage"
     ref="loginPage"
     v-model="formValid"
-    class="login mb-9"
+    class="login mb-9 elevation-10 rounded"
     style="background: white"
   >
     <v-container>
       <!-- forms -->
       <v-row justify="center">
         <v-col
+          :lg="!popUp ? '8' : '12'"
+          :md="!popUp ? '8' : '12'"
+          :xl="!popUp ? '5' : '12'"
           cols="12"
           sm="12"
-          :md="!popUp ? '8' : '12'"
-          :lg="!popUp ? '8' : '12'"
-          :xl="!popUp ? '5' : '12'"
         >
           <v-card :flat="popUp">
             <v-card-title
-              :class="{ 'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp }"
+              :class="{
+                'bg-blue text-white mb-5 text-center': !popUp,
+                'py-0 mb-5': popUp,
+              }"
             >
               <h2 class="ma-0">
-                {{ currentPanel | capitalize }}
+                {{ currentPanel }}
               </h2>
             </v-card-title>
 
@@ -30,12 +33,9 @@
               <MessageHandler field="login" />
 
               <!-- button to re-send confirmation if login failed -->
-              <div
-                v-if="resendButton"
-                class="d-flex flex-row justify-center"
-              >
+              <div v-if="resendButton" class="d-flex flex-row justify-center">
                 <v-btn
-                  class="text-center teal white--text px-2"
+                  class="text-center bg-teal text-white px-2"
                   href="/users/resendConfirmation"
                   @click="
                     () => {
@@ -46,31 +46,26 @@
                   Resend me the confirmation email
                 </v-btn>
               </div>
-              <v-divider
-                v-if="resendButton"
-                class="pb-0 mb-0"
-              />
+              <v-divider v-if="resendButton" class="pb-0 mb-0" opacity="0.9" />
 
               <!-- OAUTH -->
               <v-list
                 v-if="checkEndpoint()"
+                class="d-flex flex-column align-center"
               >
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
                   :key="'provider_' + providerIndex"
-                  style="justify-content: center"
                 >
                   <v-btn
-                    width="250px"
                     :class="provider.color"
-                    class="text-left"
                     :href="provider.callback + getCurrentLocation()"
+                    class="text-left"
+                    elevation="3"
+                    width="250px"
                   >
                     <v-layout width="100%">
-                      <v-icon
-                        left
-                        class="mr-5"
-                      >
+                      <v-icon class="mr-5" start>
                         {{ "fab fa-" + provider.name.toLowerCase() }}
                       </v-icon>
                       <v-layout>with {{ provider.name }}</v-layout>
@@ -81,33 +76,30 @@
             </v-card-text>
 
             <!-- card content // Form -->
-            <v-card-text v-if="currentPanel === 'login'">
-              <v-form
-                id="loginForm"
-                ref="loginForm"
-                v-model="formValid"
-              >
+            <v-card-text v-if="currentPanel === 'Login'">
+              <v-form id="loginForm" ref="loginForm" v-model="formValid">
                 <!-- account -->
                 <v-text-field
                   v-model="loginData.name"
+                  :rules="[rules.isRequired()]"
                   label="Username or email"
                   required
-                  outlined
-                  :rules="[rules.isRequired()]"
+                  variant="outlined"
                   @keyup.enter="logUser()"
                 />
 
                 <!-- password -->
                 <v-text-field
                   v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  counter
-                  required
-                  outlined
+                  :append-inner-icon="show1 ? 'fas fa-eye' : 'fas fa-eye-slash'"
                   :rules="[rules.isRequired()]"
-                  @click:append="show1 = !show1"
+                  :type="show1 ? 'text' : 'password'"
+                  autocomplete="off"
+                  counter
+                  label="Password"
+                  required
+                  variant="outlined"
+                  @click:append-inner="show1 = !show1"
                   @keyup.enter="logUser()"
                 />
 
@@ -119,9 +111,10 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                    >Forgotten your password?</span>
+                      >Forgotten your password?</span
+                    >
                   </router-link>
-                  <v-divider />
+                  <v-divider opacity="0.9" />
                   <router-link to="/accounts/signup">
                     <span
                       @click="
@@ -129,9 +122,10 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                    >Need to create a new account?</span>
+                      >Need to create a new account?</span
+                    >
                   </router-link>
-                  <v-divider />
+                  <v-divider opacity="0.9" />
                   <a
                     href="https://fairsharing.gitbook.io/fairsharing/#accessing-fairsharing-through-3rd-party-accounts"
                     target="_blank"
@@ -142,16 +136,16 @@
                           $emit('ClosePopup', true);
                         }
                       "
-                    >Can't login with ORCID or Github?</span>
+                      >Can't login with ORCID or Github?</span
+                    >
                   </a>
                 </v-card-text>
 
                 <v-card-actions class="mt-2 justify-center">
                   <v-btn
-                    class="px-4"
-                    light
-                    color="primary"
                     :disabled="!formValid"
+                    class="px-4 bg-primary"
+                    elevation="2"
                     @click="logUser()"
                   >
                     LOGIN
@@ -167,11 +161,11 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex'
+import { mapActions, mapState } from "vuex";
 
 import MessageHandler from "@/components/Users/MessageHandler";
-import { isRequired } from "@/utils/rules.js"
-import stringUtils from '@/utils/stringUtils';
+import { isRequired } from "@/utils/rules.js";
+import stringUtils from "@/utils/stringUtils";
 
 /** This component handles the login page
  *
@@ -194,18 +188,26 @@ export default {
     return {
       show1: false,
       resendButton: false,
-      currentPanel: "login",
+      currentPanel: "Login",
       loginData: {},
       oauthLogin: [
         {
           name: "ORCID",
-          color: "green white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
+          color: "bg-green text-white",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/orcid",
         },
+        // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
+        /*
+        {
+          name: "Twitter",
+          color: "blue text-white",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/twitter",
+        },
+         */
         {
           name: "GitHub",
-          color: "black white--text",
-          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
+          color: "bg-black text-white",
+          callback: import.meta.env.VITE_API_ENDPOINT + "/users/auth/github",
         },
       ],
       rules: {
@@ -236,14 +238,38 @@ export default {
         if (_module.messages().login.message === confirmationError) {
           _module.resendButton = true;
         }
-      }
-      else {
+      } else {
         const goTo = _module.$route.query.goTo;
+        let target = {};
         if (_module.redirect) {
           if (goTo) {
-            _module.$router.push({
-              path: goTo,
-            });
+            //Added if condition as path was trimming query params in path in vue-router 4
+            if (goTo.includes("?")) {
+              const url = goTo.split("?");
+              const queryURLArr = url[1].split("&");
+              queryURLArr.forEach((pair) => {
+                if (pair !== "") {
+                  let splitpair = pair.split("=");
+                  let key = splitpair[0];
+                  target[key] = splitpair[1];
+
+                  //For advancedSearch only
+                  if (url[0] === "/advancedsearch" && pair.includes("fields")) {
+                    const [key, ...rest] = pair.split("=");
+                    const value = rest.join("=");
+                    target[key] = decodeURIComponent(value);
+                  }
+                }
+              });
+              _module.$router.push({
+                path: url[0],
+                query: target,
+              });
+            } else {
+              _module.$router.push({
+                path: goTo,
+              });
+            }
           } else {
             _module.$router.push({
               path: "/accounts/profile",
@@ -263,29 +289,32 @@ export default {
     getCurrentLocation() {
       let loc = this.$router.currentRoute.path;
       let params = this.$route.query;
-      let query = Object.keys(params).map(k=>`${k}=${params[k]}`).join('&').replace("next=","");
+      let query = Object.keys(params)
+        .map((k) => `${k}=${params[k]}`)
+        .join("&")
+        .replace("next=", "");
       let origin;
       if (params.length > 0) {
         origin = encodeURI(`${loc}`);
-      }
-      else {
+      } else {
         origin = encodeURI(`${loc}?${query}`);
       }
       return `?origin=${origin}`;
     },
     checkEndpoint() {
-      if (process.env.VUE_APP_API_ENDPOINT === 'https://api.fairsharing.org' ||
-          process.env.VUE_APP_API_ENDPOINT === 'http://127.0.0.1:3000'
-         ) {
+      if (
+        import.meta.env.VITE_API_ENDPOINT === "https://api.fairsharing.org" ||
+        import.meta.env.VITE_API_ENDPOINT === "http://127.0.0.1:3000"
+      ) {
         return true;
       }
       return false;
-    }
+    },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #loginPage a {
   text-decoration: none !important;
 }

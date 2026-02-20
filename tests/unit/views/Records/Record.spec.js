@@ -136,7 +136,7 @@ describe("Record.vue", function () {
       "graphMock",
       GraphClient.prototype,
       "executeQuery",
-      graphMockValue
+      graphMockValue,
     );
     mocks.setMock("canEditStub", RESTClient.prototype, "canEdit", true);
     mocks.setMock("canClaimStub", RESTClient.prototype, "canClaim", true);
@@ -145,13 +145,13 @@ describe("Record.vue", function () {
       "removeMaintainer",
       RESTClient.prototype,
       "removeMaintainer",
-      true
+      true,
     );
     mocks.setMock(
       "metadataFields",
       RESTClient.prototype,
       "extraMetadataFields",
-      true
+      true,
     );
     mocks.setMock("changeWatcher", RESTClient.prototype, "changeWatcher", {
       message: "success",
@@ -212,7 +212,7 @@ describe("Record.vue", function () {
     expect(wrapper.vm.getTitle).toBe("FAIRsharing | 10.25504/FAIRsharing.abc");
     expect(wrapper.vm.currentRoute).toBe("10.25504/FAIRsharing.abc");
     expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
-      "FAIRsharing | IAT"
+      "FAIRsharing | IAT",
     );
   });
 
@@ -234,12 +234,14 @@ describe("Record.vue", function () {
     expect(wrapper.vm.buttons[1].isDisabled()).toBe(false);
     expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
     expect(wrapper.vm.buttons[2].isDisabled()).toBe(false);
-    expect(wrapper.vm.buttons[3].name().toLowerCase()).toEqual("no graph available");
+    expect(wrapper.vm.buttons[3].name().toLowerCase()).toEqual(
+      "no graph available",
+    );
     expect(wrapper.vm.buttons[3].isDisabled()).toBe(true);
     expect(wrapper.vm.buttons[4].name()).toEqual("View record history");
     expect(wrapper.vm.buttons[4].isDisabled()).toBe(false);
     expect(wrapper.vm.buttons[5].name()).toEqual(
-      "Have a suggestion/question ?"
+      "Have a suggestion/question ?",
     );
     expect(wrapper.vm.buttons[5].isDisabled()).toBe(false);
     wrapper.vm.buttons[0].method();
@@ -396,7 +398,7 @@ describe("Record.vue", function () {
     });
     await wrapper.vm.requestOwnership();
     expect(wrapper.vm.error).toBe(
-      "Sorry, your request to claim this record failed. Please contact us."
+      "Sorry, your request to claim this record failed. Please contact us.",
     );
     mocks.restore("restMock");
     mocks.setMock("claimRecord", RESTClient.prototype, "claimRecord", true);
@@ -649,7 +651,7 @@ describe("Record.vue", function () {
       "removeMaintainer",
       RESTClient.prototype,
       "removeMaintainer",
-      { error: "fail!" }
+      { error: "fail!" },
     );
     await wrapper.vm.removeMaintainer();
     expect(wrapper.vm.stopMaintainFailure).toBe(true);

@@ -7,20 +7,11 @@
     "curatorSummaryStatistics",
     {
       "name": "messages",
-      "fields": [
-        "id",
-        "message",
-        "updatedAt",
-        "createdAt"
-      ]
+      "fields": ["id", "message", "updatedAt", "createdAt"]
     },
     {
       "name": "curatorList",
-      "fields": [
-        "username",
-        "id",
-        "role"
-      ]
+      "fields": ["username", "id", "role"]
     },
     {
       "name": "approvalsRequired",
@@ -39,17 +30,11 @@
             "priority",
             {
               "name": "lastEditor",
-              "fields": [
-                "id",
-                "username"
-              ]
+              "fields": ["id", "username"]
             },
             {
               "name": "creator",
-              "fields": [
-                "id",
-                "username"
-              ]
+              "fields": ["id", "username"]
             }
           ]
         }
@@ -69,36 +54,27 @@
             "processingNotes",
             {
               "name": "lastEditor",
-              "fields": [
-                "id",
-                "username"
-              ]
+              "fields": ["id", "username"]
             }
           ]
         },
         {
           "queryName": "user",
-          "fields": [
-            "username",
-            "id"
-          ]
+          "fields": ["username", "id"]
         }
       ]
     },
     {
       "name": "recentCuratorCreations",
       "fields": [
-            "id",
-            "name",
-            "createdAt",
-            "type",
-            {
-              "queryName": "creator",
-              "fields": [
-                "id",
-                "username"
-              ]
-            }
+        "id",
+        "name",
+        "createdAt",
+        "type",
+        {
+          "queryName": "creator",
+          "fields": ["id", "username"]
+        }
       ]
     },
     {
@@ -113,10 +89,7 @@
             "status",
             {
               "name": "maintainers",
-              "fields": [
-                "id",
-                "username"
-              ]
+              "fields": ["id", "username"]
             }
           ]
         }
@@ -131,17 +104,11 @@
         "type",
         {
           "queryName": "creator",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         },
         {
           "queryName": "curator",
-          "fields": [
-            "id",
-            "username"
-          ]
+          "fields": ["id", "username"]
         }
       ]
     }

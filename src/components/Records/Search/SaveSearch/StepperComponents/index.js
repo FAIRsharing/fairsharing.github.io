@@ -1,9 +1,8 @@
-export const StepperDialogHeader = () => import("./StepperDialogHeader.vue");
+export { default as StepperDialogHeader } from "./StepperDialogHeader.vue";
 
-export const PolicyStepper = () => import("./PolicyStepper.vue");
+export { default as PolicyStepper } from "./PolicyStepper.vue";
 
-export const OrganisationStepper = () => import("./OrganisationStepper.vue");
+export { default as OrganisationStepper } from "./OrganisationStepper.vue";
 
-export const UserStepper = () => import("./UserStepper.vue");
-
-export const ResultCard = () => import("./ResultCard.vue");
+export { default as UserStepper } from "./UserStepper.vue";
+export { default as ResultCard } from "./ResultCard.vue";

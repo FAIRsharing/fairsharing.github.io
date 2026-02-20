@@ -1,17 +1,13 @@
 <template>
-  <v-tooltip
-    bottom
-    class="mr-2"
-  >
-    <template #activator="{ on, attrs }">
+  <v-tooltip location="bottom" class="mr-2">
+    <template #activator="{ props }">
       <v-icon
-        v-bind="attrs"
-        small
+        size="x-small"
         :class="textColour"
-        class="mr-1"
-        v-on="on"
+        class="mr-1 iconStyle"
+        v-bind="props"
       >
-        fa-question-circle
+        fas fa-question-circle
       </v-icon>
     </template>
     <span> {{ toolTipText }} </span>
@@ -28,8 +24,26 @@ export default {
     },
     textColour: {
       type: String,
-      default: 'white--text'
-    }
+      default: "text-white",
+    },
   },
 };
 </script>
+
+<style scoped lang="scss">
+.iconStyle {
+  align-items: center;
+  display: inline-flex;
+  font-feature-settings: "liga";
+  font-size: 16px;
+  justify-content: center;
+  letter-spacing: normal;
+  line-height: 1;
+  position: relative;
+  text-indent: 0;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+</style>

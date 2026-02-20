@@ -6,6 +6,7 @@ docTemp
 package-lock.json
 coverage
 out
+yarn.lock
 
 # local env files
 .env.local

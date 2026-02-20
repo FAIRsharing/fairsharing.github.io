@@ -2,21 +2,18 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="maintenanceRequestsProcessed">
-        <v-card-title
-          id="text-curator-search-5"
-          class="green white--text"
-        >
+        <v-card-title id="text-curator-search-5" class="bg-green text-white">
           <b> OWNERSHIP REQUESTS </b>
           <v-spacer />
           <v-text-field
             v-model="searches"
-            label="Search"
-            color="white"
-            single-line
-            hide-details
-            solo
             class="searchField"
             clearable
+            color="white"
+            hide-details
+            label="Search"
+            single-line
+            variant="solo"
           />
         </v-card-title>
         <v-card-text v-if="error.general">
@@ -26,31 +23,24 @@
           </v-alert>
         </v-card-text>
         <v-data-table
-          :loading="loading"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="maintenanceRequestsProcessed"
+          :loading="loading"
           :search="searches"
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           sort-by=""
         >
-          <template
-            v-if="recordType"
-            #item="props"
-          >
+          <template v-if="recordType" #item="props">
             <tr>
               <td>
                 {{ props.item.createdAt }}
               </td>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  <v-avatar v-if="props.item.type" class="mr-2" size="40">
                     <Icon
-                      :item="props.item.type"
                       :height="40"
+                      :item="props.item.type"
                       wrapper-class=""
                     />
                   </v-avatar>
@@ -66,26 +56,24 @@
               </td>
               <td>
                 <v-edit-dialog
-                  :return-value.sync="props.item.processingNotes"
+                  v-model:return-value="props.item.processingNotes"
                   large
                   @save="
                     saveProcessingNotes(
                       props.item.id,
-                      props.item.processingNotes
+                      props.item.processingNotes,
                     )
                   "
                 >
                   {{ props.item.processingNotes }}
                   <template #input>
                     <div class="testDialog">
-                      <div class="mt-4 title">
-                        Update Processing Notes
-                      </div>
+                      <div class="mt-4 text-h6">Update Processing Notes</div>
                       <v-textarea
                         v-model="props.item.processingNotes"
-                        width="1200px"
                         label="Edit (not long words)"
-                        filled
+                        variant="filled"
+                        width="1200px"
                       />
                     </div>
                   </template>
@@ -94,14 +82,13 @@
               <td>
                 <v-icon
                   color="blue"
-                  dark
-                  left
+                  start
                   @click.stop="
                     assignMaintenanceOwner(
                       props.item.recordName,
                       props.item.id,
                       props.item.userName,
-                      props.item.requestID
+                      props.item.requestID,
                     )
                   "
                 >
@@ -110,14 +97,13 @@
                 {{ props.item.actions }}
                 <v-icon
                   color="red"
-                  dark
-                  right
+                  end
                   @click="
                     rejectMaintenanceOwner(
                       props.item.recordName,
                       props.item.id,
                       props.item.userName,
-                      props.item.requestID
+                      props.item.requestID,
                     )
                   "
                 >
@@ -128,17 +114,14 @@
           </template>
         </v-data-table>
       </v-card-text>
-      <v-layout
-        row
-        justify-center
-      >
+      <v-layout justify-center row>
         <v-dialog
           v-model="dialogs.confirmAssignment"
           max-width="700px"
           persistent
         >
           <v-card>
-            <v-card-title class="headline">
+            <v-card-title class="text-h5">
               Are you sure you want to
               <span style="color: blue; padding-left: 5px; padding-right: 5px">
                 ACCEPT
@@ -146,15 +129,11 @@
               this ownership?
               <ul style="list-style-type: none">
                 <li>
-                  <span style="color: gray">
-                    Record:
-                  </span>
+                  <span style="color: gray"> Record: </span>
                   {{ dialogs.recordName }}
                 </li>
                 <li>
-                  <span style="color: gray">
-                    User:
-                  </span>
+                  <span style="color: gray"> User: </span>
                   {{ dialogs.userName }}
                 </li>
               </ul>
@@ -163,18 +142,18 @@
               <v-spacer />
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
                 persistent
+                variant="text"
                 @click="closeMaintenanceAssign()"
               >
                 Cancel
               </v-btn>
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
                 persistent
+                variant="text"
                 @click="assignMaintenanceOwnConfirm('approved')"
               >
                 OK
@@ -184,17 +163,14 @@
           </v-card>
         </v-dialog>
       </v-layout>
-      <v-layout
-        row
-        justify-center
-      >
+      <v-layout justify-center row>
         <v-dialog
           v-model="dialogs.rejectAssignment"
           max-width="700px"
           persistent
         >
           <v-card>
-            <v-card-title class="headline">
+            <v-card-title class="text-h5">
               Are you sure you want to
               <span style="color: red; padding-left: 5px; padding-right: 5px">
                 REJECT
@@ -202,15 +178,11 @@
               this ownership?
               <ul style="list-style-type: none">
                 <li>
-                  <span style="color: gray">
-                    Record:
-                  </span>
+                  <span style="color: gray"> Record: </span>
                   {{ dialogs.recordName }}
                 </li>
                 <li>
-                  <span style="color: gray">
-                    User:
-                  </span>
+                  <span style="color: gray"> User: </span>
                   {{ dialogs.userName }}
                 </li>
               </ul>
@@ -219,18 +191,18 @@
               <v-spacer />
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
                 persistent
+                variant="text"
                 @click="closeMaintenanceReject()"
               >
                 Cancel
               </v-btn>
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue darken-1"
-                text
+                color="blue-darken-1"
                 persistent
+                variant="text"
                 @click="assignMaintenanceOwnConfirm('rejected')"
               >
                 OK
@@ -262,10 +234,10 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
@@ -298,7 +270,7 @@ export default {
   watch: {
     maintenanceRequests: function () {
       this.maintenanceRequestsProcessed = JSON.parse(
-          JSON.stringify(this.maintenanceRequests)
+        JSON.stringify(this.maintenanceRequests),
       );
     },
     "dialogs.confirmAssignment"(val) {
@@ -315,7 +287,7 @@ export default {
     let data = await client.executeQuery(getPendingMaintenanceRequests);
     this.prepareMaintenanceRequests(data);
     this.maintenanceRequestsProcessed = JSON.parse(
-        JSON.stringify(this.maintenanceRequests)
+      JSON.stringify(this.maintenanceRequests),
     );
     this.loading = false;
   },
@@ -344,7 +316,7 @@ export default {
       this.maintenanceRequests.sort(this.compareRecordDesc);
       for (let i = 0; i < this.maintenanceRequests.length; i++) {
         this.maintenanceRequests[i].createdAt = this.formatDate(
-            this.maintenanceRequests[i].createdAt
+          this.maintenanceRequests[i].createdAt,
         );
       }
     },
@@ -392,24 +364,25 @@ export default {
         general: null,
       };
       let data = await restClient.updateStatusMaintenanceRequest(
-          _module.dialogs.requestId,
-          newStatus,
-          this.user().credentials.token
+        _module.dialogs.requestId,
+        newStatus,
+        this.user().credentials.token,
       );
+      /* v8 ignore start */
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
-            (element) => element.requestID === _module.dialogs.requestId
+          (element) => element.requestID === _module.dialogs.requestId,
         );
         _module.maintenanceRequestsProcessed.splice(index, 1);
         if (
-            _module.approvalRequired.findIndex(
-                (element) => element.id === _module.dialogs.recordID
-            ) < 0
+          _module.approvalRequired.findIndex(
+            (element) => element.id === _module.dialogs.recordID,
+          ) < 0
         ) {
           if (
-              _module.maintenanceRequestsProcessed.findIndex(
-                  (element) => element.id === _module.dialogs.recordID
-              ) < 0
+            _module.maintenanceRequestsProcessed.findIndex(
+              (element) => element.id === _module.dialogs.recordID,
+            ) < 0
           ) {
             await _module.saveProcessingNotes(_module.dialogs.recordID, null);
           }
@@ -424,6 +397,7 @@ export default {
         _module.dialogs.rejectAssignment = false;
       }
     },
+    /* v8 ignore end */
     rejectMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;
@@ -450,19 +424,21 @@ export default {
 
 <style scoped>
 #text-curator-search-5
-div.theme--light.v-input:not(.v-input--is-disabled)
-input {
+  div.theme--light.v-input:not(.v-input--is-disabled)
+  input {
   color: #fff;
 }
+
 .testDialog {
   width: 600px !important;
 }
 
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 </style>

@@ -31,7 +31,7 @@ describe("GraphQL Client", function () {
   });
 
   it("can be instantiated as a singleton", function () {
-    process.env.VUE_APP_CLIENT_ID = undefined;
+    import.meta.env.VITE_CLIENT_ID = undefined;
     const instance2 = new Client();
     expect(client).toBe(instance2.constructor["_instance"]);
   });
@@ -55,7 +55,7 @@ describe("GraphQL Client", function () {
         searchFairsharingRecords: {
           records: [{}],
         },
-      })
+      }),
     );
 
     let output2 = await client.getData(localQuery);
@@ -66,7 +66,7 @@ describe("GraphQL Client", function () {
             records: [{}],
           },
         },
-      })
+      }),
     );
     stub.restore();
   });
@@ -125,7 +125,7 @@ describe("GraphQL Client", function () {
     ];
     let queryFragment = client.buildQuery(smallQuery);
     expect(queryFragment).toBe(
-      "test{ inFairsharing label id definitions iri synonyms domains{ label id definitions iri synonyms inFairsharing}}"
+      "test{ inFairsharing label id definitions iri synonyms domains{ label id definitions iri synonyms inFairsharing}}",
     );
   });
 });

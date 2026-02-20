@@ -1,197 +1,512 @@
 <template>
   <main>
-    <v-container
-      fluid
-      class="py-0 mb-10"
-    >
+    <v-container class="py-0 mb-10" fluid>
       <NotFound v-if="error" />
-      <v-row
-        v-else
-        no-gutters
-      >
+      <v-row v-else no-gutters>
         <v-col
           id="ontologyBrowser"
-          xs="12"
-          sm="12"
-          md="12"
+          class="border-e"
+          cols="12"
           lg="4"
+          md="12"
+          sm="12"
           xl="3"
-          col="12"
-          class="border-right"
+          xs="12"
         >
-          <div
-            v-if="tree.length > 0"
-            id="searchOntology"
-            class="pr-2"
-          >
+          <div v-if="tree.length > 0" id="searchOntology" class="pr-2 mt-6">
             <v-autocomplete
               v-model="search"
-              :items="flattenedTree"
-              :label="`Search ${selectedOntology}s`"
-              outlined
-              hide-details
               :color="color"
-              item-text="name"
+              :items="uniqueSearchItems"
+              :label="`Search ${selectedOntology}s`"
               clearable
+              hide-details
+              item-title="name"
+              item-value="id"
+              return-object
+              variant="outlined"
             />
-            <v-divider class="mb-2" />
+            <v-divider class="mb-2 opacity-100" />
           </div>
-          <v-treeview
-            :items="tree"
-            :color="color"
-            :search="search"
-            :open.sync="open"
+
+          <v-virtual-scroll
+            ref="virtualScroll"
+            :height="'70vh'"
+            :items="visibleNodes"
             class="tree pb-3 px-3"
-            hoverable
           >
-            <template #label="{ item }">
+            <template #default="{ item }">
               <div
-                class="d-flex flex-row justify-center align-center cursor-pointer"
-                @click="searchTerm(item)"
+                :style="{ paddingLeft: `${item.depth * 24}px` }"
+                class="d-flex align-center py-1 cursor-pointer hover-bg"
               >
-                <v-chip
-                  :class="!activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
-                  class="cursor-pointer"
-                >
-                  {{ item.name }}
-                </v-chip>
-                <v-spacer />
+                <div class="d-flex justify-center" style="width: 24px">
+                  <v-icon
+                    v-if="item.hasChildren"
+                    :icon="
+                      isOpen(item.identifier)
+                        ? 'fas fa-caret-down'
+                        : 'fas fa-caret-right'
+                    "
+                    size="small"
+                    @click="toggleNode(item)"
+                  />
+                </div>
+
                 <div
-                  :class="activeTerms.includes(item.identifier) ? `${color} white--text`:`white ${color}--text ${color}--border`"
-                  class="d-flex justify-center align-center hits"
+                  class="d-flex flex-row justify-center align-center flex-grow-1"
+                  @click="searchTerm(item)"
                 >
-                  {{ item.records_count ? item.records_count : 0 }}
+                  <span
+                    :class="[
+                      'chip-mimic mr-2',
+                      item.isTarget || activeTerms.includes(item.identifier)
+                        ? `bg-${color} text-white font-weight-bold elevation-2 border-0`
+                        : `text-${color} border-${color}`,
+                    ]"
+                  >
+                    {{ item.name }}
+                  </span>
+
+                  <v-spacer />
+
+                  <div
+                    :class="
+                      activeTerms.includes(item.identifier)
+                        ? `bg-${color} text-white`
+                        : `bg-white text-${color} border-${color} border border-solid border-opacity-100`
+                    "
+                    class="hits d-flex justify-center align-center"
+                  >
+                    {{ item.records_count || 0 }}
+                  </div>
                 </div>
               </div>
             </template>
-          </v-treeview>
+          </v-virtual-scroll>
         </v-col>
+
         <v-col
           id="termDisplay"
-          xs="12"
-          sm="12"
-          md="12"
-          lg="8"
-          xl="9"
-          col="12"
           class="py-0 my-0"
+          cols="12"
+          lg="8"
+          md="12"
+          sm="12"
+          xl="9"
+          xs="12"
         >
           <div v-if="!loadingData && tree.length > 0">
             <TermDetails
               v-if="records && selectedTerm"
               :selected-ontology="selectedOntology"
+              @clear-selection="noSelection"
             />
-            <v-card
-              v-else
-              class="pa-0"
-              flat
-            >
+            <v-card v-else class="pa-0" flat>
               <v-card-text class="pa-0">
-                <OntologySunburst />
+                <OntologySunburst @subject-node="subjectNode" />
               </v-card-text>
             </v-card>
           </div>
         </v-col>
       </v-row>
     </v-container>
+
     <v-fade-transition>
-      <v-overlay
-        v-if="loadingData"
-        :absolute="false"
-        opacity="0.8"
-      >
-        <Loaders />
-      </v-overlay>
+      <div>
+        <v-overlay
+          v-model="loadingData"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <Loaders />
+        </v-overlay>
+      </div>
     </v-fade-transition>
   </main>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
-
+import { mapActions, mapState } from "vuex";
 import Loaders from "@/components/Navigation/Loaders";
-import OntologySunburst from "@/components/Ontologies/OntologySunburst"
-import TermDetails from "@/components/Ontologies/TermDetails"
+import OntologySunburst from "@/components/Ontologies/OntologySunburst";
+import TermDetails from "@/components/Ontologies/TermDetails";
 import NotFound from "@/views/Errors/404";
 
 export default {
   name: "OntologyBrowser",
-  components: {Loaders, NotFound, TermDetails, OntologySunburst},
-  data(){
+  components: { Loaders, NotFound, TermDetails, OntologySunburst },
+  data() {
     return {
-      allowedOntologies: ['domain', 'subject'],
-      search: null
-    }
+      allowedOntologies: ["domain", "subject"],
+      search: null,
+    };
   },
   computed: {
-    selectedOntology () { return this.$route.params.id },
-    error () { return !this.allowedOntologies.includes(this.selectedOntology) },
-    color () { return this.colors[this.selectedOntology] },
-    term () {
-      return this.flattenedTree.find((currentNode) => {
-        if (this.$route.query['term']) {
-          return currentNode.name.toLowerCase() === decodeURIComponent(this.$route.query['term']).toLowerCase()
-        }
-      })
-    },
-    open: {
-      get() { return this.openedTerms },
-      set(val) { this.openTerms(val) }
-    },
     ...mapState("editor", ["colors"]),
+    // We do NOT map activeTerms/openedTerms directly to avoid undefined errors
     ...mapState("ontologyBrowser", [
       "tree",
       "records",
       "loadingData",
       "flattenedTree",
       "pagination",
-      "activeTerms",
       "selectedTerm",
-      "openedTerms"
     ]),
+
+    selectedOntology() {
+      return this.$route.params.id;
+    },
+    error() {
+      return !this.allowedOntologies.includes(this.selectedOntology);
+    },
+    color() {
+      return this.colors[this.selectedOntology];
+    },
+    term() {
+      const qTerm = this.$route.query["term"];
+      if (!qTerm) return null;
+      return this.flattenedTree.find(
+        (node) =>
+          node.name.toLowerCase() === decodeURIComponent(qTerm).toLowerCase(),
+      );
+    },
+    // Manual State mapping with Safety Checks
+    activeTerms() {
+      return this.$store.state.ontologyBrowser.activeTerms || [];
+    },
+    openedTerms() {
+      return this.$store.state.ontologyBrowser.openedTerms || [];
+    },
+
+    /**
+     * VISIBLE NODES
+     * Combines Pruning (Search) + Flattening (Expansion)
+     */
+    visibleNodes() {
+      let sourceTree = this.tree || [];
+
+      // 1. If Searching, use a Pruned Tree (Supports Multiple Instances)
+      if (this.search && this.search.identifier) {
+        const pruned = this.pruneTreeWithChildren(
+          this.tree,
+          this.search.identifier,
+        );
+        if (pruned.length > 0) sourceTree = pruned;
+      }
+
+      const result = [];
+      const searchId = this.search?.identifier
+        ? String(this.search.identifier)
+        : null;
+
+      // Safety: Ensure we have an array of Strings for comparison
+      const currentOpenTerms = (this.openedTerms || []).map(String);
+
+      const traverse = (nodes, depth = 0) => {
+        if (!nodes || nodes.length === 0) return;
+
+        for (const node of nodes) {
+          const hasChildren = node.children && node.children.length > 0;
+          const strId = String(node.identifier);
+          const isTarget = strId === searchId;
+
+          // Check if this node is Open
+          const isOpen = currentOpenTerms.includes(strId);
+
+          result.push({
+            ...node,
+            depth,
+            hasChildren,
+            isTarget,
+          });
+
+          // Expand logic:
+          // We only descend if the node has children AND is marked as Open
+          if (hasChildren && isOpen) {
+            traverse(node.children, depth + 1);
+          }
+        }
+      };
+
+      traverse(sourceTree);
+      return result;
+    },
+
+    /**
+     * UNIQUE SEARCH ITEMS
+     * Filters the flattenedTree to ensure each term ID appears only once
+     * in the Autocomplete dropdown.
+     */
+    uniqueSearchItems() {
+      const items = this.flattenedTree || [];
+      const seen = new Set();
+
+      return items.filter((item) => {
+        const id = item.identifier;
+        if (seen.has(id)) {
+          return false; // Duplicate found, skip it
+        }
+        seen.add(id);
+        return true; // New item, keep it
+      });
+    },
   },
   watch: {
+    // URL Term Watcher
     async term(newVal) {
-      /* istanbul ignore else */
       if (newVal) {
-        let parents = [...new Set(this.getAncestors()(newVal.identifier))];
-        await this.activateTerms(newVal)
-        this.open = parents
+        await this.activateTerms(newVal);
+
+        // Find ALL paths to this term (in case it exists in multiple places)
+        const allPaths = this.findAllPaths(this.tree, newVal.identifier);
+        const parentsToOpen = new Set();
+
+        allPaths.forEach((path) => {
+          path.forEach((id) => {
+            if (String(id) !== String(newVal.identifier)) {
+              parentsToOpen.add(String(id));
+            }
+          });
+        });
+
+        this.openTerms(Array.from(parentsToOpen));
+      } else {
+        await this.activateTerms();
       }
-      else await this.activateTerms()
     },
-    search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
+
+    // --- SEARCH WATCHER (Handles Multiple Instances) ---
+    search(newTerm) {
+      // CASE 1: Search Cleared
+      if (!newTerm) {
+        // Reset to full tree by clearing the "open" list
+        this.openTerms([]);
+        return;
+      }
+      // CASE 2: Active Search
+      const targetId = newTerm.identifier || newTerm;
+      const strTargetId = String(targetId);
+      // 1. Find ALL paths to the target node
+      const allPaths = this.findAllPaths(this.tree, targetId);
+
+      // 2. Collect ALL parent IDs from ALL paths
+      const allIdsToOpen = new Set();
+
+      allPaths.forEach((path) => {
+        path.forEach((id) => {
+          // Add ID to open set ONLY if it is NOT the target itself
+          // (We want the parents open, but the target closed)
+          if (
+            String(id) !== strTargetId &&
+            !Object.keys(newTerm).includes("isSunburst")
+          ) {
+            allIdsToOpen.add(String(id));
+          }
+          //Target is open because the selection is from Sunburst
+          else if (newTerm["isSunburst"]) {
+            allIdsToOpen.add(String(id));
+          }
+        });
+      });
+
+      // 3. Update Vuex State
+      this.openTerms(Array.from(allIdsToOpen));
+
+      // 4. Scroll to FIRST Instance
+      setTimeout(() => {
+        if (!this.$refs.virtualScroll) return;
+
+        // Find index of the FIRST occurrence in the visible list
+        const index = this.visibleNodes.findIndex(
+          (x) => String(x.identifier) === strTargetId,
+        );
+
+        if (index !== -1) {
+          if (this.$refs.virtualScroll.scrollToIndex) {
+            this.$refs.virtualScroll.scrollToIndex(index);
+          } else {
+            // Fallback: 50px is the estimated item height
+            this.$refs.virtualScroll.$el.scrollTop = index * 50;
+          }
+        }
+      }, 300);
+    },
   },
-  async mounted() { await this.fetchTerms() },
-  destroyed() { this.leavePage() },
+  async mounted() {
+    await this.fetchTerms();
+  },
+  unmounted() {
+    this.leavePage();
+  },
   methods: {
-    searchTerm(term){
-      this.resetPagination()
-      if (this.activeTerms.includes(term.identifier)) this.$router.push({path: this.$route.path})
-      else this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(term.name)}})
-    },
     ...mapActions("ontologyBrowser", [
       "fetchTerms",
       "fetchRecords",
       "resetPagination",
       "activateTerms",
       "openTerms",
-      "leavePage"
+      "leavePage",
     ]),
-    ...mapGetters("ontologyBrowser", ["getAncestors"])
-  }
-}
+
+    /**
+     * Searches for a term and updates the route based on its presence in the active terms list.
+     *
+     * @param {Object} term - The term object to be searched.
+     * @param {string} term.identifier - The unique identifier of the term.
+     * @param {string} term.name - The name of the term to encode and include in the query parameters if not already active.
+     * @return {void} This method does not return a value.
+     */
+    searchTerm(term) {
+      this.resetPagination();
+      if (this.activeTerms.includes(term.identifier))
+        this.$router.push({ path: this.$route.path });
+      else
+        this.$router.push({
+          path: this.$route.path,
+          query: { term: encodeURIComponent(term.name) },
+        });
+    },
+
+    // --- UPDATED HELPER: Find ALL Paths ---
+    // Returns Array of Arrays: [[Root, Child, Target], [Root, OtherChild, Target]]
+    findAllPaths(nodes, targetId, currentPath = [], results = []) {
+      const strTarget = String(targetId);
+
+      for (const node of nodes) {
+        const strNode = String(node.identifier);
+
+        // Create a new path array for this branch
+        const newPath = [...currentPath, node.identifier];
+
+        // Match Found: Add this full path to results
+        if (strNode === strTarget) {
+          results.push(newPath);
+        }
+
+        // Continue searching deeper even if match found (in case of nested weirdness),
+        // but primarily to find matches in OTHER branches.
+        if (node.children && node.children.length > 0) {
+          this.findAllPaths(node.children, targetId, newPath, results);
+        }
+      }
+
+      return results;
+    },
+
+    /**
+     * Toggles the open or closed state of a node in the hierarchy.
+     * Updates the list of currently opened nodes based on the given item's identifier.
+     *
+     * @param {Object} item - The node object to be toggled.
+     * @param {boolean} item.hasChildren - Indicates if the node has child items.
+     * @param {number|string} item.identifier - The unique identifier of the node.
+     * @return {void} This method does not return a value.
+     */
+    toggleNode(item) {
+      if (!item.hasChildren) return;
+
+      const strId = String(item.identifier);
+      const currentOpenTerms = (this.openedTerms || []).map(String);
+      const isOpen = currentOpenTerms.includes(strId);
+
+      let newOpened = [...(this.openedTerms || [])];
+
+      if (isOpen) {
+        // Close: Remove strict match
+        newOpened = newOpened.filter((id) => String(id) !== strId);
+      } else {
+        // Open: Add original ID
+        newOpened.push(item.identifier);
+      }
+      newOpened = newOpened.map((item) =>
+        typeof item === "string" ? Number(item) : item,
+      );
+      this.openTerms(newOpened);
+    },
+
+    /**
+     * Prune logic that supports multiple matches
+     * @param nodes
+     * @param targetId
+     * @return Array
+     */
+    pruneTreeWithChildren(nodes, targetId) {
+      const filtered = [];
+      const strTarget = String(targetId);
+
+      for (const node of nodes) {
+        const strNode = String(node.identifier);
+
+        // CASE 1: Found the target
+        if (strNode === strTarget) {
+          filtered.push({
+            ...node,
+            children: node.children ? [...node.children] : [],
+          });
+          // We do NOT 'continue' here because a child might ALSO contain the target
+          // (unlikely in standard ontology but possible in graph structures)
+          // Actually, for standard tree display, if we found it, we show it.
+          // If the term appears AGAIN inside itself, recursion handles it.
+          continue;
+        }
+
+        // CASE 2: Look in children
+        if (node.children && node.children.length > 0) {
+          const matchingChildren = this.pruneTreeWithChildren(
+            node.children,
+            targetId,
+          );
+          if (matchingChildren.length > 0) {
+            filtered.push({ ...node, children: matchingChildren });
+          }
+        }
+      }
+      return filtered;
+    },
+
+    /**
+     * SAFE CHECK: Checks if a node is open regardless of ID type (String/Number)
+     * @param identifier
+     * @return Boolean
+     */
+    isOpen(identifier) {
+      if (!this.openedTerms) return false;
+      // Convert everything to String for comparison
+      return this.openedTerms.map(String).includes(String(identifier));
+    },
+
+    /**
+     * Updates the search property with the first element of the provided value array
+     * and calls the toggleNode method with the same element.
+     * @param {Array} value - An array where the first element is used to update the search property and passed to the toggleNode method.
+     */
+    subjectNode(value) {
+      if (value && value.length) {
+        this.search = value[0];
+        this.toggleNode(value[0]);
+      } else {
+        this.search = null;
+      }
+    },
+
+    noSelection(value) {
+      if (value) {
+        this.search = null;
+      }
+    },
+  },
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .subject_color--border {
-  border: 1px solid ;
-  border-color: #E67E22 !important
+  border: 1px solid #e67e22 !important;
 }
 
 .domain_color--border {
-  border: 1px solid ;
-  border-color: #712727 !important
+  border: 1px solid #712727 !important;
 }
 
 .hits {
@@ -200,13 +515,14 @@ export default {
   border-radius: 50%;
 }
 
-#ontologyBrowser, #termDisplay {
+#ontologyBrowser,
+#termDisplay {
   display: flex;
   flex-direction: column;
 }
 
 .tree {
-  overflow-y: scroll;
+  /* overflow-y handled by virtual-scroll, but we keep this for flex layout */
   flex-grow: 1;
   height: 70vh;
 }
@@ -229,4 +545,17 @@ export default {
   cursor: pointer !important;
 }
 
+.hover-bg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.chip-mimic {
+  border: 1px solid;
+  border-radius: 18px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  display: inline-block;
+  white-space: nowrap;
+}
 </style>

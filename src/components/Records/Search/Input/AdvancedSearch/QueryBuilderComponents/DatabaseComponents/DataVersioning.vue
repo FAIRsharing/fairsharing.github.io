@@ -1,22 +1,19 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataVersioning",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
@@ -25,14 +22,11 @@ export default {
   },
   data: () => {
     return {
-      itemList: [
-        "yes",
-        "no",
-        "not found"
-      ],
+      itemList: ["yes", "no", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Does the resource enable modifications to published data (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all public versions of the data? Multiple selections will be joined with OR.",
+      toolTipText:
+        "Does the resource enable modifications to published data (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all public versions of the data? Multiple selections will be joined with OR.",
     };
   },
   computed: {

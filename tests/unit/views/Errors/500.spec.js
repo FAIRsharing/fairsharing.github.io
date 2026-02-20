@@ -7,17 +7,18 @@ const localVue = createLocalVue();
 localVue.use(VueMeta);
 
 describe("500 error page", () => {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Error, {
-            localVue
-        });
+  beforeEach(() => {
+    wrapper = shallowMount(Error, {
+      localVue,
     });
+  });
 
-    it("can mount", () => {
-        expect(wrapper.vm.$options.name).toBe("Error500");
-        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Server Error");
-    });
-
+  it("can mount", () => {
+    expect(wrapper.vm.$options.name).toBe("Error500");
+    expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
+      "FAIRsharing | Server Error",
+    );
+  });
 });

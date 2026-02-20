@@ -1,8 +1,5 @@
 {
   "queryName": "fairsharingRecord",
   "queryParam": null,
-  "fields": [
-    "id",
-    {"$ref": "organisationLinks"}
-  ]
+  "fields": ["id", { "$ref": "organisationLinks" }]
 }

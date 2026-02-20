@@ -6,10 +6,7 @@
     "label",
     {
       "name": "children",
-      "fields": [
-        "id",
-        "label"
-      ]
+      "fields": ["id", "label"]
     }
   ]
 }

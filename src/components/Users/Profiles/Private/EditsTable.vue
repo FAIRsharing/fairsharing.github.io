@@ -1,24 +1,24 @@
 <template>
   <div>
     <v-data-table
-      class="userProfileEditsTable"
-      :items="edits"
-      :headers="headers"
-      :items-per-page="perPage"
       :footer-props="footer"
+      :headers="headers"
+      :items="edits"
+      :items-per-page="perPage"
       calculate-widths
+      class="userProfileEditsTable"
     >
       <template #[`item.fairsharingRecord.name`]="{ item }">
         <div class="d-flex justify-start align-center">
           <v-avatar size="30">
             <Icon
-              :item="item.fairsharingRecord.type"
               :height="30"
+              :item="item.fairsharingRecord.type"
               wrapper-class=""
             />
           </v-avatar>
           <div class="mt-1 ml-3 alignLeft">
-            {{ item.fairsharingRecord.name | cleanString }}
+            {{ $filters.cleanString(item.fairsharingRecord.name) }}
           </div>
         </div>
       </template>
@@ -48,23 +48,22 @@
       </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-menu offset-x>
-          <template #activator="{ on, attrs }">
-            <v-icon
-              v-bind="attrs"
-              v-on="on"
-            >
-              fas fa-ellipsis-v
-            </v-icon>
+        <v-menu>
+          <template #activator="{ props }">
+            <v-icon v-bind="props"> fas fa-ellipsis-v</v-icon>
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.fairsharingRecord.id)">
-              <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
+              <template #prepend>
+                <v-icon>fas fa-eye</v-icon>
+              </template>
+              <v-list-item-title> Preview record</v-list-item-title>
             </v-list-item>
             <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
-              <v-list-item-avatar><v-icon>fas fa-newspaper</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-list-item-title> Go to record </v-list-item-title></v-list-item-content>
+              <template #prepend>
+                <v-icon>fas fa-newspaper</v-icon>
+              </template>
+              <v-list-item-title> Go to record</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -72,22 +71,18 @@
 
       <template #no-data>
         <v-btn
-          class="ma-1 white--text"
-          color="orange"
           :disabled="loading"
+          class="ma-1 text-white"
+          color="orange"
           @click="loadEditEvents"
         >
           <v-progress-circular
-            :size="25"
             :class="'pa-1' + [loading ? 'd-flex' : ' d-none']"
+            :size="25"
             color="white"
             indeterminate
           />
-          <span
-            :class="[!loading ? 'd-flex' : ' d-none']"
-          >
-            Load
-          </span>
+          <span :class="[!loading ? 'd-flex' : ' d-none']"> Load </span>
         </v-btn>
       </template>
     </v-data-table>
@@ -95,16 +90,16 @@
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showOverlay">
       <v-btn
-        fab
-        small
-        class="grey--text absolute"
+        v-if="closeButton"
+        class="text-black absolute"
+        icon="fas fa-xmark fa-solid"
         @click="hideOverlay()"
       >
-        <v-icon>fa-times</v-icon>
+        <v-icon size="30" />
       </v-btn>
 
       <v-card>
-        <Record :target="targetID" />
+        <Record :target="targetID" @show-dialog="showDialog" />
       </v-card>
     </v-dialog>
   </div>
@@ -112,86 +107,93 @@
 
 <script>
 import moment from "moment";
-import {mapActions, mapState} from "vuex"
+import { mapActions, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
-import { cleanString } from "@/utils/stringUtils"
 //import StatusPills from "./StatusPills";
 import Record from "@/views/Records/Record";
 
 export default {
   name: "EditsTable",
   //components: {Icon, Record, StatusPills},
-  components: {Icon, Record},
-  mixins: [cleanString],
+  components: { Icon, Record },
   data: () => {
     return {
       showOverlay: false,
       targetID: null,
       edits: [],
-      loading: false
-    }
+      loading: false,
+      closeButton: false,
+    };
   },
   computed: {
-    ...mapState('users', ['user']),
+    ...mapState("users", ["user"]),
     headers() {
       let headers = [
-        {text: 'Record', value: 'fairsharingRecord.name', align: 'center'},
-        {text: 'Event', value: 'editEvent', align: 'center'},
-        {text: 'Type', value: 'editType', align: 'center'},
-        {text: 'Date', value: 'createdAt', align: 'center'},
-        {text: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
+        { title: "Record", value: "fairsharingRecord.name", align: "center" },
+        { title: "Event", value: "editEvent", align: "center" },
+        { title: "Type", value: "editType", align: "center" },
+        { title: "Date", value: "createdAt", align: "center" },
+        {
+          title: "Actions",
+          value: "actions",
+          align: "center",
+          sortable: "false",
+        },
       ];
       return headers;
     },
-    noData(){
-      return "This user has not edited any records."
+    noData() {
+      return "This user has not edited any records.";
     },
-    perPage(){
+    perPage() {
       return 10;
     },
-    footer(){
-      return {'items-per-page-options': [10]}
+    footer() {
+      return { "items-per-page-options": [10] };
     },
   },
   methods: {
-    ...mapActions('users', ['getUserEditEvents']),
-    moment (date) {
-      return moment(date).format('dddd, MMMM Do YYYY, H:mm');
+    ...mapActions("users", ["getUserEditEvents"]),
+    moment(date) {
+      return moment(date).format("dddd, MMMM Do YYYY, H:mm");
     },
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
     },
     goToRecord(id) {
-      window.open("/" + id, '_blank');
+      window.open("/" + id, "_blank");
     },
-    hideOverlay(){
+    hideOverlay() {
       this.showOverlay = false;
       this.targetID = null;
+      this.closeButton = false;
+    },
+    showDialog(value) {
+      this.closeButton = value;
     },
     async loadEditEvents() {
       this.loading = true;
       // The means of getting a user's ID differs depending on whether this component is active in the
       // public or private profile. I'm checking the route to see which it is.
-      let loc = this.$router.currentRoute.path;
+      let loc = this.$router.currentRoute.value.path;
       let data;
       let userId;
-      if (loc === '/accounts/profile') {
+      if (loc === "/accounts/profile") {
         userId = this.user().id;
-      }
-      else {
-        userId = loc.split('/')[2]
+      } else {
+        userId = loc.split("/")[2];
       }
       if (userId) {
         data = await this.getUserEditEvents(userId);
         this.edits = data.user.editEvents;
       }
       // If everything went as planned...
-      this.loading = false
-    }
-  }
-}
+      this.loading = false;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -200,12 +202,13 @@ export default {
 }
 
 .userProfileRecordsTable th {
-  min-width: 100px
+  min-width: 100px;
 }
 
 .absolute {
   position: absolute !important;
   z-index: 1;
-  right: 13px;
+  right: -13px;
+  top: -10px;
 }
 </style>

@@ -1,21 +1,18 @@
 <template>
   <v-card class="mb-2">
     <v-card-text v-if="approvalRequiredProcessed">
-      <v-card-title
-        id="text-curator-search-0"
-        class="green white--text"
-      >
+      <v-card-title id="text-curator-search-0" class="bg-green text-white">
         <b> USER EDITS AWAITING APPROVAL </b>
         <v-spacer />
         <v-text-field
           v-model="searches"
-          label="Search"
-          color="white"
-          single-line
-          hide-details
-          solo
           class="searchField"
           clearable
+          color="white"
+          hide-details
+          label="Search"
+          single-line
+          variant="solo"
         />
       </v-card-title>
       <v-card-text v-if="error.general">
@@ -25,17 +22,14 @@
         </v-alert>
       </v-card-text>
       <v-data-table
-        :loading="loading"
+        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         :headers="headerItems"
         :items="approvalRequiredProcessed"
+        :loading="loading"
         :search="searches"
-        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         sort-by=""
       >
-        <template
-          v-if="recordType"
-          #item="props"
-        >
+        <template v-if="recordType" #item="props">
           <tr>
             <td>
               {{ props.item.updatedAt }}
@@ -47,15 +41,14 @@
             </td>
             <td>
               <v-menu>
-                <template #activator="{ on: menu, attrs }">
-                  <v-tooltip bottom>
-                    <template #activator="{ on: tooltip }">
+                <template #activator="{ props: menuProps }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props: tooltipProps }">
                       <v-icon
                         class="clickable"
-                        small
                         color="nordnetBlue"
-                        v-bind="attrs"
-                        v-on="{ ...tooltip, ...menu }"
+                        size="small"
+                        v-bind="[menuProps, tooltipProps]"
                       >
                         {{ props.item.curator }}
                       </v-icon>
@@ -79,16 +72,8 @@
             </td>
             <td>
               <div class="d-flex align-center">
-                <v-avatar
-                  v-if="props.item.type"
-                  class="mr-2"
-                  :height="40"
-                >
-                  <Icon
-                    :item="props.item.type"
-                    :height="40"
-                    wrapper-class=""
-                  />
+                <v-avatar v-if="props.item.type" :height="40" class="mr-2">
+                  <Icon :height="40" :item="props.item.type" wrapper-class="" />
                 </v-avatar>
                 <a :href="'/' + props.item.id">
                   {{ props.item.recordName }}
@@ -107,7 +92,7 @@
             </td>
             <td>
               <v-edit-dialog
-                :return-value.sync="props.item.processingNotes"
+                v-model:return-value="props.item.processingNotes"
                 large
                 @save="
                   saveProcessingNotes(props.item.id, props.item.processingNotes)
@@ -116,14 +101,12 @@
                 {{ props.item.processingNotes }}
                 <template #input>
                   <div class="dialogProcNotesEdit">
-                    <div class="mt-4 title">
-                      Update Processing Notes
-                    </div>
+                    <div class="mt-4 text-h6">Update Processing Notes</div>
                     <v-textarea
                       v-model="props.item.processingNotes"
-                      width="1200px"
                       label="Edit (not long words)"
-                      filled
+                      variant="filled"
+                      width="1200px"
                     />
                   </div>
                 </template>
@@ -132,34 +115,29 @@
             <td>
               <v-icon
                 color="blue"
-                dark
-                left
+                start
                 @click.stop="
                   approveChangesMenu(
                     props.item.recordName,
                     props.item.id,
-                    props.item.hidden
+                    props.item.hidden,
                   )
                 "
               >
-                far fa-check-circle
+                fas fa-check-circle
               </v-icon>
               {{ props.item.actions }}
               <v-icon
                 color="red"
-                dark
-                right
-                small
+                end
+                size="small"
                 @click="deleteRecordMenu(props.item.recordName, props.item.id)"
               >
                 fas fa-trash
               </v-icon>
-              <v-tooltip bottom>
-                <template #activator="{ on, attrs }">
-                  <span
-                    v-bind="attrs"
-                    v-on="on"
-                  >
+              <v-tooltip location="bottom">
+                <template #activator="{ props }">
+                  <span v-bind="props">
                     <a
                       :href="'/' + props.item.id + '/edit'"
                       style="padding-left: 12px"
@@ -186,16 +164,10 @@
         </template>
       </v-data-table>
     </v-card-text>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="dialogs.approveChanges"
-        max-width="700px"
-      >
+    <v-layout justify-center row>
+      <v-dialog v-model="dialogs.approveChanges" max-width="700px">
         <v-card>
-          <v-card-title class="headline">
+          <v-card-title class="text-h5">
             Are you sure you want to
             <span style="color: blue; padding-left: 5px; padding-right: 1px">
               ACCEPT/APPROVE CHANGES
@@ -211,15 +183,15 @@
             <v-spacer />
             <v-btn
               :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="closeApproveChangesMenu()"
             >
               Cancel
             </v-btn>
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="confirmApproval()"
             >
               OK
@@ -227,9 +199,9 @@
             <v-spacer />
             <v-switch
               v-model="dialogs.createReview"
+              class="pr-3"
               color="green"
               label="Create Review"
-              class="pr-3"
             />
             <v-switch
               v-model="dialogs.recordHidden"
@@ -241,16 +213,10 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="dialogs.deleteRecord"
-        max-width="700px"
-      >
+    <v-layout justify-center row>
+      <v-dialog v-model="dialogs.deleteRecord" max-width="700px">
         <v-card>
-          <v-card-title class="headline">
+          <v-card-title class="text-h5">
             Are you sure you want to
             <span style="color: red; padding-left: 5px; padding-right: 5px">
               DELETE
@@ -266,8 +232,8 @@
             <v-spacer />
             <v-btn
               :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="closeDeleteMenu()"
             >
               Cancel
@@ -275,10 +241,10 @@
             <v-btn
               :disabled="
                 dialogs.disableDelButton === true ||
-                  dialogs.disableButton === true
+                dialogs.disableButton === true
               "
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="confirmDelete()"
             >
               OK
@@ -350,7 +316,7 @@ export default {
   watch: {
     approvalRequired: function () {
       this.approvalRequiredProcessed = JSON.parse(
-        JSON.stringify(this.approvalRequired)
+        JSON.stringify(this.approvalRequired),
       );
     },
     "dialogs.approveChanges"(val) {
@@ -369,7 +335,7 @@ export default {
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(
-      JSON.stringify(this.approvalRequired)
+      JSON.stringify(this.approvalRequired),
     );
     this.loading = false;
   },
@@ -408,8 +374,9 @@ export default {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
-            (element) => element.id === rec.id
+            (element) => element.id === rec.id,
           );
+          /* v8 ignore next 3 */
           if (index >= 0) {
             object.hidden = true;
           }
@@ -425,10 +392,10 @@ export default {
       this.approvalRequired.sort(this.compareRecordDescUpdate);
       for (let i = 0; i < this.approvalRequired.length; i++) {
         this.approvalRequired[i].updatedAt = this.formatDate(
-          this.approvalRequired[i].updatedAt
+          this.approvalRequired[i].updatedAt,
         );
         this.approvalRequired[i].createdAt = this.formatDate(
-          this.approvalRequired[i].createdAt
+          this.approvalRequired[i].createdAt,
         );
       }
       let curators = listOfCurators.curatorList;
@@ -496,11 +463,11 @@ export default {
         _module.error.recordID = idRecord;
       }
       const index = _module.approvalRequiredProcessed.findIndex(
-        (element) => element.id === idRecord
+        (element) => element.id === idRecord,
       );
       _module.approvalRequiredProcessed[index].curator = nameUser.substring(
         0,
-        6
+        6,
       );
     },
 
@@ -537,7 +504,7 @@ export default {
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -550,14 +517,14 @@ export default {
       _module.dialogs.disableButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -606,9 +573,10 @@ export default {
   overflow-y: auto;
 }
 
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

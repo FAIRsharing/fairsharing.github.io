@@ -1,8 +1,5 @@
 <template>
-  <v-container
-    id="container-back"
-    fluid
-  >
+  <v-container id="container-back" fluid>
     <div id="search">
       <section class="d-flex flex-column justify-center">
         <v-row class="justify-center">
@@ -19,23 +16,15 @@
               class="mr-8 mb-8"
               :class="[
                 'mt-1',
-                $vuetify.breakpoint.lgAndDown
+                $vuetify.display.lgAndDown
                   ? 'home-search-bt'
                   : 'home-search-bt-xl',
               ]"
               href="https://assist.fairsharing.org/"
               target="_blank"
             >
-              <v-icon
-                x-small
-                class="mr-1"
-              >
-                fas fa-search fa-graduation-cap
-              </v-icon>
-              <v-icon
-                x-small
-                class="mr-1"
-              >
+              <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
+              <v-icon size="x-small" class="mr-1">
                 fas fa-graduation-cap
               </v-icon>
               <span class="button-text-size">Explore & Learn</span>
@@ -59,19 +48,13 @@
             class="d-flex align-center pa-0"
             :class="[
               {
-                'verticalDividerWrp mx-3': $vuetify.breakpoint.mdAndUp,
-                'horizontalDividerWrp my-3': $vuetify.breakpoint.smAndDown,
+                'verticalDividerWrp mx-3': $vuetify.display.mdAndUp,
+                'horizontalDividerWrp my-3': $vuetify.display.smAndDown,
               },
             ]"
           >
-            <div
-              v-if="$vuetify.breakpoint.mdAndUp"
-              class="vertical-divider"
-            />
-            <div
-              v-else
-              class="horizontal-divider"
-            />
+            <div v-if="$vuetify.display.mdAndUp" class="vertical-divider" />
+            <div v-else class="horizontal-divider" />
           </v-col>
           <!--Search Block -->
           <v-col
@@ -92,7 +75,7 @@
               show-home-search
               placeholder="search through all content"
               :is-advance-search-term="isAdvanceSearchTerm"
-              @advancedSearchTerm="advancedSearchTerm"
+              @advanced-search-term="advancedSearchTerm"
             />
           </v-col>
           <!--Divider -->
@@ -104,19 +87,13 @@
             class="d-flex align-center pa-0"
             :class="[
               {
-                'verticalDividerWrp mx-3': $vuetify.breakpoint.mdAndUp,
-                'horizontalDividerWrp my-3': $vuetify.breakpoint.smAndDown,
+                'verticalDividerWrp mx-3': $vuetify.display.mdAndUp,
+                'horizontalDividerWrp my-3': $vuetify.display.smAndDown,
               },
             ]"
           >
-            <div
-              v-if="$vuetify.breakpoint.mdAndUp"
-              class="vertical-divider"
-            />
-            <div
-              v-else
-              class="horizontal-divider"
-            />
+            <div v-if="$vuetify.display.mdAndUp" class="vertical-divider" />
+            <div v-else class="horizontal-divider" />
           </v-col>
           <!--Browse Subject -->
           <v-col
@@ -131,18 +108,13 @@
               class="mb-8"
               :class="[
                 'mt-1',
-                $vuetify.breakpoint.lgAndDown
+                $vuetify.display.lgAndDown
                   ? 'home-search-bt'
                   : 'home-search-bt-xl',
               ]"
               to="/browse/subject"
             >
-              <v-icon
-                x-small
-                class="mr-1"
-              >
-                fas fa-search
-              </v-icon>
+              <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
               <span class="button-text-size">Browse by Subject</span>
             </v-btn>
             <v-img
@@ -151,8 +123,8 @@
               width="90%"
               max-height="340"
               max-width="340"
-              contain
               alt="browse by subject"
+              class="contain"
             />
           </v-col>
         </v-row>
@@ -181,7 +153,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #container-back {
   background: rgb(37, 52, 66);
 }

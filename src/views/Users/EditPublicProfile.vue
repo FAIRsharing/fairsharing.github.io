@@ -1,46 +1,33 @@
 <template>
-  <v-container
-    class="mb-10"
-    fluid
-  >
-    <v-alert
-      v-if="!currentPublicUser.username && !pageLoad"
-      type="error"
-    >
+  <v-container class="mb-10" fluid>
+    <v-alert v-if="!currentPublicUser.username && !pageLoad" type="error">
       No user found with id {{ $route.params.id }}.
     </v-alert>
 
     <v-alert
-      v-if="messages().getPublicUser.message && !pageLoad && currentPublicUser.username"
-      class="white--text"
+      v-if="
+        messages().getPublicUser.message &&
+        !pageLoad &&
+        currentPublicUser.username
+      "
+      class="text-white"
       type="error"
     >
       {{ messages().getPublicUser.message }}
     </v-alert>
 
-    <v-row
-      class="justify-center"
-    >
-      <v-col
-        cols="12"
-        sm="12"
-        md="8"
-        lg="10"
-        xl="8"
-      >
+    <v-row class="justify-center">
+      <v-col cols="12" sm="12" md="8" lg="10" xl="8">
         <!--   Error Handling for update user action     -->
         <div v-if="messages().updateProfile.message">
           <v-alert
             v-if="messages().updateProfile.error"
-            class="white--text"
+            class="text-white"
             type="error"
           >
             {{ messages().updateProfile.message }}
           </v-alert>
-          <v-alert
-            v-else
-            type="success"
-          >
+          <v-alert v-else type="success">
             {{ messages().updateProfile.message }}
           </v-alert>
         </div>
@@ -49,53 +36,50 @@
         <div v-if="messages().deletePublicUser.message">
           <v-alert
             v-if="messages().deletePublicUser.error"
-            class="white--text"
+            class="text-white"
             type="error"
           >
             {{ messages().deletePublicUser.error }}
           </v-alert>
-          <v-alert
-            v-else
-            type="success"
-          >
+          <v-alert v-else type="success">
             {{ messages().deletePublicUser.message }}
           </v-alert>
         </div>
 
-
         <v-form
           v-if="currentPublicUser.username"
           v-model="valid"
-          @submit.prevent="valid ? updatePublicProfile() : valid=false"
+          @submit.prevent="valid ? updatePublicProfile() : (valid = false)"
         >
-          <v-card-title class="primary white--text">
-            <h2> Edit Public profile of User ID: {{ $route.params.id }} </h2>
+          <v-card-title class="bg-primary text-white">
+            <h2>Edit Public profile of User ID: {{ $route.params.id }}</h2>
           </v-card-title>
-          <v-container
-            fluid
-            class="text-center elevation-3 pa-5"
-          >
+          <v-container fluid class="text-center elevation-3 pa-5">
             <v-row>
               <v-col
                 v-for="(field, fieldKey) in fields"
                 :id="'edit_' + field.name"
-                :key="field.name+'_' + fieldKey"
+                :key="field.name + '_' + fieldKey"
                 cols="12"
               >
                 <div v-if="field.type === 'switch'">
                   <v-switch
                     v-model="formData[field.name]"
-                    :label="formData[field.name]?'Switch off to deactivate user account':field.label"
+                    :label="
+                      formData[field.name]
+                        ? 'Switch off to deactivate user account'
+                        : field.label
+                    "
                   />
                 </div>
                 <div v-if="field.type === 'select'">
                   <v-select
                     v-model="formData[field.name]"
-                    outlined
+                    variant="outlined"
                     :label="field.label"
                     :items="data[field.data]"
                     :rules="field.rules"
-                    item-text="name"
+                    item-title="name"
                   />
                 </div>
                 <div v-if="field.type === 'input'">
@@ -105,7 +89,7 @@
                   <v-text-field
                     v-model="formData[field.name]"
                     :label="field.label"
-                    outlined
+                    variant="outlined"
                     :type="field.type"
                     :disabled="isDisabled(field.name)"
                     :rules="field.rules"
@@ -122,17 +106,16 @@
               </v-col>
             </v-row>
             <v-btn
-              class="primary mr-5 white--text"
+              class="bg-primary mr-5 text-white"
               type="submit"
-              outlined
+              variant="outlined"
             >
               Update Profile
             </v-btn>
             <v-btn
               color="error"
-              text
-              outlined
-              @click.prevent="dialog=true"
+              variant="outlined"
+              @click.prevent="dialog = true"
             >
               Delete Account!
             </v-btn>
@@ -141,27 +124,23 @@
       </v-col>
     </v-row>
 
-    <v-dialog
-      v-model="dialog"
-      max-width="290"
-    >
+    <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="text-h6">
           Are you sure you want to delete the user account?
         </v-card-title>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="gray darken-1"
-            text
-            @click="dialog = false;"
-          >
+          <v-btn color="gray darken-1" variant="text" @click="dialog = false">
             No
           </v-btn>
           <v-btn
-            color="red darken-1"
-            text
-            @click="dialog = false;deleteAccount()"
+            color="red-darken-1"
+            variant="text"
+            @click="
+              dialog = false;
+              deleteAccount();
+            "
           >
             Yes
           </v-btn>
@@ -173,13 +152,10 @@
       height="100%"
       class="d-flex flex-column rounded-0 mb-10"
     >
-      <v-card-title class="primary white--text py-3">
+      <v-card-title class="bg-primary text-white py-3">
         Organisations
       </v-card-title>
-      <v-card-text
-        class="pa-0"
-        style="flex-grow: 1"
-      >
+      <v-card-text class="pa-0" style="flex-grow: 1">
         <EditOrganisations />
       </v-card-text>
     </v-card>
@@ -187,17 +163,23 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RESTClient from "@/lib/Client/RESTClient";
-import { isBluesky, isEmail, isMastodon, isRequired, isUrl } from "@/utils/rules.js"
+import {
+  isBluesky,
+  isEmail,
+  isMastodon,
+  isRequired,
+  isUrl,
+} from "@/utils/rules.js";
 
 const restClient = new RESTClient();
 
 export default {
   name: "EditPublicProfile",
-  components: {EditOrganisations},
+  components: { EditOrganisations },
   data: () => {
     return {
       valid: false,
@@ -206,7 +188,7 @@ export default {
       dialog: false,
       data: {
         profileTypes: [],
-        userRoles: []
+        userRoles: [],
       },
       fields: [
         {
@@ -220,104 +202,91 @@ export default {
           label: "Email address",
           hint: null,
           type: "input",
-          rules: [
-            isEmail(),
-            isRequired()
-          ]
+          rules: [isEmail(), isRequired()],
         },
         {
           name: "first_name",
           label: "First Name",
           hint: null,
           type: "input",
-          rules: []
+          rules: [],
         },
         {
           name: "last_name",
           label: "Last Name",
           hint: null,
           type: "input",
-          rules: []
+          rules: [],
         },
         {
           name: "homepage",
           label: "Homepage",
           hint: null,
           type: "input",
-          rules: [
-            isUrl()
-          ]
+          rules: [isUrl()],
         },
         {
           name: "twitter",
           label: "Twitter",
           hint: null,
-          type: "input"
+          type: "input",
         },
         {
           name: "mastodon",
           label: "Mastodon",
           hint: null,
           type: "input",
-          rules: [
-              isMastodon()
-          ]
+          rules: [isMastodon()],
         },
         {
           name: "bluesky",
           label: "Bluesky",
           hint: null,
           type: "input",
-          rules: [
-            isBluesky()
-          ]
+          rules: [isBluesky()],
         },
         {
           name: "orcid",
           label: "Orcid ID",
           hint: "To change this field log in with ORCID",
-          type: "input"
+          type: "input",
         },
         {
           name: "profile_type",
           label: "Profile Type",
           hint: null,
           type: "select",
-          rules: [
-            isRequired()
-          ],
-          data: "profileTypes"
+          rules: [isRequired()],
+          data: "profileTypes",
         },
         {
           name: "role",
           label: "Role",
           hint: null,
           type: "select",
-          rules: [
-            isRequired()
-          ],
-          data: "userRoles"
+          rules: [isRequired()],
+          data: "userRoles",
         },
         {
           name: "preferences_hide",
           label: "Hide your email address on public pages.",
           hint: null,
-          type: "checkbox"
+          type: "checkbox",
         },
         {
           name: "preferences_send",
           label: "Receive record update emails from FAIRsharing.",
           hint: null,
-          type: "checkbox"
+          type: "checkbox",
         },
         {
           name: "deactivated",
           label: "Switch on to activate user account",
           hint: null,
-          type: "switch"
-        }
+          type: "switch",
+        },
       ],
-      formData:{
+      formData: {
         username: null,
         id: null,
         email: null,
@@ -331,24 +300,28 @@ export default {
         twitter: null,
         mastodon: null,
         bluesky: null,
-        deactivated:null,
-        role: null
-      }
-    }
+        deactivated: null,
+        role: null,
+      },
+    };
   },
   computed: {
-    ...mapState('users', ['currentPublicUser','messages', 'user'])
+    ...mapState("users", ["currentPublicUser", "messages", "user"]),
   },
   async mounted() {
     await this.loadUser();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanStore();
   },
   methods: {
-    ...mapActions('users', ['getPublicUserForModification','updatePublicUser','deletePublicUser']),
-    ...mapMutations('users', ['cleanStore']),
-    async updatePublicProfile () {
+    ...mapActions("users", [
+      "getPublicUserForModification",
+      "updatePublicUser",
+      "deletePublicUser",
+    ]),
+    ...mapMutations("users", ["cleanStore"]),
+    async updatePublicProfile() {
       this.loading = true;
       this.$store.commit("users/setMessage", {
         field: "updateProfile",
@@ -357,10 +330,12 @@ export default {
       let data = JSON.parse(JSON.stringify(this.formData));
       data.preferences = {
         hide_email: this.formData.preferences_hide,
-        email_updates: this.formData.preferences_send
+        email_updates: this.formData.preferences_send,
       };
       data.deactivated = !data.deactivated;
-      let role_id = this.data.userRoles.filter(role => this.formData.role === role.name)[0].id;
+      let role_id = this.data.userRoles.filter(
+        (role) => this.formData.role === role.name,
+      )[0].id;
       data.role_id = role_id;
       await this.updatePublicUser(data);
       await this.loadUser();
@@ -375,10 +350,9 @@ export default {
     isDisabled(name) {
       const _module = this;
       /* istanbul ignore if */
-      if (name === 'username' || name === 'orcid') {
+      if (name === "username" || name === "orcid") {
         return true;
-      }
-      else if (name === 'email' && _module.currentPublicUser.third_party) {
+      } else if (name === "email" && _module.currentPublicUser.third_party) {
         return true;
       }
       return false;
@@ -386,14 +360,18 @@ export default {
     async loadUser() {
       await this.getPublicUserForModification(this.$route.params.id);
       this.data.profileTypes = await restClient.getProfileTypes();
-      this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
+      this.data.userRoles = await restClient.getUserRoles(
+        this.user().credentials.token,
+      );
       /* istanbul ignore else */
       if (this.currentPublicUser.preferences) {
         this.formData.username = this.currentPublicUser.username;
         this.formData.id = this.$route.params.id;
         this.formData.email = this.currentPublicUser.email;
-        this.formData.preferences_hide = this.currentPublicUser['preferences']['hide_email'];
-        this.formData.preferences_send = this.currentPublicUser['preferences']['email_updates'];
+        this.formData.preferences_hide =
+          this.currentPublicUser["preferences"]["hide_email"];
+        this.formData.preferences_send =
+          this.currentPublicUser["preferences"]["email_updates"];
         this.formData.first_name = this.currentPublicUser.first_name;
         this.formData.last_name = this.currentPublicUser.last_name;
         this.formData.homepage = this.currentPublicUser.homepage;
@@ -406,13 +384,13 @@ export default {
         this.formData.deactivated = !this.currentPublicUser.deactivated;
       }
       this.pageLoad = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
-  #edit_hide_email label {
-    margin-bottom: 0 !important;
-  }
+#edit_hide_email label {
+  margin-bottom: 0 !important;
+}
 </style>

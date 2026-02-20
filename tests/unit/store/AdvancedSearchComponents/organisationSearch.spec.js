@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import OrganisationSearchStore from "@/store/AdvancedSearchComponents/organisationSearch";
 
-import OrganisationSearchData from "../../../../tests/fixtures/getOrganisationsSearch.json";
+import OrganisationSearchData from "../../../fixtures/getOrganisationsSearch.json";
 
 describe("OrganisationSearchStore store methods", () => {
   const { actions, mutations, getters } = OrganisationSearchStore;
@@ -73,7 +73,7 @@ describe("OrganisationSearchStore store methods", () => {
     };
     const builtData = getters.getSearchOrganisations(getOrganisationsResult);
     expect(builtData).toStrictEqual(
-      getOrganisationsResult["searchOrganisations"]
+      getOrganisationsResult["searchOrganisations"],
     );
   });
 
@@ -86,10 +86,10 @@ describe("OrganisationSearchStore store methods", () => {
       ],
     };
     const builtData = getters.getSearchOrganisationNames(
-      getOrganisationsResult
+      getOrganisationsResult,
     );
     expect(builtData).toStrictEqual(
-      getOrganisationsResult["searchOrganisations"].map(({ name }) => name)
+      getOrganisationsResult["searchOrganisations"].map(({ name }) => name),
     );
   });
 

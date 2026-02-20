@@ -1,22 +1,19 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataCuration",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
@@ -34,7 +31,8 @@ export default {
       ],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, automated, or manual curation). Multiple selections will be joined with OR.",
+      toolTipText:
+        "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, automated, or manual curation). Multiple selections will be joined with OR.",
     };
   },
   computed: {

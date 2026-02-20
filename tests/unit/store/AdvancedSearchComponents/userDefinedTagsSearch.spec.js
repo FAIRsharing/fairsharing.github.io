@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import UserDefinedTagsSearchStore from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 
-import UserDefinedTagsSearchData from "../../../../tests/fixtures/getUserDefinedTagsSearch.json";
+import UserDefinedTagsSearchData from "../../../fixtures/getUserDefinedTagsSearch.json";
 
 describe("TaxonomiesSearchStore store methods", () => {
   const { actions, mutations, getters } = UserDefinedTagsSearchStore;
@@ -68,10 +68,10 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchUserDefinedTags: ["test", "test1", "test2"],
     };
     const builtData = getters.getSearchUserDefinedTags(
-      getUserDefinedTagsResult
+      getUserDefinedTagsResult,
     );
     expect(builtData).toStrictEqual(
-      getUserDefinedTagsResult["searchUserDefinedTags"]
+      getUserDefinedTagsResult["searchUserDefinedTags"],
     );
   });
 

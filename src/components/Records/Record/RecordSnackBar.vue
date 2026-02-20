@@ -1,9 +1,5 @@
 <template>
-  <v-snackbar
-    :value="model"
-    :color="type"
-    class="text-body"
-  >
+  <v-snackbar :model-value="model" :color="type" class="text-body">
     <span class="text-center">
       {{ message }}
     </span>
@@ -14,13 +10,11 @@
 export default {
   name: "RecordSnackbar",
   props: {
-    model: {default: null, type: Boolean},
-    message: {default: null, type: String},
-    type: {default: 'info', type: String},
-  }
-}
+    model: { default: null, type: Boolean },
+    message: { default: null, type: String },
+    type: { default: "info", type: String },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

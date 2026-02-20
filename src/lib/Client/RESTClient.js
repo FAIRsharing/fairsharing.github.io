@@ -11,13 +11,13 @@ class RESTClient {
       return RESTClient._instance;
     }
     RESTClient._instance = this;
-    this.baseURL = process.env.VUE_APP_API_ENDPOINT;
+    this.baseURL = import.meta.env.VITE_API_ENDPOINT;
     this.headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
       "Cache-Control": "no-cache",
     };
-    this.headers["X-Client-Id"] = process.env.VUE_APP_CLIENT_ID;
+    this.headers["X-Client-Id"] = import.meta.env.VITE_CLIENT_ID;
   }
 
   /* USERS: all methods below related to handling user authentication */
@@ -758,7 +758,7 @@ class RESTClient {
   async updateStatusMaintenanceRequest(
     maintenanceRequest,
     newStatus,
-    userToken
+    userToken,
   ) {
     let _client = this;
     const request = {

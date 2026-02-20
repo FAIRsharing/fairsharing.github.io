@@ -1,20 +1,10 @@
 <template>
-  <v-form
-    id="editOrganisations"
-    ref="editOrganisations"
-    v-model="formValid"
-  >
-    <v-container
-      fluid
-      class="pa-0"
-    >
+  <v-form id="editOrganisations" ref="editOrganisations" v-model="formValid">
+    <v-container class="pa-0" fluid>
       <v-row>
-        <v-col
-          cols="12"
-          class="pa-0"
-        >
+        <v-col class="pa-0" cols="12">
           <v-card>
-            <v-card-title class="grey lighten-4 blue--text">
+            <v-card-title class="bg-grey-lighten-4 text-blue">
               Edit Organisations & Grants
             </v-card-title>
             <Alerts target="organisations" />
@@ -28,40 +18,56 @@
                     v-for="(link, linkIndex) in organisationLinks"
                     :key="'orgaLink_' + linkIndex"
                     cols="12"
-                    class="col-lg-6 col-xl-3"
+                    lg="6"
+                    xl="3"
                   >
                     <v-card
                       v-if="link.organisation.name"
                       key="view"
-                      :class="['flexCard lighten-3',{'grey': !link.isLead, 'green': link.isLead}]"
+                      :class="[
+                        'flexCard',
+                        {
+                          'bg-grey-lighten-3': !link.isLead,
+                          'bg-green-lighten-3': link.isLead,
+                        },
+                      ]"
                       height="100%"
                     >
-                      <v-card-text
-                        class="py-1"
-                        style="flex-grow: 1"
-                      >
+                      <v-card-text class="py-1" style="flex-grow: 1">
                         <v-list
-                          class="lighten-3 px-0"
-                          :class="['lighten-3 px-0',{'grey': !link.isLead, 'green': link.isLead}]"
+                          :class="[
+                            'px-0',
+                            {
+                              'bg-grey-lighten-3': !link.isLead,
+                              'bg-green-lighten-3': link.isLead,
+                            },
+                          ]"
+                          class="px-0"
                         >
                           <v-list-item class="px-0">
-                            <v-list-item-content class="mb-0 pb-0">
-                              <v-list-item-title class="font-weight-bold">
-                                {{ link.organisation.name }}
-                              </v-list-item-title>
-                              <v-list-item-subtitle> {{ link.organisation.homepage }} </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="link.organisation.types">
-                                Types: {{ link.organisation.types.join(", ") }}
-                              </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="link.relation">
-                                <span class="text-decoration-underline">Relation:</span>
-                                {{ link.relation }}
-                              </v-list-item-subtitle>
-                              <v-list-item-subtitle v-if="link.grant">
-                                <span class="text-decoration-underline">Grant:</span>
-                                {{ link.grant.name }}
-                              </v-list-item-subtitle>
-                            </v-list-item-content>
+                            <v-list-item-title class="font-weight-bold">
+                              {{ link.organisation.name }}
+                            </v-list-item-title>
+                            <v-list-item-subtitle>
+                              {{ link.organisation.homepage }}
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle
+                              v-if="link.organisation.types"
+                            >
+                              Types: {{ link.organisation.types.join(", ") }}
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle v-if="link.relation">
+                              <span class="text-decoration-underline"
+                                >Relation:</span
+                              >
+                              {{ link.relation }}
+                            </v-list-item-subtitle>
+                            <v-list-item-subtitle v-if="link.grant">
+                              <span class="text-decoration-underline"
+                                >Grant:</span
+                              >
+                              {{ link.grant.name }}
+                            </v-list-item-subtitle>
                           </v-list-item>
                         </v-list>
                         <v-switch
@@ -74,45 +80,34 @@
                       <v-card-actions style="border-top: 1px solid #ccc">
                         <v-spacer />
                         <v-btn
+                          class="bg-green text-white"
                           icon
-                          class="green white--text"
                           @click="showEditOverlay(linkIndex)"
                         >
-                          <v-icon small>
-                            fa-pen
-                          </v-icon>
+                          <v-icon size="small"> fas fa-pen</v-icon>
                         </v-btn>
                         <v-btn
+                          class="bg-red text-white"
                           icon
-                          class="red white--text"
                           @click="removeRelation(linkIndex)"
                         >
-                          <v-icon small>
-                            fa-trash
-                          </v-icon>
+                          <v-icon size="small"> fas fa-trash</v-icon>
                         </v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    class="col-lg-6 col-xl-3"
-                  >
+                  <v-col cols="12" lg="6" xl="3">
                     <v-card
+                      class="newRel text-green"
                       height="100%"
-                      class="newRel green--text"
-                      style="cursor: pointer"
                       min-height="190px"
+                      style="cursor: pointer"
                       @click="showEditOverlay(null)"
                     >
-                      <div class="mb-4">
-                        <v-icon
-                          x-large
-                          class="green--text icon--xxl"
-                        >
-                          fa-plus-circle
-                        </v-icon>
-                      </div>
+                      <v-icon class="text-green mb-4" size="40">
+                        fas fa-plus-circle
+                      </v-icon>
+
                       <div class="text-h4 text-center">
                         Add a new relationship
                       </div>
@@ -123,16 +118,18 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="info"
-                :loading="saving"
-                @click="saveRecord(false)"
+                :loading="continueLoader"
+                class="bg-primary"
+                variant="elevated"
+                @click="saveRecord(false, $event.target)"
               >
                 Save and continue
               </v-btn>
               <v-btn
-                class="info"
-                :loading="saving"
-                @click="saveRecord(true)"
+                :loading="exitLoader"
+                class="bg-primary"
+                variant="elevated"
+                @click="saveRecord(true, $event.target)"
               >
                 Save and exit
               </v-btn>
@@ -143,124 +140,142 @@
     </v-container>
     <LinkOverlay />
     <v-fade-transition>
-      <v-overlay
-        v-if="loading"
-        :absolute="false"
-        opacity="0.8"
-      >
-        <loaders />
-      </v-overlay>
+      <div>
+        <v-overlay
+          v-model="loading"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <loaders />
+        </v-overlay>
+      </div>
     </v-fade-transition>
   </v-form>
 </template>
 
 <script>
-    import { isEqual } from "lodash"
-    import { mapActions, mapGetters,mapState } from "vuex"
+import { isEqual } from "lodash";
+import { mapActions, mapGetters, mapState } from "vuex";
 
-    import Loaders from "../../Navigation/Loaders";
-    import Alerts from "../Alerts";
-    import LinkOverlay from "./LinkOverlay";
+import Loaders from "../../Navigation/Loaders";
+import Alerts from "../Alerts";
+import LinkOverlay from "./LinkOverlay";
 
-    export default {
-        name: "Organisations",
-        components: {Alerts, LinkOverlay, Loaders},
-        data(){
-            return {
-                formValid: false,
-                showOverlay: false,
-                initialized: false,
-                loading: false,
-                saving: false,
-                data: {}
-            }
-        },
-        computed: {
-          ...mapState("record", ["sections"]),
-          ...mapState("users", ["user"]),
-          organisationLinks() {
-            return this.sections["organisations"].data;
+export default {
+  name: "Organisations",
+  components: { Alerts, LinkOverlay, Loaders },
+  data() {
+    return {
+      formValid: false,
+      showOverlay: false,
+      initialized: false,
+      loading: false,
+      data: {},
+      exitLoader: false,
+      continueLoader: false,
+    };
+  },
+  computed: {
+    ...mapState("record", ["sections"]),
+    ...mapState("users", ["user"]),
+    organisationLinks() {
+      return this.sections["organisations"].data;
+    },
+  },
+  watch: {
+    organisationLinks: {
+      deep: true,
+      handler() {
+        let changes = 0;
+        this.sections["organisations"].initialData.forEach((link) => {
+          let found = this.organisationLinks.filter(
+            (obj) => obj.id === link.id,
+          )[0];
+          if (!found) {
+            changes += 1;
+          } else if (!isEqual(link, found)) {
+            changes += 1;
           }
-        },
-        watch: {
-          organisationLinks: {
-            deep: true,
-            handler() {
-              let changes = 0;
-              this.sections["organisations"].initialData.forEach((link) => {
-                let found = this.organisationLinks.filter(obj => obj.id === link.id)[0];
-                if (!found){
-                  changes += 1;
-                }
-                else if (!isEqual(link, found)){
-                    changes += 1;
-                }
-              });
-              this.organisationLinks.forEach((link) => {
-                if (!link.id){
-                  changes += 1;
-                }
-              });
-              this.$store.commit("record/setChanges", {
-                section: "organisations",
-                value: changes
-              })
-            }
+        });
+        this.organisationLinks.forEach((link) => {
+          if (!link.id) {
+            changes += 1;
           }
-        },
-        methods: {
-          ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants"]),
-          ...mapActions("record", ["updateOrganisations"]),
-          ...mapGetters("record", ["getSection"]),
-          removeRelation(id){
-            this.organisationLinks.splice(id, 1);
-          },
-          async showEditOverlay(id){
-            if (!this.initialized){
-              this.loading = true;
-              await Promise.all([
-                this.getOrganisationsTypes(),
-                this.getOrganisations(),
-                this.getGrants()
-              ]);
-              this.loading = false;
-              this.initialized = true;
-            }
-            let editObject = {
-              showOverlay: true,
-              data: (this.organisationLinks[id]) ? JSON.parse(JSON.stringify(this.organisationLinks[id])) : {}
-            };
-            if (id !== null) editObject.id = id;
-            this.$store.commit("record/setEditOrganisationLink", editObject);
-          },
-          async saveRecord(redirect){
-            this.saving = true;
-            await this.updateOrganisations(this.user().credentials.token);
-            this.saving = false;
-            if (!redirect) this.$scrollTo("#mainHeader");
-            else if (redirect && !this.getSection("organisations").error){
-              await this.$router.push({path: '/' + this.$route.params.id})
-            }
-          }
-        },
-    }
+        });
+        this.$store.commit("record/setChanges", {
+          section: "organisations",
+          value: changes,
+        });
+      },
+    },
+  },
+  methods: {
+    ...mapActions("editor", [
+      "getOrganisations",
+      "getOrganisationsTypes",
+      "getGrants",
+    ]),
+    ...mapActions("record", ["updateOrganisations"]),
+    ...mapGetters("record", ["getSection"]),
+    removeRelation(id) {
+      this.organisationLinks.splice(id, 1);
+    },
+    async showEditOverlay(id) {
+      if (!this.initialized) {
+        this.loading = true;
+        await Promise.all([
+          this.getOrganisationsTypes(),
+          this.getOrganisations(),
+          this.getGrants(),
+        ]);
+        this.loading = false;
+        this.initialized = true;
+      }
+      let editObject = {
+        showOverlay: true,
+        data: this.organisationLinks[id]
+          ? JSON.parse(JSON.stringify(this.organisationLinks[id]))
+          : {},
+      };
+      if (id !== null) editObject.id = id;
+      this.$store.commit("record/setEditOrganisationLink", editObject);
+    },
+    async saveRecord(redirect, item) {
+      if (item.textContent.trim() === "Save and continue") {
+        this.continueLoader = true;
+        this.exitLoader = false;
+      } else if (item.textContent.trim() === "Save and exit") {
+        this.continueLoader = false;
+        this.exitLoader = true;
+      }
+      await this.updateOrganisations(this.user().credentials.token);
+      this.continueLoader = false;
+      this.exitLoader = false;
+      if (!redirect) this.$scrollTo("#mainHeader");
+      else if (redirect && !this.getSection("organisations").error) {
+        await this.$router.push({ path: "/" + this.$route.params.id });
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>
-    .flexCard {
-        display:flex;
-        flex-direction: column;
-    }
+.flexCard {
+  display: flex;
+  flex-direction: column;
+}
 
-    #editOrganisations .expand-transition-enter-active,
-    #editOrganisations .expand-transition-leave-active {
-      transition-duration: 0.7s !important;
-    }
+#editOrganisations .expand-transition-enter-active,
+#editOrganisations .expand-transition-leave-active {
+  transition-duration: 0.7s !important;
+}
 
-    .newRel {
-      justify-content: center;
-      align-items: center;
-      display:flex;
-      flex-direction: column;
-    }
+.newRel {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
 </style>

@@ -1,22 +1,19 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-value="itemValue"
+    :item-list="itemList"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "MandatedDataSharing",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
@@ -25,15 +22,11 @@ export default {
   },
   data: () => {
     return {
-      itemList: [
-        "required",
-        "suggested",
-        "not covered",
-        "other"
-      ],
+      itemList: ["required", "suggested", "not covered", "other"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Data sharing, other than clearly stated valid reasons. Multiple selections will be joined with OR.",
+      toolTipText:
+        "Data sharing, other than clearly stated valid reasons. Multiple selections will be joined with OR.",
     };
   },
   computed: {

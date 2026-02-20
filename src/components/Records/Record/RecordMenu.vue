@@ -1,29 +1,16 @@
 <template>
   <div class="text-right">
-    <v-menu
-      offset-y
-      :disabled="readOnlyMode"
-    >
-      <template #activator="{ on, attrs }">
-        <v-btn
-          class="mt-1"
-          color="primary"
-          v-bind="attrs"
-          v-on="on"
-        >
+    <v-menu :disabled="readOnlyMode">
+      <template #activator="{ props }">
+        <v-btn class="mt-1" color="primary" v-bind="props">
           Actions
-          <v-icon
-            small
-            right
-          >
-            fa-chevron-down
-          </v-icon>
+          <v-icon size="small" end> fas fa-chevron-down </v-icon>
         </v-btn>
       </template>
       <v-list>
         <v-list-item
           v-for="(button, index) in buttons"
-          :key="button.name()+'_'+button.isDisabled()+'_'+ index"
+          :key="button.name() + '_' + button.isDisabled() + '_' + index"
           :disabled="button.isDisabled()"
           @click="button.method()"
         >
@@ -41,16 +28,13 @@ export default {
   name: "RecordMenu",
   props: {
     buttons: {
-      type: Array, default: () => {
-      }
+      type: Array,
+      default: () => {},
     },
     readOnlyMode: {
-      default: false, type: Boolean
-    }
+      default: false,
+      type: Boolean,
+    },
   },
-}
+};
 </script>
-
-<style scoped>
-
-</style>

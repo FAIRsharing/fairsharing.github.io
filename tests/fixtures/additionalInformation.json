@@ -6,10 +6,7 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "properties": {
       "dataset_pid": {
-        "enum": [
-          "nono",
-          "no"
-        ],
+        "enum": ["nono", "no"],
         "type": "string",
         "default": null,
         "description": "Does the repository assign them to the deposited data? Which type of identifier schema is used? Do they use persistent identifiers?"
@@ -38,10 +35,7 @@
             "description": "The URL to the information"
           },
           "metrics": {
-            "enum": [
-              "yes",
-              "no"
-            ],
+            "enum": ["yes", "no"],
             "type": "string",
             "default": null,
             "description": "Do they have metrics on dataset usage?"
@@ -57,19 +51,13 @@
         "description": "Links to associated tools"
       },
       "dataset_citation": {
-        "enum": [
-          "yes",
-          "no"
-        ],
+        "enum": ["yes", "no"],
         "type": "string",
         "default": null,
         "description": "A mechanism to enable link datasets to related articles or pre-prints: does the repository enable this at submission stage or post-submission? Do they have a mechanism?"
       },
       "dataset_contacts": {
-        "enum": [
-          "yes",
-          "no"
-        ],
+        "enum": ["yes", "no"],
         "type": "string",
         "default": null,
         "description": "Does the resource provide contact information for the owner/depositor of a dataset?"
@@ -101,10 +89,7 @@
             "description": "The URL of the condition information"
           },
           "restrictions": {
-            "enum": [
-              "yes",
-              "no"
-            ],
+            "enum": ["yes", "no"],
             "type": "string",
             "default": null,
             "description": "Do they have restrictions on who can deposit a dataset?"
@@ -113,19 +98,13 @@
         "description": "Deposition of data: are there any restrictions (e.g. by location, country, organization, etc.) or can anyone from anywhere deposit data?"
       },
       "dataset_versioning": {
-        "enum": [
-          "yes",
-          "no"
-        ],
+        "enum": ["yes", "no"],
         "type": "string",
         "default": null,
         "description": "Mechanism and process to make and track edits to a dataset after deposition: does the repository enable modification to the submitted dataset (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all versions of the data? Do they allow dataset versioning?"
       },
       "dataset_prepubreview": {
-        "enum": [
-          "yes",
-          "no"
-        ],
+        "enum": ["yes", "no"],
         "type": "string",
         "default": null,
         "description": "Mechanism and process for sharing deposited data via a link anonymously (or otherwise depending on journal policy regarding open/closed review): does the repository allow confidential access to the data for peer-review? Does the repository also have capability for double blind peer review? Do they allow access for peer-review?"
@@ -146,10 +125,7 @@
             "description": "The URL of the curation information."
           },
           "type": {
-            "enum": [
-              "open",
-              "controlled"
-            ],
+            "enum": ["open", "controlled"],
             "type": "string",
             "default": null,
             "description": "Open or controlled"
@@ -190,19 +166,14 @@
         },
         "description": "Certification and badges",
         "dependencies": {
-          "type": [
-            "url"
-          ]
+          "type": ["url"]
         }
       }
     },
     "definitions": {
       "tool": {
         "type": "object",
-        "required": [
-          "name",
-          "url"
-        ],
+        "required": ["name", "url"],
         "properties": {
           "url": {
             "type": "string",
@@ -219,10 +190,7 @@
       },
       "access_point": {
         "type": "object",
-        "required": [
-          "type",
-          "url"
-        ],
+        "required": ["type", "url"],
         "properties": {
           "url": {
             "type": "string",
@@ -231,29 +199,18 @@
             "description": "The URL of the web service."
           },
           "type": {
-            "enum": [
-              "REST",
-              "SOAP",
-              "SPARQL",
-              "Other"
-            ],
+            "enum": ["REST", "SOAP", "SPARQL", "Other"],
             "type": "string",
             "default": "REST",
             "description": "The type of web service being run. Three most commonly-used values are supplied (REST, SOAP, SPARQL), with “Other” also provided to allow for any other types / unknown service types."
           },
           "example_url": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "format": "uri",
             "description": "An example query for the service."
           },
           "documentation_url": {
-            "type": [
-              "string",
-              "null"
-            ],
+            "type": ["string", "null"],
             "format": "uri",
             "description": "The URL where documentation related to the web service can be found."
           }
@@ -261,10 +218,7 @@
       },
       "data_process": {
         "type": "object",
-        "required": [
-          "name",
-          "type"
-        ],
+        "required": ["name", "type"],
         "properties": {
           "url": {
             "type": "string",

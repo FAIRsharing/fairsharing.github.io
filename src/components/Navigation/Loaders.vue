@@ -1,26 +1,15 @@
 <template>
-  <v-container style="z-index:3">
-    <v-row
-      class="justify-center d-none"
-      no-gutters
-    >
-      <v-col
-        cols="12"
-        class="text-center"
-      >
-        <h2 class="blue--text">
-          Loading your content. <br> Please wait ...
+  <v-container style="z-index: 3">
+    <v-row class="justify-center d-none" no-gutters>
+      <v-col cols="12" class="text-center">
+        <h2 class="text-blue">
+          Loading your content. <br />
+          Please wait ...
         </h2>
       </v-col>
     </v-row>
-    <v-row
-      class="justify-center"
-      no-gutters
-    >
-      <v-col
-        cols="12"
-        class="text-center"
-      >
+    <v-row class="justify-center" no-gutters>
+      <v-col cols="12" class="text-center">
         <svg
           class="lds-dna"
           width="330px"
@@ -29,13 +18,9 @@
           xmlns:xlink="http://www.w3.org/1999/xlink"
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid"
-          style="background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%;"
+          style="background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%"
         >
-          <circle
-            cx="6.451612903225806"
-            cy="50"
-            r="3"
-          >
+          <circle cx="6.451612903225806" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -63,11 +48,7 @@
               begin="-0.5s"
             />
           </circle>
-          <circle
-            cx="6.451612903225806"
-            cy="50"
-            r="3"
-          >
+          <circle cx="6.451612903225806" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -95,11 +76,7 @@
               begin="-0.5s"
             />
           </circle>
-          <circle
-            cx="16.129032258064512"
-            cy="50"
-            r="3"
-          >
+          <circle cx="16.129032258064512" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -127,11 +104,7 @@
               begin="-0.7s"
             />
           </circle>
-          <circle
-            cx="16.129032258064512"
-            cy="50"
-            r="3"
-          >
+          <circle cx="16.129032258064512" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -159,11 +132,7 @@
               begin="-0.7s"
             />
           </circle>
-          <circle
-            cx="25.806451612903224"
-            cy="50"
-            r="3"
-          >
+          <circle cx="25.806451612903224" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -191,11 +160,7 @@
               begin="-0.9s"
             />
           </circle>
-          <circle
-            cx="25.806451612903224"
-            cy="50"
-            r="3"
-          >
+          <circle cx="25.806451612903224" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -223,11 +188,7 @@
               begin="-0.9s"
             />
           </circle>
-          <circle
-            cx="35.48387096774193"
-            cy="50"
-            r="3"
-          >
+          <circle cx="35.48387096774193" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -255,11 +216,7 @@
               begin="-1.1s"
             />
           </circle>
-          <circle
-            cx="35.48387096774193"
-            cy="50"
-            r="3"
-          >
+          <circle cx="35.48387096774193" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -287,11 +244,7 @@
               begin="-1.1s"
             />
           </circle>
-          <circle
-            cx="45.16129032258064"
-            cy="50"
-            r="3"
-          >
+          <circle cx="45.16129032258064" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -319,11 +272,7 @@
               begin="-1.3s"
             />
           </circle>
-          <circle
-            cx="45.16129032258064"
-            cy="50"
-            r="3"
-          >
+          <circle cx="45.16129032258064" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -351,11 +300,7 @@
               begin="-1.3s"
             />
           </circle>
-          <circle
-            cx="54.838709677419345"
-            cy="50"
-            r="3"
-          >
+          <circle cx="54.838709677419345" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -383,11 +328,7 @@
               begin="-1.5s"
             />
           </circle>
-          <circle
-            cx="54.838709677419345"
-            cy="50"
-            r="3"
-          >
+          <circle cx="54.838709677419345" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -415,11 +356,7 @@
               begin="-1.5s"
             />
           </circle>
-          <circle
-            cx="64.51612903225805"
-            cy="50"
-            r="3"
-          >
+          <circle cx="64.51612903225805" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -447,11 +384,7 @@
               begin="-1.7s"
             />
           </circle>
-          <circle
-            cx="64.51612903225805"
-            cy="50"
-            r="3"
-          >
+          <circle cx="64.51612903225805" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -479,11 +412,7 @@
               begin="-1.7s"
             />
           </circle>
-          <circle
-            cx="74.19354838709677"
-            cy="50"
-            r="3"
-          >
+          <circle cx="74.19354838709677" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -511,11 +440,7 @@
               begin="-1.9s"
             />
           </circle>
-          <circle
-            cx="74.19354838709677"
-            cy="50"
-            r="3"
-          >
+          <circle cx="74.19354838709677" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -543,11 +468,7 @@
               begin="-1.9s"
             />
           </circle>
-          <circle
-            cx="83.87096774193547"
-            cy="50"
-            r="3"
-          >
+          <circle cx="83.87096774193547" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -575,11 +496,7 @@
               begin="-2.1s"
             />
           </circle>
-          <circle
-            cx="83.87096774193547"
-            cy="50"
-            r="3"
-          >
+          <circle cx="83.87096774193547" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -607,11 +524,7 @@
               begin="-2.1s"
             />
           </circle>
-          <circle
-            cx="93.54838709677418"
-            cy="50"
-            r="3"
-          >
+          <circle cx="93.54838709677418" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -639,11 +552,7 @@
               begin="-2.3s"
             />
           </circle>
-          <circle
-            cx="93.54838709677418"
-            cy="50"
-            r="3"
-          >
+          <circle cx="93.54838709677418" cy="50" r="3">
             <animate
               attributeName="r"
               times="0;0.5;1"
@@ -678,13 +587,13 @@
 </template>
 
 <script>
-    export default {
-        name: "Loaders"
-    }
+export default {
+  name: "Loaders",
+};
 </script>
 
 <style scoped>
-    h2 {
-        font-size: 35px;
-    }
+h2 {
+  font-size: 35px;
+}
 </style>

@@ -57,7 +57,7 @@
       "color": "#7ae827"
     }
   ],
-  "registry":[
+  "registry": [
     {
       "name": "Collection",
       "color": "#A37146",
@@ -84,7 +84,7 @@
       "active": true
     }
   ],
-  "status":[
+  "status": [
     {
       "name": "Ready",
       "color": "#27aae1",
@@ -106,7 +106,7 @@
       "active": true
     }
   ],
-  "distance":[
+  "distance": [
     {
       "name": "One hop",
       "hops": 1,

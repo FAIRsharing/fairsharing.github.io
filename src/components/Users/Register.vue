@@ -1,17 +1,11 @@
 <template>
   <v-container>
     <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="12"
-        md="4"
-        lg="4"
-        xl="4"
-      >
+      <v-col cols="12" sm="12" md="4" lg="4" xl="4">
         <v-card>
           <!-- TITLE -->
-          <v-card-title class="blue white--text">
-            <h2> Register a new account</h2>
+          <v-card-title class="bg-blue text-white">
+            <h2>Register a new account</h2>
           </v-card-title>
 
           <!-- SUCCESS -->
@@ -19,23 +13,13 @@
             v-if="message || errors.length > 0"
             class="pt-2 mb-0 pb-0"
           >
-            <v-alert
-              v-if="message"
-              type="success"
-              class="my-3"
-            >
+            <v-alert v-if="message" type="success" class="my-3">
               {{ message }}
             </v-alert>
-            <v-alert
-              v-if="errors.length > 0"
-              type="error"
-            >
+            <v-alert v-if="errors.length > 0" type="error">
               <b>Please correct the following error(s):</b>
               <ul>
-                <li
-                  v-for="(error, index) in errors"
-                  :key="'error_' + index"
-                >
+                <li v-for="(error, index) in errors" :key="'error_' + index">
                   {{ error }}
                 </li>
               </ul>
@@ -56,7 +40,8 @@
                 label="Username"
                 :rules="[rules.isRequired()]"
                 required
-                outlined
+                variant="outlined"
+                color="primary"
               />
 
               <!-- email -->
@@ -65,7 +50,8 @@
                 label="Email address"
                 :rules="[rules.isEmail(), rules.isRequired()]"
                 required
-                outlined
+                variant="outlined"
+                color="primary"
               />
 
               <!-- password -->
@@ -75,19 +61,13 @@
                 :rules="[rules.isRequired()]"
                 label="Password"
                 required
-                outlined
+                variant="outlined"
+                color="primary"
               >
-                <template slot="append">
-                  <div
-                    class="pt-1 mr-2"
-                    @click="showPwd = !showPwd"
-                  >
-                    <v-icon v-if="showPwd">
-                      fa-eye
-                    </v-icon>
-                    <v-icon v-else>
-                      fa-eye-slash
-                    </v-icon>
+                <template #append-inner>
+                  <div class="pt-1 mr-2" @click="showPwd = !showPwd">
+                    <v-icon v-if="showPwd"> fas fa-eye </v-icon>
+                    <v-icon v-else> fas fa-eye-slash </v-icon>
                   </div>
                   <validity-progress :password="loginData.password" />
                 </template>
@@ -96,32 +76,33 @@
               <!-- repeat password -->
               <v-text-field
                 v-model="loginData.repeatPwd"
-                :append-icon="showRepeat ? 'fa-eye' : 'fa-eye-slash'"
+                :append-inner-icon="
+                  showRepeat ? 'fas fa-eye' : 'fas fa-eye-slash'
+                "
                 :type="showRepeat ? 'text' : 'password'"
                 label="Repeat password"
                 required
-                outlined
-                :rules="[rules.hasValue(loginData.password), rules.isRequired()]"
+                variant="outlined"
+                :rules="[
+                  rules.hasValue(loginData.password),
+                  rules.isRequired(),
+                ]"
+                color="primary"
                 @click:append="showRepeat = !showRepeat"
               />
 
               <!-- accept terms and conditions -->
-              <div class="d-flex">
-                <v-checkbox
-                  v-model="termsAccepted"
-                  class="pt-0 mt-0"
-                  :rules="[rules.isRequired()]"
-                />
-                <div>
-                  I acknowledge that I have read and agreed to the
-                  <router-link
-                    to="/privacy"
-                    target="_blank"
-                  >
-                    terms and conditions.
-                  </router-link>
-                </div>
-              </div>
+              <v-checkbox v-model="termsAccepted" :rules="[rules.isRequired()]">
+                <template #label>
+                  <div>
+                    I acknowledge that I have read and agreed to the
+                    <router-link to="/privacy" target="_blank">
+                      terms and conditions.
+                    </router-link>
+                  </div>
+                </template>
+              </v-checkbox>
+
               <div class="px-5 mb-5">
                 <router-link to="/accounts/login">
                   - I already have an account -
@@ -131,7 +112,7 @@
                 Please see our
                 <a
                   href="https://fairsharing.gitbook.io/fairsharing#password-advice"
-                  _target="_blank"
+                  target="_blank"
                 >
                   password advice
                 </a>
@@ -139,8 +120,9 @@
               </div>
               <v-btn
                 :loading="isLoading"
-                class="success full-width"
+                class="bg-success full-width"
                 :disabled="!formValid"
+                elevation="2"
                 @click="register()"
               >
                 Register my new account
@@ -154,60 +136,70 @@
 </template>
 
 <script>
-    import RESTClient from "@/lib/Client/RESTClient.js";
-    import { hasValue, isEmail, isRequired } from "@/utils/rules.js"
+import RESTClient from "@/lib/Client/RESTClient.js";
+import { hasValue, isEmail, isRequired } from "@/utils/rules.js";
 
-    import ValidityProgress from "./Password/ValidityProgress";
+import ValidityProgress from "./Password/ValidityProgress";
 
-    const Client = new RESTClient();
+const Client = new RESTClient();
 
-    export default {
-      name: "Register",
-      components: {ValidityProgress},
-      data: () => {
-            return {
-                showPwd: false,
-                showRepeat: false,
-                loginData: {},
-                errors: [],
-                message: null,
-                isLoading: false,
-                rules: {
-                    hasValue: function(val){return hasValue(val)},
-                    isEmail: function(){return isEmail()},
-                    isRequired: function(){return isRequired()},
-                },
-                formValid: false,
-                termsAccepted: false,
-            }
+export default {
+  name: "Register",
+  components: { ValidityProgress },
+  data: () => {
+    return {
+      showPwd: false,
+      showRepeat: false,
+      loginData: {},
+      errors: [],
+      message: null,
+      isLoading: false,
+      rules: {
+        hasValue: function (val) {
+          return hasValue(val);
         },
-        methods: {
-            register: async function(){
-                const _module = this;
-                _module.errors = [];
-                _module.message = false;
-                _module.isLoading = true;
-                const user_mail = _module.loginData.email;
-                let user = {
-                    username: _module.loginData.name,
-                    email: _module.loginData.email,
-                    password: _module.loginData.password,
-                    password_confirmation: _module.loginData['repeatPwd']
-                };
-                let response = await Client.createAccount(user);
-                if (!response.error){
-                    _module.message = "Account created, please verify your email address " + user_mail;
-                    _module.$refs['registerForm'].reset();
-                }
-                else {
-                  Object.keys(response.error.response.data.errors).forEach(function(errorField){
-                    response.error.response.data.errors[errorField].forEach(function(error){
-                      _module.errors.push(errorField + ' ' + error);
-                    })
-                  });
-                }
-                _module.isLoading = false;
-            }
-        }
-    }
+        isEmail: function () {
+          return isEmail();
+        },
+        isRequired: function () {
+          return isRequired();
+        },
+      },
+      formValid: false,
+      termsAccepted: false,
+    };
+  },
+  methods: {
+    register: async function () {
+      const _module = this;
+      _module.errors = [];
+      _module.message = false;
+      _module.isLoading = true;
+      const user_mail = _module.loginData.email;
+      let user = {
+        username: _module.loginData.name,
+        email: _module.loginData.email,
+        password: _module.loginData.password,
+        password_confirmation: _module.loginData["repeatPwd"],
+      };
+      let response = await Client.createAccount(user);
+      if (!response.error) {
+        _module.message =
+          "Account created, please verify your email address " + user_mail;
+        _module.$refs["registerForm"].reset();
+      } else {
+        Object.keys(response.error.response.data.errors).forEach(
+          function (errorField) {
+            response.error.response.data.errors[errorField].forEach(
+              function (error) {
+                _module.errors.push(errorField + " " + error);
+              },
+            );
+          },
+        );
+      }
+      _module.isLoading = false;
+    },
+  },
+};
 </script>

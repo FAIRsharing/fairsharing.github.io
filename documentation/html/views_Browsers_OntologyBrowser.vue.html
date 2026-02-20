@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Browsers/OntologyBrowser.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Browsers/OntologyBrowser.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;main>
+    &lt;v-container class="py-0 mb-10" fluid>
+      &lt;NotFound v-if="error" />
+      &lt;v-row v-else no-gutters>
+        &lt;v-col
+          id="ontologyBrowser"
+          class="border-e"
+          cols="12"
+          lg="4"
+          md="12"
+          sm="12"
+          xl="3"
+          xs="12"
+        >
+          &lt;div v-if="tree.length > 0" id="searchOntology" class="pr-2 mt-6">
+            &lt;v-autocomplete
+              v-model="search"
+              :color="color"
+              :items="uniqueSearchItems"
+              :label="`Search ${selectedOntology}s`"
+              clearable
+              hide-details
+              item-title="name"
+              item-value="id"
+              return-object
+              variant="outlined"
+            />
+            &lt;v-divider class="mb-2 opacity-100" />
+          &lt;/div>
+
+          &lt;v-virtual-scroll
+            ref="virtualScroll"
+            :height="'70vh'"
+            :items="visibleNodes"
+            class="tree pb-3 px-3"
+          >
+            &lt;template #default="{ item }">
+              &lt;div
+                :style="{ paddingLeft: `${item.depth * 24}px` }"
+                class="d-flex align-center py-1 cursor-pointer hover-bg"
+              >
+                &lt;div class="d-flex justify-center" style="width: 24px">
+                  &lt;v-icon
+                    v-if="item.hasChildren"
+                    :icon="
+                      isOpen(item.identifier)
+                        ? 'fas fa-caret-down'
+                        : 'fas fa-caret-right'
+                    "
+                    size="small"
+                    @click="toggleNode(item)"
+                  />
+                &lt;/div>
+
+                &lt;div
+                  class="d-flex flex-row justify-center align-center flex-grow-1"
+                  @click="searchTerm(item)"
+                >
+                  &lt;span
+                    :class="[
+                      'chip-mimic mr-2',
+                      item.isTarget || activeTerms.includes(item.identifier)
+                        ? `bg-${color} text-white font-weight-bold elevation-2 border-0`
+                        : `text-${color} border-${color}`,
+                    ]"
+                  >
+                    {{ item.name }}
+                  &lt;/span>
+
+                  &lt;v-spacer />
+
+                  &lt;div
+                    :class="
+                      activeTerms.includes(item.identifier)
+                        ? `bg-${color} text-white`
+                        : `bg-white text-${color} border-${color} border border-solid border-opacity-100`
+                    "
+                    class="hits d-flex justify-center align-center"
+                  >
+                    {{ item.records_count || 0 }}
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+            &lt;/template>
+          &lt;/v-virtual-scroll>
+        &lt;/v-col>
+
+        &lt;v-col
+          id="termDisplay"
+          class="py-0 my-0"
+          cols="12"
+          lg="8"
+          md="12"
+          sm="12"
+          xl="9"
+          xs="12"
+        >
+          &lt;div v-if="!loadingData &amp;&amp; tree.length > 0">
+            &lt;TermDetails
+              v-if="records &amp;&amp; selectedTerm"
+              :selected-ontology="selectedOntology"
+              @clear-selection="noSelection"
+            />
+            &lt;v-card v-else class="pa-0" flat>
+              &lt;v-card-text class="pa-0">
+                &lt;OntologySunburst @subject-node="subjectNode" />
+              &lt;/v-card-text>
+            &lt;/v-card>
+          &lt;/div>
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+
+    &lt;v-fade-transition>
+      &lt;div>
+        &lt;v-overlay
+          v-model="loadingData"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          &lt;Loaders />
+        &lt;/v-overlay>
+      &lt;/div>
+    &lt;/v-fade-transition>
+  &lt;/main>
+&lt;/template>
+
+&lt;script>
+import { mapActions, mapState } from "vuex";
+import Loaders from "@/components/Navigation/Loaders";
+import OntologySunburst from "@/components/Ontologies/OntologySunburst";
+import TermDetails from "@/components/Ontologies/TermDetails";
+import NotFound from "@/views/Errors/404";
+
+export default {
+  name: "OntologyBrowser",
+  components: { Loaders, NotFound, TermDetails, OntologySunburst },
+  data() {
+    return {
+      allowedOntologies: ["domain", "subject"],
+      search: null,
+    };
+  },
+  computed: {
+    ...mapState("editor", ["colors"]),
+    // We do NOT map activeTerms/openedTerms directly to avoid undefined errors
+    ...mapState("ontologyBrowser", [
+      "tree",
+      "records",
+      "loadingData",
+      "flattenedTree",
+      "pagination",
+      "selectedTerm",
+    ]),
+
+    selectedOntology() {
+      return this.$route.params.id;
+    },
+    error() {
+      return !this.allowedOntologies.includes(this.selectedOntology);
+    },
+    color() {
+      return this.colors[this.selectedOntology];
+    },
+    term() {
+      const qTerm = this.$route.query["term"];
+      if (!qTerm) return null;
+      return this.flattenedTree.find(
+        (node) =>
+          node.name.toLowerCase() === decodeURIComponent(qTerm).toLowerCase(),
+      );
+    },
+    // Manual State mapping with Safety Checks
+    activeTerms() {
+      return this.$store.state.ontologyBrowser.activeTerms || [];
+    },
+    openedTerms() {
+      return this.$store.state.ontologyBrowser.openedTerms || [];
+    },
+
+    /**
+     * VISIBLE NODES
+     * Combines Pruning (Search) + Flattening (Expansion)
+     */
+    visibleNodes() {
+      let sourceTree = this.tree || [];
+
+      // 1. If Searching, use a Pruned Tree (Supports Multiple Instances)
+      if (this.search &amp;&amp; this.search.identifier) {
+        const pruned = this.pruneTreeWithChildren(
+          this.tree,
+          this.search.identifier,
+        );
+        if (pruned.length > 0) sourceTree = pruned;
+      }
+
+      const result = [];
+      const searchId = this.search?.identifier
+        ? String(this.search.identifier)
+        : null;
+
+      // Safety: Ensure we have an array of Strings for comparison
+      const currentOpenTerms = (this.openedTerms || []).map(String);
+
+      const traverse = (nodes, depth = 0) => {
+        if (!nodes || nodes.length === 0) return;
+
+        for (const node of nodes) {
+          const hasChildren = node.children &amp;&amp; node.children.length > 0;
+          const strId = String(node.identifier);
+          const isTarget = strId === searchId;
+
+          // Check if this node is Open
+          const isOpen = currentOpenTerms.includes(strId);
+
+          result.push({
+            ...node,
+            depth,
+            hasChildren,
+            isTarget,
+          });
+
+          // Expand logic:
+          // We only descend if the node has children AND is marked as Open
+          if (hasChildren &amp;&amp; isOpen) {
+            traverse(node.children, depth + 1);
+          }
+        }
+      };
+
+      traverse(sourceTree);
+      return result;
+    },
+
+    /**
+     * UNIQUE SEARCH ITEMS
+     * Filters the flattenedTree to ensure each term ID appears only once
+     * in the Autocomplete dropdown.
+     */
+    uniqueSearchItems() {
+      const items = this.flattenedTree || [];
+      const seen = new Set();
+
+      return items.filter((item) => {
+        const id = item.identifier;
+        if (seen.has(id)) {
+          return false; // Duplicate found, skip it
+        }
+        seen.add(id);
+        return true; // New item, keep it
+      });
+    },
+  },
+  watch: {
+    // URL Term Watcher
+    async term(newVal) {
+      if (newVal) {
+        await this.activateTerms(newVal);
+
+        // Find ALL paths to this term (in case it exists in multiple places)
+        const allPaths = this.findAllPaths(this.tree, newVal.identifier);
+        const parentsToOpen = new Set();
+
+        allPaths.forEach((path) => {
+          path.forEach((id) => {
+            if (String(id) !== String(newVal.identifier)) {
+              parentsToOpen.add(String(id));
+            }
+          });
+        });
+
+        this.openTerms(Array.from(parentsToOpen));
+      } else {
+        await this.activateTerms();
+      }
+    },
+
+    // --- SEARCH WATCHER (Handles Multiple Instances) ---
+    search(newTerm) {
+      // CASE 1: Search Cleared
+      if (!newTerm) {
+        // Reset to full tree by clearing the "open" list
+        this.openTerms([]);
+        return;
+      }
+      // CASE 2: Active Search
+      const targetId = newTerm.identifier || newTerm;
+      const strTargetId = String(targetId);
+      // 1. Find ALL paths to the target node
+      const allPaths = this.findAllPaths(this.tree, targetId);
+
+      // 2. Collect ALL parent IDs from ALL paths
+      const allIdsToOpen = new Set();
+
+      allPaths.forEach((path) => {
+        path.forEach((id) => {
+          // Add ID to open set ONLY if it is NOT the target itself
+          // (We want the parents open, but the target closed)
+          if (
+            String(id) !== strTargetId &amp;&amp;
+            !Object.keys(newTerm).includes("isSunburst")
+          ) {
+            allIdsToOpen.add(String(id));
+          }
+          //Target is open because the selection is from Sunburst
+          else if (newTerm["isSunburst"]) {
+            allIdsToOpen.add(String(id));
+          }
+        });
+      });
+
+      // 3. Update Vuex State
+      this.openTerms(Array.from(allIdsToOpen));
+
+      // 4. Scroll to FIRST Instance
+      setTimeout(() => {
+        if (!this.$refs.virtualScroll) return;
+
+        // Find index of the FIRST occurrence in the visible list
+        const index = this.visibleNodes.findIndex(
+          (x) => String(x.identifier) === strTargetId,
+        );
+
+        if (index !== -1) {
+          if (this.$refs.virtualScroll.scrollToIndex) {
+            this.$refs.virtualScroll.scrollToIndex(index);
+          } else {
+            // Fallback: 50px is the estimated item height
+            this.$refs.virtualScroll.$el.scrollTop = index * 50;
+          }
+        }
+      }, 300);
+    },
+  },
+  async mounted() {
+    await this.fetchTerms();
+  },
+  unmounted() {
+    this.leavePage();
+  },
+  methods: {
+    ...mapActions("ontologyBrowser", [
+      "fetchTerms",
+      "fetchRecords",
+      "resetPagination",
+      "activateTerms",
+      "openTerms",
+      "leavePage",
+    ]),
+
+    /**
+     * Searches for a term and updates the route based on its presence in the active terms list.
+     *
+     * @param {Object} term - The term object to be searched.
+     * @param {string} term.identifier - The unique identifier of the term.
+     * @param {string} term.name - The name of the term to encode and include in the query parameters if not already active.
+     * @return {void} This method does not return a value.
+     */
+    searchTerm(term) {
+      this.resetPagination();
+      if (this.activeTerms.includes(term.identifier))
+        this.$router.push({ path: this.$route.path });
+      else
+        this.$router.push({
+          path: this.$route.path,
+          query: { term: encodeURIComponent(term.name) },
+        });
+    },
+
+    // --- UPDATED HELPER: Find ALL Paths ---
+    // Returns Array of Arrays: [[Root, Child, Target], [Root, OtherChild, Target]]
+    findAllPaths(nodes, targetId, currentPath = [], results = []) {
+      const strTarget = String(targetId);
+
+      for (const node of nodes) {
+        const strNode = String(node.identifier);
+
+        // Create a new path array for this branch
+        const newPath = [...currentPath, node.identifier];
+
+        // Match Found: Add this full path to results
+        if (strNode === strTarget) {
+          results.push(newPath);
+        }
+
+        // Continue searching deeper even if match found (in case of nested weirdness),
+        // but primarily to find matches in OTHER branches.
+        if (node.children &amp;&amp; node.children.length > 0) {
+          this.findAllPaths(node.children, targetId, newPath, results);
+        }
+      }
+
+      return results;
+    },
+
+    /**
+     * Toggles the open or closed state of a node in the hierarchy.
+     * Updates the list of currently opened nodes based on the given item's identifier.
+     *
+     * @param {Object} item - The node object to be toggled.
+     * @param {boolean} item.hasChildren - Indicates if the node has child items.
+     * @param {number|string} item.identifier - The unique identifier of the node.
+     * @return {void} This method does not return a value.
+     */
+    toggleNode(item) {
+      if (!item.hasChildren) return;
+
+      const strId = String(item.identifier);
+      const currentOpenTerms = (this.openedTerms || []).map(String);
+      const isOpen = currentOpenTerms.includes(strId);
+
+      let newOpened = [...(this.openedTerms || [])];
+
+      if (isOpen) {
+        // Close: Remove strict match
+        newOpened = newOpened.filter((id) => String(id) !== strId);
+      } else {
+        // Open: Add original ID
+        newOpened.push(item.identifier);
+      }
+      newOpened = newOpened.map((item) =>
+        typeof item === "string" ? Number(item) : item,
+      );
+      this.openTerms(newOpened);
+    },
+
+    /**
+     * Prune logic that supports multiple matches
+     * @param nodes
+     * @param targetId
+     * @return Array
+     */
+    pruneTreeWithChildren(nodes, targetId) {
+      const filtered = [];
+      const strTarget = String(targetId);
+
+      for (const node of nodes) {
+        const strNode = String(node.identifier);
+
+        // CASE 1: Found the target
+        if (strNode === strTarget) {
+          filtered.push({
+            ...node,
+            children: node.children ? [...node.children] : [],
+          });
+          // We do NOT 'continue' here because a child might ALSO contain the target
+          // (unlikely in standard ontology but possible in graph structures)
+          // Actually, for standard tree display, if we found it, we show it.
+          // If the term appears AGAIN inside itself, recursion handles it.
+          continue;
+        }
+
+        // CASE 2: Look in children
+        if (node.children &amp;&amp; node.children.length > 0) {
+          const matchingChildren = this.pruneTreeWithChildren(
+            node.children,
+            targetId,
+          );
+          if (matchingChildren.length > 0) {
+            filtered.push({ ...node, children: matchingChildren });
+          }
+        }
+      }
+      return filtered;
+    },
+
+    /**
+     * SAFE CHECK: Checks if a node is open regardless of ID type (String/Number)
+     * @param identifier
+     * @return Boolean
+     */
+    isOpen(identifier) {
+      if (!this.openedTerms) return false;
+      // Convert everything to String for comparison
+      return this.openedTerms.map(String).includes(String(identifier));
+    },
+
+    /**
+     * Updates the search property with the first element of the provided value array
+     * and calls the toggleNode method with the same element.
+     * @param {Array} value - An array where the first element is used to update the search property and passed to the toggleNode method.
+     */
+    subjectNode(value) {
+      if (value &amp;&amp; value.length) {
+        this.search = value[0];
+        this.toggleNode(value[0]);
+      } else {
+        this.search = null;
+      }
+    },
+
+    noSelection(value) {
+      if (value) {
+        this.search = null;
+      }
+    },
+  },
+};
+&lt;/script>
+
+&lt;style lang="scss" scoped>
+.subject_color--border {
+  border: 1px solid #e67e22 !important;
+}
+
+.domain_color--border {
+  border: 1px solid #712727 !important;
+}
+
+.hits {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+#ontologyBrowser,
+#termDisplay {
+  display: flex;
+  flex-direction: column;
+}
+
+.tree {
+  /* overflow-y handled by virtual-scroll, but we keep this for flex layout */
+  flex-grow: 1;
+  height: 70vh;
+}
+
+@media (max-width: 1263px) {
+  #ontologyBrowser {
+    height: auto;
+  }
+  .tree {
+    max-height: 40vh;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.col {
+  flex-basis: initial !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.hover-bg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.chip-mimic {
+  border: 1px solid;
+  border-radius: 18px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  display: inline-block;
+  white-space: nowrap;
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
+	
+		on Fri Feb 20th 2026
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

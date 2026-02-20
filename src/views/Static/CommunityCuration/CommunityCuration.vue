@@ -2,25 +2,39 @@
   <main class="pa-15 mb-10">
     <!-- eslint-disable vue/no-v-html -->
     <p
-      :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="[
+        'mb-2 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xl },
+      ]"
       v-html="communityCurationData.first_section.text_1"
     />
     <div
-      v-for="(item,index) in communityCurationData.first_section.items"
-      :key="'T'+ index"
+      v-for="(item, index) in communityCurationData.first_section.items"
+      :key="'T' + index"
     >
-      <p :class="['mb-2 ml-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]">
-        {{ index+1 }} . <b>{{ item.black_text }}</b> {{ item.text }}
+      <p
+        :class="[
+          'mb-2 ml-4 lato-font-medium lato-text-sm',
+          { 'lato-text-md': $vuetify.display.xlOnly },
+        ]"
+      >
+        {{ index + 1 }} . <b>{{ item.black_text }}</b> {{ item.text }}
       </p>
     </div>
     <!-- eslint-enable vue/no-v-html -->
     <!-- eslint-disable vue/no-v-html -->
     <p
-      :class="['tb-4 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="[
+        'tb-4 mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
       v-html="communityCurationData.first_section.text_2"
     />
     <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
       v-html="communityCurationData.first_section.text_3"
     />
     <!-- eslint-enable vue/no-v-html -->
@@ -29,20 +43,23 @@
     </h1>
     <!-- eslint-disable vue/no-v-html -->
     <p
-      :class="['mb-6 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="[
+        'mb-6 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
       v-html="communityCurationData.second_section.text"
     />
     <v-card-actions class="justify-center">
       <v-btn
         elevation="2"
-        class="white--text green"
+        class="text-white bg-green"
         height="40"
         href="/community_champions/our_champions"
       >
         Meet our community champions
       </v-btn>
     </v-card-actions>
-    <br>
+    <br />
 
     <!-- pie chart of broad subjects goes here -->
     <PieChart
@@ -50,27 +67,27 @@
       :fields-chart="broadSubjects"
     />
 
-    <v-expansion-panels
-      v-model="panel"
-      :readonly="readonly"
-      multiple
-    >
+    <v-expansion-panels v-model="panel" :readonly="readonly" multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header>
+        <v-expansion-panel-title>
           <h1 class="text-h6 text-xl-h5 mb-2">
             <strong>
               {{ communityCurationData.third_section.main_title }}
             </strong>
           </h1>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <!-- eslint-disable vue/no-v-html -->
           <p
-            :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            :class="[
+              'mb-8 lato-font-medium lato-text-sm',
+              { 'lato-text-md': $vuetify.display.xl },
+            ]"
             v-html="communityCurationData.third_section.text"
           />
           <div
-            v-for="(item,index) in communityCurationData.third_section.subsections"
+            v-for="(item, index) in communityCurationData.third_section
+              .subsections"
             :key="index"
           >
             <a :id="item.anchor" />
@@ -79,134 +96,149 @@
             </h3>
             <!-- eslint-disable vue/no-v-html -->
             <p
-              :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="[
+                'mb-8 lato-font-medium lato-text-sm',
+                { 'lato-text-md': $vuetify.display.xlOnly },
+              ]"
               v-html="item.content"
             />
           </div>
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
       <!-- eslint-enable vue/no-v-html -->
       <v-expansion-panel>
-        <v-expansion-panel-header>
+        <v-expansion-panel-title>
           <h1 class="text-h6 text-xl-h5 mb-2">
             <strong>
               {{ communityCurationData.fourth_section.main_title }}
             </strong>
           </h1>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <!-- eslint-disable vue/no-v-html -->
           <p
-            :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            :class="[
+              'mb-8 lato-font-medium lato-text-sm',
+              { 'lato-text-md': $vuetify.display.xlOnly },
+            ]"
             v-html="communityCurationData.fourth_section.text"
           />
           <!-- eslint-enable vue/no-v-html -->
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
       <v-expansion-panel>
-        <v-expansion-panel-header>
+        <v-expansion-panel-title>
           <h1 class="text-h6 text-xl-h5 mb-2">
             <strong>
               {{ communityCodeOfConductData.main_title }}
             </strong>
           </h1>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
+        </v-expansion-panel-title>
+        <v-expansion-panel-text>
           <div
-            v-for="(item,index) in communityCodeOfConductData.sections"
-            :key="'A'+ index"
+            v-for="(item, index) in communityCodeOfConductData.sections"
+            :key="'A' + index"
           >
             <!-- eslint-disable vue/no-v-html -->
             <p
-              :class="['mb-6 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="[
+                'mb-6 lato-font-medium lato-text-sm',
+                { 'lato-text-md': $vuetify.display.xlOnly },
+              ]"
               v-html="item.text"
             />
           </div>
           <div
-            v-for="(item,index_two) in communityCodeOfConductData.commitments"
+            v-for="(item, index_two) in communityCodeOfConductData.commitments"
             :key="index_two"
           >
             <!-- eslint-disable vue/no-v-html -->
-            <p :class="['mb-2 ml-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]">
-              {{ index_two+1 }} . <b>{{ item.black_text }}</b>  {{ item.text }}
+            <p
+              :class="[
+                'mb-2 ml-4 lato-font-medium lato-text-sm',
+                { 'lato-text-md': $vuetify.display.xlOnly },
+              ]"
+            >
+              {{ index_two + 1 }} . <b>{{ item.black_text }}</b> {{ item.text }}
             </p>
           </div>
           <!-- eslint-enable vue/no-v-html -->
 
-          <h3 class="text-h6 text-xl-h5 mb-2 mt-4">
-            Reporting
-          </h3>
+          <h3 class="text-h6 text-xl-h5 mb-2 mt-4">Reporting</h3>
           <div
-            v-for="(item,index) in communityCodeOfConductData.reporting"
-            :key="'B'+index"
+            v-for="(item, index) in communityCodeOfConductData.reporting"
+            :key="'B' + index"
           >
             <!-- eslint-disable vue/no-v-html -->
             <p
-              :class="['mb-3 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              :class="[
+                'mb-3 lato-font-medium lato-text-sm',
+                { 'lato-text-md': $vuetify.display.xlOnly },
+              ]"
               v-html="item.text"
             />
           </div>
           <!-- eslint-enable vue/no-v-html -->
-        </v-expansion-panel-content>
+        </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
   </main>
 </template>
 
 <script>
-import { capitalize } from "lodash"
+import { capitalize } from "lodash";
 
 import PieChart from "@/components/Static/Statistics/PieChart.vue";
-import communityCurationCohorts from '@/data/communityCurationCohorts.json';
-import communityCurationData from '@/data/communityCurationData.json';
+import communityCurationCohorts from "@/data/communityCurationCohorts.json";
+import communityCurationData from "@/data/communityCurationData.json";
 import getHostname from "@/utils/generalUtils";
-import cleanString from "@/utils/stringUtils"
+import cleanString from "@/utils/stringUtils";
 
-  export default {
-    name: "CommunityCuration",
-    components: { PieChart },
-    mixins: [ getHostname, cleanString ],
-    data: () => {
-      return {
-        communityCurationData: communityCurationData.communityCuration,
-        communityCodeOfConductData: communityCurationData.communityCodeOfConductData,
-        communityCurationCohorts: communityCurationCohorts,
-        broadSubjects: {
-          "title": "Champions' Broad Specialisms",
-          "data": []
-        },
-        panel: [],
-        readonly: false
+export default {
+  name: "CommunityCuration",
+  components: { PieChart },
+  mixins: [getHostname, cleanString],
+  data: () => {
+    return {
+      communityCurationData: communityCurationData.communityCuration,
+      communityCodeOfConductData:
+        communityCurationData.communityCodeOfConductData,
+      communityCurationCohorts: communityCurationCohorts,
+      broadSubjects: {
+        title: "Champions' Broad Specialisms",
+        data: [],
+      },
+      panel: [],
+      readonly: false,
+    };
+  },
+  mounted() {
+    // This creates pie chart data from the champions' file
+    let _module = this;
+    let tempSubjects = {};
+    _module.communityCurationCohorts.data.forEach((ch) => {
+      let subj = ch.subject_area;
+      if (!subj) {
+        return;
       }
-    },
-    mounted() {
-      // This creates pie chart data from the champions' file
-      let _module = this;
-      let tempSubjects = {}
-      _module.communityCurationCohorts.data.forEach((ch) => {
-        let subj = ch.subject_area;
-        if (!subj) {
-          return;
-        }
-        if (tempSubjects[subj]) {
-          tempSubjects[subj] = tempSubjects[subj] + 1;
-        }
-        else {
-          tempSubjects[subj] = 1;
-        }
-      })
-      for (let key in tempSubjects) {
-        _module.broadSubjects.data.push({
-          name: capitalize(_module.cleanString(key)),
-          y: tempSubjects[key],
-          //url: '' // TODO: Use later to link to tabs etc.
-        })
+      if (tempSubjects[subj]) {
+        tempSubjects[subj] = tempSubjects[subj] + 1;
+      } else {
+        tempSubjects[subj] = 1;
       }
-    },
-    methods: {
-      capitalize
+    });
+    for (let key in tempSubjects) {
+      _module.broadSubjects.data.push({
+        name: capitalize(_module.cleanString(key)),
+        y: tempSubjects[key],
+        //url: '' // TODO: Use later to link to tabs etc.
+      });
     }
-  }
+  },
+  methods: {
+    capitalize,
+  },
+};
 </script>
 <style scoped>
 p {

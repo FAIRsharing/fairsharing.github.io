@@ -1,10 +1,5 @@
 {
   "queryName": "messages",
   "queryParam": null,
-  "fields": [
-    "id",
-    "message",
-    "updatedAt",
-    "createdAt"
-  ]
+  "fields": ["id", "message", "updatedAt", "createdAt"]
 }

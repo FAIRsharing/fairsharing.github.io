@@ -1,54 +1,62 @@
 <template>
-  <v-select
+  <v-combobox
     v-model="model"
     chips
-    :items="itemList"
+    :items="cleanTextList"
     multiple
-    solo
+    variant="solo"
     clearable
     closable-chips
     min-height="36px"
-    class="text-capitalize"
+    class="text-capitalize advancedSearchSelect advancedSearchDialogBoxContent"
+    density="compact"
+    flat
+    hide-details="auto"
+    color="primary"
   >
-    <template #selection="data">
+    <!--Chip slot is not required anymore-->
+    <!--    <template #chip="data">-->
+    <!--      <v-chip-->
+    <!--        class="advancedSearchChip"-->
+    <!--        v-bind="data.attrs"-->
+    <!--        :model-value="data.selected"-->
+    <!--        closable-->
+    <!--        :text="cleanString(data.item.title)"-->
+    <!--        size="large"-->
+    <!--        border="sm"-->
+    <!--        @click="data.select"-->
+    <!--        @click:close="remove(data.item.title)"-->
+    <!--      />-->
+    <!--    </template>-->
+    <template #chip="{ props, item }">
       <v-chip
-        v-bind="data.attrs"
-        :input-value="data.selected"
-        close
-        @click="data.select"
-        @click:close="remove(data.item)"
-      >
-        {{ cleanString(data.item) }}
-      </v-chip>
+        v-bind="props"
+        :text="item.raw.title"
+        color="blue"
+        variant="flat"
+      ></v-chip>
     </template>
-    <template #item="{ item, on, attrs }">
-      <v-list-item
-        v-bind="attrs"
-        v-on="on"
-      >
-        <v-list-item-icon>
-          <v-icon>
-            {{
-              model.includes(item)
-                ? "mdi-checkbox-marked"
-                : "mdi-checkbox-blank-outline"
-            }}
+    <!-- Tooltip for the field -->
+    <template #prepend>
+      <v-tooltip location="bottom" class="mr-2">
+        <template #activator="{ props }">
+          <v-icon
+            size="x-small"
+            class="mr-1 iconStyle text-white opacity-100"
+            v-bind="props"
+          >
+            fas fa-question-circle
           </v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title
-            class="text-left text-capitalize"
-            v-text="cleanString(item)"
-          />
-        </v-list-item-content>
-      </v-list-item>
+        </template>
+        <span> {{ toolTipText }} </span>
+      </v-tooltip>
     </template>
-  </v-select>
+  </v-combobox>
 </template>
 
 <script>
-import { removeItem } from "@/utils/advancedSearchUtils";
 import stringUtils from "@/utils/stringUtils";
+import { capitalize } from "lodash";
 
 export default {
   name: "SelectComponent",
@@ -62,8 +70,12 @@ export default {
       type: Array,
       default: () => [],
     },
+    toolTipText: {
+      type: String,
+      default: null,
+    },
   },
-
+  emits: ["input"],
   computed: {
     model: {
       get() {
@@ -73,15 +85,12 @@ export default {
         this.$emit("input", value);
       },
     },
-  },
-
-  methods: {
-    remove(item) {
-      return removeItem(item, this.model);
+    cleanTextList() {
+      return this.itemList.map((item) => capitalize(this.cleanString(item)));
     },
+  },
+  methods: {
+    capitalize,
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

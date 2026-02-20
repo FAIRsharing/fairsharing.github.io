@@ -1,89 +1,54 @@
-
-export const StandardRecordType = () =>
-  import("./GeneralComponents/StandardRecordType.vue");
-export const PolicyRecordType = () =>
-  import("./PolicyComponents/PolicyRecordType.vue");
-export const Registry = () => import("./GeneralComponents/Registry.vue");
-export const Subject = () => import("./GeneralComponents/Subject.vue");
-export const UserDefinedTag = () => import("./GeneralComponents/UserDefinedTag.vue");
-export const Domain = () => import("./GeneralComponents/Domains.vue");
-export const RecordStatus = () => import("./GeneralComponents/RecordStatus.vue");
-
-export const Taxonomies = () => import("./GeneralComponents/Taxonomies.vue");
-
-export const Licences = () => import("./GeneralComponents/Licences.vue");
-export const Organisations = () => import("./GeneralComponents/Organisations.vue");
-export const Countries = () => import("./GeneralComponents/Countries.vue")
-export const GroupCtrlSlot = () => import("./GroupCtrlSlot/GroupCtrlSlot.vue")
-export const DatabaseRecordType = () =>
-  import("./DatabaseComponents/DatabaseRecordType.vue");
-export const FairassistRecordType = () =>
-  import("./FairassistComponents/FairassistRecordType.vue");
-export const DataCuration = () => import("./DatabaseComponents/DataCuration.vue");
-export const DataDepositionCondition = () =>
-  import("./DatabaseComponents/DataDepositionCondition.vue");
-export const DataAccessCondition = () => import("./DatabaseComponents/DataAccessCondition.vue");
-export const CitationToRelatedPublications = () => import("./DatabaseComponents/CitationToRelatedPublications.vue");
-export const DataAccessForPrePublicationReview = () => import("./DatabaseComponents/DataAccessForPrePublicationReview.vue");
-export const DataContactInformation = () => import("./DatabaseComponents/DataContactInformation.vue");
-export const DataVersioning = () => import("./DatabaseComponents/DataVersioning.vue");
-export const AssociatedTools = () => import("./DatabaseComponents/AssociatedTools.vue");
-export const CertificationsAndCommunityBadges = () => import("./DatabaseComponents/CertificationsAndCommunityBadges.vue");
-export const DataProcessesAndConditions = () => import("./DatabaseComponents/DataProcessesAndConditions.vue");
-export const DataPreservationPolicy = () => import("./DatabaseComponents/DataPreservationPolicy.vue");
-export const ResourceSustainability = () => import("./DatabaseComponents/ResourceSustainability.vue");
-export const AccessMethods = () => import("./DatabaseComponents/AccessMethods.vue");
-export const DataAvailabilityStatement = () =>
-  import("./PolicyComponents/DataAvailabilityStatement.vue");
-export const DataProtection = () =>
-  import("./PolicyComponents/DataProtection.vue");
-export const DataCitation = () =>
-  import("./PolicyComponents/DataCitation.vue");
-export const DataPreservation = () =>
-  import("./PolicyComponents/DataPreservation.vue");
-export const ExceptionsToDataSharing = () =>
-  import("./PolicyComponents/ExceptionsToDataSharing.vue");
-export const MandatedDataSharing = () =>
-  import("./PolicyComponents/MandatedDataSharing.vue");
-export const MandatedDmpCreation = () =>
-  import("./PolicyComponents/MandatedDmpCreation.vue");
-export const SharingResearchSoftware = () =>
-  import("./PolicyComponents/SharingResearchSoftware.vue");
-export const TimingOfDmp = () =>
-  import("./PolicyComponents/TimingOfDmp.vue");
-export const LicencesForOutputs = () =>
-  import("./PolicyComponents/LicencesForOutputs.vue");
-export const SupportedCosts = () =>
-  import("./PolicyComponents/SupportedCosts.vue");
-export const IsImplemented = () =>
-  import("./OtherBooleanComponents/IsImplemented.vue");
-export const HasPublication = () =>
-  import("./OtherBooleanComponents/HasPublication.vue");
-export const UsesPersistentIdentifier = () =>
-  import("./OtherBooleanComponents/UsesPersistentIdentifier.vue");
-export const RecommendsDatabase = () =>
-  import("./OtherBooleanComponents/RecommendsDatabase.vue");
-export const RecommendsStandard = () =>
-  import("./OtherBooleanComponents/RecommendsStandard.vue");
-export const UpdatingOfDmp = () =>
-  import("./OtherBooleanComponents/UpdatingOfDmp.vue");
-export const GuidanceToHelpEnableCompliance = () =>
-  import("./OtherBooleanComponents/GuidanceToHelpEnableCompliance.vue");
-export const MonitoringOfCompliance = () =>
-  import("./OtherBooleanComponents/MonitoringOfCompliance.vue");
-export const ObjectTypes = () =>
-  import("./GeneralComponents/ObjectTypes.vue");
-export const GloballyUnique = () =>
-  import("./OtherBooleanComponents/GloballyUnique.vue");
-export const Persistent = () =>
-  import("./OtherBooleanComponents/Persistent.vue");
-export const Resolvable = () =>
-  import("./OtherBooleanComponents/Resolvable.vue");
-export const AssociatedTests = () =>
-  import("./FairassistComponents/AssociatedTests.vue");
-export const PositiveExamples = () =>
-  import("./FairassistComponents/PositiveExamples.vue");
-export const NegativeExamples = () =>
-  import("./FairassistComponents/NegativeExamples.vue");
-export const IndeterminateExamples = () =>
-  import("./FairassistComponents/IndeterminateExamples.vue");
+export { default as StandardRecordType } from "./GeneralComponents/StandardRecordType.vue";
+export { default as PolicyRecordType } from "./PolicyComponents/PolicyRecordType.vue";
+export { default as Registry } from "./GeneralComponents/Registry.vue";
+export { default as Subject } from "./GeneralComponents/Subject.vue";
+export { default as UserDefinedTag } from "./GeneralComponents/UserDefinedTag.vue";
+export { default as Domain } from "./GeneralComponents/Domains.vue";
+export { default as RecordStatus } from "./GeneralComponents/RecordStatus.vue";
+export { default as Taxonomies } from "./GeneralComponents/Taxonomies.vue";
+export { default as Licences } from "./GeneralComponents/Licences.vue";
+export { default as ObjectTypes } from "./GeneralComponents/ObjectTypes.vue";
+export { default as Organisations } from "./GeneralComponents/Organisations.vue";
+export { default as Countries } from "./GeneralComponents/Countries.vue";
+export { default as GroupCtrlSlot } from "./GroupCtrlSlot/GroupCtrlSlot.vue";
+export { default as DatabaseRecordType } from "./DatabaseComponents/DatabaseRecordType.vue";
+export { default as DataCuration } from "./DatabaseComponents/DataCuration.vue";
+export { default as DataDepositionCondition } from "./DatabaseComponents/DataDepositionCondition.vue";
+export { default as DataAccessCondition } from "./DatabaseComponents/DataAccessCondition.vue";
+export { default as CitationToRelatedPublications } from "./DatabaseComponents/CitationToRelatedPublications.vue";
+export { default as DataAccessForPrePublicationReview } from "./DatabaseComponents/DataAccessForPrePublicationReview.vue";
+export { default as DataContactInformation } from "./DatabaseComponents/DataContactInformation.vue";
+export { default as DataVersioning } from "./DatabaseComponents/DataVersioning.vue";
+export { default as AssociatedTools } from "./DatabaseComponents/AssociatedTools.vue";
+export { default as CertificationsAndCommunityBadges } from "./DatabaseComponents/CertificationsAndCommunityBadges.vue";
+export { default as DataProcessesAndConditions } from "./DatabaseComponents/DataProcessesAndConditions.vue";
+export { default as DataPreservationPolicy } from "./DatabaseComponents/DataPreservationPolicy.vue";
+export { default as ResourceSustainability } from "./DatabaseComponents/ResourceSustainability.vue";
+export { default as DataAvailabilityStatement } from "./PolicyComponents/DataAvailabilityStatement.vue";
+export { default as DataProtection } from "./PolicyComponents/DataProtection.vue";
+export { default as DataCitation } from "./PolicyComponents/DataCitation.vue";
+export { default as DataPreservation } from "./PolicyComponents/DataPreservation.vue";
+export { default as ExceptionsToDataSharing } from "./PolicyComponents/ExceptionsToDataSharing.vue";
+export { default as MandatedDataSharing } from "./PolicyComponents/MandatedDataSharing.vue";
+export { default as MandatedDmpCreation } from "./PolicyComponents/MandatedDmpCreation.vue";
+export { default as SharingResearchSoftware } from "./PolicyComponents/SharingResearchSoftware.vue";
+export { default as TimingOfDmp } from "./PolicyComponents/TimingOfDmp.vue";
+export { default as LicencesForOutputs } from "./PolicyComponents/LicencesForOutputs.vue";
+export { default as SupportedCosts } from "./PolicyComponents/SupportedCosts.vue";
+export { default as IsImplemented } from "./OtherBooleanComponents/IsImplemented.vue";
+export { default as HasPublication } from "./OtherBooleanComponents/HasPublication.vue";
+export { default as UsesPersistentIdentifier } from "./OtherBooleanComponents/UsesPersistentIdentifier.vue";
+export { default as RecommendsDatabase } from "./OtherBooleanComponents/RecommendsDatabase.vue";
+export { default as RecommendsStandard } from "./OtherBooleanComponents/RecommendsStandard.vue";
+export { default as UpdatingOfDmp } from "./OtherBooleanComponents/UpdatingOfDmp.vue";
+export { default as GuidanceToHelpEnableCompliance } from "./OtherBooleanComponents/GuidanceToHelpEnableCompliance.vue";
+export { default as MonitoringOfCompliance } from "./OtherBooleanComponents/MonitoringOfCompliance.vue";
+export { default as AccessMethods } from "./DatabaseComponents/AccessMethods.vue";
+export { default as GloballyUnique } from "./OtherBooleanComponents/GloballyUnique.vue";
+export { default as Persistent } from "./OtherBooleanComponents/Persistent.vue";
+export { default as Resolvable } from "./OtherBooleanComponents/Resolvable.vue";
+export { default as FairassistRecordType } from "./FairassistComponents/FairassistRecordType.vue";
+export { default as AssociatedTests } from "./FairassistComponents/AssociatedTests.vue";
+export { default as PositiveExamples } from "./FairassistComponents/PositiveExamples.vue";
+export { default as NegativeExamples } from "./FairassistComponents/NegativeExamples.vue";
+export { default as IndeterminateExamples } from "./FairassistComponents/IndeterminateExamples.vue";

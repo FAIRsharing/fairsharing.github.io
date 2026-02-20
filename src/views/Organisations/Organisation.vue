@@ -1,36 +1,44 @@
 <template>
   <v-container
     id="organisationPage"
+    class="standard bg-grey-lighten-3 pb-10"
     fluid
-    class="standard grey lighten-3 pb-10"
   >
-    <Loaders
-      v-if="loading"
-    />
+    <v-fade-transition>
+      <div>
+        <v-overlay
+          v-model="loading"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <loaders />
+        </v-overlay>
+      </div>
+    </v-fade-transition>
     <div v-if="error && !loading">
       <NotFound />
     </div>
     <div v-else>
       <!-- new stuff below here -->
       <v-card
-        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column"
-        outlined
         :color="$vuetify.theme.themes.bg_organisation_record_card"
-        tile
+        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column overflow-initial"
         elevation="3"
+        rounded="0"
+        tile
+        variant="outlined"
       >
         <SectionTitle title="Organisation" />
         <!-- TODO: This image refuses to go anywhere but centrally on the page -->
         <v-img
           v-if="logoUrl"
           :src="logoUrl"
-          contain
           aspect-ratio="1"
+          class="contain"
           height="120px"
         />
-        <h2
-          class="mt-3"
-        >
+        <h2 class="mt-3">
           {{ organisation.name }}
         </h2>
         <!-- alternative names -->
@@ -57,8 +65,8 @@
             <v-chip
               v-for="type in organisation.types"
               :key="type + '_type'"
-              variant="elevated"
               class="ma-1"
+              variant="flat"
             >
               {{ type }}
             </v-chip>
@@ -75,9 +83,9 @@
               v-for="parent in organisation.parentOrganisations"
               :key="'parent_' + parent.id"
               :href="orgUrl() + parent.id"
+              class="ma-1"
               color="light-blue"
               variant="elevated"
-              class="ma-1"
             >
               {{ parent.name }}
             </v-chip>
@@ -94,9 +102,9 @@
               v-for="child in organisation.childOrganisations"
               :key="'child_' + child.id"
               :href="orgUrl() + child.id"
+              class="ma-1"
               color="light-blue"
               variant="elevated"
-              class="ma-1"
             >
               {{ child.name }}
             </v-chip>
@@ -113,9 +121,9 @@
               v-for="user in organisation.users"
               :key="'user_' + user.id"
               :href="getUserLink() + user.id"
+              class="ma-1"
               color="light-blue"
               variant="elevated"
-              class="ma-1"
             >
               {{ formatUser(user) }}
             </v-chip>
@@ -131,8 +139,8 @@
             <v-chip
               v-for="country in organisation.countries"
               :key="'country_' + country.id"
-              variant="elevated"
               class="ma-1"
+              variant="flat"
             >
               {{ country.name }}
             </v-chip>
@@ -152,18 +160,15 @@
               class="ma-1"
               variant="elevated"
             >
-              <a
-                class="black--text"
-                :href="search.url"
-              >
+              <a :href="search.url" class="text-black">
                 {{ search.name }}
               </a>
               <v-icon
-                v-if="user().is_super_curator? true:false"
-                right
+                v-if="user().is_super_curator ? true : false"
                 class="ml-4"
-                size="20"
                 color="error"
+                end
+                size="20"
                 @click="confirmUnlinkSavedSearch(search)"
               >
                 mdi-link-off
@@ -172,295 +177,254 @@
           </div>
         </div>
 
-        
         <!-- ror link -->
         <p
           v-if="organisation.rorLink"
           class="d-flex flex-row mt-4 mb-0 align-center"
         >
-          <img
-            src="/assets/icons/ror-icon-rbg-32.png"
-            class="mr-1"
-          >
-          <a
-            :href="organisation.rorLink"
-          >
+          <img class="mr-1" src="/assets/icons/ror-icon-rbg-32.png" />
+          <a :href="organisation.rorLink">
             {{ organisation.rorLink }}
           </a>
         </p>
 
         <!-- edit -->
-        <p
-          v-if="user().is_curator"
-          class="mt-4"
-        >
-          <v-btn
-            class="warning"
-            @click="startEditing"
-          >
+        <p v-if="user().is_curator" class="mt-4">
+          <v-btn class="bg-warning" @click="startEditing">
             Edit Organisation
           </v-btn>
-          <v-btn
-            class="error ml-2"
-            @click="confirmDeleteOrganisation"
-          >
+          <v-btn class="bg-error ml-2" @click="confirmDeleteOrganisation">
             Delete Organisation
           </v-btn>
         </p>
       </v-card>
 
-
       <SearchOrganisationRecords
         id="searchOrganisationRecords"
-        class="mb-10 ma-4"
         :organisation="organisation"
+        class="mb-10 ma-4"
       />
 
-      <v-col
-        v-if="!loading"
-        cols="12"
-      >
-        <v-container
-          fluid
-          class="py-0"
-        />
+      <v-col v-if="!loading" cols="12">
+        <v-container class="py-0" fluid />
 
         <v-fade-transition>
-          <v-overlay
-            v-if="loading"
-            :absolute="false"
-            opacity="0.8"
-          >
-            <loaders />
-          </v-overlay>
+          <div>
+            <v-overlay
+              v-model="loading"
+              :absolute="false"
+              class="align-center justify-center"
+              opacity="0.8"
+            >
+              <loaders />
+            </v-overlay>
+          </div>
         </v-fade-transition>
       </v-col>
     </div>
     <!-- Edit existing organisation -->
-    <v-expand-transition>
-      <v-dialog
-        v-model="showEditDialog"
-        height="100%"
+    <v-dialog v-model="showEditDialog" height="100%">
+      <v-form
+        id="editOrganisation"
+        ref="editOrganisation"
+        v-model="editFormValid"
       >
-        <v-form
-          id="editOrganisation"
-          ref="editOrganisation"
-          v-model="editFormValid"
-        >
-          <v-card>
-            <v-card-text>
-              <v-container fluid>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
+        <v-card>
+          <v-card-text>
+            <v-container fluid>
+              <v-row>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.name"
+                    :rules="[rules.isRequired()]"
+                    label="Name"
+                    variant="outlined"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.homepage"
+                    :rules="[rules.isRequired(), rules.isURL()]"
+                    label="Homepage"
+                    variant="outlined"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.rorLink"
+                    :rules="[rules.isURL()]"
+                    label="ROR Link"
+                    variant="outlined"
+                  />
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-text-field
+                    v-model="editedOrganisation.alternativeNames"
+                    :rules="[]"
+                    item-text="name"
+                    item-value="id"
+                    label="Alternative names"
+                    return-object
+                    variant="outlined"
+                  />
+                </v-col>
+                <!-- TODO insert parent and child organisations here -->
+                <v-col class="pb-0" cols="12">
+                  <v-autocomplete
+                    v-model="editedOrganisation.types"
+                    :items="organisationsTypes"
+                    :rules="[rules.isRequired()]"
+                    chips
+                    clearable
+                    closable-chips
+                    item-title="name"
+                    item-value="id"
+                    label="Select an organisation type(s)"
+                    multiple
+                    return-object
+                    variant="outlined"
                   >
-                    <v-text-field
-                      v-model="editedOrganisation.name"
-                      label="Name"
-                      outlined
-                      :rules="[rules.isRequired()]"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
+                    <!-- autocomplete selected -->
+                    <template #chip="{ props, item }">
+                      <v-chip
+                        :text="item.raw.name"
+                        color="blue"
+                        v-bind="props"
+                        variant="flat"
+                      ></v-chip>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-autocomplete
+                    v-model="editedOrganisation.countries"
+                    :items="countries"
+                    :rules="[
+                      editedOrganisation.countries &&
+                        !(editedOrganisation.countries === 0),
+                    ]"
+                    item-title="name"
+                    item-value="name"
+                    label="Countries"
+                    multiple
+                    return-object
+                    variant="outlined"
                   >
-                    <v-text-field
-                      v-model="editedOrganisation.homepage"
-                      label="Homepage"
-                      outlined
-                      :rules="[rules.isRequired(), rules.isURL()]"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
-                  >
-                    <v-text-field
-                      v-model="editedOrganisation.rorLink"
-                      label="ROR Link"
-                      outlined
-                      :rules="[rules.isURL()]"
-                    />
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
-                  >
-                    <v-text-field
-                      v-model="editedOrganisation.alternativeNames"
-                      outlined
-                      item-text="name"
-                      item-value="id"
-                      return-object
-                      label="Alternative names"
-                      :rules="[]"
-                    />
-                  </v-col>
-                  <!-- TODO insert parent and child organisations here -->
-                  <v-col
-                    cols="12"
-                    class="pb-0"
-                  >
-                    <v-autocomplete
-                      v-model="editedOrganisation.types"
-                      :items="organisationsTypes"
-                      multiple
-                      outlined
-                      item-text="name"
-                      item-value="id"
-                      return-object
-                      label="Select an organisation type(s)"
-                      :rules="[rules.isRequired()]"
-                    >
-                      <!-- autocomplete selected -->
-                      <template #selection="data">
-                        <v-chip
-                          class="blue white--text removeStyle"
-                          close
-                          @click:close="removeType(data.item)"
-                        >
-                          {{ data.item.name }}
-                        </v-chip>
-                      </template>
-                    </v-autocomplete>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
-                  >
-                    <v-autocomplete
-                      v-model="editedOrganisation.countries"
-                      label="Countries"
-                      :items="countries"
-                      item-text="name"
-                      item-value="name"
-                      multiple
-                      outlined
-                      return-object
-                      :rules="[editedOrganisation.countries &&
-                        !(editedOrganisation.countries === 0)]"
-                    >
-                      <template #prepend>
-                        <v-tooltip
-                          bottom
-                          max-width="300px"
-                          class="text-justify"
-                        >
-                          <template #activator="{ on }">
-                            <v-icon v-on="on">
-                              fa-question-circle
-                            </v-icon>
-                          </template>
-                          {{ tooltips['countries'] }}
-                        </v-tooltip>
-                      </template>
+                    <template #prepend>
+                      <v-tooltip
+                        class="text-justify"
+                        location="bottom"
+                        max-width="300px"
+                      >
+                        <template #activator="{ props }">
+                          <v-icon v-bind="props">
+                            fas fa-question-circle
+                          </v-icon>
+                        </template>
+                        {{ tooltips["countries"] }}
+                      </v-tooltip>
+                    </template>
 
-                      <!-- autocomplete selected -->
-                      <template #selection="data">
-                        <v-chip
-                          class="blue white--text removeStyle"
-                          close
-                          @click:close="removeCountry( data.item )"
-                        >
-                          {{ data.item.name }}
-                        </v-chip>
-                      </template>
+                    <!-- Item selected -->
+                    <template #chip="data">
+                      <v-chip
+                        class="bg-blue text-white removeStyle"
+                        closable
+                        @click:close="removeCountry(data.item.raw)"
+                      >
+                        {{ data.item.raw.name }}
+                      </v-chip>
+                    </template>
 
-                      <!-- autocomplete data -->
-                      <template #item="data">
-                        <country-flag
-                          v-if="data.item.code !== null"
-                          :country="data.item.code"
-                          size="normal"
-                        />
-                        <img
-                          v-else
-                          src="@/assets/placeholders/country.png"
-                          class="ml-4 mr-3"
-                        >
-                        <div> {{ data.item.name }} </div>
-                      </template>
-                    </v-autocomplete>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
-                  >
-                    <v-file-input
-                      v-model="editedOrganisation.logo"
-                      :rules="[rules.isImage(), imageSizeCorrect]"
-                      clearable
-                      :loading="logoLoading"
-                      accept="image/png,image/jpeg"
-                      label="Logo"
-                      prepend-icon="fa-image"
-                    />
-                    <span>JPEG or PNG, max. file size 3MB.</span>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    class="pb-0"
-                  >
-                    <v-img
-                      v-if="logoUrl"
-                      :src="logoUrl"
-                      contain
-                      aspect-ratio="1"
-                      height="120px"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                class="error"
-                @click="showEditDialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                class="success"
-                :disabled="!editFormValid || imageTooBig"
-                @click="editOrganisation()"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-dialog>
-    </v-expand-transition>
+                    <!-- autocomplete data -->
+                    <template #item="{ props, item }">
+                      <v-list-item v-bind="props">
+                        <template #prepend>
+                          <country-flag
+                            v-if="item.raw.code !== null"
+                            :country="item.raw.code"
+                            class="mr-1 mt-n2"
+                            size="normal"
+                          />
+                          <v-img
+                            v-else
+                            class="ml-4 mr-3"
+                            src="@/assets/placeholders/country.png"
+                          />
+                        </template>
+                        <span>{{ item.raw.name }}</span>
+                      </v-list-item>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-file-input
+                    v-model="editedOrganisation.logo"
+                    :loading="logoLoading"
+                    :rules="[rules.isImage(), imageSizeCorrect]"
+                    accept="image/png,image/jpeg"
+                    clearable
+                    label="Logo"
+                    prepend-icon="fas fa-image"
+                  />
+                  <span>JPEG or PNG, max. file size 3MB.</span>
+                </v-col>
+                <v-col class="pb-0" cols="12">
+                  <v-img
+                    v-if="logoUrl"
+                    :src="logoUrl"
+                    aspect-ratio="1"
+                    class="contain"
+                    height="120px"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="bg-error"
+              variant="elevated"
+              width="200"
+              @click="showEditDialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              :disabled="!editFormValid || imageTooBig"
+              class="bg-success"
+              variant="elevated"
+              width="200"
+              @click="editOrganisation()"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
+    </v-dialog>
     <!-- Delete dialog box -->
-    <v-dialog
-      v-model="confirmDelete"
-      max-width="700px"
-      persistent
-    >
+    <v-dialog v-model="confirmDelete" max-width="500px" persistent>
       <!-- Delete organisation -->
       <v-card v-if="deleteOrganisationCard">
-        <v-card-title
-          class="headline"
+        <v-card-title class="text-h5 font-weight-bold">
+          Deleting organisation!</v-card-title
         >
-          Deleting organisation!
-        </v-card-title>
-        <v-card-text>
-          <p>
-            <b>Are you sure you want to do that? It will be permanently deleted.</b>
-          </p>
+        <v-card-text class="font-weight-bold">
+          Are you sure you want to do that? It will be permanently deleted.
         </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="info"
+            class="bg-info text-white"
+            variant="elevated"
             @click="deleteOrganisation(false)"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="error"
+            class="bg-error text-white"
+            variant="elevated"
             @click="deleteOrganisation(true)"
           >
             Delete
@@ -470,23 +434,21 @@
       </v-card>
       <!-- Unlink saved search -->
       <v-card v-if="unlinkSavedSearchCard">
-        <v-card-title class="text-h5">
-          Unlinking saved search
-        </v-card-title>
-        <v-card-text>This is will unlink saved search from this organisaton</v-card-text>
+        <v-card-title class="text-h5"> Unlinking saved search</v-card-title>
+        <v-card-text
+          >This will unlink the saved search from this organisation.
+        </v-card-text>
         <v-card-actions>
           <v-spacer />
           <v-btn
-            class="white--text"
-            color="accent3"
+            class="bg-grey-darken-1 text-white"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
           </v-btn>
           <v-btn
-            class="white--text"
-            color="success"
             :loading="deleteLoader"
+            class="bg-success text-white"
             @click="unlinkSavedSearch(true)"
           >
             OK
@@ -499,28 +461,35 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json";
 import saveSearch from "@/store";
-import { isImage, isRequired, isUrl } from "@/utils/rules.js"
-import { cleanString } from "@/utils/stringUtils"
-import NotFound from "@/views/Errors/404"
+import { isImage, isRequired, isUrl } from "@/utils/rules.js";
+import stringUtils from "@/utils/stringUtils";
+import NotFound from "@/views/Errors/404";
+import RestClient from "@/lib/Client/RESTClient.js";
+import { toBase64 } from "@/utils/generalUtils";
+import CountryFlag from "vue-country-flag-next";
 
 let graphClient = new GraphClient();
-import RestClient from "@/lib/Client/RESTClient.js"
-import {toBase64} from "@/utils/generalUtils";
 
 const restClient = new RestClient();
 
 export default {
   name: "Organisation",
-  components: {SearchOrganisationRecords, SectionTitle, NotFound, Loaders},
-  mixins: [cleanString],
+  components: {
+    CountryFlag,
+    SearchOrganisationRecords,
+    SectionTitle,
+    NotFound,
+    Loaders,
+  },
+  mixins: [stringUtils],
   data: () => {
     return {
       error: true,
@@ -531,11 +500,11 @@ export default {
         users: [],
         parentOrganisations: [],
         childOrganisations: [],
-        countries: []
+        countries: [],
       },
       editedOrganisation: {
-        name: '',
-        homepage: '',
+        name: "",
+        homepage: "",
         types: [],
         logo: null,
         countries: [],
@@ -548,49 +517,60 @@ export default {
       logoLoading: false,
       imageTooBig: true,
       perPage: 10,
-      footer: {'items-per-page-options': [10]},
+      footer: { "items-per-page-options": [10] },
       showOverlay: false,
       targetID: null,
       testEnvironment: false,
       headers: [
-        {text: 'Name', value: 'name', align: 'center'},
-        {text: 'Status', value: 'status', align: 'center'},
-        {text: 'Relation', value: 'relation', align: 'center'},
-        {text: 'Grant', value: 'grant', align: 'center'},
-        {text: 'Actions', value: 'actions', align: 'center', sortable: false}
+        { title: "Name", value: "name", align: "center" },
+        { title: "Status", value: "status", align: "center" },
+        { title: "Relation", value: "relation", align: "center" },
+        { title: "Grant", value: "grant", align: "center" },
+        {
+          title: "Actions",
+          value: "actions",
+          align: "center",
+          sortable: false,
+        },
       ],
       userHeaders: [
-        {text: 'Username', value: 'username', align: 'center'},
-        {text: 'Email address', value: 'email', align: 'center'},
-        {text: 'ORCID ID', value: 'orcid', align: 'center'},
-        {text: 'Twitter', value: 'twitter', align: 'center'},
+        { title: "Username", value: "username", align: "center" },
+        { title: "Email address", value: "email", align: "center" },
+        { title: "ORCID ID", value: "orcid", align: "center" },
+        { title: "Twitter", value: "twitter", align: "center" },
       ],
       showEditDialog: false,
       editFormValid: false,
       rules: {
-        isRequired: function(){return isRequired() },
-        isURL: function(){ return isUrl() },
-        isImage: function(){ return isImage() }
+        isRequired: function () {
+          return isRequired();
+        },
+        isURL: function () {
+          return isUrl();
+        },
+        isImage: function () {
+          return isImage();
+        },
       },
       confirmDelete: false,
       deleteOrganisationCard: false,
       unlinkSavedSearchCard: false,
       selectedItem: {},
-      deleteLoader: false
-    }
+      deleteLoader: false,
+    };
   },
   computed: {
-    ...mapState('users', ['user']),
+    ...mapState("users", ["user"]),
     ...mapState("editor", ["organisationsTypes", "countries", "tooltips"]),
     currentRoute() {
-      return this.$route.params['id'];
+      return this.$route.params["id"];
     },
     logoUrl() {
       if (this.organisation.urlForLogo) {
-        return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
+        return import.meta.env.VITE_API_ENDPOINT + this.organisation.urlForLogo;
       }
       return null;
-    }
+    },
   },
   watch: {
     async currentRoute() {
@@ -600,12 +580,19 @@ export default {
   async created() {
     await this.getOrganisation();
   },
+  async mounted() {
+    await Promise.all([
+      await this.getOrganisationsTypes(),
+      await this.getCountries(),
+    ]);
+  },
   methods: {
     ...mapActions("editor", ["getOrganisationsTypes", "getCountries"]),
     async getOrganisation() {
       try {
         // testEnvironment variable is only for test case.
-        if (this.testEnvironment) throw new Error("an error occurred while fetching data")
+        if (this.testEnvironment)
+          throw new Error("an error occurred while fetching data");
         this.loading = true;
         getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
         let org = await graphClient.executeQuery(getOrganisationQuery);
@@ -615,28 +602,39 @@ export default {
           this.editedOrganisation.homepage = this.organisation.homepage;
           this.editedOrganisation.rorLink = this.organisation.rorLink;
           this.editedOrganisation.countries = this.organisation.countries;
-          this.editedOrganisation.alternativeNames = this.organisation.alternativeNames;
+          // In Vuetify 3, text fields usually expect a string, not an array of objects
+          this.editedOrganisation.alternativeNames = this.organisation
+            .alternativeNames
+            ? this.organisation.alternativeNames.join(", ")
+            : "";
+          this.error = false;
           this.error = false;
         }
         this.loading = false;
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
+        this.loading = false;
       }
     },
     async editOrganisation() {
       // TODO complete organisation input
       // A Ruby-style map would be better here. Please feel free to refactor if you know how! ;-)
-      let type_ids = []
+      let type_ids = [];
       this.editedOrganisation.types.forEach((type) => {
-        type_ids.push(type.id)
-      })
-      let country_ids = []
-      this.editedOrganisation.countries.forEach((country) => {
-        country_ids.push(country.id)
-      })
+        type_ids.push(type.id);
+      });
+      let country_ids = [];
+      if (this.editedOrganisation.countries) {
+        this.editedOrganisation.countries.forEach((country) => {
+          country_ids.push(country.id);
+        });
+      }
       let alt_names;
       try {
-        alt_names = this.editedOrganisation.alternativeNames.split(',');
+        alt_names = this.editedOrganisation.alternativeNames
+          .split(",")
+          .map((item) => item.trim());
       }
       catch {
         alt_names = [];
@@ -648,17 +646,22 @@ export default {
         organisation_type_ids: type_ids,
         country_ids: country_ids,
         ror_link: this.editedOrganisation.rorLink,
-        alternative_names: alt_names
-      }
+        alternative_names: alt_names,
+      };
+
       if (this.editedOrganisation.logo) {
         let convertedFile = await toBase64(this.editedOrganisation.logo);
         organisationInput.logo = {
           filename: this.editedOrganisation.logo.name,
           content_type: this.editedOrganisation.logo.type,
-          data: convertedFile
-        }
+          data: convertedFile,
+        };
       }
-      let data = await restClient.editOrganisation(organisationInput, this.organisation.id, this.user().credentials.token);
+      let data = await restClient.editOrganisation(
+        organisationInput,
+        this.organisation.id,
+        this.user().credentials.token,
+      );
       if (!data.error) {
         // Reload to get the new data.
         await this.getOrganisation();
@@ -675,76 +678,79 @@ export default {
         this.imageTooBig = false;
         return true;
       }
-      this.$emit('imageTooBig', true);
+      this.$emit("imageTooBig", true);
       this.imageTooBig = true;
-      return false;
+      return "Image is too large (max 3MB).";
     },
     goToEdit(id) {
-      this.$router.push({path: `/${id}/edit`})
+      this.$router.push({ path: `/${id}/edit` });
     },
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
     },
     goToRecord(id) {
-      window.open("/" + id, '_blank');
+      window.open("/" + id, "_blank");
     },
     hideOverlay() {
       this.showOverlay = false;
       this.targetID = null;
     },
     filterRecords() {
-      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase())}
+      const params = {
+        organisations: encodeURIComponent(this.organisation.name.toLowerCase()),
+      };
       this.$router.push({
-        name: 'search',
-        query: params
+        name: "search",
+        query: params,
       });
     },
     getAltNames(org) {
-      if (org.alternativeNames.length > 0) {
-        return org.alternativeNames.join(', ');
+      if (org.alternativeNames && org.alternativeNames.length > 0) {
+        return org.alternativeNames.join(", ");
       }
       return null;
     },
     formatUser(user) {
       if (user.orcid) {
-        return `${user.username} (${user.orcid})`
+        return `${user.username} (${user.orcid})`;
       }
       else {
         return user.username;
       }
     },
     getUserLink() {
-      return process.env.VUE_APP_HOSTNAME + 'users/'
+      return import.meta.env.VITE_HOSTNAME + "users/";
     },
     orgUrl() {
-      return process.env.VUE_APP_HOSTNAME + 'organisations/'
+      return import.meta.env.VITE_HOSTNAME + "organisations/";
     },
     removeType(type) {
-      this.editedOrganisation.types = this.editedOrganisation.types.filter(obj =>
-          obj.label !== type.name && obj.id !== type.id
+      this.editedOrganisation.types = this.editedOrganisation.types.filter(
+        (obj) => obj.label !== type.name && obj.id !== type.id,
       );
     },
     removeCountry(country) {
-      this.editedOrganisation.countries = this.editedOrganisation.countries.filter(obj =>
-          obj.label !== country.name && obj.id !== country.id
-      );
+      this.editedOrganisation.countries =
+        this.editedOrganisation.countries.filter(
+          (obj) => obj.label !== country.name && obj.id !== country.id,
+        );
     },
     async startEditing() {
       this.loading = true;
       this.showEditDialog = true;
-      await this.getOrganisationsTypes();
-      this.editedOrganisation.types = this.organisationsTypes.filter(obj =>
-          this.organisation.types.indexOf(obj.name) > -1
+      // await this.getOrganisationsTypes();
+      this.editedOrganisation.types = this.organisationsTypes.filter(
+        (obj) => this.organisation.types.indexOf(obj.name) > -1,
       );
-      await this.getCountries();
+      // await this.getCountries();
       this.loading = false;
     },
 
     /**
      * Confirmation dialog to delete the organisation
      */
-    confirmDeleteOrganisation(){
+    confirmDeleteOrganisation() {
       this.confirmDelete = true;
       this.deleteOrganisationCard = true;
       this.unlinkSavedSearchCard = false;
@@ -756,11 +762,14 @@ export default {
     async deleteOrganisation(del) {
       this.unlinkSavedSearchCard = false;
       if (del) {
-        let data = await restClient.deleteOrganisation(this.organisation.id, this.user().credentials.token);
+        let data = await restClient.deleteOrganisation(
+          this.organisation.id,
+          this.user().credentials.token,
+        );
 
         if (!data.error) {
           // Redirects to organisations page.
-          window.location.pathname = '/organisations'
+          window.location.pathname = "/organisations";
         }
       }
       this.deleteOrganisationCard = false;
@@ -770,7 +779,7 @@ export default {
     /**
      * Confirmation dialog to unlink the saved search
      */
-    confirmUnlinkSavedSearch(item){
+    confirmUnlinkSavedSearch(item) {
       this.selectedItem = item;
       this.confirmDelete = true;
       this.deleteOrganisationCard = false;
@@ -785,38 +794,44 @@ export default {
       if (del) {
         this.deleteLoader = true;
         //Filter the currentOrganisation to unlink
-        let linkOrganisation = this.selectedItem.organisations
-            .filter(({id}) => id !== this.organisation.id);
+        let linkOrganisation = this.selectedItem.organisations.filter(
+          ({ id }) => id !== this.organisation.id,
+        );
 
         //Array of id of the remaining organisation
-        linkOrganisation = linkOrganisation.map(({id}) => id)
+        linkOrganisation = linkOrganisation.map(({ id }) => id);
         let saveSearchObj = {
           organisation_ids: linkOrganisation,
         };
 
         let updatedSearchResult = await restClient.updateSaveSearch(
-            this.selectedItem["id"],
-            saveSearchObj,
-            this.user().credentials.token
+          this.selectedItem["id"],
+          saveSearchObj,
+          this.user().credentials.token,
         );
         //Commit the updated result to store
-        saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
-          await this.getOrganisation();
+        saveSearch.commit(
+          "saveSearch/setSaveSearchResult",
+          updatedSearchResult,
+        );
+        await this.getOrganisation();
       }
       this.deleteLoader = false;
       this.unlinkSavedSearchCard = false;
       this.confirmDelete = false;
     },
   },
-
-
-}
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .card-class {
   min-width: 500px;
   overflow-x: scroll;
   overflow-y: hidden;
+}
+
+:deep(.v-list-item-title) {
+  display: none;
 }
 </style>

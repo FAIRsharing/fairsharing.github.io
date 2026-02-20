@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-form
     id="editMaintainers"
     ref="editMaintainers"
@@ -6,28 +6,29 @@
     @submit.prevent="addItem()"
   >
     <div>Edit Maintainer information:</div>
-    <v-chip-group
-      class="mb-5 px-4 grey lighten-3"
-      column
-    >
+    <v-chip-group class="mb-5 px-4 bg-grey-lighten-3" column>
       <v-chip
         v-for="(maintainer, index) in maintainers"
         :key="'maintainer_' + index"
-        class="pr-3"
-        :class="[!isNew(maintainer) ? 'white--text blue' : ' blue--text white borderBlue']"
+        :class="[
+          !isNew(maintainer)
+            ? 'text-white bg-blue'
+            : 'text-blue bg-white borderBlue',
+        ]"
+        class="pr-3 my-1 mr-2 ml-0"
+        variant="flat"
       >
         <div>
-          {{ maintainer['username'] }} ({{ maintainer['id'] }})
-          <v-tooltip top>
-            <template #activator="{ on, attrs }">
+          {{ maintainer["username"] }} ({{ maintainer["id"] }})
+          <v-tooltip location="top">
+            <template #activator="{ props }">
               <v-icon
-                class="ml-3 white--text"
-                v-bind="attrs"
-                small
+                class="ml-3 text-white"
+                size="small"
+                v-bind="props"
                 @click="removeMaintainer(index)"
-                v-on="on"
               >
-                fa-times-circle
+                fas fa-times-circle
               </v-icon>
             </template>
             <span> Remove maintainer </span>
@@ -35,106 +36,94 @@
         </div>
       </v-chip>
       <v-spacer />
-      <!--ADD NEW CONTACT -->
+      <!--ADD NEW MAINTAINER -->
       <v-chip
-        class="green white--text pr-5 shadowChip"
+        class="bg-green text-white pr-5 shadowChip"
         @click="selectMaintainers()"
       >
-        <v-icon
-          small
-          class="mr-3 white--text"
-        >
-          fa-plus-circle
-        </v-icon> Add a maintainer
+        <v-icon class="mr-3 text-white" size="small">
+          fas fa-plus-circle
+        </v-icon>
+        Add a maintainer
       </v-chip>
     </v-chip-group>
-
-    <v-expand-transition class="ma-5">
-      <v-overlay
-        v-if="menu.content && menu.show"
-        class="py-0"
-        :dark="false"
-        opacity="0.8"
-      >
-        <v-card width="800px">
-          <v-card-title class="green white--text">
-            Select Maintainers
-            <v-spacer />
-            <v-text-field
-              id="searchString"
-              v-model="searchString"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            />
-          </v-card-title>
-          <v-card-text>
-            <v-data-table
-              :headers="headers"
-              :items="usersList"
-              :search="search"
-              :loading="loading"
-              loading-text="Loading... Please wait"
-            >
-              <template #[`item.username`]="{ item }">
-                {{ item.username }}
-              </template>
-              <template #[`item.id`]="{ item }">
-                <router-link
-                  class="underline-effect"
-                  :to="`/users/${item.id}`"
-                >
-                  {{ `https://fairsharing.org/users/${item.id}` }}
-                </router-link>
-              </template>
-              <template #[`item.add`]="{ item }">
-                <v-icon
-                  :disabled="isAlreadyMaintainer(item)"
-                  @click="addItem(item)"
-                >
-                  fas fa-plus-circle
-                </v-icon>
-              </template>
-            </v-data-table>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              class="warning"
-              @click="menu.show = false"
-            >
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-overlay>
-    </v-expand-transition>
-    <v-layout
-      row
-      justify-center
+    <v-overlay
+      v-model="menu['show']"
+      class="align-center justify-center"
+      opacity="0.8"
     >
-      <v-dialog
-        v-model="showRemoveWatcher"
-        max-width="700px"
-      >
-        <v-card>
-          <v-card-title
-            class="headline"
+      <v-card width="800px">
+        <v-card-title class="bg-green text-white d-flex align-center">
+          Select Maintainers
+          <v-spacer />
+          <v-text-field
+            id="searchString"
+            v-model="searchString"
+            append-inner-icon="fas fa-search"
+            bg-color="white"
+            clearable
+            hide-details
+            label="Search"
+            rounded="60"
+            single-line
+            variant="solo"
+          />
+        </v-card-title>
+        <v-card-text>
+          <v-data-table
+            :headers="headers"
+            :items="usersList"
+            :loading="loading"
+            :search="search"
+            loading-text="Loading... Please wait"
           >
+            <template #[`item.username`]="{ item }">
+              {{ item.username }}
+            </template>
+            <template #[`item.id`]="{ item }">
+              <router-link :to="`/users/${item.id}`" class="underline-effect">
+                {{ `https://fairsharing.org/users/${item.id}` }}
+              </router-link>
+            </template>
+            <template #[`item.add`]="{ item }">
+              <v-icon
+                :disabled="isAlreadyMaintainer(item)"
+                @click="addItem(item)"
+              >
+                fas fa-plus-circle
+              </v-icon>
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-card-actions class="justify-center">
+          <v-btn
+            class="bg-warning"
+            variant="elevated"
+            @click="menu.show = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-overlay>
+    <v-layout justify-center row>
+      <v-dialog v-model="showRemoveWatcher" max-width="700px">
+        <v-card>
+          <v-card-title class="text-h5">
             Also remove this maintainer as watcher?
           </v-card-title>
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="completeRemoval(false)"
             >
               No
             </v-btn>
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="text"
               @click="completeRemoval(true)"
             >
               Yes
@@ -148,58 +137,58 @@
 </template>
 
 <script>
-import { isEqual } from 'lodash'
-import {mapActions, mapGetters, mapState} from "vuex"
+import { isEqual } from "lodash";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Maintainers",
-  data(){
+  data() {
     return {
-      searchString: '',
+      searchString: "",
       headers: [
         {
-          text: 'Username',
-          align: 'start',
+          title: "Username",
+          align: "start",
           sortable: false,
-          value: 'username',
+          value: "username",
         },
-        {text: 'Page', value: 'id',sortable: false},
-        {text: 'Add', value: 'add', sortable: false}
+        { title: "Page", value: "id", sortable: false },
+        { title: "Add", value: "add", sortable: false },
       ],
       loading: false,
       menu: {
         show: false,
         label: "Add maintainer",
         content: null,
-        index: null
+        index: null,
       },
       formValid: false,
       showRemoveWatcher: false,
-      watcherToRemove: null
-    }
+      watcherToRemove: null,
+    };
   },
   computed: {
     ...mapGetters("record", ["getSection"]),
-    ...mapState('users', ['usersList']),
-    maintainers:{
-      get(){
+    ...mapState("users", ["usersList"]),
+    maintainers: {
+      get() {
         return this.getSection("generalInformation").data.maintainers;
       },
       set(maintainers) {
         this.getSection("generalInformation").data.maintainers = maintainers;
-      }
+      },
     },
-    watchers:{
-      get(){
+    watchers: {
+      get() {
         return this.getSection("generalInformation").data.watchers;
-      }
+      },
     },
-    initialMaintainer(){
-      return this.getSection('generalInformation').initialData.maintainers
-    }
+    initialMaintainer() {
+      return this.getSection("generalInformation").initialData.maintainers;
+    },
   },
   watch: {
-    async searchString(val){
+    async searchString(val) {
       if (!val || val.length < 3) {
         return;
       }
@@ -210,22 +199,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions('users', ['getUsersList']),
-    selectMaintainers(){
+    ...mapActions("users", ["getUsersList"]),
+    selectMaintainers() {
       this.menu.show = true;
       this.menu.label = "Add maintainer";
       this.menu.index = null;
       this.menu.content = {
         name: null,
         id: null,
-        orcid: null
+        orcid: null,
       };
     },
-    removeMaintainer(maintainerIndex){
+    removeMaintainer(maintainerIndex) {
       let _module = this;
       let maintainerId = _module.maintainers[maintainerIndex].id;
-      _module.maintainers = _module.maintainers.filter(item => item.id !== maintainerId);
-      if (_module.watchers.some(m => m.id === maintainerId)) {
+      _module.maintainers = _module.maintainers.filter(
+        (item) => item.id !== maintainerId,
+      );
+      if (_module.watchers.some((m) => m.id === maintainerId)) {
         _module.watcherToRemove = maintainerId;
         _module.showRemoveWatcher = true;
       }
@@ -233,35 +224,34 @@ export default {
     completeRemoval(removeWatcher) {
       let _module = this;
       if (removeWatcher) {
-        let index = _module.watchers.findIndex( element => {
+        let index = _module.watchers.findIndex((element) => {
           if (element.id === _module.watcherToRemove) {
             return true;
           }
         });
-        _module.watchers.splice(index, index+1);
+        _module.watchers.splice(index, index + 1);
       }
       _module.showRemoveWatcher = false;
     },
-    addItem(item){
+    addItem(item) {
       let _module = this;
       let newMaintainer = {
         username: item.username,
         id: item.id,
-        orcid: item.orcid
-      }
-      if (!_module.maintainers.some(m => m.id === item.id)) {
+        orcid: item.orcid,
+      };
+      if (!_module.maintainers.some((m) => m.id === item.id)) {
         _module.maintainers.push(newMaintainer);
       }
     },
-    isNew(term){
-      return !this.initialMaintainer.filter(obj => isEqual(obj, term))[0];
+    isNew(term) {
+      return !this.initialMaintainer.filter((obj) => isEqual(obj, term))[0];
     },
     isAlreadyMaintainer(item) {
-      return this.maintainers.some(m => m.id === item.id);
-    }
-  }
-
-}
+      return this.maintainers.some((m) => m.id === item.id);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -269,14 +259,14 @@ export default {
   min-width: 700px;
 }
 #editMaintainers .borderBlue {
-  border: 1px solid #2A9AF4 !important;
+  border: 1px solid #2a9af4 !important;
   background-color: white !important;
-  border-color: #2A9AF4 !important;
+  border-color: #2a9af4 !important;
 }
 #editMaintainers .v-chip.white {
-  border-color: #2A9AF4 !important;
+  border-color: #2a9af4 !important;
 }
 #editMaintainers .borderBlue * {
-  color: #2A9AF4 !important;
+  color: #2a9af4 !important;
 }
 </style>

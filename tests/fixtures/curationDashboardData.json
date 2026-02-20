@@ -1,49 +1,6 @@
 {
   "curationSummary": {
-      "curatorApprovalsRequired": [
-         {
-              "username": "Terazus",
-              "id": 12345,
-              "fairsharingRecords": [
-                  {
-                      "id": 1451,
-                      "name": "Radiotherapy",
-                      "type": "database",
-                      "updatedAt": "2020-01-27",
-                      "lastEditor": [
-                          {
-                              "id": "553",
-                              "username": "Paolo Maldini"
-                          }
-                      ],
-                      "creator":
-                          {
-                              "id": "553",
-                              "username": "Marco Polo"
-                          }
-
-                  },
-                  {
-                      "id": 11,
-                      "name": "Radi",
-                      "updatedAt": "2020-09-27T09:34:54Z",
-                      "creator":
-                          {
-                              "id": "442",
-                              "username": "Maria Julia"
-                          }
-                  },
-                  {
-                      "id": 12345,
-                      "name": "Radiotgherapy",
-                      "updatedAt": "2020-05-27T09:34:54Z",
-                      "priority": true
-                  }
-
-              ]
-          }
-      ],
-      "userApprovalsRequired": [
+    "curatorApprovalsRequired": [
       {
         "username": "Terazus",
         "id": 12345,
@@ -59,19 +16,16 @@
                 "username": "Paolo Maldini"
               }
             ],
-            "creator":
-            {
+            "creator": {
               "id": "553",
               "username": "Marco Polo"
             }
-
           },
           {
             "id": 11,
             "name": "Radi",
             "updatedAt": "2020-09-27T09:34:54Z",
-            "creator":
-            {
+            "creator": {
               "id": "442",
               "username": "Maria Julia"
             }
@@ -82,209 +36,234 @@
             "updatedAt": "2020-05-27T09:34:54Z",
             "priority": true
           }
-
         ]
       }
     ],
-      "pendingMaintenanceRequests": [
+    "userApprovalsRequired": [
+      {
+        "username": "Terazus",
+        "id": 12345,
+        "fairsharingRecords": [
           {
-              "id": "3",
-              "createdAt": "2020-06-27T09:34:54Z",
-              "fairsharingRecord":
-                  {
-                      "id": "373",
-                      "name": "OrthoOntology Deontology"
-                  },
-              "user":
-                  {
-                      "username": "Rotedia",
-                      "id": "2218"
-                  }
+            "id": 1451,
+            "name": "Radiotherapy",
+            "type": "database",
+            "updatedAt": "2020-01-27",
+            "lastEditor": [
+              {
+                "id": "553",
+                "username": "Paolo Maldini"
+              }
+            ],
+            "creator": {
+              "id": "553",
+              "username": "Marco Polo"
+            }
           },
           {
-              "id": "6",
-              "createdAt": "2020-09-27T09:34:54Z",
-              "fairsharingRecord":
-                  {
-                      "id": "22",
-                      "name": "Other thing"
-                  },
-              "user":
-                  {
-                      "username": "Mariano",
-                      "id": "22"
-                  }
+            "id": 11,
+            "name": "Radi",
+            "updatedAt": "2020-09-27T09:34:54Z",
+            "creator": {
+              "id": "442",
+              "username": "Maria Julia"
+            }
           },
           {
-              "id": "6",
-              "createdAt": "2020-08-27T09:34:54Z",
-              "fairsharingRecord":
-                  {
-                      "id": "44",
-                      "name": "Other thing2"
-                  },
-              "user":
-                  {
-                      "username": "Mariano",
-                      "id": "22"
-                  }
-          },
-          {
-              "id": "6",
-              "createdAt": "2020-08-27T09:34:54Z",
-              "fairsharingRecord":
-                  {
-                      "id": "44",
-                      "name": "Other thing2"
-                  },
-              "user":
-                  {
-                      "username": "Mariano",
-                      "id": "22"
-                  }
+            "id": 12345,
+            "name": "Radiotgherapy",
+            "updatedAt": "2020-05-27T09:34:54Z",
+            "priority": true
           }
-      ],
-      "recentCuratorCreations": [
+        ]
+      }
+    ],
+    "pendingMaintenanceRequests": [
+      {
+        "id": "3",
+        "createdAt": "2020-06-27T09:34:54Z",
+        "fairsharingRecord": {
+          "id": "373",
+          "name": "OrthoOntology Deontology"
+        },
+        "user": {
+          "username": "Rotedia",
+          "id": "2218"
+        }
+      },
+      {
+        "id": "6",
+        "createdAt": "2020-09-27T09:34:54Z",
+        "fairsharingRecord": {
+          "id": "22",
+          "name": "Other thing"
+        },
+        "user": {
+          "username": "Mariano",
+          "id": "22"
+        }
+      },
+      {
+        "id": "6",
+        "createdAt": "2020-08-27T09:34:54Z",
+        "fairsharingRecord": {
+          "id": "44",
+          "name": "Other thing2"
+        },
+        "user": {
+          "username": "Mariano",
+          "id": "22"
+        }
+      },
+      {
+        "id": "6",
+        "createdAt": "2020-08-27T09:34:54Z",
+        "fairsharingRecord": {
+          "id": "44",
+          "name": "Other thing2"
+        },
+        "user": {
+          "username": "Mariano",
+          "id": "22"
+        }
+      }
+    ],
+    "recentCuratorCreations": [
+      {
+        "id": "32",
+        "name": "ewewrr",
+        "createdAt": "2020-10-27T09:34:54Z",
+        "type": "database",
+        "creator": {
+          "id": "44",
+          "username": "Lara Aral"
+        }
+      },
+      {
+        "id": "44",
+        "name": "Second",
+        "type": "database",
+        "createdAt": "2019-10-27T09:34:54Z",
+        "creator": {
+          "id": "22",
+          "username": "Donal J. Trump"
+        }
+      },
+      {
+        "id": "4443",
+        "name": "Third",
+        "type": "database",
+        "createdAt": "2017-11-11T09:34:54Z"
+      }
+    ],
+    "recordsInCuration": [
+      {
+        "username": "PRS",
+        "fairsharingRecords": [
           {
-              "id": "32",
-              "name": "ewewrr",
-              "createdAt": "2020-10-27T09:34:54Z",
-              "type": "database",
-              "creator":
-                {
-                  "id": "44",
-                  "username": "Lara Aral"
-                }
-
+            "id": "11",
+            "name": "Amphibian Anatomy Ontology",
+            "status": "approved",
+            "maintainers": [
+              {
+                "id": "23",
+                "username": "Juan"
+              },
+              {
+                "id": "13",
+                "username": "Manuel"
+              }
+            ]
           },
           {
-              "id": "44",
-              "name": "Second",
-              "type": "database",
-              "createdAt": "2019-10-27T09:34:54Z",
-              "creator":
-                {
-                  "id": "22",
-                  "username": "Donal J. Trump"
-                }
-          },
-          {
-              "id": "4443",
-              "name": "Third",
-              "type": "database",
-              "createdAt": "2017-11-11T09:34:54Z"
+            "id": "12345",
+            "name": "Frog French databases",
+            "status": "approved",
+            "maintainers": [
+              {
+                "id": "23",
+                "username": "Juan"
+              }
+            ]
           }
-      ],
-      "recordsInCuration": [
-         {
-              "username": "PRS",
-              "fairsharingRecords": [
-                  {
-                      "id": "11",
-                      "name": "Amphibian Anatomy Ontology",
-                      "status": "approved",
-                      "maintainers": [
-                         {
-                             "id": "23",
-                             "username": "Juan"
-                         },
-                         {
-                             "id": "13",
-                             "username": "Manuel"
-                         }
-                      ]
-                  },
-                  {
-                      "id": "12345",
-                      "name": "Frog French databases",
-                      "status": "approved",
-                      "maintainers": [
-                         {
-                             "id": "23",
-                             "username": "Juan"
-                         }
-                      ]
-                  }
-              ]
-         }
-      ],
-      "hiddenRecords":[
-        {
-              "id": "2669f95",
-              "name": "ShareSfhare",
-              "createdAt": "2020-10-12T13:31:25Z",
-              "creator":
-                 {
-                     "id": "234",
-                     "username": "Juancho"
-                 },
-              "curator":
-                 {
-                     "id": "2384",
-                     "username": "Manolo"
-                 }
+        ]
+      }
+    ],
+    "hiddenRecords": [
+      {
+        "id": "2669f95",
+        "name": "ShareSfhare",
+        "createdAt": "2020-10-12T13:31:25Z",
+        "creator": {
+          "id": "234",
+          "username": "Juancho"
         },
-        {
-             "id": "12345",
-             "name": "ShareSfhare",
-             "createdAt": "1425-01-01T13:31:25Z"
+        "curator": {
+          "id": "2384",
+          "username": "Manolo"
         }
-      ],
-      "incompleteRecords": [
-        {
-          "id": "2669f95",
-          "name": "ShareSfhare",
-          "createdAt": "1425-01-01T13:31:25Z",
-          "incomplete": {
-            "required": [{"field": "name"}],
-            "recommended": [{"field": "data_sharing"}],
-            "optional": []
-          }
-        },
-        {
-          "id": "12345",
-          "name": "ShareSfhare",
-          "createdAt": "1425-01-01T13:31:25Z",
-          "incomplete": {
-            "required": [{"field": "name"}, {"field": "abbreviation"}],
-            "recommended": [{"field": "data_sharing"}, {"field": "data_provenance"}],
-            "optional": []
-          }
+      },
+      {
+        "id": "12345",
+        "name": "ShareSfhare",
+        "createdAt": "1425-01-01T13:31:25Z"
+      }
+    ],
+    "incompleteRecords": [
+      {
+        "id": "2669f95",
+        "name": "ShareSfhare",
+        "createdAt": "1425-01-01T13:31:25Z",
+        "incomplete": {
+          "required": [{ "field": "name" }],
+          "recommended": [{ "field": "data_sharing" }],
+          "optional": []
         }
-      ],
-      "curatorList":[
-        {
-              "id": "22",
-              "username": "H. Pepa",
-              "role":
-                {
-                  "name": "curator"
-                }
-        },
-        {
-              "id": "2001",
-              "username": "Michael the curator",
-              "role":
-                {
-                  "name": "develop_curator"
-                }
-        },
-        {
-              "id": "33",
-              "username": "Luther",
-              "role":
-                {
-                  "name": "super_curator"
-                }
+      },
+      {
+        "id": "12345",
+        "name": "ShareSfhare",
+        "createdAt": "1425-01-01T13:31:25Z",
+        "incomplete": {
+          "required": [{ "field": "name" }, { "field": "abbreviation" }],
+          "recommended": [
+            { "field": "data_sharing" },
+            { "field": "data_provenance" }
+          ],
+          "optional": []
         }
-      ],
-      "messages": [
-        {
-          "id": "1",
-          "message": "This is an exciting message",
-          "created_at": "1425-01-01T13:31:25Z",
-          "updated_at": "1425-01-01T13:31:25Z"
+      }
+    ],
+    "curatorList": [
+      {
+        "id": "22",
+        "username": "H. Pepa",
+        "role": {
+          "name": "curator"
         }
-      ]
+      },
+      {
+        "id": "2001",
+        "username": "Michael the curator",
+        "role": {
+          "name": "develop_curator"
+        }
+      },
+      {
+        "id": "33",
+        "username": "Luther",
+        "role": {
+          "name": "super_curator"
+        }
+      }
+    ],
+    "messages": [
+      {
+        "id": "1",
+        "message": "This is an exciting message",
+        "created_at": "1425-01-01T13:31:25Z",
+        "updated_at": "1425-01-01T13:31:25Z"
+      }
+    ]
   }
 }

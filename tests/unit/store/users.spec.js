@@ -37,7 +37,7 @@ describe("Actions/Mutations", () => {
           id: 1,
           tokenValidity: "2042-02-23T13:33:54.175+00:00",
         },
-      })
+      }),
     );
     let state = {};
     await actions.login(state);
@@ -54,7 +54,7 @@ describe("Actions/Mutations", () => {
           id: 1,
           tokenValidity: -1816434501,
         },
-      })
+      }),
     );
     await actions.login(state);
     expect(actions.commit).toHaveBeenCalledWith("users/setError", {
@@ -119,7 +119,7 @@ describe("Actions/Mutations", () => {
           username: "Terazus",
           token: "123",
         },
-      })
+      }),
     );
     mutations.autoLogin(state);
     expect(state.user()).toStrictEqual({
@@ -220,7 +220,7 @@ describe("Actions/Mutations", () => {
           token: 123,
           tokenValidity: 123,
         },
-      })
+      }),
     );
     mutations.setUserMeta(state, user);
     expect(state.user()).toStrictEqual({

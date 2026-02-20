@@ -1,38 +1,19 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="12"
-        md="8"
-        lg="8"
-        xl="6"
-      >
+      <v-col cols="12" lg="8" md="8" sm="12" xl="6">
         <v-card>
-          <v-card-title class="primary white--text">
+          <v-card-title class="bg-primary text-white">
             <h2>Edit your profile</h2>
           </v-card-title>
 
-          <v-card-text
-            v-if="formData"
-            class="pt-3"
-          >
-            <v-form
-              id="editProfileForm"
-              ref="editProfileForm"
-              v-model="valid"
-            >
+          <v-card-text v-if="formData" class="pt-3">
+            <v-form id="editProfileForm" ref="editProfileForm" v-model="valid">
               <v-container>
                 <!-- message -->
-                <v-row
-                  v-if="messages().updateProfile.message"
-                  class="mb-5"
-                >
+                <v-row v-if="messages().updateProfile.message" class="mb-5">
                   <v-col cols="12">
-                    <v-alert
-                      v-if="messages().updateProfile.error"
-                      type="error"
-                    >
+                    <v-alert v-if="messages().updateProfile.error" type="error">
                       <ul>
                         <li
                           v-for="(errorLocal, errorName, index) in messages()
@@ -43,10 +24,7 @@
                         </li>
                       </ul>
                     </v-alert>
-                    <v-alert
-                      v-else
-                      type="success"
-                    >
+                    <v-alert v-else type="success">
                       {{ messages().updateProfile.message }}
                     </v-alert>
                   </v-col>
@@ -64,10 +42,10 @@
                     <div v-if="field.type === 'select'">
                       <v-select
                         v-model="formData[field.name]"
-                        outlined
-                        :label="field.label"
                         :items="data[field.data]"
+                        :label="field.label"
                         :rules="field.rules"
+                        variant="outlined"
                       />
                     </div>
                     <div v-else-if="field.type === 'input'">
@@ -76,13 +54,13 @@
                       </span>
                       <v-text-field
                         v-model="formData[field.name]"
-                        :label="field.label"
-                        outlined
-                        :type="field.type"
                         :disabled="isDisabled(field.name)"
-                        :rules="field.rules"
                         :hint="field.hint"
+                        :label="field.label"
+                        :rules="field.rules"
+                        :type="field.type"
                         class="pa-0"
+                        variant="outlined"
                       />
                     </div>
                     <div v-else-if="field.type === 'checkbox'">
@@ -96,30 +74,31 @@
                     <div v-else-if="field.type === 'autocomplete'">
                       <v-autocomplete
                         v-model="userOrganisations"
-                        multiple
                         :items="data[field.data]"
                         :label="field.label"
-                        :rules="field.rules"
-                        item-text="name"
-                        outlined
-                        return-object
-                        chips
-                        deletable-chips
                         :loading="loading"
+                        :rules="field.rules"
+                        chips
+                        closable-chips
+                        item-title="name"
+                        multiple
+                        return-object
+                        variant="outlined"
                       >
                         <template #prepend>
-                          <v-tooltip top>
-                            <template #activator="{ on, attrs }">
+                          <v-tooltip location="top">
+                            <template #activator="{ props }">
                               <v-icon
-                                v-bind="attrs"
                                 class="mt-2"
-                                v-on="on"
+                                v-bind="props"
                                 @click="newOrganisation.show = true"
                               >
-                                fa-plus-circle
+                                fas fa-plus-circle
                               </v-icon>
                             </template>
-                            <span style="z-index: 5">Create a new organisation</span>
+                            <span style="z-index: 5"
+                              >Create a new organisation</span
+                            >
                           </v-tooltip>
                         </template>
                       </v-autocomplete>
@@ -133,20 +112,23 @@
                   <a
                     href="mailto:contact@fairsharing.org?subject=FAIRsharing user profile modification"
                   >
-                    get in touch</a>.
+                    get in touch</a
+                  >.
                 </p>
                 <p v-if="!user().metadata.orcid">
-                  <b>We strongly recommend including your ORCID ID to provide
+                  <b
+                    >We strongly recommend including your ORCID ID to provide
                     extra information for the FAIRsharing community about you
-                    and the resources you develop.</b>
+                    and the resources you develop.</b
+                  >
                 </p>
                 <!-- ACTIONS -->
                 <v-row>
                   <v-col cols="12">
                     <v-btn
-                      color="success"
-                      class="mr-4"
                       :loading="loading"
+                      class="mr-4"
+                      color="success"
                       @click="updateProfile()"
                     >
                       Update profile
@@ -167,7 +149,7 @@
         style="z-index: 50"
       >
         <v-card
-          class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+          class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
           style="
             border: 2px dashed grey !important;
             border-radius: 5px;
@@ -175,14 +157,9 @@
           "
           width="800px"
         >
-          <v-card-title class="mb-4">
-            Create a new organisation
-          </v-card-title>
+          <v-card-title class="mb-4"> Create a new organisation</v-card-title>
           <v-card-text>
-            <v-alert
-              v-if="newOrganisation.error"
-              type="error"
-            >
+            <v-alert v-if="newOrganisation.error" type="error">
               {{ newOrganisation.error }}
             </v-alert>
             <v-form
@@ -192,67 +169,65 @@
             >
               <v-text-field
                 v-model="newOrganisation.data.name"
-                label="Organisation name"
-                outlined
                 :rules="[rules.isRequired()]"
                 class="mb-2"
+                label="Organisation name"
+                variant="outlined"
               />
               <v-text-field
                 v-model="newOrganisation.data.homepage"
-                label="Organisation homepage"
-                outlined
                 :rules="[rules.isRequired(), rules.isURL()]"
                 class="mb-2"
+                label="Organisation homepage"
+                variant="outlined"
               />
 
               <v-autocomplete
                 v-model="newOrganisation.data.organisation_type_ids"
                 :items="organisationsTypes"
-                multiple
-                outlined
-                item-text="name"
-                item-value="id"
-                label="Select the organisation type(s)"
                 :rules="[rules.isRequired(), rules.isLongEnough(1)]"
                 chips
-                deletable-chips
+                closable-chips
+                item-title="name"
+                item-value="id"
+                label="Select the organisation type(s)"
+                multiple
+                variant="outlined"
               />
               <div>
                 <v-file-input
                   v-model="newOrganisation.data.logo"
-                  :rules="[rules.isImage(), imageSizeCorrect]"
-                  clearable
                   :loading="logoLoading"
+                  :rules="[rules.isImage(), imageSizeCorrect]"
                   accept="image/png,image/jpeg"
-                  label="Organisation Logo"
-                  prepend-icon="fa-image"
-                  show-size
+                  clearable
                   counter
+                  label="Organisation Logo"
+                  prepend-icon="fas fa-image"
+                  show-size
                 />
-                <div class="mt-n3 mb-3">
-                  JPEG or PNG, max. file size 3MB.
-                </div>
+                <div class="mt-n3 mb-3">JPEG or PNG, max. file size 3MB.</div>
               </div>
 
               <v-autocomplete
                 v-model="newOrganisation.data.country_ids"
-                label="Countries"
                 :items="countries"
-                item-text="name"
-                item-value="name"
-                multiple
-                outlined
-                return-object
                 :rules="[
                   newOrganisation.data.country_ids &&
                     !(newOrganisation.data.country_ids.length === 0),
                 ]"
+                item-title="name"
+                item-value="name"
+                label="Countries"
+                multiple
+                return-object
+                variant="outlined"
               >
                 <!-- autocomplete selected -->
                 <template #selection="cnameData">
                   <v-chip
-                    class="blue white--text removeStyle"
-                    close
+                    class="bg-blue text-white removeStyle"
+                    closable
                     @click:close="removeCountry(cnameData.item)"
                   >
                     {{ cnameData.item.name }}
@@ -268,9 +243,9 @@
                   />
                   <img
                     v-else
-                    src="@/assets/placeholders/country.png"
                     class="ml-4 mr-3"
-                  >
+                    src="@/assets/placeholders/country.png"
+                  />
                   <div>{{ ccodeData.item.name }}</div>
                 </template>
               </v-autocomplete>
@@ -278,17 +253,14 @@
           </v-card-text>
           <v-card-actions>
             <v-btn
-              class="success"
               :disabled="!newOrganisation.formValid"
               :loading="newOrganisation.loading"
+              class="bg-success"
               @click="createOrganisation()"
             >
               Save new organisation
             </v-btn>
-            <v-btn
-              class="primary"
-              @click="newOrganisation.show = false"
-            >
+            <v-btn class="bg-primary" @click="newOrganisation.show = false">
               Cancel
             </v-btn>
           </v-card-actions>
@@ -299,12 +271,20 @@
 </template>
 
 <script>
-import CountryFlag from "vue-country-flag";
+import CountryFlag from "vue-country-flag-next";
 import { mapActions, mapState } from "vuex";
 
-import RESTClient from "@/lib/Client/RESTClient.js"
-import {toBase64} from "@/utils/generalUtils";
-import {isBluesky, isEmail, isImage,isLongEnough, isMastodon, isRequired, isUrl} from "@/utils/rules.js"
+import RESTClient from "@/lib/Client/RESTClient.js";
+import { toBase64 } from "@/utils/generalUtils";
+import {
+  isBluesky,
+  isEmail,
+  isImage,
+  isLongEnough,
+  isMastodon,
+  isRequired,
+  isUrl,
+} from "@/utils/rules.js";
 
 const restClient = new RESTClient();
 
@@ -371,18 +351,14 @@ export default {
           label: "Mastodon",
           hint: null,
           type: "input",
-          rules: [
-              isMastodon()
-          ]
+          rules: [isMastodon()],
         },
         {
           name: "bluesky",
           label: "Bluesky",
           hint: null,
           type: "input",
-          rules: [
-            isBluesky()
-          ]
+          rules: [isBluesky()],
         },
         {
           name: "orcid",
@@ -434,7 +410,7 @@ export default {
           organisation_type_ids: [],
           country_ids: [],
           logo: {},
-          logoData: {}
+          logoData: {},
         },
         formValid: true,
         show: false,
@@ -442,10 +418,10 @@ export default {
         error: false,
       },
       rules: {
-        isRequired: ()=> isRequired(),
-        isURL: ()=> isUrl(),
-        isImage: ()=> isImage(),
-        isLongEnough: (val)=> isLongEnough(val),
+        isRequired: () => isRequired(),
+        isURL: () => isUrl(),
+        isImage: () => isImage(),
+        isLongEnough: (val) => isLongEnough(val),
       },
     };
   },
@@ -469,21 +445,21 @@ export default {
           orcid: this.user().metadata.orcid,
           twitter: this.user().metadata.twitter,
           mastodon: this.user().metadata.mastodon,
-          bluesky: this.user().metadata.bluesky
-        }
+          bluesky: this.user().metadata.bluesky,
+        };
       }
       return null;
     },
   },
   watch: {
-    'newOrganisation.data.logo': {
+    "newOrganisation.data.logo": {
       async handler(logo) {
         let _module = this;
         // this.menus.newOrganisation.logoData
         if (logo === null || logo === undefined) {
           // This is to prevent a logo being deleted if a user fiddles about with the form and then
           // submits with no image uploaded.
-          _module.newOrganisation.data.logoData = {}
+          _module.newOrganisation.data.logoData = {};
           return;
         }
         _module.logoLoading = true;
@@ -491,11 +467,11 @@ export default {
         _module.newOrganisation.data.logoData = {
           filename: logo.name,
           content_type: logo.type,
-          data: convertedFile
+          data: convertedFile,
         };
         _module.logoLoading = false;
       },
-      deep: true
+      deep: true,
     },
   },
   async created() {
@@ -555,7 +531,7 @@ export default {
     },
     async createOrganisation() {
       let organisationInput = JSON.parse(
-        JSON.stringify(this.newOrganisation.data)
+        JSON.stringify(this.newOrganisation.data),
       );
       organisationInput.logo = organisationInput.logoData;
       delete organisationInput.logoData;
@@ -563,14 +539,14 @@ export default {
       /* istanbul ignore else */
       if (organisationInput.country_ids) {
         organisationInput.country_ids = organisationInput.country_ids.map(
-          (obj) => obj.id
+          (obj) => obj.id,
         );
       }
       this.newOrganisation.loading = true;
       this.newOrganisation.error = false;
       let data = await restClient.createOrganisation(
         organisationInput,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (!data.error) {
         let created = {
@@ -597,7 +573,7 @@ export default {
     removeCountry(country) {
       this.newOrganisation.data.country_ids =
         this.newOrganisation.data.country_ids.filter(
-          (obj) => obj.label !== country.name && obj.id !== country.id
+          (obj) => obj.label !== country.name && obj.id !== country.id,
         );
     },
     imageSizeCorrect() {
@@ -606,14 +582,14 @@ export default {
         return true;
       }
       if (this.newOrganisation.data.logo.size < this.allowedFileSize) {
-        this.$emit('imageTooBig', false);
+        this.$emit("imageTooBig", false);
         this.imageTooBig = false;
         return true;
       }
-      this.$emit('imageTooBig', true);
+      this.$emit("imageTooBig", true);
       this.imageTooBig = true;
       return false;
-    }
+    },
   },
 };
 </script>
@@ -622,11 +598,13 @@ export default {
 #edit_hide_email label {
   margin-bottom: 0 !important;
 }
+
 #edit_organisations .v-chip,
 #edit_organisations .fa-times-circle {
   background: #27aae1;
   color: white;
 }
+
 .menuable__content__active.v-autocomplete__content .v-list-item__content {
   max-width: 1000px;
 }

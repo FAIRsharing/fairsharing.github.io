@@ -1,114 +1,85 @@
 <template>
-  <div
-    v-if="getErrorStatus"
-    fluid
-    class="pa-0"
-  >
+  <div v-if="getErrorStatus" class="pa-0" fluid>
     <ErrorPage />
   </div>
-  <div
-    v-else
-    fluid
-    class="pa-5 mb-15"
-  >
+  <div v-else class="pa-5 mb-15">
     <div
-      :class="
-        $vuetify.breakpoint.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'
-      "
+      :class="$vuetify.display.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'"
     >
       <v-btn
-        class="mb-2"
+        class="mb-2 font-12"
         color="primary"
-        small
+        size="small"
         @click="downloadResults()"
       >
         Download Results
       </v-btn>
       <SaveSearchButton />
     </div>
-    <p class="body-2 mb-0 mt-4">
-      <v-icon
-        x-small
-        class="infoIcon"
-      >
-        {{ "fa fa-info" }}
-      </v-icon>Find out more about our Advanced Search in our
+    <p class="text-body-2 mb-0 mt-4">
+      <v-icon class="mr-1" size="small"> fas fa-info-circle</v-icon>
+      Find out more about our Advanced Search in our
       <a
+        class="text-decoration-underline"
         href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
         target="_blank"
-        class="text-decoration-underline"
-      >gitbook documentation<v-icon x-small>
-        {{ "fa fa-link" }}
-      </v-icon>
-      </a>
+        >gitbook documentation</a
+      >
+      <v-icon size="x-small"> fas fa-link</v-icon>
     </p>
     <v-data-iterator
       :items="getAdvancedSearchResponse"
-      :items-per-page.sync="itemsPerPage"
-      :page.sync="page"
-      :search="search"
-      :sort-by="sortBy.toLowerCase()"
-      :sort-desc="sortDesc"
-      :hide-default-footer="noFooter"
+      :items-per-page="itemsPerPage"
       :loading="getLoadingStatus"
-      :footer-props="{
-        'items-per-page-text': 'Records per page:',
-        'items-per-page-options': [5, 10, 25, 50, 100],
-      }"
+      :page="page"
+      :search="search"
+      :sort-by="sortData"
+      multi-sort
     >
       <!-- headers start -->
       <template #header="{ pagination, options, updateOptions }">
-        <v-data-footer
-          :pagination="pagination"
+        <v-data-table-footer
+          v-if="!noPagination"
           :options="options"
+          :pagination="pagination"
           items-per-page-text="Records per page:"
           @update:options="updateOptions"
         />
-        <v-toolbar
-          dark
-          color="blue lighten-1"
-          class="mb-5"
-        >
+        <v-toolbar class="mb-5 px-4 py-1" color="blue-lighten-1" dark>
           <v-text-field
-            v-model="search"
+            :model-value="search"
             clearable
             flat
-            solo-inverted
             hide-details
-            prepend-inner-icon="mdi-filter"
             label="Filter these results"
+            prepend-inner-icon="fas fa-solid fa-filter"
+            variant="solo"
+            width="125"
+            @update:model-value="search = $event"
           />
-          <template v-if="$vuetify.breakpoint.mdAndUp">
+          <template v-if="$vuetify.display.mdAndUp">
             <v-spacer />
             <v-select
               v-model="sortBy"
-              flat
-              solo-inverted
-              hide-details
               :items="keys"
-              prepend-inner-icon="mdi-sort"
+              flat
+              hide-details
               label="Sort by"
+              prepend-inner-icon="fas fa-solid fa-arrow-up-short-wide"
+              variant="solo"
+              width="125"
             />
             <v-spacer />
             <v-btn-toggle
-              v-model="sortDesc"
+              :model-value="sortDesc"
               mandatory
+              @update:model-value="sortDesc = $event"
             >
-              <v-btn
-                large
-                depressed
-                color="blue"
-                :value="false"
-              >
-                <v-icon>mdi-arrow-up</v-icon>
+              <v-btn :value="false" color="blue" size="large" variant="flat">
+                <v-icon icon="fas fa-solid fa-arrow-up" />
               </v-btn>
-              <v-btn
-                large
-                depressed
-                color="blue"
-                :value="true"
-              >
-                <v-icon>mdi-arrow-down</v-icon>
+              <v-btn :value="true" color="blue" size="large" variant="flat">
+                <v-icon icon="fas fa-solid fa-arrow-down" />
               </v-btn>
             </v-btn-toggle>
           </template>
@@ -116,50 +87,51 @@
       </template>
       <!-- headers stop -->
       <!-- data section begins -->
-      <template #default="props">
+      <template #default="{ items }">
         <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-          >
+          <v-col v-for="item in items" :key="item.raw.name" cols="12">
             <v-card>
-              <v-card-title class="subheading font-weight-bold">
-                <RecordStatus :record="item" />
+              <v-card-title
+                class="text-title-1 font-weight-bold d-flex align-center"
+              >
+                <RecordStatus :record="item.raw" />
                 <a
-                  :href="'/' + item.id"
-                  target="_blank"
+                  :href="fairSharingURL + getRecordLink(item.raw)"
                   class="ml-10"
-                  :class="
-                    item['status'] === 'deprecated'
-                      ? 'text-decoration-line-through'
-                      : null
-                  "
+                  style="white-space: normal"
+                  target="_blank"
                 >
-                  {{ item.name }}
+                  {{ item.raw.name }}
                 </a>
               </v-card-title>
 
               <p
                 class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
               >
-                {{ item.description }}
+                {{ item.raw.description }}
               </p>
 
-              <TagChips
-                :record="item"
-                class="ml-10"
-              />
+              <TagChips :record="item.raw" class="ml-10" />
               <p class="pb-5" />
             </v-card>
           </v-col>
         </v-row>
       </template>
       <!-- data section ends -->
-
-      <template #loading>
-        Loading...
+      <!-- footer start -->
+      <template
+        v-if="!noPagination"
+        #footer="{ pagination, options, updateOptions }"
+      >
+        <v-data-table-footer
+          :options="options"
+          :pagination="pagination"
+          items-per-page-text="Records per page:"
+          @update:options="updateOptions"
+        />
       </template>
+      <!-- footer ends -->
+      <template #no-data> No results found.</template>
     </v-data-iterator>
   </div>
 </template>
@@ -172,9 +144,10 @@ import TagChips from "@/components/Records/Shared/TagChips.vue";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
+
 export default {
   name: "AdvancedSearchResultTable",
-  components: { RecordStatus, TagChips, ErrorPage, SaveSearchButton },
+  components: { RecordStatus, ErrorPage, TagChips, SaveSearchButton },
   mixins: [recordsCardUtils],
   data() {
     return {
@@ -185,7 +158,7 @@ export default {
       itemsPerPage: 5,
       sortBy: "name",
       keys: ["Name", "Registry", "Type", "Status", "Description"],
-      fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL,
+      fairSharingURL: import.meta.env.VITE_FAIRSHARING_URL,
     };
   },
   computed: {
@@ -195,11 +168,30 @@ export default {
       "getErrorStatus",
       "getAdvancedSearchQuery",
     ]),
-    noFooter() {
+    // When there is no data in the table, hide pagination
+    noPagination() {
       return (
         Array.isArray(this.getAdvancedSearchResponse) &&
         !this.getAdvancedSearchResponse.length
       );
+    },
+    sortData() {
+      switch (this.sortBy) {
+      case "Name":
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Registry":
+        return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
+      case "Type":
+        return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
+      case "Status":
+        return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
+      case "Description":
+        return [
+          { key: "description", order: this.sortDesc ? "desc" : "asc" },
+        ];
+      default:
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      }
     },
   },
   mounted() {
@@ -232,7 +224,6 @@ export default {
           const searchFieldsArr = routeQuery["fields"]
             .split(/^\((.*)\)$/) //removes only first and last parenthesis
             .filter((item) => item); //Filter is used to remove empty string
-
           searchFieldsArr.forEach((item) => {
             const itemArr = item.split("&");
             let searchObj = {
@@ -243,14 +234,15 @@ export default {
               const paramValues = subItem.split("=");
               if (paramValues[0] === "operator") {
                 searchObj["operatorIdentifier"] = paramValues[1];
-              } else {
+              }
+              else {
                 let advancedSearchParams = {
                   identifier: "",
                   value: [] || Boolean,
                 };
                 advancedSearchParams["identifier"] = paramValues[0];
                 // For boolean/string values
-                if ((paramValues[1] === "true") || paramValues[1] === "false") {
+                if (paramValues[1] === "true" || paramValues[1] === "false") {
                   advancedSearchParams["value"] = paramValues[1];
                 }
                 else {
@@ -266,13 +258,13 @@ export default {
           //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
           advancedSearch.commit(
             "advancedSearch/setAdvancedSearch",
-            searchQuery
+            searchQuery,
           );
 
           //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
           advancedSearch.commit(
             "advancedSearch/setEditAdvancedSearch",
-            searchQuery
+            searchQuery,
           );
 
           //Calling the fetch method to get the result
@@ -295,7 +287,7 @@ export default {
             record.abbreviation || "n/a"
           },https://fairsharing.org/${record.id},${record.doi || "n/a"},${
             record.homepage || "n/a"
-          },${this.recordPublicationsLength(record)}\n`
+          },${this.recordPublicationsLength(record)}\n`,
         );
       });
       let blob = new Blob(data, { type: MIME_TYPE });
@@ -315,14 +307,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.infoIcon {
-  border: 1px solid;
-  border-radius: 50%;
-  padding: 3px 6px;
-  margin: -2px 2px 0 0;
-}
 .buttonWrapper {
   position: relative;
+
   .saveSearchResults {
     position: absolute;
     left: 40%;

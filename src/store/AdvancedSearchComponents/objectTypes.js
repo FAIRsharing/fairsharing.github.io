@@ -1,18 +1,30 @@
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import objectTypesQuery from "@/lib/GraphClient/queries/getObjectTypes.json";
 
-const CLIENT = new GraphClient();
-
+const CLIENT = new GraphClient(),
+  SEARCH_OBJECTTYPES = JSON.parse(JSON.stringify(objectTypesQuery));
 const state = {
   objectTypes: [],
   loadingData: false,
 };
 
 const actions = {
-  async fetchObjectTypes({ commit }) {
+  async fetchObjectTypes({ commit }, queryParams) {
     commit("setLoadingData", true);
-    let response = await CLIENT.executeQuery(objectTypesQuery);
-    commit("setObjectTypes", response["objectTypes"].records);
+    SEARCH_OBJECTTYPES.queryParam = {
+      q: queryParams,
+    };
+    let response = await CLIENT.executeQuery(SEARCH_OBJECTTYPES);
+    if (
+      response["objectTypes"].records &&
+      response["objectTypes"].records.length
+    ) {
+      const objectTypesList = response["objectTypes"].records.map(
+        ({ label }) => label,
+      );
+      commit("setObjectTypes", objectTypesList);
+    }
+
     commit("setLoadingData", false);
   },
   resetRecords({ commit }) {
@@ -38,7 +50,7 @@ const getters = {
   },
   getLoadingData(state) {
     return state.loadingData;
-  }
+  },
 };
 const objectTypes = {
   namespaced: true,

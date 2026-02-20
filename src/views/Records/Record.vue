@@ -1,57 +1,68 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <main>
-    <v-container
-      v-if="queryTriggered"
-      fluid
-    >
+    <v-fade-transition>
+      <div>
+        <v-overlay
+          v-model="loading"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <Loaders />
+        </v-overlay>
+      </div>
+    </v-fade-transition>
+    <v-container v-if="queryTriggered" fluid>
       <!--   error   -->
       <div v-if="error">
         <NotFound />
       </div>
 
       <!--   Action Menu & Alert   -->
-      <v-row
-        v-if="!target && queryTriggered"
-        class="mx-1"
-      >
-        <v-col
-          cols="12"
-        >
-          <!-- alerts         -->
+      <v-row v-if="!target && queryTriggered" class="mx-1">
+        <v-col cols="12">
+          <!-- alerts -->
           <record-alert
-            v-for="(alert,key,index) in alerts"
-            :key="key+'_'+alert.message+'_'+index"
-            :type="alert.type"
+            v-for="(alert, key, index) in alerts"
+            :key="key + '_' + alert.message + '_' + index"
             :message="alert.message"
+            :type="alert.type"
           />
 
-          <!--  snackbars        -->
+          <!-- snackbars -->
           <record-snackbar
-            v-for="(snackbar,index) in snackbars"
-            :key="snackbar.message+'_'+index"
+            v-for="(snackbar, index) in snackbars"
+            :key="snackbar.message + '_' + index"
             :message="snackbar.message"
-            :type="snackbar.type"
             :model="convertStringToLocalVar(snackbar.model)"
+            :type="snackbar.type"
           />
 
           <!-- Menu component -->
           <record-menu
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error && !recordHidden"
+            v-if="
+              currentRecord.fairsharingRecord['isHidden'] !== undefined &&
+              !error &&
+              !recordHidden
+            "
             :buttons="buttons"
             :read-only-mode="readOnlyMode"
           />
         </v-col>
       </v-row>
 
-      <!--  CuratorsNotes   -->
+      <!-- CuratorsNotes -->
       <CuratorNotes
         id="curatorNotes"
-        class="ma-4 mb-7"
         :back-color="getRecordCardBackground"
+        class="ma-4 mb-7"
       />
 
       <Tombstone
-        v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
+        v-if="
+          currentRecord['fairsharingRecord'] &&
+          currentRecord['fairsharingRecord'].metadata.tombstone
+        "
         id="tombStone"
         :record="currentRecord['fairsharingRecord']"
       />
@@ -59,47 +70,74 @@
       <Hidden
         v-if="recordHidden"
         id="hidden"
-        :record-name="currentRecord['fairsharingRecord'].metadata.name"
         :is-logged-in="user().isLoggedIn"
+        :record-name="currentRecord['fairsharingRecord'].metadata.name"
       />
 
       <!-- handle situations where the record is hidden -->
 
       <!--  Content  -->
-      <div v-if="currentRecord['fairsharingRecord'] && !error && !recordHidden && !currentRecord['fairsharingRecord'].metadata.tombstone">
+      <div
+        v-if="
+          currentRecord['fairsharingRecord'] &&
+          !error &&
+          !recordHidden &&
+          !currentRecord['fairsharingRecord'].metadata.tombstone
+        "
+      >
         <!-- Top Block -->
         <GeneralInfo
           id="generalInfo"
-          :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
-          :can-claim="canClaim"
           :back-color="getRecordCardBackground"
-          @requestOwnership="requestOwnership"
+          :can-claim="canClaim"
+          :class="[
+            'ma-4',
+            {
+              'mb-10':
+                currentRecord.fairsharingRecord.registry === 'Collection',
+            },
+          ]"
+          @request-ownership="requestOwnership"
         />
         <!-- Dynamic Block -->
         <v-row no-gutters>
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+          <v-col :cols="$vuetify.display.mdAndDown ? '12' : '6'">
             <!--Left Block-->
-            <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+            <div
+              v-if="currentRecord.fairsharingRecord.registry !== 'Collection'"
+            >
               <component
                 :is="block"
-                v-for="(block,index) in currentDynamicBlock.leftBlock"
+                v-for="(block, index) in currentDynamicBlock.leftBlock"
                 :id="block.toLowerCase()"
                 :key="block"
                 :back-color="getRecordCardBackground"
-                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+                :class="[
+                  'ma-4',
+                  index === currentDynamicBlock.rightBlock.length - 1
+                    ? 'mb-4'
+                    : 'mb-8',
+                ]"
               />
             </div>
           </v-col>
           <!--Right Block-->
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+          <v-col :cols="$vuetify.display.mdAndDown ? '12' : '6'">
+            <div
+              v-if="currentRecord.fairsharingRecord.registry !== 'Collection'"
+            >
               <component
                 :is="block"
-                v-for="(block,index) in currentDynamicBlock.rightBlock"
+                v-for="(block, index) in currentDynamicBlock.rightBlock"
                 :id="block.toLowerCase()"
                 :key="block"
                 :back-color="getRecordCardBackground"
-                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+                :class="[
+                  'ma-4',
+                  index === currentDynamicBlock.rightBlock.length - 1
+                    ? 'mb-4'
+                    : 'mb-8',
+                ]"
               />
             </div>
           </v-col>
@@ -108,19 +146,25 @@
         <!-- Bottom Block -->
         <Publications
           id="publications"
-          :class="['ma-4 mb-8', {'mb-10 mt-0':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :back-color="getRecordCardBackground"
+          :class="[
+            'ma-4 mb-8',
+            {
+              'mb-10 mt-0':
+                currentRecord.fairsharingRecord.registry === 'Collection',
+            },
+          ]"
         />
         <!-- Additional Information -->
         <AdditionalInfo
-          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          v-if="currentRecord.fairsharingRecord.registry !== 'Collection'"
           id="additionalInfo"
-          class="mb-8 ma-4"
           :back-color="getRecordCardBackground"
+          class="mb-8 ma-4"
         />
         <!-- Search Collection -->
         <SearchCollection
-          v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+          v-if="currentRecord.fairsharingRecord.registry === 'Collection'"
           id="searchCollection"
           class="mb-10 ma-4"
         />
@@ -128,31 +172,31 @@
     </v-container>
     <!-- This html is from a safe source -->
     <!-- eslint-disable vue/no-v-html -->
-    <script
-      type="application/ld+json"
-      v-html="JSONLD"
-    />
+    <!--    <script-->
+    <!--      type="application/ld+json"-->
+    <!--      v-html="JSONLD"-->
+    <!--    />-->
+    <component :is="'script'" type="application/ld+json">
+      <span v-html="JSONLD" />
+    </component>
     <!-- eslint-enable vue/no-v-html -->
-    <v-dialog
-      v-model="history.show"
-      fullscreen
-      class="pa-0"
-      persistent
-      no-click-animation
-    >
+    <v-dialog v-model="history.show" class="pa-0" fullscreen persistent>
       <v-card>
         <v-card-title
-          class="blue white--text pb-4"
-          style="border-radius: 0 !important;"
+          class="bg-blue text-white pb-4 pt-4 pl-6 d-flex align-center"
+          rounded="0"
         >
-          {{ getField("name") }} history logs
+          <span>{{ getField("name") }} history logs</span>
           <v-spacer />
           <v-btn
-            x-small
-            fab
+            class="bg-white mr-3"
+            color="black"
+            icon
+            size="30"
+            variant="elevated"
             @click="closeHistory()"
           >
-            <v-icon> fa-times </v-icon>
+            <v-icon icon="fas fa-xmark fa-solid" size="20" />
           </v-btn>
         </v-card-title>
         <v-card-text class="pt-2">
@@ -166,22 +210,15 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="dialogs.deleteRecord"
-      max-width="650px"
-    >
+    <v-dialog v-model="dialogs.deleteRecord" max-width="650px">
       <v-card>
-        <v-card-title
-          class="headline"
-        >
+        <v-card-title class="text-h5">
           Are you sure you want to
-          <span
-            style="color:red; padding-left: 5px; padding-right: 5px;"
-          >
+          <span style="color: red; padding-left: 5px; padding-right: 5px">
             DELETE
           </span>
           (without DOI) or tombstone (with DOI) this record?
-          <ul style="list-style-type:none;">
+          <ul style="list-style-type: none">
             <li>
               {{ dialogs.recordName }}
             </li>
@@ -191,16 +228,19 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeDeleteMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
-            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            :disabled="
+              dialogs.disableDelButton === true ||
+              dialogs.disableButton === true
+            "
+            color="blue-darken-1"
+            variant="text"
             @click="confirmDelete()"
           >
             DELETE
@@ -209,42 +249,48 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="dialogs.claimRecord"
-      max-width="700px"
-    >
+    <v-dialog v-model="dialogs.claimRecord" max-width="700px">
       <v-card>
-        <v-card-title
-          class="headline"
-        >
+        <v-card-title class="text-h5">
           <p class="claimtext">
-            <b>Please confirm that you would like to request ownership of this record.</b>
+            <b
+              >Please confirm that you would like to request ownership of this
+              record.</b
+            >
           </p>
           <p class="claimtext">
-            We encourage resource developers to claim ownership of their FAIRsharing record; doing so
-            allows them to make updates and provides them with a visible means of attribution for their efforts.
-            However, please note that for this request to be approved, you must be associated with the institutions(s)
-            that develop this resource.
+            We encourage resource developers to claim ownership of their
+            FAIRsharing record; doing so allows them to make updates and
+            provides them with a visible means of attribution for their efforts.
+            However, please note that for this request to be approved, you must
+            be associated with the institutions(s) that develop this resource.
           </p>
           <p class="claimtext">
-            Please also see our <a href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record">
-              documentation on requesting ownership</a>.
+            Please also see our
+            <a
+              href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record"
+            >
+              documentation on requesting ownership</a
+            >.
           </p>
         </v-card-title>
         <v-card-actions>
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeClaimMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
-            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            :disabled="
+              dialogs.disableDelButton === true ||
+              dialogs.disableButton === true
+            "
+            color="blue-darken-1"
+            variant="text"
             @click="requestOwnership()"
           >
             OK
@@ -253,16 +299,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="dialogs.stopMaintainRecord"
-      max-width="700px"
-    >
+    <v-dialog v-model="dialogs.stopMaintainRecord" max-width="700px">
       <v-card>
-        <v-card-title
-          class="headline"
-        >
+        <v-card-title class="text-h5">
           <p class="claimtext">
-            <b>Please confirm that you would like to stop maintaining this record:</b>
+            <b
+              >Please confirm that you would like to stop maintaining this
+              record:</b
+            >
           </p>
           <p class="claimtext">
             <b>&ldquo;{{ dialogs.recordName }}&rdquo;</b>
@@ -272,16 +316,19 @@
           <v-spacer />
           <v-btn
             :disabled="dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="closeMaintainMenu()"
           >
             Cancel
           </v-btn>
           <v-btn
-            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
-            color="blue darken-1"
-            text
+            :disabled="
+              dialogs.disableDelButton === true ||
+              dialogs.disableButton === true
+            "
+            color="blue-darken-1"
+            variant="text"
             @click="removeMaintainer()"
           >
             OK
@@ -294,33 +341,34 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Collections from "@/components/Records/Record/Collections";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
-import DataProcessesAndConditions from '@/components/Records/Record/DataProcessesAndConditions';
+import DataProcessesAndConditions from "@/components/Records/Record/DataProcessesAndConditions";
 import GeneralInfo from "@/components/Records/Record/GeneralInfo";
 import RecordHistory from "@/components/Records/Record/History/RecordHistory";
 import Organisations from "@/components/Records/Record/Organisations";
-import Publications from '@/components/Records/Record/Publications';
+import Publications from "@/components/Records/Record/Publications";
 import RecordAlert from "@/components/Records/Record/RecordAlert";
 import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
 import RelatedContent from "@/components/Records/Record/RelatedContent";
-import Support from '@/components/Records/Record/Support';
-import Tools from '@/components/Records/Record/Tools';
+import Support from "@/components/Records/Record/Support";
+import Tools from "@/components/Records/Record/Tools";
 import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
-import RestClient from "@/lib/Client/RESTClient.js"
-import Client from '@/lib/GraphClient/GraphClient.js'
+import RestClient from "@/lib/Client/RESTClient.js";
+import Client from "@/lib/GraphClient/GraphClient.js";
 import getHostname from "@/utils/generalUtils";
-import stringUtils from '@/utils/stringUtils';
-import NotFound from "@/views/Errors/404"
+import stringUtils from "@/utils/stringUtils";
+import NotFound from "@/views/Errors/404";
 
 import Hidden from "../Errors/Hidden";
 import Tombstone from "../Errors/Tombstone";
+import { useTheme } from "vuetify";
 
 const client = new RestClient();
 export default {
@@ -344,11 +392,16 @@ export default {
     DataProcessesAndConditions,
     Publications,
     Support,
-    NotFound
+    NotFound,
   },
   mixins: [stringUtils, getHostname],
   props: {
-    target: {type: Number, default: null}
+    target: { type: Number, default: null },
+  },
+  emits: ["updateHead", "showDialog"],
+  setup() {
+    const theme = useTheme();
+    return { theme };
   },
   data: () => {
     return {
@@ -359,9 +412,9 @@ export default {
       canEdit: false,
       canClaim: false,
       alreadyClaimed: false,
-      noClaimRegistered:false,
+      noClaimRegistered: false,
       ownershipApproved: false,
-      ownershipApprovalStatus:null,
+      ownershipApprovalStatus: null,
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
@@ -370,36 +423,39 @@ export default {
       buttons: [],
       history: {
         show: false,
-        loading: false
+        loading: false,
       },
       tombstone: false,
-      alerts:{},
+      alerts: {},
       snackbars: [
         {
           model: "claimedTriggered",
           type: "success",
-          message: "Thank you for claiming this record. We will be getting back to you between 48 and 72h."
+          message:
+            "Thank you for claiming this record. We will be getting back to you between 48 and 72h.",
         },
         {
           model: "reviewSuccess",
           type: "success",
-          message: "Thank you for reviewing this record."
+          message: "Thank you for reviewing this record.",
         },
         {
           model: "reviewFail",
           type: "warning",
-          message: "Sorry, it was not possibly to save a review for this record."
+          message:
+            "Sorry, it was not possibly to save a review for this record.",
         },
         {
           model: "stopMaintainSuccess",
           type: "success",
-          message: "You have been removed as maintainer of this record."
+          message: "You have been removed as maintainer of this record.",
         },
         {
           model: "stopMaintainFailure",
           type: "warning",
-          message: "You could not be removed as maintainer. Please email for assistance."
-        }
+          message:
+            "You could not be removed as maintainer. Please email for assistance.",
+        },
       ],
       dialogs: {
         recordName: "",
@@ -408,12 +464,13 @@ export default {
         disableDelButton: true,
         disableButton: false,
         claimRecord: false,
-        stopMaintainRecord: false
+        stopMaintainRecord: false,
       },
-    }
+      loading: false,
+    };
   },
   head: {
-    link: function() {
+    link: function () {
       if (this.recordID) {
         let results = [];
         let citeAsUrl;
@@ -421,114 +478,129 @@ export default {
         // Mysteriously not covered even if a doi value is provided in tests.
         /* istanbul ignore if */
         if (this.currentRecord.fairsharingRecord.doi) {
-          citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
-          describedByUrl = this.getHostname()  + this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
+          citeAsUrl =
+            "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
+          describedByUrl =
+            this.getHostname() +
+            this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
         }
         else {
           citeAsUrl = this.getHostname() + this.recordID;
           describedByUrl = this.getHostname() + this.recordId;
         }
         results.push({
-          rel: 'cite-as',
+          rel: "cite-as",
           type: "application/html",
-          href: citeAsUrl
+          href: citeAsUrl,
         });
-        results.push(
-          {
-            rel: 'describedby',
-            type: "application/json",
-            href: describedByUrl
-          }
-        )
-        results.push(
-          {
-            rel: 'describedby',
-            type: "application/ld+json",
-            href: describedByUrl
-          }
-        )
+        results.push({
+          rel: "describedby",
+          type: "application/json",
+          href: describedByUrl,
+        });
+        results.push({
+          rel: "describedby",
+          type: "application/ld+json",
+          href: describedByUrl,
+        });
         return results;
       }
-    }
+    },
   },
   computed: {
-    ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-    ...mapState('users', ["user", "messages"]),
+    ...mapState("record", ["currentRecord", "currentRecordHistory"]),
+    ...mapState("users", ["user", "messages"]),
     ...mapGetters("record", ["getField"]),
-    ...mapState('introspection', ["readOnlyMode"]),
+    ...mapState("introspection", ["readOnlyMode"]),
     recordHidden() {
-        let _module = this;
-        if (_module.currentRecord.fairsharingRecord.isHidden) {
-            if (!_module.user().isLoggedIn) {
-                return true;
-            }
-            else {
-                if (!_module.canEdit) {
-                    return true;
-                }
-            }
+      let _module = this;
+      if (_module.currentRecord.fairsharingRecord.isHidden) {
+        if (!_module.user().isLoggedIn) {
+          return true;
         }
-        return false;
+        else {
+          if (!_module.canEdit) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
     getRecordCardBackground() {
-      let finalCardBackColor
+      let finalCardBackColor;
       switch (this.currentRecord.fairsharingRecord.registry) {
-        case 'Standard':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
-          break;
-        case 'Database':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
-          break;
-        case 'Policy':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
-          break;
-        case 'Collection':
-          finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
-          break;
+      case "Standard":
+        finalCardBackColor =
+            this.theme.computedThemes.value.fairSharingTheme
+              .bg_standard_record_card;
+        break;
+      case "Database":
+        finalCardBackColor =
+            this.theme.computedThemes.value.fairSharingTheme.colors
+              .bg_database_record_card;
+        break;
+      case "Policy":
+        finalCardBackColor =
+            this.theme.computedThemes.value.fairSharingTheme.colors
+              .bg_policy_record_card;
+        break;
+      case "Collection":
+        finalCardBackColor =
+            this.theme.computedThemes.value.fairSharingTheme.colors
+              .bg_collection_record_card;
+        break;
       }
-      return finalCardBackColor
+      return finalCardBackColor;
     },
-    JSONLD () {
+    JSONLD() {
       return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
     },
     currentRoute() {
-      let id = this.$route.params['id'];
-      if (id.includes("FAIRsharing.")) {
+      let id = this.$route.params["id"];
+      if (id !== undefined && id.includes("FAIRsharing.")) {
         return "10.25504/" + id;
       }
-      return this.target || this.$route.params['id'];
+      return this.target || this.$route.params["id"];
     },
-    userIsLoggedIn(){
+    userIsLoggedIn() {
       return this.user().isLoggedIn;
     },
     getTitle() {
-      return 'FAIRsharing | ' + this.currentRoute;
+      return "FAIRsharing | " + this.currentRoute;
     },
     maintainsRecord() {
       let _module = this;
-      if (!_module.userIsLoggedIn){
-        return false
+      if (!_module.userIsLoggedIn) {
+        return false;
       }
       // Is the current_user's ID in the array of maintainer objects?
-      if (typeof _module.currentRecord['fairsharingRecord']['maintainers'] === 'undefined') {
+      if (
+        typeof _module.currentRecord["fairsharingRecord"]["maintainers"] ===
+        "undefined"
+      ) {
         return false;
       }
-      if (_module.currentRecord['fairsharingRecord']['maintainers'].length === 0) {
+      if (
+        _module.currentRecord["fairsharingRecord"]["maintainers"].length === 0
+      ) {
         return false;
       }
-      return _module.currentRecord['fairsharingRecord']['maintainers'].some(({ id }) => id === _module.user().id);
+      return _module.currentRecord["fairsharingRecord"]["maintainers"].some(
+        ({ id }) => id === _module.user().id,
+      );
     },
     currentDynamicBlock() {
-      if (this.$vuetify.breakpoint.name === 'md') {
+      if (this.$vuetify.display.name === "md") {
         return {
           leftBlock: ["Collections", "RelatedContent", "Support"],
-          rightBlock: ["DataProcessesAndConditions", "Tools", "Organisations"]
-        }
-      } else {
+          rightBlock: ["DataProcessesAndConditions", "Tools", "Organisations"],
+        };
+      }
+      else {
         return {
           leftBlock: ["Collections", "Support", "DataProcessesAndConditions"],
-          rightBlock: ["RelatedContent", "Tools", "Organisations"]
-        }
+          rightBlock: ["RelatedContent", "Tools", "Organisations"],
+        };
       }
     },
   },
@@ -541,7 +613,7 @@ export default {
         await this.getMenuButtons();
       }
       await this.$nextTick();
-      await this.$scrollTo(this.$route.hash || 'body')
+      // await this.$scrollTo(this.$route.hash || 'body')
     },
     async target() {
       await this.getData();
@@ -551,34 +623,35 @@ export default {
         await this.getMenuButtons();
       }
       await this.$nextTick();
-      await this.$scrollTo(this.$route.hash || 'body')
+      await this.$scrollTo(this.$route.hash || "body");
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
       //await this.checkClaimStatus();
       await this.getMenuButtons();
       await this.checkAlerts();
-    }
+    },
   },
-  destroyed() {
-    // minor change in the y axis can fix a serious bug after going back to records..
-    this.$scrollTo('body',5,{})
-  },
+  // unmounted() {
+  //   // minor change in the y axis can fix a serious bug after going back to records..
+  //   this.$scrollTo('body',5,{})
+  // },
   async mounted() {
-      let _module = this;
-      _module.client = new Client();
-      await _module.getData();
-      _module.recordID = this.currentRecord.fairsharingRecord.id;
-      _module.$emit('updateHead');
-      if (!_module.error) {
-        await _module.canEditRecord();
-        await _module.checkClaimStatus();
-        await _module.getMenuButtons()
-      }
-      await _module.$nextTick();
-      await _module.checkAlerts();
+    let _module = this;
+    _module.loading = true;
+    _module.client = new Client();
+    await _module.getData();
+    _module.recordID = this.currentRecord.fairsharingRecord.id;
+    _module.$emit("updateHead");
+    if (!_module.error) {
+      await _module.canEditRecord();
+      await _module.checkClaimStatus();
+      await _module.getMenuButtons();
+    }
+    await _module.$nextTick();
+    await _module.checkAlerts();
     try {
-      await _module.$scrollTo(_module.$route.hash || 'body')
+      await _module.$scrollTo(_module.$route.hash || "body");
       // eslint-disable-next-line no-empty
     }
     catch (e) {
@@ -591,101 +664,118 @@ export default {
     if (!(query === undefined || query === null)) {
       // TODO: This does work but yet again the test refuses to acknowledge this.
       /* istanbul ignore if */
-      if (query.history === 'show') {
+      if (query.history === "show") {
         _module.history = {
           show: true,
-          loading: true
+          loading: true,
         };
         await _module.getHistory();
         _module.history.loading = false;
       }
     }
+    _module.loading = false;
+    _module.$emit("showDialog", !_module.loading);
   },
   methods: {
     closeHistory() {
       this.history.show = false;
-      this.$router.replace({query: {}});
+      this.$router.replace({ query: {} });
     },
     async checkAlerts() {
       let _module = this;
       // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
       // and then curators alerts(auth-needed orange ones) so blue ones stack,
       // then orange and then red/green [approval/rejection] ones.
-      let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
-          .isAwaitingApproval()
-          .isWatching(this.isWatching())
-          .isNeedingReview(this.needsReviewing(), this.error)
-          .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-          .isAlreadyClaimed(this.alreadyClaimed)
-          .isHidden()
-          .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
+      let alertBuilder = new AlertBuilder(_module.currentRecord, this.user())
+        .isAwaitingApproval()
+        .isWatching(this.isWatching())
+        .isNeedingReview(this.needsReviewing(), this.error)
+        .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+        .isAlreadyClaimed(this.alreadyClaimed)
+        .isHidden()
+        .isOwnerShipApproved(
+          this.ownershipApprovalStatus,
+          this.isBannerExpired(),
+        );
       _module.alerts = alertBuilder.getAlerts();
     },
-    ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
-    ...mapActions('users', ['updateWatchedRecords']),
-    ...mapMutations('users', ['changeWatched']),
+    ...mapActions("record", [
+      "fetchRecord",
+      "fetchRecordHistory",
+      "fetchPreviewRecord",
+    ]),
+    ...mapActions("users", ["updateWatchedRecords"]),
+    ...mapMutations("users", ["changeWatched"]),
     async getMenuButtons() {
       let _module = this;
-      this.buttons = []
+      this.buttons = [];
       let initial_buttons = [
         {
-          name: function() { return "Edit record" },
-          isDisabled: function(){
-            if (!_module.userIsLoggedIn){
-              return false
-            }
-            return !_module.canEdit
+          name: function () {
+            return "Edit record";
           },
-          method: function(){return _module.goToEdit()}
+          isDisabled: function () {
+            if (!_module.userIsLoggedIn) {
+              return false;
+            }
+            return !_module.canEdit;
+          },
+          method: function () {
+            return _module.goToEdit();
+          },
         },
         {
-          name: function() { return "Request ownership" },
-          isDisabled: function(){
-            if (!_module.userIsLoggedIn){
-              return false
+          name: function () {
+            return "Request ownership";
+          },
+          isDisabled: function () {
+            if (!_module.userIsLoggedIn) {
+              return false;
             }
             return !_module.canClaim;
           },
-          method: async function(){
-            if (!_module.userIsLoggedIn){
+          method: async function () {
+            if (!_module.userIsLoggedIn) {
               _module.$router.push({
                 path: "/accounts/login",
                 query: {
-                  goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                }
-              })
+                  goTo: `/${_module.currentRecord["fairsharingRecord"].id}`,
+                },
+              });
             }
             else {
               _module.claimRecordMenu(
-                  _module.currentRecord['fairsharingRecord'].name,
-                  _module.currentRecord['fairsharingRecord'].id,
+                _module.currentRecord["fairsharingRecord"].name,
+                _module.currentRecord["fairsharingRecord"].id,
               );
             }
-          }
+          },
         },
         {
           name: () => {
-            if (!_module.userIsLoggedIn){
-              return "Watch record"
+            if (!_module.userIsLoggedIn) {
+              return "Watch record";
             }
             else {
-              if (!_module.isWatching()){
-                return "Watch record"
+              if (!_module.isWatching()) {
+                return "Watch record";
               }
               else {
-                return "Unwatch record"
+                return "Unwatch record";
               }
             }
           },
-          isDisabled: function() { return false },
-          method: function(){
-            if (!_module.userIsLoggedIn){
+          isDisabled: function () {
+            return false;
+          },
+          method: function () {
+            if (!_module.userIsLoggedIn) {
               _module.$router.push({
                 path: "/accounts/login",
                 query: {
-                  goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                }
-              })
+                  goTo: `/${_module.currentRecord["fairsharingRecord"].id}`,
+                },
+              });
             }
             else {
               if (_module.isWatching()) {
@@ -695,111 +785,113 @@ export default {
                 _module.changeWatchRecord(true);
               }
             }
-          }
+          },
         },
         {
-          name: function() {
-            if (_module.currentRecord['fairsharingRecord'].hasGraph) {
-              return "View Relation Graph"
+          name: function () {
+            if (_module.currentRecord["fairsharingRecord"].hasGraph) {
+              return "View Relation Graph";
             }
-            return "No graph available"
+            return "No graph available";
           },
-          isDisabled: function(){
-            if (_module.currentRecord['fairsharingRecord'].hasGraph) {
+          isDisabled: function () {
+            if (_module.currentRecord["fairsharingRecord"].hasGraph) {
               return false;
             }
             return true;
           },
-          method: function(){
+          method: function () {
             _module.$router.push({
-              path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
-            })
-          }
-        },
-        {
-          name: function() { return "View record history" },
-          isDisabled: function(){return false},
-          method: async () => {
-            this.history = {
-              show: true,
-              loading: true
-            };
-            await this.getHistory();
-            this.history.loading = false;
-          }
+              path: "/graph/" + _module.currentRecord["fairsharingRecord"].id,
+            });
+          },
         },
         {
           name: function () {
-            return "Have a suggestion/question ?"
+            return "View record history";
+          },
+          isDisabled: function () {
+            return false;
+          },
+          method: async () => {
+            this.history = {
+              show: true,
+              loading: true,
+            };
+            await this.getHistory();
+            this.history.loading = false;
+          },
+        },
+        {
+          name: function () {
+            return "Have a suggestion/question ?";
           },
           isDisabled: function () {
             return false;
           },
           method: function () {
-            parent.location = "mailto:contact@fairsharing.org?subject=[FAIRsharing][Feedback] Comments on " + _module.currentRecord.fairsharingRecord.name;
-          }
-        }
+            parent.location =
+              "mailto:contact@fairsharing.org?subject=[FAIRsharing][Feedback] Comments on " +
+              _module.currentRecord.fairsharingRecord.name;
+          },
+        },
       ];
       if (_module.user().is_curator && _module.needsReviewing()) {
-        initial_buttons.push(
-            {
-              name: function () {
-                return "Review this record"
-              },
-              isDisabled: function () {
-                // Only to be seen by logged-in curators.
-                // So, this line shouldn't really be encountered...
-                /* istanbul ignore if */
-                if (!_module.userIsLoggedIn) {
-                  return true;
-                }
-                return !_module.user().is_curator;
-              },
-              method: async function () {
-                await _module.reviewRecord();
-              }
+        initial_buttons.push({
+          name: function () {
+            return "Review this record";
+          },
+          isDisabled: function () {
+            // Only to be seen by logged-in curators.
+            // So, this line shouldn't really be encountered...
+            /* istanbul ignore if */
+            if (!_module.userIsLoggedIn) {
+              return true;
             }
-        )
+            return !_module.user().is_curator;
+          },
+          method: async function () {
+            await _module.reviewRecord();
+          },
+        });
       }
       if (_module.user().is_super_curator) {
-        initial_buttons.push(
-            {
-              name: function () {
-                return "Delete this record"
-              },
-              isDisabled: function () {
-                return !_module.user().is_super_curator;
-              },
-              method: /* istanbul ignore next */ async function () {
-                _module.deleteRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
-            }
-        )
+        initial_buttons.push({
+          name: function () {
+            return "Delete this record";
+          },
+          isDisabled: function () {
+            return !_module.user().is_super_curator;
+          },
+          method: /* istanbul ignore next */ async function () {
+            _module.deleteRecordMenu(
+              _module.currentRecord["fairsharingRecord"].name,
+              _module.currentRecord["fairsharingRecord"].id,
+            );
+          },
+        });
       }
       if (_module.maintainsRecord) {
         let _module = this;
-        initial_buttons.push(
-            {
-              name: function() { return "Stop maintaining"},
-              isDisabled: function() {
-                return false;
-              },
-              method: async function () {
-                _module.stopMaintainRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
-            },
-        )
+        initial_buttons.push({
+          name: function () {
+            return "Stop maintaining";
+          },
+          isDisabled: function () {
+            return false;
+          },
+          method: async function () {
+            _module.stopMaintainRecordMenu(
+              _module.currentRecord["fairsharingRecord"].name,
+              _module.currentRecord["fairsharingRecord"].id,
+            );
+          },
+        });
       }
       this.buttons = initial_buttons;
     },
-    convertStringToLocalVar(stringVarName){
-      return this[stringVarName]
+    convertStringToLocalVar(stringVarName) {
+      return this[stringVarName];
     },
     /*
         useful methods for communicating from child to parent // please keep these as reference
@@ -810,14 +902,17 @@ export default {
           this[name](value)
         },
      */
-    async confirmDelete(){
+    async confirmDelete() {
       const _module = this;
       _module.dialogs.disableButton = true;
-      let data = await client.deleteRecord(_module.dialogs.recordID, this.user().credentials.token);
-      if (data.error){
+      let data = await client.deleteRecord(
+        _module.dialogs.recordID,
+        this.user().credentials.token,
+      );
+      if (data.error) {
         _module.error = "error deleting record";
       }
-      else{
+      else {
         // Redirect to current record to show it has gone...
         this.$router.go();
       }
@@ -826,7 +921,7 @@ export default {
     claimRecordMenu(recordName, recordID) {
       const _module = this;
       _module.dialogs.disableButton = false;
-      _module.dialogs.disableDelButton = true
+      _module.dialogs.disableDelButton = true;
       _module.dialogs.recordName = recordName;
       _module.dialogs.recordID = recordID;
       _module.dialogs.claimRecord = true;
@@ -837,7 +932,7 @@ export default {
     stopMaintainRecordMenu(recordName, recordID) {
       const _module = this;
       _module.dialogs.disableButton = false;
-      _module.dialogs.disableDelButton = true
+      _module.dialogs.disableDelButton = true;
       _module.dialogs.recordName = recordName;
       _module.dialogs.recordID = recordID;
       _module.dialogs.stopMaintainRecord = true;
@@ -845,10 +940,10 @@ export default {
         _module.dialogs.disableDelButton = false;
       }, 5000);
     },
-    deleteRecordMenu(recordName, recordID){
+    deleteRecordMenu(recordName, recordID) {
       const _module = this;
       _module.dialogs.disableButton = false;
-      _module.dialogs.disableDelButton = true
+      _module.dialogs.disableDelButton = true;
       _module.dialogs.recordName = recordName;
       _module.dialogs.recordID = recordID;
       _module.dialogs.deleteRecord = true;
@@ -856,38 +951,41 @@ export default {
         _module.dialogs.disableDelButton = false;
       }, 5000);
     },
-    closeDeleteMenu () {
+    closeDeleteMenu() {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
     },
-    closeClaimMenu () {
+    closeClaimMenu() {
       this.dialogs.disableButton = true;
       this.dialogs.claimRecord = false;
     },
-    closeMaintainMenu () {
+    closeMaintainMenu() {
       this.dialogs.disableButton = true;
       this.dialogs.stopMaintainRecord = false;
     },
-    goToEdit(){
+    goToEdit() {
       let _module = this;
-      const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
+      const recordID = "/" + _module.currentRecord["fairsharingRecord"].id;
       if (_module.userIsLoggedIn) {
         this.$router.push({
-          path: recordID + '/edit',
-          params: {
-            fromRecordPage: true
-          }
-        })
+          path: recordID + "/edit",
+          /**
+           * Pushing artificial param breaks app
+           * Ref: https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22
+           */
+          // params: {
+          //   fromRecordPage: true
+          // }
+        });
       }
       else {
         this.$router.push({
           path: "/accounts/login",
           query: {
-            goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-          }
-        })
+            goTo: `/${_module.currentRecord["fairsharingRecord"].id}`,
+          },
+        });
       }
-
     },
     /**
      * Method to create a maintenance_request; sets canClaim and (on fail) error.
@@ -895,11 +993,15 @@ export default {
      * */
     async requestOwnership() {
       let _module = this;
-      const recordID =  _module.currentRecord['fairsharingRecord'].id;
-      const claim = await client.claimRecord(recordID, _module.user().credentials.token);
+      const recordID = _module.currentRecord["fairsharingRecord"].id;
+      const claim = await client.claimRecord(
+        recordID,
+        _module.user().credentials.token,
+      );
       /* istanbul ignore else */
       if (claim.error) {
-        _module.error = "Sorry, your request to claim this record failed. Please contact us.";
+        _module.error =
+          "Sorry, your request to claim this record failed. Please contact us.";
         _module.canClaim = false;
       }
       else {
@@ -917,22 +1019,28 @@ export default {
      * */
     async removeMaintainer() {
       let _module = this;
-      const recordID =  _module.currentRecord['fairsharingRecord'].id;
+      const recordID = _module.currentRecord["fairsharingRecord"].id;
       // TODO: Write new function to remove claim.
-      const unclaim = await client.removeMaintainer(recordID, _module.user().credentials.token);
+      const unclaim = await client.removeMaintainer(
+        recordID,
+        _module.user().credentials.token,
+      );
       if (unclaim.error) {
-        _module.error = "Sorry, your request to be removed as a maintainer of this record failed. Please contact us.";
+        _module.error =
+          "Sorry, your request to be removed as a maintainer of this record failed. Please contact us.";
         _module.stopMaintainFailure = true;
       }
       else {
         // Display a toast here.
         _module.stopMaintainSuccess = true;
         // remove maintainer from local data
-        let newMaintainers = _module.currentRecord['fairsharingRecord']['maintainers'].filter(maintainer => {
-            return maintainer.id !== _module.user().id
-          }
-        )
-        _module.currentRecord['fairsharingRecord']['maintainers'] = newMaintainers;
+        let newMaintainers = _module.currentRecord["fairsharingRecord"][
+          "maintainers"
+        ].filter((maintainer) => {
+          return maintainer.id !== _module.user().id;
+        });
+        _module.currentRecord["fairsharingRecord"]["maintainers"] =
+          newMaintainers;
       }
       _module.dialogs.stopMaintainRecord = false;
     },
@@ -943,13 +1051,24 @@ export default {
     async checkClaimStatus() {
       let _module = this;
       if (_module.user().isLoggedIn) {
-        const recordID = _module.currentRecord['fairsharingRecord'].id;
+        const recordID = _module.currentRecord["fairsharingRecord"].id;
         _module.canClaim = false;
         try {
-          const claim = await client.canClaim(recordID, _module.user().credentials.token);
+          const claim = await client.canClaim(
+            recordID,
+            _module.user().credentials.token,
+          );
           if (claim.error) {
-            if (claim.error.response.data.existing && claim.error.response.data.status === 'pending') {
-              let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
+            if (
+              claim.error.response.data.existing &&
+              claim.error.response.data.status === "pending"
+            ) {
+              let maintainer = _module
+                .getField("maintainers")
+                .filter(
+                  (maintainer) =>
+                    maintainer.username === _module.user().credentials.username,
+                );
               if (maintainer.length === 0) {
                 //alreadyClaimed: this is the situation where the current record has been already claimed by user to be maintained.
                 _module.alreadyClaimed = true;
@@ -959,7 +1078,10 @@ export default {
             _module.ownershipApprovalStatus = claim.error.response.data.status;
 
             // assign expiring date for approval/rejection banner---
-            if (_module.ownershipApprovalStatus === 'approved' || _module.ownershipApprovalStatus === 'rejected') {
+            if (
+              _module.ownershipApprovalStatus === "approved" ||
+              _module.ownershipApprovalStatus === "rejected"
+            ) {
               _module.setBannerExpiry();
             }
             _module.canClaim = false;
@@ -968,7 +1090,7 @@ export default {
             // show modal here
             _module.canClaim = !claim.existing;
           }
-          if(!claim.error) {
+          if (!claim.error) {
             //noClaimRegistered: this is the situation where the current record is not requested to be maintained by user
             _module.noClaimRegistered = true;
           }
@@ -992,10 +1114,13 @@ export default {
       this.tombstone = false;
       try {
         if (this.target) await _module.fetchPreviewRecord(this.target);
-        else await _module.fetchRecord({
-          id: this.currentRoute,
-          token: (_module.user().credentials) ? _module.user().credentials.token : null
-        });
+        else
+          await _module.fetchRecord({
+            id: this.currentRoute,
+            token: _module.user().credentials
+              ? _module.user().credentials.token
+              : null,
+          });
         // UNCOMMENT ME TO TEST TOMBSTONE PAGE
         // Or, set tombstone to true on a record, if using a local server.
         // this.currentRecord['fairsharingRecord'].metadata.tombstone = true;
@@ -1011,23 +1136,26 @@ export default {
      * */
     async getHistory() {
       await this.$store.dispatch("record/fetchRecordHistory", {
-        id: this.currentRoute, token: this.user().credentials.token
-      }
-      );
+        id: this.currentRoute,
+        token: this.user().credentials.token,
+      });
     },
     /**
      * Test if the current user can edit the current record
      * @returns {Promise<void>}
      */
-    async canEditRecord(){
+    async canEditRecord() {
       const _module = this;
       _module.canEdit = false;
       if (_module.user().isLoggedIn) {
-        const recordID = _module.currentRecord['fairsharingRecord'].id;
+        const recordID = _module.currentRecord["fairsharingRecord"].id;
         if (!recordID) {
           return false;
         }
-        const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
+        const canEdit = await client.canEdit(
+          recordID,
+          _module.user().credentials.token,
+        );
         _module.canEdit = !canEdit.error;
       }
       else {
@@ -1045,24 +1173,22 @@ export default {
       let operation;
       let records = _module.user().watchedRecords.slice();
       if (watch) {
-        operation = 'add';
-        records.push(_module.currentRecord['fairsharingRecord'].id);
+        operation = "add";
+        records.push(_module.currentRecord["fairsharingRecord"].id);
       }
       else {
-        operation = 'remove';
-        records = records.filter(function(value){
-          return value !== _module.currentRecord['fairsharingRecord'].id;
+        operation = "remove";
+        records = records.filter(function (value) {
+          return value !== _module.currentRecord["fairsharingRecord"].id;
         });
       }
-      let response = await this.updateWatchedRecords(
-          {
-            recordID: _module.currentRecord['fairsharingRecord'].id,
-            operation: operation
-          }
-      );
+      let response = await this.updateWatchedRecords({
+        recordID: _module.currentRecord["fairsharingRecord"].id,
+        operation: operation,
+      });
       // Refresh user data to reload followed record status.
       /* istanbul ignore else */
-      if (response.message.indexOf('success') !== -1){
+      if (response.message.indexOf("success") !== -1) {
         _module.changeWatched(records);
       }
       this.loading = false;
@@ -1076,18 +1202,28 @@ export default {
       if (this.user().watchedRecords === undefined) {
         return false;
       }
-      return  this.currentRecord['fairsharingRecord'].id
-          && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
+      return (
+        (this.currentRecord["fairsharingRecord"].id &&
+          this.user().watchedRecords.includes(
+            this.currentRecord["fairsharingRecord"].id,
+          )) ||
+        false
+      );
     },
     setBannerExpiry() {
       const _module = this;
-      let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+      let bannerExpiryDate = {
+        ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+      };
       if (!bannerExpiryDate[_module.getField("id")]) {
         bannerExpiryDate = {
           ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
-          [_module.getField("id")]: new Date()
-        }
-        localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+          [_module.getField("id")]: new Date(),
+        };
+        localStorage.setItem(
+          "bannerExpiryDate",
+          JSON.stringify(bannerExpiryDate),
+        );
       }
     },
     isBannerExpired() {
@@ -1098,7 +1234,10 @@ export default {
       if (temp) {
         const expiryDate = new Date(temp[id]);
         // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
-        return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
+        return !(
+          expiryDate.getTime() + DAY * 24 * 60 * 60 * 1000 <
+          now.getTime()
+        );
       }
       return true;
     },
@@ -1108,27 +1247,29 @@ export default {
       let d = new Date();
       let pastYear = d.getFullYear() - 1;
       d.setFullYear(pastYear);
-      if (!_module.reviewsPresent()){
+      if (!_module.reviewsPresent()) {
         return !_module.reviewsPresent();
       }
       else {
         // Creating a date from the string returned by the API.
         // See: https://stackoverflow.com/a/11658343/1195207
-        _module.currentRecord['fairsharingRecord']['reviews'].forEach(function (review) {
-          let rawDate = review['createdAt'].split('T')[0].split('-');
-          if (new Date(rawDate[0], rawDate[1]-1, rawDate[2]) > d) {
-            need = false;
-          }
-        })
+        _module.currentRecord["fairsharingRecord"]["reviews"].forEach(
+          function (review) {
+            let rawDate = review["createdAt"].split("T")[0].split("-");
+            if (new Date(rawDate[0], rawDate[1] - 1, rawDate[2]) > d) {
+              need = false;
+            }
+          },
+        );
       }
       return need;
     },
     reviewsPresent() {
       const _module = this;
-      if (!_module.currentRecord['fairsharingRecord']['reviews']) {
+      if (!_module.currentRecord["fairsharingRecord"]["reviews"]) {
         return false;
       }
-      if(_module.currentRecord['fairsharingRecord']['reviews'].length === 0) {
+      if (_module.currentRecord["fairsharingRecord"]["reviews"].length === 0) {
         return false;
       }
       return true;
@@ -1136,8 +1277,11 @@ export default {
     async reviewRecord() {
       // Post a review to the server.
       const _module = this;
-      const recordID = _module.currentRecord['fairsharingRecord'].id;
-      const reviewRecord = await client.reviewRecord(recordID, _module.user().credentials.token);
+      const recordID = _module.currentRecord["fairsharingRecord"].id;
+      const reviewRecord = await client.reviewRecord(
+        recordID,
+        _module.user().credentials.token,
+      );
       if (reviewRecord.error) {
         _module.reviewFail = true;
       }
@@ -1148,65 +1292,69 @@ export default {
       // Re-display the menu.
       await this.getMenuButtons();
       await this.checkAlerts();
-    }
+    },
   },
   metaInfo() {
     try {
       let id;
       if (this.currentRecord.fairsharingRecord.doi) {
-        id = this.currentRecord.fairsharingRecord.doi.split('/')[1];
+        id = this.currentRecord.fairsharingRecord.doi.split("/")[1];
       }
       else {
         id = this.currentRecord.fairsharingRecord.id;
       }
       if (this.currentRecord.fairsharingRecord.abbreviation) {
         return {
-          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation,
+          title:
+            "FAIRsharing | " +
+            this.currentRecord.fairsharingRecord.abbreviation,
           meta: [
             {
-              name: 'description',
-              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name} (${this.currentRecord.fairsharingRecord.abbreviation})`
+              name: "description",
+              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name} (${this.currentRecord.fairsharingRecord.abbreviation})`,
             },
             {
-              name: 'link',
-              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
-              rel: 'canonical'
-            }
-          ]
-        }
+              name: "link",
+              content: `${import.meta.env.VITE_HOSTNAME}${id}`,
+              rel: "canonical",
+            },
+          ],
+        };
       }
       else {
         return {
-          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.name,
+          title: "FAIRsharing | " + this.currentRecord.fairsharingRecord.name,
           meta: [
             {
-              name: 'description',
-              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name}`
+              name: "description",
+              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name}`,
             },
             {
-              name: 'link',
-              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
-              rel: 'canonical'
-            }
-          ]
-        }
+              name: "link",
+              content: `${import.meta.env.VITE_HOSTNAME}${id}`,
+              rel: "canonical",
+            },
+          ],
+        };
       }
-    } catch (e) {
+    }
+    catch (e) {
       //error
     }
-  }
-}
+  },
+};
 </script>
 <style scoped>
-
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 1s;
   transition-delay: 1s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
-ul,li {
+ul,
+li {
   padding: 0;
 }
 
@@ -1214,5 +1362,4 @@ ul,li {
   word-break: keep-all;
   font-size: 70%;
 }
-
 </style>

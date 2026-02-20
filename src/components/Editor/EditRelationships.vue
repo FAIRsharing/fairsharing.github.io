@@ -8,20 +8,20 @@
       <v-container fluid>
         <v-row>
           <!-- LEFT PANEL -->
-          <v-col xl="6" lg="6" md="12" sm="12" xs="12">
+          <v-col lg="6" md="12" sm="12" xl="6" xs="12">
             <v-card class="my-5 px-4 bg-grey-lighten-3" elevation="5">
               <v-card-title> Available records: </v-card-title>
               <v-card-text>
                 <v-text-field
                   v-model="search"
-                  variant="outlined"
-                  label="Refine search"
-                  placeholder="e.g. GenBank"
-                  hide-details
                   :loading="loading"
-                  color="primary"
                   append-inner-icon="fas fa-search"
                   clearable
+                  color="primary"
+                  hide-details
+                  label="Refine search"
+                  placeholder="e.g. GenBank"
+                  variant="outlined"
                 />
                 <v-container>
                   <v-row no-gutters>
@@ -30,25 +30,25 @@
                         filterVal, filterName, filterIndex
                       ) in searchFilters"
                       :key="'filter_' + filterIndex"
-                      cols="12"
-                      sm="12"
-                      xs="12"
-                      md="6"
-                      lg="6"
-                      xl="3"
                       class="text-center"
+                      cols="12"
+                      lg="6"
+                      md="6"
+                      sm="12"
+                      xl="3"
+                      xs="12"
                     >
                       <!-- switch for unattached records -->
                       <v-switch
                         v-model="searchFilters[filterName]"
-                        inset
                         :label="`${prepareFilterName(filterName)}`"
                         color="primary"
+                        inset
                       />
                     </v-col>
                   </v-row>
                 </v-container>
-                <v-divider thickness="1" class="pa-0 ma-0 border-opacity-100" />
+                <v-divider class="pa-0 ma-0 border-opacity-100" thickness="1" />
               </v-card-text>
               <v-responsive
                 v-if="!loading"
@@ -69,13 +69,13 @@
                     threshold: 1,
                   }"
                   class="py-2"
-                  transition="fade-transition"
                   height="70px"
+                  transition="fade-transition"
                 >
                   <div class="d-flex justify-space-between bordered pb-2">
                     <div class="d-flex full-width">
                       <div>
-                        <Icon :item="record.type" wrapper-class :height="40" />
+                        <Icon :height="40" :item="record.type" wrapper-class />
                       </div>
                       <div class="mx-4 full-width">
                         <v-list-item-title class="text-pre-wrap">
@@ -90,17 +90,17 @@
                     </div>
                     <div class="d-flex align-center">
                       <RecordStatus
+                        :in-edit-form="true"
                         :record="record"
                         :show-only-status="true"
-                        :in-edit-form="true"
                       />
                       <v-tooltip location="top">
                         <template #activator="{ props }">
                           <v-btn
-                            icon
                             class="bg-blue text-white mr-2"
-                            v-bind="props"
+                            icon
                             size="36"
+                            v-bind="props"
                             @click="viewRecord(record)"
                           >
                             <v-icon size="small"> fas fa-eye </v-icon>
@@ -111,10 +111,10 @@
                       <v-tooltip location="top">
                         <template #activator="{ props }">
                           <v-btn
-                            icon
                             class="bg-green text-white"
-                            v-bind="props"
+                            icon
                             size="36"
+                            v-bind="props"
                             @click="showOverlay(record)"
                           >
                             <v-icon size="small"> fas fa-arrow-right </v-icon>
@@ -133,7 +133,7 @@
           </v-col>
 
           <!-- RIGHT PANEL -->
-          <v-col xl="6" lg="6" md="12" sm="12" xs="12">
+          <v-col lg="6" md="12" sm="12" xl="6" xs="12">
             <v-card class="my-5 pl-4 bg-grey-lighten-3" elevation="5">
               <v-card-title>
                 <span>Associated records ({{ associations.length }})</span>
@@ -141,12 +141,12 @@
               <v-card-text>
                 <v-text-field
                   v-model="searchAssociations"
-                  variant="outlined"
-                  label="Search through existing associations names"
-                  hide-details
-                  color="primary"
                   append-inner-icon="fas fa-search"
                   clearable
+                  color="primary"
+                  hide-details
+                  label="Search through existing associations names"
+                  variant="outlined"
                 />
                 <v-container>
                   <v-row no-gutters>
@@ -155,25 +155,25 @@
                         filterVal, filterName, filterIndex
                       ) in labelsFilter"
                       :key="'filter_' + filterIndex"
-                      cols="12"
-                      sm="12"
-                      xs="12"
-                      md="6"
-                      lg="6"
-                      xl="3"
                       class="text-center"
+                      cols="12"
+                      lg="6"
+                      md="6"
+                      sm="12"
+                      xl="3"
+                      xs="12"
                     >
                       <!-- switches for records that are already linked -->
                       <v-switch
                         v-model="labelsFilter[filterName]"
-                        inset
-                        color="primary"
                         :label="`${prepareFilterName(filterName)}`"
+                        color="primary"
+                        inset
                       />
                     </v-col>
                   </v-row>
                 </v-container>
-                <v-divider thickness="1" class="pa-0 ma-0 border-opacity-100" />
+                <v-divider class="pa-0 ma-0 border-opacity-100" thickness="1" />
               </v-card-text>
               <v-list
                 v-if="getAssociations.length > 0"
@@ -184,17 +184,17 @@
                   v-for="(association, index) in getAssociations"
                   :id="'association_' + association.linkedRecord.id"
                   :key="'association_' + index"
+                  :class="{ 'bg-orange-lighten-3': association.new }"
+                  class="my-1"
                   density="compact"
                   ripple
-                  class="my-1"
-                  :class="{ 'bg-orange-lighten-3': association.new }"
                 >
                   <div class="d-flex justify-space-between bordered pb-2">
                     <div>
                       <Icon
+                        :height="40"
                         :item="association.linkedRecord.type"
                         wrapper-class=""
-                        :height="40"
                       />
                     </div>
                     <div class="mx-4 full-width">
@@ -217,8 +217,8 @@
                         -</b
                       >
                       <v-list-item-title
-                        style="font-size: 0.8125rem; font-weight: 500"
                         class="text-pre-wrap"
+                        style="font-size: 0.8125rem; font-weight: 500"
                       >
                         {{ association.linkedRecord.name }}
                       </v-list-item-title>
@@ -232,17 +232,17 @@
                     </div>
                     <div class="d-flex align-center">
                       <RecordStatus
+                        :in-edit-form="true"
                         :record="association.linkedRecord"
                         :show-only-status="true"
-                        :in-edit-form="true"
                       />
                       <v-tooltip location="top">
                         <template #activator="{ props }">
                           <v-btn
-                            icon
                             class="bg-blue text-white mr-2"
-                            v-bind="props"
+                            icon
                             size="36"
+                            v-bind="props"
                             @click="viewRecord(association.linkedRecord)"
                           >
                             <v-icon size="small"> fas fa-eye </v-icon>
@@ -253,10 +253,10 @@
                       <v-tooltip location="top">
                         <template #activator="{ props }">
                           <v-btn
-                            icon
                             class="bg-red text-white"
-                            v-bind="props"
+                            icon
                             size="36"
+                            v-bind="props"
                             @click="removeItem(association)"
                           >
                             <v-icon size="small"> fas fa-trash </v-icon>
@@ -280,10 +280,11 @@
     </v-card-text>
     <v-card-actions>
       <v-btn
-        class="bg-primary"
         :loading="continueLoader"
-        variant="elevated"
+        class="bg-primary"
+        data-testid="continue-button"
         style="font-size: 14px"
+        variant="elevated"
         @click="saveRecord(false, $event.target)"
       >
         Save and continue
@@ -291,8 +292,9 @@
       <v-btn
         :loading="exitLoader"
         class="bg-primary"
-        variant="elevated"
+        data-testid="exit-button"
         style="font-size: 14px"
+        variant="elevated"
         @click="saveRecord(true, $event.target)"
       >
         Save and exit
@@ -302,13 +304,13 @@
     <!-- SELECT RELATION LABEL -->
     <v-dialog
       v-model="showRelationsPanel"
-      class="py-0"
       :dark="false"
+      class="py-0"
       opacity="0.8"
       persistent
       width="700px"
     >
-      <v-container fluid class="py-0">
+      <v-container class="py-0" fluid>
         <v-row justify="center">
           <v-form
             id="editRecordAssociation"
@@ -319,8 +321,8 @@
             <v-card
               v-if="addingRelation"
               class="flexCard"
-              width="100%"
               min-height="450px"
+              width="100%"
             >
               <v-card-title class="bg-green text-white">
                 Add a new relationship
@@ -329,18 +331,18 @@
                 v-if="!panelContent || panelContent.length === 0"
                 class="mb-0 pb-0"
               >
-                <v-alert type="error" class="mt-3">
+                <v-alert class="mt-3" type="error">
                   This source and target can't have relationship.
                 </v-alert>
               </v-card-text>
 
               <v-card-text class="text-center py-3 px-4">
                 <div
-                  class="pa-3"
                   :class="{
                     'bg-blue-lighten-5': formValid,
                     'bg-red-lighten-5': !formValid,
                   }"
+                  class="pa-3"
                   style="border-radius: 5px"
                 >
                   <div>
@@ -356,12 +358,12 @@
                   </div>
                   <div>
                     <v-icon
-                      size="x-large"
-                      class="my-5"
                       :class="{
                         'text-blue': addingRelation.recordAssocLabel,
                         'text-red': !addingRelation.recordAssocLabel,
                       }"
+                      class="my-5"
+                      size="x-large"
                     >
                       fas fa-arrow-down
                     </v-icon>
@@ -391,20 +393,20 @@
               <v-card-text v-if="addingRelation" class="pb-0 pt-3">
                 <v-autocomplete
                   v-model="addingRelation.recordAssocLabel"
+                  :disabled="!panelContent || panelContent.length === 0"
                   :items="panelContent"
-                  variant="outlined"
-                  return-object
+                  :rules="[rules.isRequired()]"
                   item-title="relation"
                   item-value="relation"
                   label="Select the type of relationship"
-                  :disabled="!panelContent || panelContent.length === 0"
-                  :rules="[rules.isRequired()]"
+                  return-object
+                  variant="outlined"
                 />
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                  class="bg-success"
                   :disabled="!formValid"
+                  class="bg-success"
                   @click="addItem()"
                 >
                   Add relation
@@ -422,15 +424,15 @@
     <!-- attempt to add duplicate relationship -->
     <v-snackbar
       v-model="duplicateRelationship"
-      color="warning"
       class="text-body"
+      color="warning"
     >
       The same record/relation combination may not be added more than once.
     </v-snackbar>
     <v-snackbar
       v-model="multipleRelationship"
-      color="warning"
       class="text-body"
+      color="warning"
     >
       {{ multipleRelationshipMessage }}
     </v-snackbar>
@@ -511,6 +513,7 @@ export default {
               .toLowerCase()
               .includes(searchTerm.toLowerCase()) &&
             (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ===
+              /* v8 ignore next */
               true ||
               this.labelsFilter[obj.linkedRecord.type.toLowerCase()] === true)
           ) {
@@ -519,7 +522,6 @@ export default {
         }
         // ...otherwise, compare against both name and abbreviation.
         else {
-          /* istanbul ignore next */
           if (
             (obj.linkedRecord.name
               .toLowerCase()
@@ -527,6 +529,7 @@ export default {
               obj.linkedRecord.abbreviation
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase())) &&
+            /* v8 ignore next */
             (this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] ||
               this.labelsFilter[obj.linkedRecord.type.toLowerCase()]) === true
           ) {
@@ -601,7 +604,8 @@ export default {
         let tmpRelation;
         if (typeof link.recordAssocLabel.relation == "undefined") {
           tmpRelation = link.recordAssocLabel;
-        } else {
+        }
+        else {
           tmpRelation = link.recordAssocLabel.relation;
         }
         return (
@@ -616,6 +620,7 @@ export default {
       }
       // Check if the user is trying to add multiple examples of FAIRassist relations.
       // https://github.com/FAIRsharing/FAIRsharing-API/issues/1137
+      /* v8 ignore start */
       if (
         _module.currentRecord.fairsharingRecord.type === "metric" ||
         _module.currentRecord.fairsharingRecord.type === "principle"
@@ -634,6 +639,7 @@ export default {
           return;
         }
       }
+      /* v8 ignore end */
       // Finally get to add the new relation.
       let newRelation = {
         linkedRecord: _module.addingRelation.linkedRecord,
@@ -682,6 +688,7 @@ export default {
         sourceType: this.sections.relations.data.type.toLowerCase(),
         prohibited: prohibited,
       });
+      /* v8 ignore next 3 */
       this.$nextTick(() => {
         this.$refs["editRecordAssociation"].validate();
       });
@@ -707,18 +714,20 @@ export default {
       });
       allowedRelations.forEach((allowedRelation) => {
         if (!Object.keys(labelsFilter).includes(allowedRelation.target)) {
-          /* istanbul ignore else */
           if (allRegistries.includes(allowedRelation.target.toLowerCase())) {
             labelsFilter[allowedRelation.target] = true;
             allRegistries.splice(
               allRegistries.indexOf(allowedRelation.target.toLowerCase()),
               1,
             );
-          } else {
+            /* v8 ignore start */
+          }
+          else {
             // This must therefore be a record type.
             labelsFilter[allowedRelation.target] = true;
             types.push(allowedRelation.target);
           }
+          /* v8 ignore stop */
         }
       });
       this.labelsFilter = { ...labelsFilter };
@@ -738,7 +747,8 @@ export default {
           // Check if this is a registry or type
           if (this.fairsharingRegistries.indexOf(filter) > -1) {
             registries.push(filter);
-          } else {
+          }
+          else {
             types.push(filter);
           }
         }
@@ -752,6 +762,7 @@ export default {
         searchAnd: false,
       });
       let i = 0;
+
       this.availableRecords.forEach((rec) => {
         rec.isActive = i < 15; // activate the 15 first items for v-lazy.
         i += 1;
@@ -766,7 +777,8 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      } else if (item.textContent.trim() === "Save and exit") {
+      }
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

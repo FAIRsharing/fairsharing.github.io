@@ -55,7 +55,7 @@ const $store = new Vuex.Store({
   },
 });
 let $route = { path: "/123/edit", params: { id: 123 } };
-// const router = new VueRouter();
+
 const $router = { push: vi.fn() };
 
 let graphStub;

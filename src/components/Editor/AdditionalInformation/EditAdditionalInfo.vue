@@ -429,11 +429,12 @@ export default {
         required,
         fields: JSON.parse(JSON.stringify(item)),
       };
-      /* istanbul ignore next */
+      /* v8 ignore start */
       this.$nextTick(() => {
         if (this.$refs["editAdditionalInformationOverlay"])
           this.$refs["editAdditionalInformationOverlay"].validate();
       });
+      /* v8 ignore stop */
     },
     hideOverlay() {
       this.overlay = {
@@ -456,11 +457,12 @@ export default {
       Object.keys(template).forEach((field) => {
         this.overlay.fields[field] = null;
       });
-      /* istanbul ignore next */
+      /* v8 ignore start */
       this.$nextTick(() => {
         if (this.$refs["editAdditionalInformationOverlay"])
           this.$refs["editAdditionalInformationOverlay"].validate();
       });
+      /* v8 ignore stop */
     },
     addItem() {
       this.setAdditionalInformationSubField({

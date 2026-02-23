@@ -77,8 +77,7 @@ export const mutations = {
           third_party: thirdParty,
           watchedRecords: watchedRecords,
           role: role,
-          orcid: user.orcid,
-          twitter: user.twitter,
+          orcid: user.orcid
         };
       };
     } else {
@@ -94,8 +93,7 @@ export const mutations = {
           is_super_curator: false,
           third_party: false,
           role: null,
-          orcid: null,
-          twitter: null,
+          orcid: null
         };
       };
     }
@@ -110,7 +108,6 @@ export const mutations = {
       first_name: user.first_name,
       last_name: user.last_name,
       homepage: user.homepage,
-      twitter: user.twitter,
       mastodon: user.mastodon,
       bluesky: user.bluesky,
       orcid: user.orcid,
@@ -193,7 +190,6 @@ export const mutations = {
       first_name: null,
       last_name: null,
       homepage: null,
-      twitter: null,
       orcid: null,
       profile_type: null,
       preferences: {},
@@ -552,7 +548,6 @@ let currentUser = {
       first_name: null,
       last_name: null,
       homepage: null,
-      twitter: null,
       orcid: null,
       profile_type: null,
       preferences: {},

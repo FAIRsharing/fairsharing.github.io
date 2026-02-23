@@ -49,7 +49,6 @@ describe("PublicProfile.vue", () => {
                homepage: "http://goatse.cx",
                orcid: "1234-5678-9012-3456",
                username: "goatse",
-               twitter: "goatse",
                maintainedRecords: [],
            }
        });

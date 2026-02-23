@@ -35,32 +35,29 @@ describe("PublicProfile.vue", () => {
   let externalClientStub;
   let getpubs;
 
-  beforeAll(() => {
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-      data: { id: "12345", name: "mrgoatse", orcid: "123" },
+    beforeAll( () => {
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {id: "12345", name: "mrgoatse", orcid: '123'}
+        });
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+           user: {
+               email:"mrg@goatse.cx",
+               firstName: "Mr.",
+               lastName: "Goatse",
+               homepage: "http://goatse.cx",
+               orcid: "1234-5678-9012-3456",
+               username: "goatse",
+               maintainedRecords: [],
+           }
+       });
+       externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns({data: ORCIDfixture});
+       wrapper = shallowMount(PublicProfile, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+        });
+        getpubs = jest.spyOn(wrapper.vm, "getPublications");
     });
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      user: {
-        email: "mrg@goatse.cx",
-        firstName: "Mr.",
-        lastName: "Goatse",
-        homepage: "http://goatse.cx",
-        orcid: "1234-5678-9012-3456",
-        username: "goatse",
-        twitter: "goatse",
-        maintainedRecords: [],
-      },
-    });
-    externalClientStub = sinon
-      .stub(ExternalClient.prototype, "executeQuery")
-      .returns({ data: ORCIDfixture });
-    wrapper = shallowMount(PublicProfile, {
-      localVue,
-      router,
-      mocks: { $store, $router, $route },
-    });
-    getpubs = jest.spyOn(wrapper.vm, "getPublications");
-  });
 
   afterAll(() => {
     restStub.restore();

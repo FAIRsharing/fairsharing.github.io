@@ -341,12 +341,6 @@ export default {
           rules: [isUrl()],
         },
         {
-          name: "twitter",
-          label: "Twitter",
-          hint: null,
-          type: "input",
-        },
-        {
           name: "mastodon",
           label: "Mastodon",
           hint: null,
@@ -443,7 +437,6 @@ export default {
           homepage: this.user().metadata.homepage,
           profile_type: this.user().metadata.profile_type,
           orcid: this.user().metadata.orcid,
-          twitter: this.user().metadata.twitter,
           mastodon: this.user().metadata.mastodon,
           bluesky: this.user().metadata.bluesky,
         };

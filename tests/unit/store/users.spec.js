@@ -183,8 +183,7 @@ describe("Actions/Mutations", () => {
       is_super_curator: false,
       role: null,
       third_party: false,
-      orcid: 123456,
-      twitter: "terazus",
+      orcid: 123456
     };
     getStub.withArgs("user").returns(JSON.stringify(user));
     mutations.setUser(state, user);
@@ -203,8 +202,7 @@ describe("Actions/Mutations", () => {
       is_super_curator: false,
       role: null,
       third_party: false,
-      orcid: 123456,
-      twitter: "terazus",
+      orcid: 123456
     });
   });
 

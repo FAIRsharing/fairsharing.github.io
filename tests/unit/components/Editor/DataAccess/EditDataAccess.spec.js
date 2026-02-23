@@ -1,6 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import DataAccess from "@/components/Editor/DataAccess/EditDataAccess.vue";
@@ -9,12 +16,8 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
-const sinon = require("sinon");
-const VueScrollTo = require("vue-scrollto");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo);
+const sinon = require("sinon");
 
 recordStore.state.sections = {
   dataAccess: {
@@ -47,9 +50,7 @@ const $store = new Vuex.Store({
       users: userStore,
     },
   }),
-  vuetify = new Vuetify(),
-  router = new VueRouter(),
-  $router = { push: jest.fn() };
+  $router = { push: vi.fn() };
 let graphStub,
   restStub,
   wrapper,
@@ -67,10 +68,10 @@ describe("Edit -> DataAccess.vue", function () {
   });
   beforeEach(async () => {
     wrapper = await shallowMount(DataAccess, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [$store],
+        mocks: { $route, $router },
+      },
     });
   });
   afterAll(async () => {
@@ -102,7 +103,8 @@ describe("Edit -> DataAccess.vue", function () {
   });
 
   it("can save a record", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    const btn = { textContent: "Save and continue" };
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: "GG!" });
     graphStub.restore();
@@ -121,7 +123,7 @@ describe("Edit -> DataAccess.vue", function () {
         },
       },
     });
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, btn);
     expect(recordStore.state.sections.dataAccess.error).toBe(null);
     expect(recordStore.state.sections.dataAccess.message).toBe(
       "Record successfully updated!",
@@ -138,7 +140,7 @@ describe("Edit -> DataAccess.vue", function () {
         fairsharingRecord: { id: 123 },
       },
     ];
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, btn);
     expect(recordStore.state.sections.dataAccess.error).toBe(null);
     expect(recordStore.state.sections.dataAccess.message).toBe(
       "Record successfully updated!",
@@ -148,6 +150,12 @@ describe("Edit -> DataAccess.vue", function () {
     restStub.returns({ data: { error: "I am en error !" } });
     await wrapper.vm.saveRecord(true);
     expect(recordStore.state.sections.dataAccess.error).toBe(true);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+  });
+
+  it("handles save and exit with redirect", async () => {
+    const btn = { textContent: "Save and exit" };
+    await wrapper.vm.saveRecord(true, btn);
+    expect(wrapper.vm.message.error).toBe(false);
   });
 });

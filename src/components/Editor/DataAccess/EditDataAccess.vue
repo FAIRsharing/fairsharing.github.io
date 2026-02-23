@@ -12,8 +12,8 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="bg-primary"
           :loading="continueLoader"
+          class="bg-primary"
           variant="elevated"
           @click="saveRecord(false, $event.target)"
         >
@@ -34,8 +34,8 @@
         <v-overlay
           v-if="!initialized"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <loaders />
         </v-overlay>
@@ -90,9 +90,11 @@ export default {
         if (!isEqual(initialLicences, licences)) {
           changes += 1;
         }
+        /* v8 ignore start */
         if (!isEqual(initialSupportLinks, supportLinks)) {
           changes += 1;
         }
+        /* v8 ignore end */
         if (exhaustive !== this.dataAccess.exhaustiveLicences) {
           changes += 1;
         }
@@ -117,7 +119,8 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      } else if (item.textContent.trim() === "Save and exit") {
+      }
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

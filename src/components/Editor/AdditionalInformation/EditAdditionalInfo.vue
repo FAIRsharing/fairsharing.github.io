@@ -155,7 +155,14 @@
                     location="bottom"
                   >
                     <template #activator="{ props }">
-                      <v-icon v-bind="props"> fas fa-question-circle </v-icon>
+                      <v-icon
+                        class="mr-2"
+                        color="grey"
+                        size="x-small"
+                        v-bind="props"
+                      >
+                        fas fa-question-circle
+                      </v-icon>
                     </template>
                     {{ getFields("object")[fieldName]["description"] }}
                   </v-tooltip>

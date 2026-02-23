@@ -2,7 +2,7 @@
   <div
     v-if="fieldName"
     :class="{ reposition: !isSwitch }"
-    class="d-flex flex-row"
+    class="d-flex flex-row align-center mb-5"
   >
     <v-tooltip
       v-if="fieldProps.description"
@@ -10,7 +10,9 @@
       location="bottom"
     >
       <template #activator="{ props }">
-        <v-icon v-bind="props"> fas fa-question-circle</v-icon>
+        <v-icon class="mr-2" color="grey" v-bind="props">
+          fas fa-question-circle</v-icon
+        >
       </template>
       {{ fieldProps.description }}
     </v-tooltip>
@@ -21,6 +23,7 @@
       :model-value="target()"
       :rules="rules"
       class="textField"
+      hide-details
       variant="outlined"
       width="80%"
       @update:model-value="setField($event)"
@@ -32,6 +35,7 @@
       :label="getName"
       :model-value="target()"
       class="field"
+      hide-details
       variant="outlined"
       @update:model-value="setField($event)"
     />
@@ -141,7 +145,8 @@ export default {
       if (!this.fields[this.fieldName]) {
         if (!this.subfieldName) {
           this.fields[this.fieldName] = null;
-        } else {
+        }
+        else {
           this.fields[this.fieldName] = {};
         }
       }

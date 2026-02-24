@@ -47,6 +47,19 @@ global.CSS = {
   escape: (str) => str,
 };
 
+if (!Object.groupBy) {
+  Object.groupBy = (items, callback) => {
+    return items.reduce((acc, item) => {
+      const key = callback(item);
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(item);
+      return acc;
+    }, {});
+  };
+}
+
 // --- 5. Silence Vue warnings (Optional) ---
 // If you want to suppress specific warnings (like "Vuetify is not installed"), you can do it here.
 // const originalConsoleWarn = console.warn;

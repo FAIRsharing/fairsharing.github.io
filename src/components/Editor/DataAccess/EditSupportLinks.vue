@@ -265,7 +265,7 @@ export default {
         if (this.reactToTypeChange && this.edit.template) {
           this.edit.template.url = {};
         }
-        /* istanbul ignore else */
+        /* v8 ignore next 3 */
         if (this.$refs["editSupportLink"])
           this.$refs["editSupportLink"].validate();
         this.reactToTypeChange = true;
@@ -327,7 +327,8 @@ export default {
       }
       if (id !== null) {
         this.sections.dataAccess.data.support_links[id] = newLink;
-      } else {
+      }
+      else {
         this.sections.dataAccess.data.support_links[
           this.sections.dataAccess.data.support_links.length
         ] = newLink;
@@ -348,6 +349,7 @@ export default {
           return index;
         }
         index += 1;
+        /* v8 ignore next */
       }
     },
     isNew(item) {

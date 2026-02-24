@@ -1,17 +1,14 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vue from "vue";
-import Vuetify from "vuetify";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import EditSupportLinks from "@/components/Editor/DataAccess/EditSupportLinks.vue";
 import ExternalClients from "@/lib/Client/ExternalClients.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
+
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-const vuetify = new Vuetify();
-localVue.use(Vuex);
 let $route = { path: "/123/edit", params: { id: 123 } };
 recordStore.state.sections = {
   dataAccess: {
@@ -67,14 +64,20 @@ describe("Edit -> EditSupportLinks.vue", function () {
       },
     };
     wrapper = await shallowMount(EditSupportLinks, {
-      localVue,
-      vuetify,
-      mocks: { $store, $route },
+      global: {
+        plugins: [$store],
+        mocks: { $route },
+      },
       stubs: { "v-form": editSupportLink },
     });
   });
 
   it("can be mounted", () => {
+    wrapper.vm.rules.isRequired();
+    wrapper.vm.rules.isUrl();
+    wrapper.vm.rules.isEmail();
+    wrapper.vm.rules.isEmailOrUrl();
+    wrapper.vm.$options.watch.search.call(wrapper.vm);
     expect(wrapper.vm.$options.name).toMatch("EditSupportLinks");
     expect(wrapper.vm.isNew({ field: "test" })).toBe(true);
   });
@@ -166,7 +169,7 @@ describe("Edit -> EditSupportLinks.vue", function () {
       type: "TeSS links to training materials",
       url: "ABC",
     };
-    await Vue.nextTick();
+    await wrapper.vm.$nextTick();
     expect(wrapper.vm.edit.template.url).toStrictEqual("ABC");
   });
 
@@ -181,5 +184,25 @@ describe("Edit -> EditSupportLinks.vue", function () {
       object,
     ];
     expect(wrapper.vm.getLinkIndex(object)).toBe(1);
+  });
+
+  it("can check displayGroupData method", () => {
+    const item = [{ name: "asparagus", type: "vegetables", quantity: 9 }];
+    const output = {
+      vegetables: [{ name: "asparagus", type: "vegetables", quantity: 9 }],
+    };
+    wrapper.vm.displayGroupData(item);
+    expect(wrapper.vm.displayGroupData(item)).toStrictEqual(output);
+  });
+
+  it("can check rule computed property", () => {
+    wrapper.vm.edit.template = {};
+    expect(wrapper.vm.rule).toBe(null);
+
+    wrapper.vm.edit.template = {
+      type: "Other",
+      url: "https://example.com/test",
+    };
+    expect(wrapper.vm.rule).toBe("url");
   });
 });

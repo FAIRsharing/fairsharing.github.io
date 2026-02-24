@@ -134,7 +134,7 @@ class AlertBuilder {
       );
       this.alerts["isIncomplete"] = {
         type: "info",
-        message: `This record is incomplete and  <b>will not be issued with a DOI</b> until at least all required fields have been completed. Still missing: ${final.join(
+        message: `This record is incomplete and  <b>will not be issued with a DOI</b> until at least all required fields have been completed. Affected fields: ${final.join(
           ", "
         )}.`,
       };
@@ -158,7 +158,7 @@ class AlertBuilder {
       );
       this.alerts["isMissingRecommendedFields"] = {
         type: "info",
-        message: `This record is missing at least one recommended field. Still missing: ${final.join(
+        message: `This record is missing at least one recommended field. Affected fields: ${final.join(
           ", "
         )}.`,
       };

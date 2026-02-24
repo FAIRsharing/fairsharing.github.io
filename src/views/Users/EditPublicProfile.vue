@@ -249,12 +249,6 @@ export default {
           ]
         },
         {
-          name: "twitter",
-          label: "Twitter",
-          hint: null,
-          type: "input"
-        },
-        {
           name: "mastodon",
           label: "Mastodon",
           hint: null,
@@ -328,7 +322,6 @@ export default {
         homepage: null,
         profile_type: null,
         orcid: null,
-        twitter: null,
         mastodon: null,
         bluesky: null,
         deactivated:null,
@@ -400,7 +393,6 @@ export default {
         this.formData.profile_type = this.currentPublicUser.profile_type;
         this.formData.role = this.currentPublicUser.role;
         this.formData.orcid = this.currentPublicUser.orcid;
-        this.formData.twitter = this.currentPublicUser.twitter;
         this.formData.mastodon = this.currentPublicUser.mastodon;
         this.formData.bluesky = this.currentPublicUser.bluesky;
         this.formData.deactivated = !this.currentPublicUser.deactivated;

@@ -108,5 +108,80 @@ describe("AlertBuilder", () => {
         expect(Object.keys(resp.alerts).length).toBe(0);
     });
 
+    it("can show required components missing", () => {
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          doi: 'FAIRsharing.abc123',
+          incomplete: {
+            required: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
+          },
+        },
+      });
+      resp = alertBuilder.isIncomplete();
+      expect(Object.keys(resp.alerts).length).toBe(1);
+      expect(resp.alerts.isIncomplete.message).toMatch(/missing at least one required field/);
+
+      alertBuilder = new AlertBuilder(
+        {
+          fairsharingRecord: {
+            incomplete: {
+              required: [
+                {
+                  url: "http://notagoat.cx",
+                  field: "field_name"
+                }
+              ]
+            }
+          }
+        },
+      );
+      resp = alertBuilder.isIncomplete();
+      expect(Object.keys(resp.alerts).length).toBe(1);
+      expect(resp.alerts.isIncomplete.message).toMatch(
+        /not be issued with a DOI/
+      );
+
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          incomplete: {
+            required: [],
+          },
+        },
+      });
+      resp = alertBuilder.isIncomplete();
+      expect(Object.keys(resp.alerts).length).toBe(0);
+    })
+
+    it("can show recommended components missing", () => {
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          incomplete: {
+            recommended: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
+          },
+        },
+      });
+      resp = alertBuilder.isMissingRecommendedFields();
+      expect(Object.keys(resp.alerts).length).toBe(1);
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          incomplete: {
+            recommended: [],
+          },
+        },
+      });
+      resp = alertBuilder.isMissingRecommendedFields();
+      expect(Object.keys(resp.alerts).length).toBe(0);
+    });
+
 
 });

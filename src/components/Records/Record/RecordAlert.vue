@@ -2,13 +2,11 @@
   <v-alert
     dense
     :type="type"
-    class="mb-2 flex-grow-1"
+    class="mb-2 flex-grow-1 text-center"
+    :icon="type === 'info' ? 'fas fa-circle-exclamation' : null"
   >
     <!-- eslint-disable vue/no-v-html -->
-    <span
-      id="message-text"
-      v-html="message"
-    />
+    <span id="message-text" v-html="message" />
     <!-- eslint-enable vue/no-v-html -->
   </v-alert>
 </template>
@@ -17,10 +15,10 @@
 export default {
   name: "RecordAlert",
   props: {
-    message: {default: null, type: String},
-    type: {default: 'info', type: String},
-  }
-}
+    message: { default: null, type: String },
+    type: { default: "info", type: String },
+  },
+};
 </script>
 
 <style scoped>

@@ -619,6 +619,7 @@ export default {
           .isAlreadyClaimed(this.alreadyClaimed)
           .isHidden()
           .isIncomplete()
+          .isMissingRecommendedFields()
           .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
       _module.alerts = alertBuilder.getAlerts();
     },

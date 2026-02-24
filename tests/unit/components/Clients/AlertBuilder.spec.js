@@ -136,5 +136,31 @@ describe("AlertBuilder", () => {
       expect(Object.keys(resp.alerts).length).toBe(0);
     })
 
+    it("can show recommended components missing", () => {
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          incomplete: {
+            recommended: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
+          },
+        },
+      });
+      resp = alertBuilder.isMissingRecommendedFields();
+      expect(Object.keys(resp.alerts).length).toBe(1);
+      alertBuilder = new AlertBuilder({
+        fairsharingRecord: {
+          incomplete: {
+            recommended: [],
+          },
+        },
+      });
+      resp = alertBuilder.isMissingRecommendedFields();
+      expect(Object.keys(resp.alerts).length).toBe(0);
+    });
+
 
 });

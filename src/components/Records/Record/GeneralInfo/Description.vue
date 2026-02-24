@@ -10,12 +10,14 @@
       <b>Description</b>
     </span>
 
-    <!-- use v-html to inject sanitized HTML -->
+    <!-- this should have been sanitised... -->
+    <!-- eslint-disable vue/no-v-html -->
     <p
       class="ma-0 full-width ml-md-12 ml-8"
       :class="{ 'text-end': $vuetify.breakpoint.smAndDown }"
       v-html="descriptionHtml"
     />
+    <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>
 

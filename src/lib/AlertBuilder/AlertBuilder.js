@@ -132,9 +132,16 @@ class AlertBuilder {
           );
         }
       );
+      let message;
+      if (this.currentRecord.fairsharingRecord.doi) {
+        message = 'This record is missing at least one required field.';
+      }
+      else {
+        message = 'This record is incomplete and <b>will not be issued with a DOI</b> until at least all required fields have been completed.';
+      }
       this.alerts["isIncomplete"] = {
         type: "info",
-        message: `This record is incomplete and  <b>will not be issued with a DOI</b> until at least all required fields have been completed. Affected fields: ${final.join(
+        message: `${message} Affected fields: ${final.join(
           ", "
         )}.`,
       };

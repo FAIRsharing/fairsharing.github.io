@@ -3,6 +3,7 @@
     dense
     :type="type"
     class="mb-2 flex-grow-1 text-center"
+    icon="fas fa-circle-exclamation"
   >
     <!-- eslint-disable vue/no-v-html -->
     <span

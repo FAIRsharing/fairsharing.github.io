@@ -126,9 +126,9 @@ class AlertBuilder {
       this.currentRecord.fairsharingRecord.incomplete.required.forEach(
         (missing) => {
           final.push(
-            `<a class="white--text text-decoration-underline" href="${
+            `<a class="white--text text-decoration-underline" target="_blank" href="${
               missing.url
-            }">${missing.field.replace("_", " ")}</a>`
+            }">${missing.field.replace(/_/g, " ")}</a>`
           );
         }
       );
@@ -159,7 +159,9 @@ class AlertBuilder {
       this.currentRecord.fairsharingRecord.incomplete.recommended.forEach(
         (missing) => {
           final.push(
-            `<a class="white--text text-decoration-underline" href="${missing.url}">${missing.field.replace("_", " ")}</a>`
+            `<a class="white--text text-decoration-underline" target="_blank" href="${
+              missing.url
+            }">${missing.field.replace(/_/g, " ")}</a>`
           );
         }
       );

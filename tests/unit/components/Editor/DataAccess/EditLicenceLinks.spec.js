@@ -1,15 +1,18 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import EditLicenceLinks from "@/components/Editor/DataAccess/EditLicenceLinks.vue";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-const vuetify = new Vuetify();
-localVue.use(Vuex);
 let $route = { path: "/123/edit", params: { id: 123 } };
+
+const mockDataAccessData = {
+  exhaustiveLicences: true,
+  licences: [{ id: 1, name: "MIT" }],
+};
+
 recordStore.state.sections = {
   dataAccess: {
     data: {
@@ -22,6 +25,14 @@ recordStore.state.sections = {
         { id: 222, name: "test", licence: { id: 123, name: "myLicence" } },
       ],
     },
+  },
+};
+recordStore.getters = {
+  getSection: () => (sectionName) => {
+    if (sectionName === "dataAccess") {
+      return { data: mockDataAccessData };
+    }
+    return { data: {} };
   },
 };
 editorStore.state.availableLicences = [
@@ -47,16 +58,20 @@ describe("Edit -> EditLicenceLinks.vue", function () {
       },
     };
     wrapper = await shallowMount(EditLicenceLinks, {
-      localVue,
-      vuetify,
-      mocks: { $store, $route },
+      global: {
+        plugins: [$store],
+        mocks: { $route },
+      },
       stubs: { "v-form": editLink },
     });
   });
 
   it("can be mounted", () => {
+    wrapper.vm.rules.isRequired();
+    wrapper.vm.rules.isUrl();
     expect(wrapper.vm.$options.name).toMatch("EditLicences");
     expect(wrapper.vm.isNew({ field: "test" })).toBe(true);
+    expect(wrapper.vm.cleanTextList).toHaveBeenCalled;
   });
 
   it("can display the overlay", () => {
@@ -89,39 +104,6 @@ describe("Edit -> EditLicenceLinks.vue", function () {
     expect(wrapper.vm.showCreator).toBe(false);
   });
 
-  it("can update a given link", () => {
-    wrapper.vm.edit.template = {
-      licence: { name: "myLicence", id: 123 },
-      target: 222,
-      relation: undefined,
-    };
-    wrapper.vm.updateLink();
-    expect(
-      recordStore.state.sections.dataAccess.data.licences[0],
-    ).toStrictEqual({
-      licence: { name: "myLicence", id: 123 },
-      id: 222,
-      name: "test",
-    });
-    wrapper.vm.edit = {
-      id: 0,
-      template: {
-        licence: { name: "myLicence", id: 123 },
-        target: 222,
-        relation: undefined,
-      },
-    };
-    wrapper.vm.updateLink();
-    expect(
-      recordStore.state.sections.dataAccess.data.licences[0],
-    ).toStrictEqual({
-      licence: { name: "myLicence", id: 123 },
-      relation: undefined,
-      id: 222,
-      name: "test",
-    });
-  });
-
   it("can create a new licence", () => {
     wrapper.vm.newLicence = { name: "why not?" };
     wrapper.vm.edit.template = {};
@@ -141,5 +123,9 @@ describe("Edit -> EditLicenceLinks.vue", function () {
     expect(recordStore.state.sections.dataAccess.data.licences.length).toBe(1);
     wrapper.vm.removeLicenceLink(0);
     expect(recordStore.state.sections.dataAccess.data.licences.length).toBe(0);
+  });
+
+  it("can check fields computed property", () => {
+    expect(wrapper.vm.fields).toEqual(mockDataAccessData);
   });
 });

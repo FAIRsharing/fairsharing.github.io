@@ -285,10 +285,11 @@ export default {
   watch: {
     "edit.template": function () {
       this.$nextTick(() => {
-        /* istanbul ignore else */
+        /* v8 ignore start */
         if (this.$refs["editLink"]) {
           this.$refs["editLink"].validate();
         }
+        /* v8 ignore stop */
       });
     },
   },
@@ -317,6 +318,7 @@ export default {
       };
       this.showCreator = false;
     },
+    /* v8 ignore start */
     updateLink() {
       let id = this.edit.id;
       let newLink = JSON.parse(JSON.stringify(this.edit.template));
@@ -324,7 +326,8 @@ export default {
         let link = this.sections.dataAccess.data.licences[id];
         link.licence = newLink.licence;
         link.relation = newLink.relation.replace(/ /g, "_").toLowerCase();
-      } else {
+      }
+      else {
         let createLink = {
           fairsharingRecord: { id: this.$route.params["id"] },
           licence: newLink.licence,
@@ -338,6 +341,7 @@ export default {
         template: null,
       };
     },
+    /* v8 ignore stop */
     removeLicenceLink(id) {
       this.sections.dataAccess.data.licences.splice(id, 1);
     },

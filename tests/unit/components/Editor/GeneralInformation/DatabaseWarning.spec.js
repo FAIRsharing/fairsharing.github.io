@@ -1,13 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import DatabaseWarning from "@/components/Editor/GeneralInformation/DatabaseWarning.vue";
 import recordStore from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
 recordStore.state.sections = {
   generalInformation: {
     data: {
@@ -31,9 +28,9 @@ let wrapper;
 describe("Editor -> DatabaseWarning.vue", () => {
   beforeEach(() => {
     wrapper = shallowMount(DatabaseWarning, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+      global: {
+        plugins: [$store],
+      },
     });
   });
 

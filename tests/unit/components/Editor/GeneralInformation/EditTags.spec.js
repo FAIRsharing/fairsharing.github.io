@@ -1,18 +1,15 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import EditTags from "@/components/Editor/GeneralInformation/EditTags.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
-const sinon = require("sinon");
-const VueScrollTo = require("vue-scrollto");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo);
-const vuetify = new Vuetify();
+const sinon = require("sinon");
+
+const scrollToMock = vi.fn();
 
 recordStore.state.sections = {
   generalInformation: {
@@ -54,19 +51,22 @@ let wrapper;
 describe("Editor -> EditTags.vue", () => {
   beforeEach(() => {
     wrapper = shallowMount(EditTags, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+      global: {
+        plugins: [$store],
+        mocks: {
+          $scrollTo: scrollToMock,
+        },
+      },
     });
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("EditTags");
     expect(wrapper.vm.recordTags.length).toBe(5);
-    expect(wrapper.vm.buttonIcon).toBe("fa-plus-circle");
+    expect(wrapper.vm.buttonIcon).toBe("fas fa-plus-circle");
     expect(wrapper.vm.buttonLabel).toBe("Add/edit tags");
     wrapper.vm.menu.show = true;
-    expect(wrapper.vm.buttonIcon).toBe("fa-minus-circle");
+    expect(wrapper.vm.buttonIcon).toBe("fas fa-minus-circle");
     expect(wrapper.vm.buttonLabel).toBe("Hide table");
   });
 
@@ -83,12 +83,16 @@ describe("Editor -> EditTags.vue", () => {
   });
 
   it("can open/close the menu", () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     wrapper.vm.showMenu();
     expect(wrapper.vm.menu.show).toBe(true);
-    jest.clearAllMocks();
+    expect(scrollToMock).toHaveBeenCalledTimes(1);
+    expect(scrollToMock).toHaveBeenCalledWith("#editTags");
+    vi.clearAllMocks();
     wrapper.vm.showMenu();
     expect(wrapper.vm.menu.show).toBe(false);
+    expect(wrapper.vm.menu.show).toBe(false);
+    expect(scrollToMock).not.toHaveBeenCalled();
   });
 
   it("can remove a specific tag", () => {
@@ -126,5 +130,54 @@ describe("Editor -> EditTags.vue", () => {
     await wrapper.vm.getTags("test");
     expect(wrapper.vm.tags).toStrictEqual([newTag]);
     graphStub.restore();
+  });
+
+  it("handles formValid form v-model updates", async () => {
+    await wrapper.setData({ formValid: false });
+    const form = wrapper.findComponent({ name: "v-form" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.formValid).toBe(true);
+  });
+
+  it("can check isNew method", () => {
+    wrapper = shallowMount(EditTags, {
+      computed: {
+        initialSections() {
+          return {
+            tags: [{ id: 10, name: "Existing Item" }],
+          };
+        },
+      },
+      global: {
+        plugins: [$store],
+        mocks: {
+          $scrollTo: scrollToMock,
+        },
+      },
+    });
+    const termToCheck = { id: 10, name: "Existing Item" };
+    const result = wrapper.vm.isNew(termToCheck, "tags");
+    expect(result).toBe(false);
+  });
+
+  it("can check initialSections computed property", async () => {
+    let output = {
+      "taxonomic range":
+        wrapper.vm.getSection("generalInformation").initialData.taxonomies,
+    };
+    expect(wrapper.vm.initialSections).toStrictEqual(output);
+  });
+
+  it("can check sections computed property", async () => {
+    let output = {
+      "taxonomic range": {
+        items:
+          wrapper.vm.getSection("generalInformation").initialData.taxonomies,
+        color: wrapper.vm.colors["taxonomy"],
+        tooltip: wrapper.vm.tooltips.species,
+      },
+    };
+    expect(wrapper.vm.sections).toStrictEqual(output);
   });
 });

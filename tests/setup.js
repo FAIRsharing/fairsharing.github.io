@@ -60,6 +60,7 @@ if (!Object.groupBy) {
   };
 }
 
+
 // --- 5. Silence Vue warnings (Optional) ---
 // If you want to suppress specific warnings (like "Vuetify is not installed"), you can do it here.
 // const originalConsoleWarn = console.warn;

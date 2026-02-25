@@ -686,17 +686,16 @@ export default {
       // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
       // and then curators alerts(auth-needed orange ones) so blue ones stack,
       // then orange and then red/green [approval/rejection] ones.
-      let alertBuilder = new AlertBuilder(_module.currentRecord, this.user())
-        .isAwaitingApproval()
-        .isWatching(this.isWatching())
-        .isNeedingReview(this.needsReviewing(), this.error)
-        .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-        .isAlreadyClaimed(this.alreadyClaimed)
-        .isHidden()
-        .isOwnerShipApproved(
-          this.ownershipApprovalStatus,
-          this.isBannerExpired(),
-        );
+      let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
+          .isAwaitingApproval()
+          .isWatching(this.isWatching())
+          .isNeedingReview(this.needsReviewing(), this.error)
+          .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+          .isAlreadyClaimed(this.alreadyClaimed)
+          .isHidden()
+          .isIncomplete()
+          .isMissingRecommendedFields()
+          .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
       _module.alerts = alertBuilder.getAlerts();
     },
     ...mapActions("record", [

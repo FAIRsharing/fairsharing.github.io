@@ -70,18 +70,13 @@ class AlertBuilder {
     return this;
   }
 
-  isNeedingReviewAndBeenReviewed(isReviewPresent = false) {
-    if (
-      this.currentUser.is_curator &&
-      isReviewPresent &&
-      this.alerts.isNeedingReview
-    ) {
-      this.alerts["isNeedingReview"].message =
-        `This record is in need of periodic curator review. The last review was on ${this.currentRecord["fairsharingRecord"]["reviews"][0]["createdAt"].split(/T/)[0]}
-      by ${this.currentRecord["fairsharingRecord"]["reviews"][0]["user"]["username"]}.`;
+    isNeedingReviewAndBeenReviewed(isReviewPresent = false) {
+        if (this.currentUser.is_curator && isReviewPresent && this.alerts.isNeedingReview) {
+            this.alerts['isNeedingReview'].message = `This record is in need of periodic curator review. The last review was on ${this.currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0]}
+      by ${this.currentRecord['fairsharingRecord']['reviews'][0]['user']['username']}.`
+        }
+        return this;
     }
-    return this;
-  }
 
   isAlreadyClaimed(isAlreadyClaimed) {
     if (isAlreadyClaimed) {
@@ -102,6 +97,65 @@ class AlertBuilder {
       this.alerts["isHidden"] = {
         type: "warning",
         message: "This record is hidden!",
+      };
+    }
+    return this;
+  }
+
+  // Record lacks required fields and won't get a DOI.
+  isIncomplete() {
+    if (!this.currentRecord.fairsharingRecord.incomplete) {
+      return this;
+    }
+    if (this.currentRecord.fairsharingRecord.incomplete.required.length > 0) {
+      let final = [];
+      this.currentRecord.fairsharingRecord.incomplete.required.forEach(
+        (missing) => {
+          final.push(
+            `<a class="white--text text-decoration-underline" target="_blank" href="${
+              missing.url
+            }">${missing.field.replace(/_/g, " ")}</a>`
+          );
+        }
+      );
+      let message;
+      if (this.currentRecord.fairsharingRecord.doi) {
+        message = 'This record is missing at least one required field.';
+      }
+      else {
+        message = 'This record is incomplete and <b>will not be issued with a DOI</b> until at least all required fields have been completed.';
+      }
+      this.alerts["isIncomplete"] = {
+        type: "info",
+        message: `${message} Affected fields: ${final.join(
+          ", "
+        )}.`,
+      };
+    }
+    return this;
+  }
+
+  // Record lacks some recommended fields but could get a DOI.
+  isMissingRecommendedFields() {
+    if (!this.currentRecord.fairsharingRecord.incomplete) {
+      return this;
+    }
+    if (this.currentRecord.fairsharingRecord.incomplete.recommended.length > 0) {
+      let final = [];
+      this.currentRecord.fairsharingRecord.incomplete.recommended.forEach(
+        (missing) => {
+          final.push(
+            `<a class="white--text text-decoration-underline" target="_blank" href="${
+              missing.url
+            }">${missing.field.replace(/_/g, " ")}</a>`
+          );
+        }
+      );
+      this.alerts["isMissingRecommendedFields"] = {
+        type: "info",
+        message: `This record is missing at least one recommended field. Affected fields: ${final.join(
+          ", "
+        )}.`,
       };
     }
     return this;

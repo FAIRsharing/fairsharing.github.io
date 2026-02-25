@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="formValid">
+  <v-form ref="form" v-model="formValid" validate-on="input eager">
     <v-fade-transition>
       <div>
         <v-overlay
@@ -237,11 +237,11 @@
           <!-- Item selected -->
           <template #chip="data">
             <v-chip
-              v-if="data.item.title"
+              v-if="data.item.raw.name"
               class="bg-blue text-white text-capitalize"
               closable
             >
-              {{ data.item.title.replace(/_/g, " ") }}
+              {{ data.item.raw.name.replace(/_/g, " ") }}
             </v-chip>
           </template>
           <!-- select list data -->
@@ -679,7 +679,6 @@ export default {
     },
   },
   mounted() {
-    this.$refs.form.validate();
     if (
       this.$router.currentRoute.path !== "/create" &&
       this.currentRecord.fairsharingRecord.urlForLogo

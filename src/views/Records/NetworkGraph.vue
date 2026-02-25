@@ -183,7 +183,7 @@
                         $vuetify.display.xsOnly
                           ? 'full-width'
                           : 'button-filters',
-                        distance['active'] ? 'text-white ' : 'black--text ',
+                        distance['active'] ? 'text-white ' : 'text-black ',
                       ]"
                       :color="getLengthColour(distance['hops'])"
                       :disabled="!buttonsActive"
@@ -397,7 +397,8 @@ export default {
           response[0].message === "record not found"
         ) {
           this.error = true;
-        } else if (
+        }
+        else if (
           !response.fairsharingGraph ||
           !response.fairsharingGraph.data ||
           response.fairsharingGraph.data.length === 0 ||
@@ -408,13 +409,15 @@ export default {
           this.registry = "N/A";
           this.type = "N/A";
           this.initialized = true;
-        } else {
+        }
+        else {
           this.graphData = response.fairsharingGraph.data;
           this.loading = false;
           this.registry = this.graphData.registry;
           this.type = this.graphData.type;
         }
-      } catch (e) {
+      }
+      catch (e) {
         console.error("Graph Data Error:", e);
         this.error = true;
         this.loading = false;
@@ -526,7 +529,8 @@ export default {
         this.loading = true;
         window.location.assign("/" + node);
         //this.loading = false;
-      } else {
+      }
+      else {
         this.loading = true;
         window.location.assign("/graph/" + node);
         //this.loading = false;
@@ -543,7 +547,8 @@ export default {
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
         return "#27aae1";
-      } else {
+      }
+      else {
         return "gray";
       }
     },

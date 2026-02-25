@@ -6,19 +6,19 @@
     >
       <span class="d-flex flex-column align-center">
         <v-progress-circular
+          :color="badge.progressColor"
+          :model-value="badge.progress"
           :rotate="360"
           :size="85"
           :width="10"
-          :model-value="badge.progress"
-          :color="badge.progressColor"
           class="mr-1"
         >
           <v-tooltip
             v-if="showProgressHover"
+            :color="badge.progressColor"
+            :open-on-hover="showProgressHover"
             location="bottom"
             offset="30"
-            :open-on-hover="showProgressHover"
-            :color="badge.progressColor"
           >
             <template #activator="{ props }">
               <div v-bind="props">
@@ -29,15 +29,15 @@
           </v-tooltip>
           <v-tooltip
             v-if="badge.icon"
-            location="top"
             :open-on-hover="showTextHover"
+            location="top"
           >
             <template #activator="{ props }">
               <div style="position: relative" v-bind="props">
                 <Icon
-                  style="cursor: help"
                   :item="badge.icon"
                   size="38"
+                  style="cursor: help"
                   wrapper-class=""
                 />
                 <!--   if the current badge is standard/policy/database then add a node icon over it               -->
@@ -50,9 +50,9 @@
                   class="extra-badge-holder"
                 >
                   <Icon
-                    style="position: absolute; top: 25%; left: 20%"
-                    item="nodes"
                     :height="15"
+                    item="nodes"
+                    style="position: absolute; top: 25%; left: 20%"
                     wrapper-class=""
                   />
                 </div>
@@ -62,13 +62,13 @@
           </v-tooltip>
           <record-status
             v-else
-            :show-only-status="true"
             :record="currentRecordLocal['fairsharingRecord']"
+            :show-only-status="true"
           />
         </v-progress-circular>
         <b
           v-if="showProgress && badge.progress > 0"
-          :class="[`${badge.progressColor}--text`]"
+          :class="[`text-${badge.progressColor}`]"
           >{{ badge.progress }}</b
         >
       </span>

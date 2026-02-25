@@ -6,7 +6,10 @@
     :icon="type === 'info' ? 'fas fa-circle-exclamation' : null"
   >
     <!-- eslint-disable vue/no-v-html -->
-    <span id="message-text" v-html="message" />
+    <span
+      id="message-text"
+      v-html="message"
+    />
     <!-- eslint-enable vue/no-v-html -->
   </v-alert>
 </template>

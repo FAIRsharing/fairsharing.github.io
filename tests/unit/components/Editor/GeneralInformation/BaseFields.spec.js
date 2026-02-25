@@ -1,18 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import sinon from "sinon";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { mount } from "@vue/test-utils";
 import Vuex from "vuex";
-
+import sinon from "sinon";
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
 
 // This is so the validation hacks work when testing.
 // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1732
@@ -52,9 +46,9 @@ const $store = new Vuex.Store({
 const $route = {
   path: "/create",
 };
-const router = new VueRouter();
+
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
   currentRoute: {
     path: "/edit/123",
   },
@@ -63,14 +57,14 @@ const $router = {
 let wrapper;
 
 describe("Editor -> BaseFields.vue", () => {
-  beforeAll(() => {
-    wrapper = shallowMount(BaseFields, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+  beforeEach(() => {
+    wrapper = mount(BaseFields, {
+      global: {
+        plugins: [$store],
+        mocks: { $route, $router },
+      },
       stubs: { "v-form": VueFormStub },
-      propsData: {
+      props: {
         createMode: false,
         submitRecord: false,
         loading: false,
@@ -141,5 +135,12 @@ describe("Editor -> BaseFields.vue", () => {
     logoStub.returns({});
     await wrapper.vm.deleteLogo();
     expect(wrapper.vm.currentLogo).toBeNull();
+  });
+
+  it("can check isDatabase method", async () => {
+    wrapper.vm.fields.type = { name: "repository" };
+    expect(wrapper.vm.isDatabase()).toBe(true);
+    // wrapper.vm.fields.type = { name: "test" };
+    // expect(wrapper.vm.isDatabase()).toBe(false);
   });
 });

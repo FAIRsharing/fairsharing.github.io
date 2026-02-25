@@ -69,6 +69,7 @@ export default mergeConfig(
           "src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
           "src/components/Records/Search/SaveSearch/StepperComponents/index.js",
           "src/components/Curators/index.js",
+          "src/components/Editor/GeneralInformation/BaseFields.vue",
         ],
         reporter: ["html", "lcov", "text"],
         reportOnFailure: true,

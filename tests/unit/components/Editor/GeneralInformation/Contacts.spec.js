@@ -1,13 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import Contact from "@/components/Editor/GeneralInformation/Contact.vue";
 import recordStore from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
 let contact = {
   contact_name: "jean",
   contact_email: "jean@test.com",
@@ -47,9 +44,9 @@ const formValidation = {
 describe("Editor -> Contact.vue", () => {
   beforeEach(() => {
     wrapper = shallowMount(Contact, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+      global: {
+        plugins: [$store],
+      },
       stubs: { "v-form": formValidation },
     });
   });
@@ -126,5 +123,13 @@ describe("Editor -> Contact.vue", () => {
   it("can add the contact", () => {
     wrapper.vm.addItem();
     expect(wrapper.vm.submitted).toBe(false);
+  });
+
+  it("handles formValid form v-model updates", async () => {
+    await wrapper.setData({ formValid: false });
+    const form = wrapper.findComponent({ name: "v-form" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.formValid).toBe(true);
   });
 });

@@ -1,17 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import NewTags from "@/components/Editor/GeneralInformation/NewTags.vue";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
-const VueScrollTo = require("vue-scrollto");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo);
-const vuetify = new Vuetify();
+const scrollToMock = vi.fn();
 
 editorStore.state.allTags = [{ label: "not abc", model: "subject" }];
 recordStore.state.sections = {
@@ -25,17 +20,19 @@ const $store = new Vuex.Store({
 });
 
 let $route = { path: "/123/edit", params: { id: 123 } };
-const router = new VueRouter();
 
 let wrapper;
 
 describe("Editor -> NewTags.vue", () => {
-  beforeAll(() => {
+  beforeEach(() => {
     wrapper = shallowMount(NewTags, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route },
+      global: {
+        plugins: [$store],
+        mocks: {
+          $route,
+          $scrollTo: scrollToMock,
+        },
+      },
     });
   });
 
@@ -67,12 +64,17 @@ describe("Editor -> NewTags.vue", () => {
   });
 
   it("can add the add list to the record", () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     wrapper.vm.newTags = ["def", "ijk"];
     wrapper.vm.createTerms();
     expect(wrapper.vm.newTags).toStrictEqual([]);
     expect(wrapper.vm.loading).toStrictEqual(false);
     expect(wrapper.vm.showOverlay).toStrictEqual(false);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
+  });
+
+  it("can check email computed property", () => {
+    let output = "test";
+    expect(wrapper.vm.email).toBe(output);
   });
 });

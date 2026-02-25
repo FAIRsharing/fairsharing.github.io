@@ -57,9 +57,7 @@ export default {
 
       const unsafe = md.render(capitalized || "");
       // Sanitize the generated HTML to avoid XSS.
-      return DOMPurify.sanitize(unsafe, {
-        // ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
-      });
+      return DOMPurify.sanitize(unsafe);
     },
   },
 };

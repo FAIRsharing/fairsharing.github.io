@@ -17,8 +17,7 @@
         "id",
         "username",
         "email",
-        "orcid",
-        "twitter"
+        "orcid"
       ]
     },
     {

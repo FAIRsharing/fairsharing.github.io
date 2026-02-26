@@ -562,8 +562,7 @@ export default {
       userHeaders: [
         {text: 'Username', value: 'username', align: 'center'},
         {text: 'Email address', value: 'email', align: 'center'},
-        {text: 'ORCID ID', value: 'orcid', align: 'center'},
-        {text: 'Twitter', value: 'twitter', align: 'center'},
+        {text: 'ORCID ID', value: 'orcid', align: 'center'}
       ],
       showEditDialog: false,
       editFormValid: false,

@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue";
@@ -8,11 +8,9 @@ import RestClient from "@/lib/Client/RESTClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
 recordStore.state.sections = {
   organisations: { data: [{ id: 1, organisation: { name: "abc", id: 1 } }] },
 };
@@ -21,8 +19,20 @@ recordStore.state.editOrganisationLink = {
   data: { id: 1, organisation: { name: "abc", id: 1 } },
   id: 0,
 };
-editorStore.state.organisations = [];
-editorStore.state.grants = [];
+editorStore.state.organisations = [{ id: 1, name: "Existing Org" }];
+(editorStore.state.organisationsTypes = [
+  { id: 1, name: "Government" },
+  { id: 2, name: "Nonprofit" },
+  { id: 3, name: "Education" },
+  { id: 4, name: "Company" },
+  { id: 5, name: "Other" },
+  { id: 6, name: "Other" },
+  { id: 7, name: "Other" },
+  { id: 8, name: "Other" },
+  { id: 9, name: "Other" },
+  { id: 10, name: "Other" },
+]),
+(editorStore.state.grants = []);
 const $store = new Vuex.Store({
   modules: {
     editor: editorStore,
@@ -78,19 +88,24 @@ describe("Edit -> LinkOverlay.vue", function () {
 
   beforeEach(async () => {
     wrapper = await shallowMount(LinkOverlay, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+      global: {
+        plugins: [$store],
+      },
       stubs: { "v-form": formValidation },
     });
   });
 
   it("can be mounted", () => {
     wrapper.vm.menus.show = "organisation";
+    wrapper.vm.rules.isRequired();
+    wrapper.vm.rules.isURL();
+    wrapper.vm.rules.isImage();
     expect(wrapper.vm.$options.name).toMatch("LinkOverlay");
     expect(wrapper.vm.organisationLinks).toStrictEqual([
       { id: 1, organisation: { name: "abc", id: 1 } },
     ]);
+    expect(wrapper.vm.cleanTextList).toHaveBeenCalled;
+    expect(wrapper.vm.relationValue).toHaveBeenCalled;
   });
 
   it("can check removeCountry", () => {
@@ -381,13 +396,86 @@ describe("Edit -> LinkOverlay.vue", function () {
     wrapper.vm.importROR = true;
     wrapper.vm.validName = false;
     wrapper.vm.menus.newOrganisation.data.name = "xyz";
-    wrapper.vm.$refs["createNewOrganisation"] = {
-      reset: jest.fn(),
-    };
+    // wrapper.vm.$refs["createNewOrganisation"] = {
+    //   reset: vi.fn(),
+    // };
     wrapper.vm.clearForm();
     expect(wrapper.vm.enterName).toBe(true);
     expect(wrapper.vm.importROR).toBe(false);
     expect(wrapper.vm.validName).toBe(true);
     expect(wrapper.vm.menus.newOrganisation.data.name).toBe("");
+  });
+
+  it("validates image size", () => {
+    // No logo -> Valid
+    expect(wrapper.vm.imageSizeCorrect()).toBe(true);
+
+    // Small logo -> Valid
+    wrapper.vm.menus.newOrganisation.logo = { size: 100 };
+    expect(wrapper.vm.imageSizeCorrect()).toBe(true);
+    expect(wrapper.emitted().imageTooBig[0]).toEqual([false]);
+
+    // Big logo -> Invalid (limit is 3145728)
+    wrapper.vm.menus.newOrganisation.logo = { size: 4000000 };
+    expect(wrapper.vm.imageSizeCorrect()).toBe(false);
+    expect(wrapper.emitted().imageTooBig[1]).toEqual([true]);
+  });
+
+  it("selectTypes method", () => {
+    /* Government */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["Government"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 1, name: "Government" }]);
+  });
+
+  it("selectTypes method for ELSE switch case for IF case", () => {
+    /* Government */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["government"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 1, name: "Government" }]);
+
+    /* Non profit */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["nonprofit"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 2, name: "Nonprofit" }]);
+
+    /* education */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["education"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 3, name: "Education" }]);
+
+    /* company */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["company"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 6, name: "Other" }]);
+
+    /* healthcare */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["healthcare"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 9, name: "Other" }]);
   });
 });

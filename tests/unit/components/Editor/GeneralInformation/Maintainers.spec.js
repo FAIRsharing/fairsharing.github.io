@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { afterAll, beforeEach, describe, expect, it } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Maintainers from "@/components/Editor/GeneralInformation/Maintainers.vue";
@@ -9,9 +9,6 @@ import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
 let maintainer = {
   username: "jean",
   id: 100,
@@ -57,13 +54,15 @@ describe("Editor -> Maintainers.vue", () => {
 
   beforeEach(() => {
     wrapper = shallowMount(Maintainers, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+      global: {
+        plugins: [$store],
+      },
     });
   });
 
   it("can be mounted", () => {
+    wrapper.vm.$options.watch.searchString.call(wrapper.vm, "test");
+    wrapper.vm.$options.watch.searchString.call(wrapper.vm, "te");
     expect(wrapper.vm.$options.name).toMatch("Maintainers");
     expect(
       wrapper.vm.getSection("generalInformation").data.maintainers,
@@ -130,5 +129,13 @@ describe("Editor -> Maintainers.vue", () => {
       orcid: null,
     };
     expect(wrapper.vm.isAlreadyMaintainer(nextMaintainer)).toBe(false);
+  });
+
+  it("handles formValid form v-model updates", async () => {
+    await wrapper.setData({ formValid: false });
+    const form = wrapper.findComponent({ name: "v-form" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.formValid).toBe(true);
   });
 });

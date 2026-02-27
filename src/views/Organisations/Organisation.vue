@@ -22,7 +22,10 @@
     <div v-else>
       <!-- new stuff below here -->
       <v-card
-        :color="$vuetify.theme.themes.bg_organisation_record_card"
+        :color="
+          theme.computedThemes.value.fairSharingTheme.colors
+            .bg_organisation_record_card
+        "
         class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column overflow-initial"
         elevation="3"
         rounded="0"
@@ -475,6 +478,7 @@ import NotFound from "@/views/Errors/404";
 import RestClient from "@/lib/Client/RESTClient.js";
 import { toBase64 } from "@/utils/generalUtils";
 import CountryFlag from "vue-country-flag-next";
+import { useTheme } from "vuetify/framework";
 
 let graphClient = new GraphClient();
 
@@ -490,6 +494,10 @@ export default {
     Loaders,
   },
   mixins: [stringUtils],
+  setup() {
+    const theme = useTheme();
+    return { theme };
+  },
   data: () => {
     return {
       error: true,

@@ -77,4 +77,12 @@ describe("Editor -> NewTags.vue", () => {
     let output = "test";
     expect(wrapper.vm.email).toBe(output);
   });
+
+  it("handles formValid form v-model updates", async () => {
+    await wrapper.setData({ formValid: false });
+    const form = wrapper.findComponent({ name: "v-form" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.formValid).toBe(true);
+  });
 });

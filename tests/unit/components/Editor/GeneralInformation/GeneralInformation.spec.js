@@ -1,7 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { config, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
@@ -13,16 +11,15 @@ import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+
 const sinon = require("sinon");
-const VueScrollTo = require("vue-scrollto");
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo);
-const vuetify = new Vuetify();
+
 const blob = new Blob(["image/jpg"]);
 const mFile = new File([blob], "img.jpeg", {
   type: "image/jpeg",
 });
+
+const scrollToMock = vi.fn();
 
 let record = {
   id: 123,
@@ -75,18 +72,18 @@ const $store = new Vuex.Store({
 });
 
 let $route = { path: "/123/edit", params: { id: 123 } };
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+
+const $router = { push: vi.fn() };
 
 describe("Edit -> GeneralInformation.vue", function () {
   let wrapper;
   let graphStub;
   beforeAll(async () => {
-    Vue.config.silent = true;
+    config.global.config.warnHandler = () => null;
 
     const fileContents = "data:image/png;base64,TEST1";
-    const readAsDataURL = jest.fn();
-    const addEventListener = jest.fn((_, evtHandler) => {
+    const readAsDataURL = vi.fn();
+    const addEventListener = vi.fn((_, evtHandler) => {
       evtHandler({
         target: { result: fileContents },
       });
@@ -96,7 +93,7 @@ describe("Edit -> GeneralInformation.vue", function () {
       readAsDataURL,
       result: fileContents,
     };
-    window.FileReader = jest.fn(() => dummyFileReader);
+    window.FileReader = vi.fn(() => dummyFileReader);
 
     // jest.mock('toBase64', () => Promise.resolve('value'))
 
@@ -135,16 +132,20 @@ describe("Edit -> GeneralInformation.vue", function () {
     });
 
     wrapper = await shallowMount(GeneralInfo, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [$store],
+        mocks: {
+          $route,
+          $router,
+          $scrollTo: scrollToMock,
+        },
+      },
     });
   });
 
   afterAll(() => {
     graphStub.restore();
-    Vue.config.silent = false;
+    // Vue.config.silent = false;
   });
 
   it("can be mounted", async () => {
@@ -152,13 +153,24 @@ describe("Edit -> GeneralInformation.vue", function () {
     // expect(wrapper.vm.currentFields).toStrictEqual(wrapper.vm.initialFields);
     await wrapper.vm.getData();
     expect(wrapper.vm.currentFields.type).toBe("abc");
-    expect(wrapper.vm.message.type()).toBe("success");
-    recordStore.state.sections.generalInformation.error = true;
-    expect(wrapper.vm.message.type()).toBe("error");
-    recordStore.state.sections.generalInformation.error = false;
+    // expect(wrapper.vm.message.type()).toBe("success");
+    // recordStore.state.sections.generalInformation.error = true;
+    // expect(wrapper.vm.message.type()).toBe("error");
+    // recordStore.state.sections.generalInformation.error = false;
     expect(wrapper.vm.section).toStrictEqual(
       recordStore.state.sections.generalInformation,
     );
+  });
+
+  it("can test message computed property when error is false", async () => {
+    wrapper.vm.getSection("generalInformation").error = false;
+    expect(wrapper.vm.message.type()).toBe("success");
+  });
+
+  it("can test message computed property when error is true", async () => {
+    wrapper.vm.getSection("generalInformation").error = true;
+    wrapper.vm.getSection("generalInformation").message = "test value";
+    expect(wrapper.vm.message.type()).toBe("error");
   });
 
   it("can react to changes to currentFields", async () => {
@@ -194,13 +206,14 @@ describe("Edit -> GeneralInformation.vue", function () {
     expect(wrapper.vm.getChanges["generalInformation"]).toBe(2);
 
     wrapper.vm.initialized = false;
-    await Vue.nextTick();
+    await wrapper.vm.$nextTick();
     wrapper.vm.currentFields.name = "???";
     expect(wrapper.vm.getChanges["generalInformation"]).toBe(2);
   });
 
   it("can save record", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    const btn = { textContent: "Save and continue" };
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     wrapper.vm.currentFields.userDefinedTags = [
       { label: "newUserDefinedTag" },
       { label: "existingUserDefinedTag", id: 555 },
@@ -217,38 +230,39 @@ describe("Edit -> GeneralInformation.vue", function () {
       name: "none",
     });
     wrapper.vm.currentFields.metadata.deprecation_reason = "should be deleted"; // non-deprecated records should delete this
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, true, btn);
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     expect($router.push).toHaveBeenCalledTimes(1);
     expect(wrapper.vm.currentFields.metadata.deprecation_reason).toBeFalsy();
     wrapper.vm.currentFields.status = "deprecated";
     wrapper.vm.currentFields.metadata.deprecation_reason =
       "should not be deleted"; // now it's deprecated this should remain
-    await wrapper.vm.saveRecord(true, true);
+    await wrapper.vm.saveRecord(true, true, btn);
     expect(wrapper.vm.currentFields.metadata.deprecation_reason).toEqual(
       "should not be deleted",
     );
     wrapper.vm.currentFields.type = { id: 789 };
-    await wrapper.vm.saveRecord(false, false);
+    await wrapper.vm.saveRecord(false, false, btn);
     expect($router.push).toHaveBeenCalledTimes(2);
     tagStub.restore();
     postStub.restore();
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     postStub = sinon.stub(RestClient.prototype, "updateRecord");
     postStub.returns({ error: { response: { data: "error" } } });
     tagStub = sinon.stub(RestClient.prototype, "createNewUserDefinedTag");
     tagStub.returns({
       error: { response: { data: "error" } },
     });
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, false, btn);
     expect(wrapper.vm.message.error).toBe(true);
     postStub.restore();
     tagStub.restore();
   });
 
   it("can raise a no species error", async () => {
+    const btn = { textContent: "Save and exit" };
     wrapper.vm.currentFields.taxonomies = [];
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, false, btn);
     expect(wrapper.vm.message.error).toBe(true);
   });
 
@@ -258,5 +272,23 @@ describe("Edit -> GeneralInformation.vue", function () {
     wrapper.vm.currentFields.type = "xyz";
     await wrapper.vm.checkTypeChange();
     expect(wrapper.vm.showTypeChanged).toBe(true);
+  });
+
+  it("can check closeTypeChanged method", async () => {
+    wrapper.vm.closeTypeChanged();
+    expect(wrapper.vm.showTypeChanged).toBe(false);
+  });
+
+  it("handles formValid form v-model updates", async () => {
+    await wrapper.setData({ formValid: false });
+    const form = wrapper.findComponent({ name: "v-form" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.formValid).toBe(true);
+  });
+
+  it("can check submitWithChangedType method", async () => {
+    await wrapper.vm.submitWithChangedType();
+    expect(wrapper.vm.showTypeChanged).toBe(false);
   });
 });

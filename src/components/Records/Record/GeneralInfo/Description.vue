@@ -3,7 +3,11 @@
     <span class="d-flex align-baseline width-15-percent-flex">
       <v-tooltip bottom>
         <template #activator="{ on }">
-          <v-icon class="mr-2" size="15" v-on="on"> fa-question-circle </v-icon>
+          <v-icon
+            class="mr-2"
+            size="15"
+            v-on="on"
+          > fa-question-circle </v-icon>
         </template>
         {{ recordTooltips.description }}
       </v-tooltip>

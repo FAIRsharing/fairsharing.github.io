@@ -121,56 +121,63 @@ class AlertBuilder {
     if (!this.currentRecord.fairsharingRecord.incomplete) {
       return this;
     }
-    if (this.currentRecord.fairsharingRecord.incomplete.required.length > 0) {
-      let final = [];
-      this.currentRecord.fairsharingRecord.incomplete.required.forEach(
-        (missing) => {
-          final.push(
-            `<a class="white--text text-decoration-underline" target="_blank" href="${
-              missing.url
-            }">${missing.field.replace(/_/g, " ")}</a>`
-          );
+    if (this.currentUser.is_curator || this.currentRecord.fairsharingRecord.maintainers.map(m => m.id).includes(this.currentUser.id)) {
+      if (this.currentRecord.fairsharingRecord.incomplete.required.length > 0) {
+        let final = [];
+        this.currentRecord.fairsharingRecord.incomplete.required.forEach(
+          (missing) => {
+            final.push(
+              `<a class="white--text text-decoration-underline" target="_blank" href="${
+                missing.url
+              }">${missing.field.replace(/_/g, " ")}</a>`
+            );
+          }
+        );
+        let message;
+        if (this.currentRecord.fairsharingRecord.doi) {
+          message = 'This record is missing at least one required field.';
         }
-      );
-      let message;
-      if (this.currentRecord.fairsharingRecord.doi) {
-        message = 'This record is missing at least one required field.';
+        else {
+          message = 'This record is incomplete and <b>will not be issued with a DOI</b> until at least all required fields have been completed.';
+        }
+        this.alerts["isIncomplete"] = {
+          type: "info",
+          message: `${message} Affected fields: ${final.join(
+            ", "
+          )}.`,
+        };
       }
-      else {
-        message = 'This record is incomplete and <b>will not be issued with a DOI</b> until at least all required fields have been completed.';
-      }
-      this.alerts["isIncomplete"] = {
-        type: "info",
-        message: `${message} Affected fields: ${final.join(
-          ", "
-        )}.`,
-      };
     }
     return this;
   }
 
   // Record lacks some recommended fields but could get a DOI.
   isMissingRecommendedFields() {
-    if (!this.currentRecord.fairsharingRecord.incomplete) {
+    if (
+      !this.currentRecord.fairsharingRecord.incomplete) {
       return this;
     }
-    if (this.currentRecord.fairsharingRecord.incomplete.recommended.length > 0) {
-      let final = [];
-      this.currentRecord.fairsharingRecord.incomplete.recommended.forEach(
-        (missing) => {
-          final.push(
-            `<a class="white--text text-decoration-underline" target="_blank" href="${
-              missing.url
-            }">${missing.field.replace(/_/g, " ")}</a>`
-          );
-        }
-      );
-      this.alerts["isMissingRecommendedFields"] = {
-        type: "info",
-        message: `This record is missing at least one recommended field. Affected fields: ${final.join(
-          ", "
-        )}.`,
-      };
+    if (this.currentUser.is_curator || this.currentRecord.fairsharingRecord.maintainers.map(m => m.id).includes(this.currentUser.id)) {
+      if (
+        this.currentRecord.fairsharingRecord.incomplete.recommended.length > 0
+      ) {
+        let final = [];
+        this.currentRecord.fairsharingRecord.incomplete.recommended.forEach(
+          (missing) => {
+            final.push(
+              `<a class="white--text text-decoration-underline" target="_blank" href="${
+                missing.url
+              }">${missing.field.replace(/_/g, " ")}</a>`
+            );
+          }
+        );
+        this.alerts["isMissingRecommendedFields"] = {
+          type: "info",
+          message: `This record is missing at least one recommended field. Affected fields: ${final.join(
+            ", "
+          )}.`,
+        };
+      }
     }
     return this;
   }

@@ -65,7 +65,7 @@ export default mergeConfig(
           "vitest.config.js",
           "vue.config.js",
           "webpack.config.js",
-          "views/Records/NetworkGraph.vue",
+          "src/views/Records/NetworkGraph.vue",
           "src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
           "src/components/Records/Search/SaveSearch/StepperComponents/index.js",
           "src/components/Curators/index.js",

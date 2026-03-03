@@ -37,7 +37,7 @@ const mockGraphResponse = {
     {
       id: "req-1",
       createdAt: "2023-01-01T10:00:00Z",
-      user: { id: "u1", username: "UserA" },
+      user: { id: "u1", username: "User A" },
       fairsharingRecord: {
         id: "rec-1",
         name: "Record A",
@@ -48,7 +48,7 @@ const mockGraphResponse = {
     {
       id: "req-2",
       createdAt: "2023-02-01T10:00:00Z",
-      user: { id: "u2", username: "UserB" },
+      user: { id: "u2", username: "User B" },
       fairsharingRecord: {
         id: "rec-2",
         name: "Record B",

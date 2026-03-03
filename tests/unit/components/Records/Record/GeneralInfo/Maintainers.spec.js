@@ -1,14 +1,9 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers.vue";
 import Record from "@/store/recordData.js";
 import users from "@/store/users";
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
 
 let editor = {
   namespaced: true,
@@ -41,9 +36,18 @@ describe("Maintainers.vue", function () {
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(Maintainers, {
-      localVue,
-      vuetify,
-      mocks: { $store },
+      global: {
+        plugins: [$store],
+        mocks: {
+          $vuetify: { display: { smAndDown: false } },
+          $route: { params: { id: "123" } },
+        },
+        stubs: {
+          "router-link": true,
+          RouterLink: true,
+          Icon: true,
+        },
+      },
     });
   });
 

@@ -8,23 +8,26 @@ import GraphClient from "@/lib/GraphClient/GraphClient";
 // -------------------------------------------------------------------------
 // 1. MOCK EXTERNAL DEPENDENCIES
 // -------------------------------------------------------------------------
+const graphClientMock = vi.hoisted(() => ({
+  setHeader: vi.fn(),
+  executeQuery: vi.fn(),
+}));
+
+const restClientMock = vi.hoisted(() => ({
+  updateStatusMaintenanceRequest: vi.fn(),
+  deleteRecord: vi.fn(),
+}));
 
 // Mock RESTClient and GraphClient classes
 vi.mock("@/lib/Client/RESTClient.js", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      updateStatusMaintenanceRequest: vi.fn(),
-      deleteRecord: vi.fn(),
-    })),
+    default: vi.fn().mockImplementation(() => restClientMock),
   };
 });
 
 vi.mock("@/lib/GraphClient/GraphClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      setHeader: vi.fn(),
-      executeQuery: vi.fn(),
-    })),
+    default: vi.fn().mockImplementation(() => graphClientMock),
   };
 });
 
@@ -104,6 +107,10 @@ describe("MaintenanceRequests.vue", () => {
     wrapper = shallowMount(MaintenanceRequests, {
       global: {
         plugins: [store],
+        stubs: {
+          "v-edit-dialog": true,
+          VEditDialog: true,
+        },
       },
       props: {
         headerItems: [],
@@ -333,6 +340,8 @@ describe("MaintenanceRequests.vue", () => {
   });
 
   it("prepareMaintenanceRequests: Formats data, sorts by date desc, and applies date formatting", () => {
+    wrapper.vm.maintenanceRequests = [];
+
     // RAW MOCK DATA (Before processing)
     const rawData = {
       pendingMaintenanceRequests: [
@@ -375,10 +384,10 @@ describe("MaintenanceRequests.vue", () => {
     // ASSERTION 3: Date Formatting
     // The method loops at the end and calls formatDate
     expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe(
-      "Formatted(2023-01-01)",
+      "Formatted: 2023-01-01",
     );
     expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(
-      "Formatted(2020-01-01)",
+      "Formatted: 2020-01-01",
     );
   });
 });

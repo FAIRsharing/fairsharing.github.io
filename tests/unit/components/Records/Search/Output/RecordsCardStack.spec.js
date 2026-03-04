@@ -9,21 +9,29 @@ import getRecord from "../../../../../fixtures/getRecord.json";
 const vuetify = createVuetify();
 
 describe("RecordsCardStack.vue", function () {
-  let wrapper;
+  const getWrapper = () =>
+    shallowMount(RecordsCardStack, {
+      vuetify,
+      props: {
+        record: getRecord,
+      },
+      global: {
+        stubs: {
+          "router-link": true,
+        },
+      },
+    });
+
+  let wrapper = getWrapper();
   let record = getRecord;
 
-  wrapper = shallowMount(RecordsCardStack, {
-    vuetify,
-    props: {
-      record: record,
-    },
-  });
-
   it("can be instantiated", () => {
+    wrapper = getWrapper();
     expect(wrapper.vm.$options.name).toMatch("RecordsCardStack");
   });
 
   it("can generate correct link depending on doi presence", () => {
+    wrapper = getWrapper();
     expect(wrapper.vm.getRecordLink(wrapper.vm.record)).toEqual(
       wrapper.vm.record.id,
     );
@@ -33,21 +41,25 @@ describe("RecordsCardStack.vue", function () {
   });
 
   it("can check getMaxItemShow computed property", () => {
-    vuetify.framework.breakpoint.lgOnly = true;
-    vuetify.framework.breakpoint.mdAndDown = false;
+    wrapper = getWrapper();
+    wrapper.vm.$vuetify.display.lg = true;
+    wrapper.vm.$vuetify.display.mdAndDown = false;
+    wrapper.vm.$vuetify.display.xl = false;
     expect(wrapper.vm.getMaxItemShown).toBe(2);
-    vuetify.framework.breakpoint.lgOnly = false;
-    vuetify.framework.breakpoint.xlOnly = true;
+    wrapper.vm.$vuetify.display.lg = false;
+    wrapper.vm.$vuetify.display.xl = true;
     expect(wrapper.vm.getMaxItemShown).toBe(3);
   });
 
   it("can check organizeChips method", () => {
+    wrapper = getWrapper();
     record["subjects"] = undefined;
     expect(wrapper.vm.organizeChips(record, "subjects", 3)).toBe(false);
     expect(wrapper.vm.organizeChips(record, "userDefinedTags", 3)).toBe(true);
   });
 
   it("can truncate long text", () => {
+    wrapper = getWrapper();
     expect(wrapper.vm.truncateString("testes", 10)).toEqual("testes");
     expect(wrapper.vm.truncateString("testes", 4)).toEqual("test...");
     expect(wrapper.vm.truncateString("", 10)).toEqual("");

@@ -31,19 +31,20 @@ describe("Edit -> Alerts.vue", function () {
   };
 
   it("can be mounted", () => {
+    recordStore.state.sections.organisations.error = false;
     wrapper = createWrapper();
     expect(wrapper.vm.$options.name).toMatch("Alerts");
   });
 
   it("can check computed message() when error is true", () => {
-    wrapper = createWrapper();
     recordStore.state.sections.organisations.error = true;
+    wrapper = createWrapper();
     expect(wrapper.vm.message.type()).toBe("error");
   });
 
   it("can check computed message() when error is false", () => {
-    wrapper = createWrapper();
     recordStore.state.sections.organisations.error = false;
+    wrapper = createWrapper();
     expect(wrapper.vm.message.type()).toBe("success");
   });
 });

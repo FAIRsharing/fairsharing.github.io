@@ -75,6 +75,7 @@ describe("Edit -> LinkOverlay.vue", function () {
   let fetchStub;
 
   beforeEach(async () => {
+    sinon.restore();
     wrapper = await shallowMount(LinkOverlay, {
       vuetify,
       mocks: { $store },
@@ -118,21 +119,17 @@ describe("Edit -> LinkOverlay.vue", function () {
   });
 
   it("can confirm the modifications", () => {
-    recordStore.state.editOrganisationLink = {
-      showOverlay: true,
-      data: { organisation: { name: "test", id: 2 } },
-      id: -1,
-    };
+    wrapper.vm.editOrganisationLink.showOverlay = true;
+    wrapper.vm.editOrganisationLink.data = { organisation: { name: "test", id: 2 } };
+    wrapper.vm.editOrganisationLink.id = -1;
     wrapper.vm.confirmModifications();
     expect(wrapper.vm.organisationLinks).toStrictEqual([
       { id: 1, organisation: { name: "abc", id: 1 } },
       { organisation: { name: "test", id: 2 } },
     ]);
-    recordStore.state.editOrganisationLink = {
-      showOverlay: true,
-      data: { id: 1, organisation: { name: "work", id: 1 } },
-      id: 0,
-    };
+    wrapper.vm.editOrganisationLink.showOverlay = true;
+    wrapper.vm.editOrganisationLink.data = { id: 1, organisation: { name: "work", id: 1 } };
+    wrapper.vm.editOrganisationLink.id = 0;
     wrapper.vm.confirmModifications();
     expect(wrapper.vm.organisationLinks).toStrictEqual([
       { id: 1, organisation: { name: "work", id: 1 } },
@@ -203,7 +200,6 @@ describe("Edit -> LinkOverlay.vue", function () {
   });
 
   it("can create a new grant", async () => {
-    restStub.restore();
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({
       data: {
@@ -236,10 +232,14 @@ describe("Edit -> LinkOverlay.vue", function () {
 
   it("can run a custom filter on autocompletes", () => {
     expect(
-      wrapper.vm.customFilter({ name: "this", alternativeNames: [] }, "that"),
+      wrapper.vm.customFilter("", "that", {
+        raw: { name: "this", alternativeNames: [] },
+      }),
     ).toBe(false);
     expect(
-      wrapper.vm.customFilter({ name: "this", alternativeNames: [] }, "this"),
+      wrapper.vm.customFilter("", "this", {
+        raw: { name: "this", alternativeNames: [] },
+      }),
     ).toBe(true);
   });
 
@@ -378,9 +378,6 @@ describe("Edit -> LinkOverlay.vue", function () {
     wrapper.vm.importROR = true;
     wrapper.vm.validName = false;
     wrapper.vm.menus.newOrganisation.data.name = "xyz";
-    wrapper.vm.$refs["createNewOrganisation"] = {
-      reset: jest.fn(),
-    };
     wrapper.vm.clearForm();
     expect(wrapper.vm.enterName).toBe(true);
     expect(wrapper.vm.importROR).toBe(false);

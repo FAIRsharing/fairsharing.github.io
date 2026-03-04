@@ -84,8 +84,16 @@ describe("Edit -> Organisations.vue", function () {
     });
   });
 
+  afterEach(() => {
+    if (restStub && restStub.restore) {
+      restStub.restore();
+      restStub = null;
+    }
+    jest.clearAllMocks();
+  });
+
   afterAll(async () => {
-    graphStub.restore();
+    sinon.restore();
   });
 
   it("can be mounted", async () => {
@@ -115,10 +123,10 @@ describe("Edit -> Organisations.vue", function () {
     await wrapper.vm.showEditOverlay(null);
     expect(recordStore.state.editOrganisationLink.showOverlay).toBe(true);
     expect(recordStore.state.editOrganisationLink.data).toStrictEqual({});
-    expect(editorStore.state.organisationsTypes).toStrictEqual([
+    expect($store.state.editor.organisationsTypes).toStrictEqual([
       { id: 1, name: "Government body" },
     ]);
-    expect(editorStore.state.organisations).toStrictEqual([
+    expect($store.state.editor.organisations).toStrictEqual([
       {
         homepage: "test",
         id: 1,
@@ -127,7 +135,7 @@ describe("Edit -> Organisations.vue", function () {
         urlForLogo: null,
       },
     ]);
-    expect(editorStore.state.grants).toStrictEqual([
+    expect($store.state.editor.grants).toStrictEqual([
       { id: 1, name: "aGrant", description: null },
     ]);
     await wrapper.vm.showEditOverlay(0);
@@ -171,9 +179,9 @@ describe("Edit -> Organisations.vue", function () {
     wrapper.vm.organisationLinks.push({
       organisation: { name: "a third organisation" },
     });
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect($router.push).toHaveBeenCalledTimes(0);
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, { textContent: "Save and exit" });
     expect($router.push).toHaveBeenCalledTimes(1);
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     recordStore.state.sections = {
@@ -185,8 +193,6 @@ describe("Edit -> Organisations.vue", function () {
         message: null,
       },
     };
-    restStub.restore();
-    jest.clearAllMocks();
   });
 
   it("can handle error upon saving the data", async () => {
@@ -194,9 +200,7 @@ describe("Edit -> Organisations.vue", function () {
     wrapper.vm.removeRelation(0);
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: { error: "I am an error" } });
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect(recordStore.state.sections.organisations.error).toBe(true);
-    restStub.restore();
-    jest.clearAllMocks();
   });
 });

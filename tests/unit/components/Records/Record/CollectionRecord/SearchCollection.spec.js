@@ -103,6 +103,7 @@ describe("SearchCollection.vue", function () {
   });
 
   beforeEach(async () => {
+    $route.query = {};
     //-- making a mock div element
     const element = document.createElement("div");
     element.id = "topElement";
@@ -121,8 +122,8 @@ describe("SearchCollection.vue", function () {
   });
 
   it("can check the mocked html element is correctly added", () => {
-    const byId = wrapper.find("#topElement");
-    expect(byId.element.id).toBe("topElement");
+    const byId = document.getElementById("topElement");
+    expect(byId.id).toBe("topElement");
   });
 
   it("can check changeListType function", () => {
@@ -145,16 +146,16 @@ describe("SearchCollection.vue", function () {
   });
 
   it("can react to router changes", async () => {
+    $route.query = { fairsharingRegistry: "Collection", page: "2" };
     const wrapper2 = await shallowMount(searchCollection, {
       mocks: { $route, $store },
       vuetify,
     });
-    wrapper2.vm.$route.query = { fairsharingRegistry: "Collection", page: "2" };
     expect(wrapper2.vm.currentPath).toStrictEqual([
       "Collection",
       { fairsharingRegistry: "Collection", page: "2" },
     ]);
-    wrapper.vm.$route.query = { fairsharingRegistry: "" };
+    $route.query = { fairsharingRegistry: "" };
     expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
     wrapper.vm.testEnvironment = true;
   });
@@ -178,9 +179,13 @@ describe("SearchCollection.vue", function () {
     await wrapper.vm.$store.dispatch("introspection/fetchParameters");
     Client.prototype.getData.restore();
 
-    let queryParameters = await wrapper.vm.$store.getters[
+    const wrapperWithQuery = await shallowMount(searchCollection, {
+      mocks: { $route, $store },
+      vuetify,
+    });
+    let queryParameters = await wrapperWithQuery.vm.$store.getters[
       "introspection/buildQueryParameters"
-    ](wrapper.vm.currentPath);
+    ](wrapperWithQuery.vm.currentPath);
     expect(queryParameters).toStrictEqual({
       page: "2",
     });

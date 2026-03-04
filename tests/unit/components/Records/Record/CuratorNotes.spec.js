@@ -1,5 +1,4 @@
 import { shallowMount  } from "@vue/test-utils";
-import VueSanitize from "vue-sanitize";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -35,6 +34,6 @@ describe("CuratorNotes.vue", function () {
   });
 
   it("can add newlines", () => {
-    expect(wrapper.vm.prepareNotes("this\nthat")).toEqual("this<br />that");
+    expect(wrapper.vm.prepareNotes("this\nthat")).toEqual("this<br>that");
   });
 });

@@ -39,7 +39,7 @@ describe("generalUtils.js", function () {
 
   it("can check formatDateIso method", function () {
     let dummyDate = "2020-10-27T09:34:54Z";
-    expect(generalUtils.methods.formatDateIso(dummyDate)).toBe("Oct 27, 2020");
+    expect(generalUtils.methods.formatDateIso(dummyDate)).toBe("2020-10-27");
   });
 
   it("can check compareRecordDescUpdate method", function () {

@@ -1,5 +1,24 @@
 import { vi } from "vitest";
 
+// Jest compatibility shim for legacy specs still using `jest.*`.
+if (!globalThis.jest) {
+  globalThis.jest = {
+    fn: vi.fn,
+    spyOn: vi.spyOn,
+    mock: vi.mock,
+    clearAllMocks: vi.clearAllMocks,
+    resetAllMocks: vi.resetAllMocks,
+    restoreAllMocks: vi.restoreAllMocks,
+    useFakeTimers: vi.useFakeTimers,
+    useRealTimers: vi.useRealTimers,
+    advanceTimersByTime: vi.advanceTimersByTime,
+    runAllTimers: vi.runAllTimers,
+    runOnlyPendingTimers: vi.runOnlyPendingTimers,
+    setSystemTime: vi.setSystemTime,
+    setTimeout: () => {},
+  };
+}
+
 // --- 1. ResizeObserver Polyfill ---
 // Vuetify uses this to detect when elements (like drawers or cards) change size.
 // JSDOM doesn't support it, so we mock it to prevent crashes.

@@ -1,5 +1,6 @@
 import {
   afterAll,
+  afterEach,
   beforeAll,
   beforeEach,
   describe,
@@ -67,12 +68,21 @@ describe("Edit -> DataAccess.vue", function () {
     });
   });
   beforeEach(async () => {
+    recordStore.state.sections.dataAccess.error = null;
+    recordStore.state.sections.dataAccess.message = null;
     wrapper = await shallowMount(DataAccess, {
       global: {
         plugins: [$store],
         mocks: { $route, $router },
       },
     });
+  });
+  afterEach(() => {
+    if (restStub && restStub.restore) {
+      restStub.restore();
+      restStub = null;
+    }
+    vi.clearAllMocks();
   });
   afterAll(async () => {
     graphStub.restore();
@@ -148,14 +158,15 @@ describe("Edit -> DataAccess.vue", function () {
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     expect($router.push).toHaveBeenCalledTimes(1);
     restStub.returns({ data: { error: "I am en error !" } });
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, btn);
     expect(recordStore.state.sections.dataAccess.error).toBe(true);
-    vi.clearAllMocks();
   });
 
   it("handles save and exit with redirect", async () => {
     const btn = { textContent: "Save and exit" };
+    const pushCalls = $router.push.mock.calls.length;
     await wrapper.vm.saveRecord(true, btn);
-    expect(wrapper.vm.message.error).toBe(false);
+    expect(recordStore.state.sections.dataAccess.error).toBeNull();
+    expect($router.push).toHaveBeenCalledTimes(pushCalls + 1);
   });
 });

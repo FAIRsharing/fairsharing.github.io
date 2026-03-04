@@ -23,6 +23,10 @@ vi.mock("@vue/test-utils", async () => {
     if (normalized.mocks) {
       globalConfig.mocks = { ...(globalConfig.mocks || {}), ...normalized.mocks };
     }
+    globalConfig.mocks = {
+      $scrollTo: vi.fn(),
+      ...(globalConfig.mocks || {}),
+    };
 
     if (normalized.stubs) {
       globalConfig.stubs = { ...(globalConfig.stubs || {}), ...normalized.stubs };

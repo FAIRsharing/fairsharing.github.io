@@ -37,7 +37,7 @@ describe("UsersList.vue", function () {
   });
 
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   afterAll(() => {

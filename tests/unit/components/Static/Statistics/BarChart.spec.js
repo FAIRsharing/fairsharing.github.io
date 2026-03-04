@@ -6,7 +6,7 @@ describe("BarChart.vue", () => {
   let wrapper;
   beforeAll(() => {
     wrapper = shallowMount(BarChart, {
-      propsData: {
+      props: {
         refName: "Name of the chart",
         fieldsChart: {
           title: "This a bar chart",
@@ -44,7 +44,7 @@ describe("BarChart.vue", () => {
 
   it("can use not percentage", () => {
     wrapper = shallowMount(BarChart, {
-      propsData: {
+      props: {
         refName: "Name of the chart",
         showPercent: false,
         fieldsChart: {

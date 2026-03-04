@@ -31,7 +31,7 @@ describe("Pagination.vue", () => {
   it("can be instantiated", () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         currentPage: 1,
       },
@@ -45,7 +45,7 @@ describe("Pagination.vue", () => {
     $route.query = {};
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         currentPage: 1,
       },
@@ -60,7 +60,7 @@ describe("Pagination.vue", () => {
     $route.query = { page: "2" };
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         default: 0,
       },
@@ -76,7 +76,7 @@ describe("Pagination.vue", () => {
     $route.query = {};
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         default: 0,
       },
@@ -90,7 +90,7 @@ describe("Pagination.vue", () => {
     $route.query = { page: "120" };
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         default: 0,
       },
@@ -102,7 +102,7 @@ describe("Pagination.vue", () => {
   it("Has a paginate() method that sets the current page in the URL query", async () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         default: 0,
       },
@@ -118,7 +118,7 @@ describe("Pagination.vue", () => {
   it("can define whether it is testing or development environment", () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         default: 0,
       },
@@ -133,7 +133,7 @@ describe("Pagination.vue", () => {
   it("can check whether paginate works if it is not allowed", () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      propsData: {
+      props: {
         totalPages: 10,
         default: 0,
       },

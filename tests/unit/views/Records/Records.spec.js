@@ -191,7 +191,7 @@ describe("Records.vue", () => {
   });
 
   it("can reset the store when destroyed", () => {
-    wrapper.destroy();
+    wrapper.unmount();
     expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.loading).toBe(false);

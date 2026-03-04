@@ -28,7 +28,7 @@ describe("FilterButton.vue", function () {
 
   wrapper = shallowMount(FilterButton, {
     vuetify,
-    propsData: {
+    props: {
       item: {
         active: false,
         filterName: "isMaintained",
@@ -82,7 +82,7 @@ describe("FilterButton.vue", function () {
   it("can check applyFilter function", () => {
     anotherWrapper = shallowMount(FilterButton, {
       vuetify,
-      propsData: {
+      props: {
         item: { active: true, filterName: "isMaintained", title: "All" },
         isFirstItem: false,
         mdScreens: false,

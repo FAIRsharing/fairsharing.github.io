@@ -15,7 +15,7 @@ describe("RecordStatus.vue", function () {
 
   wrapper = shallowMount(RecordStatus, {
     vuetify,
-    propsData: { record: { status: "ready", type: "collection" } },
+    props: { record: { status: "ready", type: "collection" } },
   });
 
   it("can be instantiated", () => {

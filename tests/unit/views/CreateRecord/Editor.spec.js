@@ -65,7 +65,7 @@ describe("Editor.vue", function () {
     isDisabled = wrapper.vm.isDisabled("Another tab");
     expect(isDisabled).toBe(false);
     wrapper.vm.hasLoaded = false;
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   it("can clean the store on destroy", async () => {
@@ -75,7 +75,7 @@ describe("Editor.vue", function () {
       stubs: ["router-link"],
     });
     wrapper.vm.hasLoaded = false;
-    wrapper.destroy();
+    wrapper.unmount();
     expect(editorStore.state.countries).toBe(null);
     expect(recordStore.state.sections.dataAccess).toBe(undefined);
   });

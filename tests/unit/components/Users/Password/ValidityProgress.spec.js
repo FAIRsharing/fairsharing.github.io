@@ -23,7 +23,7 @@ describe("ValidityProgress.vue", () => {
       data: { percent: 0 },
     });
         const anotherWrapper = await shallowMount(ValidityProgress, {
-      propsData: {
+      props: {
         password: "Great password 123!?",
       },
     });

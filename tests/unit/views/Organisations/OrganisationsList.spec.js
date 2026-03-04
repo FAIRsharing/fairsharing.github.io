@@ -39,7 +39,7 @@ describe("OrganisationsList.vue", () => {
   });
 
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   afterAll(() => {

@@ -19,7 +19,7 @@ describe("SearchLinkChips.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(SearchLinkChips, {
       vuetify,
-      propsData: {
+      props: {
         type: "domains",
         chips: [
           {

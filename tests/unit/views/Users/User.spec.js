@@ -90,7 +90,7 @@ describe("User.vue", () => {
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
-    wrapper.destroy();
+    wrapper.unmount();
     expect(usersStore.state.user().records).toStrictEqual({});
   });
 

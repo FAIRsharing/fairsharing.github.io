@@ -7,7 +7,7 @@ describe("PieChart.vue", () => {
   let wrapper;
   beforeAll(() => {
     wrapper = shallowMount(PieChart, {
-      propsData: {
+      props: {
         refName: "Name of the Pie chart",
         fieldsChart: {
           title: "This a pie chart",
@@ -34,7 +34,7 @@ describe("PieChart.vue", () => {
 
   it("can use not links", () => {
     wrapper = shallowMount(PieChart, {
-      propsData: {
+      props: {
         linkWork: false,
         refName: "Name of the Pie chart",
         fieldsChart: {

@@ -8,7 +8,7 @@ describe("RecordsTable.vue", () => {
 
   it("can be mounted with watched records", () => {
     wrapper = shallowMount(RecordTable, {
-      propsData: {
+      props: {
         records: [],
         source: "watchedRecords",
       },
@@ -20,7 +20,7 @@ describe("RecordsTable.vue", () => {
 
   it("can be mounted with maintained records", () => {
     wrapper = shallowMount(RecordTable, {
-      propsData: {
+      props: {
         records: [],
         source: "maintainedRecords",
       },
@@ -32,7 +32,7 @@ describe("RecordsTable.vue", () => {
 
   it("can be mounted with maintenance requests", () => {
     wrapper = shallowMount(RecordTable, {
-      propsData: {
+      props: {
         source: "maintenanceRequests",
       },
     });
@@ -43,7 +43,7 @@ describe("RecordsTable.vue", () => {
 
   it("can show and hide the overlay", () => {
     wrapper = shallowMount(RecordTable, {
-      propsData: {
+      props: {
         source: "maintenanceRequests",
       },
       mocks: { $router },
@@ -60,7 +60,7 @@ describe("RecordsTable.vue", () => {
 
   it("can open the record page", async () => {
     wrapper = shallowMount(RecordTable, {
-      propsData: {
+      props: {
         source: "maintenanceRequests",
       },
       mocks: { $router },

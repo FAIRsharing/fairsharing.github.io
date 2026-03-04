@@ -68,7 +68,7 @@ describe("Organisations.vue", function () {
     wrapper = shallowMount(Organisations, {
       vuetify,
       mocks: { $store },
-      propsData: { inlineStyle: true },
+      props: { inlineStyle: true },
     });
   });
 

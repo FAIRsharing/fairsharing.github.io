@@ -8,7 +8,7 @@ describe("EditsTable.vue", () => {
 
   it("can be mounted", () => {
     wrapper = shallowMount(EditsTable, {
-      propsData: {
+      props: {
         edits: [
           {
             fairsharingRecord: {
@@ -30,7 +30,7 @@ describe("EditsTable.vue", () => {
 
   it("can show and hide the overlay", () => {
     wrapper = shallowMount(EditsTable, {
-      propsData: {},
+      props: {},
       mocks: { $router },
     });
     wrapper.vm.previewRecord(12);
@@ -43,7 +43,7 @@ describe("EditsTable.vue", () => {
 
   it("can open the record page", async () => {
     wrapper = shallowMount(EditsTable, {
-      propsData: {},
+      props: {},
       mocks: { $router },
     });
     const mockedOpen = jest.fn();
@@ -56,7 +56,7 @@ describe("EditsTable.vue", () => {
 
   it("formats fields as required", () => {
     wrapper = shallowMount(EditsTable, {
-      propsData: {
+      props: {
         edits: [],
       },
     });

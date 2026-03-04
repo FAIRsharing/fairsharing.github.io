@@ -14,7 +14,7 @@ describe("RecordsCardStack.vue", function () {
 
   wrapper = shallowMount(RecordsCardStack, {
     vuetify,
-    propsData: {
+    props: {
       record: record,
     },
   });

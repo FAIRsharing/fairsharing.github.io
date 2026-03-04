@@ -16,7 +16,7 @@ describe("CuratorCohorts.vue", function () {
     });
   });
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   it("can be instantiated", () => {

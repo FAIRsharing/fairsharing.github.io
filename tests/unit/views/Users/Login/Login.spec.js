@@ -40,7 +40,7 @@ describe("Login.vue", () => {
   beforeEach(() => {
     wrapper = shallowMount(Login, {
       router,
-      propsData: {
+      props: {
         redirect: true,
       },
       stubs: ["router-link", "router-view"],
@@ -74,7 +74,7 @@ describe("Login.vue", () => {
     $route.query = {};
     let anotherWrapper = shallowMount(Login, {
       router,
-      propsData: {
+      props: {
         redirect: true,
       },
       stubs: ["router-link", "router-view"],
@@ -133,7 +133,7 @@ describe("Login.vue", () => {
   it("can process redirection", async () => {
     const anotherWrapper = shallowMount(Login, {
       router,
-      propsData: {
+      props: {
         redirect: false,
       },
       stubs: ["router-link", "router-view"],
@@ -156,7 +156,7 @@ describe("Login.vue", () => {
     $route.query.redirect = true;
     let anotherWrapper = shallowMount(Login, {
       router,
-      propsData: {
+      props: {
         redirect: false,
       },
       stubs: ["router-link", "router-view"],

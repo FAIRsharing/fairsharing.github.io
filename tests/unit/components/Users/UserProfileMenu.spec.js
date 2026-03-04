@@ -102,7 +102,7 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 1 },
+      props: { viewingId: 1 },
       router,
       mocks: { $store },
     });
@@ -126,7 +126,7 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 2 },
+      props: { viewingId: 2 },
       router,
       mocks: { $store },
     });
@@ -150,7 +150,7 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: {},
+      props: {},
       router,
       mocks: { $store },
     });
@@ -185,14 +185,14 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 1 },
+      props: { viewingId: 1 },
       router,
       mocks: { $store },
     });
     expect(wrapper.vm.disableEdit()).toBe(false);
 
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 2 },
+      props: { viewingId: 2 },
       router,
       mocks: { $store },
     });
@@ -216,7 +216,7 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 2 },
+      props: { viewingId: 2 },
       router,
       mocks: { $store },
     });

@@ -7,7 +7,7 @@ describe("ViewAwards", () => {
 
   it("can be mounted", () => {
     wrapper = shallowMount(AwardsTable, {
-      propsData: {
+      props: {
         organisations: [],
       },
     });

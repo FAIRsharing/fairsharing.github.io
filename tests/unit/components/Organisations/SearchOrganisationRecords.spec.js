@@ -43,7 +43,7 @@ describe("SearchOrganisationRecords.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(SearchOrganisationRecords, {
       vuetify,
-      propsData: { organisation: organisation },
+      props: { organisation: organisation },
       stubs: ["router-link", "router-view"],
     });
   });

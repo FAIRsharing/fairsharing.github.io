@@ -19,7 +19,7 @@ describe("TagChips.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(TagChips, {
       vuetify,
-      propsData: {
+      props: {
         record: {
           name: "test record",
           objectTypes: [

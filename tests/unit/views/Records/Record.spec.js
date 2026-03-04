@@ -170,7 +170,7 @@ describe("Record.vue", function () {
     mocks.restoreAll();
   });
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
   beforeEach(async () => {
     wrapper = await shallowMount(Record, {
@@ -191,7 +191,7 @@ describe("Record.vue", function () {
       mocks: { $route, $store, $router },
       vuetify,
       router,
-      propsData: { target: 123 },
+      props: { target: 123 },
     });
     expect(anotherWrapper.vm.$options.name).toMatch("Record");
     expect(anotherWrapper.vm.getTitle).toBe("FAIRsharing | 123");
@@ -659,7 +659,7 @@ describe("Record.vue", function () {
     //expect(wrapper.vm.history.show).toBe(true);
     wrapper.vm.closeHistory();
     expect(wrapper.vm.history.show).toBe(false);
-    wrapper.destroy();
+    wrapper.unmount();
     $route.query = { history: "hide" };
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },

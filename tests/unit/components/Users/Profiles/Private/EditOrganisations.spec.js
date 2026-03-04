@@ -97,7 +97,7 @@ describe("OrganisationTable.vue", () => {
     // mocks.restoreAll();
   });
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
   beforeEach(async () => {
     wrapper = await shallowMount(EditOrganisations, {

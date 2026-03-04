@@ -18,7 +18,7 @@ describe("ListController.vue", function () {
 
   wrapper = shallowMount(ListController, {
     vuetify,
-    propsData: {
+    props: {
       options: {
         type: Object,
         default: null,

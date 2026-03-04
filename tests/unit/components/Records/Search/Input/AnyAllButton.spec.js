@@ -20,7 +20,7 @@ describe("AnyAllButton.vue", function () {
 
   wrapper = shallowMount(AnyAllButton, {
     vuetify,
-    propsData: {
+    props: {
       searchAnd: true,
     },
     mocks: { $router, $route },

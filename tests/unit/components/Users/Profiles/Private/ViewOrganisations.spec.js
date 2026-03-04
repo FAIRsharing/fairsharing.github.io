@@ -7,7 +7,7 @@ describe("ViewOrganisations", () => {
 
   it("can be mounted", () => {
     wrapper = shallowMount(OrganisationsTable, {
-      propsData: {
+      props: {
         organisations: [],
       },
     });
@@ -18,7 +18,7 @@ describe("ViewOrganisations", () => {
 
   it("can process organisation types", () => {
     wrapper = shallowMount(OrganisationsTable, {
-      propsData: {
+      props: {
         organisations: [],
       },
     });

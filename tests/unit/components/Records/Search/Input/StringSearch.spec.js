@@ -58,7 +58,7 @@ describe("StringSearch.vue", () => {
   it("can pass the search term to the correct route for homePage searchBox function", () => {
     wrapper = shallowMount(StringSearch, {
       vuetify,
-      propsData: {
+      props: {
         showHomeSearch: true,
       },
       mocks: { $router, $route },
@@ -128,7 +128,7 @@ describe("StringSearch.vue", () => {
 
   it("appends terms when relevant prop is set", () => {
     wrapper = shallowMount(StringSearch, {
-      propsData: {
+      props: {
         addSearchTerms: true,
       },
       mocks: { $router, $route },

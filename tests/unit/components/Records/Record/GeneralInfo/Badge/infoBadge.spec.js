@@ -11,7 +11,7 @@ describe("infoBadge.vue", function () {
   it("can be instantiated", async () => {
     wrapper = await shallowMount(infoBadge, {
       vuetify,
-      propsData: {
+      props: {
         currentRecord: {
           fairsharingRecord: {
             name: "standard",

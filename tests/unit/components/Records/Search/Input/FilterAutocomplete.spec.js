@@ -37,7 +37,7 @@ describe("FilterAutocomplete.vue", function () {
   wrapper = shallowMount(ExpansionPanel, {
     vuetify,
     mocks: { $store, $route, $router },
-    propsData: {
+    props: {
       filter: {
         filterName: "grants",
       },

@@ -62,7 +62,7 @@ describe("NewRecord", () => {
       vuetify,
       router,
       mocks: { $store, $route, $router },
-      propsData: {
+      props: {
         fairassistOnly: true,
       },
     });

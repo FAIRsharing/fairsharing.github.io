@@ -1,4 +1,6 @@
 import { vi } from "vitest";
+import GraphQLClient from "@/lib/GraphClient/GraphClient.js";
+import RESTClient from "@/lib/Client/RESTClient.js";
 
 // Vue 2 -> Vue 3 test compatibility for legacy specs.
 vi.mock("@vue/test-utils", async () => {
@@ -181,6 +183,57 @@ if (!Object.groupBy) {
     }, {});
   };
 }
+
+// Prevent accidental network access to local API endpoints in unit tests.
+const nativeFetch = globalThis.fetch ? globalThis.fetch.bind(globalThis) : null;
+const mockedFetch = async (input, init) => {
+  const url =
+    typeof input === "string" ? input : (input && input.url) || "";
+  if (
+    url.includes("localhost:3000") ||
+    url.includes("127.0.0.1:3000") ||
+    url.includes("undefined/graphql")
+  ) {
+    return new Response(JSON.stringify({}), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  if (nativeFetch) return nativeFetch(input, init);
+  throw new Error(`Unexpected fetch in tests: ${url}`);
+};
+globalThis.fetch = vi.fn(mockedFetch);
+if (typeof window !== "undefined") {
+  window.fetch = globalThis.fetch;
+}
+
+// Short-circuit GraphQL requests that would otherwise target localhost in tests.
+const originalGetData = GraphQLClient.prototype.getData;
+GraphQLClient.prototype.getData = async function (queryString) {
+  const url = this.url || "";
+  if (
+    url.includes("localhost:3000") ||
+    url.includes("127.0.0.1:3000") ||
+    url.includes("undefined/graphql")
+  ) {
+    return { data: { data: {} } };
+  }
+  return originalGetData.call(this, queryString);
+};
+
+const originalExecuteQuery = RESTClient.prototype.executeQuery;
+RESTClient.prototype.executeQuery = async function (query) {
+  const url = query?.baseURL || "";
+  if (
+    url.includes("localhost:3000") ||
+    url.includes("127.0.0.1:3000") ||
+    url.startsWith("undefined") ||
+    url.includes("/undefined/")
+  ) {
+    return { data: {} };
+  }
+  return originalExecuteQuery.call(this, query);
+};
 
 
 // --- 5. Silence Vue warnings (Optional) ---

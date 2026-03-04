@@ -1,19 +1,19 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import AccessMethods from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/AccessMethods.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("AccessMethods.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(AccessMethods, {
-      localVue,
-      vuetify,
+      global: {
+        plugins: [vuetify],
+      },
     });
   });
 

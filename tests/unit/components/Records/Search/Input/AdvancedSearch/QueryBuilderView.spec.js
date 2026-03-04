@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
@@ -10,10 +10,9 @@ const $router = {
 };
 let $route = { path: "/search", query: {} };
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("QueryBuilderView.vue", () => {
   let wrapper, store;
@@ -52,10 +51,10 @@ describe("QueryBuilderView.vue", () => {
     });
 
     wrapper = shallowMount(QueryBuilderView, {
-      localVue,
-      vuetify,
-      store,
-      mocks: { $router, $route },
+      global: {
+        plugins: [store, vuetify],
+        mocks: { $router, $route },
+      },
     });
   });
 

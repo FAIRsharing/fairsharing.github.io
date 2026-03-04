@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import FairassistRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/FairassistComponents/FairassistRecordType.vue";
@@ -10,10 +10,8 @@ const $router = {
   push: jest.fn(),
 };
 let $route = { path: "/advancedsearch", query: {} };
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.mixin(recordTypesMixin);
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("FairassistRecordType.vue", () => {
   let wrapper, store, actions;
@@ -43,19 +41,21 @@ describe("FairassistRecordType.vue", () => {
     actions = {
       fetchAllRecordTypes: jest.fn(),
     };
+    recordTypes.actions = {
+      fetchAllRecordTypes: actions.fetchAllRecordTypes,
+    };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
-        actions,
         recordTypes: recordTypes,
       },
     });
     wrapper = shallowMount(FairassistRecordType, {
-      localVue,
-      vuetify,
-      store,
-      mixins: [recordTypesMixin],
-      mocks: { $router, $route },
+      global: {
+        plugins: [store, vuetify],
+        mixins: [recordTypesMixin],
+        mocks: { $router, $route },
+      },
     });
   });
 

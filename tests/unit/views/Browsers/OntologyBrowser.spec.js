@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json";
@@ -9,11 +9,9 @@ import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.j
 import editorStore from "@/store/editor.js";
 import ontologyBrowserStore from "@/store/ontologyBrowser";
 import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue";
-const sinon = require("sinon"),
-  localVue = createLocalVue();
-localVue.use(Vuex);
+const sinon = require("sinon");
 const router = new VueRouter(),
-  vuetify = new Vuetify(),
+  vuetify = createVuetify(),
   $router = { push: jest.fn() },
   $store = new Vuex.Store({
     modules: {
@@ -52,10 +50,10 @@ describe("OntologyBrowser.vue", function () {
   it("can be mounted with a query", async () => {
     $route.query.term = "Biology";
     wrapper = await shallowMount(OntologyBrowser, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [vuetify, router],
+        mocks: { $store, $route, $router },
+      },
     });
     expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
     expect(wrapper.vm.term.id).toBe("287245 - Biology");
@@ -65,16 +63,16 @@ describe("OntologyBrowser.vue", function () {
       " - Natural Science",
       "287 - Life Science",
     ]);
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   it("can be mounted without a query", async () => {
     $route.query = {};
     wrapper = await shallowMount(OntologyBrowser, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [vuetify, router],
+        mocks: { $store, $route, $router },
+      },
     });
     expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
     expect(wrapper.vm.term).toBeUndefined();
@@ -94,6 +92,6 @@ describe("OntologyBrowser.vue", function () {
       path: "/browse/",
     });
 
-    wrapper.destroy();
+    wrapper.unmount();
   });
 });

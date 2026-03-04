@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue";
@@ -10,9 +10,7 @@ import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 recordStore.state.sections = {
   organisations: { data: [{ id: 1, organisation: { name: "abc", id: 1 } }] },
 };
@@ -78,7 +76,6 @@ describe("Edit -> LinkOverlay.vue", function () {
 
   beforeEach(async () => {
     wrapper = await shallowMount(LinkOverlay, {
-      localVue,
       vuetify,
       mocks: { $store },
       stubs: { "v-form": formValidation },

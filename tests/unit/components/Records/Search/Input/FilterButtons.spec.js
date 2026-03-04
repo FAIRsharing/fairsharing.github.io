@@ -1,14 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import FilterButtons from "@/components/Records/Search/Input/FilterButtons.vue";
 import searchFilters from "@/store/searchFilters.js";
 import users from "@/store/users.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -21,7 +19,6 @@ describe("FilterButtons.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(FilterButtons, {
-    localVue,
     vuetify,
     mocks: { $store },
   });

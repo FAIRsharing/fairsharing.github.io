@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
@@ -7,9 +7,6 @@ import UserMenu from "@/components/Users/UserProfileMenu.vue";
 import Client from "@/lib/Client/RESTClient.js";
 import userStore from "@/store/users";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-localVue.use(Vuex);
 userStore.state.user = function () {
   return {
     role: "super_curator",
@@ -50,7 +47,6 @@ describe("UserProfileMenu.vue", () => {
 
   beforeEach(() => {
     wrapper = shallowMount(UserMenu, {
-      localVue,
       router,
       mocks: { $store },
     });
@@ -107,7 +103,6 @@ describe("UserProfileMenu.vue", () => {
     });
     wrapper = shallowMount(UserMenu, {
       propsData: { viewingId: 1 },
-      localVue,
       router,
       mocks: { $store },
     });
@@ -132,7 +127,6 @@ describe("UserProfileMenu.vue", () => {
     });
     wrapper = shallowMount(UserMenu, {
       propsData: { viewingId: 2 },
-      localVue,
       router,
       mocks: { $store },
     });
@@ -157,7 +151,6 @@ describe("UserProfileMenu.vue", () => {
     });
     wrapper = shallowMount(UserMenu, {
       propsData: {},
-      localVue,
       router,
       mocks: { $store },
     });
@@ -193,7 +186,6 @@ describe("UserProfileMenu.vue", () => {
     });
     wrapper = shallowMount(UserMenu, {
       propsData: { viewingId: 1 },
-      localVue,
       router,
       mocks: { $store },
     });
@@ -201,7 +193,6 @@ describe("UserProfileMenu.vue", () => {
 
     wrapper = shallowMount(UserMenu, {
       propsData: { viewingId: 2 },
-      localVue,
       router,
       mocks: { $store },
     });
@@ -226,7 +217,6 @@ describe("UserProfileMenu.vue", () => {
     });
     wrapper = shallowMount(UserMenu, {
       propsData: { viewingId: 2 },
-      localVue,
       router,
       mocks: { $store },
     });

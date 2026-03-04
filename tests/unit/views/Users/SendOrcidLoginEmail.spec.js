@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 
@@ -13,12 +13,9 @@ describe("SendOrcidLoginEmail.vue", function () {
   restStub = sinon.stub(Client.prototype, "sendOrcidVerification");
 
   const router = new VueRouter();
-  const localVue = createLocalVue();
-  localVue.use(VueRouter);
-
+    
   beforeEach(() => {
     wrapper = shallowMount(SendOrcidLoginEmail, {
-      localVue,
       router,
     });
   });

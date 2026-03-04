@@ -1,14 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
 import organisationSearchStore from "@/store/AdvancedSearchComponents/organisationSearch";
 import userStore from "@/store/users.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("OrganisationStepper.vue", () => {
   let wrapper, store, actions;
@@ -66,7 +64,6 @@ describe("OrganisationStepper.vue", () => {
     });
 
     wrapper = shallowMount(OrganisationStepper, {
-      localVue,
       vuetify,
       store,
     });

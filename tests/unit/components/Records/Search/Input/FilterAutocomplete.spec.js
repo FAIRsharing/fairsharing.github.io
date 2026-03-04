@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue";
@@ -9,9 +9,7 @@ import uiController from "@/store/uiController.js";
 import getGrants from "../../../../../fixtures/getGrants.json";
 
 jest.useFakeTimers();
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -37,7 +35,6 @@ describe("FilterAutocomplete.vue", function () {
   let wrapper;
   let fake_GetFilter_Grants_Response = getGrants;
   wrapper = shallowMount(ExpansionPanel, {
-    localVue,
     vuetify,
     mocks: { $store, $route, $router },
     propsData: {

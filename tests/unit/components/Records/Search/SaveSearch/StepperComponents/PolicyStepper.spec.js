@@ -1,14 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import PolicyStepper from "@/components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue";
 import saveSearchStore from "@/store/saveSearch";
 import userStore from "@/store/users.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("PolicyStepper.vue", () => {
   let wrapper, store, actions;
@@ -66,7 +64,6 @@ describe("PolicyStepper.vue", () => {
     });
 
     wrapper = shallowMount(PolicyStepper, {
-      localVue,
       vuetify,
       store,
     });

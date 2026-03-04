@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import CommunityCarousel from "@/components/Home/CommunityCarousel";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 let breakpoint = {
   init: jest.fn(),
   framework: {},

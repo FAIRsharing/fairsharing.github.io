@@ -1,18 +1,15 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import EditPublicProfile from "@/views/Users/EditPublicProfile";
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
+const vuetify = createVuetify();
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
 
 import Client from "@/lib/Client/RESTClient.js";
 import userStore from "@/store/users";
 
-localVue.use(Vuex);
-localVue.use(VueScrollTo, {});
 let $route = { params: { id: 123 } };
 let $router = {
   push: jest.fn(),
@@ -69,7 +66,6 @@ describe("EditPublicProfile.vue", function () {
   beforeEach(async () => {
     wrapper = await shallowMount(EditPublicProfile, {
       vuetify,
-      localVue,
       mocks: { $store, $route, $router },
     });
   });
@@ -87,7 +83,6 @@ describe("EditPublicProfile.vue", function () {
     delete $store.state.users.currentPublicUser.preferences;
     const wrapper2 = shallowMount(EditPublicProfile, {
       vuetify,
-      localVue,
       mocks: { $store, $route },
     });
     expect(wrapper2.vm.$options.name).toMatch("EditPublicProfile");

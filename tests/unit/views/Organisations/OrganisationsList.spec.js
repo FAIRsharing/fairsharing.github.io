@@ -1,15 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import allOrganisationsQuery from "@/lib/GraphClient/queries/getAllOrganisations.json";
 import OrganisationsList from "@/views/Organisations/OrganisationsList";
 
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
-localVue.use(Vuex);
+const vuetify = createVuetify();
 
 describe("OrganisationsList.vue", () => {
   let wrapper;
@@ -37,7 +35,6 @@ describe("OrganisationsList.vue", () => {
   beforeEach(async () => {
     wrapper = await shallowMount(OrganisationsList, {
       vuetify,
-      localVue,
     });
   });
 

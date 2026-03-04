@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
@@ -7,10 +7,7 @@ import Client from "@/lib/Client/RESTClient.js";
 import usersStore from "@/store/users.js";
 import Login from "@/views/Users/Login/Login.vue";
 
-const localVue = createLocalVue();
-// localVue.use(VueRouter);
-localVue.use(Vuex);
-const $store = new Vuex.Store({
+// const $store = new Vuex.Store({
   modules: {
     users: usersStore,
   },
@@ -42,7 +39,6 @@ describe("Login.vue", () => {
   });
   beforeEach(() => {
     wrapper = shallowMount(Login, {
-      localVue,
       router,
       propsData: {
         redirect: true,
@@ -77,7 +73,6 @@ describe("Login.vue", () => {
 
     $route.query = {};
     let anotherWrapper = shallowMount(Login, {
-      localVue,
       router,
       propsData: {
         redirect: true,
@@ -137,7 +132,6 @@ describe("Login.vue", () => {
 
   it("can process redirection", async () => {
     const anotherWrapper = shallowMount(Login, {
-      localVue,
       router,
       propsData: {
         redirect: false,
@@ -161,7 +155,6 @@ describe("Login.vue", () => {
   it("can process special redirection", async () => {
     $route.query.redirect = true;
     let anotherWrapper = shallowMount(Login, {
-      localVue,
       router,
       propsData: {
         redirect: false,

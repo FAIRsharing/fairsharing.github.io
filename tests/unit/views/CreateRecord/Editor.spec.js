@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
@@ -12,8 +12,6 @@ import CreateRecord from "@/views/CreateRecord/Editor.vue";
 import metaTemplate from "../../../fixtures/metaTemplate.json";
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 const $store = new Vuex.Store({
   modules: {
@@ -52,7 +50,6 @@ describe("Editor.vue", function () {
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
@@ -73,7 +70,6 @@ describe("Editor.vue", function () {
 
   it("can clean the store on destroy", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
@@ -90,7 +86,6 @@ describe("Editor.vue", function () {
     restStub = sinon.stub(RESTClient.prototype, "executeQuery");
     restStub.withArgs(sinon.match.any).returns({ data: { error: "error" } });
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
     });
@@ -103,7 +98,6 @@ describe("Editor.vue", function () {
 
   it("reloads data correctly", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
@@ -115,7 +109,6 @@ describe("Editor.vue", function () {
 
   it("can prevent leaving the route", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
@@ -140,7 +133,6 @@ describe("Editor.vue", function () {
       fairsharingRecord: returnedData,
     });
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],

@@ -1,11 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueHead from "vue-head";
 import VueMeta from "vue-meta";
 import VueRouter from "vue-router";
 import VueSanitize from "vue-sanitize";
 import VueScrollTo from "vue-scrollto";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
@@ -16,12 +16,6 @@ import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
 
 // Initializing context for mounting
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueMeta);
-localVue.use(VueScrollTo, {});
-localVue.use(VueSanitize);
-localVue.use(VueHead);
 
 // Initializing store states and getters
 users.state.user = function () {
@@ -181,7 +175,6 @@ describe("Record.vue", function () {
   beforeEach(async () => {
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
     });
@@ -196,7 +189,6 @@ describe("Record.vue", function () {
   it("can be mounted with a target", async () => {
     anotherWrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
       propsData: { target: 123 },
@@ -427,7 +419,6 @@ describe("Record.vue", function () {
 
     const wrapper2 = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
     });
@@ -512,7 +503,6 @@ describe("Record.vue", function () {
     };
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
     });
@@ -580,7 +570,6 @@ describe("Record.vue", function () {
     };
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
     });
@@ -661,7 +650,6 @@ describe("Record.vue", function () {
     $route.query = { history: "show" };
     let wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
     });
@@ -675,7 +663,6 @@ describe("Record.vue", function () {
     $route.query = { history: "hide" };
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
       router,
     });

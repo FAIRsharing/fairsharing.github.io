@@ -1,7 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 
 import RecordTable from "@/components/Users/Profiles/Private/RecordsTable";
-const localVue = createLocalVue();
 const $router = { push: jest.fn() };
 
 describe("RecordsTable.vue", () => {
@@ -9,7 +8,6 @@ describe("RecordsTable.vue", () => {
 
   it("can be mounted with watched records", () => {
     wrapper = shallowMount(RecordTable, {
-      localVue,
       propsData: {
         records: [],
         source: "watchedRecords",
@@ -22,7 +20,6 @@ describe("RecordsTable.vue", () => {
 
   it("can be mounted with maintained records", () => {
     wrapper = shallowMount(RecordTable, {
-      localVue,
       propsData: {
         records: [],
         source: "maintainedRecords",
@@ -35,7 +32,6 @@ describe("RecordsTable.vue", () => {
 
   it("can be mounted with maintenance requests", () => {
     wrapper = shallowMount(RecordTable, {
-      localVue,
       propsData: {
         source: "maintenanceRequests",
       },
@@ -47,7 +43,6 @@ describe("RecordsTable.vue", () => {
 
   it("can show and hide the overlay", () => {
     wrapper = shallowMount(RecordTable, {
-      localVue,
       propsData: {
         source: "maintenanceRequests",
       },
@@ -65,7 +60,6 @@ describe("RecordsTable.vue", () => {
 
   it("can open the record page", async () => {
     wrapper = shallowMount(RecordTable, {
-      localVue,
       propsData: {
         source: "maintenanceRequests",
       },

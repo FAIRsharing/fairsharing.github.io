@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
@@ -9,9 +9,7 @@ import record from "@/store/recordData";
 import Record from "@/store/recordData.js";
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -30,7 +28,6 @@ describe("AdditionalInfo.vue", function () {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(AdditionalInfo, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

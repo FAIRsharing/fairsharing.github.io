@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
 
@@ -12,8 +12,6 @@ import editorStore from "@/store/editor";
 import userStore from "@/store/users";
 import EditProfile from "@/views/Users/EditProfile.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 userStore.state.user = function () {
   return {
     metadata: {
@@ -83,7 +81,6 @@ describe("EditPrivateProfile.vue", () => {
 
   beforeEach(async () => {
     wrapper = await shallowMount(EditProfile, {
-      localVue,
       mocks: { $store, $router },
     });
   });
@@ -142,7 +139,6 @@ describe("EditPrivateProfile.vue", () => {
       },
     });
     let anotherWrapper = await shallowMount(EditProfile, {
-      localVue,
       mocks: { $store, $router },
     });
     expect(anotherWrapper.vm.formData).toBe(null);

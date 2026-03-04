@@ -1,7 +1,7 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
@@ -10,9 +10,7 @@ import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
 import NewRecord from "@/views/CreateRecord/NewRecord.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 recordStore.state.newRecord = false;
 userStore.state.user().is_curator = false;
@@ -61,7 +59,6 @@ describe("NewRecord", () => {
     graphStub.withArgs(sinon.match.any).returns(recordTypeData);
 
     wrapper = shallowMount(NewRecord, {
-      localVue,
       vuetify,
       router,
       mocks: { $store, $route, $router },

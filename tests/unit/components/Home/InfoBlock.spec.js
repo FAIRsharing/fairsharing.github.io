@@ -1,16 +1,13 @@
-import { createLocalVue, RouterLinkStub, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { RouterLinkStub, shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import InfoBlock from "@/components/Home/InfoBlock";
 import icons from "@/plugins/icons";
 const vuetify = new Vuetify({ icons: icons });
-const localVue = new createLocalVue();
 import Vuex from "vuex";
 
 import searchFiltersStore from "@/store/searchFilters.js";
 
-localVue.use(vuetify);
-localVue.use(Vuex);
 
 const $store = new Vuex.Store({
   modules: {

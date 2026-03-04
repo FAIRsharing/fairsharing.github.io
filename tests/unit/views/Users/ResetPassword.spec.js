@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
@@ -7,10 +7,7 @@ import Client from "@/lib/Client/RESTClient.js";
 import usersStore from "@/store/users";
 import ResetPassword from "@/views/Users/ResetPassword.vue";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
 const router = new VueRouter();
-localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -40,7 +37,6 @@ describe("ResetPassword.vue", () => {
 
   it("raises an error when no token and no logged in user", async () => {
     wrapper = await shallowMount(ResetPassword, {
-      localVue,
       router,
       stubs: ["router-link"],
       mocks: { $store },
@@ -54,14 +50,12 @@ describe("ResetPassword.vue", () => {
   });
 
   it("can reset a password of a user", async () => {
-    const secondLocalVue = createLocalVue();
-    const $router = {
+        const $router = {
       push: jest.fn(),
     };
     wrapper = await shallowMount(ResetPassword, {
       mocks: { $route, $store, $router },
       stubs: ["router-link"],
-      secondLocalVue,
       router,
     });
 

@@ -1,12 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import AnyAllButton from "@/components/Records/Search/Input/AnyAllButton.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 let $route = {
   name: "search",
@@ -21,7 +19,6 @@ describe("AnyAllButton.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(AnyAllButton, {
-    localVue,
     vuetify,
     propsData: {
       searchAnd: true,

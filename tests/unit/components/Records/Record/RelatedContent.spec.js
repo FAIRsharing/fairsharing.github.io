@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import RelatedContent from "@/components/Records/Record/RelatedContent.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   name: "standard",
@@ -73,7 +71,6 @@ describe("RelatedContent.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(RelatedContent, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

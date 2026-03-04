@@ -1,12 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueSanitize from "vue-sanitize";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import Educational from "@/views/Static/Educational/Educational";
 
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
-localVue.use(VueSanitize);
+const vuetify = createVuetify();
 
 let $route = {
   name: "Community",
@@ -20,7 +18,6 @@ describe("Educational.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(Educational, {
-      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
@@ -41,7 +38,6 @@ describe("Educational.vue", function () {
     // wrapper.vm.$route.hash = '#anotherAnchor'
     $route.hash = "#anotherAnchor";
     wrapper = shallowMount(Educational, {
-      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
@@ -76,7 +72,6 @@ describe("Educational.vue", function () {
             hash: '#nutshell'
         }
         wrapper = shallowMount(Educational, {
-            localVue,
             vuetify,
             mocks: {$route},
             stubs: ['router-link', 'router-view']

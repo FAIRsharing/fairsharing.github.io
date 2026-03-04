@@ -1,14 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueSanitize from "vue-sanitize";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import noDatasetsPlease from "@/data/noDatasetsPlease.json";
 import icons from "@/plugins/icons";
 import New from "@/views/Static/New/New";
 
 const vuetify = new Vuetify({ icons: icons });
-const localVue = createLocalVue();
-localVue.use(VueSanitize);
 
 describe("New.vue", function () {
   let wrapper;
@@ -16,7 +14,6 @@ describe("New.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(New, {
       vuetify,
-      localVue,
     });
   });
 

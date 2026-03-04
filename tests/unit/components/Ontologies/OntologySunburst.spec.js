@@ -1,9 +1,9 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import Highcharts from "highcharts";
 import Sunburst from "highcharts/modules/sunburst";
 import HighchartsVue from "highcharts-vue";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json";
@@ -12,12 +12,9 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import ontologyBrowserStore from "@/store/ontologyBrowser";
 Sunburst(Highcharts);
 
-const sinon = require("sinon"),
-  localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(HighchartsVue);
+const sinon = require("sinon");
 const router = new VueRouter(),
-  vuetify = new Vuetify(),
+  vuetify = createVuetify(),
   $router = { push: jest.fn() },
   $store = new Vuex.Store({
     modules: { ontologyBrowser: ontologyBrowserStore },
@@ -44,10 +41,10 @@ describe("OntologyBrowser.vue", function () {
 
   beforeEach(async () => {
     wrapper = await shallowMount(OntologySunburst, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [vuetify, router],
+        mocks: { $store, $route, $router },
+      },
     });
   });
 

@@ -1,12 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Pagination from "@/components/Records/Search/Header/Pagination";
 import records from "@/store/recordSearch.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     records: records,
@@ -15,7 +13,7 @@ const $store = new Vuex.Store({
 
 $store.state.records.currentPage = 1;
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 let $route = {
   name: "Standards",
   query: {
@@ -38,7 +36,6 @@ describe("Pagination.vue", () => {
         currentPage: 1,
       },
       vuetify,
-      localVue,
     });
     expect(wrapper.vm.$options.name).toMatch("Pagination");
   });
@@ -53,7 +50,6 @@ describe("Pagination.vue", () => {
         currentPage: 1,
       },
       vuetify,
-      localVue,
     });
 
     expect(wrapper.vm.currentPageLocal).toBe(1);
@@ -69,7 +65,6 @@ describe("Pagination.vue", () => {
         default: 0,
       },
       vuetify,
-      localVue,
     });
 
     expect(wrapper.vm.currentPageLocal).toBe(2);
@@ -86,7 +81,6 @@ describe("Pagination.vue", () => {
         default: 0,
       },
       vuetify,
-      localVue,
     });
 
     expect(wrapper.vm.currentPageLocal).toBe(1);
@@ -101,7 +95,6 @@ describe("Pagination.vue", () => {
         default: 0,
       },
       vuetify,
-      localVue,
     });
     expect(wrapper.vm.currentPageLocal).toBe(120);
   });
@@ -114,7 +107,6 @@ describe("Pagination.vue", () => {
         default: 0,
       },
       vuetify,
-      localVue,
     });
     wrapper.vm.allowPaginate = true;
     wrapper.vm.$router.push = push;
@@ -131,7 +123,6 @@ describe("Pagination.vue", () => {
         default: 0,
       },
       vuetify,
-      localVue,
     });
     wrapper.vm.disableThrottle(false);
     expect(wrapper.vm.allowPaginate).toBe(false);
@@ -147,7 +138,6 @@ describe("Pagination.vue", () => {
         default: 0,
       },
       vuetify,
-      localVue,
     });
     wrapper.vm.allowPaginate = false;
     wrapper.vm.paginate(2);

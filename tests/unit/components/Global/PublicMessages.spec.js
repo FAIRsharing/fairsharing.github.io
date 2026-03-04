@@ -1,15 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import PublicMessages from "@/components/Global/PublicMessages";
 import messages from "@/store/messages.js";
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
+const vuetify = createVuetify();
 import VueMoment from "vue-moment";
 
-localVue.use(Vuex);
-localVue.use(VueMoment);
 
 const $store = new Vuex.Store({
   modules: {
@@ -26,7 +23,6 @@ describe("PublicMessages.vue", () => {
 
     it("can be instantiated", () => {
             wrapper = shallowMount(PublicMessages, {
-            localVue,
             vuetify,
             mocks:{$store}
         });

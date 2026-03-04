@@ -1,7 +1,7 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueMeta from "vue-meta";
 import VueScrollTo from "vue-scrollto";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json";
@@ -16,10 +16,6 @@ import Records from "@/views/Records/Records.vue";
 const sinon = require("sinon");
 const axios = require("axios");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueMeta);
-localVue.use(VueScrollTo, {});
 
 userStore.state.user = function () {
   return {
@@ -70,11 +66,10 @@ describe("Records.vue", () => {
   // Set up the wrapper
   let wrapper;
   beforeEach(async () => {
-    vuetify = new Vuetify();
+    vuetify = createVuetify();
 
     wrapper = await shallowMount(Records, {
       mocks: { $route, $store },
-      localVue,
       vuetify,
     });
     delete global.window["top"];
@@ -161,7 +156,6 @@ describe("Records.vue", () => {
     };
     let localWrapper = await shallowMount(Records, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
     });
     await localWrapper.vm.tryRedirect();

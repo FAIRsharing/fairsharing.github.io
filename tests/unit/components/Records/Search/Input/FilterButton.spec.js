@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import FilterButton from "@/components/Records/Search/Input/FilterButton.vue";
 import searchFiltersStore from "@/store/searchFilters.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 let $route = {
   name: "search",
@@ -29,7 +27,6 @@ describe("FilterButton.vue", function () {
   let anotherWrapper;
 
   wrapper = shallowMount(FilterButton, {
-    localVue,
     vuetify,
     propsData: {
       item: {
@@ -84,7 +81,6 @@ describe("FilterButton.vue", function () {
 
   it("can check applyFilter function", () => {
     anotherWrapper = shallowMount(FilterButton, {
-      localVue,
       vuetify,
       propsData: {
         item: { active: true, filterName: "isMaintained", title: "All" },

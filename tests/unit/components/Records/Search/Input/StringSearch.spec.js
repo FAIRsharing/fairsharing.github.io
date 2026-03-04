@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
@@ -8,7 +8,7 @@ const $router = {
 };
 let $route = { path: "/search", query: {} };
 
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("StringSearch.vue", () => {
   let wrapper = shallowMount(StringSearch, {

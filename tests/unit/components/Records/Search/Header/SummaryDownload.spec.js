@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import SummaryDownload from "@/components/Records/Search/Header/SummaryDownload.vue";
 import recordsStore from "@/store/recordSearch.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -41,7 +39,6 @@ describe("SummaryDownload.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(SummaryDownload, {
-    localVue,
     vuetify,
     mocks: { $store, $route },
   });

@@ -1,12 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 
 import Register from "@/components/Users/Register.vue";
 import Client from "@/lib/Client/RESTClient.js";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
 const router = new VueRouter();
 
 describe("Register.vue", () => {
@@ -14,7 +12,6 @@ describe("Register.vue", () => {
 
   beforeEach(() => {
     wrapper = shallowMount(Register, {
-      localVue,
       router,
     });
   });

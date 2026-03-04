@@ -1,19 +1,16 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import History from "@/components/Records/Record/History/RecordHistory.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("RecordHistory.vue", function () {
   let wrapper;
 
   beforeEach(() => {
     wrapper = shallowMount(History, {
-      localVue,
       vuetify,
       props: {
         history: [],

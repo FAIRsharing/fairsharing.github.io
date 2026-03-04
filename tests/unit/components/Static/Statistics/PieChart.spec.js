@@ -1,14 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 
 import PieChart from "@/components/Static/Statistics/PieChart.vue";
 
-const localVue = createLocalVue();
 
 describe("PieChart.vue", () => {
   let wrapper;
   beforeAll(() => {
     wrapper = shallowMount(PieChart, {
-      localVue,
       propsData: {
         refName: "Name of the Pie chart",
         fieldsChart: {
@@ -36,7 +34,6 @@ describe("PieChart.vue", () => {
 
   it("can use not links", () => {
     wrapper = shallowMount(PieChart, {
-      localVue,
       propsData: {
         linkWork: false,
         refName: "Name of the Pie chart",

@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueScrollTo from "vue-scrollto";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
@@ -14,13 +14,10 @@ import userStore from "@/store/users";
 
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo, {});
 const sinon = require("sinon");
 const axios = require("axios");
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const $route = {
   name: "Record",
@@ -114,7 +111,6 @@ describe("SearchCollection.vue", function () {
 
     wrapper = await shallowMount(searchCollection, {
       mocks: { $route, $store },
-      localVue,
       vuetify,
       attachTo: element,
     });
@@ -152,7 +148,6 @@ describe("SearchCollection.vue", function () {
     const wrapper2 = await shallowMount(searchCollection, {
       mocks: { $route, $store },
       vuetify,
-      localVue,
     });
     wrapper2.vm.$route.query = { fairsharingRegistry: "Collection", page: "2" };
     expect(wrapper2.vm.currentPath).toStrictEqual([

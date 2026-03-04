@@ -1,21 +1,18 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack.vue";
 
 import getRecord from "../../../../../fixtures/getRecord.json";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("RecordsCardStack.vue", function () {
   let wrapper;
   let record = getRecord;
 
   wrapper = shallowMount(RecordsCardStack, {
-    localVue,
     vuetify,
     propsData: {
       record: record,

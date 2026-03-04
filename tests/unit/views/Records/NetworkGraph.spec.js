@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
@@ -11,9 +11,7 @@ import Highcharts from "highcharts";
 import Networkgraph from "highcharts/modules/networkgraph";
 Networkgraph(Highcharts);
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const router = new VueRouter();
 const $router = { push: jest.fn() };
@@ -119,7 +117,6 @@ describe("NetworkGraph.vue", function () {
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     graphStub.returns(graphMock);
     wrapper = await shallowMount(GraphTest, {
-      localVue,
       vuetify,
       router,
       mocks: { $router, $route, $store },
@@ -152,7 +149,6 @@ describe("NetworkGraph.vue", function () {
   it("reloads page when route changes and id is 10", async () => {
     $route.params.id = 10;
     wrapper = await shallowMount(GraphTest, {
-      localVue,
       vuetify,
       router,
       mocks: { $router, $route, $store },
@@ -166,7 +162,6 @@ describe("NetworkGraph.vue", function () {
     graphMock = {};
     graphStub.returns(graphMock);
     wrapper = await shallowMount(GraphTest, {
-      localVue,
       vuetify,
       router,
       mocks: { $router, $route, $store },

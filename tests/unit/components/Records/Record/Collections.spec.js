@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Collections from "@/components/Records/Record/Collections.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const this_record = {
   id: 999,
@@ -128,7 +126,6 @@ describe("Collections.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(Collections, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

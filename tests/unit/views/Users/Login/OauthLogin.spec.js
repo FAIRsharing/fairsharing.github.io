@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
@@ -7,8 +7,6 @@ import Client from "@/lib/Client/RESTClient.js";
 import usersStore from "@/store/users.js";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -34,7 +32,6 @@ describe("Login.vue", () => {
 
   const mountComponent = async () => {
     wrapper = await shallowMount(OauthLogin, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
     });

@@ -1,12 +1,10 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import CommunityBlock from "@/components/Home/CommunityBlock";
 import icons from "@/plugins/icons";
 const vuetify = new Vuetify({ icons: icons });
-const localVue = new createLocalVue();
 
-localVue.use(vuetify);
 
 describe("CategoryBlock.vue", function () {
   let wrapper;

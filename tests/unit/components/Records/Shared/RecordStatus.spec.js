@@ -4,9 +4,10 @@ import { createVuetify } from "vuetify";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import light from "@/plugins/theme";
 
-let vuetify = new Vuetify({
+let vuetify = createVuetify({
   theme: {
-    themes: { light },
+    defaultTheme: "fairSharingTheme",
+    themes: { fairSharingTheme: light },
   },
 });
 

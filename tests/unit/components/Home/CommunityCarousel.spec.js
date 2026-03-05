@@ -4,12 +4,6 @@ import { createVuetify } from "vuetify";
 import CommunityCarousel from "@/components/Home/CommunityCarousel";
 
 const vuetify = createVuetify();
-let breakpoint = {
-  init: jest.fn(),
-  framework: {},
-  smAndUp: true,
-};
-vuetify.framework.breakpoint = breakpoint;
 
 describe("CommunityCarousel", function () {
   let wrapper;
@@ -22,15 +16,18 @@ describe("CommunityCarousel", function () {
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("CommunityCarousel");
-    breakpoint = {
-      init: jest.fn(),
-      framework: {},
-      smAndUp: false,
-    };
-    vuetify.framework.breakpoint = breakpoint;
-    const wrapper2 = shallowMount(CommunityCarousel, {
-      vuetify,
-    });
-    expect(wrapper2.vm.$options.name).toMatch("CommunityCarousel");
+    const computed = wrapper.vm.$options.computed.responsiveSlideData;
+    expect(
+      computed.call({
+        $vuetify: { display: { smAndUp: true } },
+        logos: wrapper.vm.logos,
+      }),
+    ).toEqual(wrapper.vm.logos.multipleImageSlider);
+    expect(
+      computed.call({
+        $vuetify: { display: { smAndUp: false } },
+        logos: wrapper.vm.logos,
+      }),
+    ).toEqual(wrapper.vm.logos.singleImageSlider);
   });
 });

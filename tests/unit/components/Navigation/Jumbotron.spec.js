@@ -1,5 +1,4 @@
 import { shallowMount  } from "@vue/test-utils";
-import VueSanitize from "vue-sanitize";
 import { createVuetify } from "vuetify";
 
 import Jumbotron from "@/components/Navigation/Jumbotron";

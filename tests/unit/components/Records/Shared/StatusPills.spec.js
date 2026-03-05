@@ -4,9 +4,10 @@ import { createVuetify } from "vuetify";
 import StatusPills from "@/components/Records/Shared/StatusPills.vue";
 import light from "@/plugins/theme";
 
-const vuetify = new Vuetify({
+const vuetify = createVuetify({
   theme: {
-    themes: { light },
+    defaultTheme: "fairSharingTheme",
+    themes: { fairSharingTheme: light },
   },
 });
 let wrapper;

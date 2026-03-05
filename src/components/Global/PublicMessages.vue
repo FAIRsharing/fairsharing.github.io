@@ -56,15 +56,17 @@ export default {
       return moment(date).format("dddd, MMMM Do YYYY, H:mm");
     },
     is_development() {
-      if (import.meta.env.VITE_API_ENDPOINT.includes("dev-api")) {
+      const endpoint = import.meta.env.VITE_API_ENDPOINT || "";
+      if (endpoint.includes("dev-api")) {
         return true;
       }
       return false;
     },
     is_localhost() {
+      const endpoint = import.meta.env.VITE_API_ENDPOINT || "";
       if (
-        import.meta.env.VITE_API_ENDPOINT.includes("localhost:3000") ||
-        import.meta.env.VITE_API_ENDPOINT.includes("127.0.0.1:3000")
+        endpoint.includes("localhost:3000") ||
+        endpoint.includes("127.0.0.1:3000")
       ) {
         return true;
       }

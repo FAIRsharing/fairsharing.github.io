@@ -127,10 +127,8 @@ describe("MaintenanceRequests.vue", () => {
 
       expect(graphQuerySpy).toHaveBeenCalled();
 
-      // Check formatting (mixin usage)
-      expect(wrapper.vm.maintenanceRequests[0].createdAt).toContain(
-        "Formatted:",
-      );
+      // Check date formatting
+      expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe("Feb 1, 2023");
 
       // Check Sorting (Desc Date)
       // req-2 (Feb) should come before req-1 (Jan)
@@ -383,11 +381,7 @@ describe("MaintenanceRequests.vue", () => {
 
     // ASSERTION 3: Date Formatting
     // The method loops at the end and calls formatDate
-    expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe(
-      "Formatted: 2023-01-01",
-    );
-    expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(
-      "Formatted: 2020-01-01",
-    );
+    expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe("Jan 1, 2023");
+    expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe("Jan 1, 2020");
   });
 });

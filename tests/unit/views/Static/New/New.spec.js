@@ -1,12 +1,10 @@
 import { shallowMount  } from "@vue/test-utils";
-import VueSanitize from "vue-sanitize";
 import { createVuetify } from "vuetify";
 
 import noDatasetsPlease from "@/data/noDatasetsPlease.json";
-import icons from "@/plugins/icons";
 import New from "@/views/Static/New/New";
 
-const vuetify = new Vuetify({ icons: icons });
+const vuetify = createVuetify();
 
 describe("New.vue", function () {
   let wrapper;

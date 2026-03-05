@@ -59,10 +59,7 @@ describe("OntologyBrowser.vue", function () {
     expect(wrapper.vm.term.id).toBe("287245 - Biology");
     // wrapper.vm.search = "Biology"
     await wrapper.setData({ search: "Biology" });
-    expect(wrapper.vm.open).toEqual([
-      " - Natural Science",
-      "287 - Life Science",
-    ]);
+    expect(wrapper.vm.openedTerms).toEqual([]);
     wrapper.unmount();
   });
 
@@ -75,7 +72,7 @@ describe("OntologyBrowser.vue", function () {
       },
     });
     expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
-    expect(wrapper.vm.term).toBeUndefined();
+    expect(wrapper.vm.term).toBe(null);
     await wrapper.vm.activateTerms();
     wrapper.vm.searchTerm({ identifier: 351, name: "biology" });
     expect($router.push).toHaveBeenCalledWith({

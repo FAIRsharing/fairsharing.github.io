@@ -57,9 +57,10 @@ $store.state.users.user = function () {
   };
 };
 
-let vuetify = new Vuetify({
+let vuetify = createVuetify({
   theme: {
-    themes: { light },
+    defaultTheme: "fairSharingTheme",
+    themes: { fairSharingTheme: light },
   },
 });
 
@@ -199,7 +200,9 @@ describe("Organisation", () => {
     });
     expect(wrapper.vm.currentRoute).toEqual(1);
     $route.params.id = 10;
-    expect(wrapper.vm.currentRoute).toEqual(10);
+    expect(wrapper.vm.$options.computed.currentRoute.call(wrapper.vm)).toEqual(
+      10,
+    );
   });
 
   // TODO: This will call the relevant code but the server's response is mocked.

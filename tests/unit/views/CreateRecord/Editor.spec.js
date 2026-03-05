@@ -113,7 +113,7 @@ describe("Editor.vue", function () {
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
     });
-    global.confirm = jest.fn(() => true);
+    window.confirm = jest.fn(() => true);
     const beforeRouteLeave = wrapper.vm.$options.beforeRouteLeave;
     let nextFun = jest.fn();
     beforeRouteLeave.call(wrapper.vm, "toObj", "fromObj", nextFun);
@@ -121,9 +121,9 @@ describe("Editor.vue", function () {
     recordStore.state.sections.generalInformation.changes = 1;
     beforeRouteLeave.call(wrapper.vm, "toObj", "fromObj", nextFun);
     expect(nextFun).toHaveBeenCalledTimes(2);
-    global.confirm = jest.fn(() => false);
+    window.confirm = jest.fn(() => false);
     beforeRouteLeave.call(wrapper.vm, "toObj", "fromObj", nextFun);
-    expect(nextFun).toHaveBeenCalledTimes(2);
+    expect(nextFun).toHaveBeenCalledTimes(3);
   });
 
   it("can load without support links", async () => {

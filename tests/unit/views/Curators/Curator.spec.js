@@ -12,8 +12,6 @@ import Curator from "@/views/Curators/Curator.vue";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
-axios.defaults.adapter = require("axios/lib/adapters/http");
-
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -54,7 +52,7 @@ describe("Curator.vue", () => {
     });
   });
 
-  afterEach(() => {
+  afterAll(() => {
     graphStub.restore();
     restStub.restore();
   });

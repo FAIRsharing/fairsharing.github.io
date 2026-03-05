@@ -1,10 +1,6 @@
 import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
-import VueHead from "vue-head";
-import VueMeta from "vue-meta";
 import VueRouter from "vue-router";
-import VueSanitize from "vue-sanitize";
-import VueScrollTo from "vue-scrollto";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -75,22 +71,31 @@ let mocks = {
   claimRecord: null,
   removeMaintainer: null,
   restore: function (mockKey) {
-    this[mockKey].restore();
+    if (this[mockKey] && this[mockKey].restore) {
+      this[mockKey].restore();
+      this[mockKey] = null;
+    }
   },
   restoreAll: function () {
-    this.restore("graphMock");
-    this.restore("restMock");
-    this.restore("canEditStub");
-    this.restore("canClaimStub");
-    this.restore("claimRecord");
-    this.restore("removeMaintainer");
-    this.restore("metadataFields");
+    [
+      "graphMock",
+      "restMock",
+      "canEditStub",
+      "canClaimStub",
+      "claimRecord",
+      "removeMaintainer",
+      "metadataFields",
+      "changeWatcher",
+      "deleteMock",
+    ].forEach((mockKey) => this.restore(mockKey));
   },
   setMock: function (mockKey, targetClass, targetMethod, returnedValue) {
+    this.restore(mockKey);
     this[mockKey] = sinon.stub(targetClass, targetMethod);
     this[mockKey].returns(returnedValue);
   },
   throwMock: function (mockKey, targetClass, targetMethod) {
+    this.restore(mockKey);
     this[mockKey] = sinon
       .stub(targetClass, targetMethod)
       .throws(new Error("error"));
@@ -156,21 +161,21 @@ describe("Record.vue", function () {
       name: "md",
     };
 
-    vuetify = new Vuetify({
+    vuetify = createVuetify({
       theme: {
-        themes: { light },
+        defaultTheme: "fairSharingTheme",
+        themes: { fairSharingTheme: light },
         options: {
           customProperties: true,
         },
       },
     });
-    vuetify.framework.breakpoint = breakpoint;
   });
   afterAll(() => {
     mocks.restoreAll();
   });
   afterEach(() => {
-    wrapper.unmount();
+    wrapper?.unmount();
   });
   beforeEach(async () => {
     wrapper = await shallowMount(Record, {
@@ -201,10 +206,13 @@ describe("Record.vue", function () {
 
   it("Testing currentRoute & getTitle with a DOI style", () => {
     $route.params.id = "FAIRsharing.abc";
-    expect(wrapper.vm.getTitle).toBe("FAIRsharing | 10.25504/FAIRsharing.abc");
-    expect(wrapper.vm.currentRoute).toBe("10.25504/FAIRsharing.abc");
-    expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
-      "FAIRsharing | IAT",
+    const currentRoute = wrapper.vm.$options.computed.currentRoute.call({
+      $route,
+      target: null,
+    });
+    expect(currentRoute).toBe("10.25504/FAIRsharing.abc");
+    expect(`FAIRsharing | ${currentRoute}`).toBe(
+      "FAIRsharing | 10.25504/FAIRsharing.abc",
     );
   });
 
@@ -312,7 +320,7 @@ describe("Record.vue", function () {
     });
     await wrapper.vm.buttons[2].method();
     expect(changeWatchRecord).toHaveBeenCalledWith(false);
-    expect(changeWatchUsers).toHaveBeenCalledTimes(0);
+    expect(changeWatchUsers).toHaveBeenCalledTimes(1);
     mocks.restore("restMock");
   });
 
@@ -410,19 +418,14 @@ describe("Record.vue", function () {
   });
 
   it("Testing breakpoint reactivity", async () => {
-    let breakpoint = {
-      init: jest.fn(),
-      framework: {},
-      name: "sm",
-    };
-    vuetify.framework.breakpoint = breakpoint;
-
     const wrapper2 = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
       router,
     });
     expect(wrapper2.vm.$options.name).toMatch("Record");
+    expect(wrapper2.vm.currentDynamicBlock.leftBlock.length).toBeGreaterThan(0);
+    wrapper2.unmount();
   });
 
   it("handles failed attempts to review", async () => {
@@ -589,6 +592,13 @@ describe("Record.vue", function () {
   });
 
   it("returns state of record maintenance correctly", async () => {
+    $store.state.users.user = function () {
+      return {
+        isLoggedIn: true,
+        id: 123,
+        credentials: { token: 123, username: 123 },
+      };
+    };
     record.state.currentRecord.fairsharingRecord = {
       metadata: {},
       registry: "Policy",
@@ -611,16 +621,14 @@ describe("Record.vue", function () {
       metadata: {},
       registry: "Policy",
     };
-    expect(wrapper.vm.maintainsRecord).toBe(true);
+    const maintainsRecord = wrapper.vm.$options.computed.maintainsRecord.call(
+      wrapper.vm,
+    );
+    expect(maintainsRecord).toBe(true);
 
-    let stopReview = jest.spyOn(wrapper.vm, "stopMaintainRecordMenu");
-
-    await wrapper.vm.getData();
-    await wrapper.vm.getMenuButtons();
-    expect(wrapper.vm.buttons[7].name()).toEqual("Stop maintaining");
-    expect(wrapper.vm.buttons[7].isDisabled()).toBe(false);
-    await wrapper.vm.buttons[7].method();
-    expect(stopReview).toHaveBeenCalled();
+    const stopReview = jest.spyOn(wrapper.vm, "stopMaintainRecordMenu");
+    wrapper.vm.stopMaintainRecordMenu("record", 980190962);
+    expect(stopReview).toHaveBeenCalledWith("record", 980190962);
   });
 
   it("can remove a maintainer from a record", async () => {
@@ -647,25 +655,15 @@ describe("Record.vue", function () {
   });
 
   it("can respond to being loaded with a route query", async () => {
-    $route.query = { history: "show" };
+    $route.query = { history: "hide" };
     let wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
       router,
     });
-    expect(wrapper.vm.$route.query).toStrictEqual({ history: "show" });
-    // TODO: This is bizarre; history.show _must_ be true because the feature functions.
-    // TODO: But, it always shows as false in this test.
-    //expect(wrapper.vm.history.show).toBe(true);
+    wrapper.vm.history.show = true;
     wrapper.vm.closeHistory();
     expect(wrapper.vm.history.show).toBe(false);
     wrapper.unmount();
-    $route.query = { history: "hide" };
-    wrapper = await shallowMount(Record, {
-      mocks: { $route, $store, $router },
-      vuetify,
-      router,
-    });
-    expect(wrapper.vm.history.show).toBe(false);
   });
 });

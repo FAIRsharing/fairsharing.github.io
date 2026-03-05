@@ -151,13 +151,17 @@ describe("Mutation & Actions & Getters", () => {
 
   it("can throw error when inappropriate data provided ", async () => {
     stub.restore();
-    stub.withArgs(sinon.match.any).returns(new Error("error"));
+    stub = sinon.stub(Client.prototype, "executeQuery");
+    stub.rejects(new Error("error"));
     await actions.initializeCollectionRecords(state, null);
     await actions.fetchCollectionRecords(state, {
       params: { q: "this", a: "that" },
       token: "wibble",
     });
-    await expect(sinon.stub(Client.prototype, "executeQuery")).rejects;
+    expect(actions.commit).toHaveBeenCalledWith("records/setRecords", {
+      records: [],
+    });
+    stub.restore();
   });
 
   it("can get and set collection ids", () => {

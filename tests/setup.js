@@ -35,6 +35,12 @@ vi.mock("@vue/test-utils", async () => {
       ...(globalConfig.mocks || {}),
     };
 
+    globalConfig.stubs = {
+      "router-link": true,
+      "router-view": true,
+      ...(globalConfig.stubs || {}),
+    };
+
     if (normalized.stubs) {
       globalConfig.stubs = { ...(globalConfig.stubs || {}), ...normalized.stubs };
     }

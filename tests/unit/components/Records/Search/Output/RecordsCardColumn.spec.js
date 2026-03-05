@@ -1,5 +1,6 @@
+/* eslint-env jest */
+
 import { shallowMount  } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue";
@@ -13,7 +14,12 @@ describe("RecordsCardColumn.vue", function () {
   let record = getRecord;
 
   wrapper = shallowMount(RecordsCardStack, {
-    vuetify,
+    global: {
+      plugins: [vuetify],
+      stubs: {
+        "router-link": true,
+      },
+    },
     props: {
       record: record,
     },

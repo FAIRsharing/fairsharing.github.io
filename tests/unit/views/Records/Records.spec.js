@@ -105,21 +105,11 @@ describe("Records.vue", () => {
       test4: 123,
       test5: true,
     };
-    let returnedVal = {
-      data: {
-        data: fakeIntrospection.data,
-      },
-      headers: {
-        maintenance: "false",
-      },
-    };
-    sinon
-      .stub(Client.prototype, "getData")
-      .withArgs(sinon.match.any)
-      .returns(returnedVal);
-    await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-    Client.prototype.getData.restore();
-    const path = wrapper.vm.currentPath;
+    wrapper.vm.$store.state.introspection.searchQueryParameters =
+      fakeIntrospection.data.__schema.types
+        .find((queryType) => queryType.name === "Query")
+        .fields.find((field) => field.name === "searchFairsharingRecords");
+    const path = wrapper.vm.$options.computed.currentPath.call(wrapper.vm);
     const queryParameters =
       await wrapper.vm.$store.getters["introspection/buildQueryParameters"](
         path,
@@ -136,9 +126,13 @@ describe("Records.vue", () => {
   it("react to path change", async () => {
     $route.path = "/search";
     $route.query = {};
-    expect(wrapper.vm.currentPath[0]).toBe("Search");
+    expect(wrapper.vm.$options.computed.currentPath.call(wrapper.vm)[0]).toBe(
+      "Search",
+    );
     $route.path = "/standard";
-    expect(wrapper.vm.currentPath[0]).toBe("Standard");
+    expect(wrapper.vm.$options.computed.currentPath.call(wrapper.vm)[0]).toBe(
+      "Standard",
+    );
   });
 
   it("can correctly redirect", async () => {

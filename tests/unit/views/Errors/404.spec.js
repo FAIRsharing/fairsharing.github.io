@@ -1,5 +1,4 @@
 import { shallowMount  } from "@vue/test-utils";
-import VueMeta from "vue-meta";
 
 import Error from "@/views/Errors/404.vue";
 
@@ -14,7 +13,7 @@ describe("404 error page", () => {
 
   it("can mount", () => {
     expect(wrapper.vm.$options.name).toBe("Error404");
-    expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
+    expect(wrapper.vm.$options.metaInfo.call(wrapper.vm).title).toBe(
       "FAIRsharing | Not Found",
     );
   });

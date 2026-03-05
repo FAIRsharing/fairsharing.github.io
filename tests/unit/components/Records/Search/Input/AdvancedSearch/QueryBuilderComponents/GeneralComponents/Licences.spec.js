@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Licences from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Licences.vue";
@@ -10,9 +10,7 @@ const $router = {
   push: jest.fn(),
 };
 let $route = { path: "/advancedsearch", query: {} };
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("Licences.vue", () => {
   let wrapper, store, actions;
@@ -39,10 +37,10 @@ describe("Licences.vue", () => {
       },
     });
     wrapper = shallowMount(Licences, {
-      localVue,
-      vuetify,
-      store,
-      mocks: { $router, $route },
+      global: {
+        plugins: [store, vuetify],
+        mocks: { $router, $route },
+      },
     });
   });
 

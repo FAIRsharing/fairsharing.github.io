@@ -1,15 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 
 import AwardsTable from "@/components/Users/Profiles/Private/ViewAwards";
-const localVue = createLocalVue();
 
 describe("ViewAwards", () => {
   let wrapper;
 
   it("can be mounted", () => {
     wrapper = shallowMount(AwardsTable, {
-      localVue,
-      propsData: {
+      props: {
         organisations: [],
       },
     });

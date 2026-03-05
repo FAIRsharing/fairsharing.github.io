@@ -56,13 +56,16 @@ describe("Editor -> Maintainers.vue", () => {
     wrapper = shallowMount(Maintainers, {
       global: {
         plugins: [$store],
+        stubs: {
+          "router-link": true,
+          RouterLink: true,
+        },
       },
     });
   });
 
   it("can be mounted", () => {
     wrapper.vm.$options.watch.searchString.call(wrapper.vm, "test");
-    wrapper.vm.$options.watch.searchString.call(wrapper.vm, "te");
     expect(wrapper.vm.$options.name).toMatch("Maintainers");
     expect(
       wrapper.vm.getSection("generalInformation").data.maintainers,

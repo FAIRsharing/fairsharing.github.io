@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import CarouselContent from "@/components/Home/CarouselContent";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("TabContent.vue", function () {
   let wrapper;

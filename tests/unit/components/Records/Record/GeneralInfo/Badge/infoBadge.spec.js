@@ -1,19 +1,17 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import infoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge.vue";
 
-const localVue = createLocalVue();
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("infoBadge.vue", function () {
   let wrapper;
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(infoBadge, {
-      localVue,
       vuetify,
-      propsData: {
+      props: {
         currentRecord: {
           fairsharingRecord: {
             name: "standard",

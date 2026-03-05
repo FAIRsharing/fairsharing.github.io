@@ -1,19 +1,19 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import TimingOfDmp from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/TimingOfDmp.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("TimingOfDmp", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(TimingOfDmp, {
-      localVue,
-      vuetify,
+      global: {
+        plugins: [vuetify],
+      },
     });
   });
 

@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Countries from "@/components/Records/Record/GeneralInfo/Countries.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 let editor = {
   namespaced: true,
@@ -42,7 +40,6 @@ describe("Countries.vue", function () {
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(Countries, {
-      localVue,
       vuetify,
       mocks: { $store },
       stubs: ["router-link"],

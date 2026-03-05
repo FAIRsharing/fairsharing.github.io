@@ -1,6 +1,7 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Organisations from "@/components/Editor/Organisations/Organisations.vue";
@@ -13,12 +14,8 @@ import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
 const sinon = require("sinon");
-const VueScrollTo = require("vue-scrollto");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 let organisation = {
   organisation: {
@@ -46,7 +43,7 @@ const $store = new Vuex.Store({
 });
 let $route = { path: "/123/edit", params: { id: 123 } };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("Edit -> Organisations.vue", function () {
   let wrapper;
@@ -81,15 +78,22 @@ describe("Edit -> Organisations.vue", function () {
 
   beforeEach(async () => {
     wrapper = await shallowMount(Organisations, {
-      localVue,
       vuetify,
       router,
       mocks: { $store, $route, $router },
     });
   });
 
+  afterEach(() => {
+    if (restStub && restStub.restore) {
+      restStub.restore();
+      restStub = null;
+    }
+    vi.clearAllMocks();
+  });
+
   afterAll(async () => {
-    graphStub.restore();
+    sinon.restore();
   });
 
   it("can be mounted", async () => {
@@ -119,10 +123,10 @@ describe("Edit -> Organisations.vue", function () {
     await wrapper.vm.showEditOverlay(null);
     expect(recordStore.state.editOrganisationLink.showOverlay).toBe(true);
     expect(recordStore.state.editOrganisationLink.data).toStrictEqual({});
-    expect(editorStore.state.organisationsTypes).toStrictEqual([
+    expect($store.state.editor.organisationsTypes).toStrictEqual([
       { id: 1, name: "Government body" },
     ]);
-    expect(editorStore.state.organisations).toStrictEqual([
+    expect($store.state.editor.organisations).toStrictEqual([
       {
         homepage: "test",
         id: 1,
@@ -131,7 +135,7 @@ describe("Edit -> Organisations.vue", function () {
         urlForLogo: null,
       },
     ]);
-    expect(editorStore.state.grants).toStrictEqual([
+    expect($store.state.editor.grants).toStrictEqual([
       { id: 1, name: "aGrant", description: null },
     ]);
     await wrapper.vm.showEditOverlay(0);
@@ -143,7 +147,7 @@ describe("Edit -> Organisations.vue", function () {
   });
 
   it("can save the current data", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: {} });
     recordStore.state.sections.organisations = {
@@ -175,9 +179,9 @@ describe("Edit -> Organisations.vue", function () {
     wrapper.vm.organisationLinks.push({
       organisation: { name: "a third organisation" },
     });
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect($router.push).toHaveBeenCalledTimes(0);
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, { textContent: "Save and exit" });
     expect($router.push).toHaveBeenCalledTimes(1);
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     recordStore.state.sections = {
@@ -189,18 +193,14 @@ describe("Edit -> Organisations.vue", function () {
         message: null,
       },
     };
-    restStub.restore();
-    jest.clearAllMocks();
   });
 
   it("can handle error upon saving the data", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     wrapper.vm.removeRelation(0);
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: { error: "I am an error" } });
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect(recordStore.state.sections.organisations.error).toBe(true);
-    restStub.restore();
-    jest.clearAllMocks();
   });
 });

@@ -1,14 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 
 import BarChart from "@/components/Static/Statistics/BarChart.vue";
 
-const localVue = createLocalVue();
 describe("BarChart.vue", () => {
   let wrapper;
   beforeAll(() => {
     wrapper = shallowMount(BarChart, {
-      localVue,
-      propsData: {
+      props: {
         refName: "Name of the chart",
         fieldsChart: {
           title: "This a bar chart",
@@ -46,8 +44,7 @@ describe("BarChart.vue", () => {
 
   it("can use not percentage", () => {
     wrapper = shallowMount(BarChart, {
-      localVue,
-      propsData: {
+      props: {
         refName: "Name of the chart",
         showPercent: false,
         fieldsChart: {

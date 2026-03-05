@@ -1,6 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { initHighchartsAccessibility } from "@/main.js";
 
+vi.mock("vue", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    createApp: vi.fn(() => ({
+      use: vi.fn().mockReturnThis(),
+      directive: vi.fn().mockReturnThis(),
+      mount: vi.fn(),
+      config: { globalProperties: {} },
+    })),
+  };
+});
+
 // Mock the simple-analytics-vue
 vi.mock("simple-analytics-vue", async () => {
   return {

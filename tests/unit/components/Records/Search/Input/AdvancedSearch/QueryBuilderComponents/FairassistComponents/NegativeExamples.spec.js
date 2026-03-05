@@ -1,19 +1,19 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import NegativeExamples from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/FairassistComponents/NegativeExamples.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("NegativeExamples", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(NegativeExamples, {
-      localVue,
-      vuetify,
+      global: {
+        plugins: [vuetify],
+      },
     });
   });
 

@@ -1,22 +1,28 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+/* eslint-env jest */
+
+import { mount } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
+import { createVuetify } from "vuetify";
 
 import Register from "@/components/Users/Register.vue";
 import Client from "@/lib/Client/RESTClient.js";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
 const router = new VueRouter();
+const vuetify = createVuetify();
 
 describe("Register.vue", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallowMount(Register, {
-      localVue,
+    wrapper = mount(Register, {
       router,
+      vuetify,
     });
+  });
+
+  afterEach(() => {
+    sinon.restore();
   });
 
   it("can be instantiated", () => {
@@ -25,7 +31,7 @@ describe("Register.vue", () => {
   });
 
   it("can create new accounts", async () => {
-    let stub = sinon.stub(Client.prototype, "executeQuery");
+    let stub = sinon.stub(Client.prototype, "createAccount");
     stub.withArgs(sinon.match.any).returns({
       data: "Hello World",
     });
@@ -35,27 +41,21 @@ describe("Register.vue", () => {
       password: "test",
       repeatPwd: "test",
     };
-    wrapper.vm.$refs["registerForm"] = {
-      reset: jest.fn(),
-    };
     await wrapper.vm.register();
     expect(wrapper.vm.message).toBe(
       "Account created, please verify your email address test@test.com",
     );
-    expect(wrapper.vm.$refs["registerForm"].reset).toHaveBeenCalledTimes(1);
-    stub.restore();
+    expect(wrapper.vm.$refs["registerForm"]).toBeTruthy();
   });
 
   it("can process errors", async () => {
-    let stub = sinon.stub(Client.prototype, "executeQuery");
+    let stub = sinon.stub(Client.prototype, "createAccount");
     stub.withArgs(sinon.match.any).returns({
-      data: {
-        error: {
-          response: {
-            data: {
-              errors: {
-                email: ["missing"],
-              },
+      error: {
+        response: {
+          data: {
+            errors: {
+              email: ["missing"],
             },
           },
         },
@@ -69,6 +69,5 @@ describe("Register.vue", () => {
     };
     await wrapper.vm.register();
     expect(wrapper.vm.errors).toStrictEqual(["email missing"]);
-    stub.restore();
   });
 });

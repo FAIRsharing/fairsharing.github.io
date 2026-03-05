@@ -1,10 +1,9 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 
 import Client from "@/lib/Client/RESTClient.js";
 import RequestNewPassword from "@/views/Users/RequestNewPassword.vue";
 
-const localVue = createLocalVue();
 
 describe("ConfirmAccount.vue", () => {
   let wrapper;
@@ -24,7 +23,6 @@ describe("ConfirmAccount.vue", () => {
   });
   beforeEach(async () => {
     wrapper = await shallowMount(RequestNewPassword, {
-      localVue,
     });
   });
 

@@ -1,23 +1,26 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+/* eslint-env jest */
+
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue";
 
 import getRecord from "../../../../../fixtures/getRecord.json";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("RecordsCardColumn.vue", function () {
   let wrapper;
   let record = getRecord;
 
   wrapper = shallowMount(RecordsCardStack, {
-    localVue,
-    vuetify,
-    propsData: {
+    global: {
+      plugins: [vuetify],
+      stubs: {
+        "router-link": true,
+      },
+    },
+    props: {
       record: record,
     },
   });

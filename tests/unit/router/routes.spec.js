@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 import RestClient from "@/lib/Client/RESTClient.js";
 import router, {
   afterEach,
@@ -123,9 +125,14 @@ describe("Routes", () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it("can check scrollBehavior", () => {
-    expect(scrollBehavior({ hash: "#anchorLink" })).toStrictEqual({
-      selector: "#anchorLink",
+  it("can check scrollBehavior", async () => {
+    await expect(scrollBehavior({ hash: "#anchorLink" })).resolves.toStrictEqual({
+      el: "#anchorLink",
+      behavior: "smooth",
+    });
+    expect(scrollBehavior({}, {}, { left: 0, top: 100 })).toStrictEqual({
+      left: 0,
+      top: 100,
     });
     expect(scrollBehavior({})).toBe(false);
   });

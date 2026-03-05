@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import Carousel from "@/components/Home/Carousel";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("Carousel", function () {
   let wrapper;

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import sinon from "sinon";
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue";
@@ -11,7 +11,10 @@ import userStore from "@/store/users.js";
 // This is so the validation hacks work when testing.
 // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1732
 const VueFormStub = {
-  render: () => {},
+  name: "v-form",
+  props: ["modelValue"],
+  emits: ["update:modelValue"],
+  template: "<form><slot /></form>",
   methods: {
     validate: () => {},
   },
@@ -58,12 +61,19 @@ let wrapper;
 
 describe("Editor -> BaseFields.vue", () => {
   beforeEach(() => {
-    wrapper = mount(BaseFields, {
+    $store.state.record.newRecord = false;
+    $store.state.users.user = function () {
+      return { is_curator: false, credentials: { token: "a token" } };
+    };
+    wrapper = shallowMount(BaseFields, {
       global: {
         plugins: [$store],
         mocks: { $route, $router },
+        stubs: {
+          "v-form": VueFormStub,
+          VForm: VueFormStub,
+        },
       },
-      stubs: { "v-form": VueFormStub },
       props: {
         createMode: false,
         submitRecord: false,
@@ -83,17 +93,17 @@ describe("Editor -> BaseFields.vue", () => {
   });
 
   it("disables type field except for new records and curators", () => {
-    userStore.state.user = function () {
+    $store.state.users.user = function () {
       return { is_curator: false, credentials: { token: "a token" } };
     };
     expect(wrapper.vm.typeChangeDisabled()).toBe(true);
-    recordStore.state.newRecord = true;
+    $store.state.record.newRecord = true;
     expect(wrapper.vm.typeChangeDisabled()).toBe(false);
 
-    userStore.state.user = function () {
+    $store.state.users.user = function () {
       return { is_curator: true, credentials: { token: "a token" } };
     };
-    recordStore.state.newRecord = false;
+    $store.state.record.newRecord = false;
     expect(wrapper.vm.typeChangeDisabled()).toBe(false);
   });
 
@@ -113,16 +123,16 @@ describe("Editor -> BaseFields.vue", () => {
     expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
   });
 
-  it("sets the disableSubmit variable correctly", () => {
-    editorStore.state.possibleDuplicates = [{ record: "a record" }];
+  it("sets the disableSubmit variable correctly", async () => {
+    $store.state.editor.possibleDuplicates = [{ record: "a record" }];
     wrapper.vm.formValid = false;
-    wrapper.vm.submitRecord = false;
+    await wrapper.setProps({ submitRecord: false });
     expect(wrapper.vm.disableSubmit()).toBe(true);
     wrapper.vm.formValid = true;
     expect(wrapper.vm.disableSubmit()).toBe(true);
-    editorStore.state.possibleDuplicates = [];
+    $store.state.editor.possibleDuplicates = [];
     wrapper.vm.formValid = true;
-    wrapper.vm.submitRecord = false;
+    await wrapper.setProps({ submitRecord: false });
     expect(wrapper.vm.disableSubmit()).toBe(false);
   });
 

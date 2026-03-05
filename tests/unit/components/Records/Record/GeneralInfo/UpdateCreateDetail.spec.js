@@ -1,15 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueMoment from "vue-moment";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueMoment);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   doi: "FAIRsharing.wibble",
@@ -30,7 +27,6 @@ describe("UpdateCreateDetail.vue", function () {
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(UpdateCreateDetail, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

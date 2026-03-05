@@ -8,7 +8,7 @@ describe("AssociatedRecordsSummary.vue", function () {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(AssociatedRecordsSummary, {
-      propsData: associatedRecords.propsData,
+      props: associatedRecords.propsData,
     });
   });
 

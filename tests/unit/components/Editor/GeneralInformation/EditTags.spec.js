@@ -141,23 +141,8 @@ describe("Editor -> EditTags.vue", () => {
   });
 
   it("can check isNew method", () => {
-    wrapper = shallowMount(EditTags, {
-      computed: {
-        initialSections() {
-          return {
-            tags: [{ id: 10, name: "Existing Item" }],
-          };
-        },
-      },
-      global: {
-        plugins: [$store],
-        mocks: {
-          $scrollTo: scrollToMock,
-        },
-      },
-    });
-    const termToCheck = { id: 10, name: "Existing Item" };
-    const result = wrapper.vm.isNew(termToCheck, "tags");
+    const termToCheck = { id: 1, label: "test" };
+    const result = wrapper.vm.isNew(termToCheck, "taxonomic range");
     expect(result).toBe(false);
   });
 
@@ -165,6 +150,12 @@ describe("Editor -> EditTags.vue", () => {
     let output = {
       "taxonomic range":
         wrapper.vm.getSection("generalInformation").initialData.taxonomies,
+      subjects: wrapper.vm.getSection("generalInformation").initialData.subjects,
+      domains: wrapper.vm.getSection("generalInformation").initialData.domains,
+      "user defined tags":
+        wrapper.vm.getSection("generalInformation").initialData.userDefinedTags,
+      "object types":
+        wrapper.vm.getSection("generalInformation").initialData.objectTypes,
     };
     expect(wrapper.vm.initialSections).toStrictEqual(output);
   });
@@ -172,10 +163,29 @@ describe("Editor -> EditTags.vue", () => {
   it("can check sections computed property", async () => {
     let output = {
       "taxonomic range": {
-        items:
-          wrapper.vm.getSection("generalInformation").initialData.taxonomies,
+        items: wrapper.vm.getSection("generalInformation").data.taxonomies,
         color: wrapper.vm.colors["taxonomy"],
         tooltip: wrapper.vm.tooltips.species,
+      },
+      subjects: {
+        items: wrapper.vm.getSection("generalInformation").data.subjects,
+        color: wrapper.vm.colors["subject"],
+        tooltip: wrapper.vm.tooltips.subjects,
+      },
+      domains: {
+        items: wrapper.vm.getSection("generalInformation").data.domains,
+        color: wrapper.vm.colors["domain"],
+        tooltip: wrapper.vm.tooltips.domains,
+      },
+      "user defined tags": {
+        items: wrapper.vm.getSection("generalInformation").data.userDefinedTags,
+        color: wrapper.vm.colors["user_defined_tag"],
+        tooltip: wrapper.vm.tooltips.userDefinedTags,
+      },
+      "object types": {
+        items: wrapper.vm.getSection("generalInformation").data.objectTypes,
+        color: wrapper.vm.colors["object_type"],
+        tooltip: wrapper.vm.tooltips.objectTypes,
       },
     };
     expect(wrapper.vm.sections).toStrictEqual(output);

@@ -1,4 +1,5 @@
 import sinon from "sinon";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import Client from "@/lib/GraphClient/GraphClient.js";
 import { actions, mutations, paramsAreExpired } from "@/store/introspector.js";
@@ -117,7 +118,7 @@ describe("Localstorage Suite", () => {
   beforeEach(() => {
     localStorage.clear();
     state = {};
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
   });
 
   beforeAll(() => {

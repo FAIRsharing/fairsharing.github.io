@@ -1,9 +1,10 @@
 import { RouterLinkStub, shallowMount  } from "@vue/test-utils";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createVuetify } from "vuetify";
 
 import InfoBlock from "@/components/Home/InfoBlock";
 import icons from "@/plugins/icons";
-const vuetify = new Vuetify({ icons: icons });
+const vuetify = createVuetify({ icons: icons });
 import Vuex from "vuex";
 
 import searchFiltersStore from "@/store/searchFilters.js";

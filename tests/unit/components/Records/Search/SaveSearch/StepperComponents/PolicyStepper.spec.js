@@ -1,4 +1,5 @@
 import { shallowMount  } from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -22,7 +23,7 @@ describe("PolicyStepper.vue", () => {
             }),
           },
           actions: {
-            getUser: jest.fn(),
+            getUser: vi.fn(),
           },
         },
         saveSearch: {
@@ -32,7 +33,7 @@ describe("PolicyStepper.vue", () => {
             getLoadingStatus: () => true,
           },
           actions: {
-            fetchPolicyRecords: jest.fn(),
+            fetchPolicyRecords: vi.fn(),
           },
         },
       },

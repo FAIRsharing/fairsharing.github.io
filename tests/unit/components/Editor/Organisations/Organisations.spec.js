@@ -1,4 +1,5 @@
 import { shallowMount  } from "@vue/test-utils";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
@@ -13,7 +14,6 @@ import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
 const sinon = require("sinon");
-const VueScrollTo = require("vue-scrollto");
 
 const vuetify = createVuetify();
 
@@ -43,7 +43,7 @@ const $store = new Vuex.Store({
 });
 let $route = { path: "/123/edit", params: { id: 123 } };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("Edit -> Organisations.vue", function () {
   let wrapper;
@@ -89,7 +89,7 @@ describe("Edit -> Organisations.vue", function () {
       restStub.restore();
       restStub = null;
     }
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterAll(async () => {
@@ -147,7 +147,7 @@ describe("Edit -> Organisations.vue", function () {
   });
 
   it("can save the current data", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: {} });
     recordStore.state.sections.organisations = {
@@ -196,7 +196,7 @@ describe("Edit -> Organisations.vue", function () {
   });
 
   it("can handle error upon saving the data", async () => {
-    jest.spyOn(console, "warn").mockImplementation(() => {});
+    vi.spyOn(console, "warn").mockImplementation(() => {});
     wrapper.vm.removeRelation(0);
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: { error: "I am an error" } });

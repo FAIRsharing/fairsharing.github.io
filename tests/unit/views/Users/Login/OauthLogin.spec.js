@@ -1,5 +1,6 @@
 import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
@@ -23,7 +24,7 @@ let $route = {
 };
 const router = new VueRouter();
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 
 describe("Login.vue", () => {
@@ -131,7 +132,7 @@ describe("Login.vue", () => {
 
   it("passes jwt and expiry to oauthLogin", async () => {
     await mountComponent();
-    wrapper.vm.oauthLogin = jest.fn().mockResolvedValue();
+    wrapper.vm.oauthLogin = vi.fn().mockResolvedValue();
     await wrapper.vm.login();
     expect(wrapper.vm.oauthLogin).toHaveBeenCalledWith({
       jwt: 123,

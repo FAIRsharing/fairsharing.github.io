@@ -1,10 +1,11 @@
 import { shallowMount } from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 let $route = { path: "/search", query: {} };
 
@@ -21,8 +22,8 @@ describe("StringSearch.vue", () => {
           "v-form": {
             template: "<form><slot /></form>",
             methods: {
-              resetValidation: jest.fn(),
-              validate: jest.fn().mockReturnValue(true),
+              resetValidation: vi.fn(),
+              validate: vi.fn().mockReturnValue(true),
             },
           },
         },
@@ -43,7 +44,7 @@ describe("StringSearch.vue", () => {
   });
 
   it("can pass the search term to the correct route", () => {
-    wrapper.vm.$refs.form.resetValidation = jest.fn();
+    wrapper.vm.$refs.form.resetValidation = vi.fn();
     wrapper.vm.searchString();
     expect($router.push).toHaveBeenCalledTimes(1);
     wrapper.vm.searchTerm = "testString";
@@ -76,8 +77,8 @@ describe("StringSearch.vue", () => {
   it("can pass the search term to the correct route for homePage searchBox function", () => {
     wrapper = getWrapper({ showHomeSearch: true });
     wrapper2 = getWrapper();
-    wrapper.vm.$refs.form.resetValidation = jest.fn().mockReturnValue(true);
-    wrapper2.vm.$refs.form.resetValidation = jest.fn().mockReturnValue(true);
+    wrapper.vm.$refs.form.resetValidation = vi.fn().mockReturnValue(true);
+    wrapper2.vm.$refs.form.resetValidation = vi.fn().mockReturnValue(true);
 
     wrapper.vm.registries = [
       { label: "standards", value: "standard" },
@@ -134,7 +135,7 @@ describe("StringSearch.vue", () => {
   it("appends terms when relevant prop is set", () => {
     wrapper = getWrapper({ addSearchTerms: true });
     wrapper.vm.searchTerm = "testString";
-    wrapper.vm.$refs.form.resetValidation = jest.fn();
+    wrapper.vm.$refs.form.resetValidation = vi.fn();
     wrapper.vm.searchString();
     expect($router.push).toHaveBeenCalledWith({
       path: "/search",

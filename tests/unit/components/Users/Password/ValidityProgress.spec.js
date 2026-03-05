@@ -1,11 +1,9 @@
 import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
-import Vue from "vue";
 
 import ValidityProgress from "@/components/Users/Password/ValidityProgress";
 import Client from "@/lib/Client/RESTClient.js";
 
-Vue.config.silent = true;
 let stub;
 
 describe("ValidityProgress.vue", () => {
@@ -18,17 +16,18 @@ describe("ValidityProgress.vue", () => {
   });
 
   it("can react to password change", async () => {
-    stub = sinon.stub(Client.prototype, "executeQuery");
+    stub = sinon.stub(Client.prototype, "verifyPassword");
     stub.returns({
-      data: { percent: 0 },
+      percent: 0,
     });
-        const anotherWrapper = await shallowMount(ValidityProgress, {
+    const anotherWrapper = await shallowMount(ValidityProgress, {
       props: {
         password: "Great password 123!?",
       },
     });
-    anotherWrapper.vm.password = "anotherWrapper";
+    await anotherWrapper.vm.verifyPwd();
     expect(anotherWrapper.vm.passwordColor).toBe("red");
     expect(anotherWrapper.vm.passwordValidity).toBe(0);
+    stub.restore();
   });
 });

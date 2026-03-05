@@ -55,6 +55,12 @@ describe("EditPublicProfile.vue", function () {
       id: 1,
       username: "user",
       email: "user@user.com",
+      preferences: {
+        hide_email: false,
+        email_updates: false,
+      },
+      role: "user",
+      deactivated: false,
     });
   });
   afterAll(() => {
@@ -68,6 +74,7 @@ describe("EditPublicProfile.vue", function () {
       vuetify,
       mocks: { $store, $route, $router },
     });
+    await wrapper.vm.loadUser();
   });
 
   afterEach(() => {

@@ -38,8 +38,10 @@ let $store = new Vuex.Store({
 
 describe("EditPrivateProfile.vue", () => {
   let wrapper, graphStub, profilesStub, userStub;
+  let originalUserFn;
 
   beforeAll(() => {
+    originalUserFn = userStore.state.user;
     profilesStub = sinon
       .stub(Client.prototype, "getProfileTypes")
       .returns(["profile 1", "profile 2"]);
@@ -77,6 +79,7 @@ describe("EditPrivateProfile.vue", () => {
     profilesStub.restore();
     graphStub.restore();
     userStub.restore();
+    userStore.state.user = originalUserFn;
   });
 
   beforeEach(async () => {
@@ -130,7 +133,11 @@ describe("EditPrivateProfile.vue", () => {
 
   it("can process errors", async () => {
     userStore.state.user = function () {
-      return { metadata: {} };
+      return {
+        metadata: {},
+        records: { organisations: [] },
+        credentials: { token: "123" },
+      };
     };
     $store = new Vuex.Store({
       modules: {
@@ -146,8 +153,11 @@ describe("EditPrivateProfile.vue", () => {
 
   it("disables the email edit field for third party users", () => {
     expect(wrapper.vm.isDisabled("email")).toBe(false);
-    userStore.state.user = function () {
-      return { metadata: { third_party: true } };
+    $store.state.users.user = function () {
+      return {
+        metadata: { third_party: true },
+        records: { organisations: [] },
+      };
     };
     expect(wrapper.vm.isDisabled("email")).toBe(true);
   });

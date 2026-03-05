@@ -41,6 +41,8 @@ describe("ResetPassword.vue", () => {
       stubs: ["router-link"],
       mocks: { $store },
     });
+    await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
     const title = "ResetPassword";
     expect(wrapper.vm.$options.name).toMatch(title);
     expect(wrapper.vm.messages().resetPassword).toStrictEqual({

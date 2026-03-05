@@ -7,7 +7,7 @@ import Client from "@/lib/Client/RESTClient.js";
 import usersStore from "@/store/users.js";
 import Login from "@/views/Users/Login/Login.vue";
 
-// const $store = new Vuex.Store({
+const $store = new Vuex.Store({
   modules: {
     users: usersStore,
   },

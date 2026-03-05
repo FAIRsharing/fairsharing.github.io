@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 import { mount } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";

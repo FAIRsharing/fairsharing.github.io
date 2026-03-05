@@ -1,6 +1,7 @@
+/* eslint-env jest */
+
 import { shallowMount  } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
-import Vuex from "vuex";
 
 import History from "@/components/Records/Record/History/RecordHistory.vue";
 

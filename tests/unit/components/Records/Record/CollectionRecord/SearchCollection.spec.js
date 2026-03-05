@@ -1,5 +1,6 @@
+/* eslint-env jest */
+
 import { shallowMount  } from "@vue/test-utils";
-import VueScrollTo from "vue-scrollto";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -97,7 +98,8 @@ describe("SearchCollection.vue", function () {
   afterAll(() => {
     try {
       Client.prototype.executeQuery.restore();
-    } catch {
+    }
+    catch {
       // eslint-disable-next-line no-empty
     }
   });

@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 import RestClient from "@/lib/Client/RESTClient.js";
 import router, {
   afterEach,

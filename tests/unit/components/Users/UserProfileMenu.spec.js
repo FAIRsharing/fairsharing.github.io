@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";

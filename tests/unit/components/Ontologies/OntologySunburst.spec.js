@@ -1,7 +1,6 @@
+/* eslint-env jest */
+
 import { shallowMount  } from "@vue/test-utils";
-import Highcharts from "highcharts";
-import Sunburst from "highcharts/modules/sunburst";
-import HighchartsVue from "highcharts-vue";
 import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";

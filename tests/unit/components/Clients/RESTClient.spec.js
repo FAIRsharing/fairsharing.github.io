@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 import Client from "@/lib/Client/RESTClient.js";
 const sinon = require("sinon");
 describe("RESTClient", () => {

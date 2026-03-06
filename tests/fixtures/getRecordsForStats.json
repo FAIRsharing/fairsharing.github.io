@@ -265,12 +265,7 @@
           "totalCount": 74,
           "totalPages": 3,
           "firstPage": true,
-          "records": [
-            {},
-            {},
-            {},
-            {}
-          ]
+          "records": [{}, {}, {}, {}]
         },
         "standard": {
           "is_maintained": {
@@ -535,12 +530,7 @@
           "totalCount": 74,
           "totalPages": 3,
           "firstPage": true,
-          "records": [
-            {},
-            {},
-            {},
-            {}
-          ]
+          "records": [{}, {}, {}, {}]
         },
         "database": {
           "is_maintained": {
@@ -805,12 +795,7 @@
           "totalCount": 74,
           "totalPages": 3,
           "firstPage": true,
-          "records": [
-            {},
-            {},
-            {},
-            {}
-          ]
+          "records": [{}, {}, {}, {}]
         },
         "policy": {
           "is_maintained": {
@@ -1075,12 +1060,7 @@
           "totalCount": 74,
           "totalPages": 3,
           "firstPage": true,
-          "records": [
-            {},
-            {},
-            {},
-            {}
-          ]
+          "records": [{}, {}, {}, {}]
         }
       },
       "dbs_linked_to_stds": {
@@ -1091,14 +1071,8 @@
         ">100": 31
       },
       "dbs_implementing_most_stds": [
-        { "id": 32,
-          "name": "name1",
-          "standards_implemented": 44
-        },
-        { "id": 44,
-          "name": "name2",
-          "standards_implemented": 22
-        }
+        { "id": 32, "name": "name1", "standards_implemented": 44 },
+        { "id": 44, "name": "name2", "standards_implemented": 22 }
       ],
       "dbs_to_pubs": {
         "databases_with_publication": 1115,

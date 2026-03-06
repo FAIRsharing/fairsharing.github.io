@@ -1,21 +1,17 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      @input="selectedValue"
-    />
-  </div>
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "PositiveExamples",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,

@@ -1,6 +1,7 @@
 //Utilities classes---------------------------------
 .underline-effect {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     text-decoration: underline;
     outline: 0;
   }
@@ -27,7 +28,6 @@
   opacity: 0.3;
   -moz-opacity: 0.3;
 }
-
 
 .half-width {
   width: 50%;
@@ -88,12 +88,12 @@
 }
 
 .dashed-line {
-  border: none!important;
-  border-top: 4px dotted gray!important;
-  color: #fff!important;
-  background-color: #fff!important;
-  height: 1px!important;
-  opacity: 0.4!important;
+  border: none !important;
+  border-top: 4px dotted gray !important;
+  color: #fff !important;
+  background-color: #fff !important;
+  height: 1px !important;
+  opacity: 0.4 !important;
 }
 
 .word-break {
@@ -101,7 +101,6 @@
 }
 
 // end of utility classes
-
 
 //margins & sizes
 
@@ -213,7 +212,7 @@
 }
 
 .width-25-percent {
-width: 25%;
+  width: 25%;
 }
 
 .width-35 {
@@ -225,7 +224,7 @@ width: 25%;
 }
 
 .width-100 {
-  width:100px;
+  width: 100px;
 }
 
 .width-15-percent-flex {
@@ -255,7 +254,33 @@ width: 25%;
 .line-height-20 {
   line-height: 20px;
 }
+
+#input-18-messages {
+  margin-top: 8px;
+}
+
 //end of margins & sizes
 
+.pabsolute {
+  position: absolute;
+}
 
+.margin-auto {
+  margin: 0 auto;
+}
 
+.contain {
+  background-size: contain;
+}
+
+.font-12 {
+  font-size: 12px;
+}
+
+.overflow-initial {
+  overflow: initial;
+}
+
+.v-btn--size-x-large {
+  font-size: 1rem
+}

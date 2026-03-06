@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import DomainsSearchStore from "@/store/AdvancedSearchComponents/domainsSearch";
 
-import DomainsSearchData from "../../../../tests/fixtures/getDomainsSearch.json";
+import DomainsSearchData from "../../../fixtures/getDomainsSearch.json";
 
 describe("DomainsSearch store methods", () => {
   const { actions, mutations, getters } = DomainsSearchStore;

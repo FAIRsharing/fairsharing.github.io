@@ -3,43 +3,26 @@
     <template v-if="user().is_super_curator">
       <v-autocomplete
         v-model="organisationSelected"
+        v-model:search="searchOrganisation"
         :items="getSearchOrganisations"
-        :search-input.sync="searchOrganisation"
-        class="mb-7"
         :loading="getLoadingStatus"
-        hide-details
-        multiple
-        cache-items
         chips
-        deletable-chips
+        class="mb-7 full-width stepperField"
+        closable-chips
+        color="primary"
+        flat
+        hide-details="auto"
+        item-title="name"
         item-value="id"
-        item-text="name"
         label="Enter text to search for organisation(s) to associate with this saved search"
+        multiple
+        variant="underlined"
       >
-        <template #selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.item['id']"
-            close
-            @click="data.select"
-            @click:close="remove(data.item['id'])"
-          >
-            {{ data.item["name"] }}
-          </v-chip>
-        </template>
         <template #no-data>
-          <div
-            v-show="!getLoadingStatus"
-            class="py-3 px-4"
-          >
+          <div v-show="!getLoadingStatus" class="py-3 px-4">
             No organisation found
           </div>
-          <div
-            v-show="getLoadingStatus"
-            class="py-3 px-4"
-          >
-            Loading...
-          </div>
+          <div v-show="getLoadingStatus" class="py-3 px-4">Loading...</div>
         </template>
       </v-autocomplete>
     </template>
@@ -47,9 +30,9 @@
       <v-progress-linear
         :active="loading"
         :indeterminate="loading"
+        color="primary"
         height="6"
         rounded
-        color="primary"
       />
       <template v-if="organisationList && organisationList.length">
         <v-checkbox
@@ -61,9 +44,7 @@
         />
       </template>
       <template v-else>
-        <p v-if="!loading">
-          No organisation found
-        </p>
+        <p v-if="!loading">No organisation found</p>
       </template>
     </template>
   </div>

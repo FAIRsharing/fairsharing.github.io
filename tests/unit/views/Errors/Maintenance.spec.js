@@ -7,17 +7,18 @@ const localVue = createLocalVue();
 localVue.use(VueMeta);
 
 describe("Maintenance page", () => {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Maintenance, {
-            localVue
-        });
+  beforeEach(() => {
+    wrapper = shallowMount(Maintenance, {
+      localVue,
     });
+  });
 
-    it("can mount", () => {
-        expect(wrapper.vm.$options.name).toBe("Maintenance");
-        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Maintenance Mode");
-    });
-
+  it("can mount", () => {
+    expect(wrapper.vm.$options.name).toBe("Maintenance");
+    expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
+      "FAIRsharing | Maintenance Mode",
+    );
+  });
 });

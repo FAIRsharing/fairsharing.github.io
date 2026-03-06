@@ -1,28 +1,16 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="12"
-        md="8"
-        lg="8"
-        xl="4"
-      >
+      <v-col cols="12" sm="12" md="8" lg="8" xl="4">
         <v-card>
-          <v-card-title class="blue white--text mb-5">
-            <h2> Request a new password</h2>
+          <v-card-title class="bg-blue text-white mb-5">
+            <h2>Request a new password</h2>
           </v-card-title>
           <v-card-text v-if="triggered && message">
-            <v-alert
-              v-if="success"
-              type="success"
-            >
+            <v-alert v-if="success" type="success">
               {{ message }}
             </v-alert>
-            <v-alert
-              v-if="!success"
-              type="error"
-            >
+            <v-alert v-if="!success" type="error">
               {{ message }}
             </v-alert>
           </v-card-text>
@@ -38,12 +26,13 @@
                 v-model="formData.email"
                 label="Email address of the account"
                 required
-                outlined
+                variant="outlined"
                 :rules="[rules.isRequired(), rules.isEmail()]"
               />
               <v-btn
                 :loading="loading"
                 :disabled="!formValid"
+                color="accent2"
                 @click="sendEmail()"
               >
                 Request new password
@@ -57,38 +46,38 @@
 </template>
 
 <script>
-    import Client from "@/lib/Client/RESTClient.js"
-    import { isEmail,isRequired } from "@/utils/rules.js"
+import Client from "@/lib/Client/RESTClient.js";
+import { isEmail, isRequired } from "@/utils/rules.js";
 
-    const client = new Client();
+const client = new Client();
 
-    export default {
-        name: "NewPassword",
-        data: () => {
-          return {
-            message: null,
-            formData: {},
-            success: false,
-            triggered: false,
-            loading: false,
-            formValid: false,
-            rules: {
-              isRequired: () => isRequired(),
-              isEmail: () => isEmail()
-            }
-          }
-        },
-        methods: {
-          sendEmail: async function(){
-            if (!this.formValid) return null
-            this.loading = true;
-            this.triggered = false;
-            let response = await client.requestResetPwd(this.formData.email);
-            this.message = response.message;
-            this.success = response.success;
-            this.triggered = true;
-            this.loading = false;
-          }
-        }
-    }
+export default {
+  name: "NewPassword",
+  data: () => {
+    return {
+      message: null,
+      formData: {},
+      success: false,
+      triggered: false,
+      loading: false,
+      formValid: false,
+      rules: {
+        isRequired: () => isRequired(),
+        isEmail: () => isEmail(),
+      },
+    };
+  },
+  methods: {
+    sendEmail: async function () {
+      if (!this.formValid) return null;
+      this.loading = true;
+      this.triggered = false;
+      let response = await client.requestResetPwd(this.formData.email);
+      this.message = response.message;
+      this.success = response.success;
+      this.triggered = true;
+      this.loading = false;
+    },
+  },
+};
 </script>

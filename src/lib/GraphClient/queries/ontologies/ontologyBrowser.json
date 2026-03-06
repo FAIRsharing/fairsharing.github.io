@@ -7,14 +7,7 @@
     "totalPages",
     {
       "name": "records",
-      "fields": [
-        "id",
-        "type",
-        "name",
-        "registry",
-        "status",
-        "isRecommended"
-      ]
+      "fields": ["id", "type", "name", "registry", "status", "isRecommended"]
     }
   ]
 }

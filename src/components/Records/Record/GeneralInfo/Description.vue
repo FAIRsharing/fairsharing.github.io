@@ -1,15 +1,13 @@
 <template>
   <div class="d-flex flex-row mt-4 min-height-40">
     <span class="d-flex align-baseline width-15-percent-flex">
-      <v-tooltip bottom>
-        <template #activator="{ on }">
-          <v-icon
-            class="mr-2"
-            size="15"
-            v-on="on"
-          > fa-question-circle </v-icon>
+      <v-tooltip location="bottom">
+        <template #activator="{ props }">
+          <v-icon class="mr-2" size="15" v-bind="props">
+            fas fa-question-circle
+          </v-icon>
         </template>
-        {{ recordTooltips.description }}
+        {{ recordTooltips["description"] }}
       </v-tooltip>
       <b>Description</b>
     </span>
@@ -17,8 +15,8 @@
     <!-- this should have been sanitised... -->
     <!-- eslint-disable vue/no-v-html -->
     <p
+      :class="{ 'text-end': $vuetify.display.smAndDown }"
       class="ma-0 full-width ml-md-12 ml-8"
-      :class="{ 'text-end': $vuetify.breakpoint.smAndDown }"
       v-html="descriptionHtml"
     />
     <!-- eslint-enable vue/no-v-html -->
@@ -29,8 +27,7 @@
 import DOMPurify from "dompurify";
 import MarkdownIt from "markdown-it";
 import { mapGetters, mapState } from "vuex";
-
-import stringUtils from "@/utils/stringUtils";
+import { capitalize } from "lodash";
 
 const md = new MarkdownIt({
   html: true, // allow inline HTML in Markdown input (we will sanitize below)
@@ -40,7 +37,6 @@ const md = new MarkdownIt({
 
 export default {
   name: "Description",
-  mixins: [stringUtils],
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("editor", ["recordTooltips"]),
@@ -56,13 +52,17 @@ export default {
       // if your mixin exposes `capitalize`, call it; otherwise remove the call
       const capitalized =
         typeof this.capitalize === "function"
-          ? this.capitalize(this.descriptionRaw)
+          ? capitalize(this.descriptionRaw)
           : this.descriptionRaw;
 
       const unsafe = md.render(capitalized || "");
       // Sanitize the generated HTML to avoid XSS.
       return DOMPurify.sanitize(unsafe);
     },
+  },
+
+  methods: {
+    capitalize,
   },
 };
 </script>

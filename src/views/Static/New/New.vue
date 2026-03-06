@@ -2,72 +2,73 @@
   <main class="pa-15 mb-10">
     <!-- eslint-disable vue/no-v-html -->
     <!--  BulletPoints  -->
-    <h1 class="text-h4">
-      What to add
-    </h1>
-    <v-sheet
-      class="my-5 mb-10 pa-6"
-      elevation="3"
-    >
-      <p style="font-size:1.2rem">
-        The <a
-          href="https://fairsharing.org/communities#governance"
+    <h1 class="text-h4">What to add</h1>
+    <v-sheet class="my-5 mb-10 pa-6" elevation="3">
+      <p style="font-size: 1.2rem">
+        The
+        <a
           class="underline-effect"
+          href="/communities#governance"
           target="blank"
         >
-          FAIRsharing Team</a> curates and integrates
-        <b>descriptions</b> of community resources such as standards and databases, progressively linking both to policies. Our curation team keeps track of every record, but resource developers are the experts. We encourage you to take ownership of your resources' records and help us keep your standard, database or policy description up to date.
-        If we already describe your resource, <a
+          FAIRsharing Team</a
+        >
+        curates and integrates <b>descriptions</b> of community resources such
+        as standards and databases, progressively linking both to policies. Our
+        curation team keeps track of every record, but resource developers are
+        the experts. We encourage you to take ownership of your resources'
+        records and help us keep your standard, database or policy description
+        up to date. If we already describe your resource,
+        <a
+          class="underline-effect"
           href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record"
           target="_blank"
+          >claim</a
+        >
+        and then
+        <a
           class="underline-effect"
-        >claim</a> and then <a
           href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record"
           target="_blank"
-          class="underline-effect"
-        >update</a> it as necessary. If your resource is missing, please keep reading to start a new record submission.
+          >update</a
+        >
+        it as necessary. If your resource is missing, please keep reading to
+        start a new record submission.
       </p>
     </v-sheet>
-    <div
-      v-if="newData.firstBlock"
-      class="mt-2"
-    >
+    <div v-if="newData.firstBlock" class="mt-2">
       <v-container>
-        <v-row
-          class="block-category"
-        >
+        <v-row class="block-category">
           <v-col
-            v-for="(item,index) in newData.firstBlock.items"
-            :key="item+'_'+index"
+            v-for="(item, index) in newData.firstBlock.items"
+            :key="item + '_' + index"
             cols="12"
-            sm="12"
-            md="4"
             lg="3"
+            md="4"
+            sm="12"
           >
             <v-card
               class="mx-auto block-category__card"
-              max-width="350"
               height="100%"
+              max-width="350"
             >
-              <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
-                <div
-                  style="height: 136px"
-                  class="d-flex justify-center"
-                >
+              <div
+                class="text-white d-flex flex-column justify-center block-category__card__gradiant"
+              >
+                <div class="d-flex justify-center" style="height: 136px">
                   <v-img
-                    class="mt-5"
-                    contain
+                    :src="customIcons.values[item.icon].icon"
+                    class="mt-5 contain"
                     height="100px"
-                    :src="$vuetify.icons.values[item.icon].icon"
                   />
                 </div>
-                <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
+                <v-card-title
+                  class="d-inline text-h4 text-center text-md-h5 text-lg-h4"
+                >
                   {{ newData.firstBlock.items[index].title }}
                 </v-card-title>
               </div>
-              <v-card-text
-                class="text--primary height-100"
-              >
+              <v-card-text class="text--primary height-100">
                 <!-- eslint-disable vue/no-v-html -->
                 <span v-html="newData.firstBlock.items[index].description" />
                 <!-- eslint-enable vue/no-v-html -->
@@ -76,73 +77,55 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-sheet
-        class="my-5 mb-10 pa-6"
-        color="accent3 white--text"
-        elevation="3"
-      >
-        <div style="background-color:white;width:100px;padding:5px">
-          <v-img
-            src="/assets/icons/nodatasets.png"
-            width="100"
-          />
+      <v-sheet class="my-5 mb-10 pa-6" color="accent3 text-white" elevation="3">
+        <div style="background-color: white; width: 100px; padding: 5px">
+          <v-img src="/assets/icons/nodatasets.png" width="100" />
         </div>
         <div class="text-center">
-          <v-chip
-            class="ma-2"
-            color="white"
-            @click="translate('de')"
-          >
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('de')">
             DE
           </v-chip>
-          <v-chip
-            class="ma-2"
-            color="white"
-            @click="translate('es')"
-          >
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('es')">
             ES
           </v-chip>
-          <v-chip
-            class="ma-2"
-            color="white"
-            @click="translate('fr')"
-          >
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('fr')">
             FR
           </v-chip>
-          <v-chip
-            class="ma-2"
-            color="white"
-            @click="translate('it')"
-          >
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('it')">
             IT
           </v-chip>
-          <v-chip
-            class="ma-2"
-            color="white"
-            @click="translate('jp')"
-          >
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('jp')">
             JP
           </v-chip>
-          <v-chip
-            class="ma-2"
-            color="white"
-            @click="translate('zh')"
-          >
+          <v-chip class="bg-white ma-2" variant="flat" @click="translate('zh')">
             ZH
           </v-chip>
         </div>
-        <h2 class="text-h4 my-2">
-          No datasets, please
-        </h2>
+        <h2 class="text-h4 my-2">No datasets, please</h2>
         <ul class="circles">
           <li>
             <span>
-              <strong> No files (excel, doc, csv, sql…), no data relating to an article publication:</strong>
+              <strong>
+                No files (excel, doc, csv, sql…), no data relating to an article
+                publication:</strong
+              >
             </span>
             <ul class="ticks">
-              <li>The resource should be an organised collection of data and datasets rather than just an individual dataset.</li>
-              <li>The resource is findable. Users can access the database via an active website and can also browse and/or search the database. In contrast, datasets are generally downloadable but not searchable, and therefore are not appropriate for FAIRsharing.</li>
-              <li>The resource is accessible. Irrespective of licence type, the resource is available to users via a dedicated website (even if a log in or payment is required).</li>
+              <li>
+                The resource should be an organised collection of data and
+                datasets rather than just an individual dataset.
+              </li>
+              <li>
+                The resource is findable. Users can access the database via an
+                active website and can also browse and/or search the database.
+                In contrast, datasets are generally downloadable but not
+                searchable, and therefore are not appropriate for FAIRsharing.
+              </li>
+              <li>
+                The resource is accessible. Irrespective of licence type, the
+                resource is available to users via a dedicated website (even if
+                a log in or payment is required).
+              </li>
             </ul>
           </li>
           <li>
@@ -152,32 +135,45 @@
             <ul class="arrows">
               <li>
                 <span>
-                  If you would like to find a home for your data, try browsing our complete <a
-                    href="https://fairsharing.org/browse/subject"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >subject hierarchy</a> or searching our <a
-                    href="https://fairsharing.org/databases"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >database records</a> to find an appropriate database for your data type.
+                  If you would like to find a home for your data, try browsing
+                  our complete
+                  <a
+                    class="underline-effect font-weight-black text-white"
+                    href="/browse/subject"
+                    >subject hierarchy</a
+                  >
+                  or searching our
+                  <a
+                    class="underline-effect font-weight-black text-white"
+                    href="/databases"
+                    >database records</a
+                  >
+                  to find an appropriate database for your data type.
                 </span>
               </li>
               <li>
                 <span>
-                  Alternatively, you could look at our collection of  <a
-                    href="https://fairsharing.org/GeneralRepositoryComparison"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >Generalist Repositories</a> or browse all <a
-                    href="https://fairsharing.org/browse/subject?term=Subject%2520Agnostic"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >subject-agnostic records</a>, which may provide you with a location to store data from a wider range of research areas. If you are submitting to a particular journal, you can also search for that journal or its publisher; if they are registered with us, then their <a
-                    href="https://fairsharing.org/search?fairsharingRegistry=Policy"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >FAIRsharing data policy record(s)</a> may contain a list of recommended databases and/or standards.
+                  Alternatively, you could look at our collection of
+                  <a
+                    class="underline-effect font-weight-black text-white"
+                    href="/GeneralRepositoryComparison"
+                    >Generalist Repositories</a
+                  >
+                  or browse all
+                  <a
+                    class="underline-effect font-weight-black text-white"
+                    href="/browse/subject?term=Subject%2520Agnostic"
+                    >subject-agnostic records</a
+                  >, which may provide you with a location to store data from a
+                  wider range of research areas. If you are submitting to a
+                  particular journal, you can also search for that journal or
+                  its publisher; if they are registered with us, then their
+                  <a
+                    class="underline-effect font-weight-black text-white"
+                    href="/search?fairsharingRegistry=Policy"
+                    >FAIRsharing data policy record(s)</a
+                  >
+                  may contain a list of recommended databases and/or standards.
                 </span>
               </li>
             </ul>
@@ -185,49 +181,41 @@
         </ul>
       </v-sheet>
       <v-sheet
-        :class="['mb-5 pa-6',{'mx-25-percent':$vuetify.breakpoint.mdAndUp}]"
-        color="uncertain_color white--text"
+        :class="['mb-5 pa-6', { 'mx-25-percent': $vuetify.display.mdAndUp }]"
+        color="uncertain_color text-white"
         elevation="3"
       >
-        <h3 class="text-h4">
-          Get Started!
-        </h3>
-        <p style="font-size:1.2rem">
-          If you have not already done so, you may wish to <a
+        <h3 class="text-h4">Get Started!</h3>
+        <p class="text-left" style="font-size: 1.2rem">
+          If you have not already done so, you may wish to
+          <a
+            class="underline-effect font-weight-black text-white"
             href="https://fairsharing.gitbook.io/fairsharing/"
             target="_blank"
-            class="underline-effect font-weight-black white--text"
-          >create an account.</a>
+            >create an account.</a
+          >
         </p>
-        <p style="font-size:1.2rem">
-          Any questions? Don't hesitate to <a
-            href="mailto:contact@fairsharing.org"
-            class="font-weight-black white--text underline-effect"
-          >contact us</a> or to
+        <p class="text-left" style="font-size: 1.2rem">
+          Any questions? Don't hesitate to
           <a
+            class="font-weight-black text-white underline-effect"
+            href="mailto:contact@fairsharing.org"
+            >contact us</a
+          >
+          or to
+          <a
+            class="font-weight-black text-white underline-effect"
             href="https://fairsharing.gitbook.io/fairsharing/"
-            class="font-weight-black white--text underline-effect"
           >
             consult our documentation.
           </a>
         </p>
-        <v-btn
-          color="primary"
-          to="/create"
-        >
-          Add New Record
-        </v-btn>
+        <v-btn color="primary" to="/create"> Add New Record </v-btn>
       </v-sheet>
     </div>
     <!-- eslint-enable vue/no-v-html -->
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="showTranslation"
-        max-width="700px"
-      >
+    <v-layout justify-center row>
+      <v-dialog v-model="showTranslation" max-width="700px">
         <v-card>
           <v-card-title>
             <!-- nothing to see here -->
@@ -238,8 +226,8 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="blue darken-1"
-              text
+              color="blue-darken-1"
+              variant="elevated"
               @click="showTranslation = false"
             >
               {{ closeButton }}
@@ -253,39 +241,42 @@
 </template>
 
 <script>
-import newData from '@/data/NewStaticPageData.json'
-import noDatasetsPlease from '@/data/noDatasetsPlease.json'
+import newData from "@/data/NewStaticPageData.json";
+import noDatasetsPlease from "@/data/noDatasetsPlease.json";
+import customIcons from "@/plugins/icons";
+
 export default {
   name: "New",
   data: () => {
     return {
       newData,
       showTranslation: false,
-      translatedText: '',
-      closeButton: ''
-    }
+      translatedText: "",
+      closeButton: "",
+      customIcons: customIcons,
+    };
   },
   methods: {
     translate(language) {
       this.translatedText = noDatasetsPlease[language].text;
       this.closeButton = noDatasetsPlease[language].close;
       this.showTranslation = true;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .block-category {
   &__card {
-    transition: all .2ms ease;
-    -webkit-transition: all .2s ease;
-    -moz-transition: all .2s ease;
-    -o-transition: all .2s ease;
-    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    transition: all 0.2ms ease;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, 0.15) !important;
 
     &:hover {
       transform: scale(1.05);
@@ -307,10 +298,10 @@ export default {
   list-style-type: "\2022";
 }
 .arrows {
- list-style-type: "\27A4";
+  list-style-type: "\27A4";
 }
 .ticks {
- list-style-type: "\2713\0020";
+  list-style-type: "\2713\0020";
 }
 li span {
   position: relative;

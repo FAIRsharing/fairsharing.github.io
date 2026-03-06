@@ -6,48 +6,39 @@
         <v-spacer />
         <v-text-field
           v-model="search"
-          append-icon="mdi-magnify"
+          append-inner-icon="fas fa-search"
+          clearable
+          color="primary"
+          hide-details
           label="Search"
           single-line
-          hide-details
-          outlined
+          variant="outlined"
         />
       </v-card-title>
 
       <v-data-table
         :headers="headers"
         :items="organisations"
-        :search="search"
         :loading="loading"
+        :search="search"
         loading-text="Loading... Please wait"
-        :class="{'data-table-mobile': $vuetify.breakpoint.xs}"
-        :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+        mobile-breakpoint="md"
       >
         <template #[`item.name`]="{ item }">
-          <router-link
-            :to="`/organisations/${item.id}`"
-          >
+          <router-link :to="`/organisations/${item.id}`">
             {{ item.name }}
           </router-link>
         </template>
         <template #[`item.types`]="{ item }">
-          {{ item.types.join(', ') }}
+          {{ item.types.join(", ") }}
         </template>
         <template #[`item.homepage`]="{ item }">
-          <a
-            target="_blank"
-            class="underline-effect"
-            :href="item.homepage"
-          >
+          <a :href="item.homepage" class="underline-effect" target="_blank">
             {{ item.homepage }}
           </a>
         </template>
         <template #[`item.rorLink`]="{ item }">
-          <a
-            target="_blank"
-            class="underline-effect"
-            :href="item.rorLink"
-          >
+          <a :href="item.rorLink" class="underline-effect" target="_blank">
             {{ item.rorLink }}
           </a>
         </template>
@@ -66,17 +57,17 @@ export default {
 
   data() {
     return {
-      search: '',
+      search: "",
       headers: [
         {
-          text: "Name",
+          title: "Name",
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "Types", value: "types", sortable: false },
-        { text: "Homepage", value: "homepage", sortable: false },
-        { text: "ROR", value: "rorLink", sortable: false }
+        { title: "Types", value: "types", sortable: false },
+        { title: "Homepage", value: "homepage", sortable: false },
+        { title: "ROR", value: "rorLink", sortable: false },
       ],
       loading: false,
       organisations: [],
@@ -92,7 +83,7 @@ export default {
   methods: {
     async getOrganisationsList() {
       const organisationsList = await graphClient.executeQuery(
-        getAllOrganisationsQuery
+        getAllOrganisationsQuery,
       );
 
       this.organisations = organisationsList.allOrganisations;
@@ -102,10 +93,7 @@ export default {
 </script>
 
 <style scoped>
-.data-table-mobile >>> .v-data-table__mobile-row {
-  display: grid;
-  grid-template-columns: 1fr 228px;
-  font-size: 0.775rem;
-  height: auto;
+:deep(.v-data-table-headers--mobile) {
+  display: none;
 }
 </style>

@@ -1,62 +1,92 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import sinon from "sinon";
-import VueRouter from "vue-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-
 import RecordsWithoutDois from "@/components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue";
-import Client from "@/lib/Client/RESTClient.js";
-import usersStore from "@/store/users";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
+const { mockGetRecordsWoDOIs } = vi.hoisted(() => ({
+  mockGetRecordsWoDOIs: vi.fn(),
+}));
 
-usersStore.state.user = function () {
+vi.mock("@/lib/Client/RESTClient", () => {
   return {
-    isLoggedIn: true,
-    credentials: { token: 123, username: 123 },
+    default: vi.fn().mockImplementation(() => ({
+      getRecordsWoDOIs: mockGetRecordsWoDOIs,
+    })),
   };
-};
-
-const $store = new Vuex.Store({
-  modules: {
-    users: usersStore,
-  },
 });
 
-const router = new VueRouter();
+describe("RecordsWithoutDois.vue", () => {
+  let wrapper;
+  let store;
 
-describe("RecordsWithoutDois", () => {
-  let restStub, wrapper;
-  beforeAll(() => {
-       restStub = sinon.stub(Client.prototype, "executeQuery").returns(
-        {
-          data: {
-            error: false
-          }
-        }
-    );
-    wrapper = shallowMount(RecordsWithoutDois, {
-      localVue,
-      router,
-      mocks: { $store },
+  beforeEach(() => {
+    vi.clearAllMocks();
+    store = new Vuex.Store({
+      modules: {
+        users: {
+          namespaced: true,
+          state: {
+            user: () => ({ credentials: { token: "TEST_TOKEN_123" } }),
+          },
+        },
+      },
     });
   });
-  afterEach( () => {
-    restStub.restore();
-  });
 
-  it("can be mounted", () => {
-    expect(wrapper.vm.$options.name).toMatch("RecordsWithoutDois");
-    expect(wrapper.vm.obtainFileRecordsWODois).toHaveBeenCalled;
-  });
-
-
-  it("can download a file with records without DOIs", async () => {
-    restStub.restore();
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-      data: "[El1|f1_1|f1_2|f1_3,El2|f2_1|f2_2|f2_3]"
+  const createWrapper = () => {
+    return shallowMount(RecordsWithoutDois, {
+      global: {
+        plugins: [store],
+      },
     });
-    await wrapper.vm.obtainFileRecordsWODois();
-    expect(wrapper.vm.downloadContent).toBe("data:text/json;charset=utf-8,%5BEl1%7Cf1_1%7Cf1_2%7Cf1_3%2CEl2%7Cf2_1%7Cf2_2%7Cf2_3%5D");
+  };
+
+  it("initializes, sets loading, and fetches data with token on mount", async () => {
+    mockGetRecordsWoDOIs.mockResolvedValue(["Record A"]);
+    wrapper = createWrapper();
+    expect(wrapper.vm.loading).toBe(true);
+    await wrapper.vm.$nextTick();
+    await new Promise(process.nextTick);
+    expect(mockGetRecordsWoDOIs).toHaveBeenCalledWith("TEST_TOKEN_123");
+    expect(wrapper.vm.loading).toBe(false);
+  });
+
+  it("formats valid data into a newline-separated string correctly", async () => {
+    const apiResponse = ["Record One", "Record Two", "Record Three"];
+
+    mockGetRecordsWoDOIs.mockResolvedValue(apiResponse);
+
+    wrapper = createWrapper();
+    await wrapper.vm.$nextTick();
+    await new Promise(process.nextTick);
+    const expectedRawContent = "Record One\r\nRecord Two\r\nRecord Three";
+    const expectedURI =
+      "data:text/json;charset=utf-8," + encodeURIComponent(expectedRawContent);
+
+    expect(wrapper.vm.downloadContent).toBe(expectedURI);
+  });
+
+  it("handles a single data item correctly", async () => {
+    const apiResponse = ["Single Record"];
+    mockGetRecordsWoDOIs.mockResolvedValue(apiResponse);
+
+    wrapper = createWrapper();
+    await wrapper.vm.$nextTick();
+    await new Promise(process.nextTick);
+
+    const expectedRawContent = "Single Record";
+    const expectedURI =
+      "data:text/json;charset=utf-8," + encodeURIComponent(expectedRawContent);
+
+    expect(wrapper.vm.downloadContent).toBe(expectedURI);
+  });
+
+  it("handles null or missing data gracefully", async () => {
+    mockGetRecordsWoDOIs.mockResolvedValue(null);
+    wrapper = createWrapper();
+    await wrapper.vm.$nextTick();
+    await new Promise(process.nextTick);
+    const expectedURI = "data:text/json;charset=utf-8,";
+    expect(wrapper.vm.downloadContent).toBe(expectedURI);
   });
 });

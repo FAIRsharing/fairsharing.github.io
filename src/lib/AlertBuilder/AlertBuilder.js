@@ -11,9 +11,10 @@ class AlertBuilder {
       let message;
       if (this.currentRecord.fairsharingRecord.isComplete) {
         message = "This record is awaiting review by FAIRsharing curators";
-      } else {
+      }
+      else {
         message =
-          'This record has been modified, but will not be sent to the curation team until all requirements are met. More information is available in our <a class="white--text text-decoration-underline" href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record#minimal-curation-requirements">documentation</a>.';
+          'This record has been modified, but will not be sent to the curation team until all requirements are met. More information is available in our <a class="text-white text-decoration-underline" href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record#minimal-curation-requirements">documentation</a>.';
       }
       this.alerts["isAwaitingApproval"] = {
         type: "info",
@@ -76,18 +77,9 @@ class AlertBuilder {
       isReviewPresent &&
       this.alerts.isNeedingReview
     ) {
-      this.alerts[
-        "isNeedingReview"
-      ].message = `This record is in need of periodic curator review. The last review was on ${
-        this.currentRecord["fairsharingRecord"]["reviews"][0][
-          "createdAt"
-        ].split(/T/)[0]
-      }
-      by ${
-        this.currentRecord["fairsharingRecord"]["reviews"][0]["user"][
-          "username"
-        ]
-      }.`;
+      this.alerts["isNeedingReview"].message =
+        `This record is in need of periodic curator review. The last review was on ${this.currentRecord["fairsharingRecord"]["reviews"][0]["createdAt"].split(/T/)[0]}
+      by ${this.currentRecord["fairsharingRecord"]["reviews"][0]["user"]["username"]}.`;
     }
     return this;
   }
@@ -127,7 +119,7 @@ class AlertBuilder {
         this.currentRecord.fairsharingRecord.incomplete.required.forEach(
           (missing) => {
             final.push(
-              `<a class="white--text text-decoration-underline" target="_blank" href="${
+              `<a class="text-white text-decoration-underline" target="_blank" href="${
                 missing.url
               }">${missing.field.replace(/_/g, " ")}</a>`
             );
@@ -165,7 +157,7 @@ class AlertBuilder {
         this.currentRecord.fairsharingRecord.incomplete.recommended.forEach(
           (missing) => {
             final.push(
-              `<a class="white--text text-decoration-underline" target="_blank" href="${
+              `<a class="text-white text-decoration-underline" target="_blank" href="${
                 missing.url
               }">${missing.field.replace(/_/g, " ")}</a>`
             );

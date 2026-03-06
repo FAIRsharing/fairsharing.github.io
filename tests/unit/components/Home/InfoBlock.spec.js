@@ -1,10 +1,10 @@
-import {createLocalVue, RouterLinkStub, shallowMount} from "@vue/test-utils";
+import { createLocalVue, RouterLinkStub, shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify";
 
-import InfoBlock from "@/components/Home/InfoBlock"
+import InfoBlock from "@/components/Home/InfoBlock";
 import icons from "@/plugins/icons";
-const vuetify = new Vuetify({'icons':icons});
-const localVue = new createLocalVue()
+const vuetify = new Vuetify({ icons: icons });
+const localVue = new createLocalVue();
 import Vuex from "vuex";
 
 import searchFiltersStore from "@/store/searchFilters.js";
@@ -13,54 +13,63 @@ localVue.use(vuetify);
 localVue.use(Vuex);
 
 const $store = new Vuex.Store({
-    modules: {
-        searchFilters: searchFiltersStore,
-    }
+  modules: {
+    searchFilters: searchFiltersStore,
+  },
 });
 
 searchFiltersStore.state.filtersStatistic = {
-    fairsharing_registry: {
-        buckets: [{key: 'standard', doc_count: 5}, {key: 'database', doc_count: 10}, {key: 'policy', doc_count: 15}]
-    },
-    record_type: {
-        buckets: [
-            {key: 'terminology_artefact', doc_count: 5}, {key: 'model_and_format', doc_count: 10},
-            {key: 'reporting_guideline', doc_count: 15}, {key: 'identifier_schema', doc_count: 15},
-            {key: 'funder', doc_count: 15}, {key: 'journal', doc_count: 15}, {key: 'society', doc_count: 15},
-            {key: 'repository', doc_count: 10}, {key: 'knowledgebase', doc_count: 11},
-            {key: 'knowledgebase_and_repository', doc_count: 12},
-            {key: 'project', doc_count: 6}, {key: 'institution', doc_count: 5},
-            {key: 'journal_publisher', doc_count: 4},
-        ]
-    },
-    subjects: {
-        buckets: [
-            {key: 'natural science', doc_count: 5}, {key: 'engineering science', doc_count: 10},
-            {key: 'humanities', doc_count: 15}, {key: 'social science', doc_count: 15},
-        ]
-    },
-    user_defined_tags: {
-        buckets: [
-            {key: 'institutional repository', doc_count: 70 }
-        ]
-    }
-}
+  fairsharing_registry: {
+    buckets: [
+      { key: "standard", doc_count: 5 },
+      { key: "database", doc_count: 10 },
+      { key: "policy", doc_count: 15 },
+    ],
+  },
+  record_type: {
+    buckets: [
+      { key: "terminology_artefact", doc_count: 5 },
+      { key: "model_and_format", doc_count: 10 },
+      { key: "reporting_guideline", doc_count: 15 },
+      { key: "identifier_schema", doc_count: 15 },
+      { key: "funder", doc_count: 15 },
+      { key: "journal", doc_count: 15 },
+      { key: "society", doc_count: 15 },
+      { key: "repository", doc_count: 10 },
+      { key: "knowledgebase", doc_count: 11 },
+      { key: "knowledgebase_and_repository", doc_count: 12 },
+      { key: "project", doc_count: 6 },
+      { key: "institution", doc_count: 5 },
+      { key: "journal_publisher", doc_count: 4 },
+    ],
+  },
+  subjects: {
+    buckets: [
+      { key: "natural science", doc_count: 5 },
+      { key: "engineering science", doc_count: 10 },
+      { key: "humanities", doc_count: 15 },
+      { key: "social science", doc_count: 15 },
+    ],
+  },
+  user_defined_tags: {
+    buckets: [{ key: "institutional repository", doc_count: 70 }],
+  },
+};
 
-describe("BlockInfo.vue", function(){
-    let wrapper;
+describe("BlockInfo.vue", function () {
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(InfoBlock, {
-            vuetify,
-            mocks:{$store},
-            stubs: {
-                RouterLink: RouterLinkStub
-            }
-        })
+  beforeEach(() => {
+    wrapper = shallowMount(InfoBlock, {
+      vuetify,
+      mocks: { $store },
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
     });
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("InfoBlock");
-    });
-
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("InfoBlock");
+  });
 });

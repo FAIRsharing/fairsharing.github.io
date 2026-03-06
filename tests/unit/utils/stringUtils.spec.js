@@ -31,7 +31,7 @@ describe("stringUtils.js", function(){
     })
 
     it("converts text in strings to urls", () => {
-      expect(stringUtils.methods.toHyperLink('link to https://sirwilliamhope.org')).toBe("link to <a href='https://sirwilliamhope.org'>https://sirwilliamhope.org</a>");
+      expect(stringUtils.methods.toHyperLink('link to https://sirwilliamhope.org')).toBe("link to <a href='https://sirwilliamhope.org' target='_blank'>https://sirwilliamhope.org</a>");
     })
 
 })

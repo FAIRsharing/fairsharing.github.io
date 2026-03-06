@@ -17,7 +17,7 @@ const stringUtils = {
     toHyperLink(str) {
       let pattern1 =
         /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
-      let link = str.replace(pattern1, "<a href='$1'>$1</a>");
+      let link = str.replace(pattern1, "<a href='$1' target='_blank'>$1</a>");
 
       return link;
     },

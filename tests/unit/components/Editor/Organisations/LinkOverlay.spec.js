@@ -396,9 +396,6 @@ describe("Edit -> LinkOverlay.vue", function () {
     wrapper.vm.importROR = true;
     wrapper.vm.validName = false;
     wrapper.vm.menus.newOrganisation.data.name = "xyz";
-    // wrapper.vm.$refs["createNewOrganisation"] = {
-    //   reset: vi.fn(),
-    // };
     wrapper.vm.clearForm();
     expect(wrapper.vm.enterName).toBe(true);
     expect(wrapper.vm.importROR).toBe(false);
@@ -421,7 +418,7 @@ describe("Edit -> LinkOverlay.vue", function () {
     expect(wrapper.emitted().imageTooBig[1]).toEqual([true]);
   });
 
-  it("selectTypes method", () => {
+  it("selectTypes method for filter case IF condition", () => {
     /* Government */
     wrapper.vm.menus.newOrganisation.selectOrganisation = {
       types: ["Government"],
@@ -432,7 +429,7 @@ describe("Edit -> LinkOverlay.vue", function () {
     ).toStrictEqual([{ id: 1, name: "Government" }]);
   });
 
-  it("selectTypes method for ELSE switch case for IF case", () => {
+  it("selectTypes method for ELSE switch case", () => {
     /* Government */
     wrapper.vm.menus.newOrganisation.selectOrganisation = {
       types: ["government"],
@@ -477,5 +474,12 @@ describe("Edit -> LinkOverlay.vue", function () {
     expect(
       wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
     ).toStrictEqual([{ id: 9, name: "Other" }]);
+  });
+
+  it("handles editOrganisationLink.showOverlay form v-model updates", async () => {
+    const form = wrapper.findComponent({ name: "v-overlay" });
+    expect(form.props("modelValue")).toBe(true);
+    await form.vm.$emit("update:modelValue", false);
+    expect(wrapper.vm.editOrganisationLink.showOverlay).toBe(false);
   });
 });

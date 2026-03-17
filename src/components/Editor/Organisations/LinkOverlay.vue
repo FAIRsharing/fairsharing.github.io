@@ -807,6 +807,7 @@ export default {
         (type) =>
           type.name === this.menus.newOrganisation.selectOrganisation.types[0],
       );
+
       if (matchedType && matchedType.length) {
         this.menus.newOrganisation.data.organisation_type_ids = matchedType;
       }

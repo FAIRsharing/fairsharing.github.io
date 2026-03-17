@@ -4,6 +4,7 @@ import Vuex from "vuex";
 
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
 import RestClient from "@/lib/Client/RESTClient.js";
+
 const sinon = require("sinon");
 
 const vuetify = createVuetify();

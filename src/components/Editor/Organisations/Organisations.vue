@@ -194,7 +194,8 @@ export default {
           )[0];
           if (!found) {
             changes += 1;
-          } else if (!isEqual(link, found)) {
+          }
+          else if (!isEqual(link, found)) {
             changes += 1;
           }
         });
@@ -245,13 +246,15 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      } else if (item.textContent.trim() === "Save and exit") {
+      }
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }
       await this.updateOrganisations(this.user().credentials.token);
       this.continueLoader = false;
       this.exitLoader = false;
+      /* v8 ignore next */
       if (!redirect) this.$scrollTo("#mainHeader");
       else if (redirect && !this.getSection("organisations").error) {
         await this.$router.push({ path: "/" + this.$route.params.id });

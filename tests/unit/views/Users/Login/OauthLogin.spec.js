@@ -43,6 +43,8 @@ describe("Login.vue", () => {
     restStub.returns({
       data: {
         username: "Terazus",
+        id: 42,
+        expiry: 456,
       },
     });
   });
@@ -104,6 +106,40 @@ describe("Login.vue", () => {
       },
     };
     await mountComponent();
+    expect(wrapper.vm.messages().login.message).toBe("Missing token or expiry");
+    expect(wrapper.vm.messages().login.error).toBe(true);
+  });
+
+  it("can process missing jwt error", async () => {
+    $route = {
+      fullPath: "/login_success?expiry=456",
+      name: "OAuth Login",
+      path: "/login_success",
+      query: {
+        expiry: 456,
+      },
+    };
+    wrapper = await shallowMount(OauthLogin, {
+      localVue,
+      router,
+      mocks: { $store, $route, $router },
+    });
+    expect(wrapper.vm.messages().login.message).toBe("Missing token or expiry");
+    expect(wrapper.vm.messages().login.error).toBe(true);
+  });
+
+  it("can process empty params error", async () => {
+    $route = {
+      fullPath: "/login_success",
+      name: "OAuth Login",
+      path: "/login_success",
+      query: {},
+    };
+    wrapper = await shallowMount(OauthLogin, {
+      localVue,
+      router,
+      mocks: { $store, $route, $router },
+    });
     expect(wrapper.vm.messages().login.message).toBe("Missing token or expiry");
     expect(wrapper.vm.messages().login.error).toBe(true);
   });

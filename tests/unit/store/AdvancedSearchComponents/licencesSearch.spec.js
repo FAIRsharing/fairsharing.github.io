@@ -24,7 +24,7 @@ describe("LicencesSearch store methods", () => {
   });
 
   it("can check fetchSearchLicences actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchLicences({ commit }, "licences");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("LicencesSearch store methods", () => {
       searchLicences: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchLicences({ commit }, "licences");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSearchLicences actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSearchLicences({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

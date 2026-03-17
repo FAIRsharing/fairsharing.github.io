@@ -1,21 +1,18 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import EditPublicProfile from "@/views/Users/EditPublicProfile";
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
+const vuetify = createVuetify();
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
 
 import Client from "@/lib/Client/RESTClient.js";
 import userStore from "@/store/users";
 
-localVue.use(Vuex);
-localVue.use(VueScrollTo, {});
 let $route = { params: { id: 123 } };
 let $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 userStore.state.user = function () {
   return {
@@ -38,7 +35,7 @@ let $store = new Vuex.Store({
     users: userStore,
   },
 });
-$router.go = jest.fn();
+$router.go = vi.fn();
 
 describe("EditPublicProfile.vue", function () {
   let wrapper, restStubProfile, restStubRole, restStubUser;
@@ -58,6 +55,12 @@ describe("EditPublicProfile.vue", function () {
       id: 1,
       username: "user",
       email: "user@user.com",
+      preferences: {
+        hide_email: false,
+        email_updates: false,
+      },
+      role: "user",
+      deactivated: false,
     });
   });
   afterAll(() => {
@@ -69,13 +72,13 @@ describe("EditPublicProfile.vue", function () {
   beforeEach(async () => {
     wrapper = await shallowMount(EditPublicProfile, {
       vuetify,
-      localVue,
       mocks: { $store, $route, $router },
     });
+    await wrapper.vm.loadUser();
   });
 
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   it("can be instantiated", () => {
@@ -87,14 +90,13 @@ describe("EditPublicProfile.vue", function () {
     delete $store.state.users.currentPublicUser.preferences;
     const wrapper2 = shallowMount(EditPublicProfile, {
       vuetify,
-      localVue,
       mocks: { $store, $route },
     });
     expect(wrapper2.vm.$options.name).toMatch("EditPublicProfile");
   });
 
   it("can check updatePublicProfile method", async () => {
-    let updatePublicUser = jest.spyOn(wrapper.vm, "updatePublicUser");
+    let updatePublicUser = vi.spyOn(wrapper.vm, "updatePublicUser");
     wrapper.vm.formData.role = "user";
     await wrapper.vm.updatePublicProfile();
     expect(updatePublicUser).toHaveBeenCalled();

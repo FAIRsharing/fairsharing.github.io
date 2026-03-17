@@ -8,8 +8,6 @@ vi.mock("@/utils/rules.js", () => ({
   isUrl: vi.fn(() => "is-url-rule"),
 }));
 
-const mockCleanString = vi.fn((str) => `cleaned-${str}`);
-
 describe("FieldInput.vue", () => {
   let wrapper;
   let store;
@@ -48,10 +46,6 @@ describe("FieldInput.vue", () => {
     return mount(FieldInput, {
       global: {
         plugins: [store],
-        mocks: {
-          // Mock the stringUtils mixin
-          cleanString: mockCleanString,
-        },
         stubs: {
           VTooltip: {
             template:
@@ -107,14 +101,12 @@ describe("FieldInput.vue", () => {
   describe("getName computed property", () => {
     it("returns cleaned fieldName if subfieldName is missing", () => {
       wrapper = mountComponent({ fieldProps: {} });
-      expect(mockCleanString).toHaveBeenCalledWith("testField");
-      expect(wrapper.vm.getName).toBe("cleaned-testField");
+      expect(wrapper.vm.getName).toBe("testField");
     });
 
     it("returns cleaned subfieldName if it exists", () => {
       wrapper = mountComponent({ subfieldName: "sub", fieldProps: {} });
-      expect(mockCleanString).toHaveBeenCalledWith("sub");
-      expect(wrapper.vm.getName).toBe("cleaned-sub");
+      expect(wrapper.vm.getName).toBe("sub");
     });
   });
 
@@ -197,15 +189,11 @@ describe("FieldInput.vue", () => {
     });
 
     it("returns fallback object structure if undefined", () => {
-      // This covers the specific logic:
-      // retval = { [fieldName]: { [subfieldName]: "no" } }
-      // retval[fieldName] = subfieldName
+      // target() is evaluated during render and initializes the parent field as {}.
       wrapper = mountComponent({ subfieldName: "subKey", fieldProps: {} }, {});
 
       const result = wrapper.vm.fieldCheck();
-
-      // Based on code: retval.testField is set to "subKey" overwriting the object
-      expect(result).toHaveProperty("testField", "subKey");
+      expect(result).toStrictEqual({});
     });
   });
 
@@ -223,8 +211,8 @@ describe("FieldInput.vue", () => {
       expect.anything(),
       {
         fieldName: "testField",
-        fieldValue: expect.anything(),
-        subfieldName: undefined,
+        fieldValue: "",
+        subfieldName: null,
       },
     );
   });
@@ -259,7 +247,7 @@ describe("FieldInput.vue", () => {
     await switchComp.trigger("click");
     expect(mutations.setAdditionalInformation).toHaveBeenCalledWith(
       expect.anything(),
-      { fieldName: "testField", fieldValue: "yes", subfieldName: undefined },
+      { fieldName: "testField", fieldValue: "yes", subfieldName: null },
     );
   });
 

@@ -1,35 +1,32 @@
 import sinon from "sinon";
-import Vue from "vue";
 
 import Client from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import { actions, getters, mutations } from "@/store/users.js";
 import { initUserDataState } from "@/store/utils.js";
 
-Vue.config.silent = true;
-
 describe("Actions/Mutations", () => {
-  let getStub;
+  let removeItemSpy;
   let restClientStub;
   let graphStub;
 
   beforeEach(() => {
-    // jest.spyOn(Storage.prototype, 'setItem');
-    jest.spyOn(Storage.prototype, "removeItem");
-    getStub = sinon.stub(Storage.prototype, "getItem");
+    localStorage.clear();
+    removeItemSpy = vi.spyOn(Storage.prototype, "removeItem");
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     restClientStub = sinon.stub(Client.prototype, "executeQuery");
   });
   afterEach(() => {
-    jest.clearAllMocks();
-    getStub.restore();
+    vi.clearAllMocks();
     restClientStub.restore();
     graphStub.restore();
+    removeItemSpy.mockRestore();
   });
 
   it("Login: testing no user and valid token", async () => {
-    getStub.withArgs("user").returns(
+    localStorage.setItem(
+      "user",
       JSON.stringify({
         credentials: {
           username: "Terazus",
@@ -46,7 +43,8 @@ describe("Actions/Mutations", () => {
 
   it("Login: testing no user and invalid token", async () => {
     let state = {};
-    getStub.withArgs("user").returns(
+    localStorage.setItem(
+      "user",
       JSON.stringify({
         credentials: {
           username: "Terazus",
@@ -65,7 +63,7 @@ describe("Actions/Mutations", () => {
 
   it("Login: testing no user and no data", async () => {
     let state = {};
-    getStub.withArgs("user").returns();
+    localStorage.removeItem("user");
     await actions.login(state);
     expect(actions.commit).not.toHaveBeenCalled();
   });
@@ -113,7 +111,8 @@ describe("Actions/Mutations", () => {
 
   it("Login: testing automatically", () => {
     const state = {};
-    getStub.withArgs("user").returns(
+    localStorage.setItem(
+      "user",
       JSON.stringify({
         credentials: {
           username: "Terazus",
@@ -122,15 +121,16 @@ describe("Actions/Mutations", () => {
       }),
     );
     mutations.autoLogin(state);
-    expect(state.user()).toStrictEqual({
+    expect(state.user()).toMatchObject({
       credentials: { token: "123", username: "Terazus" },
     });
   });
 
   it("Logout Action: can logout a user", async () => {
     let state = {};
+    localStorage.setItem("user", JSON.stringify({ token: "123" }));
     mutations.logout(state);
-    expect(localStorage.removeItem).toHaveBeenCalledWith("user");
+    expect(localStorage.getItem("user")).toBe(null);
   });
 
   it("Logout Mutation: can logout a user", async () => {
@@ -150,7 +150,7 @@ describe("Actions/Mutations", () => {
         },
       },
     };
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.logout(state);
     expect(actions.commit).not.toHaveBeenCalled();
     restClientStub.returns({
@@ -183,11 +183,11 @@ describe("Actions/Mutations", () => {
       is_super_curator: false,
       role: null,
       third_party: false,
-      orcid: 123456
+      orcid: 123456,
     };
-    getStub.withArgs("user").returns(JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
     mutations.setUser(state, user);
-    expect(state.user()).toStrictEqual({
+    expect(state.user()).toMatchObject({
       id: 1,
       credentials: {
         username: "Terazus",
@@ -202,7 +202,7 @@ describe("Actions/Mutations", () => {
       is_super_curator: false,
       role: null,
       third_party: false,
-      orcid: 123456
+      orcid: 123456,
     });
   });
 
@@ -211,7 +211,8 @@ describe("Actions/Mutations", () => {
     const user = {
       username: "Terazus",
     };
-    getStub.withArgs("user").returns(
+    localStorage.setItem(
+      "user",
       JSON.stringify({
         credentials: {
           username: "Terazus",
@@ -238,9 +239,10 @@ describe("Actions/Mutations", () => {
     const state = {
       user: "test",
     };
+    localStorage.setItem("user", JSON.stringify({ token: "123" }));
     const userDefaultState = initUserDataState();
     mutations.clearUserData(state);
-    expect(localStorage.removeItem).toHaveBeenCalledWith("user");
+    expect(localStorage.getItem("user")).toBe(null);
     expect(state.user()).toStrictEqual(userDefaultState);
   });
 

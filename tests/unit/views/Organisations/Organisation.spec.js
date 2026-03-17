@@ -1,18 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import { RouterLinkStub } from "@vue/test-utils";
+import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
-
+import { reactive } from "vue";
 import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import light from "@/plugins/theme";
 import users from "@/store/users.js";
 import Organisation from "@/views/Organisations/Organisation";
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 users.state.user = function () {
   return {
@@ -43,6 +38,10 @@ let editor = {
         "If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank.",
     },
   },
+  actions: {
+    getOrganisationsTypes: vi.fn(),
+    getCountries: vi.fn(),
+  },
 };
 
 let $store = new Vuex.Store({
@@ -59,18 +58,19 @@ $store.state.users.user = function () {
   };
 };
 
-let vuetify = new Vuetify({
+let vuetify = createVuetify({
   theme: {
-    themes: { light },
+    defaultTheme: "fairSharingTheme",
+    themes: { fairSharingTheme: light },
   },
 });
 
-let $route = {
+let $route = reactive({
   path: "/organisations/1",
   params: { id: 1 },
-};
-const router = new VueRouter();
-const $router = { push: jest.fn() };
+});
+
+const $router = { push: vi.fn() };
 let restStub;
 
 describe("Organisation", () => {
@@ -122,8 +122,6 @@ describe("Organisation", () => {
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(Organisation, {
-      localVue,
-      router,
       vuetify,
       mocks: { $route, $router, $store },
       stubs: { RouterLink: RouterLinkStub },
@@ -137,9 +135,7 @@ describe("Organisation", () => {
   it("redirects to the search page for filtering", async () => {
     graphStub.restore();
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
-      router,
       mocks: { $route, $router, $store },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -160,9 +156,7 @@ describe("Organisation", () => {
       error: "error",
     });
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
-      router,
       mocks: { $route, $router, $store },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -183,9 +177,7 @@ describe("Organisation", () => {
       organisation: organisation,
     });
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
-      router,
       mocks: { $route, $router, $store },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -198,11 +190,11 @@ describe("Organisation", () => {
   it("watches the current route", async () => {
     graphStub.restore();
     wrapper = await shallowMount(Organisation, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
+      global: {
+        plugins: [vuetify, $store],
+        mocks: { $route, $router },
+        stubs: { RouterLink: RouterLinkStub },
+      },
     });
     expect(wrapper.vm.currentRoute).toEqual(1);
     $route.params.id = 10;
@@ -213,9 +205,7 @@ describe("Organisation", () => {
   // TODO: So, I can't prove that the server has modified the information.
   it("can modify the organisation", async () => {
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
-      router,
       mocks: { $route, $router, $store },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -224,14 +214,12 @@ describe("Organisation", () => {
   });
 
   it("can delete the organisation", async () => {
-    let assignMock = jest.fn();
+    let assignMock = vi.fn();
     delete window.location;
     window.location = { assign: assignMock };
 
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
-      router,
       mocks: { $route, $router, $store },
       stubs: { RouterLink: RouterLinkStub },
     });

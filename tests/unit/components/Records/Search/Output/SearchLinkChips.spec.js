@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips.vue";
 
@@ -9,19 +9,17 @@ let $route = {
 };
 
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 
 describe("SearchLinkChips.vue", function () {
   let wrapper;
-  const vuetify = new Vuetify();
-  const localVue = createLocalVue();
+  const vuetify = createVuetify();
 
   beforeEach(() => {
     wrapper = shallowMount(SearchLinkChips, {
-      localVue,
       vuetify,
-      propsData: {
+      props: {
         type: "domains",
         chips: [
           {

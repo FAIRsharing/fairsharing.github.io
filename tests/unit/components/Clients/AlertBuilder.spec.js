@@ -1,4 +1,5 @@
 import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import { describe, expect, it } from "vitest";
 
 describe("AlertBuilder", () => {
   let alertBuilder;
@@ -110,185 +111,188 @@ describe("AlertBuilder", () => {
     resp = alertBuilder.isHidden();
     expect(Object.keys(resp.alerts).length).toBe(1);
 
-        alertBuilder = new AlertBuilder(
-            {fairsharingRecord: {isApproved: true, isHidden: false}}
-            , {is_curator: true});
-        resp = alertBuilder.isHidden();
-        expect(Object.keys(resp.alerts).length).toBe(0);
-    });
+    alertBuilder = new AlertBuilder(
+      { fairsharingRecord: { isApproved: true, isHidden: false } },
+      { is_curator: true },
+    );
+    resp = alertBuilder.isHidden();
+    expect(Object.keys(resp.alerts).length).toBe(0);
+  });
 
-    it("can show required components missing", () => {
-      alertBuilder = new AlertBuilder({
-          fairsharingRecord: {
-            maintainers: [],
-            doi: 'FAIRsharing.abc123',
-            incomplete: {
-              required: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
-          }
-        },
-        { is_curator: true }
-      );
-      resp = alertBuilder.isIncomplete();
-      expect(Object.keys(resp.alerts).length).toBe(1);
-      expect(resp.alerts.isIncomplete.message).toMatch(/missing at least one required field/);
-
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [{id: 1}],
-            doi: "FAIRsharing.abc123",
-            incomplete: {
-              required: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
+  it("can show required components missing", () => {
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          doi: "FAIRsharing.abc123",
+          incomplete: {
+            required: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
           },
         },
-        { is_curator: false, id: 1 }
-      );
-      resp = alertBuilder.isIncomplete();
-      expect(Object.keys(resp.alerts).length).toBe(1);
-      expect(resp.alerts.isIncomplete.message).toMatch(
-        /missing at least one required field/
-      );
+      },
+      { is_curator: true },
+    );
+    resp = alertBuilder.isIncomplete();
+    expect(Object.keys(resp.alerts).length).toBe(1);
+    expect(resp.alerts.isIncomplete.message).toMatch(
+      /missing at least one required field/,
+    );
 
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [],
-            doi: "FAIRsharing.abc123",
-            incomplete: {
-              required: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [{ id: 1 }],
+          doi: "FAIRsharing.abc123",
+          incomplete: {
+            required: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
           },
         },
-        { is_curator: false }
-      );
-      resp = alertBuilder.isIncomplete();
-      expect(Object.keys(resp.alerts).length).toBe(0);
+      },
+      { is_curator: false, id: 1 },
+    );
+    resp = alertBuilder.isIncomplete();
+    expect(Object.keys(resp.alerts).length).toBe(1);
+    expect(resp.alerts.isIncomplete.message).toMatch(
+      /missing at least one required field/,
+    );
 
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [],
-            incomplete: {
-              required: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          doi: "FAIRsharing.abc123",
+          incomplete: {
+            required: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
           },
         },
-        { is_curator: true }
-      );
-      resp = alertBuilder.isIncomplete();
-      expect(Object.keys(resp.alerts).length).toBe(1);
-      expect(resp.alerts.isIncomplete.message).toMatch(
-        /not be issued with a DOI/
-      );
+      },
+      { is_curator: false },
+    );
+    resp = alertBuilder.isIncomplete();
+    expect(Object.keys(resp.alerts).length).toBe(0);
 
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [],
-            incomplete: {
-              required: [],
-            },
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          incomplete: {
+            required: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
           },
         },
-        { is_curator: true }
-      );
-      resp = alertBuilder.isIncomplete();
-      expect(Object.keys(resp.alerts).length).toBe(0);
-    })
+      },
+      { is_curator: true },
+    );
+    resp = alertBuilder.isIncomplete();
+    expect(Object.keys(resp.alerts).length).toBe(1);
+    expect(resp.alerts.isIncomplete.message).toMatch(
+      /not be issued with a DOI/,
+    );
 
-    it("can show recommended components missing", () => {
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [],
-            incomplete: {
-              recommended: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          incomplete: {
+            required: [],
           },
         },
-        { is_curator: true }
-      );
-      resp = alertBuilder.isMissingRecommendedFields();
-      expect(Object.keys(resp.alerts).length).toBe(1);
+      },
+      { is_curator: true },
+    );
+    resp = alertBuilder.isIncomplete();
+    expect(Object.keys(resp.alerts).length).toBe(0);
+  });
 
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [{id: 1}],
-            incomplete: {
-              recommended: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
+  it("can show recommended components missing", () => {
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          incomplete: {
+            recommended: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
           },
         },
-        { is_curator: false, id: 1 }
-      );
-      resp = alertBuilder.isMissingRecommendedFields();
-      expect(Object.keys(resp.alerts).length).toBe(1);
+      },
+      { is_curator: true },
+    );
+    resp = alertBuilder.isMissingRecommendedFields();
+    expect(Object.keys(resp.alerts).length).toBe(1);
 
-      alertBuilder = new AlertBuilder(
-        {
-          fairsharingRecord: {
-            maintainers: [],
-            incomplete: {
-              recommended: [
-                {
-                  url: "http://notagoat.cx",
-                  field: "field_name",
-                },
-              ],
-            },
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [{ id: 1 }],
+          incomplete: {
+            recommended: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
           },
         },
-        { is_curator: false }
-      );
-      resp = alertBuilder.isMissingRecommendedFields();
-      expect(Object.keys(resp.alerts).length).toBe(0);
+      },
+      { is_curator: false, id: 1 },
+    );
+    resp = alertBuilder.isMissingRecommendedFields();
+    expect(Object.keys(resp.alerts).length).toBe(1);
 
-      alertBuilder = new AlertBuilder({
-          fairsharingRecord: {
-            maintainers: [],
-            incomplete: {
-              recommended: [],
-            },
-          }
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          incomplete: {
+            recommended: [
+              {
+                url: "http://notagoat.cx",
+                field: "field_name",
+              },
+            ],
+          },
         },
-        { is_curator: true }
-      );
-      resp = alertBuilder.isMissingRecommendedFields();
-      expect(Object.keys(resp.alerts).length).toBe(0);
-    });
+      },
+      { is_curator: false },
+    );
+    resp = alertBuilder.isMissingRecommendedFields();
+    expect(Object.keys(resp.alerts).length).toBe(0);
 
-
+    alertBuilder = new AlertBuilder(
+      {
+        fairsharingRecord: {
+          maintainers: [],
+          incomplete: {
+            recommended: [],
+          },
+        },
+      },
+      { is_curator: true },
+    );
+    resp = alertBuilder.isMissingRecommendedFields();
+    expect(Object.keys(resp.alerts).length).toBe(0);
+  });
 });

@@ -9,7 +9,7 @@ describe("Mutations & Actions", () => {
   const returnedVal = MessagesData;
   let state = {};
   let stub;
-  actions.commit = jest.fn();
+  actions.commit = vi.fn();
 
   beforeEach(() => {
     state = {

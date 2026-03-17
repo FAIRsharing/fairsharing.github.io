@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import ObjectTypes from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/ObjectTypes.vue";
@@ -7,12 +7,10 @@ import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import objectTypes from "@/store/AdvancedSearchComponents/objectTypes";
 
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 let $route = { path: "/advancedsearch", query: {} };
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("ObjectTypes.vue", () => {
   let wrapper, store, actions;
@@ -28,7 +26,7 @@ describe("ObjectTypes.vue", () => {
       },
     };
     actions = {
-      fetchObjectTypes: jest.fn(),
+      fetchObjectTypes: vi.fn(),
     };
     store = new Vuex.Store({
       modules: {
@@ -39,10 +37,10 @@ describe("ObjectTypes.vue", () => {
       },
     });
     wrapper = shallowMount(ObjectTypes, {
-      localVue,
-      vuetify,
-      store,
-      mocks: { $router, $route },
+      global: {
+        plugins: [store, vuetify],
+        mocks: { $router, $route },
+      },
     });
   });
 

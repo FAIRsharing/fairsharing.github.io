@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
@@ -12,9 +12,6 @@ import CreateRecord from "@/views/CreateRecord/Editor.vue";
 import metaTemplate from "../../../fixtures/metaTemplate.json";
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-
 const $store = new Vuex.Store({
   modules: {
     record: recordStore,
@@ -27,7 +24,7 @@ $store.state.users.user = function () {
 };
 let $route = { params: { id: "123" } };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 let graphStub;
 let restStub;
 
@@ -52,7 +49,6 @@ describe("Editor.vue", function () {
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
@@ -68,18 +64,17 @@ describe("Editor.vue", function () {
     isDisabled = wrapper.vm.isDisabled("Another tab");
     expect(isDisabled).toBe(false);
     wrapper.vm.hasLoaded = false;
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   it("can clean the store on destroy", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
     });
     wrapper.vm.hasLoaded = false;
-    wrapper.destroy();
+    wrapper.unmount();
     expect(editorStore.state.countries).toBe(null);
     expect(recordStore.state.sections.dataAccess).toBe(undefined);
   });
@@ -90,7 +85,6 @@ describe("Editor.vue", function () {
     restStub = sinon.stub(RESTClient.prototype, "executeQuery");
     restStub.withArgs(sinon.match.any).returns({ data: { error: "error" } });
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
     });
@@ -103,7 +97,6 @@ describe("Editor.vue", function () {
 
   it("reloads data correctly", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
@@ -115,22 +108,21 @@ describe("Editor.vue", function () {
 
   it("can prevent leaving the route", async () => {
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],
     });
-    global.confirm = jest.fn(() => true);
+    window.confirm = vi.fn(() => true);
     const beforeRouteLeave = wrapper.vm.$options.beforeRouteLeave;
-    let nextFun = jest.fn();
+    let nextFun = vi.fn();
     beforeRouteLeave.call(wrapper.vm, "toObj", "fromObj", nextFun);
     expect(nextFun).toHaveBeenCalledTimes(1);
     recordStore.state.sections.generalInformation.changes = 1;
     beforeRouteLeave.call(wrapper.vm, "toObj", "fromObj", nextFun);
     expect(nextFun).toHaveBeenCalledTimes(2);
-    global.confirm = jest.fn(() => false);
+    window.confirm = vi.fn(() => false);
     beforeRouteLeave.call(wrapper.vm, "toObj", "fromObj", nextFun);
-    expect(nextFun).toHaveBeenCalledTimes(2);
+    expect(nextFun).toHaveBeenCalledTimes(3);
   });
 
   it("can load without support links", async () => {
@@ -140,7 +132,6 @@ describe("Editor.vue", function () {
       fairsharingRecord: returnedData,
     });
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
       stubs: ["router-link"],

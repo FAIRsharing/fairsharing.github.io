@@ -33,19 +33,19 @@ describe("AdvancedSearch store methods", () => {
   });
 
   it("can check fetchAdvancedSearchResults actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchAdvancedSearchResults({ commit }, "searchTerm");
     expect(commit).toHaveBeenCalledTimes(3);
   });
 
   it("can check fetchAdvancedSearchResults actions without advanceSearchTerm", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchAdvancedSearchResults({ commit });
     expect(commit).toHaveBeenCalledTimes(3);
   });
 
   it("can check fetchAdvancedSearchResults actions with Error response", async () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     stub.returns({
       error: "error",
     });
@@ -55,7 +55,7 @@ describe("AdvancedSearch store methods", () => {
   });
 
   it("can check resetAdvancedSearchResponse actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetAdvancedSearchResponse({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

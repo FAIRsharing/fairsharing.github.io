@@ -151,48 +151,74 @@ let editorStore = {
   },
   actions: {
     async getCountries(state) {
-      let countries = await graphClient.executeQuery(countriesQuery);
-      state.commit("setCountries", countries["searchCountries"]);
+      try {
+        let countries = await graphClient.executeQuery(countriesQuery);
+        state.commit("setCountries", countries?.searchCountries || []);
+      }
+      catch (e) {
+        state.commit("setCountries", []);
+      }
     },
     async getRecordTypes(state, fairassistOnly = false) {
       let recordTypes = [];
-      let data = await graphClient.executeQuery(typesQuery);
-      const size = data["fairsharingRegistries"].records.length;
-      let currentItem = 0;
-      data["fairsharingRegistries"].records.forEach(function (type) {
-        if (fairassistOnly) {
-          if (type.name.toLowerCase() !== "fairassist") return;
-        }
-        currentItem += 1;
-        recordTypes.push({
-          header: type.name,
+      try {
+        let data = await graphClient.executeQuery(typesQuery);
+        let registries = data?.fairsharingRegistries?.records || [];
+        let filteredRegistries = registries.filter((type) => {
+          if (!type || !type.name) return false;
+          return !fairassistOnly || type.name.toLowerCase() === "fairassist";
         });
-        type.recordTypes.forEach(function (subType) {
+
+        filteredRegistries.forEach(function (type, index) {
           recordTypes.push({
-            name: subType.name,
-            group: type.name,
-            id: subType.id,
-            description: subType.description,
+            header: type.name,
           });
+          (type.recordTypes || []).forEach(function (subType) {
+            recordTypes.push({
+              name: subType.name,
+              group: type.name,
+              id: subType.id,
+              description: subType.description,
+            });
+          });
+          if (index < filteredRegistries.length - 1) {
+            recordTypes.push({ divider: true });
+          }
         });
-        if (currentItem < size) recordTypes.push({ divider: true });
-      });
+      }
+      catch (e) {
+        recordTypes = [];
+      }
       state.commit("setRecordTypes", recordTypes);
     },
     async getObjectTypes(state) {
       let objectTypes = [];
-      let data = await graphClient.executeQuery(objectTypesQuery);
-      data.objectTypes.records.forEach(function (type) {
-        objectTypes.push(type);
-      });
+      try {
+        let data = await graphClient.executeQuery(objectTypesQuery);
+        (data?.objectTypes?.records || []).forEach(function (type) {
+          objectTypes.push(type);
+        });
+      }
+      catch (e) {
+        objectTypes = [];
+      }
       state.commit("setObjectTypes", objectTypes);
     },
     async getTags(state, queryString) {
       let tagQueryCopy = JSON.parse(JSON.stringify(tagsQuery));
       if (queryString) tagQueryCopy.queryParam = { q: queryString };
-      let data = await graphClient.executeQuery(tagQueryCopy);
-      let first = !state.state.allTags;
-      state.commit("setTags", { data: data["searchTags"], firstTime: first });
+      try {
+        let data = await graphClient.executeQuery(tagQueryCopy);
+        let first = !state.state.allTags;
+        state.commit("setTags", {
+          data: data?.searchTags || [],
+          firstTime: first,
+        });
+      }
+      catch (e) {
+        let first = !state.state.allTags;
+        state.commit("setTags", { data: [], firstTime: first });
+      }
     },
     async getOrganisations(state) {
       let organisations = await graphClient.executeQuery(getOrganisationsQuery);
@@ -271,7 +297,8 @@ let editorStore = {
               relationId: typeObject.id,
             });
           });
-        } else {
+        }
+        else {
           recordTypes.forEach((relationParent) => {
             if (!Object.keys(allowed).includes(relationParent)) {
               allowed[relationParent] = [];

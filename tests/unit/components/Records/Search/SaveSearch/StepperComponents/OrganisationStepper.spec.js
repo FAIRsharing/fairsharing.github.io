@@ -1,72 +1,44 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
-import organisationSearchStore from "@/store/AdvancedSearchComponents/organisationSearch";
-import userStore from "@/store/users.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("OrganisationStepper.vue", () => {
-  let wrapper, store, actions;
+  let wrapper, store;
   beforeEach(() => {
-    userStore.getters = {
-      getUserRecords: () => {
-        return [
-          {
-            user: {
-              savedSearches: [
-                {
-                  id: 206,
-                  name: "Test",
-                  url: "http://www.example.com",
-                  comments: "",
-                  createdAt: "2024-06-19T14:52:28Z",
-                  creator: { id: 1, username: "dummy" },
-                  fairsharingRecords: [],
-                  organisations: [],
-                },
-              ],
-            },
-          },
-        ];
-      },
-    };
-    organisationSearchStore.getters = {
-      getSearchOrganisations: () => {
-        return [
-          {
-            id: 1,
-            name: "Organisation1",
-          },
-        ];
-      },
-
-      getLoadingStatus: () => {
-        return [true];
-      },
-    };
-    actions = {
-      getUser: jest.fn(),
-      fetchSearchOrganisations: jest.fn(),
-    };
-
-    userStore.state.user().is_super_curator = true;
-
     store = new Vuex.Store({
       modules: {
-        namespaced: true,
-        actions,
-        organisationSearch: organisationSearchStore,
-        users: userStore,
+        users: {
+          namespaced: true,
+          state: {
+            user: () => ({ is_super_curator: true }),
+          },
+          getters: {
+            getUserRecords: () => ({
+              user: { organisations: [] },
+            }),
+          },
+          actions: {
+            getUser: vi.fn(),
+          },
+        },
+        organisationSearch: {
+          namespaced: true,
+          getters: {
+            getSearchOrganisations: () => [{ id: 1, name: "Organisation1" }],
+            getLoadingStatus: () => true,
+          },
+          actions: {
+            fetchSearchOrganisations: vi.fn(),
+          },
+        },
       },
     });
 
     wrapper = shallowMount(OrganisationStepper, {
-      localVue,
       vuetify,
       store,
     });

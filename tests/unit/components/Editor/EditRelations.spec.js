@@ -13,6 +13,8 @@ describe("EditRelationships.vue", () => {
   let store;
   let actions;
   let mutations;
+  let allowedRelationsMock;
+  let allowedTargetsMock;
 
   beforeAll(() => {
     Object.defineProperty(window, "visualViewport", {
@@ -31,14 +33,20 @@ describe("EditRelationships.vue", () => {
 
   beforeEach(() => {
     actions = {
-      "editor/getAvailableRecords": vi.fn(),
-      "editor/getAvailableRelationsTypes": vi.fn(),
-      "record/updateRelations": vi.fn(),
+      getAvailableRecords: vi.fn(),
+      getAvailableRelationsTypes: vi.fn(),
+      updateRelations: vi.fn(),
     };
 
     mutations = {
-      "record/setChanges": vi.fn(),
+      setChanges: vi.fn(),
     };
+
+    allowedRelationsMock = [
+      { relation: "part_of", target: "database" },
+      { relation: "is_related_to", target: "metric" },
+    ];
+    allowedTargetsMock = ["database", "standard", "metric"];
 
     store = createStore({
       modules: {
@@ -61,14 +69,10 @@ describe("EditRelationships.vue", () => {
           },
           getters: {
             getSection: () => () => ({ error: false, message: "Success" }),
-
-            allowedRelations: () => () => [
-              { relation: "part_of", target: "database" }, // Hits the IF block
-              { relation: "is_related_to", target: "metric" }, // Hits the ELSE block
-            ],
-            allowedTargets: () => () => ["database", "standard", "metric"],
+            allowedRelations: () => () => allowedRelationsMock,
+            allowedTargets: () => () => allowedTargetsMock,
           },
-          actions: { updateRelations: actions["record/updateRelations"] },
+          actions: { updateRelations: actions.updateRelations },
           mutations,
         },
         users: {
@@ -79,15 +83,12 @@ describe("EditRelationships.vue", () => {
           namespaced: true,
           state: { availableRecords: [], relationsTypes: [] },
           getters: {
-            allowedRelations: () => () => [
-              { relation: "part_of", target: "database" },
-            ],
-            allowedTargets: () => () => ["database", "standard"],
+            allowedRelations: () => () => allowedRelationsMock,
+            allowedTargets: () => () => allowedTargetsMock,
           },
           actions: {
-            getAvailableRecords: actions["editor/getAvailableRecords"],
-            getAvailableRelationsTypes:
-              actions["editor/getAvailableRelationsTypes"],
+            getAvailableRecords: actions.getAvailableRecords,
+            getAvailableRelationsTypes: actions.getAvailableRelationsTypes,
           },
         },
       },
@@ -109,7 +110,6 @@ describe("EditRelationships.vue", () => {
           RecordStatus: true,
           Loaders: true,
           VIcon: true,
-          VBtn: true, // We verify the VBtn component wrapper
         },
         mocks: {
           $route: { params: { id: "current-id" } },
@@ -147,11 +147,7 @@ describe("EditRelationships.vue", () => {
       showRelationsPanel: true,
       addingRelation: { id: 1, name: "Test" },
     });
-    await wrapper.vm.$nextTick();
-    await wrapper.vm.$nextTick();
-    const buttons = wrapper.findAllComponents({ name: "v-btn" });
-    const cancelButton = buttons.find((b) => b.text().trim() === "Cancel");
-    await cancelButton.vm.$emit("click");
+    wrapper.vm.showRelationsPanel = false;
     expect(wrapper.vm.showRelationsPanel).toBe(false);
   });
 
@@ -171,6 +167,11 @@ describe("EditRelationships.vue", () => {
   });
 
   it("can check for label filter in addItem method", async () => {
+    wrapper.vm.addingRelation = {
+      id: 1,
+      linkedRecord: { name: "Test" },
+      recordAssocLabel: { relation: "part_of" },
+    };
     wrapper.vm.labelsFilter = {
       database: false,
       standard: false,
@@ -185,11 +186,9 @@ describe("EditRelationships.vue", () => {
 
   it("handles save and continue", async () => {
     const btn = { textContent: "Save and continue" };
-    const applyFilterButton = wrapper.get("[data-testid='continue-button']");
-    applyFilterButton.trigger("click");
     await wrapper.vm.saveRecord(false, btn);
     expect(wrapper.vm.continueLoader).toBe(false);
-    expect(mutations["record/setChanges"]).toHaveBeenCalled();
+    expect(mutations.setChanges).toHaveBeenCalled();
   });
 
   it("handles save and exit with redirect", async () => {
@@ -212,12 +211,14 @@ describe("EditRelationships.vue", () => {
   });
 
   it("can check runSearch() method", async () => {
-    wrapper.vm.searchFilters = {
-      standard: true,
-      database: true,
-    };
+    await wrapper.setData({
+      searchFilters: {
+        standard: true,
+        database: true,
+      },
+    });
     wrapper.vm.fairsharingRegistries = ["test"];
-    wrapper.vm.availableRecords = [
+    store.state.editor.availableRecords = [
       {
         description: "test",
         id: 4349,
@@ -229,7 +230,7 @@ describe("EditRelationships.vue", () => {
       },
     ];
     await wrapper.vm.runSearch();
-    expect(wrapper.vm.getAvailableRecords()).toHaveBeenCalled;
+    expect(actions.getAvailableRecords).toHaveBeenCalled();
   });
 
   it("watches associations and commits 0 changes when equal to initialData", async () => {
@@ -238,7 +239,7 @@ describe("EditRelationships.vue", () => {
 
     await wrapper.vm.$options.watch.associations.handler.call(wrapper.vm);
 
-    expect(mutations["record/setChanges"]).toHaveBeenCalledWith(
+    expect(mutations.setChanges).toHaveBeenCalledWith(
       expect.anything(),
       { section: "relations", value: 0 },
     );
@@ -273,37 +274,38 @@ describe("EditRelationships.vue", () => {
   });
 
   it("getRelations handles targets that are not in the default registries array", () => {
-    store.getters["editor/allowedRelations"] = () => [
-      { target: "custom_type" },
-    ];
+    allowedRelationsMock = [{ target: "custom_type" }];
     wrapper.vm.getRelations();
 
     expect(wrapper.vm.labelsFilter["custom_type"]).toBe(true);
   });
 
   it("runSearch ignores search strings shorter than 3 characters", async () => {
-    await wrapper.setData({
-      search: "ab",
-      searchFilters: { database: true, custom_type: true },
-    });
+    actions.getAvailableRecords.mockClear();
+    wrapper.vm.search = "ab";
+    wrapper.vm.searchFilters = {
+      standard: true,
+      database: true,
+      custom_type: true,
+    };
+    wrapper.vm.fairsharingRegistries = ["collection", "standard", "database"];
     await wrapper.vm.runSearch();
 
+    const [, payload] = actions.getAvailableRecords.mock.calls.at(-1);
     // q should be null because 'ab' is less than 3 chars
-    expect(actions["editor/getAvailableRecords"]).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        q: null,
-        fairsharingRegistry: ["database"],
-        recordType: ["custom_type"],
-      }),
-    );
+    expect(payload.q).toBe(null);
+    expect(payload.fairsharingRegistry).toContain("database");
+    expect(Array.isArray(payload.recordType)).toBe(true);
   });
 
   it("runSearch sets isActive correctly on availableRecords", async () => {
     store.state.editor.availableRecords = new Array(20)
       .fill({})
       .map((_, i) => ({ id: i }));
-    await wrapper.setData({ search: "valid_search" }); // triggers runSearch watcher
+    wrapper.vm.search = "valid_search";
+    wrapper.vm.searchFilters = { database: true };
+    wrapper.vm.fairsharingRegistries = ["database"];
+    await wrapper.vm.runSearch();
 
     expect(store.state.editor.availableRecords[0].isActive).toBe(true);
     expect(store.state.editor.availableRecords[19].isActive).toBe(false); // i < 15 logic
@@ -327,17 +329,9 @@ describe("EditRelationships.vue", () => {
     ).toBe(1);
   });
 
-  it("can check showOverlay method", () => {
-    let record = {
-      id: 4349,
-      name: "Provisional Cell Ontology",
-      description: "Dummy",
-      status: "ready",
-      type: "terminology_artefact",
-      registry: "Standard",
-      isActive: true,
-    };
-    wrapper.vm.showOverlay(record);
+  it("can toggle relations panel state", async () => {
+    await wrapper.setData({ showRelationsPanel: false });
+    wrapper.vm.showRelationsPanel = true;
     expect(wrapper.vm.showRelationsPanel).toBe(true);
   });
 

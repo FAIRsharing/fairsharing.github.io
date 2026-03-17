@@ -24,7 +24,7 @@ describe("TaxonomiesSearchStore store methods", () => {
   });
 
   it("can check fetchSearchUserDefinedTags actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchUserDefinedTags({ commit }, "userdefinedtags");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchUserDefinedTags: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchUserDefinedTags({ commit }, "userdefinedtags");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetUserDefinedTags actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetUserDefinedTags({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

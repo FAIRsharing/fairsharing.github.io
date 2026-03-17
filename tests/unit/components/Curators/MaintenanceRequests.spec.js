@@ -8,23 +8,26 @@ import GraphClient from "@/lib/GraphClient/GraphClient";
 // -------------------------------------------------------------------------
 // 1. MOCK EXTERNAL DEPENDENCIES
 // -------------------------------------------------------------------------
+const graphClientMock = vi.hoisted(() => ({
+  setHeader: vi.fn(),
+  executeQuery: vi.fn(),
+}));
+
+const restClientMock = vi.hoisted(() => ({
+  updateStatusMaintenanceRequest: vi.fn(),
+  deleteRecord: vi.fn(),
+}));
 
 // Mock RESTClient and GraphClient classes
 vi.mock("@/lib/Client/RESTClient.js", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      updateStatusMaintenanceRequest: vi.fn(),
-      deleteRecord: vi.fn(),
-    })),
+    default: vi.fn().mockImplementation(() => restClientMock),
   };
 });
 
 vi.mock("@/lib/GraphClient/GraphClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      setHeader: vi.fn(),
-      executeQuery: vi.fn(),
-    })),
+    default: vi.fn().mockImplementation(() => graphClientMock),
   };
 });
 
@@ -34,7 +37,7 @@ const mockGraphResponse = {
     {
       id: "req-1",
       createdAt: "2023-01-01T10:00:00Z",
-      user: { id: "u1", username: "UserA" },
+      user: { id: "u1", username: "User A" },
       fairsharingRecord: {
         id: "rec-1",
         name: "Record A",
@@ -45,7 +48,7 @@ const mockGraphResponse = {
     {
       id: "req-2",
       createdAt: "2023-02-01T10:00:00Z",
-      user: { id: "u2", username: "UserB" },
+      user: { id: "u2", username: "User B" },
       fairsharingRecord: {
         id: "rec-2",
         name: "Record B",
@@ -104,6 +107,10 @@ describe("MaintenanceRequests.vue", () => {
     wrapper = shallowMount(MaintenanceRequests, {
       global: {
         plugins: [store],
+        stubs: {
+          "v-edit-dialog": true,
+          VEditDialog: true,
+        },
       },
       props: {
         headerItems: [],
@@ -120,10 +127,8 @@ describe("MaintenanceRequests.vue", () => {
 
       expect(graphQuerySpy).toHaveBeenCalled();
 
-      // Check formatting (mixin usage)
-      expect(wrapper.vm.maintenanceRequests[0].createdAt).toContain(
-        "Formatted:",
-      );
+      // Check date formatting
+      expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe("Feb 1, 2023");
 
       // Check Sorting (Desc Date)
       // req-2 (Feb) should come before req-1 (Jan)
@@ -333,6 +338,8 @@ describe("MaintenanceRequests.vue", () => {
   });
 
   it("prepareMaintenanceRequests: Formats data, sorts by date desc, and applies date formatting", () => {
+    wrapper.vm.maintenanceRequests = [];
+
     // RAW MOCK DATA (Before processing)
     const rawData = {
       pendingMaintenanceRequests: [
@@ -374,11 +381,7 @@ describe("MaintenanceRequests.vue", () => {
 
     // ASSERTION 3: Date Formatting
     // The method loops at the end and calls formatDate
-    expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe(
-      "Formatted(2023-01-01)",
-    );
-    expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(
-      "Formatted(2020-01-01)",
-    );
+    expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe("Jan 1, 2023");
+    expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe("Jan 1, 2020");
   });
 });

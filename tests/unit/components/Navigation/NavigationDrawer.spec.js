@@ -1,15 +1,12 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import NavDrawer from "@/components/Navigation/NavigationDrawer.vue";
 import userStore from "@/store/users.js";
 
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-localVue.use(Vuex);
+const vuetify = createVuetify();
 const router = new VueRouter();
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({
@@ -21,7 +18,6 @@ const $store = new Vuex.Store({
 describe("NavigationDrawer.vue", () => {
   it("can be instantiated", async () => {
     const wrapper = shallowMount(NavDrawer, {
-      localVue,
       vuetify,
       router,
       mocks: { $store },

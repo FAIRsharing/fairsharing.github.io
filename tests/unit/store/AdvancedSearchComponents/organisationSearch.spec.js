@@ -24,7 +24,7 @@ describe("OrganisationSearchStore store methods", () => {
   });
 
   it("can check fetchSearchOrganisations actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchOrganisations({ commit }, "organisations");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("OrganisationSearchStore store methods", () => {
       searchOrganisations: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchOrganisations({ commit }, "organisations");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetOrganisations actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetOrganisations({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

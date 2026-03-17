@@ -24,7 +24,7 @@ describe("DomainsSearch store methods", () => {
   });
 
   it("can check fetchSearchDomains actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchDomains({ commit }, "domains");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("DomainsSearch store methods", () => {
       searchDomains: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchDomains({ commit }, "domains");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSearchDomains actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSearchDomains({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

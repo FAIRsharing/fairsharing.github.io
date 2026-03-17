@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -16,9 +16,6 @@ import usersStore from "@/store/users.js";
 import CreateRecord from "@/views/CreateRecord/NewRecord.vue";
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -28,7 +25,7 @@ const $store = new Vuex.Store({
 });
 let $route = { name: "New_content", path: "/new" };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 let restStub;
 let graphStub;
@@ -88,9 +85,8 @@ describe("CreateRecord.vue", function () {
   });
 
   beforeEach(async () => {
-    vuetify = new Vuetify();
+    vuetify = createVuetify();
     wrapper = await shallowMount(CreateRecord, {
-      localVue,
       vuetify,
       router,
       mocks: { $store, $route, $router },
@@ -102,7 +98,7 @@ describe("CreateRecord.vue", function () {
   });
 
   it("can create records", async () => {
-    let checkForDups = jest.spyOn(wrapper.vm, "checkForDups");
+    let checkForDups = vi.spyOn(wrapper.vm, "checkForDups");
     wrapper.vm.recordCreated = false;
     recordStore.state.sections.generalInformation.data.countries = [
       { id: 123 },

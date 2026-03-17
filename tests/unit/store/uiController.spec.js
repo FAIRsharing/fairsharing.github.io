@@ -19,7 +19,7 @@ describe("Mutations & Actions", () => {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     };
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.setGeneralUIAttributesAction(state, fakeObject);
     expect(actions.commit).toHaveBeenCalledWith(
       "uiController/setUIStatus",
@@ -29,7 +29,7 @@ describe("Mutations & Actions", () => {
 
   it("can check the setScrollStatus action", () => {
     let fakeState = true;
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.setScrollStatus(state, fakeState);
     expect(actions.commit).toHaveBeenCalledWith(
       "uiController/setScrollStatus",
@@ -39,7 +39,7 @@ describe("Mutations & Actions", () => {
 
   it("can check the setStickToTop action", () => {
     let fakeState = true;
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.setStickToTop(state, fakeState);
     expect(actions.commit).toHaveBeenCalledWith(
       "uiController/setStickToTop",

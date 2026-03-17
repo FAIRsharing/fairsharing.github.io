@@ -24,7 +24,7 @@ describe("ObjectTypes store methods", () => {
   });
 
   it("can check fetchObjectTypes actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchObjectTypes({ commit }, "type");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("ObjectTypes store methods", () => {
       objectTypes: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchObjectTypes({ commit }, "type");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetObjectTypes actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetRecords({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

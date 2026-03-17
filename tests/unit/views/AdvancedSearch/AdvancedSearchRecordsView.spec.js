@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
@@ -11,14 +11,12 @@ let $route = {
 };
 
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 
 describe("AdvancedSearchRecordsView.vue", function () {
   let wrapper, store, actions;
-  const vuetify = new Vuetify();
-  const localVue = createLocalVue();
-  localVue.use(Vuex);
+  const vuetify = createVuetify();
 
   beforeEach(() => {
     advancedSearch.getters = {
@@ -28,7 +26,7 @@ describe("AdvancedSearchRecordsView.vue", function () {
     };
 
     actions = {
-      resetAdvancedSearchResponse: jest.fn(),
+      resetAdvancedSearchResponse: vi.fn(),
     };
 
     store = new Vuex.Store({
@@ -40,10 +38,10 @@ describe("AdvancedSearchRecordsView.vue", function () {
     });
 
     wrapper = shallowMount(AdvancedSearchRecordsView, {
-      localVue,
-      vuetify,
-      store,
-      mocks: { $route, $router },
+      global: {
+        plugins: [store, vuetify],
+        mocks: { $route, $router },
+      },
     });
   });
 

@@ -24,7 +24,7 @@ describe("CountriesSearch store methods", () => {
   });
 
   it("can check fetchSearchCountries actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchCountries({ commit }, "country");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("CountriesSearch store methods", () => {
       searchCountries: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchCountries({ commit }, "country");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSearchCountries actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSearchCountries({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

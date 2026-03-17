@@ -1,10 +1,9 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 
 import Client from "@/lib/Client/RESTClient.js";
 import ConfirmAccount from "@/views/Users/ConfirmAccount.vue";
 
-const localVue = createLocalVue();
 
 let $route = {
   path: "/users/confirmation",
@@ -29,7 +28,6 @@ describe("ConfirmAccount.vue", () => {
 
   it("can instantiate without token", () => {
     wrapper = shallowMount(ConfirmAccount, {
-      localVue,
       mocks: { $route },
     });
     const title = "ConfirmAccount";
@@ -41,7 +39,6 @@ describe("ConfirmAccount.vue", () => {
     $route.query.confirmation_token = "imatoken";
     wrapper = await shallowMount(ConfirmAccount, {
       mocks: { $route },
-      localVue,
     });
     await wrapper.vm.validateToken();
     expect(wrapper.vm.error).toBe(false);
@@ -62,7 +59,6 @@ describe("ConfirmAccount.vue", () => {
     });
     wrapper = await shallowMount(ConfirmAccount, {
       mocks: { $route },
-      localVue,
     });
     await wrapper.vm.validateToken();
     expect(wrapper.vm.error).toBe(true);

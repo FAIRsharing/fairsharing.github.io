@@ -78,6 +78,7 @@ const $router = { push: vi.fn() };
 describe("Edit -> GeneralInformation.vue", function () {
   let wrapper;
   let graphStub;
+  let restExecuteStub;
   beforeAll(async () => {
     config.global.config.warnHandler = () => null;
 
@@ -95,7 +96,7 @@ describe("Edit -> GeneralInformation.vue", function () {
     };
     window.FileReader = vi.fn(() => dummyFileReader);
 
-    // jest.mock('toBase64', () => Promise.resolve('value'))
+    // vi.mock('toBase64', () => Promise.resolve('value'))
 
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     graphStub.withArgs(countriesQuery).returns({
@@ -130,6 +131,8 @@ describe("Edit -> GeneralInformation.vue", function () {
     graphStub.withArgs(tagsQuery).returns({
       searchTags: [{ label: "abc", id: 1, model: "domain" }],
     });
+    restExecuteStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restExecuteStub.returns({ data: {} });
 
     wrapper = await shallowMount(GeneralInfo, {
       global: {
@@ -145,6 +148,7 @@ describe("Edit -> GeneralInformation.vue", function () {
 
   afterAll(() => {
     graphStub.restore();
+    restExecuteStub.restore();
     // Vue.config.silent = false;
   });
 
@@ -261,9 +265,12 @@ describe("Edit -> GeneralInformation.vue", function () {
 
   it("can raise a no species error", async () => {
     const btn = { textContent: "Save and exit" };
+    const postStub = sinon.stub(RestClient.prototype, "updateRecord");
+    postStub.returns({ error: { response: { data: "error" } } });
     wrapper.vm.currentFields.taxonomies = [];
     await wrapper.vm.saveRecord(false, false, btn);
     expect(wrapper.vm.message.error).toBe(true);
+    postStub.restore();
   });
 
   it("deals with type changes", async () => {
@@ -279,7 +286,7 @@ describe("Edit -> GeneralInformation.vue", function () {
     expect(wrapper.vm.showTypeChanged).toBe(false);
   });
 
-  it("handle formValid form v-model update", async () => {
+  it("handles formValid form v-model updates", async () => {
     await wrapper.setData({ formValid: false });
     const form = wrapper.findComponent({ name: "v-form" });
     expect(form.props("modelValue")).toBe(false);
@@ -288,7 +295,10 @@ describe("Edit -> GeneralInformation.vue", function () {
   });
 
   it("can check submitWithChangedType method", async () => {
+    wrapper.vm.redirect = true;
+    wrapper.vm.saveRecord = vi.fn().mockResolvedValue();
     await wrapper.vm.submitWithChangedType();
     expect(wrapper.vm.showTypeChanged).toBe(false);
+    expect(wrapper.vm.saveRecord).toHaveBeenCalledWith(true, true);
   });
 });

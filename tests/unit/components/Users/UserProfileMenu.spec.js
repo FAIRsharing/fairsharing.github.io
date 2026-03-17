@@ -1,15 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+/* eslint-env jest */
+
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import UserMenu from "@/components/Users/UserProfileMenu.vue";
 import Client from "@/lib/Client/RESTClient.js";
 import userStore from "@/store/users";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-localVue.use(Vuex);
 userStore.state.user = function () {
   return {
     role: "super_curator",
@@ -26,11 +24,7 @@ const $store = new Vuex.Store({
     users: userStore,
   },
 });
-let routes = [
-  { name: "Login", path: "/accounts/login" },
-  { name: "User", path: "/accounts/profile" },
-];
-const router = new VueRouter({ routes });
+const $router = { push: vi.fn() };
 
 describe("UserProfileMenu.vue", () => {
   let wrapper;
@@ -49,10 +43,9 @@ describe("UserProfileMenu.vue", () => {
   });
 
   beforeEach(() => {
+    $router.push.mockClear();
     wrapper = shallowMount(UserMenu, {
-      localVue,
-      router,
-      mocks: { $store },
+      mocks: { $store, $router },
     });
   });
 
@@ -72,21 +65,23 @@ describe("UserProfileMenu.vue", () => {
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Curator Panel")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/curator");
+    expect($router.push).toHaveBeenCalledWith({ path: "/curator" });
   });
 
   it("can log user out", async () => {
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Logout")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/accounts/login");
+    expect($router.push).toHaveBeenCalledWith({ name: "Login" });
   });
 
   it("can reset user pwd", async () => {
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Reset Password")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/accounts/forgotPassword");
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/accounts/forgotPassword",
+    });
   });
 
   it("can redirect to user edit profile or editPublicProfile", async () => {
@@ -106,15 +101,13 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 1 },
-      localVue,
-      router,
-      mocks: { $store },
+      props: { viewingId: 1 },
+      mocks: { $store, $router },
     });
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Edit profile")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/profiles/edit");
+    expect($router.push).toHaveBeenCalledWith({ path: "/profiles/edit" });
     userStore.state.user = function () {
       return {
         role: "super_curator",
@@ -131,15 +124,15 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 2 },
-      localVue,
-      router,
-      mocks: { $store },
+      props: { viewingId: 2 },
+      mocks: { $store, $router },
     });
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Edit profile")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/profiles/editPublicProfile/2");
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/profiles/editPublicProfile/2",
+    });
     userStore.state.user = function () {
       return {
         role: "super_curator",
@@ -156,22 +149,20 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: {},
-      localVue,
-      router,
-      mocks: { $store },
+      props: {},
+      mocks: { $store, $router },
     });
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Edit profile")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/profiles/edit");
+    expect($router.push).toHaveBeenCalledWith({ path: "/profiles/edit" });
   });
 
   it("can redirect to userLists", async () => {
     await wrapper.vm.menuItems
       .filter((obj) => obj.name === "Users List")[0]
       .action();
-    expect(wrapper.vm.$route.path).toBe("/profiles/usersList");
+    expect($router.push).toHaveBeenCalledWith({ path: "/profiles/usersList" });
   });
 
   it("hides edit profile button where required", () => {
@@ -192,18 +183,14 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 1 },
-      localVue,
-      router,
-      mocks: { $store },
+      props: { viewingId: 1 },
+      mocks: { $store, $router },
     });
     expect(wrapper.vm.disableEdit()).toBe(false);
 
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 2 },
-      localVue,
-      router,
-      mocks: { $store },
+      props: { viewingId: 2 },
+      mocks: { $store, $router },
     });
     expect(wrapper.vm.disableEdit()).toBe(false);
   });
@@ -225,25 +212,19 @@ describe("UserProfileMenu.vue", () => {
       },
     });
     wrapper = shallowMount(UserMenu, {
-      propsData: { viewingId: 2 },
-      localVue,
-      router,
-      mocks: { $store },
+      props: { viewingId: 2 },
+      mocks: { $store, $router },
     });
     expect(wrapper.vm.disableEdit()).toBe(false);
   });
 
   it("supplies correct password reset URL", () => {
-    userStore.state.user = function () {
-      return {
-        isLoggedIn: false,
-      };
+    $store.state.users.user = function () {
+      return { isLoggedIn: false };
     };
     expect(wrapper.vm.resetPasswordPath()).toEqual("/accounts/forgotPassword");
-    userStore.state.user = function () {
-      return {
-        isLoggedIn: true,
-      };
+    $store.state.users.user = function () {
+      return { isLoggedIn: true };
     };
     expect(wrapper.vm.resetPasswordPath()).toEqual("/users/password/edit");
   });

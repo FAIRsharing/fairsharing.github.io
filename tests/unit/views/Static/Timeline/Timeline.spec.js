@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import Home from "@/views/Static/Timeline/Timeline";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("Timeline.vue", function () {
   let wrapper;

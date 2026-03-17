@@ -26,7 +26,7 @@ describe("Mutation & Actions & Getters", () => {
     perPage: null,
     currentPage: 1,
   };
-  actions.commit = jest.fn();
+  actions.commit = vi.fn();
   let stub;
 
   beforeAll(() => {
@@ -55,7 +55,7 @@ describe("Mutation & Actions & Getters", () => {
     expect(actions.commit).toHaveBeenCalledTimes(3);
 
     actions.commit = null;
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.fetchRecords(state, { params: {}, token: null });
     expect(actions.commit).toHaveBeenCalledTimes(3);
   });
@@ -151,13 +151,17 @@ describe("Mutation & Actions & Getters", () => {
 
   it("can throw error when inappropriate data provided ", async () => {
     stub.restore();
-    stub.withArgs(sinon.match.any).returns(new Error("error"));
+    stub = sinon.stub(Client.prototype, "executeQuery");
+    stub.rejects(new Error("error"));
     await actions.initializeCollectionRecords(state, null);
     await actions.fetchCollectionRecords(state, {
       params: { q: "this", a: "that" },
       token: "wibble",
     });
-    await expect(sinon.stub(Client.prototype, "executeQuery")).rejects;
+    expect(actions.commit).toHaveBeenCalledWith("records/setRecords", {
+      records: [],
+    });
+    stub.restore();
   });
 
   it("can get and set collection ids", () => {

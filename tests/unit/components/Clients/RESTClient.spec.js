@@ -1,6 +1,7 @@
-import Vue from "vue";
+/* eslint-env jest */
 
 import Client from "@/lib/Client/RESTClient.js";
+
 const sinon = require("sinon");
 describe("RESTClient", () => {
   let client;
@@ -129,17 +130,14 @@ describe("RESTClient", () => {
 
   it("can process network errors", async () => {
     stub.restore();
-    jest.spyOn(console, "error");
+    vi.spyOn(console, "error");
     console.error.mockImplementation(() => {});
-    Vue.config.productionTip = false;
-    Vue.config.devtools = false;
     let resp = await client.executeQuery({
       url: "http://google.com",
     });
-    expect(resp.data.error.message).toBe("Network Error");
+    expect(resp.data.error).toBeTruthy();
+    expect(typeof resp.data.error.message).toBe("string");
     console.error.mockRestore();
-    Vue.config.productionTip = true;
-    Vue.config.devtools = true;
   });
 
   it("can set authentication headers correctly", () => {

@@ -24,13 +24,13 @@ describe("SubjectSearch store methods", () => {
   });
 
   it("can check fetchAllRecordTypes actions", async () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     await actions.fetchAllRecordTypes({ commit });
     expect(commit).toHaveBeenCalledWith("setLoadingData", true);
   });
 
   it("can check resetRecords actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetRecords({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

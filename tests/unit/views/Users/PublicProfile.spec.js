@@ -1,4 +1,4 @@
-import { createLocalVue, RouterLinkStub, shallowMount } from "@vue/test-utils";
+import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
@@ -12,8 +12,6 @@ import usersStore from "@/store/users";
 import PublicProfile from "@/views/Users/PublicProfile";
 import User from "@/views/Users/User";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -26,7 +24,7 @@ let $route = {
 };
 
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("PublicProfile.vue", () => {
   let wrapper;
@@ -35,29 +33,30 @@ describe("PublicProfile.vue", () => {
   let externalClientStub;
   let getpubs;
 
-    beforeAll( () => {
-        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {id: "12345", name: "mrgoatse", orcid: '123'}
-        });
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-           user: {
-               email:"mrg@goatse.cx",
-               firstName: "Mr.",
-               lastName: "Goatse",
-               homepage: "http://goatse.cx",
-               orcid: "1234-5678-9012-3456",
-               username: "goatse",
-               maintainedRecords: [],
-           }
-       });
-       externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns({data: ORCIDfixture});
-       wrapper = shallowMount(PublicProfile, {
-            localVue,
-            router,
-            mocks: {$store, $router, $route},
-        });
-        getpubs = jest.spyOn(wrapper.vm, "getPublications");
+  beforeAll(() => {
+    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+      data: { id: "12345", name: "mrgoatse", orcid: "123" },
     });
+    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+      user: {
+        email: "mrg@goatse.cx",
+        firstName: "Mr.",
+        lastName: "Goatse",
+        homepage: "http://goatse.cx",
+        orcid: "1234-5678-9012-3456",
+        username: "goatse",
+        maintainedRecords: [],
+      },
+    });
+    externalClientStub = sinon
+      .stub(ExternalClient.prototype, "executeQuery")
+      .returns({ data: ORCIDfixture });
+    wrapper = shallowMount(PublicProfile, {
+      router,
+      mocks: { $store, $router, $route },
+    });
+    getpubs = vi.spyOn(wrapper.vm, "getPublications");
+  });
 
   afterAll(() => {
     restStub.restore();
@@ -92,7 +91,6 @@ describe("PublicProfile.vue", () => {
       user: { orcid: "123456" },
     });
     wrapper = shallowMount(PublicProfile, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -103,7 +101,6 @@ describe("PublicProfile.vue", () => {
       error: "error",
     });
     wrapper = shallowMount(PublicProfile, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -121,7 +118,6 @@ describe("PublicProfile.vue", () => {
      */
     externalClientStub.returns({ data: { error: "error" } });
     let wrapper = await shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },

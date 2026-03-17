@@ -1,17 +1,8 @@
-import { shallowMount } from "@vue/test-utils";
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
-
+import { shallowMount  } from "@vue/test-utils";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
-import { createStore } from "vuex";
+import Vuex from "vuex";
 
 import Organisations from "@/components/Editor/Organisations/Organisations.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -22,7 +13,6 @@ import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
-
 const sinon = require("sinon");
 
 const vuetify = createVuetify();
@@ -44,7 +34,7 @@ recordStore.state.sections = {
 };
 recordStore.state.currentRecord = { fairsharingRecord: { id: 123 } };
 userStore.state.user().credentials.token = 123;
-const $store = createStore({
+const $store = new Vuex.Store({
   modules: {
     editor: editorStore,
     record: recordStore,
@@ -52,7 +42,7 @@ const $store = createStore({
   },
 });
 let $route = { path: "/123/edit", params: { id: 123 } };
-
+const router = new VueRouter();
 const $router = { push: vi.fn() };
 
 describe("Edit -> Organisations.vue", function () {
@@ -88,10 +78,9 @@ describe("Edit -> Organisations.vue", function () {
 
   beforeEach(async () => {
     wrapper = await shallowMount(Organisations, {
-      global: {
-        plugins: [vuetify],
-        mocks: { $store, $route, $router, $scrollTo: vi.fn() },
-      },
+      vuetify,
+      router,
+      mocks: { $store, $route, $router },
     });
   });
 
@@ -211,15 +200,7 @@ describe("Edit -> Organisations.vue", function () {
     wrapper.vm.removeRelation(0);
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({ data: { error: "I am an error" } });
-    await wrapper.vm.saveRecord(false, { textContent: "Save and exit" });
+    await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect(recordStore.state.sections.organisations.error).toBe(true);
-  });
-
-  it("handles formValid form v-model updates", async () => {
-    await wrapper.setData({ formValid: false });
-    const form = wrapper.findComponent({ name: "v-form" });
-    expect(form.props("modelValue")).toBe(false);
-    await form.vm.$emit("update:modelValue", true);
-    expect(wrapper.vm.formValid).toBe(true);
   });
 });

@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { RouterLinkStub } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
@@ -12,8 +12,6 @@ import editorStore from "@/store/editor";
 import usersStore from "@/store/users";
 import User from "@/views/Users/User.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -22,7 +20,7 @@ const $store = new Vuex.Store({
 });
 let $route = { path: "/accounts/profile" };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 describe("User.vue", () => {
   let wrapper;
@@ -62,7 +60,6 @@ describe("User.vue", () => {
 
   it("can be instantiated", () => {
     wrapper = shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router },
       stubs: { RouterLink: RouterLinkStub },
@@ -81,7 +78,6 @@ describe("User.vue", () => {
       data: { error: "error" },
     });
     wrapper = shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -90,12 +86,11 @@ describe("User.vue", () => {
 
   it("can clean up store on destroy", () => {
     wrapper = shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
-    wrapper.destroy();
+    wrapper.unmount();
     expect(usersStore.state.user().records).toStrictEqual({});
   });
 
@@ -107,7 +102,6 @@ describe("User.vue", () => {
      */
     externalClientStub.returns({ data: { error: "error" } });
     let wrapper = await shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -117,7 +111,6 @@ describe("User.vue", () => {
 
   it("can copy url correctly", async () => {
     let wrapper = await shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -128,7 +121,6 @@ describe("User.vue", () => {
 
   it("can delete a user", async () => {
     let wrapper = await shallowMount(User, {
-      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },

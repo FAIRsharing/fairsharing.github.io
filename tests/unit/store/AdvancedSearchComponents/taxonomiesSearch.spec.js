@@ -24,7 +24,7 @@ describe("TaxonomiesSearchStore store methods", () => {
   });
 
   it("can check fetchSearchTaxonomies actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchTaxonomies({ commit }, "taxonomies");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchTaxonomies: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchTaxonomies({ commit }, "taxonomies");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSearchTaxonomies actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSearchTaxonomies({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

@@ -1,16 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-
 let $route = { params: { id: "123" } };
 const router = new VueRouter();
-const $router = { push: jest.fn() };
+const $router = { push: vi.fn() };
 
 let editor = {
   namespaced: true,
@@ -44,7 +41,6 @@ describe("Keywords.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(Keywords, {
-      localVue,
       router,
       mocks: { $store, $route, $router },
     });

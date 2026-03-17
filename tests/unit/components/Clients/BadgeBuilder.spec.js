@@ -1,5 +1,6 @@
 import badgeBuilderFakeData from "@/../tests/fixtures/badgeBuilderFakeData.json";
 import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
+import { describe, expect, it } from "vitest";
 
 describe("BadgeBuilder", () => {
   let badgeBuilder;

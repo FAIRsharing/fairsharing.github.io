@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
 const utils = recordsCardUtils;
@@ -95,7 +95,12 @@ describe("recordsCardsUtils.js", function () {
   });
 
   it("sets and organises chips", () => {
-    utils.methods.getMaxItemShown = 2;
+    const context = {
+      chips: [],
+      remainTagCount: 0,
+      getMaxItemShown: 2,
+      organizeChips: utils.methods.organizeChips,
+    };
     const record = {
       objectTypes: [
         {
@@ -121,23 +126,27 @@ describe("recordsCardsUtils.js", function () {
       ],
       taxonomies: [],
     };
-    expect(utils.methods.chips).toBe(undefined);
-    utils.methods.setChips(record);
+    utils.methods.setChips.call(context, record);
     let result = [
       { id: 1, label: "one", type: "objectTypes" },
       { id: 1, label: "one", type: "subjects" },
       { id: 2, label: "two", type: "domains" },
       { id: 3, label: "three", type: "domains" },
     ];
-    expect(utils.methods.chips).toStrictEqual(result);
+    expect(context.chips).toStrictEqual(result);
   });
 
   describe("setChips", () => {
-    let context = {
-      chips: [],
-      remainTagCount: 0,
-      getMaxItemShown: 2,
-    };
+    let context;
+    beforeEach(() => {
+      context = {
+        chips: [],
+        remainTagCount: 0,
+        getMaxItemShown: 2,
+        organizeChips: utils.methods.organizeChips,
+      };
+    });
+
     it("aggregates chips from multiple categories in the correct order", () => {
       context.getMaxItemShown = 5;
       const record = {
@@ -145,7 +154,7 @@ describe("recordsCardsUtils.js", function () {
         domains: [{ name: "D1" }],
       };
 
-      context.setChips(record);
+      utils.methods.setChips.call(context, record);
 
       expect(context.chips).toHaveLength(2);
       expect(context.chips[0].type).toBe("subjects");
@@ -161,7 +170,7 @@ describe("recordsCardsUtils.js", function () {
         subjects: [{ name: "S1" }, { name: "S2" }, { name: "S3" }],
       };
 
-      utils.methods.setChips(record);
+      utils.methods.setChips.call(context, record);
       expect(context.remainTagCount).toBe(3);
       expect(context.chips).toHaveLength(2);
     });
@@ -174,7 +183,7 @@ describe("recordsCardsUtils.js", function () {
       const record = { objectTypes: [{ name: "New" }] };
       context.getMaxItemShown = 5;
 
-      context.setChips(record);
+      utils.methods.setChips.call(context, record);
 
       expect(context.chips).toHaveLength(1);
       expect(context.chips[0].name).toBe("New");
@@ -183,17 +192,25 @@ describe("recordsCardsUtils.js", function () {
   });
 
   describe("organizeChips", () => {
-    let context = {
-      // Data properties
-      chips: [],
-      remainTagCount: 0,
-      getMaxItemShown: 2, // Arbitrary limit for testing
-    };
+    let context;
+    beforeEach(() => {
+      context = {
+        chips: [],
+        remainTagCount: 0,
+        getMaxItemShown: 2,
+      };
+    });
+
     it("pushes items to chips array if they are within the limit", () => {
       const record = {
         subjects: [{ name: "Math" }, { name: "Science" }],
       };
-      const result = utils.methods.organizeChips(record, "subjects", 2);
+      const result = utils.methods.organizeChips.call(
+        context,
+        record,
+        "subjects",
+        2,
+      );
 
       expect(result).toBe(true);
       expect(context.chips).toHaveLength(2);
@@ -213,7 +230,7 @@ describe("recordsCardsUtils.js", function () {
       };
       record.subjects.remainTagCount = 0;
 
-      utils.methods.organizeChips(record, "subjects", 2);
+      utils.methods.organizeChips.call(context, record, "subjects", 2);
 
       expect(context.chips).toHaveLength(2);
       expect(record.subjects.remainTagCount).toBe(2);
@@ -221,7 +238,12 @@ describe("recordsCardsUtils.js", function () {
 
     it("returns false if the node does not exist in record", () => {
       const record = {};
-      const result = utils.methods.organizeChips(record, "missing_node", 5);
+      const result = utils.methods.organizeChips.call(
+        context,
+        record,
+        "missing_node",
+        5,
+      );
 
       expect(result).toBe(false);
       expect(context.chips).toHaveLength(0);

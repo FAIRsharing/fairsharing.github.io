@@ -3,7 +3,7 @@ import { shallowMount } from "@vue/test-utils";
 import Sorting from "@/components/Records/Search/Header/Sorting";
 
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 
 describe("Sorting.vue", () => {

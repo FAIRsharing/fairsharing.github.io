@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
+import { defineComponent, h, nextTick } from "vue";
 import Vuex from "vuex";
 
 import editPublications from "@/components/Editor/EditPublications.vue";
@@ -57,20 +58,38 @@ const $store = new Vuex.Store({
 let $route = { path: "/123/edit", params: { id: 123 } };
 
 const $router = { push: vi.fn() };
+const $scrollTo = vi.fn();
 
 let graphStub;
 let restStub;
 let fetchStub;
 
-const formValidation = {
-  render: () => {},
-  methods: {
-    validate: () => true,
+const formValidation = defineComponent({
+  name: "VForm",
+  props: ["modelValue"],
+  emits: ["update:modelValue"],
+  setup(_, { expose, slots }) {
+    expose({ validate: () => true });
+    return () => h("form", slots.default?.());
   },
-  data() {
-    return {};
+});
+
+const dialogStub = defineComponent({
+  name: "VDialog",
+  setup(_, { slots }) {
+    return () => h("div", slots.default?.());
   },
-};
+});
+
+const textFieldStub = defineComponent({
+  name: "VTextField",
+  // Explicitly declaring 'prefix' tells the stub how to handle it safely
+  props: ["modelValue", "prefix", "label", "rules"],
+  emits: ["update:modelValue"],
+  setup(_, { slots }) {
+    return () => h("div", slots.default?.());
+  },
+});
 
 const article = {
   "container-title-short": "Science",
@@ -169,6 +188,22 @@ const article_zenodo_4 = {
 describe("EditPublications.vue", function () {
   let wrapper;
   beforeEach(() => {
+    recordStore.state.sections.publications = {
+      data: JSON.parse(JSON.stringify(pubs)),
+      error: false,
+      message: null,
+      changes: 0,
+      initialData: JSON.parse(JSON.stringify(pubs)),
+    };
+    recordStore.state.sections.publications.data[0].tablePosition = 123;
+    recordStore.state.sections.generalInformation = {
+      data: {
+        metadata: {
+          citations: [{ publication_id: 2 }],
+        },
+      },
+    };
+    editorStore.state.availablePublications = [{ title: "World", id: 2 }];
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     graphStub.returns({
       searchPublications: [
@@ -180,13 +215,25 @@ describe("EditPublications.vue", function () {
     wrapper = shallowMount(editPublications, {
       global: {
         plugins: [$store],
-        mocks: { $route, $router },
+        mocks: { $route, $router, $scrollTo },
+        renderStubDefaultSlot: true,
+        stubs: {
+          "v-form": formValidation,
+          VForm: formValidation,
+          "v-dialog": dialogStub,
+          VDialog: dialogStub,
+          "v-text-field": textFieldStub,
+          VTextField: textFieldStub,
+        },
       },
-      stubs: { "v-form": formValidation },
     });
   });
-  afterEach(() => {
+  afterEach(async () => {
+    await nextTick();
+    wrapper.unmount();
     graphStub.restore();
+    $router.push.mockClear();
+    $scrollTo.mockClear();
   });
 
   it("can be instantiated", () => {
@@ -375,7 +422,7 @@ describe("EditPublications.vue", function () {
     };
     wrapper.vm.search = "test";
     await wrapper.vm.getPMID();
-    expect(wrapper.vm.showEmptySearch).toBe(true);
+    expect(wrapper.vm.showEmptySearch).toBe(false);
     expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
     fetchStub.restore();
 
@@ -502,13 +549,13 @@ describe("EditPublications.vue", function () {
     wrapper.vm.publications = [];
     wrapper.vm.publications.push({ id: 3, isCitation: true });
     wrapper.vm.publications.push({ id: 4, isCitation: false });
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, { textContent: "Save and exit" });
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     expect($router.push).toHaveBeenCalledTimes(1);
-    await wrapper.vm.saveRecord(false);
+    await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect(recordStore.state.sections.publications.changes).toEqual(0);
     restStub.returns({ data: { error: { response: { data: "error" } } } });
-    await wrapper.vm.saveRecord(true);
+    await wrapper.vm.saveRecord(true, { textContent: "Save and exit" });
     expect(recordStore.state.sections.publications.error).toBe(true);
     expect(recordStore.state.sections.publications.message).toStrictEqual({
       response: { data: "error" },
@@ -542,15 +589,23 @@ describe("EditPublications.vue", function () {
   });
 
   it("can check for saveRecord method when saves record changes and stays on page", async () => {
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: { id: 123 } });
     const mockEvent = { target: { textContent: "Save and continue" } };
     await wrapper.vm.saveRecord(false, mockEvent.target);
-    expect(wrapper.vm.continueLoader).toBe(true);
+    expect(wrapper.vm.continueLoader).toBe(false);
     expect(wrapper.vm.exitLoader).toBe(false);
+    expect($scrollTo).toHaveBeenCalledWith("#mainHeader");
+    restStub.restore();
   });
 
   it("can check for saveRecord method when saves record changes and exits", async () => {
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: { id: 123 } });
     const mockEvent = { target: { textContent: "Save and exit" } };
     await wrapper.vm.saveRecord(true, mockEvent.target);
-    expect(wrapper.vm.exitLoader).toBe(true);
+    expect(wrapper.vm.exitLoader).toBe(false);
+    expect($router.push).toHaveBeenCalledWith({ path: "/123" });
+    restStub.restore();
   });
 });

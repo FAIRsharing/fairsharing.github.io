@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   doi: "FAIRsharing.wibble",
@@ -28,8 +26,8 @@ describe("DOITitle.vue", function () {
 
   beforeAll(() => {
     const fileContents = { width: "100", height: "200" };
-    const readAsDataURL = jest.fn();
-    const addEventListener = jest.fn((_, evtHandler) => {
+    const readAsDataURL = vi.fn();
+    const addEventListener = vi.fn((_, evtHandler) => {
       evtHandler({
         target: fileContents,
       });
@@ -39,12 +37,11 @@ describe("DOITitle.vue", function () {
       readAsDataURL,
       target: fileContents,
     };
-    window.Image = jest.fn(() => dummyFileReader);
+    window.Image = vi.fn(() => dummyFileReader);
   });
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(DOITitle, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import SaveSearchStepper from "@/components/Records/Search/SaveSearch/SaveSearchStepper.vue";
@@ -7,9 +7,7 @@ import advancedSearchStore from "@/store/AdvancedSearchComponents/advancedSearch
 import saveSearchStore from "@/store/saveSearch";
 import userStore from "@/store/users.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("SaveSearchStepper.vue", () => {
   let wrapper, store, actions;
@@ -57,7 +55,7 @@ describe("SaveSearchStepper.vue", () => {
       },
     };
     actions = {
-      getUser: jest.fn(),
+      getUser: vi.fn(),
     };
     userStore.state.user().is_super_curator = true;
 
@@ -72,7 +70,6 @@ describe("SaveSearchStepper.vue", () => {
     });
 
     wrapper = shallowMount(SaveSearchStepper, {
-      localVue,
       vuetify,
       store,
     });

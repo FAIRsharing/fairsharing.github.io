@@ -32,13 +32,13 @@ describe("SaveSearch store methods", () => {
   });
 
   it("can check fetchPolicyRecords actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchPolicyRecords({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSaveSearchDialog actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSaveSearchDialog({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

@@ -1,39 +1,41 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueSanitize from "vue-sanitize";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import Educational from "@/views/Static/Educational/Educational";
 
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
-localVue.use(VueSanitize);
+const vuetify = createVuetify();
 
 let $route = {
   name: "Community",
   hash: "#faq9-3",
 };
 
-const originalClipboard = { ...global.navigator.clipboard };
+const originalClipboard = global.navigator.clipboard;
 
 describe("Educational.vue", function () {
   let wrapper;
 
   beforeEach(() => {
     wrapper = shallowMount(Educational, {
-      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
     });
     const mockClipboard = {
-      writeText: jest.fn(),
+      writeText: vi.fn(),
     };
-    global.navigator.clipboard = mockClipboard;
+    Object.defineProperty(global.navigator, "clipboard", {
+      configurable: true,
+      value: mockClipboard,
+    });
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    global.navigator.clipboard = originalClipboard;
+    vi.resetAllMocks();
+    Object.defineProperty(global.navigator, "clipboard", {
+      configurable: true,
+      value: originalClipboard,
+    });
   });
 
   it("can be instantiated", () => {
@@ -41,7 +43,6 @@ describe("Educational.vue", function () {
     // wrapper.vm.$route.hash = '#anotherAnchor'
     $route.hash = "#anotherAnchor";
     wrapper = shallowMount(Educational, {
-      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
@@ -50,8 +51,9 @@ describe("Educational.vue", function () {
   });
 
   it("generates correct doi link", () => {
-    let doiLink = `https://doi.org/${test}`;
-    expect(wrapper.vm.generateDoiLink(test)).toEqual(doiLink);
+    const doi = "10.5281/zenodo.8191958";
+    let doiLink = `https://doi.org/${doi}`;
+    expect(wrapper.vm.generateDoiLink(doi)).toEqual(doiLink);
   });
 
   it("can copy url correctly", () => {
@@ -71,33 +73,31 @@ describe("Educational.vue", function () {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(mockDoi);
   });
 
-    it("can generatePopup", () => {
-        const $route = {
-            hash: '#nutshell'
-        }
-        wrapper = shallowMount(Educational, {
-            localVue,
-            vuetify,
-            mocks: {$route},
-            stubs: ['router-link', 'router-view']
-        })
-        const selectedInfoGraphic = {
-          id: "nutshell",
-          logo: "nutshell.png",
-          text: "",
-          doi: "10.5281/zenodo.7737366",
-          url: "https://zenodo.org/record/8191958/files/0%20-%20FAIRsharing%20in%20a%20nutshell%20V1.1.pdf?download=1",
-          copyButtonStatus: true,
-          hash: "nutshell",
-        };
-        wrapper.vm.$route.hash
-        wrapper.vm.infographicPopup.data = {};
-        wrapper.vm.infographicPopup.show = false;
-        wrapper.vm.infographicPopup.loading = false;
-        wrapper.vm.generatePopup()
-        expect(wrapper.vm.infographicPopup.data).toStrictEqual(selectedInfoGraphic)
-        expect(wrapper.vm.infographicPopup.show).toBe(true)
-        expect(wrapper.vm.infographicPopup.loading).toBe(true)
+  it("can generatePopup", () => {
+    const $route = {
+      hash: "#nutshell",
+    };
+    wrapper = shallowMount(Educational, {
+      vuetify,
+      mocks: { $route },
+      stubs: ["router-link", "router-view"],
     });
-
+    const selectedInfoGraphic = {
+      id: "nutshell",
+      logo: "nutshell.png",
+      text: "",
+      doi: "10.5281/zenodo.7737366",
+      url: "https://zenodo.org/record/8191958/files/0%20-%20FAIRsharing%20in%20a%20nutshell%20V1.1.pdf?download=1",
+      copyButtonStatus: true,
+      hash: "nutshell",
+    };
+    wrapper.vm.$route.hash;
+    wrapper.vm.infographicPopup.data = {};
+    wrapper.vm.infographicPopup.show = false;
+    wrapper.vm.infographicPopup.loading = false;
+    wrapper.vm.generatePopup();
+    expect(wrapper.vm.infographicPopup.data).toStrictEqual(selectedInfoGraphic);
+    expect(wrapper.vm.infographicPopup.show).toBe(true);
+    expect(wrapper.vm.infographicPopup.loading).toBe(true);
+  });
 });

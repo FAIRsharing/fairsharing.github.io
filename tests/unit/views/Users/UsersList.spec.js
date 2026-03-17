@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
@@ -8,9 +8,7 @@ import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import usersStore from "@/store/users";
 import UsersList from "@/views/Users/UsersList";
 
-const vuetify = new Vuetify();
-const localVue = createLocalVue();
-localVue.use(Vuex);
+const vuetify = createVuetify();
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -34,13 +32,12 @@ describe("UsersList.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(UsersList, {
       vuetify,
-      localVue,
       mocks: { $store },
     });
   });
 
   afterEach(() => {
-    wrapper.destroy();
+    wrapper.unmount();
   });
 
   afterAll(() => {
@@ -52,7 +49,7 @@ describe("UsersList.vue", function () {
   });
 
   it("can get users", async () => {
-    let spy = jest.spyOn(wrapper.vm, "getUsersList");
+    let spy = vi.spyOn(wrapper.vm, "getUsersList");
     await wrapper.setData({ searchString: "search string" });
     expect(spy).toHaveBeenCalled();
   });

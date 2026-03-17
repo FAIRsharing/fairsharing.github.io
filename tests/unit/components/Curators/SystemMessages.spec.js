@@ -1,4 +1,4 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
@@ -66,6 +66,10 @@ describe("Curator -> SystemMessages.vue", () => {
       global: {
         plugins: [$store],
         mocks: { $router },
+        stubs: {
+          "v-edit-dialog": true,
+          VEditDialog: true,
+        },
       },
       props: {
         headerItems: header,
@@ -73,8 +77,10 @@ describe("Curator -> SystemMessages.vue", () => {
     });
   });
   afterEach(() => {
-    graphStub.restore();
     restStub.restore();
+  });
+  afterAll(() => {
+    graphStub.restore();
   });
 
   it("can be mounted", () => {

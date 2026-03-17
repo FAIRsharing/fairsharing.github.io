@@ -1,12 +1,10 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
 
 import RecentCuratorCreation from "@/components/Curators/RecentCuratorCreation.vue";
-import Client from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import usersStore from "@/store/users";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
@@ -26,45 +24,44 @@ let header = [
     value: "creator",
   },
 ];
-usersStore.state.user = function () {
-  return {
-    namespaced: true,
-    isLoggedIn: true,
-    credentials: { token: 123, username: 123 },
-  };
-};
-
-const $store = new Vuex.Store({
-  modules: {
-    users: usersStore,
-  },
-});
-
 const $router = { push: vi.fn() };
 
 describe("Curator -> RecentCuratorCreation.vue", () => {
-  let restStub, wrapper, graphStub;
-  beforeAll(() => {
-    graphStub = sinon
-      .stub(GraphClient.prototype, "executeQuery")
-      .returns(curationDataSummary);
+  let wrapper, graphStub;
 
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-      data: {
-        error: false,
+  const createStore = () =>
+    new Vuex.Store({
+      modules: {
+        users: {
+          namespaced: true,
+          state: {
+            user: () => ({
+              isLoggedIn: true,
+              credentials: { token: 123, username: 123 },
+            }),
+          },
+        },
       },
     });
+
+  beforeEach(() => {
+    graphStub = sinon
+      .stub(GraphClient.prototype, "executeQuery")
+      .resolves(curationDataSummary);
+
     wrapper = shallowMount(RecentCuratorCreation, {
-      plugins: [$store],
-      mocks: { $router },
+      global: {
+        plugins: [createStore()],
+        mocks: { $router },
+      },
       props: {
         headerItems: header,
       },
     });
   });
+
   afterEach(() => {
     graphStub.restore();
-    restStub.restore();
   });
 
   it("can be mounted", () => {

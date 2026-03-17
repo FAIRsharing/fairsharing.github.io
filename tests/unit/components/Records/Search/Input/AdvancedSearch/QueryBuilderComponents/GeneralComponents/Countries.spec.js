@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Countries from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Countries.vue";
@@ -7,12 +7,10 @@ import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
 import countriesSearch from "@/store/AdvancedSearchComponents/countriesSearch";
 
 const $router = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 let $route = { path: "/advancedsearch", query: {} };
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("Countries.vue", () => {
   let wrapper, store, actions;
@@ -28,7 +26,7 @@ describe("Countries.vue", () => {
       },
     };
     actions = {
-      fetchSearchCountries: jest.fn(),
+      fetchSearchCountries: vi.fn(),
     };
     store = new Vuex.Store({
       modules: {
@@ -39,10 +37,10 @@ describe("Countries.vue", () => {
       },
     });
     wrapper = shallowMount(Countries, {
-      localVue,
-      vuetify,
-      store,
-      mocks: { $router, $route },
+      global: {
+        plugins: [store, vuetify],
+        mocks: { $router, $route },
+      },
     });
   });
 

@@ -1,13 +1,13 @@
-/* eslint-env jest */
-
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import RelatedContent from "@/components/Records/Record/RelatedContent.vue";
 import Record from "@/store/recordData.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   name: "standard",
@@ -73,6 +73,7 @@ describe("RelatedContent.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(RelatedContent, {
+      localVue,
       vuetify,
       mocks: { $store },
     });
@@ -100,12 +101,12 @@ describe("RelatedContent.vue", function () {
   });
 
   it("can filter searches on name and abbreviation", () => {
-    let item = { raw: { name: "one", abbreviation: null } };
-    expect(wrapper.vm.nameAbbrFilter("", "one", item)).toBe(true);
-    expect(wrapper.vm.nameAbbrFilter("", "two", item)).toBe(false);
-    item = { raw: { name: "a_very_long_string", abbreviation: "small" } };
-    expect(wrapper.vm.nameAbbrFilter("", "very", item)).toBe(true);
-    expect(wrapper.vm.nameAbbrFilter("", "small", item)).toBe(true);
-    expect(wrapper.vm.nameAbbrFilter("", "item", item)).toBe(false);
+    let item = { name: "one", abbreviation: null };
+    expect(wrapper.vm.nameAbbrFilter(item, "one")).toBe(true);
+    expect(wrapper.vm.nameAbbrFilter(item, "two")).toBe(false);
+    item = { name: "a_very_long_string", abbreviation: "small" };
+    expect(wrapper.vm.nameAbbrFilter(item, "very")).toBe(true);
+    expect(wrapper.vm.nameAbbrFilter(item, "small")).toBe(true);
+    expect(wrapper.vm.nameAbbrFilter(item, "item")).toBe(false);
   });
 });

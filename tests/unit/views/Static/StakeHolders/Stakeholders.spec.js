@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import Stakeholders from "@/views/Static/Stakeholders/Stakeholders";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("Stakeholders.vue", function () {
   let wrapper;

@@ -7,7 +7,7 @@ describe("NoneFound.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(NoneFound, {
-      props: {
+      propsData: {
         dataField: [{ name: "some sort of object" }],
       },
     });
@@ -24,7 +24,7 @@ describe("NoneFound.vue", function () {
   it("can be instantiated with Object data", () => {
     // wrapper.setProps({ dataField: [],stringField : 'one doi' })
     wrapper = shallowMount(NoneFound, {
-      props: {
+      propsData: {
         dataField: [],
         stringField: "one doi",
       },

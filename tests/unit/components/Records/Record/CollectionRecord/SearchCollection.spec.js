@@ -1,7 +1,6 @@
-/* eslint-env jest */
-
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import VueScrollTo from "vue-scrollto";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
@@ -15,10 +14,13 @@ import userStore from "@/store/users";
 
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.use(VueScrollTo, {});
 const sinon = require("sinon");
 const axios = require("axios");
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 const $route = {
   name: "Record",
@@ -98,14 +100,12 @@ describe("SearchCollection.vue", function () {
   afterAll(() => {
     try {
       Client.prototype.executeQuery.restore();
-    }
-    catch {
+    } catch {
       // eslint-disable-next-line no-empty
     }
   });
 
   beforeEach(async () => {
-    $route.query = {};
     //-- making a mock div element
     const element = document.createElement("div");
     element.id = "topElement";
@@ -114,6 +114,7 @@ describe("SearchCollection.vue", function () {
 
     wrapper = await shallowMount(searchCollection, {
       mocks: { $route, $store },
+      localVue,
       vuetify,
       attachTo: element,
     });
@@ -124,8 +125,8 @@ describe("SearchCollection.vue", function () {
   });
 
   it("can check the mocked html element is correctly added", () => {
-    const byId = document.getElementById("topElement");
-    expect(byId.id).toBe("topElement");
+    const byId = wrapper.find("#topElement");
+    expect(byId.element.id).toBe("topElement");
   });
 
   it("can check changeListType function", () => {
@@ -148,16 +149,17 @@ describe("SearchCollection.vue", function () {
   });
 
   it("can react to router changes", async () => {
-    $route.query = { fairsharingRegistry: "Collection", page: "2" };
     const wrapper2 = await shallowMount(searchCollection, {
       mocks: { $route, $store },
       vuetify,
+      localVue,
     });
+    wrapper2.vm.$route.query = { fairsharingRegistry: "Collection", page: "2" };
     expect(wrapper2.vm.currentPath).toStrictEqual([
       "Collection",
       { fairsharingRegistry: "Collection", page: "2" },
     ]);
-    $route.query = { fairsharingRegistry: "" };
+    wrapper.vm.$route.query = { fairsharingRegistry: "" };
     expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
     wrapper.vm.testEnvironment = true;
   });
@@ -181,13 +183,9 @@ describe("SearchCollection.vue", function () {
     await wrapper.vm.$store.dispatch("introspection/fetchParameters");
     Client.prototype.getData.restore();
 
-    const wrapperWithQuery = await shallowMount(searchCollection, {
-      mocks: { $route, $store },
-      vuetify,
-    });
-    let queryParameters = await wrapperWithQuery.vm.$store.getters[
+    let queryParameters = await wrapper.vm.$store.getters[
       "introspection/buildQueryParameters"
-    ](wrapperWithQuery.vm.currentPath);
+    ](wrapper.vm.currentPath);
     expect(queryParameters).toStrictEqual({
       page: "2",
     });
@@ -202,7 +200,7 @@ describe("SearchCollection.vue", function () {
   });
 
   it("can reset the records store when destroyed", () => {
-    wrapper.unmount();
+    wrapper.destroy();
     expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.loading).toBe(false);

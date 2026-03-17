@@ -1,19 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DataAccessCondition from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DataAccessCondition.vue";
 
-
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("DataAccessCondition.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(DataAccessCondition, {
-      global: {
-        plugins: [vuetify],
-      },
+      localVue,
+      vuetify,
     });
   });
 

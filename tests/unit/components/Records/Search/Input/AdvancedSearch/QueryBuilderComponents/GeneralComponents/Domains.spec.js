@@ -1,5 +1,5 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Domains from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Domains.vue";
@@ -10,7 +10,9 @@ const $router = {
   push: jest.fn(),
 };
 let $route = { path: "/advancedsearch", query: {} };
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("Domains.vue", () => {
   let wrapper, store, actions;
@@ -37,10 +39,10 @@ describe("Domains.vue", () => {
       },
     });
     wrapper = shallowMount(Domains, {
-      global: {
-        plugins: [store, vuetify],
-        mocks: { $router, $route },
-      },
+      localVue,
+      vuetify,
+      store,
+      mocks: { $router, $route },
     });
   });
 

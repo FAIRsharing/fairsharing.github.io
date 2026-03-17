@@ -1,5 +1,5 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue";
@@ -9,7 +9,9 @@ import uiController from "@/store/uiController.js";
 import getGrants from "../../../../../fixtures/getGrants.json";
 
 jest.useFakeTimers();
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -35,9 +37,10 @@ describe("FilterAutocomplete.vue", function () {
   let wrapper;
   let fake_GetFilter_Grants_Response = getGrants;
   wrapper = shallowMount(ExpansionPanel, {
+    localVue,
     vuetify,
     mocks: { $store, $route, $router },
-    props: {
+    propsData: {
       filter: {
         filterName: "grants",
       },
@@ -79,7 +82,7 @@ describe("FilterAutocomplete.vue", function () {
     wrapper.vm.applyFilters();
     expect($router.push).toHaveBeenCalledTimes(0);
 
-    wrapper.vm.selectedValues = [{ key: "value1" }];
+    wrapper.vm.selectedValues = ["value1"];
     wrapper.vm.applyFilters();
     expect($router.push).toHaveBeenCalledTimes(1);
     expect($router.push).toHaveBeenCalledWith({
@@ -87,7 +90,7 @@ describe("FilterAutocomplete.vue", function () {
       query: { grants: "value1", page: 1 },
     });
 
-    wrapper.vm.selectedValues = [{ key: "value 2" }, { key: "value 3" }];
+    wrapper.vm.selectedValues = ["value 2", "value 3"];
     wrapper.vm.applyFilters();
     expect($router.push).toHaveBeenCalledTimes(2);
     expect($router.push).toHaveBeenCalledWith({
@@ -105,7 +108,7 @@ describe("FilterAutocomplete.vue", function () {
     });
 
     wrapper.vm.$route.query = { grants: "value1,value%202" };
-    wrapper.vm.selectedValues = [{ key: "val3" }, { key: "value1" }];
+    wrapper.vm.selectedValues = ["val3", "value1"];
     wrapper.vm.applyFilters();
     expect($router.push).toHaveBeenCalledTimes(4);
     expect($router.push).toHaveBeenCalledWith({
@@ -114,7 +117,7 @@ describe("FilterAutocomplete.vue", function () {
     });
 
     wrapper.vm.$route.query = { grants: "agrants,newGrants" };
-    wrapper.vm.selectedValues = [{ key: "agrants" }, { key: "newGrants" }];
+    wrapper.vm.selectedValues = ["agrants", "newGrants"];
     wrapper.vm.applyFilters();
     expect($router.push).toHaveBeenCalledTimes(4);
   });

@@ -1,19 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import MandatedDataSharing from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/MandatedDataSharing.vue";
 
-
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("MandatedDataSharing", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(MandatedDataSharing, {
-      global: {
-        plugins: [vuetify],
-      },
+      localVue,
+      vuetify,
     });
   });
 

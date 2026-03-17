@@ -1,6 +1,6 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json";
@@ -10,9 +10,11 @@ import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.j
 import editorStore from "@/store/editor";
 import ontologyBrowserStore from "@/store/ontologyBrowser";
 
-const sinon = require("sinon");
+const sinon = require("sinon"),
+  localVue = createLocalVue();
+localVue.use(Vuex);
 const router = new VueRouter(),
-  vuetify = createVuetify(),
+  vuetify = new Vuetify(),
   $router = { push: jest.fn() },
   $store = new Vuex.Store({
     modules: {
@@ -53,11 +55,11 @@ describe("TermDetails.vue", () => {
 
   beforeEach(async () => {
     wrapper = await shallowMount(TermDetails, {
-      global: {
-        plugins: [vuetify, router],
-        mocks: { $store, $route, $router },
-      },
-      props: { selectedOntology: "Subject" },
+      localVue,
+      vuetify,
+      router,
+      mocks: { $store, $route, $router },
+      propsData: { selectedOntology: "Subject" },
     });
   });
 

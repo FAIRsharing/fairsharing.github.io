@@ -1,12 +1,14 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
 import Editor from "@/store/editor";
 import Record from "@/store/recordData.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -20,6 +22,7 @@ describe("Citations.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(DatasetBoolean, {
+      localVue,
       vuetify,
       mocks: { $store },
     });

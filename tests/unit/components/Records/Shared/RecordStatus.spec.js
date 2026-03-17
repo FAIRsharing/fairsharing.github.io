@@ -1,13 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import light from "@/plugins/theme";
 
-let vuetify = createVuetify({
+let vuetify = new Vuetify({
   theme: {
-    defaultTheme: "fairSharingTheme",
-    themes: { fairSharingTheme: light },
+    themes: { light },
   },
 });
 
@@ -16,7 +15,7 @@ describe("RecordStatus.vue", function () {
 
   wrapper = shallowMount(RecordStatus, {
     vuetify,
-    props: { record: { status: "ready", type: "collection" } },
+    propsData: { record: { status: "ready", type: "collection" } },
   });
 
   it("can be instantiated", () => {

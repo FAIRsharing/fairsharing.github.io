@@ -1,42 +1,23 @@
 import { shallowMount } from "@vue/test-utils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
 const $router = {
-  push: vi.fn(),
+  push: jest.fn(),
 };
 let $route = { path: "/search", query: {} };
 
-const vuetify = createVuetify();
+let vuetify = new Vuetify();
 
 describe("StringSearch.vue", () => {
-  const getWrapper = (props = {}) =>
-    shallowMount(StringSearch, {
-      mocks: { $router, $route },
-      vuetify,
-      props,
-      global: {
-        stubs: {
-          "v-form": {
-            template: "<form><slot /></form>",
-            methods: {
-              resetValidation: vi.fn(),
-              validate: vi.fn().mockReturnValue(true),
-            },
-          },
-        },
-      },
-    });
-
-  let wrapper = getWrapper();
-  let wrapper2 = getWrapper();
-
-  beforeEach(() => {
-    $router.push.mockClear();
-    wrapper = getWrapper();
-    wrapper2 = getWrapper();
+  let wrapper = shallowMount(StringSearch, {
+    mocks: { $router, $route },
+    vuetify,
+  });
+  let wrapper2 = shallowMount(StringSearch, {
+    mocks: { $router, $route },
+    vuetify,
   });
 
   it("can mount", () => {
@@ -44,7 +25,10 @@ describe("StringSearch.vue", () => {
   });
 
   it("can pass the search term to the correct route", () => {
-    wrapper.vm.$refs.form.resetValidation = vi.fn();
+    wrapper.vm.$refs["form"] = {
+      validate: jest.fn(),
+      resetValidation: jest.fn(),
+    };
     wrapper.vm.searchString();
     expect($router.push).toHaveBeenCalledTimes(1);
     wrapper.vm.searchTerm = "testString";
@@ -57,10 +41,7 @@ describe("StringSearch.vue", () => {
   });
 
   it("can check responsiveHeight", () => {
-    wrapper.vm.$vuetify.display.mdAndDown = true;
-    wrapper.vm.$vuetify.display.md = true;
-    wrapper.vm.$vuetify.display.lg = false;
-    wrapper.vm.$vuetify.display.xl = false;
+    vuetify.framework.breakpoint.mdAndDown = true;
     expect(wrapper.vm.responsiveHeight).toStrictEqual({
       "style-sm-xs": true,
       "style-md": true,
@@ -70,15 +51,28 @@ describe("StringSearch.vue", () => {
   });
 
   it("can check responsiveHeightTextBox", () => {
-    wrapper.vm.$vuetify.display.xl = true;
+    vuetify.framework.breakpoint.xlOnly = true;
     expect(wrapper.vm.responsiveHeightTextBox).toBe(50);
   });
 
   it("can pass the search term to the correct route for homePage searchBox function", () => {
-    wrapper = getWrapper({ showHomeSearch: true });
-    wrapper2 = getWrapper();
-    wrapper.vm.$refs.form.resetValidation = vi.fn().mockReturnValue(true);
-    wrapper2.vm.$refs.form.resetValidation = vi.fn().mockReturnValue(true);
+    wrapper = shallowMount(StringSearch, {
+      vuetify,
+      propsData: {
+        showHomeSearch: true,
+      },
+      mocks: { $router, $route },
+    });
+
+    wrapper.vm.$refs.form = {
+      validate: jest.fn().mockImplementation(() => true),
+      resetValidation: jest.fn().mockImplementation(() => true),
+    };
+
+    wrapper2.vm.$refs["form"] = {
+      validate: jest.fn().mockImplementation(() => true),
+      resetValidation: jest.fn().mockImplementation(() => true),
+    };
 
     wrapper.vm.registries = [
       { label: "standards", value: "standard" },
@@ -100,11 +94,11 @@ describe("StringSearch.vue", () => {
 
     wrapper.vm.searchStringHomePage();
     // this won't have been called with a null search string
-    expect($router.push).toHaveBeenCalledTimes(0);
+    expect($router.push).toHaveBeenCalledTimes(2);
 
     wrapper.vm.searchTerm = "testStringHome";
     wrapper.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(2);
+    expect($router.push).toHaveBeenCalledTimes(4);
     expect($router.push).toHaveBeenCalledWith({
       path: "/search",
       query: { q: "testStringHome" },
@@ -115,7 +109,7 @@ describe("StringSearch.vue", () => {
       { label: "standards", value: "standard" },
     ];
     wrapper2.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(3);
+    expect($router.push).toHaveBeenCalledTimes(5);
     expect($router.push).toHaveBeenCalledWith({
       path: "/search",
       query: {
@@ -129,13 +123,22 @@ describe("StringSearch.vue", () => {
       { label: "standards", value: "standard" },
     ];
     wrapper2.vm.searchStringHomePage();
-    expect($router.push).toHaveBeenCalledTimes(4);
+    expect($router.push).toHaveBeenCalledTimes(6);
   });
 
   it("appends terms when relevant prop is set", () => {
-    wrapper = getWrapper({ addSearchTerms: true });
+    wrapper = shallowMount(StringSearch, {
+      propsData: {
+        addSearchTerms: true,
+      },
+      mocks: { $router, $route },
+      vuetify,
+    });
     wrapper.vm.searchTerm = "testString";
-    wrapper.vm.$refs.form.resetValidation = vi.fn();
+    wrapper.vm.$refs["form"] = {
+      validate: jest.fn(),
+      resetValidation: jest.fn(),
+    };
     wrapper.vm.searchString();
     expect($router.push).toHaveBeenCalledWith({
       path: "/search",

@@ -1,10 +1,15 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import linkify from "vue-linkify";
+import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify";
 
 import icons from "@/plugins/icons";
 import Community from "@/views/Static/Community/Community.vue";
 
 const VueScrollTo = require("vue-scrollto");
+const localVue = createLocalVue();
+localVue.use(VueSanitize);
+localVue.use(VueScrollTo);
 
 let $route = {
   name: "Community",
@@ -15,13 +20,14 @@ const push = jest.fn();
 const $router = {
   push: jest.fn(),
 };
-const pushState = jest.spyOn(window.history, "pushState").mockImplementation(() => {});
 
 describe("Community.vue", function () {
   let wrapper;
-  const vuetify = createVuetify({ icons: icons });
+  localVue.directive("linkified", linkify);
+  const vuetify = new Vuetify({ icons: icons });
   beforeEach(() => {
     wrapper = shallowMount(Community, {
+      localVue,
       vuetify,
       mocks: { $route, $router },
       stubs: ["router-link"],
@@ -33,6 +39,7 @@ describe("Community.vue", function () {
     // wrapper.vm.$route.hash = '#anotherAnchor'
     $route.hash = "#anotherAnchor";
     wrapper = shallowMount(Community, {
+      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
@@ -41,19 +48,11 @@ describe("Community.vue", function () {
   });
 
   it("can check jumpToAnchor method", () => {
-    const anchor = document.createElement("div");
-    anchor.id = "newAnchor";
-    anchor.scrollIntoView = jest.fn();
-    document.body.appendChild(anchor);
     wrapper.vm.currentAnchor = "";
+    wrapper.vm.$router.push = push;
     wrapper.vm.jumpToAnchor("newAnchor");
-    expect(pushState).toHaveBeenCalledWith(null, null, "#newAnchor");
+    expect(push).toHaveBeenCalledWith({ hash: "newAnchor" });
     wrapper.vm.jumpToAnchor("newAnchor");
     expect(wrapper.vm.currentAnchor).not.toBe("");
-    anchor.remove();
-  });
-
-  afterAll(() => {
-    pushState.mockRestore();
   });
 });

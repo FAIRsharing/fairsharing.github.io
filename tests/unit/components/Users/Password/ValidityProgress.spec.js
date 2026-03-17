@@ -1,14 +1,18 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
+import Vue from "vue";
 
 import ValidityProgress from "@/components/Users/Password/ValidityProgress";
 import Client from "@/lib/Client/RESTClient.js";
 
+const localVue = createLocalVue();
+Vue.config.silent = true;
 let stub;
 
 describe("ValidityProgress.vue", () => {
   it("can be mounted", () => {
     let wrapper = shallowMount(ValidityProgress, {
+      localVue,
     });
     expect(wrapper.vm.$options.name).toBe("ValidityProgress");
     expect(wrapper.vm["passwordValidity"]).toBe(0);
@@ -16,18 +20,19 @@ describe("ValidityProgress.vue", () => {
   });
 
   it("can react to password change", async () => {
-    stub = sinon.stub(Client.prototype, "verifyPassword");
+    stub = sinon.stub(Client.prototype, "executeQuery");
     stub.returns({
-      percent: 0,
+      data: { percent: 0 },
     });
+    const secondLocalVue = createLocalVue();
     const anotherWrapper = await shallowMount(ValidityProgress, {
-      props: {
+      secondLocalVue,
+      propsData: {
         password: "Great password 123!?",
       },
     });
-    await anotherWrapper.vm.verifyPwd();
+    anotherWrapper.vm.password = "anotherWrapper";
     expect(anotherWrapper.vm.passwordColor).toBe("red");
     expect(anotherWrapper.vm.passwordValidity).toBe(0);
-    stub.restore();
   });
 });

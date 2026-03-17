@@ -853,12 +853,7 @@ export default {
       this.menus.newOrganisation.data.ror_link = null;
       this.menus.newOrganisation.data.parent_ror_links = [];
       this.menus.newOrganisation.data.child_ror_links = [];
-      if (
-        this.$refs.createNewOrganisation &&
-        typeof this.$refs.createNewOrganisation.reset === "function"
-      ) {
-        this.$refs.createNewOrganisation.reset();
-      }
+      this.$refs.createNewOrganisation.reset();
     },
     imageSizeCorrect() {
       if (!this.menus.newOrganisation.logo) {

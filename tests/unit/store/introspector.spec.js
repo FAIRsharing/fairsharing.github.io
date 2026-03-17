@@ -1,5 +1,4 @@
 import sinon from "sinon";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import Client from "@/lib/GraphClient/GraphClient.js";
 import { actions, mutations, paramsAreExpired } from "@/store/introspector.js";
@@ -116,9 +115,9 @@ describe("Localstorage Suite", () => {
   let state = {};
   let stub;
   beforeEach(() => {
-    localStorage.clear();
+    delete global.window["localStorage"];
+    global.window = Object.create(window);
     state = {};
-    actions.commit = vi.fn();
   });
 
   beforeAll(() => {
@@ -138,46 +137,38 @@ describe("Localstorage Suite", () => {
   });
 
   it("testing with empty localStorage", async () => {
+    global.window.localStorage = {};
+    actions.commit = jest.fn();
     await actions.fetchParameters(state, 24);
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setLocalStorageExpiryTime",
-    );
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setParameters",
-      { message: "Hello" },
-    );
+    expect(actions.commit).toHaveBeenCalledTimes(2);
   });
 
   it("testing with an introspectionQuery present but no timer", async () => {
-    localStorage.introspectionQuery = JSON.stringify({ test: "ABC" });
+    global.window.localStorage = {
+      introspectionQuery: JSON.stringify({ test: "ABC" }),
+    };
     await actions.fetchParameters(state, 24);
-    expect(actions.commit).not.toHaveBeenCalled();
-    actions.commit.mockClear();
+    expect(actions.commit).toHaveBeenCalledTimes(2);
     await actions.fetchParameters(state);
-    expect(actions.commit).not.toHaveBeenCalled();
+    expect(actions.commit).toHaveBeenCalledTimes(2);
   });
 
   it("testing with non expired dated AND introspection query", async () => {
-    localStorage.expiryDate = new Date();
-    localStorage.introspectionQuery = JSON.stringify({ test: "ABC" });
+    global.window.localStorage = {
+      expiryDate: new Date(),
+      introspectionQuery: JSON.stringify({ test: "ABC" }),
+    };
     await actions.fetchParameters(state, 24);
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setParameters",
-      { test: "ABC" },
-    );
+    expect(actions.commit).toHaveBeenCalledTimes(3);
   });
 
   it("testing with expired dated AND introspection query", async () => {
-    localStorage.expiryDate = new Date();
-    localStorage.introspectionQuery = JSON.stringify({ test: "ABC" });
+    global.window.localStorage = {
+      expiryDate: new Date(),
+      introspectionQuery: JSON.stringify({ test: "ABC" }),
+    };
     await actions.fetchParameters(state, -10);
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setLocalStorageExpiryTime",
-    );
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setParameters",
-      { message: "Hello" },
-    );
+    expect(actions.commit).toHaveBeenCalledTimes(5);
 
     stub.restore();
     stub = sinon.stub(Client.prototype, "getData");

@@ -1,10 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import realData from "@/data/communityCurationCohorts.json";
 import CuratorCohorts from "@/views/Static/CommunityCuration/CuratorCohorts";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("CuratorCohorts.vue", function () {
   let wrapper;
@@ -16,7 +16,7 @@ describe("CuratorCohorts.vue", function () {
     });
   });
   afterEach(() => {
-    wrapper.unmount();
+    wrapper.destroy();
   });
 
   it("can be instantiated", () => {

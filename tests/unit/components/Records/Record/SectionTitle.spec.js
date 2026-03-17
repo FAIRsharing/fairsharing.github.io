@@ -8,7 +8,7 @@ describe("SectionTitle.vue", function () {
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(SectionTitle, {
-      props: {
+      propsData: {
         title: "Exciting Title",
       },
     });

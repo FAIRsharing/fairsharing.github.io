@@ -1,15 +1,19 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import linkify from "vue-linkify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason.vue";
 import Record from "@/store/recordData.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.directive("linkified", linkify);
+const vuetify = new Vuetify();
 
 Record.state.currentRecord.fairsharingRecord.metadata = {
-  deprecation_reason: "some deprecation reason...",
-  deprecation_date: "1912-04-15",
+  deprecationReason: "some deprecation reason...",
+  deprecationDate: "1912-04-15",
 };
 const $store = new Vuex.Store({
   modules: {
@@ -22,13 +26,9 @@ describe("Citations.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(DeprecationReason, {
+      localVue,
       vuetify,
       mocks: { $store },
-      global: {
-        directives: {
-          linkified: {},
-        },
-      },
     });
   });
 

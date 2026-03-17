@@ -1,19 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import GloballyUnique from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/OtherBooleanComponents/GloballyUnique.vue";
 
-
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("GloballyUnique", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(GloballyUnique, {
-      global: {
-        plugins: [vuetify],
-      },
+      localVue,
+      vuetify,
     });
   });
 

@@ -1,12 +1,14 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput.vue";
 import recordsStore from "@/store/recordSearch.js";
 import UIController from "@/store/uiController.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 let $route = {
   path: "standards",
@@ -27,6 +29,7 @@ describe("SearchOutput.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(SearchOutput, {
+    localVue,
     vuetify,
     mocks: { $store, $route },
   });

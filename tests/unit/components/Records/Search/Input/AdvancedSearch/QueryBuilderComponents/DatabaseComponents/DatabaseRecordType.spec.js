@@ -1,5 +1,5 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DatabaseRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DatabaseRecordType.vue";
@@ -10,8 +10,10 @@ const $router = {
   push: jest.fn(),
 };
 let $route = { path: "/advancedsearch", query: {} };
-
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.mixin(recordTypesMixin);
+let vuetify = new Vuetify();
 
 describe("DatabaseRecordType.vue", () => {
   let wrapper, store, actions;
@@ -41,21 +43,19 @@ describe("DatabaseRecordType.vue", () => {
     actions = {
       fetchAllRecordTypes: jest.fn(),
     };
-    recordTypes.actions = {
-      fetchAllRecordTypes: actions.fetchAllRecordTypes,
-    };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
+        actions,
         recordTypes: recordTypes,
       },
     });
     wrapper = shallowMount(DatabaseRecordType, {
-      global: {
-        plugins: [store, vuetify],
-        mixins: [recordTypesMixin],
-        mocks: { $router, $route },
-      },
+      localVue,
+      vuetify,
+      store,
+      mixins: [recordTypesMixin],
+      mocks: { $router, $route },
     });
   });
 

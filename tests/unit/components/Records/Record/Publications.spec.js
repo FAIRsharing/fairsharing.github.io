@@ -1,9 +1,11 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import Publications from "@/components/Records/Record/Publications.vue";
 import Record from "@/store/recordData.js";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 Record.state.currentRecord["fairsharingRecord"] = {
   publications: [{ title: "Publication One" }, { title: "Publication Two" }],
   subjects: [],
@@ -23,6 +25,7 @@ describe("Publications.vue", function () {
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(Publications, {
+      localVue,
       mocks: { $store },
     });
   });

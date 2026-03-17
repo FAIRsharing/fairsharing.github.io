@@ -1,37 +1,32 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack.vue";
 
 import getRecord from "../../../../../fixtures/getRecord.json";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(VueRouter);
+const vuetify = new Vuetify();
 
 describe("RecordsCardStack.vue", function () {
-  const getWrapper = () =>
-    shallowMount(RecordsCardStack, {
-      vuetify,
-      props: {
-        record: getRecord,
-      },
-      global: {
-        stubs: {
-          "router-link": true,
-        },
-      },
-    });
-
-  let wrapper = getWrapper();
+  let wrapper;
   let record = getRecord;
 
+  wrapper = shallowMount(RecordsCardStack, {
+    localVue,
+    vuetify,
+    propsData: {
+      record: record,
+    },
+  });
+
   it("can be instantiated", () => {
-    wrapper = getWrapper();
     expect(wrapper.vm.$options.name).toMatch("RecordsCardStack");
   });
 
   it("can generate correct link depending on doi presence", () => {
-    wrapper = getWrapper();
     expect(wrapper.vm.getRecordLink(wrapper.vm.record)).toEqual(
       wrapper.vm.record.id,
     );
@@ -41,25 +36,21 @@ describe("RecordsCardStack.vue", function () {
   });
 
   it("can check getMaxItemShow computed property", () => {
-    wrapper = getWrapper();
-    wrapper.vm.$vuetify.display.lg = true;
-    wrapper.vm.$vuetify.display.mdAndDown = false;
-    wrapper.vm.$vuetify.display.xl = false;
+    vuetify.framework.breakpoint.lgOnly = true;
+    vuetify.framework.breakpoint.mdAndDown = false;
     expect(wrapper.vm.getMaxItemShown).toBe(2);
-    wrapper.vm.$vuetify.display.lg = false;
-    wrapper.vm.$vuetify.display.xl = true;
+    vuetify.framework.breakpoint.lgOnly = false;
+    vuetify.framework.breakpoint.xlOnly = true;
     expect(wrapper.vm.getMaxItemShown).toBe(3);
   });
 
   it("can check organizeChips method", () => {
-    wrapper = getWrapper();
     record["subjects"] = undefined;
     expect(wrapper.vm.organizeChips(record, "subjects", 3)).toBe(false);
     expect(wrapper.vm.organizeChips(record, "userDefinedTags", 3)).toBe(true);
   });
 
   it("can truncate long text", () => {
-    wrapper = getWrapper();
     expect(wrapper.vm.truncateString("testes", 10)).toEqual("testes");
     expect(wrapper.vm.truncateString("testes", 4)).toEqual("test...");
     expect(wrapper.vm.truncateString("", 10)).toEqual("");

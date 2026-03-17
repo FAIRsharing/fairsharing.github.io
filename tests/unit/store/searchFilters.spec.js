@@ -20,11 +20,14 @@ describe("searchFilters store methods", () => {
   let state = {
     rawFilters: [],
     filters: [],
-    filtersStatistic: Object.assign([{}], {
-      fairsharing_registry: {
-        buckets: [{ doc_count: 500, key: "standard" }],
+    filtersStatistic: [
+      {
+        subjects: { buckets: [{ doc_count: 12, key: "natural science" }] },
+        fairsharing_registry: {
+          buckets: [{ doc_count: 500, key: "standard" }],
+        },
       },
-    }),
+    ],
     filterButtons: [{ data: [{ active: true }] }],
     isLoadingFilters: false,
   };
@@ -92,15 +95,10 @@ describe("searchFilters store methods", () => {
   });
 
   it("can check getFiltersStatisticCount getters", () => {
-    state.filtersStatistic = Object.assign([{}], {
-      fairsharing_registry: {
-        buckets: [{ doc_count: 500, key: "standard" }],
-      },
-    });
     const builtData = getters.getFiltersStatisticCount(state);
     expect(
       builtData({ filterName: "fairsharing_registry", key: "standard" }),
-    ).toBe(500);
+    ).toBe(74);
   });
 
   it("can change the state of loading status", () => {

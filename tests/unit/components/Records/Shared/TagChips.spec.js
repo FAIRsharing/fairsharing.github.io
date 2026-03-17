@@ -1,5 +1,5 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 
 import TagChips from "@/components/Records/Shared/TagChips.vue";
 
@@ -14,12 +14,14 @@ const $router = {
 
 describe("TagChips.vue", function () {
   let wrapper;
-  const vuetify = createVuetify();
-  
+  const vuetify = new Vuetify();
+  const localVue = createLocalVue();
+
   beforeEach(() => {
     wrapper = shallowMount(TagChips, {
+      localVue,
       vuetify,
-      props: {
+      propsData: {
         record: {
           name: "test record",
           objectTypes: [

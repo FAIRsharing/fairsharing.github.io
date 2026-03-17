@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import HitCount from "@/components/Records/Search/Header/HitCount.vue";
 import recordsStore from "@/store/recordSearch.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -17,6 +19,7 @@ describe("HitCount.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(HitCount, {
+    localVue,
     vuetify,
     mocks: { $store },
   });

@@ -1,7 +1,7 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
@@ -12,6 +12,8 @@ import editor from "@/store/editor.js";
 import editorStore from "@/store/editor.js";
 import userStore from "@/store/users.js";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 // Initializing store states and getters
 editorStore.state.organisations = [];
 
@@ -91,17 +93,18 @@ describe("OrganisationTable.vue", () => {
     );
     mocks.setMock("editUserStub", RESTClient.prototype, "editUser", "success");
     mocks.setMock("getUserStub", RESTClient.prototype, "getUser", {});
-    vuetify = createVuetify();
+    vuetify = new Vuetify();
   });
   afterAll(() => {
     // mocks.restoreAll();
   });
   afterEach(() => {
-    wrapper.unmount();
+    wrapper.destroy();
   });
   beforeEach(async () => {
     wrapper = await shallowMount(EditOrganisations, {
       mocks: { $route, $store, $router },
+      localVue,
       vuetify,
       router,
     });

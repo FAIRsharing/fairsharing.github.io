@@ -1,8 +1,10 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import FilterChips from "@/components/Records/Search/Header/FilterChips.vue";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
 const $route = {
   path: "/search",
@@ -25,6 +27,7 @@ describe("FilterChips.vue", () => {
   beforeEach(async () => {
     wrapper = shallowMount(FilterChips, {
       mocks: { $route, $router },
+      localVue,
     });
   });
 

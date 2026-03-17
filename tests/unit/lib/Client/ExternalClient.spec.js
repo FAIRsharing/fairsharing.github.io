@@ -1,4 +1,5 @@
 import axios from "axios";
+import Vue from "vue";
 
 import Client from "@/lib/Client/ExternalClients.js";
 
@@ -29,11 +30,16 @@ describe("RESTClient", () => {
 
   it("can execute a query", async () => {
     RestStub.restore();
-    RestStub = sinon.stub(axios, "get");
-    RestStub.rejects(new Error("Network Error"));
+    Vue.config.productionTip = false;
+    Vue.config.devtools = false;
+    jest.spyOn(console, "error");
+    console.error.mockImplementation(() => {});
     let resp = await client.executeQuery({
       url: "http://google.com",
     });
     expect(resp.data.error.message).toBe("Network Error");
+    console.error.mockRestore();
+    Vue.config.productionTip = true;
+    Vue.config.devtools = true;
   });
 });

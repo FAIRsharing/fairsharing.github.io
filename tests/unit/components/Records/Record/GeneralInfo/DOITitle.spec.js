@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle.vue";
 import Record from "@/store/recordData.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   doi: "FAIRsharing.wibble",
@@ -42,6 +44,7 @@ describe("DOITitle.vue", function () {
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(DOITitle, {
+      localVue,
       vuetify,
       mocks: { $store },
     });

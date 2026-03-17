@@ -1,8 +1,8 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import { RouterLinkStub } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
@@ -11,8 +11,6 @@ import light from "@/plugins/theme";
 import users from "@/store/users.js";
 import Organisation from "@/views/Organisations/Organisation";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 users.state.user = function () {
   return {
@@ -59,9 +57,10 @@ $store.state.users.user = function () {
   };
 };
 
-let vuetify = new Vuetify({
+let vuetify = createVuetify({
   theme: {
-    themes: { light },
+    defaultTheme: "fairSharingTheme",
+    themes: { fairSharingTheme: light },
   },
 });
 
@@ -122,7 +121,6 @@ describe("Organisation", () => {
 
   it("can be instantiated", async () => {
     wrapper = await shallowMount(Organisation, {
-      localVue,
       router,
       vuetify,
       mocks: { $route, $router, $store },
@@ -137,7 +135,6 @@ describe("Organisation", () => {
   it("redirects to the search page for filtering", async () => {
     graphStub.restore();
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
       router,
       mocks: { $route, $router, $store },
@@ -160,7 +157,6 @@ describe("Organisation", () => {
       error: "error",
     });
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
       router,
       mocks: { $route, $router, $store },
@@ -183,7 +179,6 @@ describe("Organisation", () => {
       organisation: organisation,
     });
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
       router,
       mocks: { $route, $router, $store },
@@ -198,7 +193,6 @@ describe("Organisation", () => {
   it("watches the current route", async () => {
     graphStub.restore();
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
       router,
       mocks: { $route, $router, $store },
@@ -206,14 +200,15 @@ describe("Organisation", () => {
     });
     expect(wrapper.vm.currentRoute).toEqual(1);
     $route.params.id = 10;
-    expect(wrapper.vm.currentRoute).toEqual(10);
+    expect(wrapper.vm.$options.computed.currentRoute.call(wrapper.vm)).toEqual(
+      10,
+    );
   });
 
   // TODO: This will call the relevant code but the server's response is mocked.
   // TODO: So, I can't prove that the server has modified the information.
   it("can modify the organisation", async () => {
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
       router,
       mocks: { $route, $router, $store },
@@ -229,7 +224,6 @@ describe("Organisation", () => {
     window.location = { assign: assignMock };
 
     wrapper = await shallowMount(Organisation, {
-      localVue,
       vuetify,
       router,
       mocks: { $route, $router, $store },

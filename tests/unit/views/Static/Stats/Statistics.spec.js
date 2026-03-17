@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 
@@ -8,7 +8,6 @@ import Stats from "@/views/Static/Stats/Statistics.vue";
 
 import dataStats from "../../../../fixtures/getRecordsForStats.json";
 
-const localVue = createLocalVue();
 
 const router = new VueRouter();
 const $router = { push: jest.fn() };
@@ -24,7 +23,6 @@ describe("Statistics.vue", () => {
       .stub(GraphClient.prototype, "executeQuery")
       .returns(fakeDataStats);
     wrapper = await shallowMount(Stats, {
-      localVue,
       router,
       mocks: { $router },
     });

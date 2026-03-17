@@ -1,10 +1,6 @@
-import { createLocalVue } from "@vue/test-utils";
-import VueRouter from "vue-router";
+import { describe, expect, it } from "vitest";
 
 import { hackSearch } from "@/router/hackSearch";
-
-const localVue = createLocalVue();
-localVue.use(VueRouter);
 
 describe("hackSearch", () => {
   it("correctly re-writes old queries", () => {

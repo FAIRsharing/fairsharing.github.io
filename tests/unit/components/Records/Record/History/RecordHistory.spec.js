@@ -1,19 +1,17 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
-import Vuex from "vuex";
+/* eslint-env jest */
+
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import History from "@/components/Records/Record/History/RecordHistory.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("RecordHistory.vue", function () {
   let wrapper;
 
   beforeEach(() => {
     wrapper = shallowMount(History, {
-      localVue,
       vuetify,
       props: {
         history: [],
@@ -47,12 +45,15 @@ describe("RecordHistory.vue", function () {
   });
 
   it("can reverse arrays", () => {
-    let array = [1, 2, 3];
-    let output = wrapper.vm.reverse(array, 0);
-    expect(output).toStrictEqual([...array].reverse());
+    wrapper = shallowMount(History, {
+      vuetify,
+      props: {
+        history: [["tab_1", [1, 2, 3]]],
+        legacyLogs: [],
+      },
+    });
+    expect(wrapper.vm.paginatedData).toStrictEqual([3, 2, 1]);
     wrapper.vm.reverseDate = false;
-    let dict = { a: 1, b: 2, c: 3 };
-    output = wrapper.vm.reverse(dict, 1);
-    expect(output).toStrictEqual(array);
+    expect(wrapper.vm.paginatedData).toStrictEqual([1, 2, 3]);
   });
 });

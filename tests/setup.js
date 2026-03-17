@@ -14,23 +14,14 @@ vi.mock("@vue/test-utils", async () => {
       normalized.props = normalized.propsData;
     }
 
-    const legacyPlugins = [
-      normalized.store,
-      normalized.router,
-      normalized.vuetify,
-    ].filter(Boolean);
+    const legacyPlugins = [normalized.store, normalized.router, normalized.vuetify]
+      .filter(Boolean);
     if (legacyPlugins.length > 0) {
-      globalConfig.plugins = [
-        ...(globalConfig.plugins || []),
-        ...legacyPlugins,
-      ];
+      globalConfig.plugins = [...(globalConfig.plugins || []), ...legacyPlugins];
     }
 
     if (normalized.mocks) {
-      globalConfig.mocks = {
-        ...(globalConfig.mocks || {}),
-        ...normalized.mocks,
-      };
+      globalConfig.mocks = { ...(globalConfig.mocks || {}), ...normalized.mocks };
     }
     globalConfig.mocks = {
       $scrollTo: vi.fn(),
@@ -51,17 +42,11 @@ vi.mock("@vue/test-utils", async () => {
     };
 
     if (normalized.stubs) {
-      globalConfig.stubs = {
-        ...(globalConfig.stubs || {}),
-        ...normalized.stubs,
-      };
+      globalConfig.stubs = { ...(globalConfig.stubs || {}), ...normalized.stubs };
     }
 
     if (normalized.mixins) {
-      globalConfig.mixins = [
-        ...(globalConfig.mixins || []),
-        ...normalized.mixins,
-      ];
+      globalConfig.mixins = [...(globalConfig.mixins || []), ...normalized.mixins];
     }
 
     normalized.global = globalConfig;
@@ -96,9 +81,7 @@ vi.mock("@vue/test-utils", async () => {
     mount: (component, options) =>
       withDestroyAlias(actual.mount(component, normalizeOptions(options))),
     shallowMount: (component, options) =>
-      withDestroyAlias(
-        actual.shallowMount(component, normalizeOptions(options)),
-      ),
+      withDestroyAlias(actual.shallowMount(component, normalizeOptions(options))),
   };
 });
 
@@ -218,55 +201,6 @@ if (!Object.groupBy) {
   };
 }
 
-// Prevent accidental network access to local API endpoints in unit tests.
-const nativeFetch = globalThis.fetch ? globalThis.fetch.bind(globalThis) : null;
-const mockedFetch = async (input, init) => {
-  const url = typeof input === "string" ? input : (input && input.url) || "";
-  if (
-    url.includes("localhost:3000") ||
-    url.includes("127.0.0.1:3000") ||
-    url.includes("undefined/graphql")
-  ) {
-    return new Response(JSON.stringify({}), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  if (nativeFetch) return nativeFetch(input, init);
-  throw new Error(`Unexpected fetch in tests: ${url}`);
-};
-globalThis.fetch = vi.fn(mockedFetch);
-if (typeof window !== "undefined") {
-  window.fetch = globalThis.fetch;
-}
-
-// Short-circuit GraphQL requests that would otherwise target localhost in tests.
-const originalGetData = GraphQLClient.prototype.getData;
-GraphQLClient.prototype.getData = async function (queryString) {
-  const url = this.url || "";
-  if (
-    url.includes("localhost:3000") ||
-    url.includes("127.0.0.1:3000") ||
-    url.includes("undefined/graphql")
-  ) {
-    return { data: { data: {} } };
-  }
-  return originalGetData.call(this, queryString);
-};
-
-const originalExecuteQuery = RESTClient.prototype.executeQuery;
-RESTClient.prototype.executeQuery = async function (query) {
-  const url = query?.baseURL || "";
-  if (
-    url.includes("localhost:3000") ||
-    url.includes("127.0.0.1:3000") ||
-    url.startsWith("undefined") ||
-    url.includes("/undefined/")
-  ) {
-    return { data: {} };
-  }
-  return originalExecuteQuery.call(this, query);
-};
 
 // --- 5. Silence Vue warnings (Optional) ---
 // If you want to suppress specific warnings (like "Vuetify is not installed"), you can do it here.

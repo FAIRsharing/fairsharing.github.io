@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   metadata: {
@@ -39,7 +37,6 @@ describe("DataProcessAndCondition.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(DataProcessAndCondition, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

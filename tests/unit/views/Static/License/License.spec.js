@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 
 import Licence from "@/views/Static/Licence/Licence";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("Licence.vue", function () {
   let wrapper;

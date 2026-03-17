@@ -1,19 +1,19 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import LicencesForOutputs from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/LicencesForOutputs.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("LicencesForOutputs", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(LicencesForOutputs, {
-      localVue,
-      vuetify,
+      global: {
+        plugins: [vuetify],
+      },
     });
   });
 

@@ -1,5 +1,5 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
@@ -9,9 +9,7 @@ import Record from "@/store/recordData.js";
 const sinon = require("sinon");
 import OtherDataProcesses from "@/components/Records/Record/DataProcessesAndConditions/OtherDataProcesses";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -31,7 +29,6 @@ describe("OtherDataProcesses.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(OtherDataProcesses, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

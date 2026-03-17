@@ -1,19 +1,19 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import AssociatedTests from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/FairassistComponents/AssociatedTests.vue";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-let vuetify = new Vuetify();
+
+let vuetify = createVuetify();
 
 describe("AssociatedTests", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(AssociatedTests, {
-      localVue,
-      vuetify,
+      global: {
+        plugins: [vuetify],
+      },
     });
   });
 

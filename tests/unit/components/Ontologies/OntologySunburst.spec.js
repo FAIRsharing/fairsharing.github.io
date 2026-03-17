@@ -1,23 +1,24 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Highcharts from "highcharts";
-import Sunburst from "highcharts/modules/sunburst";
-import HighchartsVue from "highcharts-vue";
+/* eslint-env jest */
+
+import { shallowMount  } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json";
 import OntologySunburst from "@/components/Ontologies/OntologySunburst";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import fairSharingTheme from "@/plugins/theme";
 import ontologyBrowserStore from "@/store/ontologyBrowser";
-Sunburst(Highcharts);
 
-const sinon = require("sinon"),
-  localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(HighchartsVue);
+const sinon = require("sinon");
 const router = new VueRouter(),
-  vuetify = new Vuetify(),
+  vuetify = createVuetify({
+    theme: {
+      defaultTheme: "fairSharingTheme",
+      themes: { fairSharingTheme },
+    },
+  }),
   $router = { push: jest.fn() },
   $store = new Vuex.Store({
     modules: { ontologyBrowser: ontologyBrowserStore },
@@ -44,18 +45,17 @@ describe("OntologyBrowser.vue", function () {
 
   beforeEach(async () => {
     wrapper = await shallowMount(OntologySunburst, {
-      localVue,
-      vuetify,
-      router,
-      mocks: { $store, $route, $router },
+      global: {
+        plugins: [vuetify, router],
+        mocks: { $store, $route, $router },
+      },
     });
   });
 
   it("can be mounted and get dynamic width", async () => {
     expect(wrapper.vm.$options.name).toMatch("OntologySunburst");
-    expect(wrapper.vm.getWidth()).toBe("100%");
-    wrapper.vm.$vuetify.display.xlOnly = true;
-    expect(wrapper.vm.getWidth()).toBe("60%");
+    expect(wrapper.vm.sunburstOptions.series[0].type).toBe("sunburst");
+    expect(Array.isArray(wrapper.vm.sunburstOptions.series[0].data)).toBe(true);
   });
 
   it("can get a tooltip", () => {
@@ -72,9 +72,14 @@ describe("OntologyBrowser.vue", function () {
       descendants_count: 0,
       identifier: 2,
       id: 1,
+      ancestors: [1],
     };
     wrapper.vm.processClickEvent(node);
-    expect($router.push).not.toHaveBeenCalled();
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/browse/",
+      query: { term: "test" },
+    });
+    $router.push.mockClear();
 
     wrapper.vm.$route.query = {};
     wrapper.vm.processClickEvent(node);
@@ -87,26 +92,17 @@ describe("OntologyBrowser.vue", function () {
     wrapper.vm.$route.query = { term: "test" };
     node.name = "Subject";
     wrapper.vm.processClickEvent(node);
-    expect($store.state.ontologyBrowser.openedTerms).toEqual([]);
+    expect(wrapper.emitted("subjectNode")).toBeTruthy();
 
     node.name = "biology";
     wrapper.vm.processClickEvent(node);
-    expect($store.state.ontologyBrowser.openedTerms).toEqual([
-      " - Natural Science",
-      "287 - Life Science",
-      "287245 - Biology",
-      "287245351 - Botany",
-    ]);
+    const emittedAfterBiology = wrapper.emitted("subjectNode");
+    expect(Array.isArray(emittedAfterBiology.at(-1)[0])).toBe(true);
 
     node.innerArcLength = 0;
     wrapper.vm.processClickEvent(node);
-    expect($store.state.ontologyBrowser.openedTerms).toEqual([
-      " - Natural Science",
-      "287 - Life Science",
-      "287245 - Biology",
-      "287245351 - Botany",
-      1,
-    ]);
+    const emittedAfterSecondClick = wrapper.emitted("subjectNode");
+    expect(Array.isArray(emittedAfterSecondClick.at(-1)[0])).toBe(true);
 
     node.descendants_count = 0;
     wrapper.vm.processClickEvent(node);

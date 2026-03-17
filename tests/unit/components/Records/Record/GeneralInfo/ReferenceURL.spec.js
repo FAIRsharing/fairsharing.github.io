@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 let editor = {
   namespaced: true,
@@ -40,7 +38,6 @@ describe("ReferenceURL.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(ReferenceURL, {
-      localVue,
       vuetify,
       mocks: { $store },
     });

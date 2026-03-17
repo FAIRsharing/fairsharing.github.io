@@ -1,13 +1,11 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount  } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord.vue";
 import Record from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
   reverseRecordAssociations: [
@@ -36,7 +34,6 @@ describe("ReplacedByRecord.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(ReplacedByRecord, {
-      localVue,
       vuetify,
       mocks: { $store },
       stubs: ["router-link"],

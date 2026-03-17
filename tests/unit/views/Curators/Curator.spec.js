@@ -1,8 +1,8 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount  } from "@vue/test-utils";
 import axios from "axios";
 import sinon from "sinon";
 import VueRouter from "vue-router";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import Client from "@/lib/Client/RESTClient.js";
@@ -12,10 +12,6 @@ import Curator from "@/views/Curators/Curator.vue";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
 
-axios.defaults.adapter = require("axios/lib/adapters/http");
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
 usersStore.state.user = function () {
   return {
     isLoggedIn: true,
@@ -33,7 +29,7 @@ const router = new VueRouter();
 const $router = { push: jest.fn() };
 
 let fakeDataDashboard = dataDashboard;
-let vuetify = new Vuetify();
+let vuetify = createVuetify();
 
 describe("Curator.vue", () => {
   let wrapper;
@@ -51,13 +47,12 @@ describe("Curator.vue", () => {
 
     wrapper = await shallowMount(Curator, {
       vuetify,
-      localVue,
       router,
       mocks: { $store, $router },
     });
   });
 
-  afterEach(() => {
+  afterAll(() => {
     graphStub.restore();
     restStub.restore();
   });

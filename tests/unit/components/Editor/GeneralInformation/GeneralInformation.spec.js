@@ -279,7 +279,7 @@ describe("Edit -> GeneralInformation.vue", function () {
     expect(wrapper.vm.showTypeChanged).toBe(false);
   });
 
-  it("handles formValid form v-model updates", async () => {
+  it("handle formValid form v-model update", async () => {
     await wrapper.setData({ formValid: false });
     const form = wrapper.findComponent({ name: "v-form" });
     expect(form.props("modelValue")).toBe(false);

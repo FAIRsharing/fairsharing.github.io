@@ -1,14 +1,13 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
-import Vuex from "vuex";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
 import RestClient from "@/lib/Client/RESTClient.js";
+
 const sinon = require("sinon");
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("StatisticsBlock.vue", function () {
   let wrapper;

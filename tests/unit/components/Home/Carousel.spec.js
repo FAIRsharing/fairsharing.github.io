@@ -1,9 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createVuetify } from "vuetify";
 
 import Carousel from "@/components/Home/Carousel";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("Carousel", function () {
   let wrapper;
@@ -19,14 +20,14 @@ describe("Carousel", function () {
   });
 
   it("can cycle through tabs", () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     expect(wrapper.vm.tabsData.selectedTab).toBe(0);
     wrapper.vm.tabsData.selectedTab = 6;
     wrapper.vm.cycleTabs();
-    jest.advanceTimersByTime(5000);
+    vi.advanceTimersByTime(5000);
     expect(wrapper.vm.tabsData.selectedTab).toBe(6);
     wrapper.vm.cycleTabs();
-    jest.advanceTimersByTime(5000);
+    vi.advanceTimersByTime(5000);
     expect(wrapper.vm.tabsData.selectedTab).toBe(0);
     wrapper.vm.tabsData.selectedTab = 3;
     wrapper.vm.cycleTabs();

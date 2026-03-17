@@ -1,9 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { beforeEach, describe, expect, it } from "vitest";
+import { createVuetify } from "vuetify";
 
 import SearchBlock from "@/components/Home/SearchBlock";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
 describe("BlockSearch.vue", function () {
   let wrapper;

@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import HomePage from "@/components/Records/Record/GeneralInfo/HomePage.vue";
 import Record from "@/store/recordData.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 let editor = {
   namespaced: true,
@@ -39,6 +41,7 @@ describe("HomePage.vue", function () {
   // TODO: Mock properties in options {}.
   beforeEach(() => {
     wrapper = shallowMount(HomePage, {
+      localVue,
       vuetify,
       mocks: { $store },
     });

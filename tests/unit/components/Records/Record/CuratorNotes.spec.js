@@ -1,14 +1,16 @@
-/* eslint-env jest */
-
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 import Record from "@/store/recordData.js";
 import users from "@/store/users";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.use(VueSanitize);
+const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -26,6 +28,7 @@ describe("CuratorNotes.vue", function () {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(CuratorNotes, {
+      localVue,
       vuetify,
       mocks: { $store },
     });
@@ -36,6 +39,6 @@ describe("CuratorNotes.vue", function () {
   });
 
   it("can add newlines", () => {
-    expect(wrapper.vm.prepareNotes("this\nthat")).toEqual("this<br>that");
+    expect(wrapper.vm.prepareNotes("this\nthat")).toEqual("this<br />that");
   });
 });

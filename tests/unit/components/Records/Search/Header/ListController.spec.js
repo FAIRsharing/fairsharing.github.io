@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import ListController from "@/components/Records/Search/Header/ListController.vue";
 import recordsStore from "@/store/recordSearch.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
   modules: {
@@ -17,8 +19,9 @@ describe("ListController.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(ListController, {
+    localVue,
     vuetify,
-    props: {
+    propsData: {
       options: {
         type: Object,
         default: null,

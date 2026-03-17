@@ -1,6 +1,6 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
@@ -8,7 +8,9 @@ import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import usersStore from "@/store/users";
 import UsersList from "@/views/Users/UsersList";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -32,12 +34,13 @@ describe("UsersList.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(UsersList, {
       vuetify,
+      localVue,
       mocks: { $store },
     });
   });
 
   afterEach(() => {
-    wrapper.unmount();
+    wrapper.destroy();
   });
 
   afterAll(() => {

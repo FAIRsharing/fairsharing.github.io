@@ -755,33 +755,31 @@ export async function afterEach(to) {
   }
 }
 
-export function scrollBehavior(to, from, savedPosition) {
-  if (to.hash) {
-    // Return a Promise to delay the scroll
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(
-          {
-            el: to.hash,
-            behavior: "smooth",
-          },
-          500,
-        ); // Wait 500ms (adjust based on your data loading speed)
-      });
-    });
-  }
-
-  if (savedPosition) {
-    return savedPosition;
-  }
-
-  return false;
-}
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      // Return a Promise to delay the scroll
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(
+            {
+              el: to.hash,
+              behavior: "smooth",
+            },
+            500,
+          ); // Wait 500ms (adjust based on your data loading speed)
+        });
+      });
+    }
+
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    return false;
+  },
 });
 
 export async function beforeEach(to, from, next, store) {

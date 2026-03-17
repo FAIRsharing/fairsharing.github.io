@@ -8,7 +8,7 @@ describe("AbbreviationTooltip.vue", () => {
     "Inist Periodic Table of the Elements Trilingual Thesaurus";
   it("can be instantiated", () => {
     wrapper = shallowMount(AbbreviationTooltip, {
-      props: { abbreviation: abbreviation },
+      propsData: { abbreviation: abbreviation },
     });
     expect(wrapper.vm.$options.name).toMatch("AbbreviationTooltip");
   });

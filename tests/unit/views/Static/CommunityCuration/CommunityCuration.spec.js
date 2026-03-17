@@ -1,10 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
 import VueCodeHighlight from "vue-code-highlight";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import CommunityCuration from "@/views/Static/CommunityCuration/CommunityCuration";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("CommunityCuration.vue", function () {
   let wrapper;

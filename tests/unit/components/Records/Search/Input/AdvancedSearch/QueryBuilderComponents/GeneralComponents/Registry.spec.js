@@ -1,5 +1,5 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Registry from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Registry.vue";
@@ -9,7 +9,9 @@ const $router = {
   push: jest.fn(),
 };
 let $route = { path: "/search", query: {} };
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("Registry.vue", () => {
   let wrapper, store, actions;
@@ -47,20 +49,18 @@ describe("Registry.vue", () => {
     actions = {
       fetchAllRecordTypes: jest.fn(),
     };
-    recordTypes.actions = {
-      fetchAllRecordTypes: actions.fetchAllRecordTypes,
-    };
     store = new Vuex.Store({
       modules: {
         namespaced: true,
+        actions,
         recordTypes: recordTypes,
       },
     });
     wrapper = shallowMount(Registry, {
-      global: {
-        plugins: [store, vuetify],
-        mocks: { $router, $route },
-      },
+      localVue,
+      vuetify,
+      store,
+      mocks: { $router, $route },
     });
   });
 

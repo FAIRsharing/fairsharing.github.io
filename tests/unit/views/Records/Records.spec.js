@@ -1,7 +1,7 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueMeta from "vue-meta";
 import VueScrollTo from "vue-scrollto";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json";
@@ -16,6 +16,10 @@ import Records from "@/views/Records/Records.vue";
 const sinon = require("sinon");
 const axios = require("axios");
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.use(VueMeta);
+localVue.use(VueScrollTo, {});
 
 userStore.state.user = function () {
   return {
@@ -66,10 +70,11 @@ describe("Records.vue", () => {
   // Set up the wrapper
   let wrapper;
   beforeEach(async () => {
-    vuetify = createVuetify();
+    vuetify = new Vuetify();
 
     wrapper = await shallowMount(Records, {
       mocks: { $route, $store },
+      localVue,
       vuetify,
     });
     delete global.window["top"];
@@ -105,11 +110,21 @@ describe("Records.vue", () => {
       test4: 123,
       test5: true,
     };
-    wrapper.vm.$store.state.introspection.searchQueryParameters =
-      fakeIntrospection.data.__schema.types
-        .find((queryType) => queryType.name === "Query")
-        .fields.find((field) => field.name === "searchFairsharingRecords");
-    const path = wrapper.vm.$options.computed.currentPath.call(wrapper.vm);
+    let returnedVal = {
+      data: {
+        data: fakeIntrospection.data,
+      },
+      headers: {
+        maintenance: "false",
+      },
+    };
+    sinon
+      .stub(Client.prototype, "getData")
+      .withArgs(sinon.match.any)
+      .returns(returnedVal);
+    await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+    Client.prototype.getData.restore();
+    const path = wrapper.vm.currentPath;
     const queryParameters =
       await wrapper.vm.$store.getters["introspection/buildQueryParameters"](
         path,
@@ -126,13 +141,9 @@ describe("Records.vue", () => {
   it("react to path change", async () => {
     $route.path = "/search";
     $route.query = {};
-    expect(wrapper.vm.$options.computed.currentPath.call(wrapper.vm)[0]).toBe(
-      "Search",
-    );
+    expect(wrapper.vm.currentPath[0]).toBe("Search");
     $route.path = "/standard";
-    expect(wrapper.vm.$options.computed.currentPath.call(wrapper.vm)[0]).toBe(
-      "Standard",
-    );
+    expect(wrapper.vm.currentPath[0]).toBe("Standard");
   });
 
   it("can correctly redirect", async () => {
@@ -150,6 +161,7 @@ describe("Records.vue", () => {
     };
     let localWrapper = await shallowMount(Records, {
       mocks: { $route, $store, $router },
+      localVue,
       vuetify,
     });
     await localWrapper.vm.tryRedirect();
@@ -185,7 +197,7 @@ describe("Records.vue", () => {
   });
 
   it("can reset the store when destroyed", () => {
-    wrapper.unmount();
+    wrapper.destroy();
     expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.loading).toBe(false);

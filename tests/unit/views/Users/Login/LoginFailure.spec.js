@@ -1,13 +1,15 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import usersStore from "@/store/users.js";
 import LoginFailure from "@/views/Users/Login/LoginFailure.vue";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -32,6 +34,7 @@ describe("Login.vue", () => {
 
   it("can instantiate", async () => {
     wrapper = await shallowMount(LoginFailure, {
+      localVue,
       router,
       vuetify,
       mocks: { $store, $route, $router },

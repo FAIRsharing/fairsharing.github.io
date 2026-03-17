@@ -1,19 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DataCuration from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DataCuration.vue";
 
-
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("DataCuration.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(DataCuration, {
-      global: {
-        plugins: [vuetify],
-      },
+      localVue,
+      vuetify,
     });
   });
 

@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import UserStepper from "@/components/Records/Search/SaveSearch/StepperComponents/UserStepper.vue";
 import userStore from "@/store/users.js";
 
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("UserStepper.vue", () => {
   let wrapper, store, actions;
@@ -30,6 +32,7 @@ describe("UserStepper.vue", () => {
     });
 
     wrapper = shallowMount(UserStepper, {
+      localVue,
       vuetify,
       store,
     });

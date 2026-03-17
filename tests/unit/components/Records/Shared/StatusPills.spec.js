@@ -1,13 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 
 import StatusPills from "@/components/Records/Shared/StatusPills.vue";
 import light from "@/plugins/theme";
 
-const vuetify = createVuetify({
+const localVue = createLocalVue();
+const vuetify = new Vuetify({
   theme: {
-    defaultTheme: "fairSharingTheme",
-    themes: { fairSharingTheme: light },
+    themes: { light },
   },
 });
 let wrapper;
@@ -15,6 +15,7 @@ let wrapper;
 describe("StatusPills.vue", () => {
   beforeAll(() => {
     wrapper = shallowMount(StatusPills, {
+      localVue,
       vuetify,
       props: {
         status: "ready",

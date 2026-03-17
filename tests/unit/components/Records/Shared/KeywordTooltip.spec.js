@@ -12,7 +12,7 @@ describe("KeywordTooltip.vue", () => {
   };
 
   it("can be mounted", () => {
-    wrapper = shallowMount(KeywordTooltip, { props: { keyword: keyword } });
+    wrapper = shallowMount(KeywordTooltip, { propsData: { keyword: keyword } });
     expect(wrapper.vm.$options.name).toMatch("KeywordTooltip");
     expect(wrapper.vm.processArray(wrapper.vm.keyword.synonyms)).toBe(
       "abc, def: test.",
@@ -21,7 +21,7 @@ describe("KeywordTooltip.vue", () => {
 
   it("can process empty synonyms", () => {
     keyword.synonyms = [];
-    wrapper = shallowMount(KeywordTooltip, { props: { keyword: keyword } });
+    wrapper = shallowMount(KeywordTooltip, { propsData: { keyword: keyword } });
     expect(wrapper.vm.processArray(wrapper.vm.keyword.synonyms)).toBe(null);
   });
 });

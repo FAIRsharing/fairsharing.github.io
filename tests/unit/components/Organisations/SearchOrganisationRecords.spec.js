@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisationRecords.vue";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 let organisation = {
   id: 1,
@@ -42,8 +44,9 @@ describe("SearchOrganisationRecords.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(SearchOrganisationRecords, {
+      localVue,
       vuetify,
-      props: { organisation: organisation },
+      propsData: { organisation: organisation },
       stubs: ["router-link", "router-view"],
     });
   });

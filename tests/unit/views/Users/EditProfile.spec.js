@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
 
@@ -12,6 +12,8 @@ import editorStore from "@/store/editor";
 import userStore from "@/store/users";
 import EditProfile from "@/views/Users/EditProfile.vue";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 userStore.state.user = function () {
   return {
     metadata: {
@@ -38,10 +40,8 @@ let $store = new Vuex.Store({
 
 describe("EditPrivateProfile.vue", () => {
   let wrapper, graphStub, profilesStub, userStub;
-  let originalUserFn;
 
   beforeAll(() => {
-    originalUserFn = userStore.state.user;
     profilesStub = sinon
       .stub(Client.prototype, "getProfileTypes")
       .returns(["profile 1", "profile 2"]);
@@ -79,11 +79,11 @@ describe("EditPrivateProfile.vue", () => {
     profilesStub.restore();
     graphStub.restore();
     userStub.restore();
-    userStore.state.user = originalUserFn;
   });
 
   beforeEach(async () => {
     wrapper = await shallowMount(EditProfile, {
+      localVue,
       mocks: { $store, $router },
     });
   });
@@ -133,11 +133,7 @@ describe("EditPrivateProfile.vue", () => {
 
   it("can process errors", async () => {
     userStore.state.user = function () {
-      return {
-        metadata: {},
-        records: { organisations: [] },
-        credentials: { token: "123" },
-      };
+      return { metadata: {} };
     };
     $store = new Vuex.Store({
       modules: {
@@ -146,6 +142,7 @@ describe("EditPrivateProfile.vue", () => {
       },
     });
     let anotherWrapper = await shallowMount(EditProfile, {
+      localVue,
       mocks: { $store, $router },
     });
     expect(anotherWrapper.vm.formData).toBe(null);
@@ -153,11 +150,8 @@ describe("EditPrivateProfile.vue", () => {
 
   it("disables the email edit field for third party users", () => {
     expect(wrapper.vm.isDisabled("email")).toBe(false);
-    $store.state.users.user = function () {
-      return {
-        metadata: { third_party: true },
-        records: { organisations: [] },
-      };
+    userStore.state.user = function () {
+      return { metadata: { third_party: true } };
     };
     expect(wrapper.vm.isDisabled("email")).toBe(true);
   });

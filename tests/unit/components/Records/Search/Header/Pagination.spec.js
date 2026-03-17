@@ -1,10 +1,12 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Pagination from "@/components/Records/Search/Header/Pagination";
 import records from "@/store/recordSearch.js";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     records: records,
@@ -13,7 +15,7 @@ const $store = new Vuex.Store({
 
 $store.state.records.currentPage = 1;
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 let $route = {
   name: "Standards",
   query: {
@@ -31,11 +33,12 @@ describe("Pagination.vue", () => {
   it("can be instantiated", () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         currentPage: 1,
       },
       vuetify,
+      localVue,
     });
     expect(wrapper.vm.$options.name).toMatch("Pagination");
   });
@@ -45,11 +48,12 @@ describe("Pagination.vue", () => {
     $route.query = {};
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         currentPage: 1,
       },
       vuetify,
+      localVue,
     });
 
     expect(wrapper.vm.currentPageLocal).toBe(1);
@@ -60,11 +64,12 @@ describe("Pagination.vue", () => {
     $route.query = { page: "2" };
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         default: 0,
       },
       vuetify,
+      localVue,
     });
 
     expect(wrapper.vm.currentPageLocal).toBe(2);
@@ -76,11 +81,12 @@ describe("Pagination.vue", () => {
     $route.query = {};
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         default: 0,
       },
       vuetify,
+      localVue,
     });
 
     expect(wrapper.vm.currentPageLocal).toBe(1);
@@ -90,11 +96,12 @@ describe("Pagination.vue", () => {
     $route.query = { page: "120" };
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         default: 0,
       },
       vuetify,
+      localVue,
     });
     expect(wrapper.vm.currentPageLocal).toBe(120);
   });
@@ -102,11 +109,12 @@ describe("Pagination.vue", () => {
   it("Has a paginate() method that sets the current page in the URL query", async () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         default: 0,
       },
       vuetify,
+      localVue,
     });
     wrapper.vm.allowPaginate = true;
     wrapper.vm.$router.push = push;
@@ -118,11 +126,12 @@ describe("Pagination.vue", () => {
   it("can define whether it is testing or development environment", () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         default: 0,
       },
       vuetify,
+      localVue,
     });
     wrapper.vm.disableThrottle(false);
     expect(wrapper.vm.allowPaginate).toBe(false);
@@ -133,11 +142,12 @@ describe("Pagination.vue", () => {
   it("can check whether paginate works if it is not allowed", () => {
     const wrapper = shallowMount(Pagination, {
       mocks: { $route, $router, $store },
-      props: {
+      propsData: {
         totalPages: 10,
         default: 0,
       },
       vuetify,
+      localVue,
     });
     wrapper.vm.allowPaginate = false;
     wrapper.vm.paginate(2);

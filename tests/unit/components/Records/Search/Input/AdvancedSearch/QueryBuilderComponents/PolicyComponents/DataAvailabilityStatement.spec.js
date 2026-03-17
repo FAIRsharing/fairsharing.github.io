@@ -1,19 +1,19 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import DataAvailabilityStatement from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/DataAvailabilityStatement.vue";
 
-
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("DataAvailabilityStatement", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(DataAvailabilityStatement, {
-      global: {
-        plugins: [vuetify],
-      },
+      localVue,
+      vuetify,
     });
   });
 

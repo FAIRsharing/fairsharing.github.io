@@ -1,12 +1,14 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueScrollTo from "vue-scrollto";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import RestClient from "@/lib/Client/RESTClient.js";
 import Home from "@/views/Home/Home";
 const sinon = require("sinon");
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
+const localVue = createLocalVue();
+localVue.use(VueScrollTo, {});
 
 describe("Home.vue", function () {
   let wrapper;
@@ -27,10 +29,11 @@ describe("Home.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(Home, {
       vuetify,
+      localVue,
     });
   });
   afterEach(() => {
-    wrapper.unmount();
+    wrapper.destroy();
   });
 
   it("can be instantiated", () => {

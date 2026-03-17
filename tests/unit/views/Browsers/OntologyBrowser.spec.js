@@ -1,6 +1,6 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json";
@@ -9,9 +9,11 @@ import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.j
 import editorStore from "@/store/editor.js";
 import ontologyBrowserStore from "@/store/ontologyBrowser";
 import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue";
-const sinon = require("sinon");
+const sinon = require("sinon"),
+  localVue = createLocalVue();
+localVue.use(Vuex);
 const router = new VueRouter(),
-  vuetify = createVuetify(),
+  vuetify = new Vuetify(),
   $router = { push: jest.fn() },
   $store = new Vuex.Store({
     modules: {
@@ -50,29 +52,32 @@ describe("OntologyBrowser.vue", function () {
   it("can be mounted with a query", async () => {
     $route.query.term = "Biology";
     wrapper = await shallowMount(OntologyBrowser, {
-      global: {
-        plugins: [vuetify, router],
-        mocks: { $store, $route, $router },
-      },
+      localVue,
+      vuetify,
+      router,
+      mocks: { $store, $route, $router },
     });
     expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
     expect(wrapper.vm.term.id).toBe("287245 - Biology");
     // wrapper.vm.search = "Biology"
     await wrapper.setData({ search: "Biology" });
-    expect(wrapper.vm.openedTerms).toEqual([]);
-    wrapper.unmount();
+    expect(wrapper.vm.open).toEqual([
+      " - Natural Science",
+      "287 - Life Science",
+    ]);
+    wrapper.destroy();
   });
 
   it("can be mounted without a query", async () => {
     $route.query = {};
     wrapper = await shallowMount(OntologyBrowser, {
-      global: {
-        plugins: [vuetify, router],
-        mocks: { $store, $route, $router },
-      },
+      localVue,
+      vuetify,
+      router,
+      mocks: { $store, $route, $router },
     });
     expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
-    expect(wrapper.vm.term).toBe(null);
+    expect(wrapper.vm.term).toBeUndefined();
     await wrapper.vm.activateTerms();
     wrapper.vm.searchTerm({ identifier: 351, name: "biology" });
     expect($router.push).toHaveBeenCalledWith({
@@ -89,6 +94,6 @@ describe("OntologyBrowser.vue", function () {
       path: "/browse/",
     });
 
-    wrapper.unmount();
+    wrapper.destroy();
   });
 });

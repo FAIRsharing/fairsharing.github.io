@@ -1,11 +1,11 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 
 describe("ActivitiesStaticTable.vue", function () {
   let wrapper;
-  const vuetify = createVuetify();
+  const vuetify = new Vuetify();
   beforeEach(() => {
     wrapper = shallowMount(ActivitiesStaticTable, {
       vuetify,

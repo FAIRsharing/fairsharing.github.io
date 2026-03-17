@@ -1,4 +1,4 @@
-import { RouterLinkStub, shallowMount  } from "@vue/test-utils";
+import { createLocalVue, RouterLinkStub, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
@@ -12,6 +12,8 @@ import usersStore from "@/store/users";
 import PublicProfile from "@/views/Users/PublicProfile";
 import User from "@/views/Users/User";
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -50,6 +52,7 @@ describe("PublicProfile.vue", () => {
        });
        externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns({data: ORCIDfixture});
        wrapper = shallowMount(PublicProfile, {
+            localVue,
             router,
             mocks: {$store, $router, $route},
         });
@@ -89,6 +92,7 @@ describe("PublicProfile.vue", () => {
       user: { orcid: "123456" },
     });
     wrapper = shallowMount(PublicProfile, {
+      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -99,6 +103,7 @@ describe("PublicProfile.vue", () => {
       error: "error",
     });
     wrapper = shallowMount(PublicProfile, {
+      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
@@ -116,6 +121,7 @@ describe("PublicProfile.vue", () => {
      */
     externalClientStub.returns({ data: { error: "error" } });
     let wrapper = await shallowMount(User, {
+      localVue,
       router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },

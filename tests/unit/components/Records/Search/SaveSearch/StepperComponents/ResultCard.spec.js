@@ -1,11 +1,13 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import ResultCard from "@/components/Records/Search/SaveSearch/StepperComponents/ResultCard.vue";
 import saveSearchStore from "@/store/saveSearch";
 
-let vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+let vuetify = new Vuetify();
 
 describe("ResultCard.vue", () => {
   let wrapper, store, actions;
@@ -28,6 +30,7 @@ describe("ResultCard.vue", () => {
     });
 
     wrapper = shallowMount(ResultCard, {
+      localVue,
       vuetify,
       store,
     });

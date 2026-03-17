@@ -1,11 +1,9 @@
-import { mount } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import { createVuetify } from "vuetify";
 import VueRouter from "vue-router";
 
 import Client from "@/lib/Client/RESTClient.js";
 import SendOrcidLoginEmail from "@/views/Users/SendOrcidLoginEmail";
-const vuetify = createVuetify();
 
 describe("SendOrcidLoginEmail.vue", function () {
   let wrapper;
@@ -15,11 +13,13 @@ describe("SendOrcidLoginEmail.vue", function () {
   restStub = sinon.stub(Client.prototype, "sendOrcidVerification");
 
   const router = new VueRouter();
-    
+  const localVue = createLocalVue();
+  localVue.use(VueRouter);
+
   beforeEach(() => {
-    wrapper = mount(SendOrcidLoginEmail, {
+    wrapper = shallowMount(SendOrcidLoginEmail, {
+      localVue,
       router,
-      vuetify,
     });
   });
 
@@ -34,6 +34,9 @@ describe("SendOrcidLoginEmail.vue", function () {
     restStub.returns({
       message: message,
     });
+    wrapper.vm.$refs.emailRef = {
+      reset: jest.fn().mockImplementation(() => true),
+    };
     wrapper.vm.success = false;
     wrapper.vm.buttonDisabled = false;
     wrapper.vm.buttonMessage = button;

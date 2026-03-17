@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("OtherDatasetArray.vue", function () {
   let wrapper;

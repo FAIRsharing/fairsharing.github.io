@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import Home from "@/views/Static/TermOfUse/TermsOfUse";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("TermsOfUse.vue", function () {
   let wrapper;

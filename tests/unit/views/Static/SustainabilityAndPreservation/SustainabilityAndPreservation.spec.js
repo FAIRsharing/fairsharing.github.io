@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import PreservationPolicy from "@/views/Static/SustainabilityAndPreservation/SustainabilityAndPreservation.vue";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("SustainabilityAndPreservation.vue", function () {
   let wrapper;

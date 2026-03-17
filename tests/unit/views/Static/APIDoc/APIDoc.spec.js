@@ -1,10 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
 import VueCodeHighlight from "vue-code-highlight";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 
 import APIDoc from "@/views/Static/APIDoc/APIDoc";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
 
 describe("APIDoc.vue", function () {
   let wrapper;

@@ -1,12 +1,15 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueMoment from "vue-moment";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Citations from "@/components/Records/Record/GeneralInfo/Citations.vue";
 import Record from "@/store/recordData.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+localVue.use(VueMoment);
+const vuetify = new Vuetify();
 
 let editor = {
   namespaced: true,
@@ -37,6 +40,7 @@ describe("Citations.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(Citations, {
+      localVue,
       vuetify,
       mocks: { $store },
     });

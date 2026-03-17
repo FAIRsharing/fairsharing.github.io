@@ -1,14 +1,16 @@
-import { shallowMount  } from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import { RouterLinkStub } from "@vue/test-utils";
 import { isEqual } from "lodash";
-import { createVuetify } from "vuetify";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import Header from "@/components/Navigation/Header.vue";
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 let $route = {
   name: "Standards",
@@ -26,6 +28,7 @@ describe("Header.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(Header, {
+    localVue,
     vuetify,
     data: () => {
       return {

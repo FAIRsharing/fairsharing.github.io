@@ -1,12 +1,14 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify";
 import Vuex from "vuex";
 
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import searchFiltersStore from "@/store/searchFilters.js";
 import uiControllerStore from "@/store/uiController.js";
 
-const vuetify = createVuetify();
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 let $route = {
   name: "search",
@@ -28,6 +30,7 @@ describe("FilterPanel.vue", function () {
   let wrapper;
 
   wrapper = shallowMount(SearchInput, {
+    localVue,
     vuetify,
     mocks: { $store, $router, $route },
   });

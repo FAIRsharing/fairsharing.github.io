@@ -1,22 +1,26 @@
-import { shallowMount  } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify";
 
 import Educational from "@/views/Static/Educational/Educational";
 
-const vuetify = createVuetify();
+const vuetify = new Vuetify();
+const localVue = createLocalVue();
+localVue.use(VueSanitize);
 
 let $route = {
   name: "Community",
   hash: "#faq9-3",
 };
 
-const originalClipboard = global.navigator.clipboard;
+const originalClipboard = { ...global.navigator.clipboard };
 
 describe("Educational.vue", function () {
   let wrapper;
 
   beforeEach(() => {
     wrapper = shallowMount(Educational, {
+      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
@@ -24,18 +28,12 @@ describe("Educational.vue", function () {
     const mockClipboard = {
       writeText: jest.fn(),
     };
-    Object.defineProperty(global.navigator, "clipboard", {
-      configurable: true,
-      value: mockClipboard,
-    });
+    global.navigator.clipboard = mockClipboard;
   });
 
   afterEach(() => {
     jest.resetAllMocks();
-    Object.defineProperty(global.navigator, "clipboard", {
-      configurable: true,
-      value: originalClipboard,
-    });
+    global.navigator.clipboard = originalClipboard;
   });
 
   it("can be instantiated", () => {
@@ -43,6 +41,7 @@ describe("Educational.vue", function () {
     // wrapper.vm.$route.hash = '#anotherAnchor'
     $route.hash = "#anotherAnchor";
     wrapper = shallowMount(Educational, {
+      localVue,
       vuetify,
       mocks: { $route },
       stubs: ["router-link"],
@@ -51,9 +50,8 @@ describe("Educational.vue", function () {
   });
 
   it("generates correct doi link", () => {
-    const doi = "10.5281/zenodo.8191958";
-    let doiLink = `https://doi.org/${doi}`;
-    expect(wrapper.vm.generateDoiLink(doi)).toEqual(doiLink);
+    let doiLink = `https://doi.org/${test}`;
+    expect(wrapper.vm.generateDoiLink(test)).toEqual(doiLink);
   });
 
   it("can copy url correctly", () => {
@@ -78,6 +76,7 @@ describe("Educational.vue", function () {
             hash: '#nutshell'
         }
         wrapper = shallowMount(Educational, {
+            localVue,
             vuetify,
             mocks: {$route},
             stubs: ['router-link', 'router-view']

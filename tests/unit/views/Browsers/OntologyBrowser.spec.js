@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -9,9 +8,9 @@ import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.j
 import editorStore from "@/store/editor.js";
 import ontologyBrowserStore from "@/store/ontologyBrowser";
 import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue";
+
 const sinon = require("sinon");
-const router = new VueRouter(),
-  vuetify = createVuetify(),
+const vuetify = createVuetify(),
   $router = { push: vi.fn() },
   $store = new Vuex.Store({
     modules: {
@@ -51,7 +50,7 @@ describe("OntologyBrowser.vue", function () {
     $route.query.term = "Biology";
     wrapper = await shallowMount(OntologyBrowser, {
       global: {
-        plugins: [vuetify, router],
+        plugins: [vuetify],
         mocks: { $store, $route, $router },
       },
     });
@@ -67,7 +66,7 @@ describe("OntologyBrowser.vue", function () {
     $route.query = {};
     wrapper = await shallowMount(OntologyBrowser, {
       global: {
-        plugins: [vuetify, router],
+        plugins: [vuetify],
         mocks: { $store, $route, $router },
       },
     });

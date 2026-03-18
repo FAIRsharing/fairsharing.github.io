@@ -19,6 +19,9 @@ describe("Countries.vue", () => {
       getSearchCountries: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

@@ -19,6 +19,9 @@ describe("ObjectTypes.vue", () => {
       getObjectTypes: () => {
         return ["Test", "Abc"];
       },
+      getLoadingData: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

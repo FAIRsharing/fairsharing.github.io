@@ -19,6 +19,9 @@ describe("UserDefinedTag.vue", () => {
       getSearchUserDefinedTags: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

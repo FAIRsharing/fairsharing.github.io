@@ -133,7 +133,7 @@ describe("RESTClient", () => {
     vi.spyOn(console, "error");
     console.error.mockImplementation(() => {});
     let resp = await client.executeQuery({
-      url: "http://google.com",
+      url: "http://test.com",
     });
     expect(resp.data.error).toBeTruthy();
     expect(typeof resp.data.error.message).toBe("string");

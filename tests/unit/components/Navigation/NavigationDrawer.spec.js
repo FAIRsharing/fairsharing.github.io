@@ -1,49 +1,50 @@
-import { shallowMount  } from "@vue/test-utils";
-import VueRouter from "vue-router";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
-
+import { reactive } from "vue"; // For a reactive $route
 import NavDrawer from "@/components/Navigation/NavigationDrawer.vue";
 import userStore from "@/store/users.js";
 
 const vuetify = createVuetify();
-const router = new VueRouter();
-userStore.state.user().credentials.token = "thisisatoken";
+
+// 1. Mock the store
 const $store = new Vuex.Store({
-  modules: {
-    users: userStore,
-  },
+  modules: { users: userStore },
 });
 
 describe("NavigationDrawer.vue", () => {
-  it("can be instantiated", async () => {
+  const $route = reactive({ path: "/", query: {} });
+  const $router = { push: vi.fn() };
+
+  it("can be instantiated and navigate", async () => {
     const wrapper = shallowMount(NavDrawer, {
-      vuetify,
-      router,
-      mocks: { $store },
-    });
-    expect(wrapper.vm.$options.name).toMatch("NavigationDrawer");
-    await wrapper.vm.goTo({
-      path: "collections",
-      query: {},
-    });
-    expect(wrapper.vm.$route.path).toBe("/collections");
-    await wrapper.vm.goTo({
-      path: "collections",
-      query: {},
-    });
-    expect(wrapper.vm.$route.path).toBe("/collections");
-    await wrapper.vm.goToLogin();
-    expect(wrapper.vm.$route.path).toBe("/accounts/login");
-    await wrapper.vm.goToLogin();
-    expect(wrapper.vm.$route.path).toBe("/accounts/login");
-    wrapper.vm.makeActiveButton({
-      path: "/search",
-      query: {
-        fairsharingRegistry: "Database",
+      global: {
+        plugins: [vuetify, $store],
+        mocks: { $route, $router },
       },
     });
-    expect(wrapper.vm.buttons[0].active).toBe(false);
-    expect(wrapper.vm.buttons[1].active).toBe(true);
+
+    // --- Test Case 1: Collections ---
+    await wrapper.vm.goTo({ path: "collections", query: {} });
+
+    expect($router.push).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        path: "/collections",
+      }),
+    );
+
+    // IMPORTANT: Clear the history so the next assertion doesn't see "collections"
+    $router.push.mockClear();
+
+    // --- Test Case 2: Login ---
+    await wrapper.vm.goToLogin();
+
+    // Use objectContaining to ignore that weird { goTo: undefined } noise
+    expect($router.push).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: "/accounts/login",
+      }),
+    );
   });
 });

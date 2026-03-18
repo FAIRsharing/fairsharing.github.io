@@ -1,7 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
-import axios from "axios";
+
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -25,7 +24,6 @@ const $store = new Vuex.Store({
   dispatch: vi.fn(),
 });
 
-const router = new VueRouter();
 const $router = { push: vi.fn() };
 
 let fakeDataDashboard = dataDashboard;
@@ -47,7 +45,6 @@ describe("Curator.vue", () => {
 
     wrapper = await shallowMount(Curator, {
       vuetify,
-      router,
       mocks: { $store, $router },
     });
   });

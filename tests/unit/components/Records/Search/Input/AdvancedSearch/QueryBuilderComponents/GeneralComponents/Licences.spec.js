@@ -19,6 +19,9 @@ describe("Licences.vue", () => {
       getSearchLicences: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

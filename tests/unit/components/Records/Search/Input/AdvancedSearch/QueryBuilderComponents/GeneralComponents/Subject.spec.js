@@ -19,6 +19,9 @@ describe("Subject.vue", () => {
       getSearchSubjects: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

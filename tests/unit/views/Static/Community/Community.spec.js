@@ -24,20 +24,29 @@ describe("Community.vue", function () {
   const vuetify = createVuetify({ icons: icons });
   beforeEach(() => {
     wrapper = shallowMount(Community, {
-      vuetify,
-      mocks: { $route, $router },
-      stubs: ["router-link"],
+      global: {
+        plugins: [vuetify],
+        mocks: { $route, $router },
+        stubs: { "router-link": true },
+        directives: {
+          "scroll-to": () => {},
+        },
+      },
     });
   });
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("Community");
-    // wrapper.vm.$route.hash = '#anotherAnchor'
     $route.hash = "#anotherAnchor";
     wrapper = shallowMount(Community, {
-      vuetify,
-      mocks: { $route },
-      stubs: ["router-link"],
+      global: {
+        plugins: [vuetify],
+        mocks: { $route },
+        stubs: { "router-link": true },
+        directives: {
+          "scroll-to": () => {},
+        },
+      },
     });
     expect(wrapper.vm.applyCss).toBe(false);
   });

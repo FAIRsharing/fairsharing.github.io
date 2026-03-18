@@ -19,6 +19,9 @@ describe("Taxonomies.vue", () => {
       getSearchTaxonomies: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

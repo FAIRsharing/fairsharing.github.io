@@ -1,8 +1,7 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 
 import Jumbotron from "@/components/Navigation/Jumbotron";
-
 
 const vuetify = createVuetify();
 let $route = { path: "/", name: "Home" };
@@ -12,9 +11,15 @@ describe("Jumbotron.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(Jumbotron, {
-      vuetify,
-      mocks: { $route },
-      stubs: ["router-link", "router-view"],
+      global: {
+        plugins: [vuetify],
+        mocks: { $route },
+        stubs: {
+          "router-link": true,
+          "router-view": true,
+          "vue-particles": true, // This silences the warning
+        },
+      },
     });
   });
 
@@ -31,9 +36,15 @@ describe("Jumbotron.vue", function () {
       },
     };
     wrapper = shallowMount(Jumbotron, {
-      vuetify,
-      mocks: { $route },
-      stubs: ["router-link", "router-view"],
+      global: {
+        plugins: [vuetify],
+        mocks: { $route },
+        stubs: {
+          "router-link": true,
+          "router-view": true,
+          "vue-particles": true, // This silences the warning
+        },
+      },
     });
     expect(wrapper.vm.$route.path).toEqual("/search");
   });
@@ -44,9 +55,15 @@ describe("Jumbotron.vue", function () {
       name: "",
     };
     wrapper = shallowMount(Jumbotron, {
-      vuetify,
-      mocks: { $route },
-      stubs: ["router-link", "router-view"],
+      global: {
+        plugins: [vuetify],
+        mocks: { $route },
+        stubs: {
+          "router-link": true,
+          "router-view": true,
+          "vue-particles": true, // This silences the warning
+        },
+      },
     });
     expect(wrapper.vm.$route.path).toEqual("");
   });
@@ -57,9 +74,15 @@ describe("Jumbotron.vue", function () {
       name: "test",
     };
     wrapper = shallowMount(Jumbotron, {
-      vuetify,
-      mocks: { $route },
-      stubs: ["router-link", "router-view"],
+      global: {
+        plugins: [vuetify],
+        mocks: { $route },
+        stubs: {
+          "router-link": true,
+          "router-view": true,
+          "vue-particles": true, // This silences the warning
+        },
+      },
     });
     expect(wrapper.vm.$route.path).toEqual("/test");
   });

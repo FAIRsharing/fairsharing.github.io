@@ -1,10 +1,10 @@
 import { mount } from "@vue/test-utils";
 import sinon from "sinon";
 import { createVuetify } from "vuetify";
-import VueRouter from "vue-router";
 
 import Client from "@/lib/Client/RESTClient.js";
 import SendOrcidLoginEmail from "@/views/Users/SendOrcidLoginEmail";
+
 const vuetify = createVuetify();
 
 describe("SendOrcidLoginEmail.vue", function () {
@@ -14,12 +14,15 @@ describe("SendOrcidLoginEmail.vue", function () {
   const message = "Verification email sent successfully!";
   restStub = sinon.stub(Client.prototype, "sendOrcidVerification");
 
-  const router = new VueRouter();
+  const $route = { path: "/", query: {} };
+  const $router = { push: vi.fn() };
 
   beforeEach(() => {
     wrapper = mount(SendOrcidLoginEmail, {
-      router,
-      vuetify,
+      global: {
+        plugins: [vuetify],
+        mocks: { $route, $router },
+      },
     });
   });
 

@@ -19,6 +19,9 @@ describe("Domains.vue", () => {
       getSearchDomains: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

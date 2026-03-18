@@ -1,29 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { initHighchartsAccessibility } from "@/main.js";
 
-// Mock the simple-analytics-vue
-vi.mock("simple-analytics-vue", async () => {
-  return {
-    default: {
-      install: vi.fn(), // Mock the Vue plugin install method
-    },
-  };
-});
-
-// Mock the vue-gtag
-vi.mock("vue-gtag", async () => {
-  return {
-    default: {
-      install: vi.fn(), // Mock the Vue plugin install method
-    },
-  };
-});
-
-vi.mock("@/App.vue", () => ({
-  default: { template: "<div>Mock App</div>" },
-}));
+// Mock the plugins to return a valid install function
+vi.mock("simple-analytics-vue", () => ({ default: { install: vi.fn() } }));
+vi.mock("vue-gtag", () => ({ default: { install: vi.fn() } }));
+vi.mock("@/App.vue", () => ({ default: { template: "<div></div>" } }));
 
 describe("main.js logic", () => {
+  beforeAll(() => {
+    if (!document.getElementById("app")) {
+      const el = document.createElement("div");
+      el.id = "app";
+      document.body.appendChild(el);
+    }
+  });
+
   beforeEach(() => {
     vi.clearAllMocks();
   });

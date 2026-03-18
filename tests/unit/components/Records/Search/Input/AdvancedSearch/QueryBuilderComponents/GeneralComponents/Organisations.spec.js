@@ -19,6 +19,9 @@ describe("Organisations.vue", () => {
       getSearchOrganisations: () => {
         return ["Test", "Abc"];
       },
+      getLoadingStatus: () => {
+        return true;
+      },
     };
     advancedSearch.getters = {
       getEditDialogStatus: () => {

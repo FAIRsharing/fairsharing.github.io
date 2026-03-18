@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -18,8 +17,7 @@ let editor = {
   },
 };
 
-const router = new VueRouter(),
-  $router = { push: vi.fn() };
+const $router = { push: vi.fn() };
 
 record.state.currentRecord.fairsharingRecord = {
   id: 12345,
@@ -39,7 +37,6 @@ describe("GeneralInfo.vue", function () {
   beforeEach(() => {
     wrapper = shallowMount(GeneralInfo, {
       vuetify,
-      router,
       mocks: { $store, $router },
       stubs: ["router-link"],
     });

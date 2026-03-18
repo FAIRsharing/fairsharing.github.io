@@ -15,7 +15,7 @@ describe("SendOrcidLoginEmail.vue", function () {
   restStub = sinon.stub(Client.prototype, "sendOrcidVerification");
 
   const router = new VueRouter();
-    
+
   beforeEach(() => {
     wrapper = mount(SendOrcidLoginEmail, {
       router,

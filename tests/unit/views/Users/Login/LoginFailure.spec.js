@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -22,7 +21,7 @@ let $route = {
       '{ "message": {"user":{"email":["can\'t be blank","is invalid"],"username":["can\'t be blank"]},"login":{}}, "error": true }',
   },
 };
-const router = new VueRouter();
+
 const $router = {
   push: vi.fn(),
 };
@@ -32,7 +31,6 @@ describe("Login.vue", () => {
 
   it("can instantiate", async () => {
     wrapper = await shallowMount(LoginFailure, {
-      router,
       vuetify,
       mocks: { $store, $route, $router },
     });

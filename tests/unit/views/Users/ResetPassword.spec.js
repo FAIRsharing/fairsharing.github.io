@@ -1,13 +1,11 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import Client from "@/lib/Client/RESTClient.js";
 import usersStore from "@/store/users";
 import ResetPassword from "@/views/Users/ResetPassword.vue";
 
-const router = new VueRouter();
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
@@ -37,9 +35,10 @@ describe("ResetPassword.vue", () => {
 
   it("raises an error when no token and no logged in user", async () => {
     wrapper = await shallowMount(ResetPassword, {
-      router,
-      stubs: ["router-link"],
-      mocks: { $store },
+      global: {
+        stubs: { "router-link": true },
+        mocks: { $store, $route: { query: {} } },
+      },
     });
     await wrapper.vm.$nextTick();
     await wrapper.vm.$nextTick();
@@ -56,9 +55,10 @@ describe("ResetPassword.vue", () => {
       push: vi.fn(),
     };
     wrapper = await shallowMount(ResetPassword, {
-      mocks: { $route, $store, $router },
-      stubs: ["router-link"],
-      router,
+      global: {
+        stubs: { "router-link": true },
+        mocks: { $route, $store, $router },
+      },
     });
 
     wrapper.vm.formData = {

@@ -1,6 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -42,7 +41,7 @@ const $store = new Vuex.Store({
 const $route = {
   path: "/create-fairassist",
 };
-const router = new VueRouter();
+
 const $router = {
   push: vi.fn(),
   currentRoute: {
@@ -60,7 +59,6 @@ describe("NewRecord", () => {
 
     wrapper = shallowMount(NewRecord, {
       vuetify,
-      router,
       mocks: { $store, $route, $router },
       props: {
         fairassistOnly: true,

@@ -2,13 +2,11 @@
 
 import { mount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 
 import Register from "@/components/Users/Register.vue";
 import Client from "@/lib/Client/RESTClient.js";
 
-const router = new VueRouter();
 const vuetify = createVuetify();
 
 describe("Register.vue", () => {
@@ -16,7 +14,6 @@ describe("Register.vue", () => {
 
   beforeEach(() => {
     wrapper = mount(Register, {
-      router,
       vuetify,
     });
   });

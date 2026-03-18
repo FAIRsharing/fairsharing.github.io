@@ -1,12 +1,11 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue";
 import Record from "@/store/recordData.js";
 
 let $route = { params: { id: "123" } };
-const router = new VueRouter();
+
 const $router = { push: vi.fn() };
 
 let editor = {
@@ -41,7 +40,6 @@ describe("Keywords.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(Keywords, {
-      router,
       mocks: { $store, $route, $router },
     });
   });

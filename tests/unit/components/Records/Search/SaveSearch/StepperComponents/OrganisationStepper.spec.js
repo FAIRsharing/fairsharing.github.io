@@ -1,10 +1,18 @@
 import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
+import { defineComponent, h } from "vue";
 
 import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
 
 let vuetify = createVuetify();
+
+const autoCompleteStub = defineComponent({
+  name: "VAutoComplete",
+  setup(_, { slots }) {
+    return () => h("div", slots.default?.());
+  },
+});
 
 describe("OrganisationStepper.vue", () => {
   let wrapper, store;
@@ -41,6 +49,10 @@ describe("OrganisationStepper.vue", () => {
     wrapper = shallowMount(OrganisationStepper, {
       vuetify,
       store,
+      stubs: {
+        "v-autocomplete": autoCompleteStub,
+        VAutoComplete: autoCompleteStub,
+      },
     });
   });
 

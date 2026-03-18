@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
+import { defineComponent, h } from "vue";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
@@ -10,6 +11,16 @@ const $router = {
 let $route = { path: "/search", query: {} };
 
 const vuetify = createVuetify();
+
+const textFieldStub = defineComponent({
+  name: "VTextField",
+  // Explicitly declaring 'prefix' tells the stub how to handle it safely
+  props: ["modelValue", "prefix", "label", "rules"],
+  emits: ["update:modelValue"],
+  setup(_, { slots }) {
+    return () => h("div", slots.default?.());
+  },
+});
 
 describe("StringSearch.vue", () => {
   const getWrapper = (props = {}) =>
@@ -26,6 +37,8 @@ describe("StringSearch.vue", () => {
               validate: vi.fn().mockReturnValue(true),
             },
           },
+          "v-text-field": textFieldStub,
+          VTextField: textFieldStub,
         },
       },
     });

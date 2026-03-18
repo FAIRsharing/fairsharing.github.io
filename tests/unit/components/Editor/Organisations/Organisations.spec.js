@@ -1,6 +1,14 @@
-import { shallowMount  } from "@vue/test-utils";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import VueRouter from "vue-router";
+import { shallowMount } from "@vue/test-utils";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -13,6 +21,7 @@ import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+
 const sinon = require("sinon");
 
 const vuetify = createVuetify();
@@ -42,7 +51,6 @@ const $store = new Vuex.Store({
   },
 });
 let $route = { path: "/123/edit", params: { id: 123 } };
-const router = new VueRouter();
 const $router = { push: vi.fn() };
 
 describe("Edit -> Organisations.vue", function () {
@@ -79,7 +87,6 @@ describe("Edit -> Organisations.vue", function () {
   beforeEach(async () => {
     wrapper = await shallowMount(Organisations, {
       vuetify,
-      router,
       mocks: { $store, $route, $router },
     });
   });

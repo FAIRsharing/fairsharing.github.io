@@ -1,8 +1,8 @@
-import { shallowMount } from "@vue/test-utils";
+import {shallowMount} from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
-import { createVuetify } from "vuetify";
+import {createVuetify} from "vuetify";
 import Vuex from "vuex";
+import {defineComponent, h} from "vue";
 
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RestClient from "@/lib/Client/RESTClient";
@@ -36,8 +36,7 @@ let $store = new Vuex.Store({
     params: { id: "1" },
     name: "EditPublicProfile",
   };
-const router = new VueRouter(),
-  $router = { push: vi.fn() };
+const $router = { push: vi.fn() };
 // Preparing mocks
 let mocks = {
   graphMock: null,
@@ -71,6 +70,15 @@ let mocks = {
   },
 };
 
+const textFieldStub = defineComponent({
+  name: "VTextField",
+  // Explicitly declaring 'prefix' tells the stub how to handle it safely
+  props: ["modelValue", "prefix", "label", "rules"],
+  emits: ["update:modelValue"],
+  setup(_, { slots }) {
+    return () => h("div", slots.default?.());
+  },
+});
 describe("OrganisationTable.vue", () => {
   let wrapper,
     vuetify,
@@ -103,7 +111,10 @@ describe("OrganisationTable.vue", () => {
     wrapper = await shallowMount(EditOrganisations, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
+      stubs: {
+        "v-text-field": textFieldStub,
+        VTextField: textFieldStub,
+      },
     });
   });
 

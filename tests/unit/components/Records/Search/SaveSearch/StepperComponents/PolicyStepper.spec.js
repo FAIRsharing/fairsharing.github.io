@@ -1,11 +1,19 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
+import { defineComponent, h } from "vue";
 
 import PolicyStepper from "@/components/Records/Search/SaveSearch/StepperComponents/PolicyStepper.vue";
 
 let vuetify = createVuetify();
+
+const autoCompleteStub = defineComponent({
+  name: "VAutoComplete",
+  setup(_, { slots }) {
+    return () => h("div", slots.default?.());
+  },
+});
 
 describe("PolicyStepper.vue", () => {
   let wrapper, store;
@@ -42,6 +50,10 @@ describe("PolicyStepper.vue", () => {
     wrapper = shallowMount(PolicyStepper, {
       vuetify,
       store,
+      stubs: {
+        "v-autocomplete": autoCompleteStub,
+        VAutoComplete: autoCompleteStub,
+      },
     });
   });
 

@@ -2,6 +2,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
+import { defineComponent, h } from "vue";
 
 import UserRecordsAwaitingApproval from "@/components/Curators/UserRecordsAwaitingApproval.vue";
 import Client from "@/lib/Client/RESTClient.js";
@@ -83,6 +84,14 @@ const $store = new Vuex.Store({
 
 const $router = { push: vi.fn() };
 
+const editDialogStub = defineComponent({
+  name: "VEditDialog",
+  setup(_, { slots }) {
+    // Renders whatever is placed inside the <v-edit-dialog> tags
+    return () => h("div", slots.default?.());
+  },
+});
+
 describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   let restStub;
   let wrapper;
@@ -99,6 +108,10 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
       global: {
         plugins: [$store],
         mocks: { $router },
+        stubs: {
+          "v-edit-dialog": editDialogStub,
+          VEditDialog: editDialogStub,
+        },
       },
       props: {
         headerItems: header,

@@ -1,16 +1,15 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import users from "@/store/users.js";
 import GraphTest from "@/views/Records/NetworkGraph.vue";
+
 const sinon = require("sinon");
 
 const vuetify = createVuetify();
 
-const router = new VueRouter();
 const $router = { push: vi.fn() };
 let $route = {
   path: "/graph/1234",
@@ -141,7 +140,6 @@ describe("NetworkGraph.vue", function () {
     graphStub.returns([{ message: "record not found" }]);
     wrapper = await shallowMount(GraphTest, {
       vuetify,
-      router,
       mocks: { $router, $route, $store },
     });
     getData = vi.spyOn(wrapper.vm, "getData");
@@ -179,7 +177,6 @@ describe("NetworkGraph.vue", function () {
     $route.params.id = 10;
     wrapper = await shallowMount(GraphTest, {
       vuetify,
-      router,
       mocks: { $router, $route, $store },
     });
 
@@ -192,7 +189,6 @@ describe("NetworkGraph.vue", function () {
     graphStub.returns(graphMock);
     wrapper = await shallowMount(GraphTest, {
       vuetify,
-      router,
       mocks: { $router, $route, $store },
     });
     await wrapper.vm.getData();

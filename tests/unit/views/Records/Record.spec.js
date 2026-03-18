@@ -1,6 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -48,8 +47,7 @@ $store.state.users.user = function () {
   return { isLoggedIn: false };
 };
 
-const router = new VueRouter(),
-  $router = { push: vi.fn(), replace: vi.fn() };
+const $router = { push: vi.fn(), replace: vi.fn() };
 
 $router.go = vi.fn();
 //-- making a mock div element
@@ -181,7 +179,6 @@ describe("Record.vue", function () {
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
     });
   });
 
@@ -195,7 +192,6 @@ describe("Record.vue", function () {
     anotherWrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
       props: { target: 123 },
     });
     expect(anotherWrapper.vm.$options.name).toMatch("Record");
@@ -421,7 +417,6 @@ describe("Record.vue", function () {
     const wrapper2 = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
     });
     expect(wrapper2.vm.$options.name).toMatch("Record");
     expect(wrapper2.vm.currentDynamicBlock.leftBlock.length).toBeGreaterThan(0);
@@ -507,7 +502,6 @@ describe("Record.vue", function () {
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
     });
     expect(wrapper.vm.reviewsPresent()).toBe(false);
   });
@@ -574,7 +568,6 @@ describe("Record.vue", function () {
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
     });
 
     record.state.currentRecord.fairsharingRecord = {
@@ -659,7 +652,6 @@ describe("Record.vue", function () {
     let wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
-      router,
     });
     wrapper.vm.history.show = true;
     wrapper.vm.closeHistory();

@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -14,6 +13,7 @@ import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users.js";
 import CreateRecord from "@/views/CreateRecord/NewRecord.vue";
+
 const sinon = require("sinon");
 
 const $store = new Vuex.Store({
@@ -24,7 +24,7 @@ const $store = new Vuex.Store({
   },
 });
 let $route = { name: "New_content", path: "/new" };
-const router = new VueRouter();
+
 const $router = { push: vi.fn() };
 
 let restStub;
@@ -88,7 +88,6 @@ describe("CreateRecord.vue", function () {
     vuetify = createVuetify();
     wrapper = await shallowMount(CreateRecord, {
       vuetify,
-      router,
       mocks: { $store, $route, $router },
     });
   });

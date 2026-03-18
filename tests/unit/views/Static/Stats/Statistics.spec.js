@@ -1,6 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 //import getFilters from "@/lib/GraphClient/queries/getFilters.json"
@@ -8,7 +7,6 @@ import Stats from "@/views/Static/Stats/Statistics.vue";
 
 import dataStats from "../../../../fixtures/getRecordsForStats.json";
 
-const router = new VueRouter();
 const $router = { push: vi.fn() };
 
 let fakeDataStats = dataStats;
@@ -22,7 +20,6 @@ describe("Statistics.vue", () => {
       .stub(GraphClient.prototype, "executeQuery")
       .returns(fakeDataStats);
     wrapper = await shallowMount(Stats, {
-      router,
       mocks: { $router },
     });
   });

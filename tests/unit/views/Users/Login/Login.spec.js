@@ -1,6 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import Client from "@/lib/Client/RESTClient.js";
@@ -17,8 +16,7 @@ let $route = {
   path: "/accounts/login",
   query: { goTo: "/123" },
 };
-let routes = [$route];
-const router = new VueRouter({ routes });
+
 const $router = {
   go: vi.fn(),
   push: vi.fn(),
@@ -39,7 +37,6 @@ describe("Login.vue", () => {
   });
   beforeEach(() => {
     wrapper = shallowMount(Login, {
-      router,
       props: {
         redirect: true,
       },
@@ -73,7 +70,6 @@ describe("Login.vue", () => {
 
     $route.query = {};
     let anotherWrapper = shallowMount(Login, {
-      router,
       props: {
         redirect: true,
       },
@@ -132,7 +128,6 @@ describe("Login.vue", () => {
 
   it("can process redirection", async () => {
     const anotherWrapper = shallowMount(Login, {
-      router,
       props: {
         redirect: false,
       },
@@ -155,7 +150,6 @@ describe("Login.vue", () => {
   it("can process special redirection", async () => {
     $route.query.redirect = true;
     let anotherWrapper = shallowMount(Login, {
-      router,
       props: {
         redirect: false,
       },

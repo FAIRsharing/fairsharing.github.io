@@ -1,7 +1,5 @@
-import { shallowMount } from "@vue/test-utils";
-import { RouterLinkStub } from "@vue/test-utils";
+import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json";
@@ -19,7 +17,6 @@ const $store = new Vuex.Store({
   },
 });
 let $route = { path: "/accounts/profile" };
-const router = new VueRouter();
 const $router = { push: vi.fn() };
 
 describe("User.vue", () => {
@@ -60,7 +57,6 @@ describe("User.vue", () => {
 
   it("can be instantiated", () => {
     wrapper = shallowMount(User, {
-      router,
       mocks: { $store, $router },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -78,7 +74,6 @@ describe("User.vue", () => {
       data: { error: "error" },
     });
     wrapper = shallowMount(User, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -86,7 +81,6 @@ describe("User.vue", () => {
 
   it("can clean up store on destroy", () => {
     wrapper = shallowMount(User, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -102,7 +96,6 @@ describe("User.vue", () => {
      */
     externalClientStub.returns({ data: { error: "error" } });
     let wrapper = await shallowMount(User, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -111,7 +104,6 @@ describe("User.vue", () => {
 
   it("can copy url correctly", async () => {
     let wrapper = await shallowMount(User, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -121,7 +113,6 @@ describe("User.vue", () => {
 
   it("can delete a user", async () => {
     let wrapper = await shallowMount(User, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });

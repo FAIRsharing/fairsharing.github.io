@@ -1,6 +1,5 @@
 import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueRouter from "vue-router";
 import Vuex from "vuex";
 
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json";
@@ -23,7 +22,6 @@ let $route = {
   params: { id: 12345 },
 };
 
-const router = new VueRouter();
 const $router = { push: vi.fn() };
 
 describe("PublicProfile.vue", () => {
@@ -52,7 +50,6 @@ describe("PublicProfile.vue", () => {
       .stub(ExternalClient.prototype, "executeQuery")
       .returns({ data: ORCIDfixture });
     wrapper = shallowMount(PublicProfile, {
-      router,
       mocks: { $store, $router, $route },
     });
     getpubs = vi.spyOn(wrapper.vm, "getPublications");
@@ -91,7 +88,6 @@ describe("PublicProfile.vue", () => {
       user: { orcid: "123456" },
     });
     wrapper = shallowMount(PublicProfile, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -101,7 +97,6 @@ describe("PublicProfile.vue", () => {
       error: "error",
     });
     wrapper = shallowMount(PublicProfile, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });
@@ -118,7 +113,6 @@ describe("PublicProfile.vue", () => {
      */
     externalClientStub.returns({ data: { error: "error" } });
     let wrapper = await shallowMount(User, {
-      router,
       mocks: { $store, $router, $route },
       stubs: { RouterLink: RouterLinkStub },
     });

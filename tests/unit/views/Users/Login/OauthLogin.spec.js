@@ -1,7 +1,15 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import VueRouter from "vue-router";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+
 import Vuex from "vuex";
 
 import Client from "@/lib/Client/RESTClient.js";
@@ -22,7 +30,7 @@ let $route = {
     expiry: 456,
   },
 };
-const router = new VueRouter();
+
 const $router = {
   push: vi.fn(),
 };
@@ -33,7 +41,6 @@ describe("Login.vue", () => {
 
   const mountComponent = async () => {
     wrapper = await shallowMount(OauthLogin, {
-      router,
       mocks: { $store, $route, $router },
     });
   };

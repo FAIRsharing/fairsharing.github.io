@@ -11,8 +11,15 @@ describe("CommunityCuration.vue", function () {
 
   beforeEach(() => {
     wrapper = shallowMount(CommunityCuration, {
-      vuetify,
-      components: { VueCodeHighlight },
+      global: {
+        plugins: [vuetify],
+        components: {
+          VueCodeHighlight,
+        },
+        stubs: {
+          PieChart: true,
+        },
+      },
     });
   });
 

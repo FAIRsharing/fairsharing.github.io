@@ -270,6 +270,8 @@ describe("EditPublications.vue", function () {
       isCitation: false,
     };
     wrapper.vm.search = "amIaDoi?";
+    const getDOIButton = wrapper.get("[data-testid='getDOI-button']");
+    getDOIButton.trigger("click");
     await wrapper.vm.getDOI();
     expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
@@ -421,6 +423,10 @@ describe("EditPublications.vue", function () {
       isCitation: false,
     };
     wrapper.vm.search = "test";
+
+    const getPMIDButton = wrapper.get("[data-testid='getPMID-button']");
+    getPMIDButton.trigger("click");
+
     await wrapper.vm.getPMID();
     expect(wrapper.vm.showEmptySearch).toBe(false);
     expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
@@ -491,6 +497,11 @@ describe("EditPublications.vue", function () {
     wrapper.vm.removePublication(2);
     expect(wrapper.vm.publications.length).toBe(2);
 
+    const createNewPublicationButton = wrapper.get(
+      "[data-testid='createNewPublication-button']",
+    );
+    createNewPublicationButton.trigger("click");
+
     wrapper.vm.createNewPublication();
     expect(wrapper.vm.errors).toStrictEqual({
       doi: null,
@@ -552,9 +563,21 @@ describe("EditPublications.vue", function () {
     await wrapper.vm.saveRecord(true, { textContent: "Save and exit" });
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     expect($router.push).toHaveBeenCalledTimes(1);
+
+    const saveRecordContinueButton = wrapper.get(
+      "[data-testid='saveRecordContinue-button']",
+    );
+    saveRecordContinueButton.trigger("click");
+
     await wrapper.vm.saveRecord(false, { textContent: "Save and continue" });
     expect(recordStore.state.sections.publications.changes).toEqual(0);
     restStub.returns({ data: { error: { response: { data: "error" } } } });
+
+    const saveRecordExitButton = wrapper.get(
+      "[data-testid='saveRecordExit-button']",
+    );
+    saveRecordExitButton.trigger("click");
+
     await wrapper.vm.saveRecord(true, { textContent: "Save and exit" });
     expect(recordStore.state.sections.publications.error).toBe(true);
     expect(recordStore.state.sections.publications.message).toStrictEqual({
@@ -607,5 +630,160 @@ describe("EditPublications.vue", function () {
     expect(wrapper.vm.exitLoader).toBe(false);
     expect($router.push).toHaveBeenCalledWith({ path: "/123" });
     restStub.restore();
+  });
+
+  it("handles search text-field v-model updates", async () => {
+    await wrapper.setData({ search: false });
+    const form = wrapper.findComponent({ name: "v-text-field" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.search).toBe(true);
+  });
+
+  it("handles publications data-table v-model updates", async () => {
+    let output = [
+      {
+        id: 1,
+        tablePosition: 0,
+        title: "Hello",
+      },
+      {
+        id: 2,
+        title: "World",
+      },
+    ];
+    await wrapper.setData({ publications: [] });
+    const form = wrapper.findComponent({ name: "v-data-table" });
+    expect(form.props("modelValue")).toStrictEqual(output);
+    await form.vm.$emit("update:modelValue", ["A"]);
+    expect(wrapper.vm.publications).toStrictEqual(["A"]);
+  });
+
+  it("handles subFormValid form v-model updates", async () => {
+    await wrapper.setData({ subFormValid: false });
+    const form = wrapper.findComponent({ name: "v-form" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.subFormValid).toBe(true);
+  });
+
+  it("handles newPublication.doi text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    //Find all stubbed text fields and filter for the DOI one
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const doiField = textFields.find((field) => field.props("label") === "DOI");
+
+    // Safety check to ensure VTU found the field
+    expect(doiField.exists()).toBe(true);
+    expect(doiField.props("modelValue")).toBe("");
+    await doiField.vm.$emit("update:modelValue", "10.1038/nature12345");
+    expect(wrapper.vm.newPublication.doi).toBe("10.1038/nature12345");
+  });
+
+  it("handles newPublication.pubmed_id text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const pubmedField = textFields.find(
+      (field) => field.props("label") === "PubMed ID",
+    );
+    expect(pubmedField.exists()).toBe(true);
+    expect(pubmedField.props("modelValue")).toBe("");
+    await pubmedField.vm.$emit("update:modelValue", "12345678");
+    expect(wrapper.vm.newPublication.pubmed_id).toBe("12345678");
+  });
+
+  it("handles newPublication.title text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const titleField = textFields.find(
+      (field) => field.props("label") === "Title",
+    );
+    expect(titleField.exists()).toBe(true);
+    expect(titleField.props("modelValue")).toBe("");
+    await titleField.vm.$emit("update:modelValue", "dummytitle");
+    expect(wrapper.vm.newPublication.title).toBe("dummytitle");
+  });
+
+  it("handles newPublication.authors text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const authorsField = textFields.find(
+      (field) => field.props("label") === "Authors",
+    );
+    expect(authorsField.exists()).toBe(true);
+    expect(authorsField.props("modelValue")).toBe("");
+    await authorsField.vm.$emit("update:modelValue", "Doe, J., Smith, A.");
+    expect(wrapper.vm.newPublication.authors).toBe("Doe, J., Smith, A.");
+  });
+
+  it("handles newPublication.journal text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const journalField = textFields.find(
+      (field) => field.props("label") === "Journal",
+    );
+    expect(journalField.exists()).toBe(true);
+    expect(journalField.props("modelValue")).toBe("");
+    await journalField.vm.$emit("update:modelValue", "DummyJournal");
+    expect(wrapper.vm.newPublication.journal).toBe("DummyJournal");
+  });
+
+  it("handles newPublication.year text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const yearField = textFields.find(
+      (field) => field.props("label") === "Publication Year",
+    );
+    expect(yearField.exists()).toBe(true);
+    expect(yearField.props("modelValue")).toBe("");
+    await yearField.vm.$emit("update:modelValue", 2000);
+    expect(wrapper.vm.newPublication.year).toBe(2000);
+  });
+
+  it("handles newPublication.url text-field v-model updates", async () => {
+    wrapper.vm.createNewPublication();
+    await nextTick();
+    const textFields = wrapper.findAllComponents({ name: "VTextField" });
+    const urlField = textFields.find((field) => field.props("label") === "URL");
+    expect(urlField.exists()).toBe(true);
+    await urlField.vm.$emit("update:modelValue", "www.test.com");
+    expect(wrapper.vm.newPublication.url).toBe("www.test.com");
+  });
+
+  it("closes the editor when the Cancel button is clicked", async () => {
+    await wrapper.setData({ openEditor: true });
+    expect(wrapper.vm.openEditor).toBe(true);
+    const buttons = wrapper.findAll("v-btn-stub");
+    const cancelButton = buttons.find((btn) => btn.text().trim() === "Cancel");
+    expect(cancelButton.exists()).toBe(true);
+    await cancelButton.trigger("click");
+    expect(wrapper.vm.openEditor).toBe(false);
+  });
+
+  it("handles showEmptySearch dialog v-model updates", async () => {
+    await wrapper.setData({ showEmptySearch: false });
+    const dialogs = wrapper.findAllComponents({ name: "VDialog" });
+    const searchDialog = dialogs.find((dialog) =>
+      dialog.text().includes("Search Term Missing"),
+    );
+    expect(searchDialog.exists()).toBe(true);
+    await searchDialog.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.showEmptySearch).toBe(true);
+  });
+
+  it("closes showEmptySearch dialog when the OK button is clicked", async () => {
+    await wrapper.setData({ showEmptySearch: true });
+    expect(wrapper.vm.showEmptySearch).toBe(true);
+    const buttons = wrapper.findAll("v-btn-stub");
+    const okButton = buttons.find((btn) => btn.text().trim() === "OK");
+    expect(okButton.exists()).toBe(true);
+    await okButton.trigger("click");
+    expect(wrapper.vm.showEmptySearch).toBe(false);
   });
 });

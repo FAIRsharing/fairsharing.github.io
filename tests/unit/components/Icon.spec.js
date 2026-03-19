@@ -1,8 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
-import Icon from "@/components/Icon.vue"; // Adjust path as necessary
+import Icon from "@/components/Icon.vue";
 
-// 1. Mock the external icons plugin
+// Mock the external icons plugin
 // We provide specific test cases: a fallback, an icon type, and an image type.
 vi.mock("@/plugins/icons", () => ({
   default: {

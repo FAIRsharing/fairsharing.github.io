@@ -32,5 +32,26 @@ describe("Carousel", function () {
     wrapper.vm.tabsData.selectedTab = 3;
     wrapper.vm.cycleTabs();
     expect(wrapper.vm.tabsData.selectedTab).toBe(3);
+    wrapper.vm.tabsData.selectedTab = 2;
+    wrapper.vm.tabsData.tabs = ["A", "B", "C", "D"];
+    wrapper.vm.cycleTabs();
+    vi.advanceTimersByTime(5000);
+    expect(wrapper.vm.tabsData.selectedTab).toBe(3);
+  });
+
+  it("handles tabsData.selectedTab tabs v-model updates", async () => {
+    await wrapper.setData({ tabsData: { selectedTab: false } });
+    const form = wrapper.findComponent({ name: "v-tabs" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.tabsData["selectedTab"]).toBe(true);
+  });
+
+  it("handles tabsData.selectedTab tabs-window v-model updates", async () => {
+    await wrapper.setData({ tabsData: { selectedTab: false } });
+    const form = wrapper.findComponent({ name: "v-tabs-window" });
+    expect(form.props("modelValue")).toBe(false);
+    await form.vm.$emit("update:modelValue", true);
+    expect(wrapper.vm.tabsData["selectedTab"]).toBe(true);
   });
 });

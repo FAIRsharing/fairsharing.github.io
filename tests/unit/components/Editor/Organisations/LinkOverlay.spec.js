@@ -1,5 +1,5 @@
+import { beforeEach, describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue";
@@ -11,7 +11,6 @@ import userStore from "@/store/users.js";
 
 const sinon = require("sinon");
 
-const vuetify = createVuetify();
 recordStore.state.sections = {
   organisations: { data: [{ id: 1, organisation: { name: "abc", id: 1 } }] },
 };
@@ -20,8 +19,20 @@ recordStore.state.editOrganisationLink = {
   data: { id: 1, organisation: { name: "abc", id: 1 } },
   id: 0,
 };
-editorStore.state.organisations = [];
-editorStore.state.grants = [];
+editorStore.state.organisations = [{ id: 1, name: "Existing Org" }];
+(editorStore.state.organisationsTypes = [
+  { id: 1, name: "Government" },
+  { id: 2, name: "Nonprofit" },
+  { id: 3, name: "Education" },
+  { id: 4, name: "Company" },
+  { id: 5, name: "Other" },
+  { id: 6, name: "Other" },
+  { id: 7, name: "Other" },
+  { id: 8, name: "Other" },
+  { id: 9, name: "Other" },
+  { id: 10, name: "Other" },
+]),
+(editorStore.state.grants = []);
 const $store = new Vuex.Store({
   modules: {
     editor: editorStore,
@@ -76,20 +87,25 @@ describe("Edit -> LinkOverlay.vue", function () {
   let fetchStub;
 
   beforeEach(async () => {
-    sinon.restore();
     wrapper = await shallowMount(LinkOverlay, {
-      vuetify,
-      mocks: { $store },
-      stubs: { "v-form": formValidation },
+      global: {
+        plugins: [$store],
+      },
+      stubs: { "v-form": formValidation, "v-overlay": true },
     });
   });
 
   it("can be mounted", () => {
     wrapper.vm.menus.show = "organisation";
+    wrapper.vm.rules.isRequired();
+    wrapper.vm.rules.isURL();
+    wrapper.vm.rules.isImage();
     expect(wrapper.vm.$options.name).toMatch("LinkOverlay");
     expect(wrapper.vm.organisationLinks).toStrictEqual([
       { id: 1, organisation: { name: "abc", id: 1 } },
     ]);
+    expect(wrapper.vm.cleanTextList).toHaveBeenCalled;
+    expect(wrapper.vm.relationValue).toHaveBeenCalled;
   });
 
   it("can check removeCountry", () => {
@@ -100,11 +116,11 @@ describe("Edit -> LinkOverlay.vue", function () {
 
   // it("can react to change in logo", () => {
   //     const fileContents= 'data:image/png;base64,TEST1';
-  //     const readAsDataURL= vi.fn();
-  //     const addEventListener   = vi.fn((_, evtHandler) => { evtHandler({
+  //     const readAsDataURL= jest.fn();
+  //     const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
   //         target: {result: fileContents}} )});
   //     const dummyFileReader    = {addEventListener, readAsDataURL, result: fileContents};
-  //     window.FileReader = vi.fn(() => dummyFileReader);
+  //     window.FileReader = jest.fn(() => dummyFileReader);
   //     wrapper.vm.menus.newOrganisation.data = {logo: {value: "123"}};
   //     expect(wrapper.vm.menus.newOrganisation.logoData.data).toBe("data:image/png;base64,TEST1");
   //     wrapper.vm.menus.newOrganisation.data = {logo: null};
@@ -120,23 +136,33 @@ describe("Edit -> LinkOverlay.vue", function () {
   });
 
   it("can confirm the modifications", () => {
-    wrapper.vm.editOrganisationLink.showOverlay = true;
-    wrapper.vm.editOrganisationLink.data = {
-      organisation: { name: "test", id: 2 },
+    wrapper.vm.$store.state.record.sections = {
+      organisations: {
+        data: [{ id: 1, organisation: { name: "abc", id: 1 } }],
+      },
     };
-    wrapper.vm.editOrganisationLink.id = -1;
+
+    wrapper.vm.$store.state.record.editOrganisationLink = {
+      showOverlay: true,
+      data: { organisation: { name: "test", id: 2 } },
+      id: -1,
+    };
+
     wrapper.vm.confirmModifications();
+
     expect(wrapper.vm.organisationLinks).toStrictEqual([
       { id: 1, organisation: { name: "abc", id: 1 } },
       { organisation: { name: "test", id: 2 } },
     ]);
-    wrapper.vm.editOrganisationLink.showOverlay = true;
-    wrapper.vm.editOrganisationLink.data = {
-      id: 1,
-      organisation: { name: "work", id: 1 },
+
+    wrapper.vm.$store.state.record.editOrganisationLink = {
+      showOverlay: true,
+      data: { id: 1, organisation: { name: "work", id: 1 } },
+      id: 0,
     };
-    wrapper.vm.editOrganisationLink.id = 0;
+
     wrapper.vm.confirmModifications();
+
     expect(wrapper.vm.organisationLinks).toStrictEqual([
       { id: 1, organisation: { name: "work", id: 1 } },
       { organisation: { name: "test", id: 2 } },
@@ -159,22 +185,15 @@ describe("Edit -> LinkOverlay.vue", function () {
       organisation_type_ids: [{ id: 1, name: "?" }],
       country_ids: [{ id: 1 }],
       parent_ror_links: [
-        {
-          id: "https:rororere.rere1",
-        },
-        {
-          id: "https:rororere.rere2",
-        },
+        { id: "https:rororere.rere1" },
+        { id: "https:rororere.rere2" },
       ],
-      child_ror_links: [
-        {
-          id: "https:rororere.rere3",
-        },
-      ],
+      child_ror_links: [{ id: "https:rororere.rere3" }],
     };
     wrapper.vm.menus.newOrganisation.data.country_ids = [];
     await wrapper.vm.createNewOrganisation();
     expect(wrapper.vm.menus.newOrganisation.error).toBe("I am an error");
+
     wrapper.vm.menus.newOrganisation.logoData = null;
     restStub.returns({
       data: {
@@ -192,7 +211,14 @@ describe("Edit -> LinkOverlay.vue", function () {
         },
       },
     });
+
+    // 2. Clear the store array to prevent test pollution!
+    wrapper.vm.$store.state.editor.organisations = [];
+
+    // 3. Test the success state
     await wrapper.vm.createNewOrganisation();
+
+    // Now it will correctly equal an array of exactly 1 item
     expect(wrapper.vm.organisations).toStrictEqual([
       {
         id: 1,
@@ -202,10 +228,12 @@ describe("Edit -> LinkOverlay.vue", function () {
         urlForLogo: undefined,
       },
     ]);
+
     restStub.restore();
   });
 
   it("can create a new grant", async () => {
+    restStub.restore();
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({
       data: {
@@ -237,16 +265,11 @@ describe("Edit -> LinkOverlay.vue", function () {
   });
 
   it("can run a custom filter on autocompletes", () => {
-    expect(
-      wrapper.vm.customFilter("", "that", {
-        raw: { name: "this", alternativeNames: [] },
-      }),
-    ).toBe(false);
-    expect(
-      wrapper.vm.customFilter("", "this", {
-        raw: { name: "this", alternativeNames: [] },
-      }),
-    ).toBe(true);
+    const mockItem = {
+      raw: { name: "this", alternativeNames: [] },
+    };
+    expect(wrapper.vm.customFilter("this", "that", mockItem)).toBe(false);
+    expect(wrapper.vm.customFilter("this", "this", mockItem)).toBe(true);
   });
 
   it("can check removeType", () => {
@@ -389,5 +412,78 @@ describe("Edit -> LinkOverlay.vue", function () {
     expect(wrapper.vm.importROR).toBe(false);
     expect(wrapper.vm.validName).toBe(true);
     expect(wrapper.vm.menus.newOrganisation.data.name).toBe("");
+  });
+
+  it("validates image size", () => {
+    // No logo -> Valid
+    expect(wrapper.vm.imageSizeCorrect()).toBe(true);
+
+    // Small logo -> Valid
+    wrapper.vm.menus.newOrganisation.logo = { size: 100 };
+    expect(wrapper.vm.imageSizeCorrect()).toBe(true);
+    expect(wrapper.emitted().imageTooBig[0]).toEqual([false]);
+
+    // Big logo -> Invalid (limit is 3145728)
+    wrapper.vm.menus.newOrganisation.logo = { size: 4000000 };
+    expect(wrapper.vm.imageSizeCorrect()).toBe(false);
+    expect(wrapper.emitted().imageTooBig[1]).toEqual([true]);
+  });
+
+  it("selectTypes method for filter case IF condition", () => {
+    /* Government */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["Government"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 1, name: "Government" }]);
+  });
+
+  it("selectTypes method for ELSE switch case", () => {
+    /* Government */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["government"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 1, name: "Government" }]);
+
+    /* Non profit */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["nonprofit"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 2, name: "Nonprofit" }]);
+
+    /* education */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["education"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 3, name: "Education" }]);
+
+    /* company */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["company"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 6, name: "Other" }]);
+
+    /* healthcare */
+    wrapper.vm.menus.newOrganisation.selectOrganisation = {
+      types: ["healthcare"],
+    };
+    wrapper.vm.selectTypes();
+    expect(
+      wrapper.vm.menus.newOrganisation.data.organisation_type_ids,
+    ).toStrictEqual([{ id: 9, name: "Other" }]);
   });
 });

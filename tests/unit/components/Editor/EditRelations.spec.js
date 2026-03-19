@@ -186,6 +186,8 @@ describe("EditRelationships.vue", () => {
 
   it("handles save and continue", async () => {
     const btn = { textContent: "Save and continue" };
+    const continueButton = wrapper.get("[data-testid='continue-button']");
+    continueButton.trigger("click");
     await wrapper.vm.saveRecord(false, btn);
     expect(wrapper.vm.continueLoader).toBe(false);
     expect(mutations.setChanges).toHaveBeenCalled();
@@ -193,8 +195,8 @@ describe("EditRelationships.vue", () => {
 
   it("handles save and exit with redirect", async () => {
     const btn = { textContent: "Save and exit" };
-    const applyFilterButton = wrapper.get("[data-testid='exit-button']");
-    applyFilterButton.trigger("click");
+    const exitButton = wrapper.get("[data-testid='exit-button']");
+    exitButton.trigger("click");
     await wrapper.vm.saveRecord(true, btn);
     expect(wrapper.vm.$router.push).toHaveBeenCalled();
   });
@@ -239,10 +241,10 @@ describe("EditRelationships.vue", () => {
 
     await wrapper.vm.$options.watch.associations.handler.call(wrapper.vm);
 
-    expect(mutations.setChanges).toHaveBeenCalledWith(
-      expect.anything(),
-      { section: "relations", value: 0 },
-    );
+    expect(mutations.setChanges).toHaveBeenCalledWith(expect.anything(), {
+      section: "relations",
+      value: 0,
+    });
   });
 
   it("addItem handles string-based recordAssocLabel (undefined relation property)", async () => {

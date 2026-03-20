@@ -18,4 +18,9 @@ describe("BlockSearch.vue", function () {
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("SearchBlock");
   });
+
+  it("can check advancedSearchTerm method", () => {
+    wrapper.vm.advancedSearchTerm("test");
+    expect(wrapper.vm.advancedSearchValue).toBe("test");
+  });
 });

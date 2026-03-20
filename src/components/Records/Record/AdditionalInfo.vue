@@ -72,14 +72,7 @@ export default {
     await this.initializeData();
     await this.$nextTick();
     this.finalData = this.tempData;
-    console.log("FD " + JSON.stringify(this.finalData));
     this.finalDataItemsHasLength = false;
-    /*
-    this.finalDataItemsHasLength = Object.keys(this.finalData).some(
-      (key) => this.finalData[key].length >= 1
-    );
-     */
-    //
     // Check that all objects have a value, and return false if all are empty.
     // This will prevent the additional info section from being displayed.
     Object.keys(this.finalData).forEach((key) => {
@@ -89,7 +82,6 @@ export default {
         });
       }
     });
-    console.log("FDHL " + this.finalDataItemsHasLength);
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),

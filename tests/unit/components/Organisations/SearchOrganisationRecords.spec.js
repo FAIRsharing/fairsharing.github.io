@@ -132,7 +132,7 @@ describe("SearchOrganisationRecords.vue", () => {
 
       await wrapper.setData({ sortBy: "Type", sortDesc: true });
       expect(wrapper.vm.sortData).toStrictEqual([
-        { key: "Type", order: "desc" },
+        { key: "type", order: "desc" },
       ]);
     });
 
@@ -144,7 +144,7 @@ describe("SearchOrganisationRecords.vue", () => {
 
       await wrapper.setData({ sortBy: "Status", sortDesc: true });
       expect(wrapper.vm.sortData).toStrictEqual([
-        { key: "Status", order: "desc" },
+        { key: "status", order: "desc" },
       ]);
     });
 

@@ -1,29 +1,16 @@
 <template>
   <div
-    v-if="currentField && currentField.length > 0"
+    v-if="currentField && currentField.length > 0 && checkCurrentfield(currentField)"
     class="pa-4 mt-4 data-holder"
   >
-    <v-tooltip
-      v-if="getDescription('head')"
-      bottom
-      class="d-inline-block mr-2"
-    >
+    <v-tooltip v-if="getDescription('head')" bottom class="d-inline-block mr-2">
       <template #activator="{ on }">
-        <v-icon
-          size="15"
-          class="mb-1"
-          v-on="on"
-        >
-          fa-question-circle
-        </v-icon>
+        <v-icon size="15" class="mb-1" v-on="on"> fa-question-circle </v-icon>
       </template>
       {{ getDescription("head") }}
     </v-tooltip>
     <b class="text-h6 text-capitalize">{{ setTitle(cleanString(title)) }}</b>
-    <div
-      v-for="(item, index) in currentField"
-      :key="item.name + '_' + index"
-    >
+    <div v-for="(item, index) in currentField" :key="item.name + '_' + index">
       <!--  URLs    -->
       <div
         v-for="(key, keyindex) in Object.keys(item)"
@@ -36,9 +23,7 @@
             class="d-inline-block mr-2"
           >
             <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
-              </v-icon>
+              <v-icon v-on="on"> fa-question-circle </v-icon>
             </template>
             {{ getDescription(item[key]) }}
           </v-tooltip>
@@ -129,6 +114,19 @@ export default {
       const regex = new RegExp(expression);
       return string.match(regex);
     },
+    // Map the values for every object in the array and determine if any are empty.
+    // If they are empty, return false.
+    checkCurrentfield(currentField) {
+      let empty = true;
+      currentField.forEach((item) => {
+        Object.keys(item).forEach((key, value) => {
+          if (item[value] === "") {
+            empty = false;
+          }
+        });
+      })
+      return empty;
+    }
   },
 };
 </script>

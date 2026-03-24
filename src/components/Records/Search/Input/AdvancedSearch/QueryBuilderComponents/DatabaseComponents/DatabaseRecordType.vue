@@ -1,23 +1,19 @@
 <template>
   <SelectComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="filteredRecordTypes('Database')"
+    :item-value="itemValue"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
   />
 </template>
 <script>
 import { mapActions } from "vuex";
-
-import { recordTypes } from "@/utils/advancedSearchUtils";
-
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
 
 export default {
   name: "DatabaseRecordType",
   components: { SelectComponent },
-  mixins: [recordTypes],
   props: {
     value: {
       type: Array,

@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import DataAccessCondition
-  from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DataAccessCondition.vue";
+import DataAccessCondition from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/DataAccessCondition.vue";
 
 describe("DataAccessCondition.vue", () => {
   let wrapper;

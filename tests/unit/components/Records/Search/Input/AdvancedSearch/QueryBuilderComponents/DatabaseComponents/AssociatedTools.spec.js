@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import AssociatedTools from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/DatabaseComponents/AssociatedTools.vue";
 
-describe("AccessMethods.vue", () => {
+describe("AssociatedTools.vue", () => {
   let wrapper;
 
   const createWrapper = (props = {}) => {
@@ -18,7 +18,7 @@ describe("AccessMethods.vue", () => {
     });
   };
 
-  describe("v-model integration with SelectComponent", () => {
+  describe("v-model integration with RadioComponent", () => {
     it("can check v-model integration with RadioComponent", async () => {
       const wrapper = createWrapper();
       const selectStub = wrapper.findComponent({ name: "RadioComponent" });

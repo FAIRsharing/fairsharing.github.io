@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Stores metadata regarding human (i.e. user interfaces) and machine-readable access points for your resource.",
     };

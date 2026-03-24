@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Data protection is part of research data management and provides links to related policies and/or supporting documentation.",
     };

@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Preferred list of appropriate licences making clear what reuse conditions (if any) must be respected. Related policy guidance should be provided to help researchers to select appropriate licences.",
     };

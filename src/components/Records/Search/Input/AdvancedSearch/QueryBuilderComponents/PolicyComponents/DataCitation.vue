@@ -2,6 +2,7 @@
   <RadioComponent
     v-model="model"
     :item-value="itemValue"
+    :tool-tip-text="toolTipText"
     @input="selectedValue"
   />
 </template>
@@ -21,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Related guidance should provide advice on how to cite a broader range of research outputs including data and software, as well as actors and enablers such as data managers, data stewards, funding bodies, research infrastructures and organisations.",
     };

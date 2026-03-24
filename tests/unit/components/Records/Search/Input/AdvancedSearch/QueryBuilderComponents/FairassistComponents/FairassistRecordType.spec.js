@@ -3,6 +3,17 @@ import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import FairassistRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/FairassistComponents/FairassistRecordType.vue";
 
+vi.mock("@/utils/advancedSearchUtils", () => ({
+  recordTypes: {
+    methods: {
+      filteredRecordTypes: vi.fn(() => ["Database Type A", "Database Type B"]),
+    },
+    computed: {
+      getRecordTypes: () => [],
+    },
+  },
+}));
+
 describe("FairassistRecordType.vue", () => {
   let wrapper;
   let actions;

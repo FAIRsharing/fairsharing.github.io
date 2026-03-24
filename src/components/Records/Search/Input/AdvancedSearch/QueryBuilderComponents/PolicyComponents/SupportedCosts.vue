@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Funding bodies’ data policies support justified costs associated with RDM and making data FAIR.",
     };

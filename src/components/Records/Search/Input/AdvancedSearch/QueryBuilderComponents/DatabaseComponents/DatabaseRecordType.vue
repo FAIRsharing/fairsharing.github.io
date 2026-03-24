@@ -9,11 +9,13 @@
 </template>
 <script>
 import { mapActions } from "vuex";
+import { recordTypes } from "@/utils/advancedSearchUtils";
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
 
 export default {
   name: "DatabaseRecordType",
   components: { SelectComponent },
+  mixins: [recordTypes],
   props: {
     value: {
       type: Array,

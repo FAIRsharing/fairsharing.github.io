@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "The policy should make clear the period of time beyond the life of the project that selected outputs must be retained. Links to relevant preservation policies and/or retention schedules should be provided.",
     };

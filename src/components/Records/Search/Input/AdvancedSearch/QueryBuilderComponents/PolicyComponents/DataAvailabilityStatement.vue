@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Data Availability Statements are provided in publications indicating how to access the underlying data or how to request legitimate access to closed data.",
     };

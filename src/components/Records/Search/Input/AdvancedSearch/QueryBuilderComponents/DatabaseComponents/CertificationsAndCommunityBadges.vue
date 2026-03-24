@@ -22,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText:
         "Certification schemes and/or community badges that assess certain aspects of the repository (e.g., its fitness, trustworthiness, adoption).",
     };

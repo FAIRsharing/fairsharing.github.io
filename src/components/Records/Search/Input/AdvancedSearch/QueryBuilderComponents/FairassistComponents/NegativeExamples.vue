@@ -2,6 +2,7 @@
   <RadioComponent
     v-model="model"
     :item-value="itemValue"
+    :tool-tip-text="toolTipText"
     @input="selectedValue"
   />
 </template>
@@ -21,6 +22,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText: "Metric with negative test examples.",
     };
   },

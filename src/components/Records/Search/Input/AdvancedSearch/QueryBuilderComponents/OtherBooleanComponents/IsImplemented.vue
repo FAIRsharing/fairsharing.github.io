@@ -23,6 +23,7 @@ export default {
   data: () => {
     return {
       itemValue: "",
+      itemSelected: "",
       toolTipText: "Implemented by at least one database.",
     };
   },

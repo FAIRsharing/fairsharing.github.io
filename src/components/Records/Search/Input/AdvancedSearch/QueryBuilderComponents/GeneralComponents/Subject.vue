@@ -1,8 +1,8 @@
 <template>
   <AutoCompleteComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="getSearchSubjects"
+    :item-value="itemValue"
     :loading="getLoadingStatus"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
@@ -68,7 +68,7 @@ export default {
   },
   mounted() {
     //Pre-fill selected values on edit advanced search is clicked and open
-    this.selectedItemValue = this.value;
+    this.itemValue = this.value;
   },
 
   methods: {

@@ -35,7 +35,6 @@ describe("DatabaseRecordType.vue", () => {
       },
     });
 
-    // 2. Mount Component
     wrapper = shallowMount(DatabaseRecordType, {
       global: {
         plugins: [store],

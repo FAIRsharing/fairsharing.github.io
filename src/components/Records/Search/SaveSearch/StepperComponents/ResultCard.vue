@@ -19,13 +19,13 @@
         class="flex-column flex-md-row justify-md-space-between my-3 px-6"
       >
         <v-btn
-          class="text-white order-md-2"
           :class="{
             'mb-3': $vuetify.display.smAndDown,
           }"
+          class="text-white order-md-2"
           color="accent2"
-          variant="elevated"
           to="/accounts/profile"
+          variant="elevated"
           @click="resetSaveSearchDialog()"
         >
           Goto Profile page
@@ -56,11 +56,12 @@
         class="flex-column flex-md-row justify-md-space-between my-3 px-6"
       >
         <v-btn
-          class="text-white order-md-2"
           :class="{
             'mb-3': $vuetify.display.smAndDown,
           }"
+          class="text-white order-md-2"
           color="accent2"
+          data-test="restart-btn"
           @click="restartStepper"
         >
           Start Again
@@ -68,6 +69,7 @@
         <v-btn
           class="text-white order-md-1"
           color="secondary"
+          data-test="close-btn"
           @click="closeStepperDialog"
         >
           Close

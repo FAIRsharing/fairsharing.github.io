@@ -5,31 +5,19 @@
         v-model="policySelected"
         v-model:search="searchPolicy"
         :items="getPolicyRecords"
-        class="mb-7 full-width stepperField"
         :loading="getLoadingStatus"
-        hide-details="auto"
-        flat
-        multiple
         chips
+        class="mb-7 full-width stepperField"
         closable-chips
-        item-value="id"
-        item-title="name"
         color="primary"
-        variant="underlined"
+        flat
+        hide-details="auto"
+        item-title="name"
+        item-value="id"
         label="Enter text to search for policy record(s) to associate with this saved search"
+        multiple
+        variant="underlined"
       >
-        <!--Chip slot is not required anymore-->
-        <!--        <template #chip="data">-->
-        <!--          <v-chip-->
-        <!--            v-bind="data.attrs"-->
-        <!--            :model-value="data.item['id']"-->
-        <!--            closable-->
-        <!--            @click="data.select"-->
-        <!--            @click:close="remove(data.item['id'])"-->
-        <!--          >-->
-        <!--            {{ data.item["title"] }}-->
-        <!--          </v-chip>-->
-        <!--        </template>-->
         <template #no-data>
           <div v-show="!getLoadingStatus" class="py-3 px-4">
             No Policy found
@@ -42,9 +30,9 @@
       <v-progress-linear
         :active="loading"
         :indeterminate="loading"
+        color="primary"
         height="6"
         rounded
-        color="primary"
       />
       <template v-if="policyList && policyList.length">
         <v-checkbox

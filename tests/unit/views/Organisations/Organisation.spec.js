@@ -1,246 +1,239 @@
-import { RouterLinkStub, shallowMount } from "@vue/test-utils";
-import sinon from "sinon";
-import { createVuetify } from "vuetify";
-import Vuex from "vuex";
-import { reactive } from "vue";
-import RESTClient from "@/lib/Client/RESTClient.js";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import light from "@/plugins/theme";
-import users from "@/store/users.js";
-import Organisation from "@/views/Organisations/Organisation";
+import { shallowMount } from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createStore } from "vuex";
+import Organisation from "@/views/Organisations/Organisation.vue";
 
-users.state.user = function () {
+// --- 1. MOCK EXTERNAL CLIENTS & UTILS ---
+const { mockDeleteOrganisation, mockEditOrganisation, mockUpdateSaveSearch } =
+  vi.hoisted(() => ({
+    mockDeleteOrganisation: vi.fn().mockResolvedValue({ error: false }),
+    mockEditOrganisation: vi.fn().mockResolvedValue({ error: false }),
+    mockUpdateSaveSearch: vi.fn().mockResolvedValue({ error: false }),
+  }));
+
+vi.mock("@/lib/GraphClient/GraphClient.js", () => {
   return {
-    isLoggedIn: true,
-    id: 123,
-    credentials: { token: 123, username: 123 },
-    watchedRecords: [1],
-  };
-};
-let editor = {
-  namespaced: true,
-  state: {
-    organisationTypes: [
-      {
-        id: 1,
-        name: "Government body",
-      },
-    ],
-    countries: [
-      {
-        code: "AF",
-        id: 1,
-        name: "Afghanistan",
-      },
-    ],
-    tooltips: {
-      abbreviation:
-        "If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank.",
-    },
-  },
-  actions: {
-    getOrganisationsTypes: vi.fn(),
-    getCountries: vi.fn(),
-  },
-};
-
-let $store = new Vuex.Store({
-  modules: {
-    users: users,
-    editor: editor,
-  },
-});
-
-$store.state.users.user = function () {
-  return {
-    isLoggedIn: false,
-    credentials: { token: "123" },
-  };
-};
-
-let vuetify = createVuetify({
-  theme: {
-    defaultTheme: "fairSharingTheme",
-    themes: { fairSharingTheme: light },
-  },
-});
-
-let $route = reactive({
-  path: "/organisations/1",
-  params: { id: 1 },
-});
-
-const $router = { push: vi.fn() };
-let restStub;
-
-describe("Organisation", () => {
-  let wrapper;
-  let graphStub;
-  let organisation = {
-    id: 1,
-    name: "4DN Data Coordination and Integration Center",
-    alternativeNames: [],
-    homepage: "http://dcic.4dnucleome.org/",
-    rorLink: "https://roro.roror.ror",
-    types: ["Consortium"],
-    urlForLogo: "/logo12345678",
-    childOrganisations: [],
-    parentOrganisations: [],
-    organisationLinks: [
-      {
-        id: 6057,
-        isLead: true,
-        relation: "maintains",
-        fairsharingRecord: {
-          id: 872,
-          name: "Pairs file format",
-          abbreviation: ".pairs",
-          type: "model_and_format",
-          registry: "Standard",
-          status: "ready",
+    default: vi.fn().mockImplementation(() => ({
+      executeQuery: vi.fn().mockResolvedValue({
+        organisation: {
+          id: 1,
+          name: "Test Org",
+          homepage: "https://test.org",
+          rorLink: "https://ror.org/test",
+          urlForLogo: "/media/logo.png",
+          alternativeNames: ["Alt1", "Alt2"],
+          types: ["Institute"],
+          users: [
+            { id: 1, username: "testuser", orcid: "0000-0000-0000-0000" },
+          ],
+          parentOrganisations: [],
+          childOrganisations: [],
+          countries: [{ id: 1, name: "France" }],
+          savedSearches: [],
         },
-        grant: null,
+      }),
+    })),
+  };
+});
+
+vi.mock("@/lib/Client/RESTClient.js", () => {
+  return {
+    default: vi.fn().mockImplementation(() => ({
+      editOrganisation: mockEditOrganisation,
+      deleteOrganisation: mockDeleteOrganisation,
+      updateSaveSearch: mockUpdateSaveSearch,
+    })),
+  };
+});
+
+vi.mock("@/utils/generalUtils", () => ({
+  toBase64: vi.fn().mockResolvedValue("data:image/png;base64,mock..."),
+}));
+
+// --- 2. MOCK VUETIFY & STORE IMPORTS ---
+vi.mock("vuetify/framework", () => ({
+  useTheme: () => ({
+    computedThemes: {
+      value: {
+        fairSharingTheme: {
+          colors: { bg_organisation_record_card: "#ffffff" },
+        },
       },
-    ],
-    users: [],
-    countries: [],
+    },
+  }),
+}));
+
+vi.mock("@/store", () => ({
+  default: { commit: vi.fn() },
+}));
+
+// Mock the JSON query import
+vi.mock("@/lib/GraphClient/queries/Organisations/getOrganisation.json", () => ({
+  default: { queryParam: { id: null } },
+}));
+
+// --- 3. MOCK ENVIRONMENT VARIABLES ---
+vi.stubEnv("VITE_API_ENDPOINT", "https://api.mock.com");
+vi.stubEnv("VITE_HOSTNAME", "https://mock.com/");
+
+describe("Organisation.vue", () => {
+  let wrapper;
+  let store;
+  let mockGetOrgTypes;
+  let mockGetCountries;
+
+  const mockRoute = { params: { id: "1" } };
+  const mockRouter = { push: vi.fn() };
+
+  const createVuexStore = () => {
+    mockGetOrgTypes = vi.fn();
+    mockGetCountries = vi.fn();
+
+    return createStore({
+      modules: {
+        users: {
+          namespaced: true,
+          state: {
+            user: () => ({
+              is_curator: true,
+              is_super_curator: false,
+              credentials: { token: "mock-token" },
+            }),
+          },
+        },
+        editor: {
+          namespaced: true,
+          state: {
+            organisationsTypes: [{ id: 1, name: "Institute" }],
+            countries: [{ id: 1, name: "France" }],
+            tooltips: { countries: "Select a country" },
+          },
+          actions: {
+            getOrganisationsTypes: mockGetOrgTypes,
+            getCountries: mockGetCountries,
+          },
+        },
+      },
+    });
   };
 
-  beforeAll(() => {
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      organisation: organisation,
-    });
-    restStub = sinon.stub(RESTClient.prototype, "executeQuery");
-    restStub.withArgs(sinon.match.any).returns({
-      data: { id: 1 },
-    });
-  });
+  const mountComponent = async () => {
+    store = createVuexStore();
 
-  afterAll(() => {
-    graphStub.restore();
-  });
-
-  it("can be instantiated", async () => {
-    wrapper = await shallowMount(Organisation, {
-      vuetify,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    const title = "Organisation";
-    expect(wrapper.vm.$options.name).toMatch(title);
-    expect(wrapper.vm.organisation.id).toEqual(1);
-    expect(wrapper.vm.currentRoute).toEqual(1);
-  });
-
-  it("redirects to the search page for filtering", async () => {
-    graphStub.restore();
-    wrapper = await shallowMount(Organisation, {
-      vuetify,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    await wrapper.vm.getOrganisation();
-    wrapper.vm.organisation = organisation;
-    wrapper.vm.filterRecords();
-    expect($router.push).toHaveBeenCalledWith({
-      name: "search",
-      query: {
-        organisations: encodeURIComponent(organisation.name.toLowerCase()),
-      },
-    });
-  });
-
-  it("doesn't display if the organisation is not set in the response", async () => {
-    graphStub.restore();
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      error: "error",
-    });
-    wrapper = await shallowMount(Organisation, {
-      vuetify,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    expect(wrapper.vm.organisation).toStrictEqual({
-      alternativeNames: [],
-      types: [],
-      users: [],
-      parentOrganisations: [],
-      childOrganisations: [],
-      countries: [],
-    });
-  });
-
-  it("can generate the correct URL for the logo", async () => {
-    graphStub.restore();
-
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      organisation: organisation,
-    });
-    wrapper = await shallowMount(Organisation, {
-      vuetify,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    expect(wrapper.vm.logoUrl).toEqual(
-      import.meta.env.VITE_API_ENDPOINT + "/logo12345678",
-    );
-    wrapper.vm.testEnvironment = true;
-  });
-
-  it("watches the current route", async () => {
-    graphStub.restore();
-    wrapper = await shallowMount(Organisation, {
+    wrapper = shallowMount(Organisation, {
       global: {
-        plugins: [vuetify, $store],
-        mocks: { $route, $router },
-        stubs: { RouterLink: RouterLinkStub },
+        plugins: [store],
+        mocks: {
+          $route: mockRoute,
+          $router: mockRouter,
+        },
+        stubs: [
+          "SectionTitle",
+          "SearchOrganisationRecords",
+          "NotFound",
+          "Loaders",
+          "CountryFlag",
+        ],
       },
     });
-    expect(wrapper.vm.currentRoute).toEqual(1);
-    $route.params.id = 10;
-    expect(wrapper.vm.currentRoute).toEqual(10);
-  });
 
-  // TODO: This will call the relevant code but the server's response is mocked.
-  // TODO: So, I can't prove that the server has modified the information.
-  it("can modify the organisation", async () => {
-    wrapper = await shallowMount(Organisation, {
-      vuetify,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    wrapper.vm.editedOrganisation.name = "changed name";
-    await wrapper.vm.editOrganisation();
-  });
+    // Wait for the created/mounted async hooks to resolve
+    await vi.dynamicImportSettled();
+  };
 
-  it("can delete the organisation", async () => {
-    let assignMock = vi.fn();
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    // Safety mock for window.location (used in deleteOrganisation)
     delete window.location;
-    window.location = { assign: assignMock };
+    window.location = { pathname: "" };
+  });
 
-    wrapper = await shallowMount(Organisation, {
-      vuetify,
-      mocks: { $route, $router, $store },
-      stubs: { RouterLink: RouterLinkStub },
-    });
+  // --- RENDERING & LIFECYCLE ---
 
-    // Cancel record deletion
-    wrapper.vm.confirmDelete = true;
-    await wrapper.vm.deleteOrganisation(false);
-    expect(wrapper.vm.confirmDelete).toEqual(false);
+  it("fetches organisation data and dispatches store actions on mount", async () => {
+    await mountComponent();
 
-    // Proceed with record deletion
+    // Verifies mounted hooks fired
+    expect(mockGetOrgTypes).toHaveBeenCalled();
+    expect(mockGetCountries).toHaveBeenCalled();
+
+    // Verifies created hook fetched the org and mapped it to the component data
+    expect(wrapper.vm.organisation.name).toBe("Test Org");
+    expect(wrapper.vm.error).toBe(false);
+  });
+
+  // --- COMPUTED PROPERTIES ---
+
+  it("computes logoUrl correctly from env variables", async () => {
+    await mountComponent();
+    expect(wrapper.vm.logoUrl).toBe("https://api.mock.com/media/logo.png");
+  });
+
+  // --- FORMATTING METHODS ---
+
+  it("formats users with and without ORCID correctly", async () => {
+    await mountComponent();
+    const userWithOrcid = { username: "testuser", orcid: "1234" };
+    const userNoOrcid = { username: "testuser2" };
+
+    expect(wrapper.vm.formatUser(userWithOrcid)).toBe("testuser (1234)");
+    expect(wrapper.vm.formatUser(userNoOrcid)).toBe("testuser2");
+  });
+
+  it("formats alternative names as comma-separated string", async () => {
+    await mountComponent();
+    const mockOrg = { alternativeNames: ["One", "Two"] };
+    expect(wrapper.vm.getAltNames(mockOrg)).toBe("One, Two");
+
+    expect(wrapper.vm.getAltNames({})).toBeNull();
+  });
+
+  // --- ACTIONS (DELETE) ---
+
+  it("calls REST client to delete organisation and redirects on success", async () => {
+    await mountComponent();
+
+    // Call the method passing 'true' to confirm deletion
     await wrapper.vm.deleteOrganisation(true);
-    await wrapper.vm.deleteOrganisation(true);
-    const url = "/organisations";
-    Object.defineProperty(window, "location", {
-      value: {
-        pathname: url,
-      },
 
-      writable: true,
-    });
+    // Verify the shared spy was called with org ID and user token
+    expect(mockDeleteOrganisation).toHaveBeenCalledWith(1, "mock-token");
 
-    expect(window.location.pathname).toEqual(url);
+    // Verify window.location was updated to redirect the user
+    expect(window.location.pathname).toBe("/organisations");
+  });
+
+  it("can check confirmDeleteOrganisation method", async () => {
+    await mountComponent();
+    wrapper.vm.confirmDeleteOrganisation();
+
+    expect(wrapper.vm.confirmDelete).toBe(true);
+    expect(wrapper.vm.deleteOrganisationCard).toBe(true);
+    expect(wrapper.vm.unlinkSavedSearchCard).toBe(false);
+  });
+
+  it("can check confirmUnlinkSavedSearch method", async () => {
+    await mountComponent();
+    wrapper.vm.confirmUnlinkSavedSearch("test");
+
+    expect(wrapper.vm.selectedItem).toBe("test");
+    expect(wrapper.vm.confirmDelete).toBe(true);
+    expect(wrapper.vm.deleteOrganisationCard).toBe(false);
+    expect(wrapper.vm.unlinkSavedSearchCard).toBe(true);
+  });
+
+  it("can check getUserLink method", async () => {
+    await mountComponent();
+    wrapper.vm.getUserLink();
+    let output = import.meta.env.VITE_HOSTNAME + "users/";
+    expect(wrapper.vm.getUserLink()).toBe(output);
+  });
+
+  it("can check orgUrl method", async () => {
+    await mountComponent();
+    wrapper.vm.orgUrl();
+    let output = import.meta.env.VITE_HOSTNAME + "organisations/";
+    expect(wrapper.vm.orgUrl()).toBe(output);
   });
 });

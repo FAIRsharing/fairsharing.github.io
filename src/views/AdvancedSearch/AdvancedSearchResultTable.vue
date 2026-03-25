@@ -5,6 +5,7 @@
   <div v-else class="pa-5 mb-15">
     <div
       :class="$vuetify.display.mdAndUp ? 'buttonWrapper' : 'd-flex flex-column'"
+      data-test="action-wrapper"
     >
       <v-btn
         class="mb-2 font-12"

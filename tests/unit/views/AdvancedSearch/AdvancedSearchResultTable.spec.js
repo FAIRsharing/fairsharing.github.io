@@ -1,110 +1,235 @@
 import { shallowMount } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
-import Vuex from "vuex";
-
-import advancedSearch from "@/store/AdvancedSearchComponents/advancedSearch";
+import { createStore } from "vuex";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
+import advancedSearch from "@/store";
 
-let $route = {
-  name: "search",
-  query: {},
-};
+vi.mock("@/store", () => ({
+  default: {
+    commit: vi.fn(),
+  },
+}));
 
-const $router = {
-  push: vi.fn(),
-};
+vi.mock("@/utils/recordsCardUtils", () => ({
+  default: {
+    methods: {
+      getRecordLink: vi.fn((record) => `/mock-link/${record.id}`),
+    },
+  },
+}));
 
-describe("AdvancedSearchResultTable.vue", function () {
-  let wrapper, store;
-  const vuetify = createVuetify();
+vi.stubEnv("VITE_FAIRSHARING_URL", "https://mock.fairsharing.org");
 
-  beforeEach(() => {
-    advancedSearch.getters = {
-      getLoadingStatus: () => {
-        return [true];
-      },
-      getAdvancedSearchResponse: () => {
-        return [
-          {
-            id: 2740,
-            type: "repository",
-            name: "Genome-Wide Association Studies Catalog",
-            description:
-              "The Genome-Wide Association Studies (GWAS) Catalog provides a consistent, searchable, visualisable and freely available database of published SNP-trait associations, which can be easily integrated with other resources, and is accessed by scientists, clinicians and other users worldwide. Within the Catalog, all eligible GWA studies are identified by literature search and assessed by curators, who then extract the reported trait, significant SNP-trait associations, and sample metadata. The Catalog also publishes a GWAS diagram of SNP-trait associations, mapped onto the human genome by chromosomal location and displayed on the human karyotype. Since 2010, delivery and development of the Catalog has been a collaborative project between the EMBL-EBI and NHGRI.",
-            registry: "Database",
-            status: "ready",
-            subjects: [
-              {
-                label: "Genomics",
-                id: 541,
-                definitions: [
-                  "The study of comprehensive sets of genes via high throughput methods.",
-                ],
-                iri: "http://purl.obolibrary.org/obo/NCIT_C84343",
-                synonyms: [],
-              },
-              {
-                label: "Comparative Genomics",
-                id: 783,
-                definitions: [
-                  "The study (typically comparison) of the sequence, structure or function of multiple genomes.",
-                ],
-                iri: "http://edamontology.org/topic_0797",
-                synonyms: [],
-              },
-            ],
-            domains: [
-              {
-                label: "Single nucleotide polymorphism",
-                id: 1798,
-                definitions: [
-                  "SNPs are single base pair positions in genomic DNA at which different sequence alternatives exist in normal individuals in some population(s), wherein the least frequent variant has an abundance of 1% or greater.",
-                ],
-                iri: "http://purl.obolibrary.org/obo/SO_0000694",
-                synonyms: ["SNP"],
-                inFairsharing: true,
-              },
-              {
-                label: "Genome-wide association study",
-                id: 1853,
-                definitions: [
-                  "Genome wide association study is a kind of study whose objective is to detect association between genetic markers (SNP or otherwise) accross the genome and a trait which may be a disease or another phenotype (e.g. trait of agronomic relevance in animal or plant studies). Genome wide association study compare the allele frequencies in 2 populations, one free of the trait used as control, the other one showing the trait use as 'case'. GWAS studies implement case-control design",
-                ],
-                iri: "http://purl.obolibrary.org/obo/STATO_0000091",
-                synonyms: ["whole genome association study", "", "GWAS study"],
-                inFairsharing: true,
-              },
-            ],
-            taxonomies: [
-              {
-                id: 453,
-                label: "Homo sapiens",
-              },
-            ],
-          },
-        ];
-      },
-      getErrorStatus: () => {
-        return [false];
-      },
-    };
+describe("AdvancedSearchResultTable.vue", () => {
+  let wrapper;
+  let store;
+  let vuetify;
+  let mockFetchAction;
+  let originalLocation;
 
-    store = new Vuex.Store({
+  const mockRoute = { query: {} };
+
+  const createVuexStore = (getterOverrides = {}) => {
+    mockFetchAction = vi.fn();
+    return createStore({
       modules: {
-        namespaced: true,
-        advancedSearch: advancedSearch,
+        advancedSearch: {
+          namespaced: true,
+          getters: {
+            getAdvancedSearchResponse: () => getterOverrides.response || [],
+            getLoadingStatus: () => getterOverrides.loading || false,
+            getErrorStatus: () => getterOverrides.error || false,
+            getAdvancedSearchQuery: () =>
+              getterOverrides.query || { fields: [] },
+          },
+          actions: { fetchAdvancedSearchResults: mockFetchAction },
+        },
       },
     });
+  };
 
-    wrapper = shallowMount(AdvancedSearchResultTable, {
+  const mountComponent = (getters = {}, routeQuery = {}) => {
+    store = createVuexStore(getters);
+    vuetify = createVuetify();
+    mockRoute.query = routeQuery;
+
+    return shallowMount(AdvancedSearchResultTable, {
       global: {
         plugins: [store, vuetify],
-        mocks: { $route, $router },
+        mocks: {
+          $route: mockRoute,
+          $vuetify: { display: { mdAndUp: true } },
+        },
+        stubs: ["ErrorPage", "SaveSearchButton", "RecordStatus", "TagChips"],
       },
     });
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
+    originalLocation = window.location;
+    delete window.location;
+    window.location = { href: "" };
   });
 
-  it("can be instantiated", () => {
-    expect(wrapper.vm.$options.name).toMatch("AdvancedSearchResultTable");
+  afterEach(() => {
+    if (wrapper) wrapper.unmount();
+    window.location = originalLocation;
+  });
+
+  it("renders ErrorPage when getErrorStatus is true", () => {
+    wrapper = mountComponent({ error: true });
+    expect(wrapper.find("error-page-stub").exists()).toBe(true);
+    expect(wrapper.find("v-data-iterator-stub").exists()).toBe(false);
+  });
+
+  it("renders table content when getErrorStatus is false", () => {
+    wrapper = mountComponent({ error: false });
+    expect(wrapper.find("error-page-stub").exists()).toBe(false);
+    expect(wrapper.find("v-data-iterator-stub").exists()).toBe(true);
+  });
+
+  // --- COMPUTED PROPERTY TESTS ---
+
+  it("computes noPagination correctly", () => {
+    // Empty array = true (no pagination)
+    wrapper = mountComponent({ response: [] });
+    expect(wrapper.vm.noPagination).toBe(true);
+
+    // Array with items = false (show pagination)
+    wrapper = mountComponent({ response: [{ id: 1 }] });
+    expect(wrapper.vm.noPagination).toBe(false);
+  });
+
+  it("computes sortData correctly for Name", () => {
+    wrapper = mountComponent();
+    wrapper.vm.sortBy = "Name";
+    wrapper.vm.sortDesc = true;
+    expect(wrapper.vm.sortData).toEqual([{ key: "name", order: "desc" }]);
+    wrapper.vm.sortDesc = false;
+    expect(wrapper.vm.sortData).toEqual([{ key: "name", order: "asc" }]);
+  });
+
+  it("computes sortData correctly for Registry", () => {
+    wrapper = mountComponent();
+    wrapper.vm.sortBy = "Registry";
+    wrapper.vm.sortDesc = true;
+    expect(wrapper.vm.sortData).toEqual([{ key: "registry", order: "desc" }]);
+
+    wrapper.vm.sortDesc = false;
+    expect(wrapper.vm.sortData).toEqual([{ key: "registry", order: "asc" }]);
+  });
+  it("computes sortData correctly for Type", () => {
+    wrapper = mountComponent();
+    wrapper.vm.sortBy = "Type";
+    wrapper.vm.sortDesc = true;
+    expect(wrapper.vm.sortData).toEqual([{ key: "type", order: "desc" }]);
+
+    wrapper.vm.sortDesc = false;
+    expect(wrapper.vm.sortData).toEqual([{ key: "type", order: "asc" }]);
+  });
+  it("computes sortData correctly for Status", () => {
+    wrapper = mountComponent();
+    wrapper.vm.sortBy = "Status";
+    wrapper.vm.sortDesc = true;
+    expect(wrapper.vm.sortData).toEqual([{ key: "status", order: "desc" }]);
+
+    wrapper.vm.sortDesc = false;
+    expect(wrapper.vm.sortData).toEqual([{ key: "status", order: "asc" }]);
+  });
+  it("computes sortData correctly for Description", () => {
+    wrapper = mountComponent();
+    wrapper.vm.sortBy = "Description";
+    wrapper.vm.sortDesc = true;
+    expect(wrapper.vm.sortData).toEqual([
+      { key: "description", order: "desc" },
+    ]);
+    wrapper.vm.sortDesc = false;
+    expect(wrapper.vm.sortData).toEqual([{ key: "description", order: "asc" }]);
+  });
+
+  it("computes sortData correctly for any value/default", () => {
+    wrapper = mountComponent();
+    wrapper.vm.sortBy = "Test";
+    wrapper.vm.sortDesc = true;
+    expect(wrapper.vm.sortData).toEqual([{ key: "name", order: "desc" }]);
+    wrapper.vm.sortDesc = false;
+    expect(wrapper.vm.sortData).toEqual([{ key: "name", order: "asc" }]);
+  });
+
+  it("generates CSV and triggers download in downloadResults()", () => {
+    const mockData = [
+      {
+        id: "1",
+        name: "Test, Record",
+        abbreviation: "TR",
+        publications: [1, 2],
+      },
+    ];
+    wrapper = mountComponent({ response: mockData });
+
+    // Trigger the download
+    wrapper.vm.downloadResults();
+
+    // Verify Blob creation
+    expect(global.URL.createObjectURL).toHaveBeenCalled();
+
+    // Verify it assigned the mocked blob URL to the window location
+    expect(window.location.href).toBe("blob:mock-url");
+  });
+
+  it("calculates recordPublicationsLength correctly", () => {
+    wrapper = mountComponent();
+    expect(
+      wrapper.vm.recordPublicationsLength({ publications: [1, 2, 3] }),
+    ).toBe(3);
+    expect(wrapper.vm.recordPublicationsLength({ publications: [] })).toBe(0);
+    expect(wrapper.vm.recordPublicationsLength({})).toBe(0); // missing property
+  });
+
+  it("parses URL query parameters and dispatches store actions on mount", () => {
+    // We must provide a string formatted exactly how fetchQueryParams expects it
+    const testRouteQuery = {
+      operator: "AND",
+      fields: "(operator=OR&registry=true+false)",
+      q: "searchterm",
+    };
+
+    // Mount triggers mounted(), which calls fetchQueryParams()
+    wrapper = mountComponent(
+      { response: [], query: { fields: [] } }, // Ensure requirements to run the if-block are met
+      testRouteQuery,
+    );
+
+    // 1. Check direct store commits
+    expect(advancedSearch.commit).toHaveBeenCalledWith(
+      "advancedSearch/setAdvancedSearch",
+      expect.any(Object),
+    );
+    expect(advancedSearch.commit).toHaveBeenCalledWith(
+      "advancedSearch/setEditAdvancedSearch",
+      expect.any(Object),
+    );
+
+    // Inspect the exact object that was built and committed by the parser
+    const committedPayload = advancedSearch.commit.mock.calls[0][1];
+    expect(committedPayload.operatorIdentifier).toBe("AND");
+    expect(committedPayload.children[0].operatorIdentifier).toBe("OR");
+    expect(committedPayload.children[0].children[0].identifier).toBe(
+      "registry",
+    );
+    // "true+false" splits to ["true", "false"] in your logic
+    expect(committedPayload.children[0].children[0].value).toEqual([
+      "true",
+      "false",
+    ]);
+
+    // 2. Check Vuex mapped action
+    expect(mockFetchAction).toHaveBeenCalledWith(
+      expect.any(Object),
+      "searchterm",
+    );
   });
 });

@@ -72,9 +72,16 @@ export default {
     await this.initializeData();
     await this.$nextTick();
     this.finalData = this.tempData;
-    this.finalDataItemsHasLength = Object.keys(this.finalData).some(
-      (key) => this.finalData[key].length >= 1,
-    );
+    this.finalDataItemsHasLength = false;
+    // Check that all objects have a value, and return false if all are empty.
+    // This will prevent the additional info section from being displayed.
+    Object.keys(this.finalData).forEach((key) => {
+      if (this.finalData[key].length >= 1) {
+        this.finalData[key].forEach((item) => {
+          this.finalDataItemsHasLength = Object.values(item).some(el => el !== undefined && el !== null && el !== '');
+        });
+      }
+    });
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
@@ -96,7 +103,7 @@ export default {
       /* istanbul ignore else */
       if (this.allowedFields.properties !== undefined) {
         const allAllowedTypes = Object.keys(
-          this.allowedFields.properties,
+          this.allowedFields.properties
         ).filter((key) => !excludedTypes.includes(key));
         for (const key of allAllowedTypes) {
           if (

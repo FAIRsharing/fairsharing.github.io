@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="currentField && currentField.length > 0"
+    v-if="currentField && currentField.length > 0 && checkCurrentfield(currentField)"
     class="pa-4 mt-4 data-holder"
   >
     <v-tooltip
@@ -123,6 +123,19 @@ export default {
       const regex = new RegExp(expression);
       return string.match(regex);
     },
+    // Map the values for every object in the array and determine if any are empty.
+    // If they are empty, return false.
+    checkCurrentfield(currentField) {
+      let empty = true;
+      currentField.forEach((item) => {
+        Object.keys(item).forEach((key, value) => {
+          if (item[value] === "") {
+            empty = false;
+          }
+        });
+      })
+      return empty;
+    }
   },
 };
 </script>

@@ -43,6 +43,7 @@ export default mergeConfig(
       coverage: {
         provider: "v8", // or 'istanbul'
         ignoreEmptyLines: true,
+        reporter: ["html", "lcov", "text", 'json-summary'],
         thresholds: {
           lines: 90,
           functions: 90,
@@ -70,7 +71,6 @@ export default mergeConfig(
           "src/components/Curators/index.js",
           "src/components/Editor/GeneralInformation/BaseFields.vue",
         ],
-        reporter: ["html", "lcov", "text"],
         reportOnFailure: true,
       },
     },

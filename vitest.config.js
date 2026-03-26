@@ -43,7 +43,7 @@ export default mergeConfig(
       coverage: {
         provider: "v8", // or 'istanbul'
         ignoreEmptyLines: true,
-        reporter: ["html", "lcov", "text", 'json-summary'],
+        reporter: ["html", "lcov", "text", "json-summary"],
         thresholds: {
           lines: 90,
           functions: 90,

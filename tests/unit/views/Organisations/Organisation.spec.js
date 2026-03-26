@@ -325,6 +325,15 @@ describe("Organisation.vue", () => {
     ]);
   });
 
+  it("opens a new tab with the correct URL in goToRecord()", async () => {
+    await mountComponent();
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => {});
+    wrapper.vm.goToRecord(456);
+    expect(openSpy).toHaveBeenCalledWith("/456", "_blank");
+    // 5. Clean up the spy so it doesn't affect other tests
+    openSpy.mockRestore();
+  });
+
   describe("editOrganisation()", () => {
     it("formats full form data, calls REST client, and refreshes on success", async () => {
       await mountComponent();
@@ -396,6 +405,46 @@ describe("Organisation.vue", () => {
 
       const payload = mockEditOrganisation.mock.calls[0][0];
       expect(payload.logo).toBeUndefined();
+    });
+  });
+
+  describe("imageSizeCorrect()", () => {
+    it("returns true and sets imageTooBig to false when no logo is selected", async () => {
+      await mountComponent();
+      wrapper.vm.editedOrganisation.logo = null;
+      wrapper.vm.imageTooBig = true;
+
+      const result = wrapper.vm.imageSizeCorrect();
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.imageTooBig).toBe(false);
+    });
+
+    it("returns true and sets imageTooBig to false when logo size is under the limit", async () => {
+      await mountComponent();
+
+      // Setup: Logo size is less than allowed
+      wrapper.vm.allowedFileSize = 3145728; // 3MB limit from your data()
+      wrapper.vm.editedOrganisation.logo = { size: 1000000 }; // 1MB logo
+      wrapper.vm.imageTooBig = true;
+
+      const result = wrapper.vm.imageSizeCorrect();
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.imageTooBig).toBe(false);
+    });
+
+    it("returns an error string, sets imageTooBig to true, and emits an event when logo is too large", async () => {
+      await mountComponent();
+      wrapper.vm.allowedFileSize = 3145728;
+      wrapper.vm.editedOrganisation.logo = { size: 4000000 }; // 4MB logo
+      wrapper.vm.imageTooBig = false;
+
+      const result = wrapper.vm.imageSizeCorrect();
+      expect(result).toBe("Image is too large (max 3MB).");
+      expect(wrapper.vm.imageTooBig).toBe(true);
+      expect(wrapper.emitted("imageTooBig")).toBeTruthy();
+      expect(wrapper.emitted("imageTooBig")[0]).toEqual([true]);
     });
   });
 });

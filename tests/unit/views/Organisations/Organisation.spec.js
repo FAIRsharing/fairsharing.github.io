@@ -151,6 +151,14 @@ describe("Organisation.vue", () => {
 
   // --- RENDERING & LIFECYCLE ---
 
+  it("can be mounted", async () => {
+    await mountComponent();
+    wrapper.vm.rules.isRequired();
+    wrapper.vm.rules.isURL();
+    wrapper.vm.rules.isImage();
+    expect(wrapper.vm.$options.name).toMatch("Organisation");
+  });
+
   it("fetches organisation data and dispatches store actions on mount", async () => {
     await mountComponent();
 
@@ -235,5 +243,159 @@ describe("Organisation.vue", () => {
     wrapper.vm.orgUrl();
     let output = import.meta.env.VITE_HOSTNAME + "organisations/";
     expect(wrapper.vm.orgUrl()).toBe(output);
+  });
+
+  it("can check unlinkSavedSearch method", async () => {
+    await mountComponent();
+    wrapper.vm.selectedItem.organisations = [{ id: 1 }, { id: 2 }];
+    wrapper.vm.organisation = { id: 1 };
+    wrapper.vm.unlinkSavedSearch(true);
+    expect(wrapper.vm.deleteOrganisationCard).toBe(false);
+    expect(wrapper.vm.confirmDelete).toBe(false);
+    expect(wrapper.vm.unlinkSavedSearchCard).toBe(false);
+  });
+
+  it("can check startEditing method", async () => {
+    await mountComponent();
+    await wrapper.vm.startEditing();
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.showEditDialog).toBe(true);
+  });
+
+  it("can check hideOverlay method", async () => {
+    await mountComponent();
+    await wrapper.vm.hideOverlay();
+    expect(wrapper.vm.showOverlay).toBe(false);
+    expect(wrapper.vm.targetID).toBe(null);
+  });
+
+  it("can check previewRecord method", async () => {
+    await mountComponent();
+    await wrapper.vm.previewRecord(1);
+    expect(wrapper.vm.targetID).toBe(1);
+    expect(wrapper.vm.showOverlay).toBe(true);
+  });
+
+  it("can check goToEdit method", async () => {
+    await mountComponent();
+    await wrapper.vm.goToEdit(1);
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      path: "/1/edit",
+    });
+  });
+
+  it("can check filterRecords method", async () => {
+    await mountComponent();
+    wrapper.vm.organisation = { name: "Test Org & Co." };
+    wrapper.vm.filterRecords();
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: "search",
+      query: { organisations: "test%20org%20%26%20co." },
+    });
+  });
+
+  it("removes the specified type from editedOrganisation.types in removeType()", async () => {
+    await mountComponent();
+    wrapper.vm.editedOrganisation.types = [
+      { id: 1, label: "Institute" },
+      { id: 2, label: "University" },
+      { id: 3, label: "Company" },
+    ];
+
+    wrapper.vm.removeType({ id: 2, name: "University" });
+
+    expect(wrapper.vm.editedOrganisation.types).toEqual([
+      { id: 1, label: "Institute" },
+      { id: 3, label: "Company" },
+    ]);
+  });
+
+  it("removes the specified country from editedOrganisation.countries in removeCountry()", async () => {
+    await mountComponent();
+
+    wrapper.vm.editedOrganisation.countries = [
+      { id: 1, label: "France" },
+      { id: 2, label: "Germany" },
+      { id: 3, label: "Spain" },
+    ];
+    wrapper.vm.removeCountry({ id: 2, name: "Germany" });
+    expect(wrapper.vm.editedOrganisation.countries).toEqual([
+      { id: 1, label: "France" },
+      { id: 3, label: "Spain" },
+    ]);
+  });
+
+  describe("editOrganisation()", () => {
+    it("formats full form data, calls REST client, and refreshes on success", async () => {
+      await mountComponent();
+      const getOrgSpy = vi
+        .spyOn(wrapper.vm, "getOrganisation")
+        .mockResolvedValue();
+      wrapper.vm.showEditDialog = true;
+      wrapper.vm.organisation.id = 99;
+
+      wrapper.vm.editedOrganisation = {
+        name: "Updated Name",
+        homepage: "http://updated.org",
+        rorLink: "http://ror.org/updated",
+        types: [
+          { id: 1, name: "Institute" },
+          { id: 2, name: "Lab" },
+        ],
+        countries: [{ id: 10, name: "France" }],
+        alternativeNames: "  Alt 1, Alt 2  ", // Notice the messy spacing
+        logo: { name: "logo.png", type: "image/png", size: 1000 },
+      };
+
+      await wrapper.vm.editOrganisation();
+
+      expect(mockEditOrganisation).toHaveBeenCalledWith(
+        {
+          name: "Updated Name",
+          homepage: "http://updated.org",
+          organisation_type_ids: [1, 2],
+          country_ids: [10],
+          ror_link: "http://ror.org/updated",
+          alternative_names: ["Alt 1", "Alt 2"],
+          logo: {
+            filename: "logo.png",
+            content_type: "image/png",
+            data: "data:image/png;base64,mock...",
+          },
+        },
+        99,
+        "mock-token",
+      );
+
+      expect(getOrgSpy).toHaveBeenCalled();
+      expect(wrapper.vm.showEditDialog).toBe(false);
+      expect(wrapper.vm.logoLoading).toBe(false);
+    });
+
+    it("gracefully handles missing alternativeNames and missing logo", async () => {
+      await mountComponent();
+      wrapper.vm.organisation.id = 99;
+      wrapper.vm.editedOrganisation = {
+        name: "Simple Org",
+        types: [],
+        countries: [],
+        alternativeNames: null,
+        logo: null,
+      };
+
+      await wrapper.vm.editOrganisation();
+
+      expect(mockEditOrganisation).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Simple Org",
+          alternative_names: [],
+        }),
+        99,
+        "mock-token",
+      );
+
+      const payload = mockEditOrganisation.mock.calls[0][0];
+      expect(payload.logo).toBeUndefined();
+    });
   });
 });

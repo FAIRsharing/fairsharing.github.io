@@ -18,12 +18,12 @@
         <v-chip
           v-for="item in getField('objectTypes')"
           :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
+          class="mr-2 mb-2 text-capitalize"
           variant="flat"
           @click="returnToSearch('objectTypes', item.label)"
         >
-          <KeywordTooltip :keyword="item" :full-width="true" />
+          <KeywordTooltip :full-width="true" :keyword="item" />
         </v-chip>
       </div>
     </div>
@@ -45,12 +45,12 @@
         <v-chip
           v-for="item in getField('subjects')"
           :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
+          class="mr-2 mb-2 text-capitalize"
           variant="flat"
           @click="returnToSearch('subjects', item.label)"
         >
-          <KeywordTooltip :keyword="item" :full-width="true" />
+          <KeywordTooltip :full-width="true" :keyword="item" />
         </v-chip>
       </div>
     </div>
@@ -72,12 +72,12 @@
         <v-chip
           v-for="item in getField('domains')"
           :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
+          class="mr-2 mb-2 text-capitalize"
           variant="flat"
           @click="returnToSearch('domains', item.label)"
         >
-          <KeywordTooltip :keyword="item" :full-width="true" />
+          <KeywordTooltip :full-width="true" :keyword="item" />
         </v-chip>
       </div>
     </div>
@@ -99,12 +99,12 @@
         <v-chip
           v-for="item in getField('taxonomies')"
           :key="item.label"
+          :color="getChipColor(item)"
           class="mr-2 mb-2 text-capitalize"
           variant="flat"
-          :color="getChipColor(item)"
           @click="returnToSearch('taxonomies', item.label)"
         >
-          <KeywordTooltip :keyword="item" :full-width="true" />
+          <KeywordTooltip :full-width="true" :keyword="item" />
         </v-chip>
       </div>
     </div>
@@ -126,12 +126,12 @@
         <v-chip
           v-for="item in getField('userDefinedTags')"
           :key="item.label"
+          :color="getChipColor(item)"
           class="mr-2 mb-2 text-capitalize"
           variant="flat"
-          :color="getChipColor(item)"
           @click="returnToSearch('userDefinedTags', item.label)"
         >
-          <KeywordTooltip :keyword="item" :full-width="true" />
+          <KeywordTooltip :full-width="true" :keyword="item" />
         </v-chip>
       </div>
     </div>
@@ -144,6 +144,7 @@ import { mapGetters, mapState } from "vuex";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
 import KeywordTooltip from "../../Shared/KeywordTooltip";
+
 export default {
   name: "Keywords",
   components: {

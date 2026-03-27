@@ -77,7 +77,9 @@ describe("Maintainers.vue", function () {
       isLoggedIn: true,
     });
     expect(wrapper.text()).toContain("This record is in need of a maintainer.");
-    expect(wrapper.text()).toContain("If you are affiliated with this project,");
+    expect(wrapper.text()).toContain(
+      "If you are affiliated with this project,",
+    );
     const claimLink = wrapper.find("p.underline-effect.text-blue");
     expect(claimLink.exists()).toBe(true);
     await claimLink.trigger("click");
@@ -92,7 +94,9 @@ describe("Maintainers.vue", function () {
       id: "980190962",
     });
     const loginLink = wrapper.find("a.mr-1");
-    expect(wrapper.text()).toContain("If you are affiliated with this project,");
+    expect(wrapper.text()).toContain(
+      "If you are affiliated with this project,",
+    );
     expect(loginLink.exists()).toBe(true);
     expect(loginLink.attributes("href")).toBe(
       `${wrapper.vm.serverLink}accounts/login?goTo=%2F980190962`,

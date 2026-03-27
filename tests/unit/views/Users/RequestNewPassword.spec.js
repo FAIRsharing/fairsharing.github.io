@@ -1,9 +1,8 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 
 import Client from "@/lib/Client/RESTClient.js";
 import RequestNewPassword from "@/views/Users/RequestNewPassword.vue";
-
 
 describe("ConfirmAccount.vue", () => {
   let wrapper;
@@ -22,8 +21,7 @@ describe("ConfirmAccount.vue", () => {
     stub.restore();
   });
   beforeEach(async () => {
-    wrapper = await shallowMount(RequestNewPassword, {
-    });
+    wrapper = await shallowMount(RequestNewPassword, {});
   });
 
   it("can instantiate without token", async () => {

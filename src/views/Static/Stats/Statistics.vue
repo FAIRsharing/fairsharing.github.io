@@ -643,8 +643,7 @@ export default {
       let textPlural = "";
       if (text === "policy") {
         textPlural = "policies";
-      }
-      else {
+      } else {
         textPlural = text + "s";
       }
       chartField.title = "Top 10 ontologies subjects covered by " + textPlural;
@@ -691,8 +690,7 @@ export default {
       let searchText = "";
       if (text === "record") {
         chartField.title = "Top 10 countries by content";
-      }
-      else {
+      } else {
         chartField.title = "Top 10 " + text + " producing countries";
         searchText = "&fairsharingRegistry=" + text;
       }
@@ -710,8 +708,7 @@ export default {
       regBucket.forEach((item) => {
         if (item.key in nameMap) {
           nameC = nameMap[item.key];
-        }
-        else {
+        } else {
           nameC = item.key[0].toUpperCase() + item.key.substring(1);
         }
         let vectItem = {
@@ -741,8 +738,7 @@ export default {
       let textPlural = "";
       if (text === "policy") {
         textPlural = "policies";
-      }
-      else {
+      } else {
         textPlural = text + "s";
       }
       chartField.title = "Top 10 species covered by " + textPlural;
@@ -784,8 +780,7 @@ export default {
     prepareLicences(data, chartField, text) {
       if (text === "database") {
         chartField.title = "Top 10 licenses for database content";
-      }
-      else {
+      } else {
         chartField.title = "Top 10 licenses for standards";
       }
       chartField.textYAxis = "Number of " + text + "s";
@@ -837,8 +832,7 @@ export default {
       regBucket.forEach((item) => {
         if (item.key in nameMap) {
           nameC = nameMap[item.key];
-        }
-        else {
+        } else {
           nameC = item.key[0].toUpperCase() + item.key.substring(1);
         }
         let vectItem = {
@@ -893,15 +887,13 @@ export default {
         chartField.title = "Top 10 standards recommended by policies";
         chartField.textYAxis = "Number of policies";
         chartField.textXAxis = "Standards";
-      }
-      else {
+      } else {
         chartField.textYAxis = "Number of policy recommendations";
         if (type === "journalStand") {
           chartField.title =
             "Top 10 standards recommended by journal publishers";
           chartField.textXAxis = "Standards";
-        }
-        else {
+        } else {
           chartField.title =
             "Top 10 databases recommended by journal publishers";
           chartField.textXAxis = "Databases";
@@ -976,14 +968,12 @@ export default {
       let textPlural = "";
       if (type === "policy") {
         textPlural = "policies";
-      }
-      else {
+      } else {
         textPlural = type + "s";
       }
       if (funder) {
         chartField.title = "Top 10 funders of " + textPlural;
-      }
-      else {
+      } else {
         chartField.title =
           "Top 10 organisations (excluding funders) of " + textPlural;
       }
@@ -998,13 +988,11 @@ export default {
         let par = key.indexOf("(");
         if (par >= 0) {
           nameC = key.substring(par + 1, key.indexOf(")"));
-        }
-        else {
+        } else {
           let comm = key.split(",");
           if (comm.length > 2) {
             nameC = comm[0] + "," + comm[comm.length - 1];
-          }
-          else {
+          } else {
             nameC = key;
           }
         }

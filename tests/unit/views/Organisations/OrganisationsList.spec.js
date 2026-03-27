@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";

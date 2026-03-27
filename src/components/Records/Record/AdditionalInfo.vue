@@ -78,7 +78,9 @@ export default {
     Object.keys(this.finalData).forEach((key) => {
       if (this.finalData[key].length >= 1) {
         this.finalData[key].forEach((item) => {
-          this.finalDataItemsHasLength = Object.values(item).some(el => el !== undefined && el !== null && el !== '');
+          this.finalDataItemsHasLength = Object.values(item).some(
+            (el) => el !== undefined && el !== null && el !== "",
+          );
         });
       }
     });
@@ -103,7 +105,7 @@ export default {
       /* istanbul ignore else */
       if (this.allowedFields.properties !== undefined) {
         const allAllowedTypes = Object.keys(
-          this.allowedFields.properties
+          this.allowedFields.properties,
         ).filter((key) => !excludedTypes.includes(key));
         for (const key of allAllowedTypes) {
           if (

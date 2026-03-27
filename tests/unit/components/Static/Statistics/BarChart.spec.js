@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 
 import BarChart from "@/components/Static/Statistics/BarChart.vue";
 

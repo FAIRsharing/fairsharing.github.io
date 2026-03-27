@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 
 import infoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge.vue";

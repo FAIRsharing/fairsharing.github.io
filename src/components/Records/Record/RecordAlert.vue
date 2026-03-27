@@ -1,9 +1,9 @@
 <template>
   <v-alert
-      density="compact"
+    density="compact"
     :type="type"
     class="mb-2 flex-grow-1 text-center"
-      :icon="type === 'info' ? 'fas fa-circle-exclamation' : null"
+    :icon="type === 'info' ? 'fas fa-circle-exclamation' : null"
   >
     <!-- eslint-disable vue/no-v-html -->
     <span id="message-text" v-html="message" />

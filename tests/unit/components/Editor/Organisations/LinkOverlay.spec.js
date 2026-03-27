@@ -32,7 +32,7 @@ editorStore.state.organisations = [{ id: 1, name: "Existing Org" }];
   { id: 9, name: "Other" },
   { id: 10, name: "Other" },
 ]),
-(editorStore.state.grants = []);
+  (editorStore.state.grants = []);
 const $store = new Vuex.Store({
   modules: {
     editor: editorStore,

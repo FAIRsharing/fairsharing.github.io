@@ -1,7 +1,6 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 
 import PieChart from "@/components/Static/Statistics/PieChart.vue";
-
 
 describe("PieChart.vue", () => {
   let wrapper;

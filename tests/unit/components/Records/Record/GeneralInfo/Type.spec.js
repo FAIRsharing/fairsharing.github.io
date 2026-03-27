@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -17,16 +17,16 @@ let editor = {
 };
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    doi: 'FAIRsharing.wibble',
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[{label:'a'}],
-    metadata: {
-      globally_unique: 'true',
-      persistent: 'false',
-      resolvable: 'false'
-    }
+  doi: "FAIRsharing.wibble",
+  subjects: [],
+  domains: [],
+  taxonomies: [],
+  userDefinedTags: [{ label: "a" }],
+  metadata: {
+    globally_unique: "true",
+    persistent: "false",
+    resolvable: "false",
+  },
 };
 const $store = new Vuex.Store({
   modules: {

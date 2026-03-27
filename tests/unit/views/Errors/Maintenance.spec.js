@@ -1,14 +1,12 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 
 import Maintenance from "@/views/Errors/Maintenance.vue";
-
 
 describe("Maintenance page", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallowMount(Maintenance, {
-    });
+    wrapper = shallowMount(Maintenance, {});
   });
 
   it("can mount", () => {

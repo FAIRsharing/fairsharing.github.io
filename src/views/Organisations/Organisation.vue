@@ -618,8 +618,7 @@ export default {
           this.error = false;
         }
         this.loading = false;
-      }
-      catch (e) {
+      } catch (e) {
         this.errors = e.message;
         this.loading = false;
       }
@@ -642,8 +641,7 @@ export default {
         alt_names = this.editedOrganisation.alternativeNames
           .split(",")
           .map((item) => item.trim());
-      }
-      catch {
+      } catch {
         alt_names = [];
       }
       this.logoLoading = true;
@@ -721,8 +719,7 @@ export default {
     formatUser(user) {
       if (user.orcid) {
         return `${user.username} (${user.orcid})`;
-      }
-      else {
+      } else {
         return user.username;
       }
     },

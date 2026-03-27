@@ -77,7 +77,7 @@ export const mutations = {
           third_party: thirdParty,
           watchedRecords: watchedRecords,
           role: role,
-          orcid: user.orcid
+          orcid: user.orcid,
         };
       };
     } else {
@@ -93,7 +93,7 @@ export const mutations = {
           is_super_curator: false,
           third_party: false,
           role: null,
-          orcid: null
+          orcid: null,
         };
       };
     }

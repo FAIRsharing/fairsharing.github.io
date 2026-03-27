@@ -4,12 +4,7 @@
       v-model="selectedFairassistRule"
       class="query-builder-group-slot__rule-selection"
     >
-      <option
-        disabled
-        value=""
-      >
-        Select a FAIRassist rule
-      </option>
+      <option disabled value="">Select a FAIRassist rule</option>
       <option
         v-for="rule in fairassistQueryBuilderComponents()"
         :key="rule.identifier"
@@ -36,7 +31,8 @@ import {
   FairassistRecordType,
   IndeterminateExamples,
   NegativeExamples,
-  PositiveExamples} from "../index";
+  PositiveExamples,
+} from "../index";
 export default {
   name: "FairassistRule",
   props: {
@@ -102,7 +98,7 @@ export default {
             initialValue: "",
           },
         ],
-        "name"
+        "name",
       );
     },
 

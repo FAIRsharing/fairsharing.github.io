@@ -1,9 +1,8 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 
 import Client from "@/lib/Client/RESTClient.js";
 import ConfirmAccount from "@/views/Users/ConfirmAccount.vue";
-
 
 let $route = {
   path: "/users/confirmation",

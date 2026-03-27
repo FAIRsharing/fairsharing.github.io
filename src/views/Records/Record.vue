@@ -483,8 +483,7 @@ export default {
           describedByUrl =
             this.getHostname() +
             this.currentRecord.fairsharingRecord.doi.split(/\//)[1];
-        }
-        else {
+        } else {
           citeAsUrl = this.getHostname() + this.recordID;
           describedByUrl = this.getHostname() + this.recordId;
         }
@@ -517,8 +516,7 @@ export default {
       if (_module.currentRecord.fairsharingRecord.isHidden) {
         if (!_module.user().isLoggedIn) {
           return true;
-        }
-        else {
+        } else {
           if (!_module.canEdit) {
             return true;
           }
@@ -529,26 +527,26 @@ export default {
     getRecordCardBackground() {
       let finalCardBackColor;
       switch (this.currentRecord.fairsharingRecord.registry) {
-      case "Standard":
-        finalCardBackColor =
+        case "Standard":
+          finalCardBackColor =
             this.theme.computedThemes.value.fairSharingTheme
               .bg_standard_record_card;
-        break;
-      case "Database":
-        finalCardBackColor =
+          break;
+        case "Database":
+          finalCardBackColor =
             this.theme.computedThemes.value.fairSharingTheme.colors
               .bg_database_record_card;
-        break;
-      case "Policy":
-        finalCardBackColor =
+          break;
+        case "Policy":
+          finalCardBackColor =
             this.theme.computedThemes.value.fairSharingTheme.colors
               .bg_policy_record_card;
-        break;
-      case "Collection":
-        finalCardBackColor =
+          break;
+        case "Collection":
+          finalCardBackColor =
             this.theme.computedThemes.value.fairSharingTheme.colors
               .bg_collection_record_card;
-        break;
+          break;
       }
       return finalCardBackColor;
     },
@@ -595,8 +593,7 @@ export default {
           leftBlock: ["Collections", "RelatedContent", "Support"],
           rightBlock: ["DataProcessesAndConditions", "Tools", "Organisations"],
         };
-      }
-      else {
+      } else {
         return {
           leftBlock: ["Collections", "Support", "DataProcessesAndConditions"],
           rightBlock: ["RelatedContent", "Tools", "Organisations"],
@@ -653,8 +650,7 @@ export default {
     try {
       await _module.$scrollTo(_module.$route.hash || "body");
       // eslint-disable-next-line no-empty
-    }
-    catch (e) {
+    } catch (e) {
       // This serves to prevent warnings when tests are run on Github (trying to scroll with no DOM etc.).  #1201
     }
     // update the UI padding and margin after DOM is fully loaded.
@@ -686,16 +682,19 @@ export default {
       // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
       // and then curators alerts(auth-needed orange ones) so blue ones stack,
       // then orange and then red/green [approval/rejection] ones.
-      let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
-          .isAwaitingApproval()
-          .isWatching(this.isWatching())
-          .isNeedingReview(this.needsReviewing(), this.error)
-          .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-          .isAlreadyClaimed(this.alreadyClaimed)
-          .isHidden()
-          .isIncomplete()
-          .isMissingRecommendedFields()
-          .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
+      let alertBuilder = new AlertBuilder(_module.currentRecord, this.user())
+        .isAwaitingApproval()
+        .isWatching(this.isWatching())
+        .isNeedingReview(this.needsReviewing(), this.error)
+        .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+        .isAlreadyClaimed(this.alreadyClaimed)
+        .isHidden()
+        .isIncomplete()
+        .isMissingRecommendedFields()
+        .isOwnerShipApproved(
+          this.ownershipApprovalStatus,
+          this.isBannerExpired(),
+        );
       _module.alerts = alertBuilder.getAlerts();
     },
     ...mapActions("record", [
@@ -741,8 +740,7 @@ export default {
                   goTo: `/${_module.currentRecord["fairsharingRecord"].id}`,
                 },
               });
-            }
-            else {
+            } else {
               _module.claimRecordMenu(
                 _module.currentRecord["fairsharingRecord"].name,
                 _module.currentRecord["fairsharingRecord"].id,
@@ -754,12 +752,10 @@ export default {
           name: () => {
             if (!_module.userIsLoggedIn) {
               return "Watch record";
-            }
-            else {
+            } else {
               if (!_module.isWatching()) {
                 return "Watch record";
-              }
-              else {
+              } else {
                 return "Unwatch record";
               }
             }
@@ -775,12 +771,10 @@ export default {
                   goTo: `/${_module.currentRecord["fairsharingRecord"].id}`,
                 },
               });
-            }
-            else {
+            } else {
               if (_module.isWatching()) {
                 _module.changeWatchRecord(false);
-              }
-              else {
+              } else {
                 _module.changeWatchRecord(true);
               }
             }
@@ -910,8 +904,7 @@ export default {
       );
       if (data.error) {
         _module.error = "error deleting record";
-      }
-      else {
+      } else {
         // Redirect to current record to show it has gone...
         this.$router.go();
       }
@@ -976,8 +969,7 @@ export default {
           //   fromRecordPage: true
           // }
         });
-      }
-      else {
+      } else {
         this.$router.push({
           path: "/accounts/login",
           query: {
@@ -1002,8 +994,7 @@ export default {
         _module.error =
           "Sorry, your request to claim this record failed. Please contact us.";
         _module.canClaim = false;
-      }
-      else {
+      } else {
         // show modal here
         _module.canClaim = false;
         _module.claimedTriggered = true;
@@ -1028,8 +1019,7 @@ export default {
         _module.error =
           "Sorry, your request to be removed as a maintainer of this record failed. Please contact us.";
         _module.stopMaintainFailure = true;
-      }
-      else {
+      } else {
         // Display a toast here.
         _module.stopMaintainSuccess = true;
         // remove maintainer from local data
@@ -1084,8 +1074,7 @@ export default {
               _module.setBannerExpiry();
             }
             _module.canClaim = false;
-          }
-          else {
+          } else {
             // show modal here
             _module.canClaim = !claim.existing;
           }
@@ -1093,8 +1082,7 @@ export default {
             //noClaimRegistered: this is the situation where the current record is not requested to be maintained by user
             _module.noClaimRegistered = true;
           }
-        }
-        catch (e) {
+        } catch (e) {
           /* istanbul ignore next */
           _module.canClaim = false;
         }
@@ -1123,8 +1111,7 @@ export default {
         // UNCOMMENT ME TO TEST TOMBSTONE PAGE
         // Or, set tombstone to true on a record, if using a local server.
         // this.currentRecord['fairsharingRecord'].metadata.tombstone = true;
-      }
-      catch (e) {
+      } catch (e) {
         this.error = e.message;
       }
       this.queryTriggered = true;
@@ -1156,8 +1143,7 @@ export default {
           _module.user().credentials.token,
         );
         _module.canEdit = !canEdit.error;
-      }
-      else {
+      } else {
         return false;
       }
     },
@@ -1174,8 +1160,7 @@ export default {
       if (watch) {
         operation = "add";
         records.push(_module.currentRecord["fairsharingRecord"].id);
-      }
-      else {
+      } else {
         operation = "remove";
         records = records.filter(function (value) {
           return value !== _module.currentRecord["fairsharingRecord"].id;
@@ -1248,8 +1233,7 @@ export default {
       d.setFullYear(pastYear);
       if (!_module.reviewsPresent()) {
         return !_module.reviewsPresent();
-      }
-      else {
+      } else {
         // Creating a date from the string returned by the API.
         // See: https://stackoverflow.com/a/11658343/1195207
         _module.currentRecord["fairsharingRecord"]["reviews"].forEach(
@@ -1283,8 +1267,7 @@ export default {
       );
       if (reviewRecord.error) {
         _module.reviewFail = true;
-      }
-      else {
+      } else {
         _module.reviewSuccess = true;
         await this.getData();
       }
@@ -1298,8 +1281,7 @@ export default {
       let id;
       if (this.currentRecord.fairsharingRecord.doi) {
         id = this.currentRecord.fairsharingRecord.doi.split("/")[1];
-      }
-      else {
+      } else {
         id = this.currentRecord.fairsharingRecord.id;
       }
       if (this.currentRecord.fairsharingRecord.abbreviation) {
@@ -1319,8 +1301,7 @@ export default {
             },
           ],
         };
-      }
-      else {
+      } else {
         return {
           title: "FAIRsharing | " + this.currentRecord.fairsharingRecord.name,
           meta: [
@@ -1336,8 +1317,7 @@ export default {
           ],
         };
       }
-    }
-    catch (e) {
+    } catch (e) {
       //error
     }
   },

@@ -186,8 +186,7 @@ export default {
         if (currentSubTab && currentSubTab[1]) {
           rawData = currentSubTab[1];
         }
-      }
-      else if (this.selectedTab === 1) {
+      } else if (this.selectedTab === 1) {
         rawData = this.legacyLogs || [];
       }
       if (!rawData) return [];

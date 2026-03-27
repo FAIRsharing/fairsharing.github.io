@@ -154,8 +154,7 @@ let editorStore = {
       try {
         let countries = await graphClient.executeQuery(countriesQuery);
         state.commit("setCountries", countries?.searchCountries || []);
-      }
-      catch (e) {
+      } catch (e) {
         state.commit("setCountries", []);
       }
     },
@@ -185,8 +184,7 @@ let editorStore = {
             recordTypes.push({ divider: true });
           }
         });
-      }
-      catch (e) {
+      } catch (e) {
         recordTypes = [];
       }
       state.commit("setRecordTypes", recordTypes);
@@ -198,8 +196,7 @@ let editorStore = {
         (data?.objectTypes?.records || []).forEach(function (type) {
           objectTypes.push(type);
         });
-      }
-      catch (e) {
+      } catch (e) {
         objectTypes = [];
       }
       state.commit("setObjectTypes", objectTypes);
@@ -214,8 +211,7 @@ let editorStore = {
           data: data?.searchTags || [],
           firstTime: first,
         });
-      }
-      catch (e) {
+      } catch (e) {
         let first = !state.state.allTags;
         state.commit("setTags", { data: [], firstTime: first });
       }
@@ -297,8 +293,7 @@ let editorStore = {
               relationId: typeObject.id,
             });
           });
-        }
-        else {
+        } else {
           recordTypes.forEach((relationParent) => {
             if (!Object.keys(allowed).includes(relationParent)) {
               allowed[relationParent] = [];

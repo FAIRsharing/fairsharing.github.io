@@ -25,7 +25,7 @@
             </v-col>
 
             <!-- divider -->
-            <v-col cols="12" class="py-0 my-0">
+            <v-col class="py-0 my-0" cols="12">
               <v-divider />
             </v-col>
 
@@ -38,9 +38,9 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-          class="bg-primary"
           :disabled="!formValid || imageTooBig"
           :loading="continueLoader"
+          class="bg-primary"
           variant="elevated"
           @click="checkTypeChange(false, $event.target)"
         >
@@ -75,13 +75,13 @@
         <v-card-text>
           <p>
             Are you sure you want to change this record from a
-            <b>{{ formatType(initialFields.type) }}</b
+            <b>{{ formatType(initialFields.type).replace(/_/g, " ") }}</b
             >&nbsp;to a&nbsp;
-            <b>{{ formatType(currentFields.type) }}?</b>
+            <b>{{ formatType(currentFields.type).replace(/_/g, " ") }}?</b>
           </p>
           <p>
             Any metadata specific to&nbsp;<b>{{
-              formatType(initialFields.type)
+              formatType(initialFields.type).replace(/_/g, " ")
             }}</b
             >&nbsp;will be deleted.
           </p>
@@ -89,17 +89,19 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
+            class="bg-blue-darken-1"
             color="blue-darken-1"
-            variant="text"
             persistent
+            variant="elevated"
             @click="closeTypeChanged()"
           >
             Cancel
           </v-btn>
           <v-btn
+            class="bg-orange-darken-1"
             color="orange-darken-1"
-            variant="text"
             persistent
+            variant="elevated"
             @click="submitWithChangedType()"
           >
             Confirm Change

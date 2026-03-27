@@ -327,8 +327,7 @@ export default {
       }
       if (id !== null) {
         this.sections.dataAccess.data.support_links[id] = newLink;
-      }
-      else {
+      } else {
         this.sections.dataAccess.data.support_links[
           this.sections.dataAccess.data.support_links.length
         ] = newLink;

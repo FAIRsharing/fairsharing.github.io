@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 

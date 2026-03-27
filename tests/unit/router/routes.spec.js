@@ -8,7 +8,7 @@ import router, {
   isMaintenanceMode,
   isNotLoggedIn,
   isSuperCurator,
-  scrollBehavior
+  scrollBehavior,
 } from "@/router";
 //import VueRouter from "vue-router";
 const sinon = require("sinon");

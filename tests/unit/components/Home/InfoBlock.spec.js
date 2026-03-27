@@ -1,4 +1,4 @@
-import { RouterLinkStub, shallowMount  } from "@vue/test-utils";
+import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createVuetify } from "vuetify";
 
@@ -8,7 +8,6 @@ const vuetify = createVuetify({ icons: icons });
 import Vuex from "vuex";
 
 import searchFiltersStore from "@/store/searchFilters.js";
-
 
 const $store = new Vuex.Store({
   modules: {

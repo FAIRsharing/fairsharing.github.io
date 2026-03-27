@@ -1,14 +1,12 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 
 import Error from "@/views/Errors/404.vue";
-
 
 describe("404 error page", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallowMount(Error, {
-    });
+    wrapper = shallowMount(Error, {});
   });
 
   it("can mount", () => {

@@ -1,5 +1,13 @@
 import sinon from "sinon";
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 import Client from "@/lib/GraphClient/GraphClient.js";
 import { actions, mutations, paramsAreExpired } from "@/store/introspector.js";
@@ -142,10 +150,9 @@ describe("Localstorage Suite", () => {
     expect(actions.commit).toHaveBeenCalledWith(
       "introspection/setLocalStorageExpiryTime",
     );
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setParameters",
-      { message: "Hello" },
-    );
+    expect(actions.commit).toHaveBeenCalledWith("introspection/setParameters", {
+      message: "Hello",
+    });
   });
 
   it("testing with an introspectionQuery present but no timer", async () => {
@@ -161,10 +168,9 @@ describe("Localstorage Suite", () => {
     localStorage.expiryDate = new Date();
     localStorage.introspectionQuery = JSON.stringify({ test: "ABC" });
     await actions.fetchParameters(state, 24);
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setParameters",
-      { test: "ABC" },
-    );
+    expect(actions.commit).toHaveBeenCalledWith("introspection/setParameters", {
+      test: "ABC",
+    });
   });
 
   it("testing with expired dated AND introspection query", async () => {
@@ -174,10 +180,9 @@ describe("Localstorage Suite", () => {
     expect(actions.commit).toHaveBeenCalledWith(
       "introspection/setLocalStorageExpiryTime",
     );
-    expect(actions.commit).toHaveBeenCalledWith(
-      "introspection/setParameters",
-      { message: "Hello" },
-    );
+    expect(actions.commit).toHaveBeenCalledWith("introspection/setParameters", {
+      message: "Hello",
+    });
 
     stub.restore();
     stub = sinon.stub(Client.prototype, "getData");

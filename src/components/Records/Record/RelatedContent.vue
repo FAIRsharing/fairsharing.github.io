@@ -1,39 +1,42 @@
 <template>
   <v-card
-      v-if="!tabsDataExist"
-      :color="backColor"
-      border
-      class="pa-4 d-flex flex-column overflow-initial"
-      elevation="3"
-      tile
+    v-if="!tabsDataExist"
+    :color="backColor"
+    border
+    class="pa-4 d-flex flex-column overflow-initial"
+    elevation="3"
+    tile
   >
-    <SectionTitle title="Related Content"/>
+    <SectionTitle title="Related Content" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->
         <v-autocomplete
-            v-if="!tabsDataExist"
-            v-model="selectedValues"
-            :custom-filter="nameAbbrFilter"
-            :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length < 5"
-            :items="getValues"
-            :menu-props="{ attach: true }"
-            :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-            clearable
-            color="primary"
-            density="compact"
-            item-title="name"
-            item-value="name"
-            prepend-inner-icon="fas fa-search"
-            style="z-index: 2"
-            variant="solo"
+          v-if="!tabsDataExist"
+          v-model="selectedValues"
+          :custom-filter="nameAbbrFilter"
+          :disabled="
+            tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data
+              .length < 5
+          "
+          :items="getValues"
+          :menu-props="{ attach: true }"
+          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
+          clearable
+          color="primary"
+          density="compact"
+          item-title="name"
+          item-value="name"
+          prepend-inner-icon="fas fa-search"
+          style="z-index: 2"
+          variant="solo"
         >
           <template #item="{ props, item }">
             <v-list class="cursor-pointer pl-5 item-name">
               <div class="" v-bind="props">
-               <span>
-                {{ item.raw.name }}
-              </span>
+                <span>
+                  {{ item.raw.name }}
+                </span>
               </div>
             </v-list>
           </template>
@@ -41,112 +44,115 @@
       </div>
       <!--  tabs    -->
       <v-tabs
-          v-if="!tabsDataExist"
-          v-model="tabsData.selectedTab"
-          :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length === 0"
-          :show-arrows="$vuetify.display.mdAndDown"
-          bg-color="transparent"
-          class="mb-5"
-          color="accent3"
-          grow
-          slider-color="accent3"
+        v-if="!tabsDataExist"
+        v-model="tabsData.selectedTab"
+        :hide-slider="
+          tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data
+            .length === 0
+        "
+        :show-arrows="$vuetify.display.mdAndDown"
+        bg-color="transparent"
+        class="mb-5"
+        color="accent3"
+        grow
+        slider-color="accent3"
       >
         <v-tab
-            v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
-            :key="tabName + '_' + tabIndex"
-            :disabled="tabsData.tabs[tabName].data.length === 0"
-            :value="tabIndex"
-            @click="selectedValues = null"
+          v-for="(tabName, tabIndex) in Object.keys(tabsData.tabs)"
+          :key="tabName + '_' + tabIndex"
+          :disabled="tabsData.tabs[tabName].data.length === 0"
+          :value="tabIndex"
+          @click="selectedValues = null"
         >
           {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
       <v-tabs-window
-          v-if="!tabsDataExist"
-          v-model="tabsData.selectedTab"
-          class="bg-transparent height-430"
+        v-if="!tabsDataExist"
+        v-model="tabsData.selectedTab"
+        class="bg-transparent height-430"
       >
         <v-tabs-window-item
-            v-for="(tabItem, tabItemIndex) in filterList"
-            :key="tabItem + '_' + tabItemIndex"
+          v-for="(tabItem, tabItemIndex) in filterList"
+          :key="tabItem + '_' + tabItemIndex"
         >
           <v-virtual-scroll
-              :items="tabItem.data"
-              class="ma-4 overflow-x-hidden"
-              height="400"
-              item-height="130"
+            :items="tabItem.data"
+            class="ma-4 overflow-x-hidden"
+            height="400"
+            item-height="130"
           >
             <template #default="{ item, index }">
               <router-link
-                  :to="'/' + item.id"
-                  @click="() => $scrollTo('body', 0, {})"
+                :to="'/' + item.id"
+                @click="() => $scrollTo('body', 0, {})"
               >
                 <v-card
-                    :key="item.id + '_' + index"
-                    border
-                    class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                    flat
+                  :key="item.id + '_' + index"
+                  border
+                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                  flat
                 >
                   <div class="d-flex align-center">
-                    <record-status :record="item" :show-status="false"/>
+                    <record-status :record="item" :show-status="false" />
                     <div
-                        class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
+                      class="ml-10 underline-effect text-ellipses-height-2lines line-height-20"
                     >
                       {{ item.name }}
                     </div>
                   </div>
                   <p
-                      class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
+                    class="text-grey relation-style text-ellipses-height-2lines line-height-14 pr-5"
                   >
                     {{ item.object }}
                     <v-tooltip location="top">
                       <template #activator="{ props }">
                         <span
-                            v-for="(label, indexLabel) in item.recordAssocLabel"
-                            :key="label + '_' + indexLabel"
-                            class="text-red mouse-info"
-                            v-bind="props"
+                          v-for="(label, indexLabel) in item.recordAssocLabel"
+                          :key="label + '_' + indexLabel"
+                          class="text-red mouse-info"
+                          v-bind="props"
                         >
                           {{ label }}
                           <span
-                              v-if="
+                            v-if="
                               indexLabel !== 0 &&
                               item.recordAssocLabel.length !== 1
                             "
-                              style="color: black !important"
-                          >and</span
+                            style="color: black !important"
+                            >and</span
                           >
                         </span>
                       </template>
                       <span
-                          v-for="(label2, indexHint) in item.recordAssocLabel"
-                          :key="label2 + '_' + indexHint"
+                        v-for="(label2, indexHint) in item.recordAssocLabel"
+                        :key="label2 + '_' + indexHint"
                       >
                         <span
-                        >{{
+                          >{{
                             indexHint !== 0 && item.recordAssocLabel.length > 1
-                                ? relationDefinition[
-                                    item.recordAssocLabel[
+                              ? relationDefinition[
+                                  item.recordAssocLabel[
                                     item.recordAssocLabel.length - 1 - indexHint
-                                        ]
-                                    ].toLowerCase()
-                                : relationDefinition[
-                                    item.recordAssocLabel[
+                                  ]
+                                ].toLowerCase()
+                              : relationDefinition[
+                                  item.recordAssocLabel[
                                     item.recordAssocLabel.length - 1 - indexHint
-                                        ]
-                                    ]
+                                  ]
+                                ]
                           }}
                           <span
-                              v-if="
+                            v-if="
                               indexHint !== item.recordAssocLabel.length - 1 &&
                               item.recordAssocLabel.length !== 1
                             "
-                              style="
+                            style="
                               color: white !important;
                               margin-left: -2px !important;
                             "
-                          >;
+                            >;
                           </span>
                         </span>
                       </span>
@@ -164,7 +170,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
@@ -192,8 +198,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {registry: ["Standard"], data: [], count: 0},
-          related_databases: {registry: ["Database"], data: [], count: 0},
+          related_standards: { registry: ["Standard"], data: [], count: 0 },
+          related_databases: { registry: ["Database"], data: [], count: 0 },
         },
       },
     };
@@ -217,7 +223,7 @@ export default {
       }
       if (
         _module.currentRecord["fairsharingRecord"].registry === "FAIRassist" ||
-          _module.currentRecord["fairsharingRecord"].registry === "Standard"
+        _module.currentRecord["fairsharingRecord"].registry === "Standard"
       ) {
         _module.tabsData.tabs["related_fairassist_components"] = {
           registry: ["FAIRassist"],
@@ -229,9 +235,9 @@ export default {
         Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
           "recordAssociations",
         ) ||
-          Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
-            "reverseRecordAssociations",
-          )
+        Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
+          "reverseRecordAssociations",
+        )
       ) {
         Object.keys(_module.tabsData.tabs).forEach((tabName) => {
           _module.tabsData.tabs[tabName].data = _module
@@ -249,9 +255,9 @@ export default {
           // https://github.com/FAIRsharing/fairsharing.github.io/pull/2255#issuecomment-1963978178
           if (tabName === "related_collections") {
             _module.tabsData.tabs["related_collections"].data =
-                _module.tabsData.tabs["related_collections"].data.filter(
-                  (item) => item.recordAssociationLabel === "recommends",
-                );
+              _module.tabsData.tabs["related_collections"].data.filter(
+                (item) => item.recordAssociationLabel === "recommends",
+              );
           }
           // 1. Create a hash with keys for each linked record ID of all the relations, containing an
           // array of all relations.
@@ -280,10 +286,9 @@ export default {
 
           // Duplicates removed, now do the count.
           _module.tabsData.tabs[tabName].count =
-              _module.tabsData.tabs[tabName].data.length;
+            _module.tabsData.tabs[tabName].data.length;
         });
-      }
-      else {
+      } else {
         return false;
       }
     },
@@ -294,11 +299,10 @@ export default {
       if (item.raw.abbreviation === null) {
         let answer = name.indexOf(search) > -1;
         return answer;
-      }
-      else {
+      } else {
         let answer =
-            name.indexOf(search) > -1 ||
-            item.raw.abbreviation.toLowerCase().indexOf(search) > -1;
+          name.indexOf(search) > -1 ||
+          item.raw.abbreviation.toLowerCase().indexOf(search) > -1;
         return answer;
       }
     },
@@ -308,7 +312,7 @@ export default {
 <style lang="scss" scoped>
 .item-name {
   &:hover {
-    background-color: #00000008
+    background-color: #00000008;
   }
 }
 </style>

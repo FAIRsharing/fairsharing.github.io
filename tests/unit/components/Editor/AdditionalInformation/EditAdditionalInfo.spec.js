@@ -58,7 +58,9 @@ describe("EditAdditionalInfo.vue", function () {
   beforeEach(() => {
     $store.state.record.sections.additionalInformation = {
       data: JSON.parse(JSON.stringify(additionalInformationFixture.data)),
-      initialData: JSON.parse(JSON.stringify(additionalInformationFixture.data)),
+      initialData: JSON.parse(
+        JSON.stringify(additionalInformationFixture.data),
+      ),
       error: false,
       message: null,
       changes: 0,

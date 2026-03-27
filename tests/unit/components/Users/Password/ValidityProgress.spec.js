@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 
 import ValidityProgress from "@/components/Users/Password/ValidityProgress";
@@ -8,8 +8,7 @@ let stub;
 
 describe("ValidityProgress.vue", () => {
   it("can be mounted", () => {
-    let wrapper = shallowMount(ValidityProgress, {
-    });
+    let wrapper = shallowMount(ValidityProgress, {});
     expect(wrapper.vm.$options.name).toBe("ValidityProgress");
     expect(wrapper.vm["passwordValidity"]).toBe(0);
     expect(wrapper.vm["passwordColor"]).toBe("red");

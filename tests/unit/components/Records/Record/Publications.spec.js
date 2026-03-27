@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import Publications from "@/components/Records/Record/Publications.vue";

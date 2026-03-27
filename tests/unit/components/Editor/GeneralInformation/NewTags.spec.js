@@ -77,8 +77,8 @@ describe("Editor -> NewTags.vue", () => {
     const output =
       "mailto:contact@fairsharing.org?subject=Request for a new species&body=" +
       encodeURIComponent(
-        'I would like to make a request for a new species in the FAIRsharing.org database. \n' +
-          'Record id: 123 \n' +
+        "I would like to make a request for a new species in the FAIRsharing.org database. \n" +
+          "Record id: 123 \n" +
           'New species name: "ADD_YOUR_SPECIES_HERE" \n \n' +
           "The FAIRsharing Team",
       );

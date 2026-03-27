@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue";

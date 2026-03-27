@@ -1,4 +1,4 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 
 import noDatasetsPlease from "@/data/noDatasetsPlease.json";

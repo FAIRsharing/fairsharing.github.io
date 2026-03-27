@@ -1,14 +1,12 @@
-import { shallowMount  } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 
 import Error from "@/views/Errors/403.vue";
-
 
 describe("403 unauthorized page", () => {
   let wrapper;
 
   it("can mount", () => {
-    wrapper = shallowMount(Error, {
-    });
+    wrapper = shallowMount(Error, {});
     expect(wrapper.vm.$options.name).toBe("Error403");
     expect(wrapper.vm.$options.metaInfo.call(wrapper.vm).title).toBe(
       "FAIRsharing | Not Authorized",

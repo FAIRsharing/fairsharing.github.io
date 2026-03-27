@@ -150,7 +150,8 @@ describe("Editor -> EditTags.vue", () => {
     let output = {
       "taxonomic range":
         wrapper.vm.getSection("generalInformation").initialData.taxonomies,
-      subjects: wrapper.vm.getSection("generalInformation").initialData.subjects,
+      subjects:
+        wrapper.vm.getSection("generalInformation").initialData.subjects,
       domains: wrapper.vm.getSection("generalInformation").initialData.domains,
       "user defined tags":
         wrapper.vm.getSection("generalInformation").initialData.userDefinedTags,

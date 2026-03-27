@@ -1,8 +1,8 @@
-import {shallowMount} from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import {createVuetify} from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
-import {defineComponent, h} from "vue";
+import { defineComponent, h } from "vue";
 
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RestClient from "@/lib/Client/RESTClient";

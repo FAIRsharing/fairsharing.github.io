@@ -23,13 +23,13 @@
 </template>
 
 <script>
-
 import {
   GloballyUnique,
   IsImplemented,
   Persistent,
   Resolvable,
-  StandardRecordType} from "../index";
+  StandardRecordType,
+} from "../index";
 export default {
   name: "StandardRule",
   props: {
@@ -76,8 +76,8 @@ export default {
           name: "Resolvable",
           component: Resolvable,
           initialValue: "",
-        }
-      ]
+        },
+      ];
     },
 
     /**

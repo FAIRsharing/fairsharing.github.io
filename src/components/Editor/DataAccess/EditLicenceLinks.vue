@@ -326,8 +326,7 @@ export default {
         let link = this.sections.dataAccess.data.licences[id];
         link.licence = newLink.licence;
         link.relation = newLink.relation.replace(/ /g, "_").toLowerCase();
-      }
-      else {
+      } else {
         let createLink = {
           fairsharingRecord: { id: this.$route.params["id"] },
           licence: newLink.licence,

@@ -604,8 +604,7 @@ export default {
         let tmpRelation;
         if (typeof link.recordAssocLabel.relation == "undefined") {
           tmpRelation = link.recordAssocLabel;
-        }
-        else {
+        } else {
           tmpRelation = link.recordAssocLabel.relation;
         }
         return (
@@ -721,8 +720,7 @@ export default {
               1,
             );
             /* v8 ignore start */
-          }
-          else {
+          } else {
             // This must therefore be a record type.
             labelsFilter[allowedRelation.target] = true;
             types.push(allowedRelation.target);
@@ -747,8 +745,7 @@ export default {
           // Check if this is a registry or type
           if (this.fairsharingRegistries.indexOf(filter) > -1) {
             registries.push(filter);
-          }
-          else {
+          } else {
             types.push(filter);
           }
         }
@@ -777,8 +774,7 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      }
-      else if (item.textContent.trim() === "Save and exit") {
+      } else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

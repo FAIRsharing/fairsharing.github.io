@@ -291,6 +291,7 @@ const restClient = new RESTClient();
 export default {
   name: "EditProfile",
   components: { CountryFlag },
+  emits: ["imageTooBig"],
   data: () => {
     return {
       data: {

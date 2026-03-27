@@ -596,7 +596,7 @@ export default {
     submitRecord: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
   },
-  emits: ["imageTooBig"],
+  emits: ["imageTooBig", "createnewrecord", "clearing", "submission"],
   data() {
     return {
       rules: {

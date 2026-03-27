@@ -50,6 +50,7 @@ export default {
       default: null,
     },
   },
+  emits: ["showConfirmDelete"],
   data: () => {
     return {
       dialog: false,
@@ -70,7 +71,8 @@ export default {
               _module.$router.push({
                 path: "/profiles/edit",
               });
-            } else if (
+            }
+            else if (
               _module.viewingId !== Number(_module.user().id) &&
               _module.viewingId &&
               (_module.user().role === "developer" ||
@@ -79,7 +81,8 @@ export default {
               _module.$router.push({
                 path: "/profiles/editPublicProfile/" + _module.viewingId,
               });
-            } else {
+            }
+            else {
               _module.$router.push({
                 path: "/profiles/edit",
               });
@@ -163,7 +166,8 @@ export default {
     resetPasswordPath: function () {
       if (this.user().isLoggedIn) {
         return "/users/password/edit";
-      } else {
+      }
+      else {
         return "/accounts/forgotPassword";
       }
     },

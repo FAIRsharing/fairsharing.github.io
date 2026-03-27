@@ -107,6 +107,7 @@ export default {
       default: true,
     },
   },
+  emits: ["requestOwnership"],
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("users", ["user"]),

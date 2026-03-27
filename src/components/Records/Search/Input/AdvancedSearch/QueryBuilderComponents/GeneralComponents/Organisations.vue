@@ -1,8 +1,8 @@
 <template>
   <AutoCompleteComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="orgNames"
+    :item-value="itemValue"
     :loading="getLoadingStatus"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
@@ -25,6 +25,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],

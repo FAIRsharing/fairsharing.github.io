@@ -1,8 +1,8 @@
 <template>
   <SelectComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="filteredRecordTypes('Policy')"
+    :item-value="itemValue"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
   />
@@ -24,6 +24,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],

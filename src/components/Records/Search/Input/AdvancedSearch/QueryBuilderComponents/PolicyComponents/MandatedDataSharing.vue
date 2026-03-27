@@ -1,8 +1,8 @@
 <template>
   <SelectComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="itemList"
+    :item-value="itemValue"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
   />
@@ -20,6 +20,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemList: ["required", "suggested", "not covered", "other"],

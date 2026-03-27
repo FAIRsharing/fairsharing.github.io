@@ -21,6 +21,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemList: ["yes", "no", "not found"],

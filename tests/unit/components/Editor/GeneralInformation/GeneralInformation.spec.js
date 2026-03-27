@@ -295,10 +295,11 @@ describe("Edit -> GeneralInformation.vue", function () {
   });
 
   it("can check submitWithChangedType method", async () => {
+    const btn = { textContent: "Save and continue" };
     wrapper.vm.redirect = true;
     wrapper.vm.saveRecord = vi.fn().mockResolvedValue();
     await wrapper.vm.submitWithChangedType();
     expect(wrapper.vm.showTypeChanged).toBe(false);
-    expect(wrapper.vm.saveRecord).toHaveBeenCalledWith(true, true);
+    expect(wrapper.vm.saveRecord).toHaveBeenCalledWith(true, true, btn);
   });
 });

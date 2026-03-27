@@ -251,7 +251,8 @@ export default {
     },
     async submitWithChangedType() {
       this.showTypeChanged = false;
-      await this.saveRecord(this.redirect, true);
+      let item = { textContent: "Save and continue" };
+      await this.saveRecord(this.redirect, true, item);
     },
     formatType(type) {
       if (type.name === undefined) {

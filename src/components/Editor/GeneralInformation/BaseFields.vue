@@ -235,13 +235,13 @@
           variant="outlined"
         >
           <!-- Item selected -->
-          <template #chip="data">
+          <template #selection="data">
             <v-chip
-              v-if="data.item.raw.name"
+              v-if="data.item.title"
               class="bg-blue text-white text-capitalize"
               closable
             >
-              {{ data.item.raw.name.replace(/_/g, " ") }}
+              {{ data.item.title.replace(/_/g, " ") }}
             </v-chip>
           </template>
           <!-- select list data -->

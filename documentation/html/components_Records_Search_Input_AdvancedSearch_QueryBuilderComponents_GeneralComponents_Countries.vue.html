@@ -94,8 +94,8 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;AutoCompleteComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="getSearchCountries"
+    :item-value="itemValue"
     :loading="getLoadingStatus"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
@@ -118,6 +118,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],

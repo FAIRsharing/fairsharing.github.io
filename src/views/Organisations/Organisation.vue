@@ -26,7 +26,7 @@
           theme.computedThemes.value.fairSharingTheme.colors
             .bg_organisation_record_card
         "
-        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column overflow-initial"
+        class="pa-4 mt-2 ml-7 mr-7 d-flex flex-column overflow-initial bg-white"
         elevation="3"
         rounded="0"
         tile

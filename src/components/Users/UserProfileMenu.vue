@@ -1,5 +1,11 @@
 <template>
-  <v-menu origin="top center 0" transition="scale-transition">
+  <v-menu
+    origin="top center 0"
+    persistent
+    scrim
+    stick-to-target
+    transition="scale-transition"
+  >
     <template #activator="{ props }">
       <div class="mr-4" v-bind="props">
         <v-icon
@@ -174,3 +180,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.hamburgerIcon {
+  z-index: 2001;
+}
+</style>

@@ -55,7 +55,7 @@
                 </a>
               </td>
               <td>
-                <v-edit-dialog
+                <v-confirm-edit
                   v-model:return-value="props.item.processingNotes"
                   large
                   @save="
@@ -77,7 +77,7 @@
                       />
                     </div>
                   </template>
-                </v-edit-dialog>
+                </v-confirm-edit>
               </td>
               <td>
                 <v-icon
@@ -387,13 +387,15 @@ export default {
             await _module.saveProcessingNotes(_module.dialogs.recordID, null);
           }
         }
-      } else {
+      }
+      else {
         _module.error.general = "error assigning " + newStatus;
         _module.error.recordID = _module.dialogs.recordID;
       }
       if (newStatus === "approved") {
         _module.dialogs.confirmAssignment = false;
-      } else {
+      }
+      else {
         _module.dialogs.rejectAssignment = false;
       }
     },
@@ -414,7 +416,8 @@ export default {
     compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
-      } else {
+      }
+      else {
         return 1;
       }
     },

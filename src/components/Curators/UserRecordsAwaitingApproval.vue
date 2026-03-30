@@ -1,7 +1,10 @@
 <template>
   <v-card class="mb-2">
     <v-card-text v-if="approvalRequiredProcessed">
-      <v-card-title id="text-curator-search-0" class="bg-green text-white">
+      <v-card-title
+        id="text-curator-search-0"
+        class="bg-green text-white d-flex align-center"
+      >
         <b> USER EDITS AWAITING APPROVAL </b>
         <v-spacer />
         <v-text-field
@@ -27,7 +30,7 @@
         :items="approvalRequiredProcessed"
         :loading="loading"
         :search="searches"
-        sort-by=""
+        return-object
       >
         <template v-if="recordType" #item="props">
           <tr>
@@ -72,7 +75,7 @@
             </td>
             <td>
               <div class="d-flex align-center">
-                <v-avatar v-if="props.item.type" :height="40" class="mr-2">
+                <v-avatar v-if="props.item.type" class="mr-2" size="40">
                   <Icon :height="40" :item="props.item.type" wrapper-class="" />
                 </v-avatar>
                 <a :href="'/' + props.item.id">
@@ -91,7 +94,7 @@
               </div>
             </td>
             <td>
-              <v-edit-dialog
+              <v-confirm-edit
                 v-model:return-value="props.item.processingNotes"
                 large
                 @save="
@@ -110,7 +113,7 @@
                     />
                   </div>
                 </template>
-              </v-edit-dialog>
+              </v-confirm-edit>
             </td>
             <td>
               <v-icon
@@ -365,12 +368,14 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          } else {
+          }
+          else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          } else {
+          }
+          else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
@@ -383,7 +388,8 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          } else {
+          }
+          else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -409,7 +415,8 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        } else if (role === "curator") {
+        }
+        else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -449,7 +456,8 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      } else {
+      }
+      else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -502,7 +510,8 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );
@@ -522,7 +531,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

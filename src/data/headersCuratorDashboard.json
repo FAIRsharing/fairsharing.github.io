@@ -1,181 +1,181 @@
 {
   "approvalRequired": [
     {
-      "text": "Date last edit",
+      "title": "Date last edit",
       "value": "updatedAt",
       "width": 90
     },
     {
-      "text": "",
+      "title": "",
       "value": "priority",
       "width": 40
     },
     {
-      "text": "Curator",
+      "title": "Curator",
       "value": "curator",
       "width": 50
     },
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordName",
       "width": 400
     },
     {
-      "text": "Last editor",
+      "title": "Last editor",
       "value": "lastEditor",
       "width": 120
     },
     {
-      "text": "Processing Notes",
+      "title": "Processing Notes",
       "value": "processingNotes",
       "sortable": false
     },
     {
-      "text": "Accept record/edit?",
+      "title": "Accept record/edit?",
       "value": "actions",
       "sortable": false,
       "width": 130
     },
     {
-      "text": "Creation date & user",
+      "title": "Creation date & user",
       "value": "createdAt",
       "width": 90
     }
   ],
   "maintenanceRequests": [
     {
-      "text": "Date",
+      "title": "Date",
       "value": "createdAt"
     },
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordName"
     },
     {
-      "text": "User login",
+      "title": "User login",
       "value": "userNameID"
     },
     {
-      "text": "Processing Notes",
+      "title": "Processing Notes",
       "value": "processingNotes",
       "sortable": false,
       "width": 250
     },
-    { "text": "Accept request?", "value": "actions", "sortable": false }
+    { "title": "Accept request?", "value": "actions", "sortable": false }
   ],
   "recordsCreatedCuratorsLastWeek": [
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordNameID"
     },
     {
-      "text": "Date created",
+      "title": "Date created",
       "value": "createdAt"
     },
     {
-      "text": "Creator",
+      "title": "Creator",
       "value": "creator"
     }
   ],
   "recordsInCuration": [
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordNameID"
     },
     {
-      "text": "Record maintainer(s)",
+      "title": "Record maintainer(s)",
       "value": "recordMaintainers"
     },
     {
-      "text": "Under curation by",
+      "title": "Under curation by",
       "value": "curator"
     }
   ],
   "recordsWithoutDois": [
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordNameID"
     },
     {
-      "text": "Date created",
+      "title": "Date created",
       "value": "createdAt"
     },
     {
-      "text": "Date last edit",
+      "title": "Date last edit",
       "value": "updatedAt"
     },
     {
-      "text": "Created by",
+      "title": "Created by",
       "value": "creator"
     },
     {
-      "text": "Last edited by",
+      "title": "Last edited by",
       "value": "lastEditor"
     }
   ],
   "hiddenRecords": [
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordNameID"
     },
     {
-      "text": "Date created",
+      "title": "Date created",
       "value": "createdAt"
     },
     {
-      "text": "Under curation by",
+      "title": "Under curation by",
       "value": "curator"
     },
     {
-      "text": "Created by",
+      "title": "Created by",
       "value": "creator"
     }
   ],
   "incompleteRecords": [
     {
-      "text": "Record name (id)",
+      "title": "Record name (id)",
       "value": "recordNameID"
     },
     {
-      "text": "Date created",
+      "title": "Date created",
       "value": "createdAt"
     },
     {
-      "text": "Missing required",
+      "title": "Missing required",
       "value": "required"
     },
     {
-      "text": "Missing recommended",
+      "title": "Missing recommended",
       "value": "recommended"
     },
     {
-      "text": "Missing optional",
+      "title": "Missing optional",
       "value": "optional"
     },
     {
-      "text": "Delete record",
+      "title": "Delete record",
       "value": "optional"
     }
   ],
   "systemMessages": [
     {
-      "text": "ID",
+      "title": "ID",
       "value": "id"
     },
     {
-      "text": "Text",
+      "title": "title",
       "value": "message"
     },
     {
-      "text": "Created at",
+      "title": "Created at",
       "value": "created_at"
     },
     {
-      "text": "Updated at",
+      "title": "Updated at",
       "value": "updated_at"
     },
     {
-      "text": "Delete",
+      "title": "Delete",
       "value": "actions",
       "sortable": false,
       "width": 130

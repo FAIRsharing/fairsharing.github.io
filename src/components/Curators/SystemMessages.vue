@@ -26,7 +26,7 @@
                   {{ props.item.id }}
                 </td>
                 <td>
-                  <v-edit-dialog
+                  <v-confirm-edit
                     v-model:return-value="props.item.message"
                     large
                     @save="saveEditedMessage(props.item.id, props.item.message)"
@@ -43,7 +43,7 @@
                         />
                       </div>
                     </template>
-                  </v-edit-dialog>
+                  </v-confirm-edit>
                 </td>
                 <td>
                   {{ props.item.created_at }}
@@ -232,7 +232,8 @@ export default {
       );
       if (response.error) {
         _module.error.general = response.error;
-      } else {
+      }
+      else {
         _module.systemMessages.forEach(function (m) {
           if (m.id === id) {
             m.message = message;
@@ -264,7 +265,8 @@ export default {
       );
       if (response.error) {
         _module.error.general = response.error;
-      } else {
+      }
+      else {
         _module.systemMessages.push({
           id: response.id,
           message: response.message,
@@ -291,7 +293,8 @@ export default {
       );
       if (response.error) {
         _module.error.general = response.error;
-      } else {
+      }
+      else {
         let filtered = _module.systemMessages.filter(function (f) {
           return f.id !== _module.dialogs.messageId;
         });

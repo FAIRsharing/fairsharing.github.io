@@ -4,16 +4,14 @@
       v-if="user().role === 'super_curator' || user().role === 'developer'"
     >
       <v-col cols12>
-        <v-banner
-          v-if="!messages()['getUser'].error"
-          :stacked="false"
-          class="text-white mb-2 text-h5"
-          color="info"
-          lines="one"
-          text="white"
-        >
-          Welcome, curator {{ user().credentials.username }}
-        </v-banner>
+        <v-toolbar class="py-1 px-4" color="info" dark flat height="45">
+          <v-toolbar-title
+            v-if="!messages()['getUser'].error"
+            class="text-white text-h5 toolBarTitle"
+          >
+            Welcome, curator {{ user().credentials.username }}
+          </v-toolbar-title>
+        </v-toolbar>
         <!-- least recently updated -->
         <v-card v-if="leastRecentlyDetails" class="mb-2">
           <v-card-text>
@@ -27,23 +25,27 @@
         <!--Tabs-->
         <v-tabs
           v-model="selectedTab"
+          align-tabs="center"
+          bg-color="black"
+          center-active
+          grow
+          selected-class="tabSelected"
           show-arrows
           slider-color="primary"
-          slider-size="5"
         >
           <v-tab v-for="tab in tabs" :key="'tab_' + tab.name">
             <div>{{ tab.name }}</div>
           </v-tab>
-          <v-tabs-window v-model="selectedTab">
-            <v-tabs-window-item
-              v-for="(tab, tabIndex) in tabs"
-              :key="tab + '_' + tabIndex"
-              class="px-1 py-3"
-            >
-              <component :is="tab.component" :header-items="tab.headers" />
-            </v-tabs-window-item>
-          </v-tabs-window>
         </v-tabs>
+        <v-tabs-window v-model="selectedTab">
+          <v-tabs-window-item
+            v-for="(tab, tabIndex) in tabs"
+            :key="tab + '_' + tabIndex"
+            class="px-10 py-3"
+          >
+            <component :is="tab.component" :header-items="tab.headers" />
+          </v-tabs-window-item>
+        </v-tabs-window>
       </v-col>
     </v-row>
 
@@ -191,3 +193,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.tabSelected {
+  background-color: #253442;
+}
+
+:deep(.tabSelected .v-tab__slider) {
+  height: 5px;
+}
+
+:deep(.toolBarTitle .v-toolbar-title__placeholder) {
+  text-overflow: unset;
+  overflow: unset;
+}
+</style>

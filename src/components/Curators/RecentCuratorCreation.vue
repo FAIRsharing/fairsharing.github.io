@@ -2,7 +2,10 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="recordsCreatedCuratorsLastWeek">
-        <v-card-title id="text-curator-search-3" class="bg-green text-white">
+        <v-card-title
+          id="text-curator-search-3"
+          class="bg-green text-white d-flex align-center"
+        >
           <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
           <v-spacer />
           <v-text-field
@@ -124,7 +127,8 @@ export default {
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        } else {
+        }
+        else {
           object.creator = "unknown";
         }
         this.recordsCreatedCuratorsLastWeek.push(object);

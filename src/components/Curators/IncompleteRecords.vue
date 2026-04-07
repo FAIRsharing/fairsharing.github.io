@@ -40,7 +40,10 @@
     </div>
     <v-card class="mb-2">
       <v-card-text v-if="incompleteRecords">
-        <v-card-title id="text-curator-search-2" class="bg-green text-white">
+        <v-card-title
+          id="text-curator-search-2"
+          class="bg-green text-white d-flex align-center"
+        >
           <b> INCOMPLETE RECORDS </b>
           <v-spacer />
           <v-text-field
@@ -201,7 +204,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.incompleteRecords.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

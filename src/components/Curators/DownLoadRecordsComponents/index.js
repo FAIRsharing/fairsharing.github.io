@@ -1,21 +1,9 @@
-export const RecordsWithoutDois = () =>
-  import(
-    "@/components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue"
-  );
+export { default as RecordsWithoutDois } from "@/components/Curators/DownLoadRecordsComponents/RecordsWithoutDois.vue";
 
-export const RecordsNeedingReview = () =>
-  import(
-    "@/components/Curators/DownLoadRecordsComponents/RecordsNeedingReview.vue"
-  );
-export const CuratorSummaryStatistics = () =>
-  import(
-    "@/components/Curators/DownLoadRecordsComponents/CuratorSummaryStatistics.vue"
-  );
-export const RecordsCreatedByMonth = () =>
-  import(
-    "@/components/Curators/DownLoadRecordsComponents/RecordsCreatedByMonth.vue"
-  );
-export const RecordEditsByMonth = () =>
-  import(
-    "@/components/Curators/DownLoadRecordsComponents/RecordEditsByMonth.vue"
-  );
+export { default as RecordsNeedingReview } from "@/components/Curators/DownLoadRecordsComponents/RecordsNeedingReview.vue";
+
+export { default as CuratorSummaryStatistics } from "@/components/Curators/DownLoadRecordsComponents/CuratorSummaryStatistics.vue";
+
+export { default as RecordsCreatedByMonth } from "@/components/Curators/DownLoadRecordsComponents/RecordsCreatedByMonth.vue";
+
+export { default as RecordEditsByMonth } from "@/components/Curators/DownLoadRecordsComponents/RecordEditsByMonth.vue";

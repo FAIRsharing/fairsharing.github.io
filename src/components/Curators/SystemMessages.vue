@@ -6,7 +6,10 @@
         class="mb-2"
       >
         <v-card-text v-if="systemMessages">
-          <v-card-title id="system-messages" class="bg-green text-white">
+          <v-card-title
+            id="system-messages"
+            class="bg-green text-white d-flex align-center"
+          >
             SYSTEM MESSAGES
             <v-btn class="bg-info ml-5" @click.stop="showAddMessage()">
               <v-icon class="mr-1" color="white"> fas fa-plus</v-icon>

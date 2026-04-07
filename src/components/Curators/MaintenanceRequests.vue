@@ -2,7 +2,10 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="maintenanceRequestsProcessed">
-        <v-card-title id="text-curator-search-5" class="bg-green text-white">
+        <v-card-title
+          id="text-curator-search-5"
+          class="bg-green text-white d-flex align-center"
+        >
           <b> OWNERSHIP REQUESTS </b>
           <v-spacer />
           <v-text-field
@@ -28,7 +31,6 @@
           :items="maintenanceRequestsProcessed"
           :loading="loading"
           :search="searches"
-          sort-by=""
         >
           <template v-if="recordType" #item="props">
             <tr>
@@ -55,60 +57,86 @@
                 </a>
               </td>
               <td>
-                <v-confirm-edit
-                  v-model:return-value="props.item.processingNotes"
-                  large
-                  @save="
-                    saveProcessingNotes(
-                      props.item.id,
-                      props.item.processingNotes,
-                    )
-                  "
+                <v-menu
+                  :close-on-content-click="false"
+                  location="bottom"
+                  min-width="400"
                 >
-                  {{ props.item.processingNotes }}
-                  <template #input>
-                    <div class="testDialog">
-                      <div class="mt-4 text-h6">Update Processing Notes</div>
-                      <v-textarea
-                        v-model="props.item.processingNotes"
-                        label="Edit (not long words)"
-                        variant="filled"
-                        width="1200px"
-                      />
-                    </div>
+                  <template #activator="{ props: menuProps }">
+                    <span
+                      style="cursor: pointer; border-bottom: 1px dashed grey"
+                      v-bind="menuProps"
+                    >
+                      {{ props.item.processingNotes || "Click to edit..." }}
+                    </span>
                   </template>
-                </v-confirm-edit>
+                  <template #default="{ isActive }">
+                    <v-card class="pa-2">
+                      <v-card-title class="text-h6">
+                        Update Processing Notes
+                      </v-card-title>
+
+                      <v-card-text class="pt-2">
+                        <v-textarea
+                          v-model="props.item.processingNotes"
+                          hide-details
+                          label="Edit (not long words)"
+                          variant="filled"
+                        />
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer />
+                        <v-btn
+                          color="primary"
+                          variant="text"
+                          @click="
+                            saveProcessingNotes(
+                              props.item.id,
+                              props.item.processingNotes,
+                            );
+                            isActive.value = false;
+                          "
+                        >
+                          Save
+                        </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </template>
+                </v-menu>
               </td>
               <td>
-                <v-icon
-                  color="blue"
-                  start
-                  @click.stop="
-                    assignMaintenanceOwner(
-                      props.item.recordName,
-                      props.item.id,
-                      props.item.userName,
-                      props.item.requestID,
-                    )
-                  "
-                >
-                  far fa-check-circle
-                </v-icon>
-                {{ props.item.actions }}
-                <v-icon
-                  color="red"
-                  end
-                  @click="
-                    rejectMaintenanceOwner(
-                      props.item.recordName,
-                      props.item.id,
-                      props.item.userName,
-                      props.item.requestID,
-                    )
-                  "
-                >
-                  fas fa-ban
-                </v-icon>
+                <div class="d-flex">
+                  <v-icon
+                    color="blue"
+                    start
+                    @click.stop="
+                      assignMaintenanceOwner(
+                        props.item.recordName,
+                        props.item.id,
+                        props.item.userName,
+                        props.item.requestID,
+                      )
+                    "
+                  >
+                    far fa-check-circle
+                  </v-icon>
+                  {{ props.item.actions }}
+                  <v-icon
+                    color="red"
+                    end
+                    @click="
+                      rejectMaintenanceOwner(
+                        props.item.recordName,
+                        props.item.id,
+                        props.item.userName,
+                        props.item.requestID,
+                      )
+                    "
+                  >
+                    fas fa-ban
+                  </v-icon>
+                </div>
               </td>
             </tr>
           </template>
@@ -142,9 +170,9 @@
               <v-spacer />
               <v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
+                color="red-darken-1"
                 persistent
-                variant="text"
+                variant="elevated"
                 @click="closeMaintenanceAssign()"
               >
                 Cancel
@@ -153,7 +181,7 @@
                 :disabled="dialogs.disableDelButton === true"
                 color="blue-darken-1"
                 persistent
-                variant="text"
+                variant="elevated"
                 @click="assignMaintenanceOwnConfirm('approved')"
               >
                 OK

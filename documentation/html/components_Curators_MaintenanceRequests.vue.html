@@ -95,7 +95,10 @@
   &lt;v-col cols12>
     &lt;v-card class="mb-2">
       &lt;v-card-text v-if="maintenanceRequestsProcessed">
-        &lt;v-card-title id="text-curator-search-5" class="bg-green text-white">
+        &lt;v-card-title
+          id="text-curator-search-5"
+          class="bg-green text-white d-flex align-center"
+        >
           &lt;b> OWNERSHIP REQUESTS &lt;/b>
           &lt;v-spacer />
           &lt;v-text-field
@@ -121,7 +124,6 @@
           :items="maintenanceRequestsProcessed"
           :loading="loading"
           :search="searches"
-          sort-by=""
         >
           &lt;template v-if="recordType" #item="props">
             &lt;tr>
@@ -148,60 +150,86 @@
                 &lt;/a>
               &lt;/td>
               &lt;td>
-                &lt;v-confirm-edit
-                  v-model:return-value="props.item.processingNotes"
-                  large
-                  @save="
-                    saveProcessingNotes(
-                      props.item.id,
-                      props.item.processingNotes,
-                    )
-                  "
+                &lt;v-menu
+                  :close-on-content-click="false"
+                  location="bottom"
+                  min-width="400"
                 >
-                  {{ props.item.processingNotes }}
-                  &lt;template #input>
-                    &lt;div class="testDialog">
-                      &lt;div class="mt-4 text-h6">Update Processing Notes&lt;/div>
-                      &lt;v-textarea
-                        v-model="props.item.processingNotes"
-                        label="Edit (not long words)"
-                        variant="filled"
-                        width="1200px"
-                      />
-                    &lt;/div>
+                  &lt;template #activator="{ props: menuProps }">
+                    &lt;span
+                      style="cursor: pointer; border-bottom: 1px dashed grey"
+                      v-bind="menuProps"
+                    >
+                      {{ props.item.processingNotes || "Click to edit..." }}
+                    &lt;/span>
                   &lt;/template>
-                &lt;/v-confirm-edit>
+                  &lt;template #default="{ isActive }">
+                    &lt;v-card class="pa-2">
+                      &lt;v-card-title class="text-h6">
+                        Update Processing Notes
+                      &lt;/v-card-title>
+
+                      &lt;v-card-text class="pt-2">
+                        &lt;v-textarea
+                          v-model="props.item.processingNotes"
+                          hide-details
+                          label="Edit (not long words)"
+                          variant="filled"
+                        />
+                      &lt;/v-card-text>
+
+                      &lt;v-card-actions>
+                        &lt;v-spacer />
+                        &lt;v-btn
+                          color="primary"
+                          variant="text"
+                          @click="
+                            saveProcessingNotes(
+                              props.item.id,
+                              props.item.processingNotes,
+                            );
+                            isActive.value = false;
+                          "
+                        >
+                          Save
+                        &lt;/v-btn>
+                      &lt;/v-card-actions>
+                    &lt;/v-card>
+                  &lt;/template>
+                &lt;/v-menu>
               &lt;/td>
               &lt;td>
-                &lt;v-icon
-                  color="blue"
-                  start
-                  @click.stop="
-                    assignMaintenanceOwner(
-                      props.item.recordName,
-                      props.item.id,
-                      props.item.userName,
-                      props.item.requestID,
-                    )
-                  "
-                >
-                  far fa-check-circle
-                &lt;/v-icon>
-                {{ props.item.actions }}
-                &lt;v-icon
-                  color="red"
-                  end
-                  @click="
-                    rejectMaintenanceOwner(
-                      props.item.recordName,
-                      props.item.id,
-                      props.item.userName,
-                      props.item.requestID,
-                    )
-                  "
-                >
-                  fas fa-ban
-                &lt;/v-icon>
+                &lt;div class="d-flex">
+                  &lt;v-icon
+                    color="blue"
+                    start
+                    @click.stop="
+                      assignMaintenanceOwner(
+                        props.item.recordName,
+                        props.item.id,
+                        props.item.userName,
+                        props.item.requestID,
+                      )
+                    "
+                  >
+                    far fa-check-circle
+                  &lt;/v-icon>
+                  {{ props.item.actions }}
+                  &lt;v-icon
+                    color="red"
+                    end
+                    @click="
+                      rejectMaintenanceOwner(
+                        props.item.recordName,
+                        props.item.id,
+                        props.item.userName,
+                        props.item.requestID,
+                      )
+                    "
+                  >
+                    fas fa-ban
+                  &lt;/v-icon>
+                &lt;/div>
               &lt;/td>
             &lt;/tr>
           &lt;/template>
@@ -235,9 +263,9 @@
               &lt;v-spacer />
               &lt;v-btn
                 :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
+                color="red-darken-1"
                 persistent
-                variant="text"
+                variant="elevated"
                 @click="closeMaintenanceAssign()"
               >
                 Cancel
@@ -246,7 +274,7 @@
                 :disabled="dialogs.disableDelButton === true"
                 color="blue-darken-1"
                 persistent
-                variant="text"
+                variant="elevated"
                 @click="assignMaintenanceOwnConfirm('approved')"
               >
                 OK
@@ -583,7 +611,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Mon Mar 30th 2026
+		on Tue Apr 7th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

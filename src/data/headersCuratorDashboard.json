@@ -138,7 +138,8 @@
     },
     {
       "title": "Date created",
-      "value": "createdAt"
+      "value": "createdAt",
+      "width": 107
     },
     {
       "title": "Missing required",

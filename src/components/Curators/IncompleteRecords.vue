@@ -84,13 +84,13 @@
                 {{ props.item.createdAt }}
               </td>
               <td>
-                {{ props.item.required }}
+                {{ props.item.required.replace(/_/g, " ") }}
               </td>
               <td>
-                {{ props.item.recommended }}
+                {{ props.item.recommended.replace(/_/g, " ") }}
               </td>
               <td>
-                {{ props.item.optional }}
+                {{ props.item.optional.replace(/_/g, " ") }}
               </td>
               <td>
                 <v-icon

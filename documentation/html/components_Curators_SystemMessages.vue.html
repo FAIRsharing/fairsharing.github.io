@@ -93,7 +93,7 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div>
-    &lt;v-col cols12>
+    &lt;v-col cols="12">
       &lt;v-card
         v-if="user().role === 'super_curator' || user().role === 'developer'"
         class="mb-2"
@@ -105,57 +105,81 @@
           >
             SYSTEM MESSAGES
             &lt;v-btn class="bg-info ml-5" @click.stop="showAddMessage()">
-              &lt;v-icon class="mr-1" color="white"> fas fa-plus&lt;/v-icon>
+              &lt;v-icon class="mr-1" color="white" icon="fas fa-plus" />
               &lt;span class="text-white">Add message&lt;/span>
             &lt;/v-btn>
             &lt;v-spacer />
           &lt;/v-card-title>
+
           &lt;v-data-table
-            :footer-props="{ 'items-per-page-options': [5, 10, 20, 25, 30] }"
             :headers="headerItems"
             :items="systemMessages"
+            :items-per-page-options="[5, 10, 20, 25, 30]"
             :loading="loading"
           >
-            &lt;template v-if="systemMessages" #item="props">
+            &lt;template v-if="systemMessages" #item="{ item }">
               &lt;tr>
                 &lt;td>
-                  {{ props.item.id }}
+                  {{ item.id }}
                 &lt;/td>
                 &lt;td>
-                  &lt;v-confirm-edit
-                    v-model:return-value="props.item.message"
-                    large
-                    @save="saveEditedMessage(props.item.id, props.item.message)"
+                  &lt;v-menu
+                    :close-on-content-click="false"
+                    location="bottom"
+                    min-width="400"
                   >
-                    {{ props.item.message }}
-                    &lt;template #input>
-                      &lt;div class="dialogMessageEdit">
-                        &lt;div class="mt-4 text-h6">Update Message&lt;/div>
-                        &lt;v-textarea
-                          v-model="props.item.message"
-                          label="Edit away!"
-                          variant="filled"
-                          width="1200px"
-                        />
-                      &lt;/div>
+                    &lt;template #activator="{ props: menuProps }">
+                      &lt;span
+                        style="cursor: pointer; border-bottom: 1px dashed grey"
+                        v-bind="menuProps"
+                      >
+                        {{ item.message || "Click to edit..." }}
+                      &lt;/span>
                     &lt;/template>
-                  &lt;/v-confirm-edit>
+                    &lt;template #default="{ isActive }">
+                      &lt;v-card class="pa-2">
+                        &lt;v-card-title class="mt-2 text-h6">
+                          Update Message
+                        &lt;/v-card-title>
+                        &lt;v-card-text class="pt-2">
+                          &lt;v-textarea
+                            v-model="item.message"
+                            hide-details
+                            label="Edit away!"
+                            variant="filled"
+                          />
+                        &lt;/v-card-text>
+                        &lt;v-card-actions>
+                          &lt;v-spacer />
+                          &lt;v-btn
+                            color="primary"
+                            variant="text"
+                            @click="
+                              saveEditedMessage(item.id, item.message);
+                              isActive.value = false;
+                            "
+                          >
+                            Save
+                          &lt;/v-btn>
+                        &lt;/v-card-actions>
+                      &lt;/v-card>
+                    &lt;/template>
+                  &lt;/v-menu>
                 &lt;/td>
                 &lt;td>
-                  {{ props.item.created_at }}
+                  {{ item.created_at }}
                 &lt;/td>
                 &lt;td>
-                  {{ props.item.updated_at }}
+                  {{ item.updated_at }}
                 &lt;/td>
                 &lt;td>
                   &lt;v-icon
                     color="red"
                     end
+                    icon="fas fa-trash"
                     size="small"
-                    @click="deleteMessage(props.item.id)"
-                  >
-                    fas fa-trash
-                  &lt;/v-icon>
+                    @click="deleteMessage(item.id)"
+                  />
                 &lt;/td>
               &lt;/tr>
             &lt;/template>
@@ -163,79 +187,75 @@
         &lt;/v-card-text>
       &lt;/v-card>
     &lt;/v-col>
-    &lt;!-- this shouldn't appear as an unauthorised user shouldn't be here -->
+
     &lt;v-row>
-      &lt;!-- dialogs -->
-      &lt;v-layout justify-center row>
-        &lt;v-dialog v-model="dialogs.addMessage" max-width="700px">
-          &lt;v-card>
-            &lt;v-card-title class="text-h5"> Add new message&lt;/v-card-title>
-            &lt;v-card-text>
-              &lt;v-textarea
-                v-model="dialogs.newMessage"
-                clearable
-                label="New message"
-                name="new-message-field"
-                placeholder="Type a message here..."
-                regular
-              />
-            &lt;/v-card-text>
-            &lt;v-card-actions>
-              &lt;v-spacer />
-              &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="closeAddMessageMenu()"
-              >
-                Cancel
-              &lt;/v-btn>
-              &lt;v-btn
-                :disabled="!dialogs.newMessage"
-                color="blue-darken-1"
-                variant="text"
-                @click="addMessage()"
-              >
-                OK
-              &lt;/v-btn>
-              &lt;v-spacer />
-            &lt;/v-card-actions>
-          &lt;/v-card>
-        &lt;/v-dialog>
-      &lt;/v-layout>
-      &lt;v-layout justify-center row>
-        &lt;v-dialog v-model="dialogs.deleteMessage" max-width="700px">
-          &lt;v-card>
-            &lt;v-card-title class="text-h5">
-              Are you sure you want to
-              &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
-                DELETE
-              &lt;/span>
-              this message?
-              &lt;ul style="list-style-type: none">
-                &lt;li>ID: {{ dialogs.messageId }}&lt;/li>
-              &lt;/ul>
-            &lt;/v-card-title>
-            &lt;v-card-actions>
-              &lt;v-spacer />
-              &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="closeDeleteMessageMenu()"
-              >
-                Cancel
-              &lt;/v-btn>
-              &lt;v-btn
-                color="blue-darken-1"
-                variant="text"
-                @click="confirmDeleteMessage()"
-              >
-                OK
-              &lt;/v-btn>
-              &lt;v-spacer />
-            &lt;/v-card-actions>
-          &lt;/v-card>
-        &lt;/v-dialog>
-      &lt;/v-layout>
+      &lt;v-dialog v-model="dialogs.addMessage" max-width="700px">
+        &lt;v-card>
+          &lt;v-card-title class="text-h5"> Add new message&lt;/v-card-title>
+          &lt;v-card-text>
+            &lt;v-textarea
+              v-model="dialogs.newMessage"
+              clearable
+              label="New message"
+              name="new-message-field"
+              placeholder="Type a message here..."
+              regular
+            />
+          &lt;/v-card-text>
+          &lt;v-card-actions>
+            &lt;v-spacer />
+            &lt;v-btn
+              color="red-darken-1"
+              variant="elevated"
+              @click="closeAddMessageMenu()"
+            >
+              Cancel
+            &lt;/v-btn>
+            &lt;v-btn
+              :disabled="!dialogs.newMessage"
+              color="blue-darken-1"
+              variant="elevated"
+              @click="addMessage()"
+            >
+              OK
+            &lt;/v-btn>
+            &lt;v-spacer />
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+
+      &lt;v-dialog v-model="dialogs.deleteMessage" max-width="700px">
+        &lt;v-card>
+          &lt;v-card-title class="text-h5">
+            Are you sure you want to
+            &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
+              DELETE
+            &lt;/span>
+            this message?
+            &lt;ul style="list-style-type: none">
+              &lt;li>ID: {{ dialogs.messageId }}&lt;/li>
+            &lt;/ul>
+          &lt;/v-card-title>
+          &lt;v-card-actions>
+            &lt;v-spacer />
+            &lt;v-btn
+              color="red-darken-1"
+              variant="elevated"
+              @click="closeDeleteMessageMenu()"
+            >
+              Cancel
+            &lt;/v-btn>
+            &lt;v-btn
+              color="blue-darken-1"
+              variant="elevated"
+              @click="confirmDeleteMessage()"
+            >
+              OK
+            &lt;/v-btn>
+            &lt;v-spacer />
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
     &lt;/v-row>
   &lt;/div>
 &lt;/template>
@@ -454,7 +474,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Tue Apr 7th 2026
+		on Wed Apr 8th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -177,13 +177,13 @@
                 {{ props.item.createdAt }}
               &lt;/td>
               &lt;td>
-                {{ props.item.required }}
+                {{ props.item.required.replace(/_/g, " ") }}
               &lt;/td>
               &lt;td>
-                {{ props.item.recommended }}
+                {{ props.item.recommended.replace(/_/g, " ") }}
               &lt;/td>
               &lt;td>
-                {{ props.item.optional }}
+                {{ props.item.optional.replace(/_/g, " ") }}
               &lt;/td>
               &lt;td>
                 &lt;v-icon

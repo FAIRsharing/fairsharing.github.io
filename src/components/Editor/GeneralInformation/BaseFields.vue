@@ -235,14 +235,14 @@
           variant="outlined"
         >
           <!-- Item selected -->
-          <template #selection="data">
+          <template #selection="{ item }">
             <v-chip
-              v-if="data.item.title"
+              v-if="!isEmpty(item.raw)"
               class="bg-blue text-white text-capitalize"
               closable
             >
-              {{ data.item.title.replace(/_/g, " ") }}
-            </v-chip>
+              {{ item.title.replace(/_/g, " ") }}</v-chip
+            >
           </template>
           <!-- select list data -->
           <template #item="{ props, item }">
@@ -573,6 +573,7 @@
 </template>
 
 <script>
+import { isEmpty } from "lodash";
 import CountryFlag from "vue-country-flag-next";
 import { mapGetters, mapState } from "vuex";
 
@@ -688,6 +689,7 @@ export default {
     }
   },
   methods: {
+    isEmpty,
     async deleteLogo() {
       this.logoLoading = true;
       let response;

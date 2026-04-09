@@ -42,18 +42,34 @@
               </v-slide-x-transition>
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="!answered" class="bg-success" @click="pressYes()">
+              <v-btn
+                v-if="!answered"
+                class="bg-success"
+                variant="elevated"
+                @click="pressYes()"
+              >
                 Yes
               </v-btn>
-              <v-btn v-if="!answered" class="bg-warning" @click="pressNo()">
+              <v-btn
+                v-if="!answered"
+                class="bg-warning"
+                variant="elevated"
+                @click="pressNo()"
+              >
                 <span>No</span>
               </v-btn>
-              <v-btn v-else class="bg-error" @click="closeMenu()">
+              <v-btn
+                v-else
+                class="bg-error"
+                variant="elevated"
+                @click="closeMenu()"
+              >
                 <span>Go back</span>
               </v-btn>
               <v-btn
                 class="bg-info"
                 href="mailto:contact@fairsharing.org?subject=Creating/editing a record in FAIRsharing"
+                variant="elevated"
               >
                 Ask a question
               </v-btn>

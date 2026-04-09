@@ -170,17 +170,18 @@ export default {
       if (this.submitAnyway) {
         if (this.possibleDuplicates.length > 0) {
           record.dups_suspected = true;
-        } else {
+        }
+        else {
           record.dups_suspected = false;
         }
-      } else {
+      }
+      else {
         if (this.possibleDuplicates.length > 0) {
           return;
         }
       }
 
       this.loading = true;
-
       record.record_type_id = record.type.id;
       record.metadata.status = status;
       record.country_ids = record.countries.map((obj) => obj.id);
@@ -198,7 +199,8 @@ export default {
           error: true,
           value: new_record.error,
         };
-      } else {
+      }
+      else {
         this.recordCreated = true;
         this.newRecord = new_record;
       }

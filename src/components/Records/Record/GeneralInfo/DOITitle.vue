@@ -10,8 +10,7 @@
             v-if="currentRecord['fairsharingRecord'].urlForLogo"
             :max-width="finalImageWidth"
             :src="newImg.src"
-            class="mr-2"
-            contain
+            class="mr-2 contain"
             width="300px"
           />
           <h3

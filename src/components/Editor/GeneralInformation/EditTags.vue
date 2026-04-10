@@ -218,12 +218,12 @@
                 </v-chip>
               </template>
               <template #[`item.definitions`]="{ item }">
-                <div v-if="item.definitions" class="font-italic limitWidth">
+                <div v-if="item.definitions" class="text-start">
                   {{ item.definitions[0] }}
                 </div>
               </template>
               <template #[`item.synonyms`]="{ item }">
-                <div v-if="item.synonyms" class="font-italic limitWidth">
+                <div v-if="item.synonyms" class="text-start">
                   {{ item.synonyms.join(", ") }}
                 </div>
               </template>

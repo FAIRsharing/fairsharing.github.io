@@ -49,13 +49,17 @@ export default {
 
     // capitalise using stringutils capitalize method, then render => sanitize
     descriptionHtml() {
+      //VUE-3 upgrade : Commenting the below code in order to display the description as entered in the field
+      //BEFORE
       // if your mixin exposes `capitalize`, call it; otherwise remove the call
-      const capitalized =
-        typeof this.capitalize === "function"
-          ? capitalize(this.descriptionRaw)
-          : this.descriptionRaw;
-
-      const unsafe = md.render(capitalized || "");
+      // const capitalized =
+      //   typeof this.capitalize === "function"
+      //     ? capitalize(this.descriptionRaw)
+      //     : this.descriptionRaw;
+      //
+      // const unsafe = md.render(capitalized || "");
+      //AFTER
+      const unsafe = md.render(this.descriptionRaw || "");
       // Sanitize the generated HTML to avoid XSS.
       return DOMPurify.sanitize(unsafe);
     },

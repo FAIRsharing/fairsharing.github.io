@@ -29,7 +29,8 @@ Highcharts.setOptions({
 
 if (typeof Exporting === "function") {
   Exporting(Highcharts);
-} else if (typeof Exporting.default === "function") {
+}
+else if (typeof Exporting.default === "function") {
   Exporting.default(Highcharts);
 }
 
@@ -67,6 +68,9 @@ export default {
         },
         title: {
           text: "", //The title text of the chart
+          style: {
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          },
         },
         credits: {
           enabled: false,
@@ -99,7 +103,8 @@ export default {
                   function (e) {
                     if (this.options.url) {
                       location.href = this.options.url;
-                    } else {
+                    }
+                    else {
                       e.stopPropagation();
                     }
                   },

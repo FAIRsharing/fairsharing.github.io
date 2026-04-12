@@ -94,7 +94,7 @@
                     }}</b>
                   </v-chip>
                   <v-chip
-                    v-if="item.isLead"
+                    v-if="item.raw.isLead"
                     class="ml-2"
                     color="pink"
                     label
@@ -189,20 +189,20 @@ export default {
 
     sortData() {
       switch (this.sortBy) {
-        case "Name":
-          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
-        case "Registry":
-          return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
-        case "Type":
-          return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
-        case "Status":
-          return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
-        case "Description":
-          return [
-            { key: "description", order: this.sortDesc ? "desc" : "asc" },
-          ];
-        default:
-          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Name":
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Registry":
+        return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
+      case "Type":
+        return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
+      case "Status":
+        return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
+      case "Description":
+        return [
+          { key: "description", order: this.sortDesc ? "desc" : "asc" },
+        ];
+      default:
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
       }
     },
   },

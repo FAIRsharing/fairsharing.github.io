@@ -26,6 +26,7 @@ import { loadFull } from "tsparticles";
 import Highcharts from "highcharts";
 import accessibilityInit from "highcharts/modules/accessibility";
 import { bootstrapApp, globalFilters } from "./utils/setupUtils";
+import { initColorFix } from "./utils/colorFix";
 
 router.beforeEach(
   async (to, from, next) => await beforeEach(to, from, next, store),
@@ -41,7 +42,8 @@ export function initHighchartsAccessibility(
 ) {
   if (typeof accessibilityModule === "function") {
     accessibilityModule(highchartsInstance);
-  } else if (
+  }
+  else if (
     accessibilityModule &&
     typeof accessibilityModule.default === "function"
   ) {
@@ -50,6 +52,7 @@ export function initHighchartsAccessibility(
 }
 
 initHighchartsAccessibility(accessibilityInit, Highcharts);
+initColorFix();
 
 const app = createApp(App)
   .use(createVuetify)

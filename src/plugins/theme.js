@@ -1,5 +1,5 @@
 const fairSharingTheme = {
-  light: true,
+  dark: false,
   colors: {
     //-- main color palette used for most parts of the app:
     primary: "#27aae1",

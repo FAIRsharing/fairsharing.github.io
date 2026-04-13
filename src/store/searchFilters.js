@@ -39,7 +39,8 @@ export const mutations = {
       if (item.type === "Boolean") {
         let ObjectModel = buttonOptions[item.filterName];
         state.filterButtons.push(ObjectModel);
-      } else if (item.filterName === "status") {
+      }
+      else if (item.filterName === "status") {
         let ObjectModel = buttonOptions.status.data;
         ObjectModel.forEach(function (button) {
           if (Object.prototype.hasOwnProperty.call(button, "apiIndex")) {
@@ -100,12 +101,16 @@ export const getters = {
     });
     return output;
   },
+
   getFiltersStatisticCount: (state) => (option) => {
-    if (state.filtersStatistic && state.filtersStatistic.length) {
-      return state.filtersStatistic[option.filterName].buckets.find(
-        (item) => item.key === option.key,
-      )["doc_count"];
+    if (state.filtersStatistic && state.filtersStatistic[option.filterName]) {
+      const targetBucket = state.filtersStatistic[
+        option.filterName
+      ].buckets.find((item) => item.key === option.key);
+
+      return targetBucket ? targetBucket.doc_count : 0;
     }
+    return 0;
   },
 };
 
@@ -149,7 +154,8 @@ export const buildFilters = function (val) {
       buckets.forEach(function (bucket) {
         if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
           filterValues.push(bucket["key_as_string"]);
-        } else {
+        }
+        else {
           filterValues.push(bucket["key"]);
         }
       });

@@ -4,10 +4,11 @@ import { createVuetify } from "vuetify";
 
 import InfoBlock from "@/components/Home/InfoBlock";
 import icons from "@/plugins/icons";
-const vuetify = createVuetify({ icons: icons });
 import Vuex from "vuex";
 
 import searchFiltersStore from "@/store/searchFilters.js";
+
+const vuetify = createVuetify({ icons: icons });
 
 const $store = new Vuex.Store({
   modules: {
@@ -53,7 +54,7 @@ searchFiltersStore.state.filtersStatistic = {
   },
 };
 
-describe("BlockInfo.vue", function () {
+describe("InfoBlock.vue", function () {
   let wrapper;
 
   beforeEach(() => {
@@ -68,5 +69,60 @@ describe("BlockInfo.vue", function () {
 
   it("can be instantiated", () => {
     expect(wrapper.vm.$options.name).toMatch("InfoBlock");
+  });
+
+  it("populates blockInfo with counts from the Vuex store", () => {
+    // Access the computed property directly from the wrapper's ViewModel (vm)
+    const blockInfo = wrapper.vm.populatedBlockInfo;
+
+    // 1. Check that the base nodes exist
+    expect(blockInfo.standard).toBeDefined();
+    expect(blockInfo.database).toBeDefined();
+    expect(blockInfo.policy).toBeDefined();
+
+    // 2. Verify that total counts are applied as numbers (mapped from the getter)
+    expect(typeof blockInfo.standard.total.count).toBe("number");
+    expect(typeof blockInfo.database.total.count).toBe("number");
+    expect(typeof blockInfo.policy.total.count).toBe("number");
+
+    // Note: If you know the exact expected count based on your mock store and JSON,
+    // you can be more specific, e.g., expect(blockInfo.standard.total.count).toBe(5);
+  });
+
+  it("sorts the items within each category by count in descending order", () => {
+    const blockInfo = wrapper.vm.populatedBlockInfo;
+
+    // Helper function to verify an array is sorted descending by the 'count' property
+    const isSortedDescending = (items) => {
+      for (let i = 0; i < items.length - 1; i++) {
+        if (items[i].count < items[i + 1].count) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    // Assert that the sort function in your computed property worked
+    expect(isSortedDescending(blockInfo.standard.items)).toBe(true);
+    expect(isSortedDescending(blockInfo.database.items)).toBe(true);
+    expect(isSortedDescending(blockInfo.policy.items)).toBe(true);
+  });
+
+  it("gracefully falls back to 0 for missing or loading data", () => {
+    // Arrange: Wipe out the mock store data to simulate an empty/loading state
+    wrapper.vm.$store.state.searchFilters.filtersStatistic = {};
+
+    // Act: Re-evaluate the computed property
+    const blockInfo = wrapper.vm.populatedBlockInfo;
+
+    // Assert: The '|| 0' fallback should catch undefined values and set them to 0
+    expect(blockInfo.standard.total.count).toBe(0);
+    expect(blockInfo.database.total.count).toBe(0);
+    expect(blockInfo.policy.total.count).toBe(0);
+
+    // Ensure the fallback also applied to the nested items array
+    if (blockInfo.standard.items.length > 0) {
+      expect(blockInfo.standard.items[0].count).toBe(0);
+    }
   });
 });

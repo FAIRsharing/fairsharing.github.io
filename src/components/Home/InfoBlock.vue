@@ -1,35 +1,35 @@
 <template>
   <v-container>
     <v-row class="block-category">
-      <v-col cols="12" sm="12" md="4" lg="4">
+      <v-col cols="12" lg="4" md="4" sm="12">
         <v-card
           class="mx-auto block-category__card"
-          max-width="350"
           height="500"
+          max-width="350"
         >
           <div
             class="text-white d-flex flex-column justify-center block-category__card__gradiant"
           >
-            <div style="height: 136px" class="d-flex justify-center">
+            <div class="d-flex justify-center" style="height: 136px">
               <v-img
+                :src="customIcons.values['home_standard'].icon"
                 class="mt-5 contain"
                 height="100px"
-                :src="customIcons.values['home_standard'].icon"
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
               <span>
-                {{ blockInfo.standard.total.count }}
+                {{ populatedBlockInfo.standard.total.count }}
               </span>
               Standards
             </v-card-title>
           </div>
           <v-card-text
-            v-if="blockInfo.standard.items.length < 5"
+            v-if="populatedBlockInfo.standard.items.length < 5"
             class="text--primary text-justify height-190"
           >
             <router-link
-              v-for="(item, index) in blockInfo.standard.items"
+              v-for="(item, index) in populatedBlockInfo.standard.items"
               :key="item.title + '_' + index"
               :to="item.searchQuery"
               class="underline-effect"
@@ -48,33 +48,33 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="4" lg="4">
+      <v-col cols="12" lg="4" md="4" sm="12">
         <v-card
           class="mx-auto block-category__card"
-          max-width="350"
           height="500"
+          max-width="350"
         >
           <div
             class="text-white d-flex flex-column justify-center block-category__card__gradiant"
           >
-            <div style="height: 136px" class="d-flex justify-center">
+            <div class="d-flex justify-center" style="height: 136px">
               <v-img
+                :src="customIcons.values['home_db'].icon"
                 class="mt-5 contain"
                 height="100px"
-                :src="customIcons.values['home_db'].icon"
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
-              <span>{{ blockInfo.database.total.count }}</span>
+              <span>{{ populatedBlockInfo.database.total.count }}</span>
               Databases
             </v-card-title>
           </div>
           <v-card-text
-            v-if="blockInfo.database.items.length < 5"
+            v-if="populatedBlockInfo.database.items.length < 5"
             class="text--primary text-justify height-190"
           >
             <router-link
-              v-for="(item, index) in blockInfo.database.items"
+              v-for="(item, index) in populatedBlockInfo.database.items"
               :key="item.title + '_' + index"
               :to="item.searchQuery"
               class="underline-effect"
@@ -93,33 +93,33 @@
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="4" lg="4">
+      <v-col cols="12" lg="4" md="4" sm="12">
         <v-card
           class="mx-auto block-category__card"
-          max-width="350"
           height="500"
+          max-width="350"
         >
           <div
             class="text-white d-flex flex-column justify-center block-category__card__gradiant"
           >
-            <div style="height: 136px" class="d-flex justify-center">
+            <div class="d-flex justify-center" style="height: 136px">
               <v-img
+                :src="customIcons.values['home_policies'].icon"
                 class="mt-5"
                 height="100px"
-                :src="customIcons.values['home_policies'].icon"
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
-              <span>{{ blockInfo.policy.total.count }}</span>
+              <span>{{ populatedBlockInfo.policy.total.count }}</span>
               Policies
             </v-card-title>
           </div>
           <v-card-text
-            v-if="blockInfo.policy.items.length < 7"
+            v-if="populatedBlockInfo.policy.items.length < 7"
             class="text--primary text-justify height-195"
           >
             <router-link
-              v-for="(item, index) in blockInfo.policy.items"
+              v-for="(item, index) in populatedBlockInfo.policy.items"
               :key="item.title + '_' + index"
               :to="item.searchQuery"
               class="underline-effect"
@@ -148,36 +148,44 @@ import { mapGetters } from "vuex";
 import homePageData from "@/data/homePageData.json";
 import { truncate } from "@/utils/stringUtils";
 import customIcons from "@/plugins/icons";
+
 export default {
   name: "InfoBlock",
   mixins: [truncate],
   data: () => {
     return {
-      blockInfo: homePageData.blockInfo,
       customIcons: customIcons,
     };
   },
   computed: {
     ...mapGetters("searchFilters", ["getFiltersStatisticCount"]),
-  },
-  mounted() {
-    Object.keys(this.blockInfo).forEach((node) => {
-      this.blockInfo[node].total.count = this.getFiltersStatisticCount(
-        this.blockInfo[node].total.option,
-      );
-      this.blockInfo[node]["items"].forEach((item, index) => {
-        this.blockInfo[node]["items"][index].count =
-          this.getFiltersStatisticCount(item.option);
+
+    populatedBlockInfo() {
+      // 1. Create a fresh copy of the JSON so we don't accidentally mutate the source file
+      const result = JSON.parse(JSON.stringify(homePageData.blockInfo));
+
+      // 2. Loop through Standards, Databases, Policies
+      Object.keys(result).forEach((node) => {
+        // Reactively grab the total count (fallback to 0 if loading)
+        result[node].total.count =
+          this.getFiltersStatisticCount(result[node].total.option) || 0;
+
+        // Reactively grab the individual item counts
+        result[node].items.forEach((item) => {
+          item.count = this.getFiltersStatisticCount(item.option) || 0;
+        });
+
+        // Sort items by count
+        result[node].items.sort((a, b) => b.count - a.count);
       });
-      this.blockInfo[node]["items"].sort(function (a, b) {
-        return b.count - a.count;
-      });
-    });
+
+      return result;
+    },
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .block-category {
   &__card {
     transition: all 0.2ms ease;

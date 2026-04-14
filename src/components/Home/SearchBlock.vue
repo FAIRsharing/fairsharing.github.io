@@ -72,7 +72,7 @@
             <string-search
               :is-advance-search-term="isAdvanceSearchTerm"
               class="mt-16"
-              placeholder="search through all content"
+              placeholder="Search through all content"
               show-home-search
               style="width: 100%"
               @advanced-search-term="advancedSearchTerm"

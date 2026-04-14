@@ -3,35 +3,35 @@
     <v-form
       ref="form"
       v-model="formValid"
-      validate-on="submit lazy"
       class="d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
       style="position: relative"
+      validate-on="submit lazy"
       @submit.prevent="searchString()"
     >
       <v-text-field
         v-model="searchTerm"
-        variant="solo"
-        single-line
+        :class="$vuetify.display.lgAndDown ? 'v-input' : 'v-input-lg-up'"
+        :placeholder="placeholder"
+        :style="{ height: responsiveHeightTextBox + 'px' }"
+        class="full-width"
         clearable
         density="compact"
-        class="full-width"
-        :class="$vuetify.display.lgAndDown ? 'v-input' : 'v-input-lg-up'"
-        :height="responsiveHeightTextBox"
-        :placeholder="placeholder"
+        single-line
+        variant="solo-filled"
       />
 
       <!--  reusable search box  -->
       <v-btn
         v-if="!showHomeSearch"
-        size="small"
-        color="primary"
-        variant="outlined"
         :class="responsiveHeight"
         class="mt-1 mt-lg-1 ml-2"
+        color="primary"
+        size="small"
         type="submit"
+        variant="outlined"
         @click="searchString()"
       >
-        <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
+        <v-icon class="mr-1" size="x-small"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
 
@@ -44,14 +44,14 @@
       <!--  home page search box  -->
       <v-btn
         v-if="showHomeSearch"
-        color="primary"
         :class="[
           'mt-1 mt-lg-1 ml-2',
           $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
         ]"
+        color="primary"
         @click="searchStringHomePage()"
       >
-        <v-icon size="x-small" class="mr-1"> fas fa-search </v-icon>
+        <v-icon class="mr-1" size="x-small"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
     </v-form>
@@ -61,9 +61,9 @@
         v-for="(checkbox, index) in registries"
         :key="checkbox.value + '_' + index"
         v-model="selectedRegistries"
-        class="d-inline-block mr-2"
         :label="checkbox.label"
         :value="checkbox"
+        class="d-inline-block mr-2"
         color="primary"
       >
         <template #label>
@@ -140,7 +140,8 @@ export default {
             ..._module.$route.query,
             q: _module.searchTerm,
           };
-        } else {
+        }
+        else {
           query = {
             // Changed due to: https://github.com/FAIRsharing/FAIRsharing-API/issues/625
             q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
@@ -166,7 +167,8 @@ export default {
           });
           _module.searchTerm = null;
           _module.$refs.form.resetValidation();
-        } else {
+        }
+        else {
           const selectedRegistriesValues = [];
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);
@@ -250,5 +252,8 @@ export default {
 }
 .v-label-white {
   color: white;
+}
+:deep(.v-field__input) {
+  min-height: v-bind(responsiveHeightTextBox + "px");
 }
 </style>

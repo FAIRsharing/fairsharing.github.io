@@ -24,7 +24,7 @@
         <string-search
           v-if="$vuetify.display.sm || $vuetify.display.mdAndUp"
           :class="$vuetify.display.lgAndDown ? 'flex-grow-1' : 'full-width'"
-          placeholder="search through all content"
+          placeholder="Search through all content"
         />
         <nav>
           <ul
@@ -229,7 +229,8 @@ export default {
       let currentQuery = this.$route.query;
       if (!isEmpty(currentQuery)) {
         return currentQuery;
-      } else {
+      }
+      else {
         return { fairsharingRegistry: this.$route.name };
       }
     },

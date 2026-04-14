@@ -102,7 +102,8 @@ let routes = [
       let [query, modified] = hackSearch(to.query);
       if (modified) {
         next({ name: "search", query: query });
-      } else {
+      }
+      else {
         next();
       }
     },
@@ -144,7 +145,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_databases_in_policies") {
+      }
+      else if (to.params.name === "live_list_databases_in_policies") {
         return {
           name: "search",
           query: {
@@ -153,7 +155,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_journal_policies") {
+      }
+      else if (to.params.name === "live_list_journal_policies") {
         return {
           name: "search",
           query: {
@@ -162,7 +165,8 @@ let routes = [
             page: 1,
           },
         };
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -204,11 +208,13 @@ let routes = [
         window.location.assign(
           "https://github.com/FAIRsharing/subject-ontology",
         );
-      } else if (to.params.name.toLowerCase() === "drao") {
+      }
+      else if (to.params.name.toLowerCase() === "drao") {
         window.location.assign(
           "https://github.com/FAIRsharing/domain-ontology",
         );
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -658,8 +664,16 @@ let routes = [
     path: "/profiles/editPublicProfile/:id",
     component: EditPublicProfile,
     beforeEnter(to, from, next) {
-      isLoggedIn(to, from, next, store);
-      isSuperCurator(to, from, next, store);
+      if (!store.state.users.user().isLoggedIn) {
+        return next("/login"); // Redirect and exit
+      }
+      if (!store.state.users.user().is_super_curator) {
+        next("/");
+      }
+      // Only if both pass, call next() exactly once
+      next();
+      // isLoggedIn(to, from, next, store);
+      // isSuperCurator(to, from, next, store);
     },
   },
   {
@@ -668,8 +682,7 @@ let routes = [
     component: UsersList,
     beforeEnter(to, from, next) {
       /**
-       * Commenting below method in order to avoid duplicacy of next() which is called in
-       * both methods
+       * Commenting below method in order to avoid duplicacy of next()   which is called in both methods
        */
       //isLoggedIn(to, from, next, store); Only superCurators can access users list
       isSuperCurator(to, from, next, store);
@@ -801,7 +814,8 @@ export async function beforeEach(to, from, next, store) {
 export function isLoggedIn(to, from, next, store) {
   if (store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //
@@ -813,7 +827,8 @@ export function isLoggedIn(to, from, next, store) {
 export function isNotLoggedIn(to, from, next, store) {
   if (!store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     next(from);
   }
 }
@@ -821,7 +836,8 @@ export function isNotLoggedIn(to, from, next, store) {
 export function isSuperCurator(to, from, next, store) {
   if (store.state.users.user().is_super_curator) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //

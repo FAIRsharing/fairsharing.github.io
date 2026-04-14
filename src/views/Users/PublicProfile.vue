@@ -1,8 +1,8 @@
 <template>
-  <v-container id="userPage" fluid class="standard bg-grey-lighten-3 pb-10">
+  <v-container id="userPage" class="standard bg-grey-lighten-3 pb-10" fluid>
     <v-row v-if="messages()['getPublicUser'].message">
       <v-col cols="12">
-        <v-alert type="success" class="mb-0" closable>
+        <v-alert class="mb-0" closable type="success">
           {{ messages()["getPublicUser"].message }}
         </v-alert>
       </v-col>
@@ -14,7 +14,7 @@
 
     <v-row v-else>
       <v-col cols="12">
-        <v-toolbar flat color="primary" dark height="55">
+        <v-toolbar color="primary" dark flat height="55">
           <v-toolbar-title>
             User Profile for {{ userData.user.username }}
           </v-toolbar-title>
@@ -26,9 +26,9 @@
         </v-toolbar>
       </v-col>
       <v-col v-if="!loading" cols="12">
-        <v-container fluid class="py-0 pa-0">
+        <v-container class="py-0 pa-0" fluid>
           <v-row>
-            <v-col cols="12" xl="2" lg="6" md="12" sm="12" xs="12" class="pt-0">
+            <v-col class="pt-0" cols="12" lg="6" md="12" sm="12" xl="2" xs="12">
               <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="bg-primary text-white py-3">
                   Personal Information
@@ -78,8 +78,8 @@
                           </b>
                           <a
                             v-if="field"
-                            class="d-flex align-center underline-effect"
                             :href="`https://orcid.org/${field}`"
+                            class="d-flex align-center underline-effect"
                             target="_blank"
                           >
                             <Icon :height="20" item="Orcid" wrapper-class="" />
@@ -93,8 +93,8 @@
               </v-card>
             </v-col>
 
-            <v-col class="pt-0" cols="12" xl="6" lg="6" md="12" sm="12" xs="12">
-              <v-card height="100%" class="d-flex flex-column rounded-0">
+            <v-col class="pt-0" cols="12" lg="6" md="12" sm="12" xl="6" xs="12">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="bg-primary text-white py-3">
                   Most recent publications
                 </v-card-title>
@@ -124,8 +124,11 @@
                   <v-btn
                     v-if="userData.user.orcid && !loading"
                     :href="`https://orcid.org/${userData.user.orcid}`"
+                    color="orcid_green"
                     rel="external"
+                    style="color: white !important"
                     target="_blank"
+                    variant="elevated"
                   >
                     View ORCID profile
                   </v-btn>
@@ -133,8 +136,8 @@
               </v-card>
             </v-col>
 
-            <v-col cols="12" xl="4" lg="6" md="6" sm="12" xs="12" class="pt-0">
-              <v-card height="100%" class="d-flex flex-column rounded-0">
+            <v-col class="pt-0" cols="12" lg="6" md="6" sm="12" xl="4" xs="12">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="bg-primary text-white py-3">
                   Maintained Records
                 </v-card-title>
@@ -147,8 +150,8 @@
               </v-card>
             </v-col>
 
-            <v-col cols="12" xl="4" lg="6" md="6" sm="12" xs="12" class="pt-0">
-              <v-card height="100%" class="d-flex flex-column rounded-0">
+            <v-col class="pt-0" cols="12" lg="6" md="6" sm="12" xl="4" xs="12">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="bg-primary text-white py-3">
                   Record Edits
                 </v-card-title>
@@ -158,8 +161,8 @@
               </v-card>
             </v-col>
 
-            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
-              <v-card height="100%" class="d-flex flex-column rounded-0">
+            <v-col class="pt-0" cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="bg-primary text-white py-3">
                   Organisations
                 </v-card-title>
@@ -171,8 +174,8 @@
               </v-card>
             </v-col>
 
-            <v-col cols="12" xl="4" lg="6" md="12" sm="12" xs="12" class="pt-0">
-              <v-card height="100%" class="d-flex flex-column rounded-0">
+            <v-col class="pt-0" cols="12" lg="6" md="12" sm="12" xl="4" xs="12">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title class="bg-primary text-white py-3">
                   Awards
                 </v-card-title>
@@ -183,15 +186,15 @@
             </v-col>
 
             <v-col
+              class="pt-0"
               cols="12"
-              xl="12"
               lg="12"
               md="12"
               sm="12"
+              xl="12"
               xs="12"
-              class="pt-0"
             >
-              <v-card height="100%" class="d-flex flex-column rounded-0">
+              <v-card class="d-flex flex-column rounded-0" height="100%">
                 <v-card-title
                   class="bg-primary text-white py-3 flex-column align-start"
                 >
@@ -203,9 +206,9 @@
                     yourself. More information on Conforming Resources and Saved
                     Searches can be found in our
                     <a
+                      class="text-white text-decoration-underline"
                       href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                       target="_blank"
-                      class="text-white text-decoration-underline"
                       >Gitbook documentation</a
                     >.
                   </v-card-subtitle>
@@ -227,8 +230,8 @@
         <v-overlay
           v-model="loading"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <loaders />
         </v-overlay>
@@ -331,7 +334,8 @@ export default {
       // No userdata, so don't look for publications.
       this.publications = [];
       this.error = true;
-    } else {
+    }
+    else {
       // Get user's publications.
       this.userData = data;
       this.publications = await this.getPublications();
@@ -347,7 +351,8 @@ export default {
         /* istanbul ignore if */
         if (publications.error) {
           return [];
-        } else {
+        }
+        else {
           output = publications["activities-summary"]["works"]["group"]
             .slice(0, 7)
             .map((obj) => {
@@ -365,7 +370,8 @@ export default {
                 if (DOI) {
                   if (DOI["external-id-url"]) {
                     url = DOI["external-id-url"].value;
-                  } else if (DOI["external-id-value"]) {
+                  }
+                  else if (DOI["external-id-value"]) {
                     url = "https://doi.org/" + DOI["external-id-value"];
                   }
                 }

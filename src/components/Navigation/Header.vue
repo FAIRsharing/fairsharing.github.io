@@ -284,6 +284,7 @@ header {
   position: relative !important;
   height: 150px;
   max-height: 150px;
+  background-color: #f5f5f5 !important;
 }
 
 .header-container:deep(.v-toolbar__content) {

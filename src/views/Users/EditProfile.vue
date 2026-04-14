@@ -129,6 +129,7 @@
                       :loading="loading"
                       class="mr-4"
                       color="success"
+                      vairant="elevated"
                       @click="updateProfile()"
                     >
                       Update profile
@@ -276,15 +277,7 @@ import { mapActions, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
 import { toBase64 } from "@/utils/generalUtils";
-import {
-  isBluesky,
-  isEmail,
-  isImage,
-  isLongEnough,
-  isMastodon,
-  isRequired,
-  isUrl,
-} from "@/utils/rules.js";
+import { isBluesky, isEmail, isImage, isLongEnough, isMastodon, isRequired, isUrl } from "@/utils/rules.js";
 
 const restClient = new RESTClient();
 

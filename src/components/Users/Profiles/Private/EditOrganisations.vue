@@ -2,144 +2,157 @@
   <v-container fluid>
     <v-snackbar
       v-model="showFailedAction"
-      color="red"
       class="text-body text-center"
+      color="error"
     >
-      <span class="text-center">
+      <div class="text-center w-100">
         You have already added this organisation in your list!
-      </span>
+      </div>
     </v-snackbar>
+
     <v-snackbar
       v-model="showSuccessAction"
-      color="green"
       class="text-body text-center"
+      color="success"
     >
-      <span class="text-center">
+      <div class="text-center w-100">
         Successfully {{ successTerm }} the organisation in your list!
-      </span>
+      </div>
     </v-snackbar>
-    <v-row>
-      <v-col v-if="userCanEditOrganisation" cols="12" md="12" lg="6" xl="6">
-        <!--  all available organisations  -->
-        <v-card-title>
-          Available Organisations
-          <v-spacer />
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            hide-details
-          />
-        </v-card-title>
-        <v-data-table
-          v-model="selected"
-          :headers="
-            userCanEditOrganisation
-              ? headersAvailableOrganisations
-              : headersAvailableOrganisations.filter(
-                  (item) => item.text !== 'action',
-                )
-          "
-          :items="allOrganisations"
-          :search="search"
-          :loading="loadingAllOrganisations"
-          :items-per-page="perPage"
-          :footer-props="footer"
-          item-key="name"
-          class="elevation-1"
-        >
-          <template #[`item.name`]="{ item }">
-            <router-link :to="'/organisations/' + item.id">
-              {{ item.name }}
-            </router-link>
-          </template>
 
-          <template #[`item.homepage`]="{ item }">
-            <a :href="item.homepage" target="_blank">
-              {{ item.homepage }}
-            </a>
-          </template>
-          <template #[`item.types`]="{ item }">
-            {{ item.types.join(", ") }}
-          </template>
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <template v-if="userCanEditOrganisation" #[`item.actions`]="{ item }">
-            <v-icon size="small" @click="AddToUsersOrganisations(item)">
-              {{ $vuetify.icons.values.plus }}
-            </v-icon>
-          </template>
-        </v-data-table>
+    <v-row>
+      <v-col v-if="userCanEditOrganisation" cols="12" lg="6" md="12" xl="6">
+        <v-card>
+          <v-card-title class="d-flex align-center">
+            Available Organisations
+            <v-spacer />
+            <v-text-field
+              v-model="search"
+              append-inner-icon="fas fa-search"
+              density="compact"
+              hide-details
+              label="Search"
+              single-line
+            />
+          </v-card-title>
+
+          <v-data-table
+            v-model="selected"
+            :headers="
+              userCanEditOrganisation
+                ? headersAvailableOrganisations
+                : headersAvailableOrganisations.filter(
+                    (item) => item.title !== 'action',
+                  )
+            "
+            :items="allOrganisations"
+            :items-per-page="perPage"
+            :loading="loadingAllOrganisations"
+            :search="search"
+            class="elevation-1"
+            item-value="name"
+          >
+            <template #[`item.name`]="{ item }">
+              <router-link :to="'/organisations/' + item.id">
+                {{ item.name }}
+              </router-link>
+            </template>
+
+            <template #[`item.homepage`]="{ item }">
+              <a :href="item.homepage" rel="noopener" target="_blank">
+                {{ item.homepage }}
+              </a>
+            </template>
+
+            <template #[`item.types`]="{ item }">
+              {{ item.types?.join(", ") }}
+            </template>
+
+            <template
+              v-if="userCanEditOrganisation"
+              #[`item.actions`]="{ item }"
+            >
+              <v-btn
+                icon
+                size="small"
+                variant="text"
+                @click="AddToUsersOrganisations(item)"
+              >
+                <v-icon>fas fa-plus-circle</v-icon>
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-card>
       </v-col>
+
       <v-col
-        cols="12"
-        md="12"
         :lg="userCanEditOrganisation ? 6 : 12"
         :xl="userCanEditOrganisation ? 6 : 12"
+        cols="12"
+        md="12"
       >
-        <!--  user existing organisations  -->
-        <v-card-title>
+        <v-card-title class="d-flex align-center">
           <span v-if="userCanEditOrganisation">User Organisations</span>
           <v-spacer />
           <v-text-field
             v-if="userOrganisations.length > 10"
             v-model="userOrganisationsSearch"
-            append-icon="mdi-magnify"
+            append-inner-icon="fas fa-search"
+            density="compact"
+            hide-details
             label="Search"
             single-line
-            hide-details
           />
         </v-card-title>
+
         <div class="d-flex align-center mb-4">
           <v-btn
             v-if="userCanEditOrganisation"
-            fab
+            class="mt-2 ml-2"
+            color="success"
+            icon="fas fa-plus"
             size="small"
-            class="bg-green text-white mt-2 ml-2"
             @click="AddNewOrganisation.show = true"
           >
-            <v-icon size="small"> fa-plus </v-icon>
           </v-btn>
-          <b v-if="userCanEditOrganisation" class="ml-2"
+          <b v-if="userCanEditOrganisation" class="ml-2 mt-2"
             >Add a new Organisation</b
           >
         </div>
+
         <v-data-table
-          :search="userOrganisationsSearch"
-          :items="userOrganisations"
           :headers="
             userCanEditOrganisation
               ? headers
-              : headers.filter((item) => item.text !== 'action')
+              : headers.filter((item) => item.title !== 'action')
           "
+          :items="userOrganisations"
           :items-per-page="perPage"
-          :footer-props="footer"
           :loading="loading"
-          calculate-widths
+          :search="userOrganisationsSearch"
           class="elevation-1"
         >
           <template #top>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-                <v-card-title class="text-h5">
-                  Are you sure you want to delete this item?
-                </v-card-title>
+                <v-card-title class="text-h5">Are you sure?</v-card-title>
+                <v-card-text
+                  >Are you sure you want to delete this item?</v-card-text
+                >
                 <v-card-actions>
                   <v-spacer />
                   <v-btn
-                    color="blue-darken-1"
-                    variant="text"
+                    color="red-darken-1"
+                    variant="elevated"
                     @click="closeDelete"
+                    >Cancel</v-btn
                   >
-                    Cancel
-                  </v-btn>
                   <v-btn
                     color="blue-darken-1"
-                    variant="text"
+                    variant="elevated"
                     @click="deleteItemConfirm"
+                    >OK</v-btn
                   >
-                    OK
-                  </v-btn>
                   <v-spacer />
                 </v-card-actions>
               </v-card>
@@ -153,7 +166,7 @@
           </template>
 
           <template #[`item.homepage`]="{ item }">
-            <a :href="item.homepage" target="_blank">
+            <a :href="item.homepage" rel="noopener" target="_blank">
               {{ item.homepage }}
             </a>
           </template>
@@ -162,112 +175,89 @@
             {{ objToList(item.organisationTypes) }}
           </template>
 
-          <!-- eslint-disable-next-line vue/no-v-html -->
           <template v-if="userCanEditOrganisation" #[`item.actions`]="{ item }">
-            <v-icon size="small" @click="deleteItem(item)">
-              {{ $vuetify.icons.values.delete }}
-            </v-icon>
+            <v-btn icon size="small" variant="text" @click="deleteItem(item)">
+              <v-icon>fas fa-trash</v-icon>
+            </v-btn>
           </template>
 
           <template #no-data>
-            <div>You are not a member of any organisations.</div>
+            <div class="pa-4">You are not a member of any organisations.</div>
           </template>
         </v-data-table>
       </v-col>
     </v-row>
-    <!--  create a new organisation card   -->
-    <v-expand-transition>
-      <v-overlay
-        v-if="AddNewOrganisation.show === true"
-        :dark="false"
-        :absolute="false"
-        opacity="0.8"
-      >
-        <v-card
-          class="elevation-0 bg-grey-lighten-3 mb-10 pb-3 px-3"
-          style="
-            border: 2px dashed grey !important;
-            border-radius: 5px;
-            max-width: 1200px;
-          "
-        >
-          <v-card-title>Create a new organisation</v-card-title>
-          <v-card-text v-if="AddNewOrganisation.error" class="mb-0 pb-0">
-            <v-alert type="error" class="mb-0">
-              {{ AddNewOrganisation.error.response.data }}
-            </v-alert>
-          </v-card-text>
-          <v-card-text>
-            <v-form
-              id="createNewOrganisation"
-              ref="createNewOrganisation"
-              v-model="AddNewOrganisation.formValid"
-            >
-              <v-container fluid>
-                <v-row>
-                  <v-col cols="12" class="pb-0">
-                    <v-text-field
-                      v-model="AddNewOrganisation.data.name"
-                      label="Organisation Name"
-                      variant="outlined"
-                      :rules="[rules.isRequired()]"
-                    />
-                  </v-col>
-                  <v-col cols="12" class="pb-0">
-                    <v-text-field
-                      v-model="AddNewOrganisation.data.homepage"
-                      label="Organisation Homepage"
-                      variant="outlined"
-                      :rules="[rules.isRequired(), rules.isURL()]"
-                    />
-                  </v-col>
-                  <v-col cols="12" class="pb-0">
-                    <v-autocomplete
-                      v-model="AddNewOrganisation.data.organisation_type_ids"
-                      :items="organisationsTypes"
-                      multiple
-                      variant="outlined"
-                      item-title="name"
-                      item-value="id"
-                      return-object
-                      label="Select the organisation type(s)"
-                      :rules="[rules.isRequired(), rules.isLongEnough(1)]"
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-file-input
-                      v-if="false"
-                      v-model="AddNewOrganisation.data.logo"
-                      accept="image/png, image/jpeg"
-                      label="File input"
-                      placeholder="Select a logo"
-                      variant="outlined"
-                      :show-size="1000"
-                      clearable
-                      chips
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              class="bg-success"
-              :disabled="!AddNewOrganisation.formValid"
-              :loading="AddNewOrganisation.loading"
-              @click="createNewOrganisation()"
-            >
-              Save new organisation
-            </v-btn>
-            <v-btn class="bg-error" @click="AddNewOrganisation.show = false">
-              Cancel
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-overlay>
-    </v-expand-transition>
+
+    <v-dialog v-model="AddNewOrganisation.show" max-width="1200px" persistent>
+      <v-card border="dashed opacity-50" class="bg-grey-lighten-3 pa-3">
+        <v-card-title>Create a new organisation</v-card-title>
+
+        <v-card-text v-if="AddNewOrganisation.error" class="pb-0">
+          <v-alert class="mb-4" closable type="error">
+            {{ AddNewOrganisation.error.response?.data || "An error occurred" }}
+          </v-alert>
+        </v-card-text>
+
+        <v-card-text>
+          <v-form
+            ref="createNewOrganisationForm"
+            v-model="AddNewOrganisation.formValid"
+          >
+            <v-row>
+              <v-col class="pb-0" cols="12">
+                <v-text-field
+                  v-model="AddNewOrganisation.data.name"
+                  :rules="[rules.isRequired()]"
+                  label="Organisation Name"
+                  variant="outlined"
+                />
+              </v-col>
+              <v-col class="pb-0" cols="12">
+                <v-text-field
+                  v-model="AddNewOrganisation.data.homepage"
+                  :rules="[rules.isRequired(), rules.isURL()]"
+                  label="Organisation Homepage"
+                  variant="outlined"
+                />
+              </v-col>
+              <v-col class="pb-0" cols="12">
+                <v-autocomplete
+                  v-model="AddNewOrganisation.data.organisation_type_ids"
+                  :items="organisationsTypes"
+                  :rules="[rules.isRequired(), rules.isLongEnough(1)]"
+                  chips
+                  item-title="name"
+                  item-value="id"
+                  label="Select type(s)"
+                  multiple
+                  variant="outlined"
+                />
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="!AddNewOrganisation.formValid"
+            :loading="AddNewOrganisation.loading"
+            color="success"
+            variant="elevated"
+            @click="createNewOrganisation()"
+          >
+            Save new organisation
+          </v-btn>
+          <v-btn
+            color="error"
+            variant="elevated"
+            @click="AddNewOrganisation.show = false"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -276,6 +266,7 @@ import { mapActions, mapState } from "vuex";
 
 import RestClient from "@/lib/Client/RESTClient.js";
 import { isLongEnough, isRequired, isUrl } from "@/utils/rules.js";
+
 const restClient = new RestClient();
 
 export default {
@@ -319,33 +310,33 @@ export default {
     },
     headers() {
       return [
-        { text: "Name", value: "name", align: "center" },
+        { title: "Name", value: "name", align: "center" },
         {
-          text: "Types",
+          title: "Types",
           value: "organisationTypes",
           align: "center",
           sortable: false,
         },
         {
-          text: "Homepage",
+          title: "Homepage",
           value: "homepage",
           align: "center",
           sortable: false,
         },
-        { text: "action", value: "actions", align: "center", sortable: false },
+        { title: "action", value: "actions", align: "center", sortable: false },
       ];
     },
     headersAvailableOrganisations() {
       return [
-        { text: "Name", value: "name", align: "center" },
-        { text: "Types", value: "types", align: "center", sortable: false },
+        { title: "Name", value: "name", align: "center" },
+        { title: "Types", value: "types", align: "center", sortable: false },
         {
-          text: "Homepage",
+          title: "Homepage",
           value: "homepage",
           align: "center",
           sortable: false,
         },
-        { text: "action", value: "actions", align: "center", sortable: false },
+        { title: "action", value: "actions", align: "center", sortable: false },
       ];
     },
     perPage() {
@@ -392,13 +383,15 @@ export default {
         ) {
           this.userCanEditOrganisation = true;
           return;
-        } else if (
+        }
+        else if (
           this.$route.name === "EditPublicProfile" &&
           this.user().is_super_curator
         ) {
           this.userCanEditOrganisation = true;
           return;
-        } else if (this.$route.name === "Edit profile") {
+        }
+        else if (this.$route.name === "Edit profile") {
           this.userCanEditOrganisation = true;
           return;
         }
@@ -414,7 +407,8 @@ export default {
         /* istanbul ignore else */
         if (user) {
           this.userOrganisations = user.organisations;
-        } else {
+        }
+        else {
           this.userOrganisations = [];
         }
       }
@@ -449,7 +443,8 @@ export default {
         await this.persistUserOrganisations();
         this.successTerm = "added";
         this.showSuccessAction = true;
-      } else {
+      }
+      else {
         this.showFailedAction = true;
       }
     },
@@ -476,7 +471,8 @@ export default {
       ) {
         newUser.id = this.$route.params.id;
         await this.updatePublicUser(newUser);
-      } else {
+      }
+      else {
         await this.updateUser(newUser);
       }
       await this.loadUserOrganisationData();
@@ -521,7 +517,8 @@ export default {
         this.allOrganisations = this.organisations;
         this.showSuccessAction = true;
         this.successTerm = "added";
-      } else {
+      }
+      else {
         this.AddNewOrganisation.error = data.error;
       }
     },

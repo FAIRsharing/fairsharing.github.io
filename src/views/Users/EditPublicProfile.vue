@@ -17,7 +17,7 @@
     </v-alert>
 
     <v-row class="justify-center">
-      <v-col cols="12" sm="12" md="8" lg="10" xl="8">
+      <v-col cols="12" lg="10" md="8" sm="12" xl="8">
         <!--   Error Handling for update user action     -->
         <div v-if="messages().updateProfile.message">
           <v-alert
@@ -51,10 +51,10 @@
           v-model="valid"
           @submit.prevent="valid ? updatePublicProfile() : (valid = false)"
         >
-          <v-card-title class="bg-primary text-white">
+          <v-card-title class="bg-primary text-white mt-5">
             <h2>Edit Public profile of User ID: {{ $route.params.id }}</h2>
           </v-card-title>
-          <v-container fluid class="text-center elevation-3 pa-5">
+          <v-container class="text-center elevation-3 pa-5" fluid>
             <v-row>
               <v-col
                 v-for="(field, fieldKey) in fields"
@@ -75,11 +75,11 @@
                 <div v-if="field.type === 'select'">
                   <v-select
                     v-model="formData[field.name]"
-                    variant="outlined"
-                    :label="field.label"
                     :items="data[field.data]"
+                    :label="field.label"
                     :rules="field.rules"
                     item-title="name"
+                    variant="outlined"
                   />
                 </div>
                 <div v-if="field.type === 'input'">
@@ -88,13 +88,13 @@
                   </span>
                   <v-text-field
                     v-model="formData[field.name]"
-                    :label="field.label"
-                    variant="outlined"
-                    :type="field.type"
                     :disabled="isDisabled(field.name)"
-                    :rules="field.rules"
                     :hint="field.hint"
+                    :label="field.label"
+                    :rules="field.rules"
+                    :type="field.type"
                     class="pa-0"
+                    variant="outlined"
                   />
                 </div>
                 <div v-if="field.type === 'checkbox'">
@@ -108,13 +108,13 @@
             <v-btn
               class="bg-primary mr-5 text-white"
               type="submit"
-              variant="outlined"
+              variant="elevated"
             >
               Update Profile
             </v-btn>
             <v-btn
               color="error"
-              variant="outlined"
+              variant="elevated"
               @click.prevent="dialog = true"
             >
               Delete Account!
@@ -149,8 +149,7 @@
     </v-dialog>
     <v-card
       v-if="currentPublicUser.username"
-      height="100%"
-      class="d-flex flex-column rounded-0 mb-10"
+      class="d-flex flex-column rounded-0 mt-10"
     >
       <v-card-title class="bg-primary text-white py-3">
         Organisations

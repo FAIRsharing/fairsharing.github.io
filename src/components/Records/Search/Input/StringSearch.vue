@@ -17,7 +17,7 @@
         clearable
         density="compact"
         single-line
-        variant="solo-filled"
+        variant="solo"
       />
 
       <!--  reusable search box  -->

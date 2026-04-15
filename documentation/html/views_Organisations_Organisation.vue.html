@@ -256,19 +256,26 @@
               class="ma-1"
               variant="elevated"
             >
-              &lt;a :href="search.url" class="text-black">
+              &lt;a :href="search.url" class="text-white">
                 {{ search.name }}
               &lt;/a>
-              &lt;v-icon
-                v-if="user().is_super_curator ? true : false"
-                class="ml-4"
-                color="error"
-                end
-                size="20"
-                @click="confirmUnlinkSavedSearch(search)"
-              >
-                mdi-link-off
-              &lt;/v-icon>
+              &lt;v-tooltip location="bottom">
+                &lt;template #activator="{ props }">
+                  &lt;span v-bind="props">
+                    &lt;v-icon
+                      v-if="user().is_super_curator ? true : false"
+                      class="ml-4 mr-2"
+                      color="error"
+                      end
+                      size="15"
+                      @click="confirmUnlinkSavedSearch(search)"
+                    >
+                      fas fa-unlink
+                    &lt;/v-icon>
+                  &lt;/span>
+                &lt;/template>
+                &lt;span>Unlink saved search&lt;/span>
+              &lt;/v-tooltip>
             &lt;/v-chip>
           &lt;/div>
         &lt;/div>
@@ -530,7 +537,9 @@
       &lt;/v-card>
       &lt;!-- Unlink saved search -->
       &lt;v-card v-if="unlinkSavedSearchCard">
-        &lt;v-card-title class="text-h5"> Unlinking saved search&lt;/v-card-title>
+        &lt;v-card-title class="text-h5 text-center">
+          Unlinking saved search&lt;/v-card-title
+        >
         &lt;v-card-text
           >This will unlink the saved search from this organisation.
         &lt;/v-card-text>
@@ -538,6 +547,7 @@
           &lt;v-spacer />
           &lt;v-btn
             class="bg-grey-darken-1 text-white"
+            variant="elevated"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
@@ -545,6 +555,7 @@
           &lt;v-btn
             :loading="deleteLoader"
             class="bg-success text-white"
+            variant="elevated"
             @click="unlinkSavedSearch(true)"
           >
             OK

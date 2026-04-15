@@ -94,12 +94,12 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div>
     &lt;v-data-table
-      class="userProfileSavedSearches"
-      :items="totalSearches"
-      :headers="headers"
-      :items-per-page="perPage"
       :footer-props="footer"
+      :headers="headers"
+      :items="totalSearches"
+      :items-per-page="perPage"
       calculate-widths
+      class="userProfileSavedSearches"
       mobile-breakpoint="960"
     >
       &lt;template #[`item.creator`]="{ item }">
@@ -160,7 +160,7 @@
           v-else-if="$route.name === 'PublicProfile'"
           @click="unlinkItem(item)"
         >
-          mdi-link-off
+          fas fa-unlink
         &lt;/v-icon>
         &lt;!--User is on its account profile page-->
         &lt;v-icon v-else @click="deleteItem(item)"> mdi-delete &lt;/v-icon>
@@ -185,9 +185,9 @@
             Cancel
           &lt;/v-btn>
           &lt;v-btn
+            :loading="loading"
             class="text-white"
             color="success"
-            :loading="loading"
             @click="deleteItemConfirm()"
           >
             OK
@@ -206,9 +206,9 @@
             Cancel
           &lt;/v-btn>
           &lt;v-btn
+            :loading="loading"
             class="text-white"
             color="success"
-            :loading="loading"
             @click="unlinkItemConfirm()"
           >
             OK
@@ -315,13 +315,15 @@ export default {
         await this.getUser();
         createdSearches = this.getUserRecords.user["createdSearches"];
         savedSearches = this.getUserRecords.user["savedSearches"];
-      } else if (searchUnlinked) {
+      }
+      else if (searchUnlinked) {
         let userId = this.$route.params.id;
         let userR = await this.getPublicUser(userId);
         await this.getUser();
         createdSearches = userR.user["createdSearches"];
         savedSearches = userR.user["savedSearches"];
-      } else {
+      }
+      else {
         createdSearches = this.createdSearches;
         savedSearches = this.savedSearches;
       }

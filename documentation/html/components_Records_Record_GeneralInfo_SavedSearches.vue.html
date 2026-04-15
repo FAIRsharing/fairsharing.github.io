@@ -115,9 +115,9 @@
       class="d-flex align-center"
     >
       &lt;v-card
+        border
         class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
         flat
-        border
       >
         &lt;div class="d-flex align-center">
           &lt;record-status
@@ -133,8 +133,8 @@
             &lt;p class="text-body-2 ml-10">
               (Created by:
               &lt;a
-                class="underline-effect"
                 :href="`/users/${search.creator['id']}`"
+                class="underline-effect"
                 >{{ search.creator["username"] }}&lt;/a
               >)
             &lt;/p>
@@ -153,7 +153,7 @@
         variant="text"
         @click="confirmUnlinkSavedSearch(search)"
       >
-        &lt;v-icon>mdi-link-off&lt;/v-icon>
+        &lt;v-icon>fas fa-unlink&lt;/v-icon>
       &lt;/v-btn>
     &lt;/div>
 
@@ -175,9 +175,9 @@
             Cancel
           &lt;/v-btn>
           &lt;v-btn
+            :loading="unlinkLoader"
             class="text-white"
             color="success"
-            :loading="unlinkLoader"
             @click="unlinkSavedSearch(true)"
           >
             OK

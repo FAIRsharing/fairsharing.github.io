@@ -3,7 +3,8 @@
     {
       "title": "Date last edit",
       "value": "updatedAt",
-      "width": 90
+      "width": 140,
+      "key": "updatedAt"
     },
     {
       "title": "",
@@ -13,17 +14,20 @@
     {
       "title": "Curator",
       "value": "curator",
-      "width": 50
+      "width": 50,
+      "key": "curator"
     },
     {
       "title": "Record name (id)",
       "value": "recordName",
-      "width": 400
+      "width": 400,
+      "key": "recordName"
     },
     {
       "title": "Last editor",
       "value": "lastEditor",
-      "width": 120
+      "width": 130,
+      "key": "lastEditor"
     },
     {
       "title": "Processing Notes",
@@ -39,21 +43,25 @@
     {
       "title": "Creation date & user",
       "value": "createdAt",
-      "width": 90
+      "width": 140,
+      "key": "createdAt"
     }
   ],
   "maintenanceRequests": [
     {
       "title": "Date",
-      "value": "createdAt"
+      "value": "createdAt",
+      "key": "createdAt"
     },
     {
       "title": "Record name (id)",
-      "value": "recordName"
+      "value": "recordName",
+      "key": "recordName"
     },
     {
       "title": "User login",
-      "value": "userNameID"
+      "value": "userNameID",
+      "key": "userNameID"
     },
     {
       "title": "Processing Notes",
@@ -66,114 +74,139 @@
   "recordsCreatedCuratorsLastWeek": [
     {
       "title": "Record name (id)",
-      "value": "recordNameID"
+      "value": "recordNameID",
+      "key": "recordNameID"
     },
     {
       "title": "Date created",
-      "value": "createdAt"
+      "value": "createdAt",
+      "key": "createdAt"
     },
     {
       "title": "Creator",
-      "value": "creator"
+      "value": "creator",
+      "key": "creator"
     }
   ],
   "recordsInCuration": [
     {
       "title": "Record name (id)",
-      "value": "recordNameID"
+      "value": "recordNameID",
+      "key": "recordNameID"
     },
     {
       "title": "Record maintainer(s)",
-      "value": "recordMaintainers"
+      "value": "recordMaintainers",
+      "key": "recordMaintainers"
     },
     {
       "title": "Under curation by",
-      "value": "curator"
+      "value": "curator",
+      "key": "curator"
     }
   ],
   "recordsWithoutDois": [
     {
       "title": "Record name (id)",
-      "value": "recordNameID"
+      "value": "recordNameID",
+      "key": "recordNameID"
     },
     {
       "title": "Date created",
-      "value": "createdAt"
+      "value": "createdAt",
+      "key": "createdAt"
     },
     {
       "title": "Date last edit",
-      "value": "updatedAt"
+      "value": "updatedAt",
+      "key": "updatedAt"
     },
     {
       "title": "Created by",
-      "value": "creator"
+      "value": "creator",
+      "key": "creator"
     },
     {
       "title": "Last edited by",
-      "value": "lastEditor"
+      "value": "lastEditor",
+      "key": "lastEditor"
     }
   ],
   "hiddenRecords": [
     {
       "title": "Record name (id)",
-      "value": "recordNameID"
+      "value": "recordNameID",
+      "key": "recordNameID"
     },
     {
       "title": "Date created",
-      "value": "createdAt"
+      "value": "createdAt",
+      "key": "createdAt"
     },
     {
       "title": "Under curation by",
-      "value": "curator"
+      "value": "curator",
+      "key": "curator"
     },
     {
       "title": "Created by",
-      "value": "creator"
+      "value": "creator",
+      "key": "creator"
     }
   ],
   "incompleteRecords": [
     {
       "title": "Record name (id)",
-      "value": "recordNameID"
+      "value": "recordNameID",
+      "key": "recordNameID"
     },
     {
       "title": "Date created",
       "value": "createdAt",
-      "width": 107
+      "key": "createdAt",
+      "width": 110
     },
     {
       "title": "Missing required",
-      "value": "required"
+      "value": "required",
+      "key": "required"
     },
     {
       "title": "Missing recommended",
-      "value": "recommended"
+      "value": "recommended",
+      "key": "recommended"
     },
     {
       "title": "Missing optional",
-      "value": "optional"
+      "value": "optional",
+      "key": "optional"
     },
     {
       "title": "Delete record",
-      "value": "optional"
+      "value": "optional",
+      "sortable": false
     }
   ],
   "systemMessages": [
     {
       "title": "ID",
-      "value": "id"
+      "value": "id",
+      "key": "id"
     },
     {
       "title": "title",
-      "value": "message"
+      "value": "message",
+      "key": "message"
     },
     {
       "title": "Created at",
-      "value": "created_at"
+      "value": "created_at",
+      "key": "created_at"
     },
     {
       "title": "Updated at",
-      "value": "updated_at"
+      "value": "updated_at",
+      "key": "updated_at"
     },
     {
       "title": "Delete",

@@ -168,7 +168,7 @@ export default {
       loading: true,
       error: false,
       keys: ["Name", "Relation", "Registry", "Type", "Status"],
-      fairSharingURL: import.meta.env.VITE_FAIRSHARING_URL,
+      fairSharingURL: import.meta.env.VITE_HOSTNAME,
     };
   },
   computed: {

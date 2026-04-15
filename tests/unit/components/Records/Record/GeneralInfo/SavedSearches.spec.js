@@ -123,7 +123,7 @@ describe("SavedSearches.vue", () => {
   it("shows the unlink button for super curators", () => {
     const unlinkBtn = wrapper.findComponent({ name: "VBtn" });
     expect(unlinkBtn.exists()).toBe(true);
-    expect(unlinkBtn.html()).toContain("mdi-link-off");
+    expect(unlinkBtn.html()).toContain("fas fa-unlink");
   });
 
   it("hides the unlink button if user is not a super curator", async () => {
@@ -137,14 +137,14 @@ describe("SavedSearches.vue", () => {
       global: { plugins: [vuetify, store], stubs: { RecordStatus: true } },
     });
 
-    const unlinkBtn = wrapper.find(".mdi-link-off");
+    const unlinkBtn = wrapper.find(".fa-unlink");
     expect(unlinkBtn.exists()).toBe(false);
   });
 
   // --- DIALOG & METHODS ---
 
   it("opens the unlink confirmation dialog when the unlink button is clicked", async () => {
-    const unlinkBtn = wrapper.findComponent({ name: "VBtn" }); // The mdi-link-off button
+    const unlinkBtn = wrapper.findComponent({ name: "VBtn" }); // The fas fa-unlink button
     await unlinkBtn.trigger("click");
 
     expect(wrapper.vm.confirmUnlink).toBe(true);

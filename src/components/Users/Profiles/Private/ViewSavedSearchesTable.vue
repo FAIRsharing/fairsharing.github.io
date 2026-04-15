@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-data-table
-      class="userProfileSavedSearches"
-      :items="totalSearches"
-      :headers="headers"
-      :items-per-page="perPage"
       :footer-props="footer"
+      :headers="headers"
+      :items="totalSearches"
+      :items-per-page="perPage"
       calculate-widths
+      class="userProfileSavedSearches"
       mobile-breakpoint="960"
     >
       <template #[`item.creator`]="{ item }">
@@ -67,7 +67,7 @@
           v-else-if="$route.name === 'PublicProfile'"
           @click="unlinkItem(item)"
         >
-          mdi-link-off
+          fas fa-unlink
         </v-icon>
         <!--User is on its account profile page-->
         <v-icon v-else @click="deleteItem(item)"> mdi-delete </v-icon>
@@ -92,9 +92,9 @@
             Cancel
           </v-btn>
           <v-btn
+            :loading="loading"
             class="text-white"
             color="success"
-            :loading="loading"
             @click="deleteItemConfirm()"
           >
             OK
@@ -113,9 +113,9 @@
             Cancel
           </v-btn>
           <v-btn
+            :loading="loading"
             class="text-white"
             color="success"
-            :loading="loading"
             @click="unlinkItemConfirm()"
           >
             OK
@@ -222,13 +222,15 @@ export default {
         await this.getUser();
         createdSearches = this.getUserRecords.user["createdSearches"];
         savedSearches = this.getUserRecords.user["savedSearches"];
-      } else if (searchUnlinked) {
+      }
+      else if (searchUnlinked) {
         let userId = this.$route.params.id;
         let userR = await this.getPublicUser(userId);
         await this.getUser();
         createdSearches = userR.user["createdSearches"];
         savedSearches = userR.user["savedSearches"];
-      } else {
+      }
+      else {
         createdSearches = this.createdSearches;
         savedSearches = this.savedSearches;
       }

@@ -22,9 +22,9 @@
       class="d-flex align-center"
     >
       <v-card
+        border
         class="pa-4 d-flex flex-column v-card-hover mx-2 height-120 my-3 full-width"
         flat
-        border
       >
         <div class="d-flex align-center">
           <record-status
@@ -40,8 +40,8 @@
             <p class="text-body-2 ml-10">
               (Created by:
               <a
-                class="underline-effect"
                 :href="`/users/${search.creator['id']}`"
+                class="underline-effect"
                 >{{ search.creator["username"] }}</a
               >)
             </p>
@@ -60,7 +60,7 @@
         variant="text"
         @click="confirmUnlinkSavedSearch(search)"
       >
-        <v-icon>mdi-link-off</v-icon>
+        <v-icon>fas fa-unlink</v-icon>
       </v-btn>
     </div>
 
@@ -82,9 +82,9 @@
             Cancel
           </v-btn>
           <v-btn
+            :loading="unlinkLoader"
             class="text-white"
             color="success"
-            :loading="unlinkLoader"
             @click="unlinkSavedSearch(true)"
           >
             OK

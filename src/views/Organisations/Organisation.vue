@@ -163,19 +163,26 @@
               class="ma-1"
               variant="elevated"
             >
-              <a :href="search.url" class="text-black">
+              <a :href="search.url" class="text-white">
                 {{ search.name }}
               </a>
-              <v-icon
-                v-if="user().is_super_curator ? true : false"
-                class="ml-4"
-                color="error"
-                end
-                size="20"
-                @click="confirmUnlinkSavedSearch(search)"
-              >
-                mdi-link-off
-              </v-icon>
+              <v-tooltip location="bottom">
+                <template #activator="{ props }">
+                  <span v-bind="props">
+                    <v-icon
+                      v-if="user().is_super_curator ? true : false"
+                      class="ml-4 mr-2"
+                      color="error"
+                      end
+                      size="15"
+                      @click="confirmUnlinkSavedSearch(search)"
+                    >
+                      fas fa-unlink
+                    </v-icon>
+                  </span>
+                </template>
+                <span>Unlink saved search</span>
+              </v-tooltip>
             </v-chip>
           </div>
         </div>
@@ -437,7 +444,9 @@
       </v-card>
       <!-- Unlink saved search -->
       <v-card v-if="unlinkSavedSearchCard">
-        <v-card-title class="text-h5"> Unlinking saved search</v-card-title>
+        <v-card-title class="text-h5 text-center">
+          Unlinking saved search</v-card-title
+        >
         <v-card-text
           >This will unlink the saved search from this organisation.
         </v-card-text>
@@ -445,6 +454,7 @@
           <v-spacer />
           <v-btn
             class="bg-grey-darken-1 text-white"
+            variant="elevated"
             @click="unlinkSavedSearch(false)"
           >
             Cancel
@@ -452,6 +462,7 @@
           <v-btn
             :loading="deleteLoader"
             class="bg-success text-white"
+            variant="elevated"
             @click="unlinkSavedSearch(true)"
           >
             OK

@@ -66,6 +66,7 @@ export default {
     },
   },
   mounted() {
+    //Commenting nexttick as it was changing the order of filters
     // this.$nextTick(function () {
     const _module = this;
     _module.itemModified = JSON.parse(JSON.stringify(this.item));

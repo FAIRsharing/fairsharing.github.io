@@ -1,18 +1,18 @@
 <template>
   <div class="d-flex flex-row justify-start pr-3 mb-1 mb-lg-2">
     <v-btn
+      :variant="!searchAnd ? 'outlined' : undefined"
+      class="mr-1"
       color="primary"
       width="50%"
-      class="mr-1"
-      :variant="!searchAnd ? 'outlined' : undefined"
       @click="applyFilter(true)"
     >
       Match All Terms
     </v-btn>
     <v-btn
+      :variant="searchAnd ? 'outlined' : undefined"
       color="primary"
       width="50%"
-      :variant="searchAnd ? 'outlined' : undefined"
       @click="applyFilter(false)"
     >
       Match Any Term

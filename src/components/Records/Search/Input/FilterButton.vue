@@ -1,13 +1,10 @@
 <template>
   <v-tooltip
-    location="bottom"
     :disabled="itemModified.tooltip === undefined || $vuetify.display.smAndDown"
+    location="bottom"
   >
     <template #activator="{ props }">
       <v-btn
-        color="primary"
-        class="mr-1 mr-lg-2"
-        :variant="!itemModified.active ? 'outlined' : 'flat'"
         :class="[
           isFirstItem && !doubleItems ? 'first-child' : 'flex-1',
           {
@@ -15,13 +12,16 @@
             'buttons-md-style': multipleItems && !isFirstItem,
           },
         ]"
+        :variant="!itemModified.active ? 'outlined' : 'flat'"
+        class="mr-1 mr-lg-2"
+        color="primary"
         v-bind="props"
         @click="selectFilter(itemModified)"
       >
         <span v-if="itemModified.title !== 'ALL'">{{
           itemModified.title
         }}</span>
-        <v-icon v-else size="large" color="primary"> fas fa-sync </v-icon>
+        <v-icon v-else color="primary" size="large"> fas fa-sync </v-icon>
       </v-btn>
     </template>
     <span>{{ itemModified.tooltip }}</span>
@@ -39,7 +39,7 @@ export default {
   name: "FilterButton",
   mixins: [currentParameter],
   props: {
-    item: { default: null, type: Object },
+    item: { default: () => ({}), type: Object },
     isFirstItem: { default: false, type: Boolean },
     mdScreens: { default: null, type: Boolean },
     itemParentIndex: { default: 0, type: Number },
@@ -66,14 +66,14 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(function () {
-      const _module = this;
-      _module.itemModified = JSON.parse(JSON.stringify(this.item));
-      const fieldValue = _module.currentParameter[this.itemModified.filterName];
-      const currentValue = _module.itemModified.value;
-      const title = _module.itemModified.title;
-      _module.checkCurrentParameters(title, fieldValue, currentValue);
-    });
+    // this.$nextTick(function () {
+    const _module = this;
+    _module.itemModified = JSON.parse(JSON.stringify(this.item));
+    const fieldValue = _module.currentParameter[this.itemModified.filterName];
+    const currentValue = _module.itemModified.value;
+    const title = _module.itemModified.title;
+    _module.checkCurrentParameters(title, fieldValue, currentValue);
+    // });
   },
   methods: {
     ...mapActions("searchFilters", ["resetFilterButtons", "activateButton"]),
@@ -81,10 +81,12 @@ export default {
       if (fieldValue === null) {
         this.itemModified.active =
           title === "all" || title === "match all terms";
-      } else {
+      }
+      else {
         if (currentValue === undefined) {
           this.itemModified.active = false;
-        } else {
+        }
+        else {
           this.itemModified.active = currentValue.toString() === fieldValue;
         }
       }
@@ -103,8 +105,8 @@ export default {
       });
       Object.prototype.hasOwnProperty.call(selectedItem, "value")
         ? (currentQuery[selectedItem.filterName] = encodeURIComponent(
-            selectedItem.value,
-          ))
+          selectedItem.value,
+        ))
         : delete currentQuery[selectedItem.filterName];
       if (!isEqual(currentQuery, oldQuery)) {
         currentQuery["page"] = 1;

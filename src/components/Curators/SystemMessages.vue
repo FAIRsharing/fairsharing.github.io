@@ -255,8 +255,7 @@ export default {
       );
       if (response.error) {
         _module.error.general = response.error;
-      }
-      else {
+      } else {
         _module.systemMessages.forEach(function (m) {
           if (m.id === id) {
             m.message = message;
@@ -288,8 +287,7 @@ export default {
       );
       if (response.error) {
         _module.error.general = response.error;
-      }
-      else {
+      } else {
         _module.systemMessages.push({
           id: response.id,
           message: response.message,
@@ -316,8 +314,7 @@ export default {
       );
       if (response.error) {
         _module.error.general = response.error;
-      }
-      else {
+      } else {
         let filtered = _module.systemMessages.filter(function (f) {
           return f.id !== _module.dialogs.messageId;
         });

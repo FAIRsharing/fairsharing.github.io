@@ -7,12 +7,10 @@ export const bootstrapApp = async () => {
     await store.dispatch("introspection/fetchParameters");
     await store.dispatch("searchFilters/assembleFilters");
     await store.dispatch("messages/setMessages");
-  }
-  catch (error) {
+  } catch (error) {
     if (error.response && error.response.status === 503) {
       store.commit("introspection/setMaintenanceMode");
-    }
-    else {
+    } else {
       await router.replace("/error/500");
     }
   }

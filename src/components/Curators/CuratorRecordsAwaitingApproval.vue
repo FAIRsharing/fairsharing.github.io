@@ -389,14 +389,12 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          }
-          else {
+          } else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          }
-          else {
+          } else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
@@ -409,8 +407,7 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          }
-          else {
+          } else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -436,8 +433,7 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        }
-        else if (role === "curator") {
+        } else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -477,8 +473,7 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      }
-      else {
+      } else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -531,8 +526,7 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );
@@ -552,8 +546,7 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

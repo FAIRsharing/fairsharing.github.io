@@ -124,15 +124,13 @@ export default {
         object.createdAt = this.formatDate(item.createdAt);
         if (item.curator) {
           object.curator = item.curator.username;
-        }
-        else {
+        } else {
           object.curator = "none";
         }
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        }
-        else {
+        } else {
           object.creator = "unknown";
         }
         this.hiddenRecords.push(object);

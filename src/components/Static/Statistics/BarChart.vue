@@ -29,8 +29,7 @@ Highcharts.setOptions({
 });
 if (typeof Exporting === "function") {
   Exporting(Highcharts);
-}
-else if (typeof Exporting.default === "function") {
+} else if (typeof Exporting.default === "function") {
   Exporting.default(Highcharts);
 }
 

@@ -170,12 +170,10 @@ export default {
       if (this.submitAnyway) {
         if (this.possibleDuplicates.length > 0) {
           record.dups_suspected = true;
-        }
-        else {
+        } else {
           record.dups_suspected = false;
         }
-      }
-      else {
+      } else {
         if (this.possibleDuplicates.length > 0) {
           return;
         }
@@ -199,8 +197,7 @@ export default {
           error: true,
           value: new_record.error,
         };
-      }
-      else {
+      } else {
         this.recordCreated = true;
         this.newRecord = new_record;
       }

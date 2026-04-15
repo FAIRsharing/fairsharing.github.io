@@ -334,8 +334,7 @@ export default {
       // No userdata, so don't look for publications.
       this.publications = [];
       this.error = true;
-    }
-    else {
+    } else {
       // Get user's publications.
       this.userData = data;
       this.publications = await this.getPublications();
@@ -351,8 +350,7 @@ export default {
         /* istanbul ignore if */
         if (publications.error) {
           return [];
-        }
-        else {
+        } else {
           output = publications["activities-summary"]["works"]["group"]
             .slice(0, 7)
             .map((obj) => {
@@ -370,8 +368,7 @@ export default {
                 if (DOI) {
                   if (DOI["external-id-url"]) {
                     url = DOI["external-id-url"].value;
-                  }
-                  else if (DOI["external-id-value"]) {
+                  } else if (DOI["external-id-value"]) {
                     url = "https://doi.org/" + DOI["external-id-value"];
                   }
                 }

@@ -42,8 +42,7 @@ export function initHighchartsAccessibility(
 ) {
   if (typeof accessibilityModule === "function") {
     accessibilityModule(highchartsInstance);
-  }
-  else if (
+  } else if (
     accessibilityModule &&
     typeof accessibilityModule.default === "function"
   ) {

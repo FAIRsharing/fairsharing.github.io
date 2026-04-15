@@ -663,8 +663,7 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          }
-          else {
+          } else {
             _module.fields.logo = {};
           }
           return;
@@ -732,8 +731,7 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        }
-        else {
+        } else {
           return true;
         }
       }

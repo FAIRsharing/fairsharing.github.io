@@ -239,8 +239,7 @@ export default {
         if (_module.messages().login.message === confirmationError) {
           _module.resendButton = true;
         }
-      }
-      else {
+      } else {
         const goTo = _module.$route.query.goTo;
         let target = {};
         if (_module.redirect) {
@@ -267,14 +266,12 @@ export default {
                 path: url[0],
                 query: target,
               });
-            }
-            else {
+            } else {
               _module.$router.push({
                 path: goTo,
               });
             }
-          }
-          else {
+          } else {
             _module.$router.push({
               path: "/accounts/profile",
             });
@@ -300,8 +297,7 @@ export default {
       let origin;
       if (params.length > 0) {
         origin = encodeURI(`${loc}`);
-      }
-      else {
+      } else {
         origin = encodeURI(`${loc}?${query}`);
       }
       return `?origin=${origin}`;

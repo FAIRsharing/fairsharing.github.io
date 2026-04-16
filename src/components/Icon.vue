@@ -36,7 +36,7 @@ export default {
     size: { default: "10", type: String },
     fallback: { default: "undefined", type: String },
     wrapperClass: { default: "icon-container", type: String },
-    height: { default: 45 },
+    height: { default: 45, type: [String, Number] },
     color: { default: null, type: String },
   },
   data() {

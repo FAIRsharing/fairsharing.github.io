@@ -31,7 +31,7 @@
             </v-btn>
             <v-img
               alt="FAIRassistant"
-              contain
+              class="contain"
               height="auto"
               max-height="400"
               max-width="400"

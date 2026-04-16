@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
-import { defineComponent, h, nextTick } from "vue";
+import { h, nextTick } from "vue";
 import Vuex from "vuex";
 
 import editPublications from "@/components/Editor/EditPublications.vue";
@@ -63,33 +63,6 @@ const $scrollTo = vi.fn();
 let graphStub;
 let restStub;
 let fetchStub;
-
-const formValidation = defineComponent({
-  name: "VForm",
-  props: ["modelValue"],
-  emits: ["update:modelValue"],
-  setup(_, { expose, slots }) {
-    expose({ validate: () => true });
-    return () => h("form", slots.default?.());
-  },
-});
-
-const dialogStub = defineComponent({
-  name: "VDialog",
-  setup(_, { slots }) {
-    return () => h("div", slots.default?.());
-  },
-});
-
-const textFieldStub = defineComponent({
-  name: "VTextField",
-  // Explicitly declaring 'prefix' tells the stub how to handle it safely
-  props: ["modelValue", "prefix", "label", "rules"],
-  emits: ["update:modelValue"],
-  setup(_, { slots }) {
-    return () => h("div", slots.default?.());
-  },
-});
 
 const article = {
   "container-title-short": "Science",
@@ -218,12 +191,48 @@ describe("EditPublications.vue", function () {
         mocks: { $route, $router, $scrollTo },
         renderStubDefaultSlot: true,
         stubs: {
-          "v-form": formValidation,
-          VForm: formValidation,
-          "v-dialog": dialogStub,
-          VDialog: dialogStub,
-          "v-text-field": textFieldStub,
-          VTextField: textFieldStub,
+          // Use plain objects instead of defineComponent variables
+          "v-form": {
+            name: "VForm",
+            props: {
+              modelValue: {
+                type: Boolean,
+                default: false,
+              },
+            },
+            emits: ["update:modelValue"],
+            render() {
+              return h("form", this.$slots.default?.());
+            },
+            // If you need the 'validate' method exposed:
+            methods: { validate: () => true },
+          },
+          "v-dialog": {
+            name: "VDialog",
+            render() {
+              return h("div", this.$slots.default?.());
+            },
+          },
+          "v-text-field": {
+            name: "VTextField",
+            props: {
+              modelValue: {
+                type: [String, Number, Object],
+                default: "",
+              },
+              prefix: String,
+              label: String,
+              rules: Array,
+            },
+            emits: ["update:modelValue"],
+            render() {
+              return h("div", this.$slots.default?.());
+            },
+          },
+          // Map the capitalized versions to the same objects
+          VForm: true, // or repeat the object
+          VDialog: true,
+          VTextField: true,
         },
       },
     });

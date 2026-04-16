@@ -15,7 +15,15 @@ const vuetify = createVuetify();
 const textFieldStub = defineComponent({
   name: "VTextField",
   // Explicitly declaring 'prefix' tells the stub how to handle it safely
-  props: ["modelValue", "prefix", "label", "rules"],
+  props: {
+    modelValue: {
+      type: [String, Number, Object],
+      default: "",
+    },
+    prefix: String,
+    label: String,
+    rules: Array,
+  },
   emits: ["update:modelValue"],
   setup(_, { slots }) {
     return () => h("div", slots.default?.());

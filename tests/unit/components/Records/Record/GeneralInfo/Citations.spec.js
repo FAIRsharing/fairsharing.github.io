@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueMoment from "vue-moment";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 

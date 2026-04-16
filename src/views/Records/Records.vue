@@ -1,15 +1,15 @@
 <template>
   <v-main>
-    <v-container fluid class="pa-0">
+    <v-container class="pa-0" fluid>
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
           v-if="$vuetify.display.lgAndUp"
+          class="d-flex mt-2 ml-2"
           cols="12"
           lg="4"
           md="4"
           xl="3"
-          class="d-flex mt-2 ml-2"
         >
           <SearchInput
             :class="[
@@ -23,7 +23,7 @@
             ]"
           />
         </v-col>
-        <v-col v-else cols="12" class="ml-3 mt-2">
+        <v-col v-else class="ml-3 mt-2" cols="12">
           <v-btn class="bg-info" @click="showFiltersSM = true">
             <span class="mr-2">Show filters</span>
             <v-icon size="small"> fas fa-filter </v-icon>
@@ -38,13 +38,18 @@
 
     <v-fade-transition>
       <div>
-        <v-dialog v-model="showFiltersSM" fullscreen :scrim="false" scrollable>
+        <v-dialog v-model="showFiltersSM" :scrim="false" fullscreen scrollable>
           <v-card>
-            <v-card-title class="bg-primary text-white pb-5">
-              Add a filter
+            <v-card-title class="bg-primary text-white pb-5 d-flex">
+              <span>Add a filter</span>
               <v-spacer />
-              <v-btn size="x-small" @click="showFiltersSM = false">
-                <v-icon>fas fa-times</v-icon>
+              <v-btn
+                color="white"
+                icon="fas fa-xmark fa-solid"
+                size="x-small"
+                variant="elevated"
+                @click="showFiltersSM = false"
+              >
               </v-btn>
             </v-card-title>
             <SearchInput class="pa-5" />
@@ -58,8 +63,8 @@
         <v-overlay
           v-model="isLoading"
           :absolute="false"
-          opacity="0.8"
           class="align-center justify-center"
+          opacity="0.8"
         >
           <Loaders />
         </v-overlay>
@@ -138,7 +143,8 @@ export default {
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title =
           this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -147,7 +153,8 @@ export default {
       this.$scrollTo("body", 50, {});
       try {
         await this.tryRedirect();
-      } catch (e) {
+      }
+      catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
@@ -161,7 +168,8 @@ export default {
       try {
         await this.tryRedirect();
         this.$scrollTo("body", 50, {});
-      } catch (e) {
+      }
+      catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
@@ -204,7 +212,8 @@ export default {
               query: query,
             });
             return true;
-          } catch (e) {
+          }
+          catch (e) {
             return false;
           }
         }
@@ -228,14 +237,16 @@ export default {
         let token;
         if (this.user().credentials !== undefined) {
           token = this.user().credentials.token;
-        } else {
+        }
+        else {
           token = "";
         }
         await _module.fetchRecords({
           params: this.getParameters(),
           token: token,
         });
-      } catch (e) {
+      }
+      catch (e) {
         /* istanbul ignore next */
         this.errors = e.message;
       }
@@ -254,7 +265,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .left-panel-fixed {
   position: sticky;
   top: 0;

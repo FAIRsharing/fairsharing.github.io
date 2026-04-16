@@ -8,6 +8,7 @@ import path from "path";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import autoprefixer from "autoprefixer";
 import viteCompression from "vite-plugin-compression";
+import legacy from "@vitejs/plugin-legacy";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -30,6 +31,12 @@ export default defineConfig({
     vue({template: {transformAssetUrls}}),
     vuetify({
       autoImport: true,
+    }),
+    legacy({
+      targets: ['defaults', 'not IE 11'], // Or your specific requirements
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'], // Replaces your manual import
+      renderLegacyChunks: true,
+      polyfills: true
     }),
     eslintPlugin,
     nodePolyfills(),

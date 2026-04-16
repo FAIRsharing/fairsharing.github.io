@@ -1,7 +1,6 @@
 <template>
   <section
     v-if="getJumbotronData"
-    class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
     :style="[
       'z-index: 2',
       {
@@ -12,13 +11,13 @@
         backgroundBlendMode: 'multiply',
       },
     ]"
+    class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
   >
-    <!-- eslint-disable vue/no-v-html -->
     <vue-particles
       id="particles"
-      :particles-loaded="particlesLoaded"
-      :options="options"
       :class="{ largeScreen: $vuetify.display.xlOnly }"
+      :options="options"
+      :particles-loaded="particlesLoaded"
     />
     <h1
       class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
@@ -38,7 +37,6 @@
       ]"
       v-html="$sanitize(getJumbotronData.subtitle)"
     />
-    <!-- eslint-enable vue/no-v-html -->
   </section>
 </template>
 

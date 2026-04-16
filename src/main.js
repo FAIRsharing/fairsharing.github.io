@@ -27,6 +27,7 @@ import Highcharts from "highcharts";
 import accessibilityInit from "highcharts/modules/accessibility";
 import { bootstrapApp, globalFilters } from "./utils/setupUtils";
 import { initColorFix } from "./utils/colorFix";
+import DOMPurify from "dompurify";
 
 router.beforeEach(
   async (to, from, next) => await beforeEach(to, from, next, store),
@@ -42,7 +43,8 @@ export function initHighchartsAccessibility(
 ) {
   if (typeof accessibilityModule === "function") {
     accessibilityModule(highchartsInstance);
-  } else if (
+  }
+  else if (
     accessibilityModule &&
     typeof accessibilityModule.default === "function"
   ) {
@@ -77,3 +79,4 @@ const app = createApp(App)
 app.directive("linkified", linkify);
 app.mount("#app");
 app.config.globalProperties.$filters = globalFilters;
+app.config.globalProperties.$sanitize = DOMPurify.sanitize;

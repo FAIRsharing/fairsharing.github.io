@@ -302,19 +302,19 @@ data&lt;-query_con$data
     <v-data-table
       :headers="tables.availableQueries.headers"
       :items="tables.availableQueries.data"
-      :item-class="
-        (item) => {
+      :row-props="
+        ({ item }) => {
           if (item.id % 2 === 0) {
-            return 'grey lighten-3';
+            return 'bg-grey-lighten-3';
           } else {
-            return 'white';
+            return 'vg-white';
           }
         }
       "
-      disable-pagination
-      disable-sort
-      hide-default-footer
+      :sort-by="[]"
       class="elevation-2 mb-8"
+      disable-pagination
+      hide-default-footer
     />
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Modifying your records</h2>
@@ -923,9 +923,9 @@ data&lt;-query_con$data
     >
       In this case file_data should be the
       <a
+        class="underline-effect"
         href="https://www.base64encode.org/"
         target="_blank"
-        class="underline-effect"
         >base64 encoded</a
       >
       file data. The logo is optional, however.
@@ -1040,7 +1040,6 @@ data&lt;-query_con$data
 
     <v-data-table
       :headers="tables.relationshipData.headers"
-      :items="tables.relationshipData.data"
       :item-class="
         (item) => {
           if (item.id % 2 === 0) {
@@ -1050,10 +1049,11 @@ data&lt;-query_con$data
           }
         }
       "
+      :items="tables.relationshipData.data"
+      class="elevation-2 mb-8"
       disable-pagination
       disable-sort
       hide-default-footer
-      class="elevation-2 mb-8"
     />
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">JSON+LD</h2>
@@ -1104,24 +1104,24 @@ export default {
         availableQueries: {
           headers: [
             {
-              text: "URL",
+              title: "URL",
               value: "URL",
-              class: "text--primary text-h6 font-weight-black",
+              class: "text-primary text-h6 font-weight-black",
             },
             {
-              text: "verb",
+              title: "verb",
               value: "verb",
-              class: "text--primary text-h6 font-weight-black",
+              class: "text-primary text-h6 font-weight-black",
             },
             {
-              text: "parameters",
+              title: "parameters",
               value: "parameters",
-              class: "text--primary text-h6 font-weight-black",
+              class: "text-primary text-h6 font-weight-black",
             },
             {
-              text: "description",
+              title: "description",
               value: "description",
-              class: "text--primary text-h6 font-weight-black",
+              class: "text-primary text-h6 font-weight-black",
             },
           ],
           data: [

@@ -220,9 +220,18 @@ describe("EditPublications.vue", function () {
                 type: [String, Number, Object],
                 default: "",
               },
-              prefix: String,
-              label: String,
-              rules: Array,
+              prefix: {
+                type: String,
+                default: "",
+              },
+              label: {
+                type: String,
+                default: "",
+              },
+              rules: {
+                type: Array,
+                default: () => [],
+              },
             },
             emits: ["update:modelValue"],
             render() {

@@ -20,9 +20,18 @@ const textFieldStub = defineComponent({
       type: [String, Number, Object],
       default: "",
     },
-    prefix: String,
-    label: String,
-    rules: Array,
+    prefix: {
+      type: String,
+      default: "",
+    },
+    label: {
+      type: String,
+      default: "",
+    },
+    rules: {
+      type: Array,
+      default: () => [],
+    },
   },
   emits: ["update:modelValue"],
   setup(_, { slots }) {

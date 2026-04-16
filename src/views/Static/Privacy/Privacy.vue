@@ -1,6 +1,6 @@
 <template>
   <main class="pa-5 mt-5 mb-10">
-    <v-expansion-panels v-model="panel" hover multiple variant="accordion">
+    <v-expansion-panels v-model="panel" multiple variant="accordion">
       <v-expansion-panel
         v-for="(item, i) in privacyData.bullet_points"
         :key="i"

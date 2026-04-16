@@ -1040,16 +1040,16 @@ data&lt;-query_con$data
 
     <v-data-table
       :headers="tables.relationshipData.headers"
-      :item-class="
-        (item) => {
+      :items="tables.relationshipData.data"
+      :row-props="
+        ({ item }) => {
           if (item.id % 2 === 0) {
-            return 'grey lighten-3';
+            return 'bg-grey-lighten-3';
           } else {
-            return 'white';
+            return 'bg-white';
           }
         }
       "
-      :items="tables.relationshipData.data"
       class="elevation-2 mb-8"
       disable-pagination
       disable-sort

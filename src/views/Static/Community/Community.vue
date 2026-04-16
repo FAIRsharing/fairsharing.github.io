@@ -1,7 +1,7 @@
 <template>
   <main :class="applyCss ? 'pa-15 mb-10' : ''">
     <!--  main_title_2 -->
-    <!-- eslint-disable vue/no-v-html -->
+
     <h1 class="mb-5">
       FAIRsharing is a community-driven resource with users and collaborators
       across all disciplines. We work together with our stakeholders to enable
@@ -192,11 +192,11 @@
             </p>
           </a>
           <i
+            v-safe-html="item.text"
             :class="[
               'mb-0 word-break lato-font-medium lato-text-sm',
               { 'lato-text-md': $vuetify.display.xl },
             ]"
-            v-html="$sanitize(item.text)"
           />
         </v-col>
       </v-row>
@@ -436,11 +436,11 @@
         {{ meettheteam.title }}
       </h4>
       <p
+        v-safe-html="meettheteam.description"
         :class="[
           'mb-5 lato-font-medium lato-text-sm',
           { 'lato-text-md': $vuetify.display.xl },
         ]"
-        v-html="$sanitize(meettheteam.description)"
       />
       <ul class="d-flex flex-wrap pl-0">
         <li
@@ -455,6 +455,7 @@
             <v-img :src="profileItem.profileImg" style="filter: grayscale(1)" />
           </v-avatar>
           <p
+            v-safe-html="profileItem.name"
             class="text-center text-primary lato-font-bold mt-2 ma-0"
             style="
               font-size: 1.5rem;
@@ -462,7 +463,6 @@
               display: flex;
               flex-direction: column;
             "
-            v-html="$sanitize(profileItem.name)"
           />
           <i class="small d-block height-75">
             {{ profileItem.role }}
@@ -507,7 +507,7 @@
             v-for="(itemText, itemIndex) in governance_text"
             :key="itemText + '_' + itemIndex"
           >
-            <p class="ma-1" v-html="$sanitize(itemText.text)" />
+            <p v-safe-html="itemText.text" class="ma-1" />
           </div>
           <div
             v-for="(item, itemIndex) in governanceItem"
@@ -530,7 +530,7 @@
                   ]"
                 >
                   <div v-if="!isArray(itemData)" class="d-flex mb-2">
-                    <p class="ma-0" v-html="$sanitize(itemData.text)" />
+                    <p v-safe-html="itemData.text" class="ma-0" />
                     <a
                       v-if="itemData.link"
                       :href="
@@ -556,7 +556,7 @@
                     :key="itemDataArray.link + '_' + itemDataArrayIndex"
                     class="d-flex mb-2"
                   >
-                    <p class="ma-0" v-html="$sanitize(itemDataArray.text)" />
+                    <p v-safe-html="itemDataArray.text" class="ma-0" />
                     <a
                       :href="
                         itemDataArray.link.toString().includes('@')
@@ -587,11 +587,11 @@
         {{ rda.title }}
       </h4>
       <p
+        v-safe-html="rda.description"
         :class="[
           'mb-5 lato-font-medium lato-text-sm',
           { 'lato-text-md': $vuetify.display.xl },
         ]"
-        v-html="$sanitize(rda.description)"
       />
       <div
         v-for="(item, itemIndex) in rda.subsections"
@@ -610,7 +610,7 @@
                 :class="['mb-1', { 'd-flex': $vuetify.display.lgAndUp }]"
               >
                 <div class="d-flex mb-2">
-                  <p class="ma-0" v-html="$sanitize(itemData.text)" />
+                  <p v-safe-html="itemData.text" class="ma-0" />
                   <a
                     v-if="itemData.link"
                     :href="
@@ -635,11 +635,11 @@
           </div>
           <div v-else>
             <p
+              v-safe-html="item.data"
               :class="[
                 'mb-5 lato-font-medium lato-text-sm',
                 { 'lato-text-md': $vuetify.display.xl },
               ]"
-              v-html="$sanitize(item.data)"
             />
           </div>
         </div>
@@ -668,8 +668,6 @@
         </p>
       </div>
     </section>
-
-    <!-- eslint-enable vue/no-v-html -->
   </main>
 </template>
 
@@ -759,7 +757,8 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      } else {
+      }
+      else {
         return org.url;
       }
     },

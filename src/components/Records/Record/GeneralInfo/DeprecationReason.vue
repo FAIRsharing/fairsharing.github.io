@@ -1,16 +1,15 @@
 <template>
-  <!-- eslint-disable vue/no-v-html -->
   <div
     v-if="currentRecord.fairsharingRecord.metadata['deprecation_reason']"
     v-linkified:options="{ className: 'underline-effect' }"
+    v-safe-html="getReason()"
     class="mt-5 text-red"
-    v-html="$sanitize(getReason())"
   />
-  <!-- eslint-enable vue/no-v-html -->
 </template>
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "DeprecationReason",
   computed: {

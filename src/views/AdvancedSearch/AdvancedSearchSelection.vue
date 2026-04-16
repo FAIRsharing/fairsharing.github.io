@@ -1,18 +1,18 @@
 <template>
   <v-card
-    elevation="3"
     :class="[
       'mx-2 full-width d-flex flex-column',
       $vuetify.display.mdAndUp ? responsiveClassObject : 'fullHeight',
     ]"
+    elevation="3"
   >
     <AdvancedSearchButtons />
     <div v-if="getAdvancedSearchText" class="searchText chips-holder ma-2">
       <v-chip
         class="ma-2 mt-2 text-capitalize"
         color="accent3"
-        variant="flat"
         label
+        variant="flat"
       >
         Search Text : {{ getAdvancedSearchText }}
       </v-chip>
@@ -36,25 +36,24 @@
           >
             <span>{{ printSelectionKeys(key) }} </span>
             <span><strong>&nbsp;:&nbsp;</strong></span>
-            <!-- eslint-disable vue/no-v-html -->
-            <span v-html="printSelectionValues(key, value)" />
-            <!-- eslint-enable vue/no-v-html -->
+
+            <span v-safe-html="printSelectionValues(key, value)" />
           </div>
 
           <v-chip
             class="operatorChip"
             color="accent"
-            variant="outlined"
             size="small"
+            variant="outlined"
           >
             {{ printSelectedOperator(item) }}
           </v-chip>
         </div>
       </div>
       <v-chip
+        class="parentOperatorChip text-uppercase font-weight-medium"
         color="accent2"
         variant="flat"
-        class="parentOperatorChip text-uppercase font-weight-medium"
       >
         {{ printOperator(getAdvancedSearchQuery["operator"]) }}
       </v-chip>
@@ -120,7 +119,8 @@ export default {
         }
         if (value === false || value[0] === "false") {
           return "false";
-        } else {
+        }
+        else {
           refinedValues = value
             .map((item) => this.cleanString(item))
             .join(" OR ");
@@ -169,7 +169,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .fullHeight {
   height: 90vh;
   overflow: scroll;

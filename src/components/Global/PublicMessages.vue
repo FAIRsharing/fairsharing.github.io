@@ -1,7 +1,6 @@
 <template>
   <div>
     <div v-if="publicMessages.length && !loading" class="my-1">
-      <!-- eslint-disable vue/no-v-html -->
       <v-alert
         v-for="(messageObj, index) in publicMessages"
         :key="messageObj.message + '_' + index"
@@ -10,9 +9,10 @@
         density="compact"
         type="info"
         ><span
-          v-html="`${moment(messageObj.updatedAt)}: ${messageObj.message}`"
+          v-safe-html="
+            `${moment(messageObj.updatedAt)}: ${messageObj.message}`
+          "
       /></v-alert>
-      <!-- eslint-enable vue/no-v-html -->
     </div>
     <div v-if="is_development()">
       <v-alert

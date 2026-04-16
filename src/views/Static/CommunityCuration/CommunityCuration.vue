@@ -1,12 +1,11 @@
 <template>
   <main class="pa-15 mb-10">
-    <!-- eslint-disable vue/no-v-html -->
     <p
+      v-safe-html="communityCurationData.first_section.text_1"
       :class="[
         'mb-2 lato-font-medium lato-text-sm',
         { 'lato-text-md': $vuetify.display.xl },
       ]"
-      v-html="communityCurationData.first_section.text_1"
     />
     <div
       v-for="(item, index) in communityCurationData.first_section.items"
@@ -21,38 +20,35 @@
         {{ index + 1 }} . <b>{{ item.black_text }}</b> {{ item.text }}
       </p>
     </div>
-    <!-- eslint-enable vue/no-v-html -->
-    <!-- eslint-disable vue/no-v-html -->
     <p
+      v-safe-html="communityCurationData.first_section.text_2"
       :class="[
         'tb-4 mb-4 lato-font-medium lato-text-sm',
         { 'lato-text-md': $vuetify.display.xlOnly },
       ]"
-      v-html="communityCurationData.first_section.text_2"
     />
     <p
+      v-safe-html="communityCurationData.first_section.text_3"
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
         { 'lato-text-md': $vuetify.display.xlOnly },
       ]"
-      v-html="communityCurationData.first_section.text_3"
     />
-    <!-- eslint-enable vue/no-v-html -->
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       {{ communityCurationData.second_section.main_title }}
     </h1>
-    <!-- eslint-disable vue/no-v-html -->
+
     <p
+      v-safe-html="communityCurationData.second_section.text"
       :class="[
         'mb-6 lato-font-medium lato-text-sm',
         { 'lato-text-md': $vuetify.display.xlOnly },
       ]"
-      v-html="communityCurationData.second_section.text"
     />
     <v-card-actions class="justify-center">
       <v-btn
-        elevation="2"
         class="text-white bg-green"
+        elevation="2"
         height="40"
         href="/community_champions/our_champions"
       >
@@ -63,8 +59,8 @@
 
     <!-- pie chart of broad subjects goes here -->
     <PieChart
-      ref-name="championBroadSubjectAreas"
       :fields-chart="broadSubjects"
+      ref-name="championBroadSubjectAreas"
     />
 
     <v-expansion-panels v-model="panel" :readonly="readonly" multiple>
@@ -77,13 +73,12 @@
           </h1>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <!-- eslint-disable vue/no-v-html -->
           <p
+            v-safe-html="communityCurationData.third_section.text"
             :class="[
               'mb-8 lato-font-medium lato-text-sm',
               { 'lato-text-md': $vuetify.display.xl },
             ]"
-            v-html="communityCurationData.third_section.text"
           />
           <div
             v-for="(item, index) in communityCurationData.third_section
@@ -94,18 +89,16 @@
             <h3 class="text-h6 text-xl-h5 mb-2">
               {{ item.title }}
             </h3>
-            <!-- eslint-disable vue/no-v-html -->
             <p
+              v-safe-html="item.content"
               :class="[
                 'mb-8 lato-font-medium lato-text-sm',
                 { 'lato-text-md': $vuetify.display.xlOnly },
               ]"
-              v-html="item.content"
             />
           </div>
         </v-expansion-panel-text>
       </v-expansion-panel>
-      <!-- eslint-enable vue/no-v-html -->
       <v-expansion-panel>
         <v-expansion-panel-title>
           <h1 class="text-h6 text-xl-h5 mb-2">
@@ -115,15 +108,13 @@
           </h1>
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <!-- eslint-disable vue/no-v-html -->
           <p
+            v-safe-html="communityCurationData.fourth_section.text"
             :class="[
               'mb-8 lato-font-medium lato-text-sm',
               { 'lato-text-md': $vuetify.display.xlOnly },
             ]"
-            v-html="communityCurationData.fourth_section.text"
           />
-          <!-- eslint-enable vue/no-v-html -->
         </v-expansion-panel-text>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -139,20 +130,18 @@
             v-for="(item, index) in communityCodeOfConductData.sections"
             :key="'A' + index"
           >
-            <!-- eslint-disable vue/no-v-html -->
             <p
+              v-safe-html="item.text"
               :class="[
                 'mb-6 lato-font-medium lato-text-sm',
                 { 'lato-text-md': $vuetify.display.xlOnly },
               ]"
-              v-html="item.text"
             />
           </div>
           <div
             v-for="(item, index_two) in communityCodeOfConductData.commitments"
             :key="index_two"
           >
-            <!-- eslint-disable vue/no-v-html -->
             <p
               :class="[
                 'mb-2 ml-4 lato-font-medium lato-text-sm',
@@ -162,23 +151,20 @@
               {{ index_two + 1 }} . <b>{{ item.black_text }}</b> {{ item.text }}
             </p>
           </div>
-          <!-- eslint-enable vue/no-v-html -->
 
           <h3 class="text-h6 text-xl-h5 mb-2 mt-4">Reporting</h3>
           <div
             v-for="(item, index) in communityCodeOfConductData.reporting"
             :key="'B' + index"
           >
-            <!-- eslint-disable vue/no-v-html -->
             <p
+              v-safe-html="item.text"
               :class="[
                 'mb-3 lato-font-medium lato-text-sm',
                 { 'lato-text-md': $vuetify.display.xlOnly },
               ]"
-              v-html="item.text"
             />
           </div>
-          <!-- eslint-enable vue/no-v-html -->
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -223,7 +209,8 @@ export default {
       }
       if (tempSubjects[subj]) {
         tempSubjects[subj] = tempSubjects[subj] + 1;
-      } else {
+      }
+      else {
         tempSubjects[subj] = 1;
       }
     });

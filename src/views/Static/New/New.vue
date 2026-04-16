@@ -1,6 +1,5 @@
 <template>
   <main class="pa-15 mb-10">
-    <!-- eslint-disable vue/no-v-html -->
     <!--  BulletPoints  -->
     <h1 class="text-h4">What to add</h1>
     <v-sheet class="my-5 mb-10 pa-6" elevation="3">
@@ -69,9 +68,9 @@
                 </v-card-title>
               </div>
               <v-card-text class="text--primary height-100">
-                <!-- eslint-disable vue/no-v-html -->
-                <span v-html="newData.firstBlock.items[index].description" />
-                <!-- eslint-enable vue/no-v-html -->
+                <span
+                  v-safe-html="newData.firstBlock.items[index].description"
+                />
               </v-card-text>
             </v-card>
           </v-col>
@@ -213,7 +212,7 @@
         <v-btn color="primary" to="/create"> Add New Record </v-btn>
       </v-sheet>
     </div>
-    <!-- eslint-enable vue/no-v-html -->
+
     <v-layout justify-center row>
       <v-dialog v-model="showTranslation" max-width="700px">
         <v-card>

@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container fluid class="text-center pa-0">
+    <v-container class="text-center pa-0" fluid>
       <Carousel />
       <InfoBlock class="mb-12" />
       <SearchBlock />
@@ -11,15 +11,14 @@
       </v-lazy>
     </v-container>
     <!-- This html is from a safe source -->
-    <!-- eslint-disable vue/no-v-html -->
+
     <!--    <script-->
     <!--      type="application/ld+json"-->
-    <!--      v-html="JSONLD"-->
+    <!--      v-safe-html="JSONLD"-->
     <!--    />-->
     <component :is="'script'" type="application/ld+json">
-      <span v-html="JSONLD" />
+      <span v-safe-html="JSONLD" />
     </component>
-    <!-- eslint-enable vue/no-v-html -->
   </v-main>
 </template>
 

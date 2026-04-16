@@ -216,25 +216,24 @@
               >
                 <v-expansion-panel-title>
                   <!-- This html is from a safe source -->
-                  <!-- eslint-disable vue/no-v-html -->
+
                   <a :href="`/educational#${child_item.anchorLink}`">
                     <h4
                       :id="child_item.anchorLink"
+                      v-safe-html="child_item.title"
                       class="text-h6"
-                      v-html="$sanitize(child_item.title)"
                     />
                   </a>
                   <!-- This html is from a safe source -->
-                  <!-- eslint-disable vue/no-v-html -->
                 </v-expansion-panel-title>
                 <v-expansion-panel-text>
                   <p
+                    v-safe-html="child_item.desc"
                     :class="[
                       'mb-2 lato-font-medium lato-text-sm',
                       { 'lato-text-md': $vuetify.display.xlOnly },
                     ]"
                     class="ma-0"
-                    v-html="$sanitize(child_item.desc)"
                   />
                 </v-expansion-panel-text>
               </v-expansion-panel>

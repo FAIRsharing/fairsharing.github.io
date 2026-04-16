@@ -13,13 +13,12 @@
     </span>
 
     <!-- this should have been sanitised... -->
-    <!-- eslint-disable vue/no-v-html -->
+
     <p
+      v-safe-html="descriptionHtml"
       :class="{ 'text-end': $vuetify.display.smAndDown }"
       class="ma-0 full-width ml-md-12 ml-8"
-      v-html="descriptionHtml"
     />
-    <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>
 

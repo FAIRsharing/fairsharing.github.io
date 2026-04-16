@@ -6,13 +6,13 @@
     </h1>
 
     <!--  main_subtitle  -->
-    <!-- eslint-disable vue/no-v-html -->
+
     <p
+      v-safe-html="stakeholdersData.main_subtitle"
       :class="[
         'mb-8 lato-font-medium lato-text-sm',
         { 'lato-text-md': $vuetify.display.xlOnly },
       ]"
-      v-html="stakeholdersData.main_subtitle"
     />
 
     <!--  main_title_2 -->
@@ -30,13 +30,12 @@
         {{ item.title }}
       </h3>
       <p
+        v-safe-html="item.content"
         :class="[
           'mb-8 lato-font-medium lato-text-sm',
           { 'lato-text-md': $vuetify.display.xlOnly },
         ]"
-        v-html="item.content"
       />
-      <!-- eslint-enable vue/no-v-html -->
     </div>
   </main>
 </template>
@@ -44,6 +43,7 @@
 <script>
 import stakeholdersData from "@/data/stakeholdersData.json";
 import getHostname from "@/utils/generalUtils";
+
 export default {
   name: "Stakeholders",
   mixins: [getHostname],

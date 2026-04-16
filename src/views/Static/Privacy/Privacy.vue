@@ -1,6 +1,6 @@
 <template>
   <main class="pa-5 mt-5 mb-10">
-    <v-expansion-panels v-model="panel" multiple hover variant="accordion">
+    <v-expansion-panels v-model="panel" hover multiple variant="accordion">
       <v-expansion-panel
         v-for="(item, i) in privacyData.bullet_points"
         :key="i"
@@ -10,9 +10,8 @@
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <!-- This html is from a safe source -->
-          <!-- eslint-disable vue/no-v-html -->
-          <p class="lato-font-medium" v-html="item.content" />
-          <!-- eslint-enable vue/no-v-html -->
+
+          <p v-safe-html="item.content" class="lato-font-medium" />
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -21,6 +20,7 @@
 
 <script>
 import privacyPolicyData from "@/data/PrivacyPolicyData.json";
+
 export default {
   name: "Privacy",
   data: () => {

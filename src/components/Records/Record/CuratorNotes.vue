@@ -1,19 +1,19 @@
 <template>
   <v-card
     v-if="currentRecord['fairsharingRecord'].curatorNotes && user().is_curator"
-    class="pa-4 d-flex flex-column overflow-initial"
     :color="backColor"
-    tile
+    class="pa-4 d-flex flex-column overflow-initial"
     elevation="3"
+    tile
   >
     <!-- Curator Notes -->
     <SectionTitle title="Curator Notes" />
     <p class="mt-2">
-      <!-- eslint-disable vue/no-v-html -->
       <span
-        v-html="prepareNotes(currentRecord['fairsharingRecord'].curatorNotes)"
+        v-safe-html="
+          prepareNotes(currentRecord['fairsharingRecord'].curatorNotes)
+        "
       />
-      <!-- eslint-enable vue/no-v-html -->
     </p>
   </v-card>
 </template>

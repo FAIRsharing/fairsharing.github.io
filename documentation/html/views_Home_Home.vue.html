@@ -93,7 +93,7 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-main>
-    &lt;v-container fluid class="text-center pa-0">
+    &lt;v-container class="text-center pa-0" fluid>
       &lt;Carousel />
       &lt;InfoBlock class="mb-12" />
       &lt;SearchBlock />
@@ -104,15 +104,14 @@
       &lt;/v-lazy>
     &lt;/v-container>
     &lt;!-- This html is from a safe source -->
-    &lt;!-- eslint-disable vue/no-v-html -->
+
     &lt;!--    &lt;script-->
     &lt;!--      type="application/ld+json"-->
-    &lt;!--      v-html="JSONLD"-->
+    &lt;!--      v-safe-html="JSONLD"-->
     &lt;!--    />-->
     &lt;component :is="'script'" type="application/ld+json">
-      &lt;span v-html="JSONLD" />
+      &lt;span v-safe-html="JSONLD" />
     &lt;/component>
-    &lt;!-- eslint-enable vue/no-v-html -->
   &lt;/v-main>
 &lt;/template>
 

@@ -6,7 +6,7 @@
       class="mb-4"
       variant="tonal"
     >
-      <div v-html="$sanitize(messages()[field].message)"></div>
+      <div v-safe-html="messages()[field].message"></div>
     </v-alert>
   </div>
 </template>

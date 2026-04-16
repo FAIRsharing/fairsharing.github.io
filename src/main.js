@@ -77,6 +77,8 @@ const app = createApp(App)
     skip: import.meta.env.NODE_ENV !== "production",
   });
 app.directive("linkified", linkify);
+app.directive("safe-html", (el, binding) => {
+  el.innerHTML = DOMPurify.sanitize(binding.value);
+});
 app.mount("#app");
 app.config.globalProperties.$filters = globalFilters;
-app.config.globalProperties.$sanitize = DOMPurify.sanitize;

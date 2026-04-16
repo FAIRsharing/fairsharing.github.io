@@ -27,6 +27,7 @@
     </h1>
     <p
       id="subtitle"
+      v-safe-html="getJumbotronData.subtitle"
       :class="[
         'lato-font-medium my-4 text-primary px-1 text-center',
         {
@@ -35,7 +36,6 @@
           'lato-text-sm': $vuetify.display.smAndDown,
         },
       ]"
-      v-html="$sanitize(getJumbotronData.subtitle)"
     />
   </section>
 </template>

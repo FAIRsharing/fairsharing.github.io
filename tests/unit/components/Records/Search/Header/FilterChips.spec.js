@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
 
 import FilterChips from "@/components/Records/Search/Header/FilterChips.vue";
 

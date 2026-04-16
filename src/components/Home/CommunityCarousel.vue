@@ -10,13 +10,13 @@
           :key="logo.image + '_' + index"
         >
           <v-sheet color="white" height="100%">
-            <v-row class="fill-height" align="center" justify="center">
+            <v-row align="center" class="fill-height" justify="center">
               <v-img
-                contain
                 :src="logo.image"
-                width="100"
+                class="contain"
                 height="100"
                 style="filter: grayscale(1)"
+                width="100"
               />
             </v-row>
           </v-sheet>
@@ -29,6 +29,7 @@
 
 <script>
 import { blockLogos } from "@/data/homePageData.json";
+
 export default {
   name: "CommunityCarousel",
   data: () => ({
@@ -39,7 +40,8 @@ export default {
     responsiveSlideData() {
       if (this.$vuetify.display.smAndUp) {
         return this.logos.multipleImageSlider;
-      } else {
+      }
+      else {
         return this.logos.singleImageSlider;
       }
     },

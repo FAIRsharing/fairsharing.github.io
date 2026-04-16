@@ -3,7 +3,7 @@
     <v-container>
       <!-- forms -->
       <v-row justify="center">
-        <v-col cols="12" sm="12" md="8" lg="8" xl="4">
+        <v-col cols="12" lg="8" md="8" sm="12" xl="4">
           <v-form ref="emailRef" v-model="formValid">
             <v-card>
               <v-card-title class="bg-blue text-white mb-5">
@@ -34,20 +34,19 @@
                 </p>
                 <v-text-field
                   v-model="email"
+                  :rules="[rules.isEmail(), rules.isRequired()]"
                   label="Email"
                   required
                   variant="outlined"
-                  :rules="[rules.isEmail(), rules.isRequired()]"
                   @focus="success = false"
                 />
               </v-card-text>
               <v-card-actions class="mt-2 pb-8 justify-center">
                 <v-btn
-                  class="px-4"
-                  light
-                  color="primary"
-                  :loading="loading"
                   :disabled="!formValid"
+                  :loading="loading"
+                  class="px-4 bg-primary"
+                  variant="elevated"
                   @click="sendVerificationRequest()"
                 >
                   {{ buttonMessage }}
@@ -63,9 +62,9 @@
 
 <script>
 import RESTClient from "@/lib/Client/RESTClient.js";
+import { isEmail, isRequired } from "@/utils/rules.js";
 
 let restClient = new RESTClient();
-import { isEmail, isRequired } from "@/utils/rules.js";
 
 export default {
   name: "SendOrcidLoginEmail",
@@ -116,7 +115,8 @@ export default {
           _module.success = true;
           _module.emailId = _module.email;
           _module.$refs.emailRef.reset();
-        } else {
+        }
+        else {
           _module.error = "Verification email not sent!";
         }
       }

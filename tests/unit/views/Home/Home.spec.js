@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import VueScrollTo from "vue-scrollto";
 import { createVuetify } from "vuetify";
 
 import RestClient from "@/lib/Client/RESTClient.js";
 import Home from "@/views/Home/Home";
+
 const sinon = require("sinon");
 
 const vuetify = createVuetify();

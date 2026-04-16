@@ -3,7 +3,7 @@
     <v-container>
       <!-- forms -->
       <v-row justify="center">
-        <v-col cols="12" sm="12" :md="4" :lg="4" :xl="4">
+        <v-col :lg="4" :md="4" :xl="4" cols="12" sm="12">
           <v-form
             id="resendConfirm"
             ref="resendConfirmForm"
@@ -25,19 +25,18 @@
 
                 <v-text-field
                   v-model="email"
+                  :rules="[rules.isEmail(), rules.isRequired()]"
                   label="Email"
                   required
                   variant="outlined"
-                  :rules="[rules.isEmail(), rules.isRequired()]"
                 />
               </v-card-text>
               <v-card-actions class="mt-2 justify-center">
                 <v-btn
-                  class="px-4"
-                  light
-                  color="primary"
-                  :loading="loading"
                   :disabled="!formValid"
+                  :loading="loading"
+                  class="px-4 bg-primary"
+                  variant="elevated"
                   @click="makeResendRequest()"
                 >
                   {{ buttonMessage }}
@@ -53,8 +52,9 @@
 
 <script>
 import RESTClient from "@/lib/Client/RESTClient.js";
-let restClient = new RESTClient();
 import { isEmail, isRequired } from "@/utils/rules.js";
+
+let restClient = new RESTClient();
 
 export default {
   name: "ResendConfirmation",
@@ -90,7 +90,8 @@ export default {
         const outcome = await restClient.resendConfirmation(user);
         if (outcome.message === "Confirmation message not sent!") {
           _module.error = "Confirmation message not sent!";
-        } else if (
+        }
+        else if (
           outcome.message === "Confirmation message sent successfully!"
         ) {
           _module.success = true;

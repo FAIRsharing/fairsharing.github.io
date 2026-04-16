@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueRouter from "vue-router";
 import { createVuetify } from "vuetify";
 
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack.vue";

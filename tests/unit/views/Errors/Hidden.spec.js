@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueMeta from "vue-meta";
 
 import Hidden from "@/views/Errors/Hidden.vue";
 

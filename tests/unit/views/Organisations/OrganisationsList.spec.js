@@ -1,7 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import { createVuetify } from "vuetify";
-import Vuex from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import allOrganisationsQuery from "@/lib/GraphClient/queries/getAllOrganisations.json";

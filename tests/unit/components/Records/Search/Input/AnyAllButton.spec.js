@@ -1,6 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
-import Vuex from "vuex";
 
 import AnyAllButton from "@/components/Records/Search/Input/AnyAllButton.vue";
 

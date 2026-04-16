@@ -153,11 +153,6 @@ describe("Record.vue", function () {
     mocks.setMock("changeWatcher", RESTClient.prototype, "changeWatcher", {
       message: "success",
     });
-    let breakpoint = {
-      init: vi.fn(),
-      framework: {},
-      name: "md",
-    };
 
     vuetify = createVuetify({
       theme: {

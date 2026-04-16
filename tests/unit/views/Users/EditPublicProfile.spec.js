@@ -3,12 +3,12 @@ import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import EditPublicProfile from "@/views/Users/EditPublicProfile";
-const vuetify = createVuetify();
 import sinon from "sinon";
-import VueScrollTo from "vue-scrollto";
 
 import Client from "@/lib/Client/RESTClient.js";
 import userStore from "@/store/users";
+
+const vuetify = createVuetify();
 
 let $route = { params: { id: 123 } };
 let $router = {

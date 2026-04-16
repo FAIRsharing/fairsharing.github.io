@@ -123,7 +123,7 @@
             &lt;tr>
               &lt;td>
                 &lt;div class="d-flex align-center">
-                  &lt;v-avatar v-if="props.item.type" :height="40" class="mr-2">
+                  &lt;v-avatar v-if="props.item.type" class="mr-2" size="40">
                     &lt;Icon
                       :height="40"
                       :item="props.item.type"
@@ -220,7 +220,8 @@ export default {
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        } else {
+        }
+        else {
           object.creator = "unknown";
         }
         this.recordsCreatedCuratorsLastWeek.push(object);

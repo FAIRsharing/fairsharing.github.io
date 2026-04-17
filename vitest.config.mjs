@@ -45,6 +45,9 @@ export default mergeConfig(
       include: ["tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
       coverage: {
         provider: "v8", // or 'istanbul'
+        // In v3, 'all' is true by default, which might "drop" your %
+        // because it now counts untested files.
+        all: false, // Set to false to match Vitest 2 behavior if preferred
         ignoreEmptyLines: true,
         reporter: ["html", "lcov", "text", "json-summary"],
         thresholds: {

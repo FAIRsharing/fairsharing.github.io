@@ -1,5 +1,14 @@
-import {afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi,} from "vitest";
-import {shallowMount} from "@vue/test-utils";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
+import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import DataAccess from "@/components/Editor/DataAccess/EditDataAccess.vue";

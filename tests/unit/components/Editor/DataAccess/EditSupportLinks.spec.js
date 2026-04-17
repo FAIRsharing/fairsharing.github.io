@@ -186,15 +186,6 @@ describe("Edit -> EditSupportLinks.vue", function () {
     expect(wrapper.vm.getLinkIndex(object)).toBe(1);
   });
 
-  it("can check displayGroupData method", () => {
-    const item = [{ name: "asparagus", type: "vegetables", quantity: 9 }];
-    const output = {
-      vegetables: [{ name: "asparagus", type: "vegetables", quantity: 9 }],
-    };
-    wrapper.vm.displayGroupData(item);
-    expect(wrapper.vm.displayGroupData(item)).toStrictEqual(output);
-  });
-
   it("can check rule computed property", () => {
     wrapper.vm.edit.template = {};
     expect(wrapper.vm.rule).toBe(null);

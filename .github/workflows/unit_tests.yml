@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '22'
           # Optional: Speeds up the workflow
           cache: 'npm'
       - name: Install Dependencies
@@ -30,15 +30,18 @@ jobs:
       - name: Report Coverage in PR
         if: always() # Run even if coverage drops below 90%
         uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          # Optional but recommended: keeps PR comments clean by updating the same comment
+          name: 'Vitest Coverage'
 
       # 3. Upload to Coveralls
       # This uses the official Codacy Action
       - name: Update coverage to coveralls
         if: always() # CRITICAL: Uploads report even if the 90% threshold fails
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2 # CHANGED: @master is risky; use @v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: './coverage/lcov.info'
+          file: './coverage/lcov.info' # CHANGED: coveralls v2 uses 'file' instead of 'path-to-lcov'
       # 3. Upload to Codacy
       # This uses the official Codacy Action
       - name: Run Codacy Coverage Reporter
@@ -46,4 +49,4 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage/lcov.info
+          coverage-reports: './coverage/lcov.info'

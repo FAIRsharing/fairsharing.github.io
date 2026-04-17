@@ -1,0 +1,6 @@
+---
+- njsscan:
+    ignore:
+      - "documentation/html/"
+      - "dist/"
+      - "node_modules/"

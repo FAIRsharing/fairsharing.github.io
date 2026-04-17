@@ -5,12 +5,10 @@ coverage
 # Ignore all HTML files:
 **/*.html
 documentation/*
-.eslintrc.js
+.eslintrc.cjs
 .github/*
 babel.config.js
 package.json
 README.md
 vite.config.mjs
-vitest.config.js
-vue.config.js
-webpack.config.js
+vitest.config.mjs

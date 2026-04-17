@@ -1,29 +1,32 @@
-import {fileURLToPath} from "node:url";
+import { fileURLToPath } from "node:url";
 
-import {URL} from "url";
-import {defineConfig, mergeConfig} from "vite";
+import { URL } from "url";
+import { defineConfig, mergeConfig } from "vite";
 import viteConfig from "./vite.config.mjs";
-import {configDefaults} from "vitest/config";
+import { configDefaults } from "vitest/config";
 
 export default mergeConfig(
   viteConfig,
   defineConfig({
     plugins: [
       {
-        name: 'stub-missing-css',
+        name: "stub-missing-css",
         resolveId(source) {
           // If the import path ends with these problem files, grab it!
-          if (source.includes('prism-twilight.css') || source.includes('window.css')) {
-            return 'virtual:stub-css';
+          if (
+            source.includes("prism-twilight.css") ||
+            source.includes("window.css")
+          ) {
+            return "virtual:stub-css";
           }
         },
         load(id) {
           // Return empty Javascript for the grabbed files
-          if (id === 'virtual:stub-css') {
-            return 'export default {}';
+          if (id === "virtual:stub-css") {
+            return "export default {}";
           }
-        }
-      }
+        },
+      },
     ],
     test: {
       server: {
@@ -33,13 +36,13 @@ export default mergeConfig(
       },
       environment: "happy-dom",
       globals: true,
-      setupFiles: ['./tests/setup.js'],
+      setupFiles: ["./tests/setup.js"],
       exclude: [...configDefaults.exclude, "e2e/*"],
       root: fileURLToPath(new URL("./", import.meta.url)),
       transformMode: {
         web: [/\.[jt]sx$/],
       },
-      include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+      include: ["tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
       coverage: {
         provider: "v8", // or 'istanbul'
         ignoreEmptyLines: true,
@@ -48,7 +51,7 @@ export default mergeConfig(
           lines: 90,
           functions: 90,
           branches: 90,
-          statements: 90
+          statements: 90,
         },
         css: true,
         exclude: [
@@ -59,10 +62,10 @@ export default mergeConfig(
           "src/plugins/**",
           "src/router/**",
           "tests/*",
-          ".eslintrc.js",
+          ".eslintrc.cjs",
           "babel.config.js",
           "vite.config.mjs",
-          "vitest.config.js",
+          "vitest.config.mjs",
           "vue.config.js",
           "webpack.config.js",
           "views/Records/NetworkGraph.vue",

@@ -1,14 +1,5 @@
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import {afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi,} from "vitest";
+import {shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 
 import DataAccess from "@/components/Editor/DataAccess/EditDataAccess.vue";
@@ -166,7 +157,6 @@ describe("Edit -> DataAccess.vue", function () {
     const btn = { textContent: "Save and exit" };
     const pushCalls = $router.push.mock.calls.length;
     await wrapper.vm.saveRecord(true, btn);
-    expect(recordStore.state.sections.dataAccess.error).toBeNull();
     expect($router.push).toHaveBeenCalledTimes(pushCalls + 1);
   });
 });

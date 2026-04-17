@@ -268,6 +268,17 @@ RESTClient.prototype.executeQuery = async function (query) {
   return originalExecuteQuery.call(this, query);
 };
 
+// We define a constructible mock using a regular function
+vi.stubGlobal(
+  "FileReader",
+  vi.fn().mockImplementation(function () {
+    this.readAsDataURL = vi.fn();
+    this.onload = null;
+    this.onerror = null;
+    this.result = null;
+  }),
+);
+
 // --- 5. Silence Vue warnings (Optional) ---
 // If you want to suppress specific warnings (like "Vuetify is not installed"), you can do it here.
 // const originalConsoleWarn = console.warn;

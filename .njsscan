@@ -1,3 +1,4 @@
-- ".*documentation/html/.*"
-- ".*dist/.*"
-- ".*node_modules/.*"
+ignore:
+  - "documentation/html/"
+  - "dist/"
+  - "node_modules/"

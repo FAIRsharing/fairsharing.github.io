@@ -17,6 +17,10 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
       - name: nodejsscan scan
+        exclude:
+          - "documentation/html/"
+          - "dist/"
+          - "node_modules/"
         id: njsscan
         uses: ajinabraham/njsscan-action@master
         with:

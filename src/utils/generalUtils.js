@@ -32,7 +32,8 @@ const generalUtils = {
     compareRecordDescUpdate(a, b) {
       if (a.updatedAt > b.updatedAt) {
         return -1;
-      } else {
+      }
+      else {
         return 1;
       }
     },
@@ -55,7 +56,6 @@ export function LightenDarkenColor(color, percent) {
   let RR = R.toString(16).length === 1 ? "0" + R.toString(16) : R.toString(16);
   let GG = G.toString(16).length === 1 ? "0" + G.toString(16) : G.toString(16);
   let BB = B.toString(16).length === 1 ? "0" + B.toString(16) : B.toString(16);
-
   return "#" + RR + GG + BB;
 }
 

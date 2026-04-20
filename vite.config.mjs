@@ -38,7 +38,7 @@ export default defineConfig({
       renderLegacyChunks: true,
       polyfills: true
     }),
-    eslintPlugin(),
+    eslintPlugin,
     nodePolyfills(),
     viteCompression()
   ],

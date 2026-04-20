@@ -370,7 +370,7 @@
           {
             "id": 3829,
             "name": "ESCAPE",
-            "tooltip": "European Science Cluster of Astronomy & Particle physics ESFRI research infrastructures"
+            "tooltip": "European Science Cluster of Astronomy and Particle physics ESFRI research infrastructures"
           }
         ],
         "scope": "Physics",
@@ -1023,7 +1023,7 @@
           "name": "Bodleian Library"
         }
       ],
-      "scope": "GLAM/Digital Humanities & Research Data Management",
+      "scope": "GLAM/Digital Humanities and Research Data Management",
       "subject_area": "social_sciences_and_humanities",
       "orcid": "0009-0005-1881-5392",
       "early_adopter" : false,

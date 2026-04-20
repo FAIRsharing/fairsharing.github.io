@@ -38,9 +38,9 @@ export default defineConfig({
       renderLegacyChunks: true,
       polyfills: true
     }),
-    eslintPlugin,
+    eslintPlugin(),
     nodePolyfills(),
-    viteCompression
+    viteCompression()
   ],
   resolve: {
     alias: {
@@ -67,8 +67,8 @@ export default defineConfig({
   build: {
     assetsDir: 'assets',
     sourcemap: true,
-    minify: 'esbuild',
-    target: 'es2015',
+    minify: 'oxc',
+    target: 'baseline-widely-available',
     cssCodeSplit: true,
     chunkSizeWarningLimit: 1250,
     commonjsOptions: {transformMixedEsModules: true},
@@ -76,6 +76,9 @@ export default defineConfig({
       input: path.resolve(__dirname, "index.html"),
       output: {
         dir: "dist",
+        manualChunks: {
+          'vendor-vuetify': ['vuetify'],
+        },
         format: "es"
       },
     }

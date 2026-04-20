@@ -1,4 +1,5 @@
-ignore:
+---
+ignore-paths:
   - "documentation/html/"
   - "dist/"
   - "node_modules/"

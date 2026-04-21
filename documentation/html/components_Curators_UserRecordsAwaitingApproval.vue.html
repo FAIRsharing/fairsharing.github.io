@@ -96,182 +96,184 @@
     &lt;v-card-text v-if="approvalRequiredProcessed">
       &lt;v-card-title
         id="text-curator-search-0"
-        class="green white--text"
+        class="bg-green text-white d-flex align-center"
       >
         &lt;b> USER EDITS AWAITING APPROVAL &lt;/b>
         &lt;v-spacer />
         &lt;v-text-field
           v-model="searches"
-          label="Search"
-          color="white"
-          single-line
-          hide-details
-          solo
           class="searchField"
           clearable
+          color="white"
+          hide-details
+          label="Search"
+          single-line
+          variant="solo"
         />
       &lt;/v-card-title>
+
       &lt;v-card-text v-if="error.general">
         &lt;v-alert type="error">
           Problem saving/updating record with id: {{ error.recordID }}
           {{ error.general }}
         &lt;/v-alert>
       &lt;/v-card-text>
+
       &lt;v-data-table
-        :loading="loading"
         :headers="headerItems"
         :items="approvalRequiredProcessed"
+        :items-per-page-options="[10, 20, 30, 40, 50]"
+        :loading="loading"
         :search="searches"
-        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
-        sort-by=""
+        return-object
       >
-        &lt;template
-          v-if="recordType"
-          #item="props"
-        >
+        &lt;template v-if="recordType" #item="{ item }">
           &lt;tr>
             &lt;td>
-              {{ props.item.updatedAt }}
+              {{ item.updatedAt }}
             &lt;/td>
             &lt;td>
               &lt;div class="priorityTag">
-                {{ props.item.priority }}
+                {{ item.priority }}
               &lt;/div>
             &lt;/td>
             &lt;td>
               &lt;v-menu>
-                &lt;template #activator="{ on: menu, attrs }">
-                  &lt;v-tooltip bottom>
-                    &lt;template #activator="{ on: tooltip }">
-                      &lt;v-icon
-                        class="clickable"
-                        small
+                &lt;template #activator="{ props: menuProps }">
+                  &lt;v-tooltip location="bottom">
+                    &lt;template #activator="{ props: tooltipProps }">
+                      &lt;span
+                        class="clickable text-decoration-underline"
                         color="nordnetBlue"
-                        v-bind="attrs"
-                        v-on="{ ...tooltip, ...menu }"
+                        size="small"
+                        v-bind="mergeProps(menuProps, tooltipProps)"
                       >
-                        {{ props.item.curator }}
-                      &lt;/v-icon>
+                        {{ item.curator || "Assign Curator" }}
+                      &lt;/span>
                     &lt;/template>
                     &lt;span>Assign a new curator&lt;/span>
                   &lt;/v-tooltip>
                 &lt;/template>
                 &lt;v-list>
                   &lt;v-list-item
-                    v-for="(item, index) in curatorList"
+                    v-for="(curator, index) in curatorList"
                     :key="index"
                     class="thelistCurators"
                     @click="
-                      assignCurator(props.item.id, item.id, item.userName)
+                      assignCurator(item.id, curator.id, curator.userName)
                     "
                   >
-                    &lt;v-list-item-title>{{ item.userName }}&lt;/v-list-item-title>
+                    &lt;v-list-item-title>
+                      {{ curator.userName }}
+                    &lt;/v-list-item-title>
                   &lt;/v-list-item>
                 &lt;/v-list>
               &lt;/v-menu>
             &lt;/td>
             &lt;td>
               &lt;div class="d-flex align-center">
-                &lt;v-avatar
-                  v-if="props.item.type"
-                  class="mr-2"
-                  :height="40"
-                >
-                  &lt;Icon
-                    :item="props.item.type"
-                    :height="40"
-                    wrapper-class=""
-                  />
+                &lt;v-avatar v-if="item.type" class="mr-2" size="40">
+                  &lt;Icon :height="40" :item="item.type" wrapper-class="" />
                 &lt;/v-avatar>
-                &lt;a :href="'/' + props.item.id">
-                  {{ props.item.recordName }}
+                &lt;a :href="'/' + item.id">
+                  {{ item.recordName }}
                 &lt;/a>
               &lt;/div>
             &lt;/td>
             &lt;td>
-              &lt;div v-if="props.item.lastEditor === 'unknown'">
-                {{ props.item.lastEditor }}
+              &lt;div v-if="item.lastEditor === 'unknown'">
+                {{ item.lastEditor }}
               &lt;/div>
               &lt;div v-else>
-                &lt;a :href="'/users/' + props.item.idLastEditor">
-                  {{ props.item.lastEditor }}
+                &lt;a :href="'/users/' + item.idLastEditor">
+                  {{ item.lastEditor }}
                 &lt;/a>
               &lt;/div>
             &lt;/td>
             &lt;td>
-              &lt;v-edit-dialog
-                :return-value.sync="props.item.processingNotes"
-                large
-                @save="
-                  saveProcessingNotes(props.item.id, props.item.processingNotes)
-                "
+              &lt;v-menu
+                :close-on-content-click="false"
+                location="bottom"
+                min-width="400"
               >
-                {{ props.item.processingNotes }}
-                &lt;template #input>
-                  &lt;div class="dialogProcNotesEdit">
-                    &lt;div class="mt-4 title">
-                      Update Processing Notes
-                    &lt;/div>
-                    &lt;v-textarea
-                      v-model="props.item.processingNotes"
-                      width="1200px"
-                      label="Edit (not long words)"
-                      filled
-                    />
-                  &lt;/div>
-                &lt;/template>
-              &lt;/v-edit-dialog>
-            &lt;/td>
-            &lt;td>
-              &lt;v-icon
-                color="blue"
-                dark
-                left
-                @click.stop="
-                  approveChangesMenu(
-                    props.item.recordName,
-                    props.item.id,
-                    props.item.hidden
-                  )
-                "
-              >
-                far fa-check-circle
-              &lt;/v-icon>
-              {{ props.item.actions }}
-              &lt;v-icon
-                color="red"
-                dark
-                right
-                small
-                @click="deleteRecordMenu(props.item.recordName, props.item.id)"
-              >
-                fas fa-trash
-              &lt;/v-icon>
-              &lt;v-tooltip bottom>
-                &lt;template #activator="{ on, attrs }">
-                  &lt;span
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    &lt;a
-                      :href="'/' + props.item.id + '/edit'"
-                      style="padding-left: 12px"
-                    >
-                      Edit
-                    &lt;/a>
+                &lt;template #activator="{ props: menuProps }">
+                  &lt;span style="cursor: pointer" v-bind="menuProps">
+                    {{ item.processingNotes || "Click to edit..." }}
                   &lt;/span>
                 &lt;/template>
-                &lt;span>If edits are saved, record is approved.&lt;/span>
-              &lt;/v-tooltip>
+                &lt;template #default="{ isActive }">
+                  &lt;v-card class="pa-2">
+                    &lt;v-card-title class="mt-2 text-h6">
+                      Update Processing Notes
+                    &lt;/v-card-title>
+                    &lt;v-card-text class="pt-2">
+                      &lt;v-textarea
+                        v-model="item.processingNotes"
+                        hide-details
+                        label="Edit (not long words)"
+                        variant="filled"
+                      />
+                    &lt;/v-card-text>
+                    &lt;v-card-actions>
+                      &lt;v-spacer />
+                      &lt;v-btn
+                        color="primary"
+                        variant="text"
+                        @click="
+                          saveProcessingNotes(item.id, item.processingNotes);
+                          isActive.value = false;
+                        "
+                      >
+                        Save
+                      &lt;/v-btn>
+                    &lt;/v-card-actions>
+                  &lt;/v-card>
+                &lt;/template>
+              &lt;/v-menu>
             &lt;/td>
             &lt;td>
-              {{ props.item.createdAt }},
-              &lt;div v-if="props.item.creator === 'unknown'">
-                {{ props.item.creator }}
+              &lt;div class="d-flex">
+                &lt;v-icon
+                  color="blue"
+                  start
+                  @click.stop="
+                    approveChangesMenu(item.recordName, item.id, item.hidden)
+                  "
+                >
+                  fas fa-check-circle
+                &lt;/v-icon>
+                {{ item.actions }}
+                &lt;v-icon
+                  color="red"
+                  end
+                  size="small"
+                  @click="deleteRecordMenu(item.recordName, item.id)"
+                >
+                  fas fa-trash
+                &lt;/v-icon>
+                &lt;v-tooltip location="bottom">
+                  &lt;template #activator="{ props }">
+                    &lt;span v-bind="props">
+                      &lt;a
+                        :href="'/' + item.id + '/edit'"
+                        style="padding-left: 12px"
+                      >
+                        Edit
+                      &lt;/a>
+                    &lt;/span>
+                  &lt;/template>
+                  &lt;span>If edits are saved, record is approved.&lt;/span>
+                &lt;/v-tooltip>
+              &lt;/div>
+            &lt;/td>
+            &lt;td>
+              {{ item.createdAt }},
+              &lt;div v-if="item.creator === 'unknown'">
+                {{ item.creator }}
               &lt;/div>
               &lt;div v-else>
-                &lt;a :href="'/users/' + props.item.idCreator">
-                  {{ props.item.creator }}
+                &lt;a :href="'/users/' + item.idCreator">
+                  {{ item.creator }}
                 &lt;/a>
               &lt;/div>
             &lt;/td>
@@ -279,112 +281,101 @@
         &lt;/template>
       &lt;/v-data-table>
     &lt;/v-card-text>
-    &lt;v-layout
-      row
-      justify-center
-    >
-      &lt;v-dialog
-        v-model="dialogs.approveChanges"
-        max-width="700px"
-      >
-        &lt;v-card>
-          &lt;v-card-title class="headline">
-            Are you sure you want to
-            &lt;span style="color: blue; padding-left: 5px; padding-right: 1px">
-              ACCEPT/APPROVE CHANGES
-            &lt;/span>
-            record?
-            &lt;ul style="list-style-type: none">
-              &lt;li>
-                {{ dialogs.recordName }}
-              &lt;/li>
-            &lt;/ul>
-          &lt;/v-card-title>
-          &lt;v-card-actions>
-            &lt;v-spacer />
-            &lt;v-btn
-              :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
-              @click="closeApproveChangesMenu()"
-            >
-              Cancel
-            &lt;/v-btn>
-            &lt;v-btn
-              color="blue darken-1"
-              text
-              @click="confirmApproval()"
-            >
-              OK
-            &lt;/v-btn>
-            &lt;v-spacer />
-            &lt;v-switch
-              v-model="dialogs.createReview"
-              color="green"
-              label="Create Review"
-              class="pr-3"
-            />
-            &lt;v-switch
-              v-model="dialogs.recordHidden"
-              color="purple"
-              label="Hide record"
-            />
-            &lt;v-spacer />
-          &lt;/v-card-actions>
-        &lt;/v-card>
-      &lt;/v-dialog>
-    &lt;/v-layout>
-    &lt;v-layout
-      row
-      justify-center
-    >
-      &lt;v-dialog
-        v-model="dialogs.deleteRecord"
-        max-width="700px"
-      >
-        &lt;v-card>
-          &lt;v-card-title class="headline">
-            Are you sure you want to
-            &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
-              DELETE
-            &lt;/span>
-            this record?
-            &lt;ul style="list-style-type: none">
-              &lt;li>
-                {{ dialogs.recordName }}
-              &lt;/li>
-            &lt;/ul>
-          &lt;/v-card-title>
-          &lt;v-card-actions>
-            &lt;v-spacer />
-            &lt;v-btn
-              :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
-              @click="closeDeleteMenu()"
-            >
-              Cancel
-            &lt;/v-btn>
-            &lt;v-btn
-              :disabled="
-                dialogs.disableDelButton === true ||
-                  dialogs.disableButton === true
-              "
-              color="blue darken-1"
-              text
-              @click="confirmDelete()"
-            >
-              OK
-            &lt;/v-btn>
-            &lt;v-spacer />
-          &lt;/v-card-actions>
-        &lt;/v-card>
-      &lt;/v-dialog>
-    &lt;/v-layout>
+
+    &lt;v-dialog v-model="dialogs.approveChanges" max-width="900px">
+      &lt;v-card>
+        &lt;v-card-title class="text-h5" style="white-space: normal">
+          Are you sure you want to
+          &lt;span style="color: blue; padding-left: 5px; padding-right: 1px">
+            ACCEPT/APPROVE CHANGES
+          &lt;/span>
+          record?
+          &lt;ul style="list-style-type: none">
+            &lt;li>
+              {{ dialogs.recordName }}
+            &lt;/li>
+          &lt;/ul>
+        &lt;/v-card-title>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            :disabled="dialogs.disableButton === true"
+            color="red-darken-1"
+            variant="elevated"
+            @click="closeApproveChangesMenu()"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            color="blue-darken-1"
+            variant="elevated"
+            @click="confirmApproval()"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+          &lt;v-switch
+            v-model="dialogs.createReview"
+            class="pr-3"
+            color="green"
+            hide-details
+            label="Create Review"
+          />
+          &lt;v-switch
+            v-model="dialogs.recordHidden"
+            color="purple"
+            hide-details
+            label="Hide record"
+          />
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
+
+    &lt;v-dialog v-model="dialogs.deleteRecord" max-width="900px">
+      &lt;v-card>
+        &lt;v-card-title class="text-h5" style="white-space: normal">
+          Are you sure you want to
+          &lt;span style="color: red; padding-left: 5px; padding-right: 5px">
+            DELETE
+          &lt;/span>
+          this record?
+          &lt;ul style="list-style-type: none">
+            &lt;li>
+              {{ dialogs.recordName }}
+            &lt;/li>
+          &lt;/ul>
+        &lt;/v-card-title>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            :disabled="dialogs.disableButton === true"
+            color="red-darken-1"
+            variant="elevated"
+            @click="closeDeleteMenu()"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            :disabled="
+              dialogs.disableDelButton === true ||
+              dialogs.disableButton === true
+            "
+            color="blue-darken-1"
+            variant="elevated"
+            @click="confirmDelete()"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
   &lt;/v-card>
 &lt;/template>
 
 &lt;script>
+import { mergeProps } from "vue";
 import { mapActions, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
@@ -443,7 +434,7 @@ export default {
   watch: {
     approvalRequired: function () {
       this.approvalRequiredProcessed = JSON.parse(
-        JSON.stringify(this.approvalRequired)
+        JSON.stringify(this.approvalRequired),
       );
     },
     "dialogs.approveChanges"(val) {
@@ -462,11 +453,12 @@ export default {
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(
-      JSON.stringify(this.approvalRequired)
+      JSON.stringify(this.approvalRequired),
     );
     this.loading = false;
   },
   methods: {
+    mergeProps,
     ...mapActions("record", ["updateRecord"]),
 
     /**
@@ -501,8 +493,9 @@ export default {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
-            (element) => element.id === rec.id
+            (element) => element.id === rec.id,
           );
+          /* v8 ignore next 3 */
           if (index >= 0) {
             object.hidden = true;
           }
@@ -518,10 +511,10 @@ export default {
       this.approvalRequired.sort(this.compareRecordDescUpdate);
       for (let i = 0; i &lt; this.approvalRequired.length; i++) {
         this.approvalRequired[i].updatedAt = this.formatDate(
-          this.approvalRequired[i].updatedAt
+          this.approvalRequired[i].updatedAt,
         );
         this.approvalRequired[i].createdAt = this.formatDate(
-          this.approvalRequired[i].createdAt
+          this.approvalRequired[i].createdAt,
         );
       }
       let curators = listOfCurators.curatorList;
@@ -589,11 +582,11 @@ export default {
         _module.error.recordID = idRecord;
       }
       const index = _module.approvalRequiredProcessed.findIndex(
-        (element) => element.id === idRecord
+        (element) => element.id === idRecord,
       );
       _module.approvalRequiredProcessed[index].curator = nameUser.substring(
         0,
-        6
+        6,
       );
     },
 
@@ -630,7 +623,7 @@ export default {
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -643,14 +636,14 @@ export default {
       _module.dialogs.disableButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -699,9 +692,10 @@ export default {
   overflow-y: auto;
 }
 
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;
@@ -752,7 +746,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri Mar 20th 2026
+		on Mon Apr 20th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

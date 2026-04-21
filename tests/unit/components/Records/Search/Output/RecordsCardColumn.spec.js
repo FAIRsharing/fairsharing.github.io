@@ -1,28 +1,31 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils";
-import VueRouter from "vue-router";
-import Vuetify from "vuetify"
+/* eslint-env jest */
 
-import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue"
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
-import getRecord from '../../../../../fixtures/getRecord.json'
+import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue";
 
-const localVue = createLocalVue();
-localVue.use(VueRouter);
-const vuetify = new Vuetify();
+import getRecord from "../../../../../fixtures/getRecord.json";
+
+const vuetify = createVuetify();
 
 describe("RecordsCardColumn.vue", function () {
-    let wrapper;
-    let record = getRecord;
+  let wrapper;
+  let record = getRecord;
 
-    wrapper = shallowMount(RecordsCardStack, {
-        localVue,
-        vuetify,
-        propsData: {
-            record: record
-        }
-    });
+  wrapper = shallowMount(RecordsCardStack, {
+    global: {
+      plugins: [vuetify],
+      stubs: {
+        "router-link": true,
+      },
+    },
+    props: {
+      record: record,
+    },
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("RecordsCardColumn");
-    });
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("RecordsCardColumn");
+  });
 });

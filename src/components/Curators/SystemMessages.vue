@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-col cols12>
+    <v-col cols="12">
       <v-card
         v-if="user().role === 'super_curator' || user().role === 'developer'"
         class="mb-2"
@@ -8,77 +8,85 @@
         <v-card-text v-if="systemMessages">
           <v-card-title
             id="system-messages"
-            class="green white--text"
+            class="bg-green text-white d-flex align-center"
           >
             SYSTEM MESSAGES
-            <v-btn
-              class="info ml-5"
-              @click.stop="showAddMessage()"
-            >
-              <v-icon
-                color="white"
-                class="mr-1"
-              >
-                fa fa-plus
-              </v-icon>
-              <span class="white--text">Add message</span>
+            <v-btn class="bg-info ml-5" @click.stop="showAddMessage()">
+              <v-icon class="mr-1" color="white" icon="fas fa-plus" />
+              <span class="text-white">Add message</span>
             </v-btn>
             <v-spacer />
           </v-card-title>
+
           <v-data-table
-            :loading="loading"
             :headers="headerItems"
             :items="systemMessages"
-            :footer-props="{ 'items-per-page-options': [5, 10, 20, 25, 30] }"
+            :items-per-page-options="[5, 10, 20, 25, 30]"
+            :loading="loading"
           >
-            <template
-              v-if="systemMessages"
-              #item="props"
-            >
+            <template v-if="systemMessages" #item="{ item }">
               <tr>
                 <td>
-                  {{ props.item.id }}
+                  {{ item.id }}
                 </td>
                 <td>
-                  <v-edit-dialog
-                    :return-value.sync="props.item.message"
-                    large
-                    @save="
-                      saveEditedMessage(props.item.id, props.item.message)
-                    "
+                  <v-menu
+                    :close-on-content-click="false"
+                    location="bottom"
+                    min-width="400"
                   >
-                    {{ props.item.message }}
-                    <template #input>
-                      <div class="dialogMessageEdit">
-                        <div class="mt-4 title">
-                          Update Message
-                        </div>
-                        <v-textarea
-                          v-model="props.item.message"
-                          width="1200px"
-                          label="Edit away!"
-                          filled
-                        />
-                      </div>
+                    <template #activator="{ props: menuProps }">
+                      <span
+                        style="cursor: pointer; border-bottom: 1px dashed grey"
+                        v-bind="menuProps"
+                      >
+                        {{ item.message || "Click to edit..." }}
+                      </span>
                     </template>
-                  </v-edit-dialog>
+                    <template #default="{ isActive }">
+                      <v-card class="pa-2">
+                        <v-card-title class="mt-2 text-h6">
+                          Update Message
+                        </v-card-title>
+                        <v-card-text class="pt-2">
+                          <v-textarea
+                            v-model="item.message"
+                            hide-details
+                            label="Edit away!"
+                            variant="filled"
+                          />
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn
+                            color="primary"
+                            variant="text"
+                            @click="
+                              saveEditedMessage(item.id, item.message);
+                              isActive.value = false;
+                            "
+                          >
+                            Save
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </template>
+                  </v-menu>
                 </td>
                 <td>
-                  {{ props.item.created_at }}
+                  {{ item.created_at }}
                 </td>
                 <td>
-                  {{ props.item.updated_at }}
+                  {{ item.updated_at }}
                 </td>
                 <td>
                   <v-icon
                     color="red"
-                    dark
-                    right
-                    small
-                    @click="deleteMessage(props.item.id)"
-                  >
-                    fas fa-trash
-                  </v-icon>
+                    end
+                    icon="fas fa-trash"
+                    size="small"
+                    @click="deleteMessage(item.id)"
+                  />
                 </td>
               </tr>
             </template>
@@ -86,93 +94,75 @@
         </v-card-text>
       </v-card>
     </v-col>
-    <!-- this shouldn't appear as an unauthorised user shouldn't be here -->
+
     <v-row>
-      <!-- dialogs -->
-      <v-layout
-        row
-        justify-center
-      >
-        <v-dialog
-          v-model="dialogs.addMessage"
-          max-width="700px"
-        >
-          <v-card>
-            <v-card-title class="headline">
-              Add new message
-            </v-card-title>
-            <v-card-text>
-              <v-textarea
-                v-model="dialogs.newMessage"
-                name="new-message-field"
-                label="New message"
-                placeholder="Type a message here..."
-                regular
-                clearable
-              />
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="closeAddMessageMenu()"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                :disabled="!dialogs.newMessage"
-                @click="addMessage()"
-              >
-                OK
-              </v-btn>
-              <v-spacer />
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-layout>
-      <v-layout
-        row
-        justify-center
-      >
-        <v-dialog
-          v-model="dialogs.deleteMessage"
-          max-width="700px"
-        >
-          <v-card>
-            <v-card-title class="headline">
-              Are you sure you want to
-              <span style="color: red; padding-left: 5px; padding-right: 5px">
-                DELETE
-              </span>
-              this message?
-              <ul style="list-style-type: none">
-                <li>ID: {{ dialogs.messageId }}</li>
-              </ul>
-            </v-card-title>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="closeDeleteMessageMenu()"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="confirmDeleteMessage()"
-              >
-                OK
-              </v-btn>
-              <v-spacer />
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-layout>
+      <v-dialog v-model="dialogs.addMessage" max-width="700px">
+        <v-card>
+          <v-card-title class="text-h5"> Add new message</v-card-title>
+          <v-card-text>
+            <v-textarea
+              v-model="dialogs.newMessage"
+              clearable
+              label="New message"
+              name="new-message-field"
+              placeholder="Type a message here..."
+              regular
+            />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="red-darken-1"
+              variant="elevated"
+              @click="closeAddMessageMenu()"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              :disabled="!dialogs.newMessage"
+              color="blue-darken-1"
+              variant="elevated"
+              @click="addMessage()"
+            >
+              OK
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogs.deleteMessage" max-width="700px">
+        <v-card>
+          <v-card-title class="text-h5">
+            Are you sure you want to
+            <span style="color: red; padding-left: 5px; padding-right: 5px">
+              DELETE
+            </span>
+            this message?
+            <ul style="list-style-type: none">
+              <li>ID: {{ dialogs.messageId }}</li>
+            </ul>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="red-darken-1"
+              variant="elevated"
+              @click="closeDeleteMessageMenu()"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              color="blue-darken-1"
+              variant="elevated"
+              @click="confirmDeleteMessage()"
+            >
+              OK
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
   </div>
 </template>
@@ -182,7 +172,7 @@ import { mapState } from "vuex";
 
 import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getMessages from "@/lib/GraphClient/queries/getMessages.json"
+import getMessages from "@/lib/GraphClient/queries/getMessages.json";
 import store from "@/store";
 import formatDate from "@/utils/generalUtils";
 
@@ -192,15 +182,15 @@ const client = new GraphClient();
 export default {
   name: "SystemMessages",
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
     return {
-      systemMessages:[],
+      systemMessages: [],
       loading: false,
       dialogs: {
         id: null,
@@ -224,17 +214,19 @@ export default {
     client.setHeader(this.user().credentials.token);
     //Fetching hidden records
     let messages = await client.executeQuery(getMessages);
-    this.prepareSystemMessages(messages)
+    this.prepareSystemMessages(messages);
     this.loading = false;
   },
   methods: {
-
     /**
      * Method to fetch messages from system
      * @param dataCuration
      */
     prepareSystemMessages(dataCuration) {
-      if(Array.isArray(dataCuration.messages) && dataCuration.messages.length) {
+      if (
+        Array.isArray(dataCuration.messages) &&
+        dataCuration.messages.length
+      ) {
         dataCuration.messages.forEach((item) => {
           this.systemMessages.push({
             id: item.id,
@@ -258,8 +250,8 @@ export default {
         message: message,
       };
       let response = await restClient.updateMessage(
-          data,
-          this.user().credentials.token
+        data,
+        this.user().credentials.token,
       );
       if (response.error) {
         _module.error.general = response.error;
@@ -290,8 +282,8 @@ export default {
         message: _module.dialogs.newMessage,
       };
       let response = await restClient.createMessage(
-          data,
-          this.user().credentials.token
+        data,
+        this.user().credentials.token,
       );
       if (response.error) {
         _module.error.general = response.error;
@@ -317,8 +309,8 @@ export default {
     async confirmDeleteMessage() {
       const _module = this;
       let response = await restClient.deleteMessage(
-          _module.dialogs.messageId,
-          this.user().credentials.token
+        _module.dialogs.messageId,
+        this.user().credentials.token,
       );
       if (response.error) {
         _module.error.general = response.error;
@@ -337,7 +329,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
 </style>

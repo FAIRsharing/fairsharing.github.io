@@ -1,32 +1,31 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      @input="selectedValue"
-    />
-  </div>
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "DataPreservationPolicy",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,
       default: "",
     },
   },
+  emits: ["input"],
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "Policy that details how the preservation of the data is ensured.",
-
+      itemValue: "",
+      itemSelected: "",
+      toolTipText:
+        "Policy that details how the preservation of the data is ensured.",
     };
   },
   computed: {

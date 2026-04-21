@@ -1,9 +1,6 @@
 <template>
   <v-main>
-    <v-container
-      fluid
-      class="text-center pa-0"
-    >
+    <v-container class="text-center pa-0" fluid>
       <Carousel />
       <InfoBlock class="mb-12" />
       <SearchBlock />
@@ -14,12 +11,14 @@
       </v-lazy>
     </v-container>
     <!-- This html is from a safe source -->
-    <!-- eslint-disable vue/no-v-html -->
-    <script
-      type="application/ld+json"
-      v-html="JSONLD"
-    />
-    <!-- eslint-enable vue/no-v-html -->
+
+    <!--    <script-->
+    <!--      type="application/ld+json"-->
+    <!--      v-safe-html="JSONLD"-->
+    <!--    />-->
+    <component :is="'script'" type="application/ld+json">
+      <span v-safe-html="JSONLD" />
+    </component>
   </v-main>
 </template>
 
@@ -30,7 +29,7 @@ import CommunityBlock from "@/components/Home/CommunityBlock";
 import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
-import RestClient from "@/lib/Client/RESTClient.js"
+import RestClient from "@/lib/Client/RESTClient.js";
 
 const restClient = new RestClient();
 
@@ -39,22 +38,29 @@ const restClient = new RestClient();
  */
 export default {
   name: "Home",
-  components:{Carousel, InfoBlock, SearchBlock, CategoryBlock, StatisticsBlock, CommunityBlock },
+  components: {
+    Carousel,
+    InfoBlock,
+    SearchBlock,
+    CategoryBlock,
+    StatisticsBlock,
+    CommunityBlock,
+  },
   data() {
     return {
-      JSONLD: {}
-    }
+      JSONLD: {},
+    };
   },
   mounted() {
     this.getJsonld();
   },
-  destroyed() {
-    this.$scrollTo('body',0,{});
+  unmounted() {
+    this.$scrollTo("body", 0, {});
   },
   methods: {
     async getJsonld() {
       this.JSONLD = await restClient.getHomepageJsonld();
     },
-  }
+  },
 };
 </script>

@@ -1,15 +1,13 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchSubjects"
-      :loading="getLoadingStatus"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
-  </div>
+  <AutoCompleteComponent
+    v-model="model"
+    :item-list="getSearchSubjects"
+    :item-value="itemValue"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -17,17 +15,17 @@ import { mapActions, mapGetters } from "vuex";
 import subjectSearch from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Subject",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],
@@ -84,6 +82,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

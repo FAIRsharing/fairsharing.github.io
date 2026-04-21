@@ -3,182 +3,184 @@
     <v-card-text v-if="approvalRequiredProcessed">
       <v-card-title
         id="text-curator-search-0"
-        class="green white--text"
+        class="bg-green text-white d-flex align-center"
       >
         <b> USER EDITS AWAITING APPROVAL </b>
         <v-spacer />
         <v-text-field
           v-model="searches"
-          label="Search"
-          color="white"
-          single-line
-          hide-details
-          solo
           class="searchField"
           clearable
+          color="white"
+          hide-details
+          label="Search"
+          single-line
+          variant="solo"
         />
       </v-card-title>
+
       <v-card-text v-if="error.general">
         <v-alert type="error">
           Problem saving/updating record with id: {{ error.recordID }}
           {{ error.general }}
         </v-alert>
       </v-card-text>
+
       <v-data-table
-        :loading="loading"
         :headers="headerItems"
         :items="approvalRequiredProcessed"
+        :items-per-page-options="[10, 20, 30, 40, 50]"
+        :loading="loading"
         :search="searches"
-        :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
-        sort-by=""
+        return-object
       >
-        <template
-          v-if="recordType"
-          #item="props"
-        >
+        <template v-if="recordType" #item="{ item }">
           <tr>
             <td>
-              {{ props.item.updatedAt }}
+              {{ item.updatedAt }}
             </td>
             <td>
               <div class="priorityTag">
-                {{ props.item.priority }}
+                {{ item.priority }}
               </div>
             </td>
             <td>
               <v-menu>
-                <template #activator="{ on: menu, attrs }">
-                  <v-tooltip bottom>
-                    <template #activator="{ on: tooltip }">
-                      <v-icon
-                        class="clickable"
-                        small
+                <template #activator="{ props: menuProps }">
+                  <v-tooltip location="bottom">
+                    <template #activator="{ props: tooltipProps }">
+                      <span
+                        class="clickable text-decoration-underline"
                         color="nordnetBlue"
-                        v-bind="attrs"
-                        v-on="{ ...tooltip, ...menu }"
+                        size="small"
+                        v-bind="mergeProps(menuProps, tooltipProps)"
                       >
-                        {{ props.item.curator }}
-                      </v-icon>
+                        {{ item.curator || "Assign Curator" }}
+                      </span>
                     </template>
                     <span>Assign a new curator</span>
                   </v-tooltip>
                 </template>
                 <v-list>
                   <v-list-item
-                    v-for="(item, index) in curatorList"
+                    v-for="(curator, index) in curatorList"
                     :key="index"
                     class="thelistCurators"
                     @click="
-                      assignCurator(props.item.id, item.id, item.userName)
+                      assignCurator(item.id, curator.id, curator.userName)
                     "
                   >
-                    <v-list-item-title>{{ item.userName }}</v-list-item-title>
+                    <v-list-item-title>
+                      {{ curator.userName }}
+                    </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
             </td>
             <td>
               <div class="d-flex align-center">
-                <v-avatar
-                  v-if="props.item.type"
-                  class="mr-2"
-                  :height="40"
-                >
-                  <Icon
-                    :item="props.item.type"
-                    :height="40"
-                    wrapper-class=""
-                  />
+                <v-avatar v-if="item.type" class="mr-2" size="40">
+                  <Icon :height="40" :item="item.type" wrapper-class="" />
                 </v-avatar>
-                <a :href="'/' + props.item.id">
-                  {{ props.item.recordName }}
+                <a :href="'/' + item.id">
+                  {{ item.recordName }}
                 </a>
               </div>
             </td>
             <td>
-              <div v-if="props.item.lastEditor === 'unknown'">
-                {{ props.item.lastEditor }}
+              <div v-if="item.lastEditor === 'unknown'">
+                {{ item.lastEditor }}
               </div>
               <div v-else>
-                <a :href="'/users/' + props.item.idLastEditor">
-                  {{ props.item.lastEditor }}
+                <a :href="'/users/' + item.idLastEditor">
+                  {{ item.lastEditor }}
                 </a>
               </div>
             </td>
             <td>
-              <v-edit-dialog
-                :return-value.sync="props.item.processingNotes"
-                large
-                @save="
-                  saveProcessingNotes(props.item.id, props.item.processingNotes)
-                "
+              <v-menu
+                :close-on-content-click="false"
+                location="bottom"
+                min-width="400"
               >
-                {{ props.item.processingNotes }}
-                <template #input>
-                  <div class="dialogProcNotesEdit">
-                    <div class="mt-4 title">
-                      Update Processing Notes
-                    </div>
-                    <v-textarea
-                      v-model="props.item.processingNotes"
-                      width="1200px"
-                      label="Edit (not long words)"
-                      filled
-                    />
-                  </div>
-                </template>
-              </v-edit-dialog>
-            </td>
-            <td>
-              <v-icon
-                color="blue"
-                dark
-                left
-                @click.stop="
-                  approveChangesMenu(
-                    props.item.recordName,
-                    props.item.id,
-                    props.item.hidden
-                  )
-                "
-              >
-                far fa-check-circle
-              </v-icon>
-              {{ props.item.actions }}
-              <v-icon
-                color="red"
-                dark
-                right
-                small
-                @click="deleteRecordMenu(props.item.recordName, props.item.id)"
-              >
-                fas fa-trash
-              </v-icon>
-              <v-tooltip bottom>
-                <template #activator="{ on, attrs }">
-                  <span
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    <a
-                      :href="'/' + props.item.id + '/edit'"
-                      style="padding-left: 12px"
-                    >
-                      Edit
-                    </a>
+                <template #activator="{ props: menuProps }">
+                  <span style="cursor: pointer" v-bind="menuProps">
+                    {{ item.processingNotes || "Click to edit..." }}
                   </span>
                 </template>
-                <span>If edits are saved, record is approved.</span>
-              </v-tooltip>
+                <template #default="{ isActive }">
+                  <v-card class="pa-2">
+                    <v-card-title class="mt-2 text-h6">
+                      Update Processing Notes
+                    </v-card-title>
+                    <v-card-text class="pt-2">
+                      <v-textarea
+                        v-model="item.processingNotes"
+                        hide-details
+                        label="Edit (not long words)"
+                        variant="filled"
+                      />
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer />
+                      <v-btn
+                        color="primary"
+                        variant="text"
+                        @click="
+                          saveProcessingNotes(item.id, item.processingNotes);
+                          isActive.value = false;
+                        "
+                      >
+                        Save
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </template>
+              </v-menu>
             </td>
             <td>
-              {{ props.item.createdAt }},
-              <div v-if="props.item.creator === 'unknown'">
-                {{ props.item.creator }}
+              <div class="d-flex">
+                <v-icon
+                  color="blue"
+                  start
+                  @click.stop="
+                    approveChangesMenu(item.recordName, item.id, item.hidden)
+                  "
+                >
+                  fas fa-check-circle
+                </v-icon>
+                {{ item.actions }}
+                <v-icon
+                  color="red"
+                  end
+                  size="small"
+                  @click="deleteRecordMenu(item.recordName, item.id)"
+                >
+                  fas fa-trash
+                </v-icon>
+                <v-tooltip location="bottom">
+                  <template #activator="{ props }">
+                    <span v-bind="props">
+                      <a
+                        :href="'/' + item.id + '/edit'"
+                        style="padding-left: 12px"
+                      >
+                        Edit
+                      </a>
+                    </span>
+                  </template>
+                  <span>If edits are saved, record is approved.</span>
+                </v-tooltip>
+              </div>
+            </td>
+            <td>
+              {{ item.createdAt }},
+              <div v-if="item.creator === 'unknown'">
+                {{ item.creator }}
               </div>
               <div v-else>
-                <a :href="'/users/' + props.item.idCreator">
-                  {{ props.item.creator }}
+                <a :href="'/users/' + item.idCreator">
+                  {{ item.creator }}
                 </a>
               </div>
             </td>
@@ -186,112 +188,101 @@
         </template>
       </v-data-table>
     </v-card-text>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="dialogs.approveChanges"
-        max-width="700px"
-      >
-        <v-card>
-          <v-card-title class="headline">
-            Are you sure you want to
-            <span style="color: blue; padding-left: 5px; padding-right: 1px">
-              ACCEPT/APPROVE CHANGES
-            </span>
-            record?
-            <ul style="list-style-type: none">
-              <li>
-                {{ dialogs.recordName }}
-              </li>
-            </ul>
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
-              @click="closeApproveChangesMenu()"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue darken-1"
-              text
-              @click="confirmApproval()"
-            >
-              OK
-            </v-btn>
-            <v-spacer />
-            <v-switch
-              v-model="dialogs.createReview"
-              color="green"
-              label="Create Review"
-              class="pr-3"
-            />
-            <v-switch
-              v-model="dialogs.recordHidden"
-              color="purple"
-              label="Hide record"
-            />
-            <v-spacer />
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-layout>
-    <v-layout
-      row
-      justify-center
-    >
-      <v-dialog
-        v-model="dialogs.deleteRecord"
-        max-width="700px"
-      >
-        <v-card>
-          <v-card-title class="headline">
-            Are you sure you want to
-            <span style="color: red; padding-left: 5px; padding-right: 5px">
-              DELETE
-            </span>
-            this record?
-            <ul style="list-style-type: none">
-              <li>
-                {{ dialogs.recordName }}
-              </li>
-            </ul>
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
-              @click="closeDeleteMenu()"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              :disabled="
-                dialogs.disableDelButton === true ||
-                  dialogs.disableButton === true
-              "
-              color="blue darken-1"
-              text
-              @click="confirmDelete()"
-            >
-              OK
-            </v-btn>
-            <v-spacer />
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-layout>
+
+    <v-dialog v-model="dialogs.approveChanges" max-width="900px">
+      <v-card>
+        <v-card-title class="text-h5" style="white-space: normal">
+          Are you sure you want to
+          <span style="color: blue; padding-left: 5px; padding-right: 1px">
+            ACCEPT/APPROVE CHANGES
+          </span>
+          record?
+          <ul style="list-style-type: none">
+            <li>
+              {{ dialogs.recordName }}
+            </li>
+          </ul>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="red-darken-1"
+            variant="elevated"
+            @click="closeApproveChangesMenu()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="blue-darken-1"
+            variant="elevated"
+            @click="confirmApproval()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+          <v-switch
+            v-model="dialogs.createReview"
+            class="pr-3"
+            color="green"
+            hide-details
+            label="Create Review"
+          />
+          <v-switch
+            v-model="dialogs.recordHidden"
+            color="purple"
+            hide-details
+            label="Hide record"
+          />
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="dialogs.deleteRecord" max-width="900px">
+      <v-card>
+        <v-card-title class="text-h5" style="white-space: normal">
+          Are you sure you want to
+          <span style="color: red; padding-left: 5px; padding-right: 5px">
+            DELETE
+          </span>
+          this record?
+          <ul style="list-style-type: none">
+            <li>
+              {{ dialogs.recordName }}
+            </li>
+          </ul>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="red-darken-1"
+            variant="elevated"
+            @click="closeDeleteMenu()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="
+              dialogs.disableDelButton === true ||
+              dialogs.disableButton === true
+            "
+            color="blue-darken-1"
+            variant="elevated"
+            @click="confirmDelete()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
+import { mergeProps } from "vue";
 import { mapActions, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
@@ -350,7 +341,7 @@ export default {
   watch: {
     approvalRequired: function () {
       this.approvalRequiredProcessed = JSON.parse(
-        JSON.stringify(this.approvalRequired)
+        JSON.stringify(this.approvalRequired),
       );
     },
     "dialogs.approveChanges"(val) {
@@ -369,11 +360,12 @@ export default {
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(
-      JSON.stringify(this.approvalRequired)
+      JSON.stringify(this.approvalRequired),
     );
     this.loading = false;
   },
   methods: {
+    mergeProps,
     ...mapActions("record", ["updateRecord"]),
 
     /**
@@ -408,8 +400,9 @@ export default {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
-            (element) => element.id === rec.id
+            (element) => element.id === rec.id,
           );
+          /* v8 ignore next 3 */
           if (index >= 0) {
             object.hidden = true;
           }
@@ -425,10 +418,10 @@ export default {
       this.approvalRequired.sort(this.compareRecordDescUpdate);
       for (let i = 0; i < this.approvalRequired.length; i++) {
         this.approvalRequired[i].updatedAt = this.formatDate(
-          this.approvalRequired[i].updatedAt
+          this.approvalRequired[i].updatedAt,
         );
         this.approvalRequired[i].createdAt = this.formatDate(
-          this.approvalRequired[i].createdAt
+          this.approvalRequired[i].createdAt,
         );
       }
       let curators = listOfCurators.curatorList;
@@ -496,11 +489,11 @@ export default {
         _module.error.recordID = idRecord;
       }
       const index = _module.approvalRequiredProcessed.findIndex(
-        (element) => element.id === idRecord
+        (element) => element.id === idRecord,
       );
       _module.approvalRequiredProcessed[index].curator = nameUser.substring(
         0,
-        6
+        6,
       );
     },
 
@@ -537,7 +530,7 @@ export default {
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -550,14 +543,14 @@ export default {
       _module.dialogs.disableButton = true;
       let data = await restClient.deleteRecord(
         _module.dialogs.recordID,
-        this.user().credentials.token
+        this.user().credentials.token,
       );
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
       } else {
         const index = _module.approvalRequiredProcessed.findIndex(
-          (element) => element.id === _module.dialogs.recordID
+          (element) => element.id === _module.dialogs.recordID,
         );
         _module.approvalRequiredProcessed.splice(index, 1);
       }
@@ -606,9 +599,10 @@ export default {
   overflow-y: auto;
 }
 
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
   max-width: 400px;

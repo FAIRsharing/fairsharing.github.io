@@ -1,15 +1,13 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="typeList()"
-      :loading="getLoadingData"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
-  </div>
+  <AutoCompleteComponent
+    v-model="model"
+    :item-list="getObjectTypes"
+    :item-value="itemValue"
+    :loading="getLoadingData"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -17,17 +15,17 @@ import { mapActions, mapGetters } from "vuex";
 import objectTypes from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "ObjectTypes",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],
@@ -62,10 +60,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            objectTypes.commit(
-              "objectTypes/setObjectTypes",
-              this.value
-            );
+            objectTypes.commit("objectTypes/setObjectTypes", this.value);
           }
         }
       },
@@ -85,13 +80,6 @@ export default {
     getResults(queryParams) {
       if (queryParams) this.fetchObjectTypes(queryParams);
     },
-    typeList() {
-      let items = [];
-      this.getObjectTypes.forEach((item) => {
-        items.push(item.label);
-      })
-      return items;
-    }
   },
 };
 </script>

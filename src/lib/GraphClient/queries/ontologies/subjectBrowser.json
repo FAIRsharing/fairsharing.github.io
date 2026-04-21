@@ -1,7 +1,5 @@
 {
   "queryName": "browseSubjects",
   "queryParam": null,
-  "fields": [
-    "data "
-  ]
+  "fields": ["data "]
 }

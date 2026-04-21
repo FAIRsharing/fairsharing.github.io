@@ -1,30 +1,28 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuetify from "vuetify"
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
-import StatusPills from "@/components/Records/Shared/StatusPills.vue"
+import StatusPills from "@/components/Records/Shared/StatusPills.vue";
 import light from "@/plugins/theme";
 
-const localVue = createLocalVue();
-const vuetify = new Vuetify({
-    theme: {
-        themes: {light}
-    }
+const vuetify = createVuetify({
+  theme: {
+    defaultTheme: "fairSharingTheme",
+    themes: { fairSharingTheme: light },
+  },
 });
 let wrapper;
 
-describe('StatusPills.vue', () => {
-
-    beforeAll(() => {
-        wrapper = shallowMount(StatusPills, {
-            localVue,
-            vuetify,
-            props: {
-                status: "ready"
-            }
-        });
+describe("StatusPills.vue", () => {
+  beforeAll(() => {
+    wrapper = shallowMount(StatusPills, {
+      vuetify,
+      props: {
+        status: "ready",
+      },
     });
+  });
 
-    it("can be mounted", () => {
-        expect(wrapper.vm.$options.name).toMatch("StatusPills");
-    });
+  it("can be mounted", () => {
+    expect(wrapper.vm.$options.name).toMatch("StatusPills");
+  });
 });

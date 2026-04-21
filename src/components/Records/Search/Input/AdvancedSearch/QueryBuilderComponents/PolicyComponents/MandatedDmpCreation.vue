@@ -1,39 +1,33 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-list="itemList"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "MandatedDmpCreation",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
-      itemList: [
-        "required",
-        "suggested",
-        "not covered",
-        "other"
-      ],
+      itemList: ["required", "suggested", "not covered", "other"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Mandates the development of a data management plan. Multiple selections will be joined with OR.",
+      toolTipText:
+        "Mandates the development of a data management plan. Multiple selections will be joined with OR.",
     };
   },
   computed: {

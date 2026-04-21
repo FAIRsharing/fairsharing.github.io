@@ -1,71 +1,52 @@
 <template>
-  <v-layout
-    class="login"
-    style="background: white"
-  >
+  <v-layout class="login" style="background: white">
     <v-container>
       <!-- forms -->
       <v-row justify="center">
-        <v-col
-          cols="12"
-          sm="12"
-          md="8"
-          lg="8"
-          xl="4"
-        >
-          <v-form
-            ref="emailRef"
-            v-model="formValid"
-          >
+        <v-col cols="12" lg="8" md="8" sm="12" xl="4">
+          <v-form ref="emailRef" v-model="formValid">
             <v-card>
-              <v-card-title class="blue white--text mb-5">
-                <h2 class="ma-0">
-                  Provide your email address
-                </h2>
+              <v-card-title class="bg-blue text-white mb-5">
+                <h2 class="ma-0">Provide your email address</h2>
               </v-card-title>
               <v-card-text class="pb-0">
-                <v-alert
-                  v-if="error"
-                  type="error"
-                >
+                <v-alert v-if="error" type="error">
                   <b>Something went wrong: {{ error }}</b>
                 </v-alert>
 
-                <v-alert
-                  v-if="success"
-                  type="success"
-                >
+                <v-alert v-if="success" type="success">
                   Verification email sent successfully, please check your email
                   {{ emailId }}.
                 </v-alert>
                 <p>
                   FAIRsharing needs an email address, and ORCID hasn't told us
                   yours. Please type your address below and click on the
-                  verification link we'll send you. If you already have
-                  an account on FAIRsharing then please use the same email
-                  address. If you don't have an account or use a different email
-                  address a new account will be created for you.
+                  verification link we'll send you. If you already have an
+                  account on FAIRsharing then please use the same email address.
+                  If you don't have an account or use a different email address
+                  a new account will be created for you.
                 </p>
                 <p>
                   If you encounter any problems, please email
-                  <a href="mailto:contact@fairsharing.org">contact@fairsharing.org</a>.
+                  <a href="mailto:contact@fairsharing.org"
+                    >contact@fairsharing.org</a
+                  >.
                 </p>
                 <v-text-field
                   v-model="email"
+                  :rules="[rules.isEmail(), rules.isRequired()]"
                   label="Email"
                   required
-                  outlined
-                  :rules="[rules.isEmail(), rules.isRequired()]"
+                  variant="outlined"
                   @focus="success = false"
                 />
               </v-card-text>
               <v-card-actions class="mt-2 pb-8 justify-center">
                 <v-btn
-                  class="px-4"
-                  light
-                  color="primary"
-                  :loading="loading"
                   :disabled="!formValid"
+                  :loading="loading"
+                  class="px-4 bg-primary"
+                  variant="elevated"
                   @click="sendVerificationRequest()"
                 >
                   {{ buttonMessage }}
@@ -81,9 +62,9 @@
 
 <script>
 import RESTClient from "@/lib/Client/RESTClient.js";
+import { isEmail, isRequired } from "@/utils/rules.js";
 
 let restClient = new RESTClient();
-import { isEmail, isRequired } from "@/utils/rules.js";
 
 export default {
   name: "SendOrcidLoginEmail",
@@ -134,7 +115,8 @@ export default {
           _module.success = true;
           _module.emailId = _module.email;
           _module.$refs.emailRef.reset();
-        } else {
+        }
+        else {
           _module.error = "Verification email not sent!";
         }
       }

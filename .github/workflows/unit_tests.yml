@@ -1,6 +1,11 @@
-name: Build
+name: Test and Coverage
 
-on: [push]
+on: [ push, pull_request ]
+
+# CRITICAL: Give the action permission to write PR comments
+permissions:
+  pull-requests: write
+  contents: read
 
 jobs:
   build:
@@ -8,18 +13,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '16.x'
-    - name: Install Dependencies
-      run: npm install
-    - name: Run npm unit tests
-      run: npm run test:unit
-    - name: Update coverage to coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: './coverage/lcov.info'
-    - name: Update coverage to codacy
-      run: npm run codacy ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          # Optional: Speeds up the workflow
+          cache: 'npm'
+      - name: Install Dependencies
+        # 'npm ci' is strictly better than 'npm install' for pipelines
+        run: npm ci
+      # 1. Run the test script
+      - name: Run Tests with Coverage
+        run: npm run test:coverage
+
+      # 2. Add the PR Comment Action
+      - name: Report Coverage in PR
+        if: always() # Run even if coverage drops below 90%
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          # Optional but recommended: keeps PR comments clean by updating the same comment
+          name: 'Vitest Coverage'
+
+      # 3. Upload to Coveralls
+      # This uses the official Codacy Action
+      - name: Update coverage to coveralls
+        if: always() # CRITICAL: Uploads report even if the 90% threshold fails
+        uses: coverallsapp/github-action@v2 # CHANGED: @master is risky; use @v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: './coverage/lcov.info' # CHANGED: coveralls v2 uses 'file' instead of 'path-to-lcov'
+      # 3. Upload to Codacy
+      # This uses the official Codacy Action
+      - name: Run Codacy Coverage Reporter
+        if: always() # CRITICAL: Uploads report even if the 90% threshold fails
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: './coverage/lcov.info'

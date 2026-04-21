@@ -1,23 +1,17 @@
 <template>
-  <div
-    v-if="hits"
-    class="mt-2"
-  >
-    <p
-      v-if="user().id"
-      class="text-center"
-    >
-      <v-tooltip top>
+  <div v-if="hits" class="mt-2">
+    <p v-if="user().id" class="text-center">
+      <v-tooltip location="top">
         <!-- eslint-disable-next-line  vue/no-template-shadow -->
-        <template #activator="{ on }">
+        <template #activator="{ props }">
           <v-btn
             :disabled="buttonDisabled"
-            x-small
-            class="info mr-10"
-            v-on="on"
+            size="x-small"
+            class="bg-info mr-10"
+            v-bind="props"
           >
             <a @click="chooseDownload()">
-              <span class="white--text">Download</span>
+              <span class="text-white">Download</span>
             </a>
           </v-btn>
         </template>
@@ -25,39 +19,36 @@
       </v-tooltip>
       <!-- eslint-enable-next-line  vue/no-template-shadow -->
     </p>
-    <v-dialog 
-      v-model="chooseDownloadActive"
-      max-width="500"
-    >
+    <v-dialog v-model="chooseDownloadActive" max-width="500">
       <v-card>
-        <v-card-title>
-          Do you need information on organisations?
-        </v-card-title>
+        <v-card-title> Do you need information on organisations? </v-card-title>
         <v-card-text>
-          Selecting "yes" here will add a FAIRsharing record's organisations to your download file. This will increase
-          the file size as each organisation will require a separate line. Select "no" to download without organisations.
+          Selecting "yes" here will add a FAIRsharing record's organisations to
+          your download file. This will increase the file size as each
+          organisation will require a separate line. Select "no" to download
+          without organisations.
         </v-card-text>
 
         <v-card-actions>
           <v-spacer />
 
           <v-btn
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="commenceDownload(true)"
           >
             Yes
           </v-btn>
           <v-btn
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="commenceDownload(false)"
           >
             No
           </v-btn>
           <v-btn
-            color="red darken-1"
-            text
+            color="red-darken-1"
+            variant="text"
             @click="chooseDownloadActive = false"
           >
             Cancel
@@ -67,7 +58,6 @@
     </v-dialog>
   </div>
 </template>
-
 
 <script>
 import { mapGetters, mapState } from "vuex";
@@ -88,7 +78,7 @@ export default {
       listControllerData: listControllerData,
       recordTypes: recordsLabels["recordTypes"],
       buttonDisabled: false,
-      chooseDownloadActive: false
+      chooseDownloadActive: false,
     };
   },
   computed: {
@@ -124,7 +114,7 @@ export default {
       this.chooseDownloadActive = false;
       this.buttonDisabled = true;
       let params = this.$store.getters["introspection/buildQueryParameters"](
-        this.currentPath
+        this.currentPath,
       );
       params["includeOrgs"] = includeOrgs;
       params["searchUrl"] =

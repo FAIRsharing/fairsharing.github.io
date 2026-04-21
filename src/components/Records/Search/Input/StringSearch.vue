@@ -3,40 +3,35 @@
     <v-form
       ref="form"
       v-model="formValid"
-      lazy-validation
       class="d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
       style="position: relative"
+      validate-on="submit lazy"
       @submit.prevent="searchString()"
     >
       <v-text-field
         v-model="searchTerm"
-        solo
-        single-line
-        clearable
-        dense
-        full-width
-        :class="$vuetify.breakpoint.lgAndDown ? 'v-input' : 'v-input-lg-up'"
-        :height="responsiveHeightTextBox"
+        :class="$vuetify.display.lgAndDown ? 'v-input' : 'v-input-lg-up'"
         :placeholder="placeholder"
+        :style="{ height: responsiveHeightTextBox + 'px' }"
+        class="full-width"
+        clearable
+        density="compact"
+        single-line
+        variant="solo"
       />
 
       <!--  reusable search box  -->
       <v-btn
         v-if="!showHomeSearch"
-        small
-        color="primary"
-        outlined
         :class="responsiveHeight"
         class="mt-1 mt-lg-1 ml-2"
+        color="primary"
+        size="small"
         type="submit"
+        variant="outlined"
         @click="searchString()"
       >
-        <v-icon
-          x-small
-          class="mr-1"
-        >
-          fas fa-search
-        </v-icon>
+        <v-icon class="mr-1" size="x-small"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
 
@@ -44,41 +39,32 @@
       <AdvancedSearch
         v-if="!showHomeSearch"
         :advanced-search-term="searchTerm"
-        @clearSearchField="clearSearchField"
+        @clear-search-field="clearSearchField"
       />
       <!--  home page search box  -->
       <v-btn
         v-if="showHomeSearch"
-        color="primary"
         :class="[
           'mt-1 mt-lg-1 ml-2',
-          $vuetify.breakpoint.lgAndDown
-            ? 'home-search-bt'
-            : 'home-search-bt-xl',
+          $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
         ]"
+        color="primary"
         @click="searchStringHomePage()"
       >
-        <v-icon
-          x-small
-          class="mr-1"
-        >
-          fas fa-search
-        </v-icon>
+        <v-icon class="mr-1" size="x-small"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
     </v-form>
     <!--  home page exclusive check box for search  -->
-    <div
-      v-if="showHomeSearch"
-      class="pt-6"
-    >
+    <div v-if="showHomeSearch" class="pt-6">
       <v-checkbox
         v-for="(checkbox, index) in registries"
         :key="checkbox.value + '_' + index"
         v-model="selectedRegistries"
-        class="d-inline-block mr-2"
         :label="checkbox.label"
         :value="checkbox"
+        class="d-inline-block mr-2"
+        color="primary"
       >
         <template #label>
           <span class="v-label-white">{{ checkbox.label }}</span>
@@ -90,6 +76,8 @@
 
 <script>
 import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
+import { useDisplay } from "vuetify";
+
 export default {
   name: "StringSearch",
   components: { AdvancedSearch },
@@ -98,6 +86,10 @@ export default {
     showHomeSearch: { default: false, type: Boolean },
     addSearchTerms: { default: false, type: Boolean },
     searchPath: { default: "/search", type: String },
+  },
+  setup() {
+    const { mdAndDown, md, lg, xl, mobile } = useDisplay();
+    return { mdAndDown, md, lg, xl, mobile };
   },
   data() {
     return {
@@ -114,21 +106,21 @@ export default {
         { label: "policies", value: "policy" },
         { label: "collections", value: "collection" },
       ],
-      formValid: true
+      formValid: true,
     };
   },
   computed: {
     responsiveHeight: function () {
       return {
-        "style-sm-xs": this.$vuetify.breakpoint.mdAndDown,
-        "style-md": this.$vuetify.breakpoint.mdOnly,
-        "style-lg": this.$vuetify.breakpoint.lgOnly,
-        "style-xl": this.$vuetify.breakpoint.xlOnly,
+        "style-sm-xs": this.$vuetify.display.mdAndDown,
+        "style-md": this.$vuetify.display.md,
+        "style-lg": this.$vuetify.display.lg,
+        "style-xl": this.$vuetify.display.xl,
       };
     },
     responsiveHeightTextBox: function () {
       let boxHeight = 35;
-      if (this.$vuetify.breakpoint.xlOnly) {
+      if (this.$vuetify.display.xl) {
         boxHeight = 50;
       }
       return boxHeight;
@@ -163,7 +155,7 @@ export default {
     },
     searchStringHomePage() {
       const _module = this;
-      let query = {}
+      let query = {};
       if (_module.searchTerm) {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
@@ -183,7 +175,7 @@ export default {
             q: _module.searchTerm ? _module.searchTerm : undefined,
             fairsharingRegistry: selectedRegistriesValues.toString(),
             searchAnd: false,
-          }
+          };
         }
         _module.$router.push({
           path: "/search",
@@ -199,7 +191,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .v-input {
   box-shadow: 0 0 0 0;
   height: 35px !important;
@@ -209,6 +201,9 @@ export default {
   box-shadow: 0 0 0 0;
   height: 48px;
   margin-bottom: 15px;
+  :deep(input) {
+    height: 50px;
+  }
 }
 
 .button-text-size {
@@ -255,5 +250,8 @@ export default {
 }
 .v-label-white {
   color: white;
+}
+:deep(.v-field__input) {
+  min-height: v-bind(responsiveHeightTextBox + "px");
 }
 </style>

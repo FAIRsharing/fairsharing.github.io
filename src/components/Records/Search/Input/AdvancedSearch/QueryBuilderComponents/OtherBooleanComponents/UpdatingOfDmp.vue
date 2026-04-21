@@ -1,32 +1,31 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <RadioComponent
-      v-model="model"
-      :item-value="itemValue"
-      @input="selectedValue"
-    />
-  </div>
+  <RadioComponent
+    v-model="model"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import RadioComponent from "../UtilComponents/RadioComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "UpdatingOfDmp",
-  components: { TooltipComponent, RadioComponent },
+  components: { RadioComponent },
   props: {
     value: {
       type: String,
       default: "",
     },
   },
+  emits: ["input"],
   data: () => {
     return {
-      itemValue:"",
-      toolTipText: "If the policy makes clear that the DMP must be updated and versioned over the life of the project, select yes. If the policy lacks clarity about whether the DMP should be updated, then select no.",
-
+      itemValue: "",
+      itemSelected: "",
+      toolTipText:
+        "If the policy makes clear that the DMP must be updated and versioned over the life of the project, select yes. If the policy lacks clarity about whether the DMP should be updated, then select no.",
     };
   },
   computed: {

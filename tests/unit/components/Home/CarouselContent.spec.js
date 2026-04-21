@@ -1,22 +1,22 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { beforeEach, describe, expect, it } from "vitest";
+import { createVuetify } from "vuetify";
 
-import CarouselContent from "@/components/Home/CarouselContent"
+import CarouselContent from "@/components/Home/CarouselContent";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
-describe("TabContent.vue", function(){
-    let wrapper;
+describe("TabContent.vue", function () {
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(CarouselContent, {
-            vuetify,
-            stubs: ['router-link']
-        })
+  beforeEach(() => {
+    wrapper = shallowMount(CarouselContent, {
+      vuetify,
+      stubs: ["router-link"],
     });
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("CarouselContent");
-    });
-
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("CarouselContent");
+  });
 });

@@ -1,252 +1,450 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
-import { RouterLinkStub } from '@vue/test-utils';
-import sinon from "sinon"
-import VueRouter from "vue-router"
-import Vuetify from "vuetify";
-import Vuex from "vuex"
+import { shallowMount } from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createStore } from "vuex";
+import Organisation from "@/views/Organisations/Organisation.vue";
 
-import RESTClient from "@/lib/Client/RESTClient.js";
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import light from "@/plugins/theme";
-import users from "@/store/users.js";
-import Organisation from "@/views/Organisations/Organisation";
+// --- 1. MOCK EXTERNAL CLIENTS & UTILS ---
+const { mockDeleteOrganisation, mockEditOrganisation, mockUpdateSaveSearch } =
+  vi.hoisted(() => ({
+    mockDeleteOrganisation: vi.fn().mockResolvedValue({ error: false }),
+    mockEditOrganisation: vi.fn().mockResolvedValue({ error: false }),
+    mockUpdateSaveSearch: vi.fn().mockResolvedValue({ error: false }),
+  }));
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-
-users.state.user = function(){ return {
-    isLoggedIn: true,
-    id: 123,
-    credentials: {token: 123, username: 123},
-    watchedRecords: [1]
-}};
-let editor = {
-    namespaced: true,
-    state:{
-        organisationTypes: [{
-            id:1,
-            name:"Government body"
-        }],
-        countries:[{
-            code:"AF",
-            id:1,
-            name:"Afghanistan"
-        }],
-        tooltips:{
-            abbreviation:"If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank.",
-        }
-    }
-}
-
-let $store = new Vuex.Store({
-
-    modules: {
-        users: users,
-        editor: editor,
-    }
-})
-
-$store.state.users.user = function (){
-    return {
-        isLoggedIn: false,
-        credentials: {token: "123"}
-    }
-};
-
-let vuetify = new Vuetify({
-    theme: {
-        themes: {light}
-    }
+vi.mock("@/lib/GraphClient/GraphClient.js", () => {
+  return {
+    default: vi.fn().mockImplementation(() => ({
+      executeQuery: vi.fn().mockResolvedValue({
+        organisation: {
+          id: 1,
+          name: "Test Org",
+          homepage: "https://test.org",
+          rorLink: "https://ror.org/test",
+          urlForLogo: "/media/logo.png",
+          alternativeNames: ["Alt1", "Alt2"],
+          types: ["Institute"],
+          users: [
+            { id: 1, username: "testuser", orcid: "0000-0000-0000-0000" },
+          ],
+          parentOrganisations: [],
+          childOrganisations: [],
+          countries: [{ id: 1, name: "France" }],
+          savedSearches: [],
+        },
+      }),
+    })),
+  };
 });
 
-let $route = {
-    path: "/organisations/1",
-    params: {id: 1}
-};
-const router = new VueRouter();
-const $router = { push: jest.fn() };
-let restStub;
+vi.mock("@/lib/Client/RESTClient.js", () => {
+  return {
+    default: vi.fn().mockImplementation(() => ({
+      editOrganisation: mockEditOrganisation,
+      deleteOrganisation: mockDeleteOrganisation,
+      updateSaveSearch: mockUpdateSaveSearch,
+    })),
+  };
+});
 
-describe("Organisation", () => {
+vi.mock("@/utils/generalUtils", () => ({
+  toBase64: vi.fn().mockResolvedValue("data:image/png;base64,mock..."),
+}));
 
-    let wrapper;
-    let graphStub;
-    let organisation = {
-        id: 1,
-        name: "4DN Data Coordination and Integration Center",
-        alternativeNames: [],
-        homepage: "http://dcic.4dnucleome.org/",
-        rorLink: "https://roro.roror.ror",
+// --- 2. MOCK VUETIFY & STORE IMPORTS ---
+vi.mock("vuetify/framework", () => ({
+  useTheme: () => ({
+    computedThemes: {
+      value: {
+        fairSharingTheme: {
+          colors: { bg_organisation_record_card: "#ffffff" },
+        },
+      },
+    },
+  }),
+}));
+
+vi.mock("@/store", () => ({
+  default: { commit: vi.fn() },
+}));
+
+// Mock the JSON query import
+vi.mock("@/lib/GraphClient/queries/Organisations/getOrganisation.json", () => ({
+  default: { queryParam: { id: null } },
+}));
+
+// --- 3. MOCK ENVIRONMENT VARIABLES ---
+vi.stubEnv("VITE_API_ENDPOINT", "https://api.mock.com");
+vi.stubEnv("VITE_HOSTNAME", "https://mock.com/");
+
+describe("Organisation.vue", () => {
+  let wrapper;
+  let store;
+  let mockGetOrgTypes;
+  let mockGetCountries;
+
+  const mockRoute = { params: { id: "1" } };
+  const mockRouter = { push: vi.fn() };
+
+  const createVuexStore = () => {
+    mockGetOrgTypes = vi.fn();
+    mockGetCountries = vi.fn();
+
+    return createStore({
+      modules: {
+        users: {
+          namespaced: true,
+          state: {
+            user: () => ({
+              is_curator: true,
+              is_super_curator: false,
+              credentials: { token: "mock-token" },
+            }),
+          },
+        },
+        editor: {
+          namespaced: true,
+          state: {
+            organisationsTypes: [{ id: 1, name: "Institute" }],
+            countries: [{ id: 1, name: "France" }],
+            tooltips: { countries: "Select a country" },
+          },
+          actions: {
+            getOrganisationsTypes: mockGetOrgTypes,
+            getCountries: mockGetCountries,
+          },
+        },
+      },
+    });
+  };
+
+  const mountComponent = async () => {
+    store = createVuexStore();
+
+    wrapper = shallowMount(Organisation, {
+      global: {
+        plugins: [store],
+        mocks: {
+          $route: mockRoute,
+          $router: mockRouter,
+        },
+        stubs: [
+          "SectionTitle",
+          "SearchOrganisationRecords",
+          "NotFound",
+          "Loaders",
+          "CountryFlag",
+        ],
+      },
+    });
+
+    // Wait for the created/mounted async hooks to resolve
+    await vi.dynamicImportSettled();
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    // Safety mock for window.location (used in deleteOrganisation)
+    delete window.location;
+    window.location = { pathname: "" };
+  });
+
+  // --- RENDERING & LIFECYCLE ---
+
+  it("can be mounted", async () => {
+    await mountComponent();
+    wrapper.vm.rules.isRequired();
+    wrapper.vm.rules.isURL();
+    wrapper.vm.rules.isImage();
+    expect(wrapper.vm.$options.name).toMatch("Organisation");
+  });
+
+  it("fetches organisation data and dispatches store actions on mount", async () => {
+    await mountComponent();
+
+    // Verifies mounted hooks fired
+    expect(mockGetOrgTypes).toHaveBeenCalled();
+    expect(mockGetCountries).toHaveBeenCalled();
+
+    // Verifies created hook fetched the org and mapped it to the component data
+    expect(wrapper.vm.organisation.name).toBe("Test Org");
+    expect(wrapper.vm.error).toBe(false);
+  });
+
+  // --- COMPUTED PROPERTIES ---
+
+  it("computes logoUrl correctly from env variables", async () => {
+    await mountComponent();
+    expect(wrapper.vm.logoUrl).toBe("https://api.mock.com/media/logo.png");
+  });
+
+  // --- FORMATTING METHODS ---
+
+  it("formats users with and without ORCID correctly", async () => {
+    await mountComponent();
+    const userWithOrcid = { username: "testuser", orcid: "1234" };
+    const userNoOrcid = { username: "testuser2" };
+
+    expect(wrapper.vm.formatUser(userWithOrcid)).toBe("testuser (1234)");
+    expect(wrapper.vm.formatUser(userNoOrcid)).toBe("testuser2");
+  });
+
+  it("formats alternative names as comma-separated string", async () => {
+    await mountComponent();
+    const mockOrg = { alternativeNames: ["One", "Two"] };
+    expect(wrapper.vm.getAltNames(mockOrg)).toBe("One, Two");
+
+    expect(wrapper.vm.getAltNames({})).toBeNull();
+  });
+
+  // --- ACTIONS (DELETE) ---
+
+  it("calls REST client to delete organisation and redirects on success", async () => {
+    await mountComponent();
+
+    // Call the method passing 'true' to confirm deletion
+    await wrapper.vm.deleteOrganisation(true);
+
+    // Verify the shared spy was called with org ID and user token
+    expect(mockDeleteOrganisation).toHaveBeenCalledWith(1, "mock-token");
+
+    // Verify window.location was updated to redirect the user
+    expect(window.location.pathname).toBe("/organisations");
+  });
+
+  it("can check confirmDeleteOrganisation method", async () => {
+    await mountComponent();
+    wrapper.vm.confirmDeleteOrganisation();
+
+    expect(wrapper.vm.confirmDelete).toBe(true);
+    expect(wrapper.vm.deleteOrganisationCard).toBe(true);
+    expect(wrapper.vm.unlinkSavedSearchCard).toBe(false);
+  });
+
+  it("can check confirmUnlinkSavedSearch method", async () => {
+    await mountComponent();
+    wrapper.vm.confirmUnlinkSavedSearch("test");
+
+    expect(wrapper.vm.selectedItem).toBe("test");
+    expect(wrapper.vm.confirmDelete).toBe(true);
+    expect(wrapper.vm.deleteOrganisationCard).toBe(false);
+    expect(wrapper.vm.unlinkSavedSearchCard).toBe(true);
+  });
+
+  it("can check getUserLink method", async () => {
+    await mountComponent();
+    wrapper.vm.getUserLink();
+    let output = import.meta.env.VITE_HOSTNAME + "users/";
+    expect(wrapper.vm.getUserLink()).toBe(output);
+  });
+
+  it("can check orgUrl method", async () => {
+    await mountComponent();
+    wrapper.vm.orgUrl();
+    let output = import.meta.env.VITE_HOSTNAME + "organisations/";
+    expect(wrapper.vm.orgUrl()).toBe(output);
+  });
+
+  it("can check unlinkSavedSearch method", async () => {
+    await mountComponent();
+    wrapper.vm.selectedItem.organisations = [{ id: 1 }, { id: 2 }];
+    wrapper.vm.organisation = { id: 1 };
+    wrapper.vm.unlinkSavedSearch(true);
+    expect(wrapper.vm.deleteOrganisationCard).toBe(false);
+    expect(wrapper.vm.confirmDelete).toBe(false);
+    expect(wrapper.vm.unlinkSavedSearchCard).toBe(false);
+  });
+
+  it("can check startEditing method", async () => {
+    await mountComponent();
+    await wrapper.vm.startEditing();
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.showEditDialog).toBe(true);
+  });
+
+  it("can check hideOverlay method", async () => {
+    await mountComponent();
+    await wrapper.vm.hideOverlay();
+    expect(wrapper.vm.showOverlay).toBe(false);
+    expect(wrapper.vm.targetID).toBe(null);
+  });
+
+  it("can check previewRecord method", async () => {
+    await mountComponent();
+    await wrapper.vm.previewRecord(1);
+    expect(wrapper.vm.targetID).toBe(1);
+    expect(wrapper.vm.showOverlay).toBe(true);
+  });
+
+  it("can check goToEdit method", async () => {
+    await mountComponent();
+    await wrapper.vm.goToEdit(1);
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      path: "/1/edit",
+    });
+  });
+
+  it("can check filterRecords method", async () => {
+    await mountComponent();
+    wrapper.vm.organisation = { name: "Test Org & Co." };
+    wrapper.vm.filterRecords();
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: "search",
+      query: { organisations: "test%20org%20%26%20co." },
+    });
+  });
+
+  it("removes the specified type from editedOrganisation.types in removeType()", async () => {
+    await mountComponent();
+    wrapper.vm.editedOrganisation.types = [
+      { id: 1, label: "Institute" },
+      { id: 2, label: "University" },
+      { id: 3, label: "Company" },
+    ];
+
+    wrapper.vm.removeType({ id: 2, name: "University" });
+
+    expect(wrapper.vm.editedOrganisation.types).toEqual([
+      { id: 1, label: "Institute" },
+      { id: 3, label: "Company" },
+    ]);
+  });
+
+  it("removes the specified country from editedOrganisation.countries in removeCountry()", async () => {
+    await mountComponent();
+
+    wrapper.vm.editedOrganisation.countries = [
+      { id: 1, label: "France" },
+      { id: 2, label: "Germany" },
+      { id: 3, label: "Spain" },
+    ];
+    wrapper.vm.removeCountry({ id: 2, name: "Germany" });
+    expect(wrapper.vm.editedOrganisation.countries).toEqual([
+      { id: 1, label: "France" },
+      { id: 3, label: "Spain" },
+    ]);
+  });
+
+  it("opens a new tab with the correct URL in goToRecord()", async () => {
+    await mountComponent();
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => {});
+    wrapper.vm.goToRecord(456);
+    expect(openSpy).toHaveBeenCalledWith("/456", "_blank");
+    // 5. Clean up the spy so it doesn't affect other tests
+    openSpy.mockRestore();
+  });
+
+  describe("editOrganisation()", () => {
+    it("formats full form data, calls REST client, and refreshes on success", async () => {
+      await mountComponent();
+      const getOrgSpy = vi
+        .spyOn(wrapper.vm, "getOrganisation")
+        .mockResolvedValue();
+      wrapper.vm.showEditDialog = true;
+      wrapper.vm.organisation.id = 99;
+
+      wrapper.vm.editedOrganisation = {
+        name: "Updated Name",
+        homepage: "http://updated.org",
+        rorLink: "http://ror.org/updated",
         types: [
-            "Consortium"
+          { id: 1, name: "Institute" },
+          { id: 2, name: "Lab" },
         ],
-        urlForLogo: "/logo12345678",
-        childOrganisations: [],
-        parentOrganisations: [],
-        organisationLinks: [
-            {
-                id: 6057,
-                isLead: true,
-                relation: "maintains",
-                fairsharingRecord: {
-                    id: 872,
-                    name: "Pairs file format",
-                    abbreviation: ".pairs",
-                    type: "model_and_format",
-                    registry: "Standard",
-                    status: "ready"
-                },
-                "grant": null
-            }
-        ],
-        users: [],
-        countries: []
-    }
+        countries: [{ id: 10, name: "France" }],
+        alternativeNames: "  Alt 1, Alt 2  ", // Notice the messy spacing
+        logo: { name: "logo.png", type: "image/png", size: 1000 },
+      };
 
-    beforeAll(() => {
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            organisation: organisation
-        });
-        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
-        restStub.withArgs(sinon.match.any).returns({
-            data: {id: 1}
-        });
+      await wrapper.vm.editOrganisation();
+
+      expect(mockEditOrganisation).toHaveBeenCalledWith(
+        {
+          name: "Updated Name",
+          homepage: "http://updated.org",
+          organisation_type_ids: [1, 2],
+          country_ids: [10],
+          ror_link: "http://ror.org/updated",
+          alternative_names: ["Alt 1", "Alt 2"],
+          logo: {
+            filename: "logo.png",
+            content_type: "image/png",
+            data: "data:image/png;base64,mock...",
+          },
+        },
+        99,
+        "mock-token",
+      );
+
+      expect(getOrgSpy).toHaveBeenCalled();
+      expect(wrapper.vm.showEditDialog).toBe(false);
+      expect(wrapper.vm.logoLoading).toBe(false);
     });
 
-    afterAll(() => {
-        graphStub.restore();
+    it("gracefully handles missing alternativeNames and missing logo", async () => {
+      await mountComponent();
+      wrapper.vm.organisation.id = 99;
+      wrapper.vm.editedOrganisation = {
+        name: "Simple Org",
+        types: [],
+        countries: [],
+        alternativeNames: null,
+        logo: null,
+      };
+
+      await wrapper.vm.editOrganisation();
+
+      expect(mockEditOrganisation).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Simple Org",
+          alternative_names: [],
+        }),
+        99,
+        "mock-token",
+      );
+
+      const payload = mockEditOrganisation.mock.calls[0][0];
+      expect(payload.logo).toBeUndefined();
+    });
+  });
+
+  describe("imageSizeCorrect()", () => {
+    it("returns true and sets imageTooBig to false when no logo is selected", async () => {
+      await mountComponent();
+      wrapper.vm.editedOrganisation.logo = null;
+      wrapper.vm.imageTooBig = true;
+
+      const result = wrapper.vm.imageSizeCorrect();
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.imageTooBig).toBe(false);
     });
 
-    it("can be instantiated", async () => {
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            router,
-            vuetify,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-        const title = "Organisation";
-        expect(wrapper.vm.$options.name).toMatch(title);
-        expect(wrapper.vm.organisation.id).toEqual(1);
-        expect(wrapper.vm.currentRoute).toEqual(1);
+    it("returns true and sets imageTooBig to false when logo size is under the limit", async () => {
+      await mountComponent();
+
+      // Setup: Logo size is less than allowed
+      wrapper.vm.allowedFileSize = 3145728; // 3MB limit from your data()
+      wrapper.vm.editedOrganisation.logo = { size: 1000000 }; // 1MB logo
+      wrapper.vm.imageTooBig = true;
+
+      const result = wrapper.vm.imageSizeCorrect();
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.imageTooBig).toBe(false);
     });
 
-    it("redirects to the search page for filtering", async() => {
-        graphStub.restore();
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-        await wrapper.vm.getOrganisation();
-        wrapper.vm.organisation = organisation;
-        wrapper.vm.filterRecords();
-        expect($router.push).toHaveBeenCalledWith({
-            name: "search",
-            query: {organisations: encodeURIComponent(organisation.name.toLowerCase())}
-        });
+    it("returns an error string, sets imageTooBig to true, and emits an event when logo is too large", async () => {
+      await mountComponent();
+      wrapper.vm.allowedFileSize = 3145728;
+      wrapper.vm.editedOrganisation.logo = { size: 4000000 }; // 4MB logo
+      wrapper.vm.imageTooBig = false;
+
+      const result = wrapper.vm.imageSizeCorrect();
+      expect(result).toBe("Image is too large (max 3MB).");
+      expect(wrapper.vm.imageTooBig).toBe(true);
+      expect(wrapper.emitted("imageTooBig")).toBeTruthy();
+      expect(wrapper.emitted("imageTooBig")[0]).toEqual([true]);
     });
-
-    it("doesn't display if the organisation is not set in the response", async () => {
-        graphStub.restore();
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            error: "error"
-        });
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-        expect(wrapper.vm.organisation).toStrictEqual({
-            alternativeNames: [],
-            types: [],
-            users: [],
-            parentOrganisations: [],
-            childOrganisations: [],
-            countries: []
-        });
-    });
-
-    it("can generate the correct URL for the logo", async () => {
-        graphStub.restore();
-
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            organisation: organisation
-        });
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-        expect(wrapper.vm.logoUrl).toEqual(process.env.VUE_APP_API_ENDPOINT + '/logo12345678');
-        wrapper.vm.testEnvironment = true;
-    });
-
-    it("watches the current route", async () => {
-        graphStub.restore();
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-        expect(wrapper.vm.currentRoute).toEqual(1);
-        $route.params.id = 10;
-        expect(wrapper.vm.currentRoute).toEqual(10);
-    });
-
-    // TODO: This will call the relevant code but the server's response is mocked.
-    // TODO: So, I can't prove that the server has modified the information.
-    it("can modify the organisation", async () => {
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-        wrapper.vm.editedOrganisation.name = 'changed name';
-        await wrapper.vm.editOrganisation();
-    });
-
-    it("can delete the organisation", async () => {
-        let assignMock = jest.fn();
-        delete window.location;
-        window.location = { assign: assignMock };
-
-        wrapper = await shallowMount(Organisation, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$route, $router, $store},
-            stubs: {RouterLink: RouterLinkStub}
-        });
-
-        // Cancel record deletion
-        wrapper.vm.confirmDelete = true;
-        await wrapper.vm.deleteOrganisation(false);
-        expect(wrapper.vm.confirmDelete).toEqual(false);
-
-        // Proceed with record deletion
-        await wrapper.vm.deleteOrganisation(true);
-        await wrapper.vm.deleteOrganisation(true);
-        const url = "/organisations";
-        Object.defineProperty(window, "location", {
-            value: {
-                pathname: url
-            },
-
-            writable: true,
-        } );
-
-        expect(window.location.pathname).toEqual(url);
-    });
-
+  });
 });

@@ -23,29 +23,12 @@ const stringUtils = {
     },
   },
   filters: {
-    capitalize(str) {
-      if (!str) return "";
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    },
     pretty(val) {
       return JSON.stringify(val)
         .replace(/,/g, "<br/>") // commas -> newlines
         .replace(/\{|\}|\[|\]/g, "") // remove brackets
         .replace(/"/g, "") // remove quotes
         .replace(/:/g, ": "); // add a space after a colon
-    },
-  },
-};
-
-export const cleanString = {
-  filters: {
-    cleanString: function (str) {
-      return str
-        .replace(/_/g, " ")
-        .replace(/([A-Z])/g, "$1")
-        .replace(/^./, function (str) {
-          return str.toUpperCase();
-        });
     },
   },
 };

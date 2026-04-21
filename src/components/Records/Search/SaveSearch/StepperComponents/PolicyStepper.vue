@@ -3,43 +3,26 @@
     <template v-if="user().is_super_curator">
       <v-autocomplete
         v-model="policySelected"
+        v-model:search="searchPolicy"
         :items="getPolicyRecords"
-        :search-input.sync="searchPolicy"
-        class="mb-7"
         :loading="getLoadingStatus"
-        hide-details
-        multiple
-        cache-items
         chips
-        deletable-chips
+        class="mb-7 full-width stepperField"
+        closable-chips
+        color="primary"
+        flat
+        hide-details="auto"
+        item-title="name"
         item-value="id"
-        item-text="name"
         label="Enter text to search for policy record(s) to associate with this saved search"
+        multiple
+        variant="underlined"
       >
-        <template #selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.item['id']"
-            close
-            @click="data.select"
-            @click:close="remove(data.item['id'])"
-          >
-            {{ data.item["name"] }}
-          </v-chip>
-        </template>
         <template #no-data>
-          <div
-            v-show="!getLoadingStatus"
-            class="py-3 px-4"
-          >
+          <div v-show="!getLoadingStatus" class="py-3 px-4">
             No Policy found
           </div>
-          <div
-            v-show="getLoadingStatus"
-            class="py-3 px-4"
-          >
-            Loading...
-          </div>
+          <div v-show="getLoadingStatus" class="py-3 px-4">Loading...</div>
         </template>
       </v-autocomplete>
     </template>
@@ -47,9 +30,9 @@
       <v-progress-linear
         :active="loading"
         :indeterminate="loading"
+        color="primary"
         height="6"
         rounded
-        color="primary"
       />
       <template v-if="policyList && policyList.length">
         <v-checkbox
@@ -61,9 +44,7 @@
         />
       </template>
       <template v-else>
-        <p v-if="!loading">
-          No policy found
-        </p>
+        <p v-if="!loading">No policy found</p>
       </template>
     </template>
   </div>
@@ -119,12 +100,11 @@ export default {
      */
     async fetchUserPolicyRecordData() {
       await this.getUser();
-      let maintainedRecordsArr = await this.getUserRecords.user[
-        "maintainedRecords"
-      ];
+      let maintainedRecordsArr =
+        await this.getUserRecords.user["maintainedRecords"];
       if (maintainedRecordsArr && maintainedRecordsArr.length) {
         return maintainedRecordsArr.filter(
-          (record) => record["registry"] === "Policy"
+          (record) => record["registry"] === "Policy",
         );
       }
       return [];

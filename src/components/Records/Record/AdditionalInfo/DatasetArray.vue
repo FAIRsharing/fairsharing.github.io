@@ -1,11 +1,19 @@
 <template>
   <div
-    v-if="currentField && currentField.length > 0 && checkCurrentfield(currentField)"
+    v-if="
+      currentField && currentField.length > 0 && checkCurrentfield(currentField)
+    "
     class="pa-4 mt-4 data-holder"
   >
-    <v-tooltip v-if="getDescription('head')" bottom class="d-inline-block mr-2">
-      <template #activator="{ on }">
-        <v-icon size="15" class="mb-1" v-on="on"> fa-question-circle </v-icon>
+    <v-tooltip
+      v-if="getDescription('head')"
+      class="d-inline-block mr-2"
+      location="bottom"
+    >
+      <template #activator="{ props }">
+        <v-icon class="mb-1 mr-2" size="15" v-bind="props">
+          fas fa-question-circle
+        </v-icon>
       </template>
       {{ getDescription("head") }}
     </v-tooltip>
@@ -19,23 +27,21 @@
         <div class="d-flex flex-row align-center min-height-40">
           <v-tooltip
             v-if="getDescription(item[key])"
-            bottom
             class="d-inline-block mr-2"
+            location="bottom"
           >
-            <template #activator="{ on }">
-              <v-icon v-on="on"> fa-question-circle </v-icon>
+            <template #activator="{ props }">
+              <v-icon v-bind="props"> fas fa-question-circle</v-icon>
             </template>
             {{ getDescription(item[key]) }}
           </v-tooltip>
           <b class="width-200 text-capitalize">{{
             setTitle(cleanString(key))
           }}</b>
-          <!-- eslint-disable vue/no-v-html -->
           <div
+            v-safe-html="toHyperLink(item[key])"
             class="d-flex full-width ml-md-12 ml-13"
-            v-html="toHyperLink(item[key])"
           />
-          <!-- eslint-enable vue/no-v-html -->
         </div>
       </div>
 
@@ -54,7 +60,10 @@ export default {
     title: { default: null, type: String },
     currentField: { default: () => [], type: Array },
     currentKey: { default: null, type: String },
-    currentTooltips: { default: () => {}, type: Object },
+    currentTooltips: {
+      default: () => {},
+      type: Object,
+    },
   },
   computed: {
     getCurrentKey() {
@@ -77,27 +86,28 @@ export default {
     },
     getUpdatedTypeTitle() {
       switch (this.getCurrentKey) {
-        case "data_curation":
-          return "Steps";
-        case "data_deposition_condition":
-          return "Restrictions";
-        default:
-          return "Type";
+      case "data_curation":
+        return "Steps";
+      case "data_deposition_condition":
+        return "Restrictions";
+      default:
+        return "Type";
       }
     },
     getUpdatedNameTitle() {
       switch (this.getCurrentKey) {
-        case "resource_sustainability":
-          return "Plan";
-        default:
-          return "Name";
+      case "resource_sustainability":
+        return "Plan";
+      default:
+        return "Name";
       }
     },
     getDescription(field) {
       let _module = this;
       if (field === "head") {
         return _module.currentTooltips["description"] || false;
-      } else if (_module.currentTooltips["properties"] !== undefined) {
+      }
+      else if (_module.currentTooltips["properties"] !== undefined) {
         if (_module.currentTooltips["properties"][field] !== undefined) {
           if (_module.currentTooltips["properties"][field]["description"]) {
             return _module.currentTooltips["properties"][field]["description"];
@@ -124,9 +134,9 @@ export default {
             empty = false;
           }
         });
-      })
+      });
       return empty;
-    }
+    },
   },
 };
 </script>

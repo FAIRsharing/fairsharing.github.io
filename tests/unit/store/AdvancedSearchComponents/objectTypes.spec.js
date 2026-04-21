@@ -3,8 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import ObjectTypesStore from "@/store/AdvancedSearchComponents/objectTypes";
 
-import ObjectTypesData from "../../../../tests/fixtures/getObjectTypes.json";
-
+import ObjectTypesData from "../../../fixtures/getObjectTypes.json";
 
 describe("ObjectTypes store methods", () => {
   const { actions, mutations, getters } = ObjectTypesStore;
@@ -25,7 +24,7 @@ describe("ObjectTypes store methods", () => {
   });
 
   it("can check fetchObjectTypes actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchObjectTypes({ commit }, "type");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -35,14 +34,14 @@ describe("ObjectTypes store methods", () => {
       objectTypes: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchObjectTypes({ commit }, "type");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetObjectTypes actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetRecords({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -67,7 +66,7 @@ describe("ObjectTypes store methods", () => {
   it("can check getObjectTypes getters", () => {
     const getObjectsResult = {
       objectTypes: {
-        records: ["test", "test1", "test2" ]
+        records: ["test", "test1", "test2"],
       },
     };
     const builtData = getters.getObjectTypes(getObjectsResult);

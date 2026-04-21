@@ -4,43 +4,36 @@
       <v-card-text v-if="recordsCreatedCuratorsLastWeek">
         <v-card-title
           id="text-curator-search-3"
-          class="green white--text"
+          class="bg-green text-white d-flex align-center"
         >
           <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
           <v-spacer />
           <v-text-field
             v-model="searches"
-            label="Search"
-            color="white"
-            single-line
-            hide-details
-            solo
             class="searchField"
             clearable
+            color="white"
+            hide-details
+            label="Search"
+            single-line
+            variant="solo"
           />
         </v-card-title>
         <v-data-table
-          :loading="loading"
+          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="recordsCreatedCuratorsLastWeek"
+          :loading="loading"
           :search="searches"
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
         >
-          <template
-            v-if="recordType"
-            #item="props"
-          >
+          <template v-if="recordType" #item="props">
             <tr>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar
-                    v-if="props.item.type"
-                    class="mr-2"
-                    :height="40"
-                  >
+                  <v-avatar v-if="props.item.type" class="mr-2" size="40">
                     <Icon
-                      :item="props.item.type"
                       :height="40"
+                      :item="props.item.type"
                       wrapper-class=""
                     />
                   </v-avatar>
@@ -75,7 +68,7 @@ import { mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json"
+import getRecentCuratorCreations from "@/lib/GraphClient/queries/curators/getRecentCuratorCreations.json";
 import formatDate from "@/utils/generalUtils";
 
 const client = new GraphClient();
@@ -86,15 +79,15 @@ export default {
     Icon,
   },
   mixins: [formatDate],
-  props:{
+  props: {
     headerItems: {
       type: Array,
-      default: null
+      default: null,
     },
   },
   data: () => {
     return {
-      recordsCreatedCuratorsLastWeek:[],
+      recordsCreatedCuratorsLastWeek: [],
       searches: "",
       recordType: {},
       loading: false,
@@ -108,12 +101,16 @@ export default {
     this.loading = true;
     client.setHeader(this.user().credentials.token);
     //Fetching hidden records
-    let recentCuratorCreations = await client.executeQuery(getRecentCuratorCreations);
-    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations)
+    /* v8 ignore start */
+    let recentCuratorCreations = await client.executeQuery(
+      getRecentCuratorCreations,
+    );
+
+    this.prepareRecordsCuratorCreationsLastWeek(recentCuratorCreations);
     this.loading = false;
+    /* v8 ignore end */
   },
   methods: {
-
     /**
      * Method to fetch recent curator creation records
      * @param dataCuration
@@ -130,7 +127,8 @@ export default {
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        } else {
+        }
+        else {
           object.creator = "unknown";
         }
         this.recordsCreatedCuratorsLastWeek.push(object);
@@ -141,11 +139,12 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .v-data-table-header tr th {
+:deep(.v-data-table-header tr th) {
   white-space: nowrap;
 }
+
 .searchField {
   width: 100%;
-  max-width: 400px
+  max-width: 400px;
 }
 </style>

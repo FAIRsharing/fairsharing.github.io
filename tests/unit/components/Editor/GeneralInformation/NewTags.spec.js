@@ -1,81 +1,93 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
-import VueRouter from "vue-router"
-import Vuetify from "vuetify"
-import Vuex from "vuex"
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
+import Vuex from "vuex";
 
-import NewTags from "@/components/Editor/GeneralInformation/NewTags.vue"
-import editorStore from "@/store/editor.js"
-import recordStore from "@/store/recordData.js"
-const VueScrollTo = require('vue-scrollto');
+import NewTags from "@/components/Editor/GeneralInformation/NewTags.vue";
+import editorStore from "@/store/editor.js";
+import recordStore from "@/store/recordData.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueScrollTo);
-const vuetify = new Vuetify();
+const scrollToMock = vi.fn();
 
-editorStore.state.allTags = [
-    {label: "not abc", model: "subject"}
-];
+editorStore.state.allTags = [{ label: "not abc", model: "subject" }];
 recordStore.state.sections = {
-    generalInformation: {data: {userDefinedTags: []}}
+  generalInformation: { data: { userDefinedTags: [] } },
 };
 const $store = new Vuex.Store({
-    modules: {
-        editor: editorStore,
-        record: recordStore
-    }
+  modules: {
+    editor: editorStore,
+    record: recordStore,
+  },
 });
 
-let $route = { path: "/123/edit", params: {id: 123} };
-const router = new VueRouter();
+let $route = { path: "/123/edit", params: { id: 123 } };
 
 let wrapper;
 
-describe('Editor -> NewTags.vue', () => {
-
-    beforeAll(() => {
-        wrapper = shallowMount(NewTags, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$store, $route}
-        });
+describe("Editor -> NewTags.vue", () => {
+  beforeEach(() => {
+    wrapper = shallowMount(NewTags, {
+      global: {
+        plugins: [$store],
+        mocks: {
+          $route,
+          $scrollTo: scrollToMock,
+        },
+      },
     });
+  });
 
-    it("can be mounted", () => {
-        expect(wrapper.vm.$options.name).toMatch("NewTags");
-    });
+  it("can be mounted", () => {
+    expect(wrapper.vm.$options.name).toMatch("NewTags");
+  });
 
-    it("can add a term to the add list", () => {
-        wrapper.vm.addTerm();
-        expect(wrapper.vm.error).toBe(false);
-        wrapper.vm.newTerm = " abc ";
-        wrapper.vm.addTerm();
-        expect(wrapper.vm.newTags).toStrictEqual(["abc"]);
-        expect(wrapper.vm.newTerm).toBe(null);
-        wrapper.vm.newTerm = "not abc";
-        wrapper.vm.addTerm();
-        expect(wrapper.vm.error).toBe('Term not abc already declared as a subject');
-        wrapper.vm.newTerm = "abc";
-        wrapper.vm.addTerm();
-        expect(wrapper.vm.error).toBe("Term abc is already in creation list");
-    });
+  it("can add a term to the add list", () => {
+    wrapper.vm.addTerm();
+    expect(wrapper.vm.error).toBe(false);
+    wrapper.vm.newTerm = " abc ";
+    wrapper.vm.addTerm();
+    expect(wrapper.vm.newTags).toStrictEqual(["abc"]);
+    expect(wrapper.vm.newTerm).toBe(null);
+    wrapper.vm.newTerm = "not abc";
+    wrapper.vm.addTerm();
+    expect(wrapper.vm.error).toBe("Term not abc already declared as a subject");
+    wrapper.vm.newTerm = "abc";
+    wrapper.vm.addTerm();
+    expect(wrapper.vm.error).toBe("Term abc is already in creation list");
+  });
 
-    it("can remove a term from add list", () => {
-        wrapper.vm.newTags = ["def", "ijk"];
-        wrapper.vm.removeItem('def');
-        expect(wrapper.vm.newTags).toStrictEqual(["ijk"]);
-        wrapper.vm.removeItem("test");
-        expect(wrapper.vm.newTags).toStrictEqual(["ijk"]);
-    });
+  it("can remove a term from add list", () => {
+    wrapper.vm.newTags = ["def", "ijk"];
+    wrapper.vm.removeItem("def");
+    expect(wrapper.vm.newTags).toStrictEqual(["ijk"]);
+    wrapper.vm.removeItem("test");
+    expect(wrapper.vm.newTags).toStrictEqual(["ijk"]);
+  });
 
-    it('can add the add list to the record', () => {
-        jest.spyOn(console, 'warn').mockImplementation(() => {});
-        wrapper.vm.newTags = ["def", "ijk"];
-        wrapper.vm.createTerms();
-        expect(wrapper.vm.newTags).toStrictEqual([]);
-        expect(wrapper.vm.loading).toStrictEqual(false);
-        expect(wrapper.vm.showOverlay).toStrictEqual(false);
-        jest.clearAllMocks();
-    });
+  it("can add the add list to the record", () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    wrapper.vm.newTags = ["def", "ijk"];
+    wrapper.vm.createTerms();
+    expect(wrapper.vm.newTags).toStrictEqual([]);
+    expect(wrapper.vm.loading).toStrictEqual(false);
+    expect(wrapper.vm.showOverlay).toStrictEqual(false);
+    vi.clearAllMocks();
+  });
+
+  it("can check email computed property", () => {
+    const output =
+      "mailto:contact@fairsharing.org?subject=Request for a new species&body=" +
+      encodeURIComponent(
+        "I would like to make a request for a new species in the FAIRsharing.org database. \n" +
+          "Record id: 123 \n" +
+          'New species name: "ADD_YOUR_SPECIES_HERE" \n \n' +
+          "The FAIRsharing Team",
+      );
+    expect(wrapper.vm.email).toBe(output);
+  });
+
+  it("adds a term via form handler method", async () => {
+    await wrapper.setData({ newTerm: "TermA" });
+    wrapper.vm.addTerm();
+    expect(wrapper.vm.newTags).toStrictEqual(["terma"]);
+  });
 });

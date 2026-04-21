@@ -1,68 +1,57 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      :value="dialog"
+      :model-value="dialog"
+      :retain-focus="false"
       fullscreen
       persistent
-      :retain-focus="false"
       @keydown.esc="closeDialog()"
     >
       <v-card>
         <div
-          class="d-flex pt-6 px-6 justify-space-between"
           :class="{
-            'flex-column align-end': $vuetify.breakpoint.smAndDown,
+            'flex-column align-end': $vuetify.display.smAndDown,
           }"
+          class="d-flex pt-6 px-6 justify-space-between"
         >
           <!--Close Button -->
-          <div
-            class="order-md-3"
-            style="padding-left: 14.4%"
-          >
-            <v-btn
-              icon
-              dark
-              @click="closeDialog()"
-            >
-              <v-icon
-                color="black"
-                size="40px"
-              >
-                mdi-close
-              </v-icon>
+          <div class="order-md-3" style="padding-left: 14.4%">
+            <v-btn icon @click="closeDialog()">
+              <v-icon icon="fas fa-xmark fa-solid" size="40" />
             </v-btn>
           </div>
           <!--FAIRsharing Logo -->
           <router-link
-            to="/"
-            class="mt-n5 order-md-1"
             :class="{
-              'mt-n15 mx-auto': $vuetify.breakpoint.smAndDown,
+              'mt-n15 mx-auto': $vuetify.display.smAndDown,
             }"
+            class="mt-n5 order-md-1"
+            to="/"
           >
             <img
-              src="/assets/fairsharing-logo.svg"
               alt="FAIRsharing logo"
+              src="/assets/fairsharing-logo.svg"
               @click="closeDialog()"
-            >
+            />
           </router-link>
           <!--Advanced Search Header Text -->
           <div
             class="order-sm-2"
             style="text-align: center; margin: 0 auto 0 auto"
           >
-            <h2 class="primary--text">
+            <h2 class="text-primary">
               Advanced filtering and searching for FAIRsharing records
             </h2>
             <p style="text-align: center">
               Find out more about our Advanced Search in our
               <a
+                class="text-decoration-underline"
                 href="https://fairsharing.gitbook.io/fairsharing/how-to/advanced-search"
                 target="_blank"
-                class="text-decoration-underline"
-              >gitbook documentation<v-icon x-small>
-                {{ "fa fa-link" }}
-              </v-icon>
+                >gitbook documentation
+                <v-icon size="x-small">
+                  {{ "fas fa-link" }}
+                </v-icon>
               </a>
             </p>
           </div>
@@ -75,33 +64,30 @@
           <!--            </span>-->
           <!--          </div>-->
 
-          <div class="d-flex full-width">
+          <div class="d-flex full-width align-center">
             <TooltipComponent
               :tool-tip-text="toolTipText"
-              text-colour="black--text"
+              text-colour="text-black"
             />
             <v-text-field
               v-if="!getEditDialogStatus"
               ref="inputRef"
-              class="text-h5"
+              class="text-h5 full-width"
               clearable
-              full-width
-              outlined
               hide-details
               label="Add Search text"
-              @change="updateSearchText($event)"
+              variant="outlined"
+              @update:model-value="updateSearchText($event)"
             />
             <v-text-field
               v-else
-              class="text-h5"
+              :model-value="updatedAdvancedSearchText"
+              class="text-h5 full-width"
               clearable
-              full-width
-              outlined
               hide-details
               label="Add Search text"
-              :value="getAdvancedSearchText"
-              @input="updateSearchText($event)"
-              @change="updateSearchText($event)"
+              variant="outlined"
+              @update:model-value="updateSearchText($event)"
             />
           </div>
         </v-card-title>
@@ -109,29 +95,29 @@
           <QueryBuilderView :is-dialog="dialog" />
         </v-card-text>
         <v-card-actions
-          class="px-6 justify-space-between"
           :class="{
-            'flex-column align-center': $vuetify.breakpoint.smAndDown,
+            'flex-column align-center': $vuetify.display.smAndDown,
           }"
+          class="px-6 justify-space-between"
         >
           <v-btn
-            color="green"
-            variant="text"
-            class="white--text order-md-2"
             :class="{
-              'mb-3': $vuetify.breakpoint.smAndDown,
+              'mb-3': $vuetify.display.smAndDown,
             }"
             :disabled="isContinue"
-            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
+            :width="$vuetify.display.smAndDown ? '100%' : '250'"
+            class="text-white order-md-2 bg-green"
+            elevation="2"
+            variant="text"
             @click="goToAdvancedSearch()"
           >
             Proceed
           </v-btn>
           <v-btn
-            color="accent3"
+            :width="$vuetify.display.smAndDown ? '100%' : '250'"
+            class="order-md-1 ml-0 bg-accent3"
+            elevation="2"
             variant="text"
-            class="white--text order-md-1 ml-0"
-            :width="$vuetify.breakpoint.smAndDown ? '100%' : '250'"
             @click="closeDialog()"
           >
             Close
@@ -160,6 +146,7 @@ export default {
       type: String,
     },
   },
+  emits: ["clearSearchField"],
   data: () => {
     return {
       dialog: false,
@@ -190,7 +177,9 @@ export default {
       ) {
         this.getAdvancedSearch["children"].forEach(({ children }) => {
           if (children && children.length) {
-            isTrue = children.every(({ value }) => value.length || isBoolean(value));
+            isTrue = children.every(
+              ({ value }) => value.length || isBoolean(value),
+            );
             isTrueArr.push(isTrue);
           }
         });
@@ -205,12 +194,16 @@ export default {
   watch: {
     getEditDialogStatus(newValue) {
       this.dialog = newValue;
-      this.updatedAdvancedSearchText = this.getAdvancedSearchText
+      this.updatedAdvancedSearchText = this.getAdvancedSearchText;
     },
     getAdvancedSearchDialogStatus(newValue) {
       this.dialog = newValue;
       //Reset searchText field
-      if (newValue && this.$refs.inputRef !== undefined) {
+      if (
+        newValue &&
+        this.$refs.inputRef !== undefined &&
+        this.$refs.inputRef !== null
+      ) {
         this.$refs.inputRef.reset();
       }
     },
@@ -221,7 +214,7 @@ export default {
     if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     }
   },
@@ -229,16 +222,17 @@ export default {
     ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
 
     closeDialog() {
-      this.dialog = false;
       advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        false
+        false,
       );
       // Redirecting to home page after closing
       if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
         this.$router.push("/");
       }
+
+      this.dialog = false;
     },
 
     isAdvancedSearchTerm(queryString) {
@@ -267,12 +261,13 @@ export default {
       } else {
         this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       }
-      this.closeDialog();
+
       //Clear search text field flag
       this.$emit("clearSearchField", true);
 
       this.advancedSearchQueryString();
       this.advancedSearchNavigation(this.queryString);
+      this.closeDialog();
     },
 
     /**
@@ -294,7 +289,7 @@ export default {
             this.queryString += params["identifier"];
             this.queryString += "=";
             if (Array.isArray(params["value"])) {
-              this.queryString += params["value"].join('+');
+              this.queryString += params["value"].join("+");
             } else if (params["value"]) {
               this.queryString += params["value"];
             }

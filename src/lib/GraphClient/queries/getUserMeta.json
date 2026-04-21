@@ -11,19 +11,14 @@
         "status",
         {
           "queryName": "fairsharingRecord",
-          "fields": [
-            "id",
-            "name",
-            "type",
-            "doi"
-          ]
+          "fields": ["id", "name", "type", "doi"]
         }
       ]
     },
-    {"$ref": "createdRecords"},
-    {"$ref": "maintainedRecords"},
-    {"$ref": "recordsInCuration"},
-    {"$ref": "watchedRecords"},
+    { "$ref": "createdRecords" },
+    { "$ref": "maintainedRecords" },
+    { "$ref": "recordsInCuration" },
+    { "$ref": "watchedRecords" },
     {
       "name": "organisations",
       "fields": [
@@ -32,13 +27,11 @@
         "homepage",
         {
           "queryName": "organisationTypes",
-          "fields": [
-            "name"
-          ]
+          "fields": ["name"]
         }
       ]
     },
-    {"$ref": "createdSearches"},
-    {"$ref": "savedSearches"}
+    { "$ref": "createdSearches" },
+    { "$ref": "savedSearches" }
   ]
 }

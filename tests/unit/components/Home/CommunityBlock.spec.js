@@ -1,25 +1,22 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { shallowMount } from "@vue/test-utils";
+import { beforeEach, describe, expect, it } from "vitest";
+import { createVuetify } from "vuetify";
 
-import CommunityBlock from "@/components/Home/CommunityBlock"
+import CommunityBlock from "@/components/Home/CommunityBlock";
 import icons from "@/plugins/icons";
-const vuetify = new Vuetify({'icons':icons});
-const localVue = new createLocalVue()
+const vuetify = createVuetify({ icons: icons });
 
-localVue.use(vuetify);
+describe("CategoryBlock.vue", function () {
+  let wrapper;
 
-describe("CategoryBlock.vue", function(){
-    let wrapper;
-
-    beforeEach(() => {
-        wrapper = shallowMount(CommunityBlock, {
-            vuetify,
-            stubs: ['router-link']
-        })
+  beforeEach(() => {
+    wrapper = shallowMount(CommunityBlock, {
+      vuetify,
+      stubs: ["router-link"],
     });
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("CommunityBlock");
-    });
-
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("CommunityBlock");
+  });
 });

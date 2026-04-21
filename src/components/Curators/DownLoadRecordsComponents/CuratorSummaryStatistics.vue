@@ -2,25 +2,16 @@
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text>
-        <v-card-title
-          id="download-curator-summary"
-          class="green white--text"
-        >
+        <v-card-title id="download-curator-summary" class="bg-green text-white">
           CURATOR SUMMARY STATISTICS
-          <v-btn
-            class="info ml-5"
-            :loading="loading"
-          >
+          <v-btn :loading="loading" class="bg-info ml-5">
             <a
               v-if="downloadCuratorContent"
               :href="downloadCuratorContent"
               download="curatorSummaryStatistics.txt"
             >
-              <v-icon
-                color="white"
-                class="mr-1"
-              > fa fa-download </v-icon>
-              <span class="white--text">Obtain file</span>
+              <v-icon class="mr-1" color="white"> fas fa-download</v-icon>
+              <span class="text-white">Obtain file</span>
             </a>
           </v-btn>
         </v-card-title>
@@ -33,7 +24,8 @@
 import { mapState } from "vuex";
 
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import getCuratorSummaryStatistics from "@/lib/GraphClient/queries/curators/getCuratorSummaryStatistics.json"
+import getCuratorSummaryStatistics from "@/lib/GraphClient/queries/curators/getCuratorSummaryStatistics.json";
+
 const client = new GraphClient();
 
 export default {
@@ -57,16 +49,14 @@ export default {
     this.loading = false;
   },
   methods: {
-
     /**
-     * Method to download file having records having curator
-     * summary statistics
+     * Method to download file having records having curator summary statistics
      */
     async obtainFileRecordsCuratorSummary(data) {
       let curatorSummary = data.curatorSummaryStatistics || [];
       this.downloadCuratorContent =
-          "data:text/json;charset=utf-8," +
-          encodeURIComponent(curatorSummary.join("\n"));
+        "data:text/json;charset=utf-8," +
+        encodeURIComponent(curatorSummary.join("\n"));
     },
   },
 };

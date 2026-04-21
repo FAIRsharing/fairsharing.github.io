@@ -1,21 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createVuetify } from "vuetify";
 
-import PreservationPolicy from "@/views/Static/SustainabilityAndPreservation/SustainabilityAndPreservation.vue"
+import PreservationPolicy from "@/views/Static/SustainabilityAndPreservation/SustainabilityAndPreservation.vue";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
-describe("SustainabilityAndPreservation.vue", function(){
-    let wrapper;
+describe("SustainabilityAndPreservation.vue", function () {
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(PreservationPolicy, {
-            vuetify,
-        })
+  beforeEach(() => {
+    wrapper = shallowMount(PreservationPolicy, {
+      vuetify,
     });
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("SustainabilityAndPreservation");
-    });
-
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("SustainabilityAndPreservation");
+  });
 });

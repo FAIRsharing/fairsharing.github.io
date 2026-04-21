@@ -1,5 +1,5 @@
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
-import {isBoolean} from "lodash";
+import { isBoolean } from "lodash";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
@@ -57,29 +57,24 @@ const actions = {
               fieldTypeValue = fieldTypeValue.flatMap((value) => value);
               fieldValue = fieldTypeValue;
             } else {
-
               if (Array.isArray(params["value"])) {
                 fieldValue = params["value"];
-              }
-              else if (isBoolean(params["value"])) {
+              } else if (isBoolean(params["value"])) {
                 fieldValue = params["value"];
-              }
-              else if (params["value"]) {
+              } else if (params["value"]) {
                 //When string is boolean value, convert to boolean format
-                if((params["value"] === "true") || (params["value"] === "false")) {
+                if (params["value"] === "true" || params["value"] === "false") {
                   fieldValue = JSON.parse(params["value"]);
                 } else {
                   fieldValue = [params["value"]];
                 }
-
               }
             }
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
-                fieldsObj[fieldKey] = fieldValue;
-            }
-            else if(isBoolean(fieldValue)) {
-                fieldsObj[fieldKey] = fieldValue;
+              fieldsObj[fieldKey] = fieldValue;
+            } else if (isBoolean(fieldValue)) {
+              fieldsObj[fieldKey] = fieldValue;
             }
           });
 
@@ -100,10 +95,8 @@ const actions = {
     let graphqlQuery = jsonToGraphQLQuery(parentQuery, {
       pretty: true,
     });
-
-    graphqlQuery = graphqlQuery.replace("query", "").trim()
+    graphqlQuery = graphqlQuery.replace("query", "").trim();
     graphqlQuery = graphqlQuery.match(/^\((.*)\)$/)[1];
-
     let whereObj = graphqlQuery.replace("where:", "");
 
     if (advancedSearchTerm) {

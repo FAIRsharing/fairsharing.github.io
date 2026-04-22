@@ -1,49 +1,32 @@
 <template>
   <v-main>
-    <transition name="fade">
-      <jump-to-top v-if="scrollStatus" />
-    </transition>
-    <v-container
-      fluid
-      class="pa-0"
-    >
+    <v-container class="pa-0" fluid>
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.display.lgAndUp"
+          class="d-flex mt-2 ml-2"
           cols="12"
           lg="4"
           md="4"
           xl="3"
-          class="d-flex mt-2 ml-2"
         >
           <SearchInput
             :class="[
               'search-input-mb',
               {
-                'left-panel-fixed-lg': stickToTop && $vuetify.breakpoint.xlOnly,
-                'left-panel-default-lg':
-                  !stickToTop && $vuetify.breakpoint.xlOnly,
-                'left-panel-default':
-                  !stickToTop && !$vuetify.breakpoint.xlOnly,
-                'left-panel-fixed': stickToTop && !$vuetify.breakpoint.xlOnly,
+                'left-panel-fixed-lg': stickToTop && $vuetify.display.xlOnly,
+                'left-panel-default-lg': !stickToTop && $vuetify.display.xlOnly,
+                'left-panel-default': !stickToTop && !$vuetify.display.xlOnly,
+                'left-panel-fixed': stickToTop && !$vuetify.display.xlOnly,
               },
             ]"
           />
         </v-col>
-        <v-col
-          v-else
-          cols="12"
-          class="ml-3 mt-2"
-        >
-          <v-btn
-            class="info"
-            @click="showFiltersSM = true"
-          >
+        <v-col v-else class="ml-3 mt-2" cols="12">
+          <v-btn class="bg-info" @click="showFiltersSM = true">
             <span class="mr-2">Show filters</span>
-            <v-icon small>
-              fa-filter
-            </v-icon>
+            <v-icon size="small"> fas fa-filter </v-icon>
           </v-btn>
         </v-col>
 
@@ -54,37 +37,38 @@
     </v-container>
 
     <v-fade-transition>
-      <v-dialog
-        v-model="showFiltersSM"
-        fullscreen
-        hide-overlay
-        scrollable
-      >
-        <v-card>
-          <v-card-title class="primary white--text pb-5">
-            Add a filter
-            <v-spacer />
-            <v-btn
-              fab
-              x-small
-              @click="showFiltersSM = false"
-            >
-              <v-icon>fa-times</v-icon>
-            </v-btn>
-          </v-card-title>
-          <SearchInput class="pa-5" />
-        </v-card>
-      </v-dialog>
+      <div>
+        <v-dialog v-model="showFiltersSM" :scrim="false" fullscreen scrollable>
+          <v-card>
+            <v-card-title class="bg-primary text-white pb-5 d-flex">
+              <span>Add a filter</span>
+              <v-spacer />
+              <v-btn
+                color="white"
+                icon="fas fa-xmark fa-solid"
+                size="x-small"
+                variant="elevated"
+                @click="showFiltersSM = false"
+              >
+              </v-btn>
+            </v-card-title>
+            <SearchInput class="pa-5" />
+          </v-card>
+        </v-dialog>
+      </div>
     </v-fade-transition>
 
     <v-fade-transition>
-      <v-overlay
-        v-if="isLoading"
-        :absolute="false"
-        opacity="0.8"
-      >
-        <Loaders />
-      </v-overlay>
+      <div>
+        <v-overlay
+          v-model="isLoading"
+          :absolute="false"
+          class="align-center justify-center"
+          opacity="0.8"
+        >
+          <Loaders />
+        </v-overlay>
+      </div>
     </v-fade-transition>
   </v-main>
 </template>
@@ -92,7 +76,6 @@
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
 
-import JumpToTop from "@/components/Navigation/jumpToTop";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
@@ -102,7 +85,7 @@ import onScrollUtil from "@/utils/onScrollUtil";
 
 export default {
   name: "Records",
-  components: { Loaders, JumpToTop, SearchOutput, SearchInput },
+  components: { Loaders, SearchOutput, SearchInput },
   mixins: [filterChipsUtils, onScrollUtil],
   data: () => ({
     searchTerm: "",
@@ -125,20 +108,20 @@ export default {
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
         (obj, [key, value]) => ({ ...obj, [value]: key }),
-        {}
+        {},
       );
       let title = "Search";
       /* istanbul ignore else */
       if (
         Object.prototype.hasOwnProperty.call(
           this.$route.query,
-          "fairsharingRegistry"
+          "fairsharingRegistry",
         )
       ) {
         if (
           Object.prototype.hasOwnProperty.call(
             flipRecordTypes,
-            this.$route.query.fairsharingRegistry
+            this.$route.query.fairsharingRegistry,
           )
         ) {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
@@ -147,6 +130,7 @@ export default {
       return title;
     },
     currentPath: function () {
+      document.title = "FAIRsharing | " + this.getTitle; // Setting up the metaInfo of the page
       let title = this.$route.path.replace("/", "");
       const client = this;
       let queryParams = {};
@@ -159,7 +143,8 @@ export default {
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title =
           this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -168,7 +153,8 @@ export default {
       this.$scrollTo("body", 50, {});
       try {
         await this.tryRedirect();
-      } catch (e) {
+      }
+      catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
@@ -182,16 +168,17 @@ export default {
       try {
         await this.tryRedirect();
         this.$scrollTo("body", 50, {});
-      } catch (e) {
+      }
+      catch (e) {
         // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
     });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cleanRecordsStore();
   },
-  destroyed() {
+  unmounted() {
     this.$scrollTo("body", 50, {});
     window.removeEventListener("scroll", () => {
       this.onScroll(this.records);
@@ -215,6 +202,7 @@ export default {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.query;
+
         /* istanbul ignore else */
         if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
@@ -224,7 +212,8 @@ export default {
               query: query,
             });
             return true;
-          } catch (e) {
+          }
+          catch (e) {
             return false;
           }
         }
@@ -242,21 +231,22 @@ export default {
       // To make sure that any lingering values from having viewed a collection are cleared out.
       // See SummaryDownload.vue for the code which looks for collection IDs when downloading a
       // summary of search results.
-      this.$store.commit('records/setCollectionIdsParam', []);
+      this.$store.commit("records/setCollectionIdsParam", []);
       try {
         this.showFiltersSM = false;
         let token;
-        if(this.user().credentials !== undefined) {
-          token = this.user().credentials.token
+        if (this.user().credentials !== undefined) {
+          token = this.user().credentials.token;
         }
         else {
-          token = ""
+          token = "";
         }
         await _module.fetchRecords({
           params: this.getParameters(),
           token: token,
         });
-      } catch (e) {
+      }
+      catch (e) {
         /* istanbul ignore next */
         this.errors = e.message;
       }
@@ -268,23 +258,14 @@ export default {
      */
     getParameters: function () {
       return this.$store.getters["introspection/buildQueryParameters"](
-        this.currentPath
+        this.currentPath,
       );
     },
-  },
-  /**
-   * Setting up the metaInfo of the page
-   * @returns {{title: String}}
-   * */
-  metaInfo() {
-    return {
-      title: "FAIRsharing | " + this.getTitle,
-    };
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .left-panel-fixed {
   position: sticky;
   top: 0;

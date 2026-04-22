@@ -1,37 +1,39 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import FilterButtons from "@/components/Records/Search/Input/FilterButtons.vue";
 import searchFilters from "@/store/searchFilters.js";
 import users from "@/store/users.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const vuetify = new Vuetify();
-
-const $store = new Vuex.Store({
-  modules: {
-    users: users,
-    searchFilters: searchFilters,
-  },
-});
+const vuetify = createVuetify();
 
 describe("FilterButtons.vue", function () {
-  let wrapper;
+  const getWrapper = () => {
+    const $store = new Vuex.Store({
+      modules: {
+        users: users,
+        searchFilters: searchFilters,
+      },
+    });
 
-  wrapper = shallowMount(FilterButtons, {
-    localVue,
-    vuetify,
-    mocks: { $store },
-  });
+    return {
+      $store,
+      wrapper: shallowMount(FilterButtons, {
+        vuetify,
+        mocks: { $store },
+      }),
+    };
+  };
 
   it("can be instantiated", () => {
+    const { wrapper } = getWrapper();
     expect(wrapper.vm.$options.name).toMatch("FilterButtons");
   });
 
   it("shows everything to curators", () => {
-    searchFilters.state.filterButtons = [
+    const { $store, wrapper } = getWrapper();
+    $store.state.searchFilters.filterButtons = [
       {
         data: [],
         curator_only: true,
@@ -41,11 +43,11 @@ describe("FilterButtons.vue", function () {
         curator_only: false,
       },
     ];
-    users.state.user = function () {
+    $store.state.users.user = function () {
       return { is_curator: true };
     };
     expect(wrapper.vm.allowedFilterButtons.length).toEqual(2);
-    users.state.user = function () {
+    $store.state.users.user = function () {
       return { is_curator: false };
     };
     expect(wrapper.vm.allowedFilterButtons.length).toEqual(1);

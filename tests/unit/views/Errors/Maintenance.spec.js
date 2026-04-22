@@ -1,23 +1,18 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueMeta from "vue-meta";
+import { shallowMount } from "@vue/test-utils";
 
 import Maintenance from "@/views/Errors/Maintenance.vue";
 
-const localVue = createLocalVue();
-localVue.use(VueMeta);
-
 describe("Maintenance page", () => {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Maintenance, {
-            localVue
-        });
-    });
+  beforeEach(() => {
+    wrapper = shallowMount(Maintenance, {});
+  });
 
-    it("can mount", () => {
-        expect(wrapper.vm.$options.name).toBe("Maintenance");
-        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Maintenance Mode");
-    });
-
+  it("can mount", () => {
+    expect(wrapper.vm.$options.name).toBe("Maintenance");
+    expect(wrapper.vm.$options.metaInfo.call(wrapper.vm).title).toBe(
+      "FAIRsharing | Maintenance Mode",
+    );
+  });
 });

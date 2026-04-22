@@ -3,43 +3,24 @@
     <template v-if="user().is_super_curator">
       <v-autocomplete
         v-model="userSelected"
+        v-model:search="searchUser"
         :items="usersList"
-        :search-input.sync="searchUser"
-        class="mb-7"
         :loading="loading"
-        hide-details
-        multiple
-        cache-items
         chips
-        deletable-chips
+        class="mb-7 full-width stepperField"
+        closable-chips
+        color="primary"
+        flat
+        hide-details="auto"
+        item-title="username"
         item-value="id"
-        item-text="username"
         label="Enter text to search for additional user(s) to associate with this saved search"
+        multiple
+        variant="underlined"
       >
-        <template #selection="data">
-          <v-chip
-            v-bind="data.attrs"
-            :input-value="data.item['id']"
-            close
-            @click="data.select"
-            @click:close="remove(data.item['id'])"
-          >
-            {{ data.item["username"] }}
-          </v-chip>
-        </template>
         <template #no-data>
-          <div
-            v-show="!loading"
-            class="py-3 px-4"
-          >
-            No User found
-          </div>
-          <div
-            v-show="loading"
-            class="py-3 px-4"
-          >
-            Loading...
-          </div>
+          <div v-show="!loading" class="py-3 px-4">No User found</div>
+          <div v-show="loading" class="py-3 px-4">Loading...</div>
         </template>
       </v-autocomplete>
     </template>

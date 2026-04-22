@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import SubjectSearchStore from "@/store/AdvancedSearchComponents/subjectSearch";
 
-import SubjectSearchData from "../../../../tests/fixtures/getSubjectSearch.json";
+import SubjectSearchData from "../../../fixtures/getSubjectSearch.json";
 
 describe("SubjectSearch store methods", () => {
   const { actions, mutations, getters } = SubjectSearchStore;
@@ -24,7 +24,7 @@ describe("SubjectSearch store methods", () => {
   });
 
   it("can check fetchSearchSubjects actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchSubjects({ commit }, "subject");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -52,14 +52,14 @@ describe("SubjectSearch store methods", () => {
       ],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchSubjects({ commit }, "Genetics");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSubjects actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSubjects({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

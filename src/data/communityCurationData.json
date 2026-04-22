@@ -1,6 +1,6 @@
 {
-  "communityCuration":{
-    "first_section":{
+  "communityCuration": {
+    "first_section": {
       "main_title": "What is the FAIRsharing Community Champions Programme?",
       "text_1": "The FAIRsharing Community Champions Programme is a thriving community of domain and discipline experts who:",
       "items": [
@@ -34,11 +34,11 @@
         }
       ]
     },
-    "second_section":{
+    "second_section": {
       "main_title": "Our Community Champions",
       "text": "Our user community is diverse in breadth and scope, with a number of stakeholder groups across all areas of research and research support. In early 2022, we began with a few Early Adopters, who have contributed greatly to the initial success of the programme, and we are now up and running with an active group of champions across all research disciplines. Our full list of community curators shows the breadth and diversity of research areas within the programme."
     },
-    "third_section":{
+    "third_section": {
       "main_title": "The Role of Community Champions",
       "text": "The Community Champions Programme creates a collaborative environment where domain experts are selected to oversee certain areas within the FAIRsharing registry in return for a number of professional benefits.",
       "subsections": [
@@ -64,7 +64,7 @@
         }
       ]
     },
-    "fourth_section":{
+    "fourth_section": {
       "main_title": "Getting Started",
       "text": "Information on <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>joining us</a> is available within our <a href='https://fairsharing.gitbook.io/fairsharing/community-curation'>Community Champions documentation</a>. We engage with communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. After <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>expressing your interest</a> in the programme, we'll be in touch and, if successful, we’ll get you set up with the proper roles."
     },
@@ -86,7 +86,7 @@
       }
     ]
   },
-  "communityCodeOfConductData":{
+  "communityCodeOfConductData": {
     "main_title": "Code of Conduct",
     "sections": [
       {

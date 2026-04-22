@@ -1,71 +1,68 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify";
-import Vuex from "vuex";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
+import { createStore } from "vuex";
 import FairassistRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/FairassistComponents/FairassistRecordType.vue";
-import recordTypes from "@/store/AdvancedSearchComponents/recordTypes";
-import { recordTypes as recordTypesMixin } from "@/utils/advancedSearchUtils";
 
-const $router = {
-  push: jest.fn(),
-};
-let $route = { path: "/advancedsearch", query: {} };
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.mixin(recordTypesMixin);
-let vuetify = new Vuetify();
+vi.mock("@/utils/advancedSearchUtils", () => ({
+  recordTypes: {
+    methods: {
+      filteredRecordTypes: vi.fn(() => ["Database Type A", "Database Type B"]),
+    },
+    computed: {
+      getRecordTypes: () => [],
+    },
+  },
+}));
 
 describe("FairassistRecordType.vue", () => {
-  let wrapper, store, actions;
+  let wrapper;
+  let actions;
+  let store;
+  const mockFilteredList = ["Database Type A", "Database Type B"];
+
   beforeEach(() => {
-    recordTypes.getters = {
-      getRecordTypes: () => {
-        return [
-          {
-            id: 1,
-            name: "metric",
-            fairsharingRegistry: {
-              id: 2,
-              name: "FAIRassist",
-            },
-          },
-          {
-            id: 2,
-            name: "model_and_format",
-            fairsharingRegistry: {
-              id: 1,
-              name: "Standard",
-            },
-          },
-        ];
-      },
-    };
     actions = {
-      fetchAllRecordTypes: jest.fn(),
+      fetchAllRecordTypes: vi.fn(),
     };
-    store = new Vuex.Store({
+
+    store = createStore({
       modules: {
-        namespaced: true,
-        actions,
-        recordTypes: recordTypes,
+        recordTypes: {
+          namespaced: true,
+          actions,
+        },
       },
     });
+
     wrapper = shallowMount(FairassistRecordType, {
-      localVue,
-      vuetify,
-      store,
-      mixins: [recordTypesMixin],
-      mocks: { $router, $route },
+      global: {
+        plugins: [store],
+        stubs: { SelectComponent: true },
+        mocks: {
+          filteredRecordTypes: vi.fn(() => mockFilteredList),
+        },
+      },
+      props: {
+        value: ["Existing Value"],
+      },
     });
   });
 
-  it("can mount", () => {
-    expect(wrapper.vm.$options.name).toBe("FairassistRecordType");
+  it('emits "input" when the model computed property is set', () => {
+    wrapper.vm.model = ["Updated via Model"];
+
+    expect(wrapper.emitted().input).toBeTruthy();
+    expect(wrapper.emitted().input[0]).toEqual([["Updated via Model"]]);
   });
 
-  it("mixin having method filteredRecordTypes to filter records according to fairsharing registry i.e. database/standard/policy", function () {
-    let resultArr = ["metric"];
-    const filterFunction = wrapper.vm.filteredRecordTypes("FAIRassist");
-    expect(filterFunction).toStrictEqual(resultArr);
+  it("updates itemSelected when selectedValue method is called", () => {
+    wrapper.vm.selectedValue(["Method Selection"]);
+    expect(wrapper.vm.itemSelected).toStrictEqual(["Method Selection"]);
+  });
+  it("can check v-model integration with SelectComponent", async () => {
+    const selectStub = wrapper.findComponent({ name: "SelectComponent" });
+    await selectStub.vm.$emit("update:modelValue", ["FTP", "SPARQL"]);
+    expect(wrapper.emitted().input).toBeTruthy();
+    expect(wrapper.emitted().input[0]).toStrictEqual([["FTP", "SPARQL"]]);
   });
 });

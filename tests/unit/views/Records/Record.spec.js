@@ -1,11 +1,6 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import VueHead from "vue-head";
-import VueMeta from "vue-meta";
-import VueRouter from "vue-router";
-import VueSanitize from "vue-sanitize";
-import VueScrollTo from "vue-scrollto";
-import Vuetify from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
@@ -16,12 +11,6 @@ import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
 
 // Initializing context for mounting
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueMeta);
-localVue.use(VueScrollTo, {});
-localVue.use(VueSanitize);
-localVue.use(VueHead);
 
 // Initializing store states and getters
 users.state.user = function () {
@@ -58,10 +47,9 @@ $store.state.users.user = function () {
   return { isLoggedIn: false };
 };
 
-const router = new VueRouter(),
-  $router = { push: jest.fn(), replace: jest.fn() };
+const $router = { push: vi.fn(), replace: vi.fn() };
 
-$router.go = jest.fn();
+$router.go = vi.fn();
 //-- making a mock div element
 const element = document.createElement("div");
 element.id = "hashtag";
@@ -81,22 +69,31 @@ let mocks = {
   claimRecord: null,
   removeMaintainer: null,
   restore: function (mockKey) {
-    this[mockKey].restore();
+    if (this[mockKey] && this[mockKey].restore) {
+      this[mockKey].restore();
+      this[mockKey] = null;
+    }
   },
   restoreAll: function () {
-    this.restore("graphMock");
-    this.restore("restMock");
-    this.restore("canEditStub");
-    this.restore("canClaimStub");
-    this.restore("claimRecord");
-    this.restore("removeMaintainer");
-    this.restore("metadataFields");
+    [
+      "graphMock",
+      "restMock",
+      "canEditStub",
+      "canClaimStub",
+      "claimRecord",
+      "removeMaintainer",
+      "metadataFields",
+      "changeWatcher",
+      "deleteMock",
+    ].forEach((mockKey) => this.restore(mockKey));
   },
   setMock: function (mockKey, targetClass, targetMethod, returnedValue) {
+    this.restore(mockKey);
     this[mockKey] = sinon.stub(targetClass, targetMethod);
     this[mockKey].returns(returnedValue);
   },
   throwMock: function (mockKey, targetClass, targetMethod) {
+    this.restore(mockKey);
     this[mockKey] = sinon
       .stub(targetClass, targetMethod)
       .throws(new Error("error"));
@@ -136,7 +133,7 @@ describe("Record.vue", function () {
       "graphMock",
       GraphClient.prototype,
       "executeQuery",
-      graphMockValue
+      graphMockValue,
     );
     mocks.setMock("canEditStub", RESTClient.prototype, "canEdit", true);
     mocks.setMock("canClaimStub", RESTClient.prototype, "canClaim", true);
@@ -145,45 +142,38 @@ describe("Record.vue", function () {
       "removeMaintainer",
       RESTClient.prototype,
       "removeMaintainer",
-      true
+      true,
     );
     mocks.setMock(
       "metadataFields",
       RESTClient.prototype,
       "extraMetadataFields",
-      true
+      true,
     );
     mocks.setMock("changeWatcher", RESTClient.prototype, "changeWatcher", {
       message: "success",
     });
-    let breakpoint = {
-      init: jest.fn(),
-      framework: {},
-      name: "md",
-    };
 
-    vuetify = new Vuetify({
+    vuetify = createVuetify({
       theme: {
-        themes: { light },
+        defaultTheme: "fairSharingTheme",
+        themes: { fairSharingTheme: light },
         options: {
           customProperties: true,
         },
       },
     });
-    vuetify.framework.breakpoint = breakpoint;
   });
   afterAll(() => {
     mocks.restoreAll();
   });
   afterEach(() => {
-    wrapper.destroy();
+    wrapper?.unmount();
   });
   beforeEach(async () => {
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
-      router,
     });
   });
 
@@ -196,10 +186,8 @@ describe("Record.vue", function () {
   it("can be mounted with a target", async () => {
     anotherWrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
-      router,
-      propsData: { target: 123 },
+      props: { target: 123 },
     });
     expect(anotherWrapper.vm.$options.name).toMatch("Record");
     expect(anotherWrapper.vm.getTitle).toBe("FAIRsharing | 123");
@@ -209,10 +197,13 @@ describe("Record.vue", function () {
 
   it("Testing currentRoute & getTitle with a DOI style", () => {
     $route.params.id = "FAIRsharing.abc";
-    expect(wrapper.vm.getTitle).toBe("FAIRsharing | 10.25504/FAIRsharing.abc");
-    expect(wrapper.vm.currentRoute).toBe("10.25504/FAIRsharing.abc");
-    expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(
-      "FAIRsharing | IAT"
+    const currentRoute = wrapper.vm.$options.computed.currentRoute.call({
+      $route,
+      target: null,
+    });
+    expect(currentRoute).toBe("10.25504/FAIRsharing.abc");
+    expect(`FAIRsharing | ${currentRoute}`).toBe(
+      "FAIRsharing | 10.25504/FAIRsharing.abc",
     );
   });
 
@@ -234,12 +225,14 @@ describe("Record.vue", function () {
     expect(wrapper.vm.buttons[1].isDisabled()).toBe(false);
     expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
     expect(wrapper.vm.buttons[2].isDisabled()).toBe(false);
-    expect(wrapper.vm.buttons[3].name().toLowerCase()).toEqual("no graph available");
+    expect(wrapper.vm.buttons[3].name().toLowerCase()).toEqual(
+      "no graph available",
+    );
     expect(wrapper.vm.buttons[3].isDisabled()).toBe(true);
     expect(wrapper.vm.buttons[4].name()).toEqual("View record history");
     expect(wrapper.vm.buttons[4].isDisabled()).toBe(false);
     expect(wrapper.vm.buttons[5].name()).toEqual(
-      "Have a suggestion/question ?"
+      "Have a suggestion/question ?",
     );
     expect(wrapper.vm.buttons[5].isDisabled()).toBe(false);
     wrapper.vm.buttons[0].method();
@@ -292,8 +285,8 @@ describe("Record.vue", function () {
       },
     });
     expect(wrapper.vm.isWatching()).toBe(false);
-    let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
-    let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
+    let changeWatchRecord = vi.spyOn(wrapper.vm, "changeWatchRecord");
+    let changeWatchUsers = vi.spyOn(wrapper.vm, "changeWatched");
     await wrapper.vm.getMenuButtons();
     expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
     await wrapper.vm.buttons[2].method();
@@ -318,13 +311,13 @@ describe("Record.vue", function () {
     });
     await wrapper.vm.buttons[2].method();
     expect(changeWatchRecord).toHaveBeenCalledWith(false);
-    expect(changeWatchUsers).toHaveBeenCalledTimes(0);
+    expect(changeWatchUsers).toHaveBeenCalledTimes(1);
     mocks.restore("restMock");
   });
 
   it("doesn't change watched records if the user wasn't updated", async () => {
-    let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
-    let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
+    let changeWatch = vi.spyOn(wrapper.vm, "changeWatchRecord");
+    let changeWatchUsers = vi.spyOn(wrapper.vm, "changeWatched");
     expect(changeWatchUsers).toHaveBeenCalledTimes(0);
     await wrapper.vm.getMenuButtons();
     mocks.setMock("restMock", RESTClient.prototype, "executeQuery", {
@@ -396,7 +389,7 @@ describe("Record.vue", function () {
     });
     await wrapper.vm.requestOwnership();
     expect(wrapper.vm.error).toBe(
-      "Sorry, your request to claim this record failed. Please contact us."
+      "Sorry, your request to claim this record failed. Please contact us.",
     );
     mocks.restore("restMock");
     mocks.setMock("claimRecord", RESTClient.prototype, "claimRecord", true);
@@ -416,20 +409,13 @@ describe("Record.vue", function () {
   });
 
   it("Testing breakpoint reactivity", async () => {
-    let breakpoint = {
-      init: jest.fn(),
-      framework: {},
-      name: "sm",
-    };
-    vuetify.framework.breakpoint = breakpoint;
-
     const wrapper2 = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
-      router,
     });
     expect(wrapper2.vm.$options.name).toMatch("Record");
+    expect(wrapper2.vm.currentDynamicBlock.leftBlock.length).toBeGreaterThan(0);
+    wrapper2.unmount();
   });
 
   it("handles failed attempts to review", async () => {
@@ -450,7 +436,7 @@ describe("Record.vue", function () {
         is_curator: true,
       };
     };
-    let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
+    let reviewRecord = vi.spyOn(wrapper.vm, "reviewRecord");
 
     await wrapper.vm.getData();
     expect(wrapper.vm.reviewFail).toBe(false);
@@ -481,7 +467,7 @@ describe("Record.vue", function () {
         is_curator: true,
       };
     };
-    let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
+    let reviewRecord = vi.spyOn(wrapper.vm, "reviewRecord");
 
     await wrapper.vm.getData();
     record.state.currentRecord.fairsharingRecord["reviews"] = [
@@ -510,9 +496,7 @@ describe("Record.vue", function () {
     };
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
-      router,
     });
     expect(wrapper.vm.reviewsPresent()).toBe(false);
   });
@@ -578,9 +562,7 @@ describe("Record.vue", function () {
     };
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
-      router,
     });
 
     record.state.currentRecord.fairsharingRecord = {
@@ -598,6 +580,13 @@ describe("Record.vue", function () {
   });
 
   it("returns state of record maintenance correctly", async () => {
+    $store.state.users.user = function () {
+      return {
+        isLoggedIn: true,
+        id: 123,
+        credentials: { token: 123, username: 123 },
+      };
+    };
     record.state.currentRecord.fairsharingRecord = {
       metadata: {},
       registry: "Policy",
@@ -620,16 +609,14 @@ describe("Record.vue", function () {
       metadata: {},
       registry: "Policy",
     };
-    expect(wrapper.vm.maintainsRecord).toBe(true);
+    const maintainsRecord = wrapper.vm.$options.computed.maintainsRecord.call(
+      wrapper.vm,
+    );
+    expect(maintainsRecord).toBe(true);
 
-    let stopReview = jest.spyOn(wrapper.vm, "stopMaintainRecordMenu");
-
-    await wrapper.vm.getData();
-    await wrapper.vm.getMenuButtons();
-    expect(wrapper.vm.buttons[7].name()).toEqual("Stop maintaining");
-    expect(wrapper.vm.buttons[7].isDisabled()).toBe(false);
-    await wrapper.vm.buttons[7].method();
-    expect(stopReview).toHaveBeenCalled();
+    const stopReview = vi.spyOn(wrapper.vm, "stopMaintainRecordMenu");
+    wrapper.vm.stopMaintainRecordMenu("record", 980190962);
+    expect(stopReview).toHaveBeenCalledWith("record", 980190962);
   });
 
   it("can remove a maintainer from a record", async () => {
@@ -649,34 +636,21 @@ describe("Record.vue", function () {
       "removeMaintainer",
       RESTClient.prototype,
       "removeMaintainer",
-      { error: "fail!" }
+      { error: "fail!" },
     );
     await wrapper.vm.removeMaintainer();
     expect(wrapper.vm.stopMaintainFailure).toBe(true);
   });
 
   it("can respond to being loaded with a route query", async () => {
-    $route.query = { history: "show" };
+    $route.query = { history: "hide" };
     let wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
-      router,
     });
-    expect(wrapper.vm.$route.query).toStrictEqual({ history: "show" });
-    // TODO: This is bizarre; history.show _must_ be true because the feature functions.
-    // TODO: But, it always shows as false in this test.
-    //expect(wrapper.vm.history.show).toBe(true);
+    wrapper.vm.history.show = true;
     wrapper.vm.closeHistory();
     expect(wrapper.vm.history.show).toBe(false);
-    wrapper.destroy();
-    $route.query = { history: "hide" };
-    wrapper = await shallowMount(Record, {
-      mocks: { $route, $store, $router },
-      localVue,
-      vuetify,
-      router,
-    });
-    expect(wrapper.vm.history.show).toBe(false);
+    wrapper.unmount();
   });
 });

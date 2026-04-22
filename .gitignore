@@ -3,9 +3,10 @@ node_modules
 docTemp
 /dist
 /source/index.html
-package-lock.json
+# package-lock.json //npm ci is strictly designed for automated environments and requires a package-lock.json
 coverage
 out
+yarn.lock
 
 # local env files
 .env.local

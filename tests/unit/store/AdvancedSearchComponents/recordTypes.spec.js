@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import RecordTypesStore from "@/store/AdvancedSearchComponents/recordTypes";
 
-import AllRecordsData from "../../../../tests/fixtures/getAllRecordsType.json";
+import AllRecordsData from "../../../fixtures/getAllRecordsType.json";
 
 describe("SubjectSearch store methods", () => {
   const { actions, mutations, getters } = RecordTypesStore;
@@ -24,13 +24,13 @@ describe("SubjectSearch store methods", () => {
   });
 
   it("can check fetchAllRecordTypes actions", async () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     await actions.fetchAllRecordTypes({ commit });
     expect(commit).toHaveBeenCalledWith("setLoadingData", true);
   });
 
   it("can check resetRecords actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetRecords({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

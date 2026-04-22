@@ -1,0 +1,14 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+**/*.html
+documentation/*
+.eslintrc.cjs
+.github/*
+babel.config.js
+package.json
+README.md
+vite.config.mjs
+vitest.config.mjs

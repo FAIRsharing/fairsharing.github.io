@@ -1,38 +1,47 @@
 <template>
   <v-autocomplete
     v-model="model"
+    v-model:search="search"
     :items="itemList"
-    :search-input.sync="search"
-    cache-items
     hide-no-data
-    hide-details
+    hide-details="auto"
     flat
     chips
     multiple
     closable-chips
-    solo
+    variant="solo"
     min-height="36px"
-    class="text-capitalize"
+    class="text-capitalize advancedSearchAutocomplete advancedSearchDialogBoxContent"
+    density="compact"
     :loading="loading"
-    loader-height="3"
-    color="accent3"
+    color="primary"
   >
-    <template #selection="data">
+    <template #chip="{ props, item }">
       <v-chip
-        v-bind="data.attrs"
-        :input-value="data.selected"
-        close
-        @click="data.select"
-        @click:close="remove(data.item)"
-      >
-        {{ data.item }}
-      </v-chip>
+        v-bind="props"
+        :text="item.raw.title"
+        color="blue"
+        variant="flat"
+      ></v-chip>
+    </template>
+    <!-- Tooltip for the field -->
+    <template #prepend>
+      <v-tooltip location="bottom" class="mr-2">
+        <template #activator="{ props }">
+          <v-icon
+            size="x-small"
+            class="mr-1 iconStyle text-white opacity-100"
+            v-bind="props"
+          >
+            fas fa-question-circle
+          </v-icon>
+        </template>
+        <span> {{ toolTipText }} </span>
+      </v-tooltip>
     </template>
   </v-autocomplete>
 </template>
 <script>
-import { removeItem } from "@/utils/advancedSearchUtils";
-
 export default {
   name: "AutoCompleteComponent",
   props: {
@@ -48,7 +57,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    toolTipText: {
+      type: String,
+      default: null,
+    },
   },
+  emits: ["input", "fetchData"],
   data: () => {
     return {
       search: null,
@@ -72,14 +86,5 @@ export default {
       this.$emit("fetchData", val);
     },
   },
-
-  methods: {
-    remove(item) {
-      return removeItem(item, this.model);
-    },
-  },
 };
 </script>
-<style lang="scss" scoped>
-@import "@/styles/advancedSearchComponents";
-</style>

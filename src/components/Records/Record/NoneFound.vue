@@ -5,12 +5,10 @@
       v-if="displayData"
       class="mt-2 pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
       flat
-      outlined
+      border
     >
-      <div class="d-flex mt-2 ">
-        <p class="ma-0">
-          None found
-        </p>
+      <div class="d-flex mt-2">
+        <p class="ma-0">None found</p>
       </div>
     </v-card>
     <!--  SingleField  -->
@@ -26,11 +24,11 @@ export default {
   props: {
     dataField: {
       type: Array,
-      default: null
+      default: null,
     },
     stringField: {
       type: String,
-      default: null
+      default: null,
     },
   },
   computed: {
@@ -39,7 +37,7 @@ export default {
     },
     displayString: function () {
       return this.stringField;
-    }
-  }
-}
+    },
+  },
+};
 </script>

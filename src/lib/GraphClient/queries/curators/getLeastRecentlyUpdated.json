@@ -1,9 +1,5 @@
 {
   "queryName": "leastRecentlyUpdated",
   "queryParam": null,
-  "fields": [
-    "id",
-    "name",
-    "updatedAt"
-  ]
+  "fields": ["id", "name", "updatedAt"]
 }

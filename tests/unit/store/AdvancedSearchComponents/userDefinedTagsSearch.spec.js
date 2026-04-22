@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import UserDefinedTagsSearchStore from "@/store/AdvancedSearchComponents/userDefinedTagsSearch";
 
-import UserDefinedTagsSearchData from "../../../../tests/fixtures/getUserDefinedTagsSearch.json";
+import UserDefinedTagsSearchData from "../../../fixtures/getUserDefinedTagsSearch.json";
 
 describe("TaxonomiesSearchStore store methods", () => {
   const { actions, mutations, getters } = UserDefinedTagsSearchStore;
@@ -24,7 +24,7 @@ describe("TaxonomiesSearchStore store methods", () => {
   });
 
   it("can check fetchSearchUserDefinedTags actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchUserDefinedTags({ commit }, "userdefinedtags");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchUserDefinedTags: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchUserDefinedTags({ commit }, "userdefinedtags");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetUserDefinedTags actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetUserDefinedTags({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -68,10 +68,10 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchUserDefinedTags: ["test", "test1", "test2"],
     };
     const builtData = getters.getSearchUserDefinedTags(
-      getUserDefinedTagsResult
+      getUserDefinedTagsResult,
     );
     expect(builtData).toStrictEqual(
-      getUserDefinedTagsResult["searchUserDefinedTags"]
+      getUserDefinedTagsResult["searchUserDefinedTags"],
     );
   });
 

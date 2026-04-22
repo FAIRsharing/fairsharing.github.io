@@ -1,22 +1,15 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueMeta from "vue-meta";
+import { shallowMount } from "@vue/test-utils";
 
 import Hidden from "@/views/Errors/Hidden.vue";
 
-const localVue = createLocalVue();
-localVue.use(VueMeta);
-
 describe("Hidden record notification", () => {
-    let wrapper;
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Hidden, {
-            localVue
-        });
-    });
+  beforeEach(() => {
+    wrapper = shallowMount(Hidden, {});
+  });
 
-    it("can mount", () => {
-        expect(wrapper.vm.$options.name).toBe("Hidden");
-    });
-
+  it("can mount", () => {
+    expect(wrapper.vm.$options.name).toBe("Hidden");
+  });
 });

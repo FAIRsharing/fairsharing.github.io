@@ -9,14 +9,7 @@
     "firstPage",
     {
       "name": "records",
-      "fields": [
-        "id",
-        "type",
-        "name",
-        "registry",
-        "description",
-        "status"
-      ]
+      "fields": ["id", "type", "name", "registry", "description", "status"]
     }
   ]
 }

@@ -16,9 +16,11 @@
 <script>
 import {
   CuratorSummaryStatistics,
-  RecordEditsByMonth,  RecordsCreatedByMonth,
+  RecordEditsByMonth,
+  RecordsCreatedByMonth,
   RecordsNeedingReview,
-  RecordsWithoutDois} from "@/components/Curators/DownLoadRecordsComponents"
+  RecordsWithoutDois,
+} from "@/components/Curators/DownLoadRecordsComponents";
 
 export default {
   name: "DownloadRecords",
@@ -27,7 +29,7 @@ export default {
     RecordsNeedingReview,
     CuratorSummaryStatistics,
     RecordsCreatedByMonth,
-    RecordEditsByMonth
+    RecordEditsByMonth,
   },
 };
 </script>

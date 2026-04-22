@@ -1,15 +1,13 @@
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <AutoCompleteComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="getSearchCountries"
-      :loading="getLoadingStatus"
-      @input="selectedValue"
-      @fetchData="getResults"
-    />
-  </div>
+  <AutoCompleteComponent
+    v-model="model"
+    :item-list="getSearchCountries"
+    :item-value="itemValue"
+    :loading="getLoadingStatus"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+    @fetch-data="getResults"
+  />
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
@@ -17,17 +15,17 @@ import { mapActions, mapGetters } from "vuex";
 import countriesSearch from "@/store";
 
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "Countries",
-  components: { TooltipComponent, AutoCompleteComponent },
+  components: { AutoCompleteComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
       itemSelected: [],
@@ -38,7 +36,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("countriesSearch", ["getSearchCountries", "getLoadingStatus"]),
+    ...mapGetters("countriesSearch", [
+      "getSearchCountries",
+      "getLoadingStatus",
+    ]),
     ...mapGetters("advancedSearch", ["getEditDialogStatus"]),
 
     model: {
@@ -64,7 +65,7 @@ export default {
           if (this.value && this.value.length) {
             countriesSearch.commit(
               "countriesSearch/setSearchCountries",
-              this.value
+              this.value,
             );
           }
         }

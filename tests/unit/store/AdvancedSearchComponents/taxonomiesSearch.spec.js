@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import TaxonomiesSearchStore from "@/store/AdvancedSearchComponents/taxonomiesSearch";
 
-import TaxonomiesSearchData from "../../../../tests/fixtures/getTaxonomiesSearch.json";
+import TaxonomiesSearchData from "../../../fixtures/getTaxonomiesSearch.json";
 
 describe("TaxonomiesSearchStore store methods", () => {
   const { actions, mutations, getters } = TaxonomiesSearchStore;
@@ -24,7 +24,7 @@ describe("TaxonomiesSearchStore store methods", () => {
   });
 
   it("can check fetchSearchTaxonomies actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchTaxonomies({ commit }, "taxonomies");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -34,14 +34,14 @@ describe("TaxonomiesSearchStore store methods", () => {
       searchTaxonomies: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchTaxonomies({ commit }, "taxonomies");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSearchTaxonomies actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSearchTaxonomies({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

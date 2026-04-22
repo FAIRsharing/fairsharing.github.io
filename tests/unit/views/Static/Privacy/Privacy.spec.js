@@ -1,21 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import Vuetify from "vuetify"
+import { createVuetify } from "vuetify";
 
-import Privacy from "@/views/Static/Privacy/Privacy"
+import Privacy from "@/views/Static/Privacy/Privacy";
 
-const vuetify = new Vuetify();
+const vuetify = createVuetify();
 
-describe("Privacy.vue", function(){
-    let wrapper;
+describe("Privacy.vue", function () {
+  let wrapper;
 
-    beforeEach(() => {
-        wrapper = shallowMount(Privacy, {
-            vuetify,
-        })
+  beforeEach(() => {
+    wrapper = shallowMount(Privacy, {
+      vuetify,
     });
+  });
 
-    it("can be instantiated", () => {
-        expect(wrapper.vm.$options.name).toMatch("Privacy");
-    });
-
+  it("can be instantiated", () => {
+    expect(wrapper.vm.$options.name).toMatch("Privacy");
+  });
 });

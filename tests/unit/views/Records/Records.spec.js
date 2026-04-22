@@ -1,25 +1,17 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils";
-import VueMeta from "vue-meta";
-import VueScrollTo from "vue-scrollto";
-import Vuetify from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json";
 import Client from "@/lib/GraphClient/GraphClient.js";
 import introspection from "@/store/introspector.js";
 import records from "@/store/recordSearch.js";
-import uiController from "@/store/uiController.js";
-import { actions } from "@/store/uiController.js";
+import uiController, { actions } from "@/store/uiController.js";
 import userStore from "@/store/users";
 import Records from "@/views/Records/Records.vue";
 
 const sinon = require("sinon");
 const axios = require("axios");
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueMeta);
-localVue.use(VueScrollTo, {});
 
 userStore.state.user = function () {
   return {
@@ -70,11 +62,10 @@ describe("Records.vue", () => {
   // Set up the wrapper
   let wrapper;
   beforeEach(async () => {
-    vuetify = new Vuetify();
+    vuetify = createVuetify();
 
     wrapper = await shallowMount(Records, {
       mocks: { $route, $store },
-      localVue,
       vuetify,
     });
     delete global.window["top"];
@@ -110,24 +101,15 @@ describe("Records.vue", () => {
       test4: 123,
       test5: true,
     };
-    let returnedVal = {
-      data: {
-        data: fakeIntrospection.data,
-      },
-      headers: {
-        maintenance: "false",
-      },
-    };
-    sinon
-      .stub(Client.prototype, "getData")
-      .withArgs(sinon.match.any)
-      .returns(returnedVal);
-    await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-    Client.prototype.getData.restore();
-    const path = wrapper.vm.currentPath;
-    const queryParameters = await wrapper.vm.$store.getters[
-      "introspection/buildQueryParameters"
-    ](path);
+    wrapper.vm.$store.state.introspection.searchQueryParameters =
+      fakeIntrospection.data.__schema.types
+        .find((queryType) => queryType.name === "Query")
+        .fields.find((field) => field.name === "searchFairsharingRecords");
+    const path = wrapper.vm.$options.computed.currentPath.call(wrapper.vm);
+    const queryParameters =
+      await wrapper.vm.$store.getters["introspection/buildQueryParameters"](
+        path,
+      );
     expect(queryParameters).toStrictEqual({
       test: "abc",
       test2: "abcdef",
@@ -140,9 +122,13 @@ describe("Records.vue", () => {
   it("react to path change", async () => {
     $route.path = "/search";
     $route.query = {};
-    expect(wrapper.vm.currentPath[0]).toBe("Search");
+    expect(wrapper.vm.$options.computed.currentPath.call(wrapper.vm)[0]).toBe(
+      "Search",
+    );
     $route.path = "/standard";
-    expect(wrapper.vm.currentPath[0]).toBe("Standard");
+    expect(wrapper.vm.$options.computed.currentPath.call(wrapper.vm)[0]).toBe(
+      "Standard",
+    );
   });
 
   it("can correctly redirect", async () => {
@@ -151,16 +137,15 @@ describe("Records.vue", () => {
      * This appears to have been caused by modifications to tryRedirect() as part of
      * https://github.com/FAIRsharing/fairsharing.github.io/issues/1186.
      */
-    jest.setTimeout(40000);
+    // vi.setTimeout(40000);
     $route.path = "/standards";
     $route.params = { fairsharingRegistry: "Standard" };
     $route.query = { fairsharingRegistry: "Standard" };
     const $router = {
-      push: jest.fn(),
+      push: vi.fn(),
     };
     let localWrapper = await shallowMount(Records, {
       mocks: { $route, $store, $router },
-      localVue,
       vuetify,
     });
     await localWrapper.vm.tryRedirect();
@@ -177,26 +162,26 @@ describe("Records.vue", () => {
     const dataArr = ["1", "2", "3"];
 
     global.window.top = { scrollY: 150 };
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.setGeneralUIAttributesAction({});
     wrapper.vm.onScroll(dataArr);
     expect(actions.commit).toHaveBeenCalledTimes(1);
 
     global.window.top = { scrollY: 50 };
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.setGeneralUIAttributesAction({});
     wrapper.vm.onScroll(dataArr);
     expect(actions.commit).toHaveBeenCalledTimes(1);
 
     global.window.top = { scrollY: 501 };
-    actions.commit = jest.fn();
+    actions.commit = vi.fn();
     actions.setGeneralUIAttributesAction({});
     wrapper.vm.onScroll(dataArr);
     expect(actions.commit).toHaveBeenCalledTimes(1);
   });
 
   it("can reset the store when destroyed", () => {
-    wrapper.destroy();
+    wrapper.unmount();
     expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     expect(wrapper.vm.$store.state.records.loading).toBe(false);

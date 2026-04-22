@@ -1,44 +1,32 @@
 <template>
   <div
+    :class="{ 'flex-column': $vuetify.display.smAndDown }"
     class="d-flex full-width py-2 px-5 justify-center"
-    :class="{ 'flex-column': $vuetify.breakpoint.smAndDown }"
   >
     <v-btn
-      :class="
-        $vuetify.breakpoint.smAndDown ? 'full-width' : 'mx-2 button-width'
-      "
+      :class="$vuetify.display.smAndDown ? 'full-width' : 'mx-2 button-width'"
       color="accent"
       elevation="2"
       @click="editAdvancedSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fa-solid fa-pen
-      </v-icon>
-      <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">{{
-        $vuetify.breakpoint.mdAndDown
-          ? "Show/Edit"
-          : "Edit"
+      <v-icon class="mr-1" size="small"> fas fa-solid fa-pen</v-icon>
+      <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }">{{
+        $vuetify.display.mdAndDown ? "Show/Edit" : "Edit"
       }}</span>
     </v-btn>
     <v-btn
-      class="white--text"
       :class="
-        $vuetify.breakpoint.smAndDown ? 'mt-3 full-width' : 'mx-2 button-width'
+        $vuetify.display.smAndDown ? 'mt-3 full-width' : 'mx-2 button-width'
       "
+      class="text-white"
       color="secondary"
       elevation="2"
       @click="openAdvancedSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
+      <v-icon class="mr-1" size="small"> fas fa-solid fa-reply</v-icon>
+      <span :class="{ 'button-text-size': $vuetify.display.lgAndUp }"
+        >Restart</span
       >
-        fa-solid fa-reply
-      </v-icon>
-      <span :class="{ 'button-text-size': $vuetify.breakpoint.lgAndUp }">Restart</span>
     </v-btn>
   </div>
 </template>
@@ -53,18 +41,19 @@ export default {
       advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
     },
     openAdvancedSearch() {
-      this.$router.replace({'query': null});
+      this.$router.replace({ query: null });
       advancedSearch.commit(
         "advancedSearch/setAdvancedSearchDialogStatus",
-        true
+        true,
       );
     },
   },
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .button-width {
   width: 50%;
+
   .button-text-size {
     font-size: 12px;
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section style="min-height:65vh">
+    <section style="min-height: 65vh">
       <!--Filtered Chips-->
       <div
         v-if="getChips.length"
@@ -12,55 +12,48 @@
       <!--List Controller-->
       <ListController
         class="mt-2"
-        :options="{hasPagination:true,hasSorting:true,hasListType:true}"
-        @ChangeListType="changeListType"
+        :options="{ hasPagination: true, hasSorting: true, hasListType: true }"
+        @change-list-type="changeListType"
       />
       <!-- Alert -->
-      <div
-        v-if="getRecordsLength<1 && !loading"
-        class="code-container"
-      >
-        <v-alert
-          colored-border
-          type="info"
-        >
+      <div v-if="getRecordsLength < 1 && !loading" class="code-container">
+        <v-alert border-color type="info">
           No records match your search!
         </v-alert>
       </div>
       <!--List Row-->
-      <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
+      <div
+        :class="[
+          'opacity-0-transition',
+          { 'opacity-1-transition': !isColumnList },
+        ]"
+      >
         <article v-if="!isColumnList">
-          <v-skeleton-loader
-            class="mt-5"
-            :loading="loading"
-            type="image"
-          >
+          <v-skeleton-loader class="mt-5" :loading="loading" type="image">
             <!-- StackCard view -->
             <RecordsCardStack
               v-for="record in records"
-              :key="'record_'+record.id"
+              :key="'record_' + record.id"
               :record="record"
             />
             <!--List Controller-->
-            <Pagination
-              :total-pages="totalPages"
-              class="my-5"
-            />
+            <Pagination :total-pages="totalPages" class="my-5" />
           </v-skeleton-loader>
         </article>
       </div>
       <!-- ColumnCard view -->
-      <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
+      <div
+        :class="[
+          'opacity-0-transition',
+          { 'opacity-1-transition': isColumnList },
+        ]"
+      >
         <article v-if="isColumnList">
-          <v-skeleton-loader
-            class="mt-5"
-            :loading="loading"
-            type="image"
-          >
+          <v-skeleton-loader class="mt-5" :loading="loading" type="image">
             <v-row>
               <RecordsCardColumn
                 v-for="record in records"
-                :key="'record_'+record.id"
+                :key="'record_' + record.id"
                 :record="record"
               />
             </v-row>
@@ -72,7 +65,7 @@
 </template>
 
 <script>
-import {mapGetters,mapState} from 'vuex'
+import { mapGetters, mapState } from "vuex";
 
 import filterChipsUtils from "@/utils/filterChipsUtils";
 
@@ -84,23 +77,29 @@ import RecordsCardStack from "./RecordsCardStack";
 
 export default {
   name: "SearchOutput",
-  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
+  components: {
+    FilterChips,
+    RecordsCardColumn,
+    ListController,
+    RecordsCardStack,
+    Pagination,
+  },
   mixins: [filterChipsUtils],
   data() {
     return {
-      isColumnList: false
-    }
+      isColumnList: false,
+    };
   },
   computed: {
-    ...mapState('records', ["records", "hits", "loading", "totalPages"]),
-    ...mapGetters('records', ["getRecordsLength"]),
+    ...mapState("records", ["records", "hits", "loading", "totalPages"]),
+    ...mapGetters("records", ["getRecordsLength"]),
   },
   methods: {
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
   },
-}
+};
 </script>
 <style scoped>
 .chips-holder {
@@ -122,4 +121,3 @@ export default {
   height: 200px;
 }
 </style>
-

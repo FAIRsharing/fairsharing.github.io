@@ -4,8 +4,8 @@
       (allowedFields.properties || getField('metadata').deprecation_reason) &&
       finalDataItemsHasLength
     "
-    class="pa-4 d-flex flex-column"
-    outlined
+    class="pa-4 d-flex flex-column overflow-initial"
+    border
     :color="backColor"
     tile
     elevation="3"
@@ -21,7 +21,7 @@
     >
       <b class="width-200">Dataset Deprecation reason</b>
       <div class="d-flex full-width ml-md-12 ml-13">
-        <p class="ma-0 warning white--text">
+        <p class="ma-0 bg-warning text-white">
           {{ getField("metadata").deprecation_reason }}
         </p>
       </div>
@@ -78,7 +78,9 @@ export default {
     Object.keys(this.finalData).forEach((key) => {
       if (this.finalData[key].length >= 1) {
         this.finalData[key].forEach((item) => {
-          this.finalDataItemsHasLength = Object.values(item).some(el => el !== undefined && el !== null && el !== '');
+          this.finalDataItemsHasLength = Object.values(item).some(
+            (el) => el !== undefined && el !== null && el !== "",
+          );
         });
       }
     });
@@ -103,7 +105,7 @@ export default {
       /* istanbul ignore else */
       if (this.allowedFields.properties !== undefined) {
         const allAllowedTypes = Object.keys(
-          this.allowedFields.properties
+          this.allowedFields.properties,
         ).filter((key) => !excludedTypes.includes(key));
         for (const key of allAllowedTypes) {
           if (

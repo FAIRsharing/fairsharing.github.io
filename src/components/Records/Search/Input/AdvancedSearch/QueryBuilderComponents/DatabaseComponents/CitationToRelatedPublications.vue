@@ -1,38 +1,34 @@
+q
 <template>
-  <div class="d-flex width-90">
-    <TooltipComponent :tool-tip-text="toolTipText" />
-    <SelectComponent
-      v-model="model"
-      :item-value="itemValue"
-      :item-list="itemList"
-      @input="selectedValue"
-    />
-  </div>
+  <SelectComponent
+    v-model="model"
+    :item-list="itemList"
+    :item-value="itemValue"
+    :tool-tip-text="toolTipText"
+    @input="selectedValue"
+  />
 </template>
 
 <script>
 import SelectComponent from "../UtilComponents/SelectComponent.vue";
-import TooltipComponent from "../UtilComponents/TooltipComponent.vue";
 
 export default {
   name: "CitationToRelatedPublications",
-  components: { TooltipComponent, SelectComponent },
+  components: { SelectComponent },
   props: {
     value: {
       type: Array,
       default: () => [],
     },
   },
+  emits: ["input"],
   data: () => {
     return {
-      itemList: [
-        "yes",
-        "no",
-        "not found"
-      ],
+      itemList: ["yes", "no", "not found"],
       itemSelected: [],
       itemValue: [],
-      toolTipText: "Does the repository have a particular, standardized mechanism to link datasets to related articles or pre-prints? Multiple selections will be joined with OR.",
+      toolTipText:
+        "Does the repository have a particular, standardized mechanism to link datasets to related articles or pre-prints? Multiple selections will be joined with OR.",
     };
   },
   computed: {

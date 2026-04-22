@@ -3,7 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import AdvancedSearchStore from "@/store/AdvancedSearchComponents/advancedSearch.js";
 
-import AdvancedSearchData from "../../../tests/fixtures/getAdvancedSearch.json";
+import AdvancedSearchData from "../../fixtures/getAdvancedSearch.json";
 
 describe("AdvancedSearch store methods", () => {
   const { actions, mutations, getters } = AdvancedSearchStore;
@@ -33,19 +33,19 @@ describe("AdvancedSearch store methods", () => {
   });
 
   it("can check fetchAdvancedSearchResults actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchAdvancedSearchResults({ commit }, "searchTerm");
     expect(commit).toHaveBeenCalledTimes(3);
   });
 
   it("can check fetchAdvancedSearchResults actions without advanceSearchTerm", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchAdvancedSearchResults({ commit });
     expect(commit).toHaveBeenCalledTimes(3);
   });
 
   it("can check fetchAdvancedSearchResults actions with Error response", async () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     stub.returns({
       error: "error",
     });
@@ -55,7 +55,7 @@ describe("AdvancedSearch store methods", () => {
   });
 
   it("can check resetAdvancedSearchResponse actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetAdvancedSearchResponse({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -150,10 +150,10 @@ describe("AdvancedSearch store methods", () => {
     };
     mutations.setAdvancedSearchQuery(state, advancedSearchQuery);
     expect(state.advancedSearchQuery["operator"]).toBe(
-      advancedSearchQuery["operator"]
+      advancedSearchQuery["operator"],
     );
     expect(state.advancedSearchQuery["fields"]).toBe(
-      advancedSearchQuery["fields"]
+      advancedSearchQuery["fields"],
     );
   });
 
@@ -278,7 +278,7 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getAdvancedSearchDialogStatus(getSearchResult);
     expect(builtData).toStrictEqual(
-      getSearchResult["advancedSearchDialogStatus"]
+      getSearchResult["advancedSearchDialogStatus"],
     );
   });
 });

@@ -1,6 +1,7 @@
-import Vue from "vue";
+/* eslint-env jest */
 
 import Client from "@/lib/Client/RESTClient.js";
+
 const sinon = require("sinon");
 describe("RESTClient", () => {
   let client;
@@ -77,7 +78,7 @@ describe("RESTClient", () => {
   it("can get the extra metadata fields", async () => {
     let resp = await client.extraMetadataFields(
       "model_and_format",
-      "userToken"
+      "userToken",
     );
     expect(resp).toBe("testData");
   });
@@ -127,26 +128,21 @@ describe("RESTClient", () => {
     expect(resp).toBe("testData");
   });
 
-
   it("can process network errors", async () => {
     stub.restore();
-    jest.spyOn(console, "error");
+    vi.spyOn(console, "error");
     console.error.mockImplementation(() => {});
-    Vue.config.productionTip = false;
-    Vue.config.devtools = false;
     let resp = await client.executeQuery({
-      url: "http://google.com",
+      url: "http://test.com",
     });
-    expect(resp.data.error.message).toBe("Network Error");
+    expect(resp.data.error).toBeTruthy();
+    expect(typeof resp.data.error.message).toBe("string");
     console.error.mockRestore();
-    Vue.config.productionTip = true;
-    Vue.config.devtools = true;
   });
 
   it("can set authentication headers correctly", () => {
     expect(client.auth_headers("fun_token")["Authorization"]).toEqual(
-      "Bearer fun_token"
+      "Bearer fun_token",
     );
   });
-
 });

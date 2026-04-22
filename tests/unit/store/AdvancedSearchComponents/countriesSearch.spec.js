@@ -3,8 +3,7 @@ import sinon from "sinon";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import CountriesSearchStore from "@/store/AdvancedSearchComponents/countriesSearch";
 
-import CountriesSearchData from "../../../../tests/fixtures/getCountriesSearch.json";
-
+import CountriesSearchData from "../../../fixtures/getCountriesSearch.json";
 
 describe("CountriesSearch store methods", () => {
   const { actions, mutations, getters } = CountriesSearchStore;
@@ -25,7 +24,7 @@ describe("CountriesSearch store methods", () => {
   });
 
   it("can check fetchSearchCountries actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchCountries({ commit }, "country");
     expect(commit).toHaveBeenCalledTimes(1);
   });
@@ -35,14 +34,14 @@ describe("CountriesSearch store methods", () => {
       searchCountries: [],
     };
     stub.returns(returnedValElse);
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.fetchSearchCountries({ commit }, "country");
 
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check resetSearchCountries actions", () => {
-    const commit = jest.fn();
+    const commit = vi.fn();
     actions.resetSearchCountries({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });

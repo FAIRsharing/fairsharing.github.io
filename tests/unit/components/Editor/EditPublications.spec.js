@@ -159,7 +159,7 @@ const article_zenodo_4 = {
 };
 
 const article_zenodo_5 = {
-  "container-title-short": "Nat. Commun.",
+  "container-title-short": "Nat. Dave.",
   "container-title": "Nature Communications",
   title:
     "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
@@ -357,7 +357,7 @@ describe("EditPublications.vue", function () {
       data: { error: { response: { data: "Im an error" } } },
     });
     const expectedArticle = {
-      journal: "Nat. Commun.",
+      journal: "Nat. Dave.",
       title:
         "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
       doi: "10.1126/science.2781282",

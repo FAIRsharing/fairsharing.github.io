@@ -46,5 +46,43 @@ describe("RESTClient.js", function () {
     restStub.restore();
   });
 
+  it("can check removeMaintainer method", async () => {
+    // 1. Setup mock data and stub
+    const recordID = 42;
+    const userToken = "test-token-123";
+    const mockResponse = {
+      data: { status: "success", message: "Maintainer removed" },
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+
+    // 2. Execute the method
+    const result = await client.removeMaintainer(recordID, userToken);
+
+    // 3. Assertions
+    // Check if the return value is the 'data' property of the response
+    expect(result).toStrictEqual(mockResponse.data);
+
+    // Verify executeQuery was called with the correct arguments
+    expect(executeStub.calledOnce).toBe(true);
+
+    const expectedRequest = {
+      method: "post",
+      baseURL: "http://localhost:3000/maintenance_requests/remove",
+      headers: client.auth_headers(userToken),
+      data: {
+        maintenance_request: { fairsharing_record_id: recordID },
+      },
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
   // TODO: Perhaps test other functions here...
 });

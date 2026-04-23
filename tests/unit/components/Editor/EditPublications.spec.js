@@ -158,6 +158,24 @@ const article_zenodo_4 = {
   },
 };
 
+const article_zenodo_5 = {
+  "container-title-short": "Nat. Commun.",
+  "container-title": "Nature Communications",
+  title:
+    "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+  issued: {
+    "date-parts": [1989],
+  },
+  author: [
+    {
+      given: "E.",
+      family: "Baulieu",
+    },
+  ],
+  DOI: "10.1126/science.2781282",
+  URL: "https://doi.org/10.1126/science.2781282",
+};
+
 describe("EditPublications.vue", function () {
   let wrapper;
   beforeEach(() => {
@@ -329,6 +347,30 @@ describe("EditPublications.vue", function () {
     restStub.returns({ data: article_zenodo_4 });
     await wrapper.vm.getDOI();
     expect(wrapper.vm.errors.doi).toBe(true);
+    fetchStub.restore();
+    restStub.restore();
+  });
+
+  it("When getting a DOI can process errors from calls but get the response from getZenodoSearch method", async () => {
+    fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+    fetchStub.returns({
+      data: { error: { response: { data: "Im an error" } } },
+    });
+    const expectedArticle = {
+      journal: "Nat. Commun.",
+      title:
+        "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      doi: "10.1126/science.2781282",
+      url: "https://doi.org/10.1126/science.2781282",
+      year: 1989,
+      authors: "Baulieu, E.; ",
+      isCitation: false,
+    };
+    wrapper.vm.search = "10.1126/science.2781282";
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: article_zenodo_5 });
+    await wrapper.vm.getDOI();
+    expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
     restStub.restore();
   });

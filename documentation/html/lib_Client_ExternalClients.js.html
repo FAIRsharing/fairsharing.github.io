@@ -103,7 +103,8 @@ class ExternalRESTClients {
       return ExternalRESTClients._instance;
     }
     ExternalRESTClients._instance = this;
-    this.doiBaseURL = "https://dx.doi.org/";
+    // this.doiBaseURL = "https://dx.doi.org/";
+    this.doiBaseURL = "/doi-api/";
     this.headers = {
       Accept: "application/x-bibtex",
     };
@@ -118,13 +119,9 @@ class ExternalRESTClients {
   async getDOI(doi) {
     let localHeaders = this.headers;
     localHeaders["Accept"] = "application/json";
-
     const targetUrl = this.doiBaseURL + doi;
-
-    // Prepend the proxy URL and encode your target URL
-    const proxyBase = "https://corsproxy.io/?url=";
     const request = {
-      url: proxyBase + targetUrl,
+      url: targetUrl,
       headers: localHeaders,
     };
     let response = await this.executeQuery(request);

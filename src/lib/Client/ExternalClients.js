@@ -25,7 +25,9 @@ class ExternalRESTClients {
 
   async getDOI(doi) {
     let localHeaders = this.headers;
-    localHeaders["Accept"] = "application/json";
+    // localHeaders["Accept"] = "application/json";
+    localHeaders["Accept"] =
+      "application/vnd.citationstyles.bibliographic+json";
     const targetUrl = this.doiBaseURL + doi;
     const request = {
       url: targetUrl,

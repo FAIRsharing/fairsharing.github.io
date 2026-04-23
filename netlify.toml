@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/doi-api/*"
-  to = "https://dx.doi.org/:splat"
-  status = 200
-  force = true

@@ -1,2 +1,3 @@
 # Netlify settings for single-page application
 /*    /index.html   200
+/doi-api/* https://dx.doi.org/:splat  200!

@@ -567,8 +567,8 @@ export default {
             dataPublication.metadata === undefined
           ) {
             this.newPublication.journal =
-              data["container-title-short"] ||
-              data["container-title"] ||
+              dataPublication["container-title-short"] ||
+              dataPublication["container-title"] ||
               dataPublication["title"];
             this.newPublication.title = dataPublication["title"];
             this.newPublication.doi = dataPublication["DOI"];

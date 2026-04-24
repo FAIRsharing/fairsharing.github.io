@@ -22,7 +22,7 @@ export default defineConfig({
     open: true,
     port: 8080,
     proxy: {
-      // Proxy for DOI requests to remove CORS
+      //Proxy for DOI requests to remove CORS
       '/doi-api/': {
         target: 'https://dx.doi.org',
         changeOrigin: true,

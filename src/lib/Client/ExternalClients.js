@@ -10,8 +10,10 @@ class ExternalRESTClients {
       return ExternalRESTClients._instance;
     }
     ExternalRESTClients._instance = this;
-    this.doiBaseURL = "https://dx.doi.org/";
+    // this.doiBaseURL = "https://dx.doi.org/";
     // this.doiBaseURL = "/doi-api/";
+    const baseUrl = import.meta.env.VITE_API_ENDPOINT.replace(/\/$/, "");
+    this.doiBaseURL = `${baseUrl}/zenodo?doi=`;
     this.headers = {
       Accept: "application/x-bibtex",
     };

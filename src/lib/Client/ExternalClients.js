@@ -10,10 +10,10 @@ class ExternalRESTClients {
       return ExternalRESTClients._instance;
     }
     ExternalRESTClients._instance = this;
-    // this.doiBaseURL = "https://dx.doi.org/";
+    this.doiBaseURL = "https://dx.doi.org/";
     // this.doiBaseURL = "/doi-api/";
-    const baseUrl = import.meta.env.VITE_API_ENDPOINT.replace(/\/$/, "");
-    this.doiBaseURL = `${baseUrl}/zenodo?doi=`;
+    this.baseUrl = import.meta.env.VITE_API_ENDPOINT.replace(/\/$/, "");
+    // this.doiBaseURL = `${baseUrl}/zenodo?doi=`;
     this.headers = {
       Accept: "application/x-bibtex",
     };
@@ -25,14 +25,37 @@ class ExternalRESTClients {
       "https://api.ror.org/v2/organizations?query=";
   }
 
+  // async getDOI(doi) {
+  //   let localHeaders = this.headers;
+  //   localHeaders["Accept"] = "application/json";
+  //   const targetUrl = this.doiBaseURL + doi;
+  //   const request = {
+  //     url: targetUrl,
+  //     headers: localHeaders,
+  //   };
+  //   let response = await this.executeQuery(request);
+  //   return response.data;
+  // }
+
   async getDOI(doi) {
-    let localHeaders = this.headers;
-    localHeaders["Accept"] = "application/json";
-    const targetUrl = this.doiBaseURL + doi;
+    // Point this to your Rails backend route instead of dx.doi.org.
+    // Ensure the route matches your setup (e.g., it might be '/api/zenodo' or '/zenodo')
+    let user = JSON.parse(localStorage.getItem("user"));
+    let token;
+    if (user) {
+      token = user.credentials.token;
+    }
+
+    const targetUrl = `${this.baseUrl}/zenodo?doi=${encodeURIComponent(doi)}`;
+
     const request = {
       url: targetUrl,
-      headers: localHeaders,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     };
+
     let response = await this.executeQuery(request);
     return response.data;
   }
@@ -87,7 +110,6 @@ class ExternalRESTClients {
   async executeQuery(query) {
     try {
       const response = await axios.get(query.url, { headers: query.headers });
-
       // Check if we got HTML instead of JSON
       const contentType = response.headers["content-type"] || "";
       if (contentType.includes("text/html")) {

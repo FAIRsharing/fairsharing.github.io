@@ -562,30 +562,6 @@ export default {
             } else {
               this.errors.doi = true;
             }
-          } else if (
-            !isEmpty(dataPublication) &&
-            dataPublication.metadata === undefined
-          ) {
-            this.newPublication.journal =
-              dataPublication["container-title-short"] ||
-              dataPublication["container-title"] ||
-              dataPublication["title"];
-            this.newPublication.title = dataPublication["title"];
-            this.newPublication.doi = dataPublication["DOI"];
-            this.newPublication.url = dataPublication["URL"];
-            if (!isEmpty(dataPublication.issued)) {
-              this.newPublication.year = Number(
-                dataPublication.issued["date-parts"][0],
-              );
-            }
-
-            let authors = [];
-            dataPublication.author.forEach(function (a) {
-              authors.push(a.family + ", " + a.given + "; ");
-            });
-            this.newPublication.authors = authors.join("");
-            this.newPublication.isCitation = false;
-            this.openEditor = true;
           } else {
             /* v8 ignore start */
             // TODO: Add a query to osf.io here:

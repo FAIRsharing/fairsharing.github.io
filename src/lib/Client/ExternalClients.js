@@ -10,10 +10,7 @@ class ExternalRESTClients {
       return ExternalRESTClients._instance;
     }
     ExternalRESTClients._instance = this;
-    this.doiBaseURL = "https://dx.doi.org/";
-    // this.doiBaseURL = "/doi-api/";
     this.baseUrl = import.meta.env.VITE_API_ENDPOINT.replace(/\/$/, "");
-    // this.doiBaseURL = `${baseUrl}/zenodo?doi=`;
     this.headers = {
       Accept: "application/x-bibtex",
     };
@@ -25,18 +22,6 @@ class ExternalRESTClients {
       "https://api.ror.org/v2/organizations?query=";
   }
 
-  // async getDOI(doi) {
-  //   let localHeaders = this.headers;
-  //   localHeaders["Accept"] = "application/json";
-  //   const targetUrl = this.doiBaseURL + doi;
-  //   const request = {
-  //     url: targetUrl,
-  //     headers: localHeaders,
-  //   };
-  //   let response = await this.executeQuery(request);
-  //   return response.data;
-  // }
-
   async getDOI(doi) {
     // Point this to your Rails backend route instead of dx.doi.org.
     // Ensure the route matches your setup (e.g., it might be '/api/zenodo' or '/zenodo')
@@ -45,9 +30,7 @@ class ExternalRESTClients {
     if (user) {
       token = user.credentials.token;
     }
-
     const targetUrl = `${this.baseUrl}/zenodo?doi=${encodeURIComponent(doi)}`;
-
     const request = {
       url: targetUrl,
       headers: {

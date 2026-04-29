@@ -71,7 +71,9 @@ describe("RESTClient", () => {
     RestStub = sinon.stub(axios, "get");
     const mockData = { id: "123", name: "Test Data" };
     RestStub.resolves({
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+      },
       data: mockData,
     });
 
@@ -80,5 +82,49 @@ describe("RESTClient", () => {
     // On success, your function returns the whole response object
     expect(resp.data).toEqual(mockData);
     expect(resp.data.isError).toBeUndefined();
+  });
+
+  it("getDOI returns data and sets Authorization header when user exists in localStorage", async () => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ credentials: { token: "123" } }),
+    );
+
+    RestStub.restore();
+    RestStub = sinon.stub(axios, "get");
+    const mockData = { id: "zenodo-123", title: "Test Dataset" };
+    RestStub.resolves({
+      headers: { "content-type": "application/json" },
+      data: mockData,
+    });
+
+    sinon.spy(client, "executeQuery");
+    let resp = await client.getDOI("10.5281/zenodo.12345");
+    expect(resp).toEqual(mockData);
+    const requestArgs = client.executeQuery.firstCall.args[0];
+    expect(requestArgs.headers.Authorization).toBe("Bearer 123");
+    expect(requestArgs.headers.Accept).toBe("application/json");
+    expect(requestArgs.url).toContain("zenodo?doi=10.5281%2Fzenodo.12345");
+    client.executeQuery.restore();
+    localStorage.clear();
+  });
+
+  it("getPMID returns data and calls the correct URL", async () => {
+    RestStub.restore();
+    RestStub = sinon.stub(axios, "get");
+    const mockData = { pmid: "12345", title: "Medical Study" };
+    RestStub.resolves({
+      headers: { "content-type": "application/json" },
+      data: mockData,
+    });
+    sinon.spy(client, "executeQuery");
+    const testId = "12345";
+    let resp = await client.getPMID(testId);
+    expect(resp).toEqual(mockData);
+
+    const requestArgs = client.executeQuery.firstCall.args[0];
+    expect(requestArgs.url).toBe(client.pmidBaseURL + testId);
+    expect(requestArgs.headers.Accept).toBe("application/json");
+    client.executeQuery.restore();
   });
 });

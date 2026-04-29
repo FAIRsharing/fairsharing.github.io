@@ -1,6 +1,2 @@
 # Netlify settings for single-page application
-# 1. Specific rules first
-/doi-api/* https://dx.doi.org/:splat  200!
-
-# 2. Catch-all for SPA routing last
-/* /index.html               200
+/*    /index.html   200

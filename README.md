@@ -13,16 +13,19 @@
 Welcome to the new FAIRsharing.org website.
 
 ## Compiles and hot-reloads for development
+
 ```
-npm run serve
+npm run dev
 ```
 
-## Test with vue-cli & generate coverage
+## Test with vitest & generate coverage
+
 ```
-npm run test:unit
+npm run test:ui
 ```
 
 ## Generate the documentation locally
+
 ```
 npm run doc:full
 ```

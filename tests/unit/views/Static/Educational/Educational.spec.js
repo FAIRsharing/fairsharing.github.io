@@ -10,16 +10,33 @@ let $route = {
   hash: "#faq9-3",
 };
 
+const $router = { replace: vi.fn() };
+
 const originalClipboard = global.navigator.clipboard;
+
+const vSafeHtml = {
+  mounted(el, binding) {
+    el.innerHTML = binding.value;
+  },
+};
 
 describe("Educational.vue", function () {
   let wrapper;
 
   beforeEach(() => {
+    vi.clearAllMocks();
     wrapper = shallowMount(Educational, {
-      vuetify,
-      mocks: { $route },
-      stubs: ["router-link"],
+      global: {
+        plugins: [vuetify],
+        directives: {
+          "safe-html": vSafeHtml,
+        },
+        mocks: {
+          $route,
+          $router,
+        },
+        stubs: ["router-link"],
+      },
     });
     const mockClipboard = {
       writeText: vi.fn(),
@@ -99,5 +116,14 @@ describe("Educational.vue", function () {
     expect(wrapper.vm.infographicPopup.data).toStrictEqual(selectedInfoGraphic);
     expect(wrapper.vm.infographicPopup.show).toBe(true);
     expect(wrapper.vm.infographicPopup.loading).toBe(true);
+  });
+
+  it("can check closeDialog method", () => {
+    wrapper.vm.infographicPopup.show = true;
+    wrapper.vm.infographicPopup.data = { some: "data" };
+    wrapper.vm.closeDialog();
+    expect(wrapper.vm.infographicPopup.data).toStrictEqual({});
+    expect(wrapper.vm.infographicPopup.show).toBe(false);
+    expect(wrapper.vm.$router.replace).toHaveBeenCalledWith({ hash: "" });
   });
 });

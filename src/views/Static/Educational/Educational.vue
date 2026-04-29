@@ -410,7 +410,6 @@ export default {
       let _module = this;
       _module.infographicPopup.data = {};
       _module.infographicPopup.show = false;
-      _module.infographicPopup.show = false;
       _module.$router.replace({ hash: "" });
     },
   },

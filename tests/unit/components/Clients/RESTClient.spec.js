@@ -1,21 +1,19 @@
-/* eslint-env jest */
-
 import Client from "@/lib/Client/RESTClient.js";
 
 const sinon = require("sinon");
 describe("RESTClient", () => {
   let client;
   let dataStub = { data: "testData" };
-  let stub = sinon.stub(Client.prototype, "executeQuery");
+  let stub;
 
-  beforeAll(() => {
+  beforeEach(() => {
+    stub = sinon.stub(Client.prototype, "executeQuery");
     stub.withArgs(sinon.match.any).returns(dataStub);
     client = new Client();
   });
-  afterAll(() => {
-    if (stub) {
-      stub.restore();
-    }
+  afterEach(() => {
+    // Clean up after every test so they don't interfere
+    stub.restore();
   });
 
   it("can be instantiated as a singleton", function () {
@@ -140,9 +138,89 @@ describe("RESTClient", () => {
     console.error.mockRestore();
   });
 
-  it("can set authentication headers correctly", () => {
-    expect(client.auth_headers("fun_token")["Authorization"]).toEqual(
-      "Bearer fun_token",
-    );
+  it("can changeWatcher method for a record", async () => {
+    const recordID = 123;
+    const operation = "watch";
+    const userToken = "fake-user-token";
+    let resp = await client.changeWatcher(recordID, operation, userToken);
+    expect(resp).toBe("testData");
+    const requestArgs = stub.lastCall.args[0];
+    expect(requestArgs.method).toBe("post");
+    expect(requestArgs.baseURL).toContain("/fairsharing_records/watch");
+    expect(requestArgs.data).toEqual({
+      record_id: recordID,
+      operation: operation,
+    });
+    expect(requestArgs.headers).toBeDefined();
+  });
+
+  it("can createPublication method", async () => {
+    const publicationData = {
+      title: "Mapping the Genome",
+      authors: "Jane Doe",
+    };
+    const userToken = "fake-token-456";
+    let resp = await client.createPublication(publicationData, userToken);
+    expect(resp).toBe("testData");
+
+    // 2. Verify the request configuration passed to executeQuery
+    const requestArgs = stub.lastCall.args[0];
+    expect(requestArgs.method).toBe("post");
+    expect(requestArgs.baseURL).toContain("/publications");
+    expect(requestArgs.data).toEqual({
+      publication: publicationData,
+    });
+    expect(requestArgs.headers).toBeDefined();
+  });
+
+  it("can editPublication method", async () => {
+    const publicationData = {
+      id: 1,
+      title: "Mapping the Genome",
+      authors: "Jane Doe",
+    };
+    const userToken = "fake-token-456";
+    let resp = await client.editPublication(publicationData, userToken);
+    expect(resp).toBe("testData");
+
+    // 2. Verify the request configuration passed to executeQuery
+    const requestArgs = stub.lastCall.args[0];
+    expect(requestArgs.method).toBe("put");
+    expect(requestArgs.baseURL).toContain("/publications/1");
+    expect(requestArgs.data).toEqual({
+      publication: publicationData,
+    });
+    expect(requestArgs.headers).toBeDefined();
+  });
+
+  it("can save relations when relations are provided", async () => {
+    const options = {
+      target: "123",
+      token: "fake-token",
+      relations: [{ id: 1, type: "related_to" }],
+    };
+    let resp = await client.saveRelations(options);
+    expect(resp).toBe("testData");
+    const requestArgs = stub.lastCall.args[0];
+    expect(requestArgs.method).toBe("put");
+    expect(requestArgs.baseURL).toContain("/fairsharing_records/123");
+    expect(
+      requestArgs.data.fairsharing_record.record_associations_attributes,
+    ).toEqual(options.relations);
+  });
+
+  it("returns an empty object and does not execute query if relations are empty", async () => {
+    const options = {
+      target: "123",
+      token: "fake-token",
+      relations: [], // Empty array
+    };
+
+    // Reset stub tracking to make sure we know if it was called during this test
+    stub.resetHistory();
+    let resp = await client.saveRelations(options);
+    //Verify it returns {} as per the "if" logic
+    expect(resp).toEqual({});
+    expect(stub.called).toBe(false);
   });
 });

@@ -10,7 +10,7 @@ class ExternalRESTClients {
       return ExternalRESTClients._instance;
     }
     ExternalRESTClients._instance = this;
-    this.doiBaseURL = "https://dx.doi.org/";
+    this.baseUrl = import.meta.env.VITE_API_ENDPOINT;
     this.headers = {
       Accept: "application/x-bibtex",
     };
@@ -23,12 +23,22 @@ class ExternalRESTClients {
   }
 
   async getDOI(doi) {
-    let localHeaders = this.headers;
-    localHeaders["Accept"] = "application/json";
+    // Point this to your Rails backend route instead of dx.doi.org.
+    // Ensure the route matches your setup (e.g., it might be '/api/zenodo' or '/zenodo')
+    let user = JSON.parse(localStorage.getItem("user"));
+    let token;
+    if (user) {
+      token = user.credentials.token;
+    }
+    const targetUrl = `${this.baseUrl}/zenodo?doi=${encodeURIComponent(doi)}`;
     const request = {
-      url: this.doiBaseURL + doi,
-      headers: localHeaders,
+      url: targetUrl,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     };
+
     let response = await this.executeQuery(request);
     return response.data;
   }
@@ -82,9 +92,27 @@ class ExternalRESTClients {
    */
   async executeQuery(query) {
     try {
-      return await axios.get(query.url, { headers: query.headers });
+      const response = await axios.get(query.url, { headers: query.headers });
+      // Check if we got HTML instead of JSON
+      const contentType = response.headers["content-type"] || "";
+      if (contentType.includes("text/html")) {
+        throw new Error(
+          "Expected JSON but received HTML (Website instead of API)",
+        );
+      }
+      // Check if the data is empty or generic error-like HTML
+      if (!response.data || response.data.length === 0) {
+        throw new Error("No data returned from the source");
+      }
+      return response;
     } catch (e) {
-      return { data: { error: e } };
+      // This will now catch both Network/CORS errors AND the manual HTML error above
+      return {
+        data: {
+          error: e.message || e,
+          isError: true,
+        },
+      };
     }
   }
 }

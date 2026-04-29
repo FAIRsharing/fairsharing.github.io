@@ -326,7 +326,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import Alerts from "@/components/Editor/Alerts";
@@ -573,7 +573,9 @@ export default {
       } else {
         /* v8 ignore next 2 */
         this.newPublication.journal =
-          data["container-title-short"] || data["container-title"];
+          data["container-title-short"] ||
+          data["container-title"] ||
+          data["title"];
         this.newPublication.doi = data["DOI"];
         this.newPublication.title = data.title;
         this.newPublication.url = data["URL"];
@@ -585,6 +587,8 @@ export default {
             dateParts = data["created"]["date-parts"][0].toString();
           }
           this.newPublication.year = Number(dateParts.split(",")[0]);
+        } else if (!isEmpty(data.issued)) {
+          this.newPublication.year = Number(data.issued["date-parts"][0]);
         }
         let authors = [];
         data.author.forEach(function (a) {

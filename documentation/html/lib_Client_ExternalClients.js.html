@@ -103,7 +103,7 @@ class ExternalRESTClients {
       return ExternalRESTClients._instance;
     }
     ExternalRESTClients._instance = this;
-    this.baseUrl = import.meta.env.VITE_API_ENDPOINT.replace(/\/$/, "");
+    this.baseUrl = import.meta.env.VITE_API_ENDPOINT;
     this.headers = {
       Accept: "application/x-bibtex",
     };

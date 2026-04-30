@@ -16,6 +16,7 @@
     <Jumbotron />
     <PublicMessages />
     <router-view class="min-height-70vh" />
+    <IntellicDoc />
     <FooterComp />
   </v-app>
 </template>
@@ -28,6 +29,7 @@ import FooterComp from "@/components/Navigation/Footer";
 import HeaderComp from "@/components/Navigation/Header";
 import Jumbotron from "@/components/Navigation/Jumbotron";
 import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
+import IntellicDoc from "@/components/Widgets/IntelliDoc";
 
 export default {
   name: "App2",
@@ -37,6 +39,7 @@ export default {
     FooterComp,
     HeaderComp,
     Jumbotron,
+    IntellicDoc,
   },
   data() {
     return {

@@ -38,6 +38,7 @@
           <b class="width-200 text-capitalize">{{
             setTitle(cleanString(key))
           }}</b>
+
           <div
             v-safe-html="toHyperLink(item[key])"
             class="d-flex full-width ml-md-12 ml-13"
@@ -86,28 +87,27 @@ export default {
     },
     getUpdatedTypeTitle() {
       switch (this.getCurrentKey) {
-      case "data_curation":
-        return "Steps";
-      case "data_deposition_condition":
-        return "Restrictions";
-      default:
-        return "Type";
+        case "data_curation":
+          return "Steps";
+        case "data_deposition_condition":
+          return "Restrictions";
+        default:
+          return "Type";
       }
     },
     getUpdatedNameTitle() {
       switch (this.getCurrentKey) {
-      case "resource_sustainability":
-        return "Plan";
-      default:
-        return "Name";
+        case "resource_sustainability":
+          return "Plan";
+        default:
+          return "Name";
       }
     },
     getDescription(field) {
       let _module = this;
       if (field === "head") {
         return _module.currentTooltips["description"] || false;
-      }
-      else if (_module.currentTooltips["properties"] !== undefined) {
+      } else if (_module.currentTooltips["properties"] !== undefined) {
         if (_module.currentTooltips["properties"][field] !== undefined) {
           if (_module.currentTooltips["properties"][field]["description"]) {
             return _module.currentTooltips["properties"][field]["description"];

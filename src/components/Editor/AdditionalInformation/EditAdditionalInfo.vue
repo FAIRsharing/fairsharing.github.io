@@ -94,8 +94,18 @@
                           ) in item"
                           :key="'arrayFieldSubField_' + subfieldIndex"
                         >
-                          <b>{{ cleanString(subfieldName).toUpperCase() }}: </b>
-                          {{ subField }}
+                          <span v-if="subfieldName === 'in_champion_registry'">
+                            <b
+                              >{{ cleanString(subfieldName).toUpperCase() }}:
+                            </b>
+                            <span>{{ subField ? "Yes" : "No" }}</span>
+                          </span>
+                          <span v-else>
+                            <b
+                              >{{ cleanString(subfieldName).toUpperCase() }}:
+                            </b>
+                            {{ subField }}
+                          </span>
                         </div>
                       </v-card-text>
                       <v-card-actions>
@@ -104,6 +114,7 @@
                           class="bg-success"
                           icon
                           size="small"
+                          variant="elevated"
                           @click="
                             showOverlay(
                               itemIndex,
@@ -124,6 +135,7 @@
                           class="bg-error"
                           icon
                           size="small"
+                          variant="elevated"
                           @click="removeItem(fieldName, itemIndex)"
                         >
                           <v-icon size="small"> fas fa-trash </v-icon>
@@ -272,7 +284,7 @@
                     {{ overlay.template[fieldName].description }}
                   </v-tooltip>
                   <v-text-field
-                    v-if="!field.enum"
+                    v-if="!field.enum && field.type === 'string'"
                     v-model="overlay.fields[fieldName]"
                     :label="fieldName"
                     :rules="rules(fieldName, overlay.required)"
@@ -280,6 +292,19 @@
                     color="primary"
                     variant="outlined"
                   />
+
+                  <div
+                    v-else-if="field.type === 'boolean'"
+                    class="d-flex align-center"
+                  >
+                    <v-checkbox
+                      v-model="overlay.fields[fieldName]"
+                      hide-details
+                    />
+                    <span class="text-capitalize">{{
+                      fieldName.replace(/_/g, " ")
+                    }}</span>
+                  </div>
                   <v-autocomplete
                     v-else
                     v-model="overlay.fields[fieldName]"
@@ -461,7 +486,11 @@ export default {
         fields: {},
       };
       Object.keys(template).forEach((field) => {
-        this.overlay.fields[field] = null;
+        if (field === "in_champion_registry") {
+          this.overlay.fields[field] = false;
+        } else {
+          this.overlay.fields[field] = "";
+        }
       });
       /* v8 ignore start */
       this.$nextTick(() => {
@@ -557,7 +586,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .iconReposition {
   position: relative;
   top: -2px;

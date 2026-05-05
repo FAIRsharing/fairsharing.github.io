@@ -33,7 +33,7 @@ describe("stringUtils.js", function () {
     expect(
       stringUtils.methods.toHyperLink("link to https://sirwilliamhope.org"),
     ).toBe(
-      "link to <a href='https://sirwilliamhope.org' target='_blank'>https://sirwilliamhope.org</a>",
+      'link to <a href="https://sirwilliamhope.org" target="_blank" rel="noopener noreferrer">https://sirwilliamhope.org</a>',
     );
   });
 });

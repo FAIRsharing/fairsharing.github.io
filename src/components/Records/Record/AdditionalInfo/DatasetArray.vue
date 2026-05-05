@@ -40,6 +40,13 @@
           }}</b>
 
           <div
+            v-if="typeof item[key] === 'boolean'"
+            class="d-flex full-width ml-md-12 ml-13"
+          >
+            {{ item[key] ? "Yes" : "No" }}
+          </div>
+          <div
+            v-else
             v-safe-html="toHyperLink(item[key])"
             class="d-flex full-width ml-md-12 ml-13"
           />

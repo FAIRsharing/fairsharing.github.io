@@ -23,6 +23,8 @@ const stringUtils = {
           pattern1,
           '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
         );
+      } else {
+        link = str;
       }
       return link;
     },

@@ -248,102 +248,96 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-    <v-fade-transition>
-      <div>
-        <v-overlay
-          :absolute="false"
-          :model-value="overlay.show"
-          class="align-center justify-center"
-          opacity="0.8"
-        >
-          <v-card width="800px">
-            <v-form
-              id="editAdditionalInformationOverlay"
-              ref="editAdditionalInformationOverlay"
-              v-model="subFormValid"
-            >
-              <v-card-title class="bg-green text-white">
-                Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
-              </v-card-title>
-              <v-card-text class="pt-4">
+    <div>
+      <v-overlay
+        v-model="overlay.show"
+        :absolute="false"
+        class="align-center justify-center"
+        close-on-back
+        opacity="0.8"
+      >
+        <v-card width="800px">
+          <v-form
+            id="editAdditionalInformationOverlay"
+            ref="editAdditionalInformationOverlay"
+            v-model="subFormValid"
+          >
+            <v-card-title class="bg-green text-white">
+              Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
+            </v-card-title>
+            <v-card-text class="pt-4">
+              <div
+                v-for="(field, fieldName, fieldIndex) in overlay.template"
+                :key="'templateField_' + fieldIndex"
+                class="d-flex flex-row reposition"
+              >
+                <v-tooltip
+                  v-if="overlay.template[fieldName].description"
+                  class="d-inline-block mr-2"
+                  location="bottom"
+                >
+                  <template #activator="{ props }">
+                    <v-icon class="mt-5 mr-3" v-bind="props">
+                      fas fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ overlay.template[fieldName].description }}
+                </v-tooltip>
                 <div
-                  v-for="(field, fieldName, fieldIndex) in overlay.template"
-                  :key="'templateField_' + fieldIndex"
-                  class="d-flex flex-row reposition"
+                  v-if="field.type === 'boolean'"
+                  class="d-flex align-center"
                 >
-                  <v-tooltip
-                    v-if="overlay.template[fieldName].description"
-                    class="d-inline-block mr-2"
-                    location="bottom"
-                  >
-                    <template #activator="{ props }">
-                      <v-icon class="mt-5 mr-3" v-bind="props">
-                        fas fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ overlay.template[fieldName].description }}
-                  </v-tooltip>
-                  <v-text-field
-                    v-if="!field.enum && field.type === 'string'"
+                  <v-checkbox
                     v-model="overlay.fields[fieldName]"
-                    :label="fieldName"
-                    :rules="rules(fieldName, overlay.required)"
-                    class="field mt-2"
-                    color="primary"
-                    variant="outlined"
+                    hide-details
                   />
-
-                  <div
-                    v-else-if="field.type === 'boolean'"
-                    class="d-flex align-center"
-                  >
-                    <v-checkbox
-                      v-model="overlay.fields[fieldName]"
-                      hide-details
-                    />
-                    <span class="text-capitalize">{{
-                      fieldName.replace(/_/g, " ")
-                    }}</span>
-                  </div>
-                  <v-autocomplete
-                    v-else
-                    v-model="overlay.fields[fieldName]"
-                    :items="field.enum"
-                    :label="fieldName"
-                    :rules="rules(fieldName, overlay.required)"
-                    class="field"
-                    color="primary"
-                    variant="outlined"
-                  />
+                  <span class="text-capitalize">{{
+                    fieldName.replace(/_/g, " ")
+                  }}</span>
                 </div>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  :disabled="!subFormValid"
-                  class="bg-success"
-                  variant="elevated"
-                  @click="addItem()"
-                >
-                  Submit item
-                </v-btn>
-                <v-btn
-                  class="bg-error"
-                  variant="elevated"
-                  @click="hideOverlay()"
-                >
-                  Cancel
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-        </v-overlay>
-      </div>
-    </v-fade-transition>
+                <v-text-field
+                  v-else-if="!field.enum"
+                  v-model="overlay.fields[fieldName]"
+                  :label="fieldName"
+                  :rules="rules(fieldName, overlay.required)"
+                  class="field mt-2"
+                  color="primary"
+                  variant="outlined"
+                />
+
+                <v-autocomplete
+                  v-else
+                  v-model="overlay.fields[fieldName]"
+                  :items="field.enum"
+                  :label="fieldName"
+                  :rules="rules(fieldName, overlay.required)"
+                  class="field"
+                  color="primary"
+                  variant="outlined"
+                />
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                :disabled="!subFormValid"
+                class="bg-success"
+                variant="elevated"
+                @click="addItem()"
+              >
+                Submit item
+              </v-btn>
+              <v-btn class="bg-error" variant="elevated" @click="hideOverlay()">
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card>
+      </v-overlay>
+    </div>
   </v-form>
 </template>
 
 <script>
-//import { isEqual } from "lodash"
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 import sortObj from "@/utils/generalUtils";

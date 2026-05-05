@@ -4,11 +4,11 @@
       (allowedFields.properties || getField('metadata').deprecation_reason) &&
       finalDataItemsHasLength
     "
-    class="pa-4 d-flex flex-column overflow-initial"
-    border
     :color="backColor"
-    tile
+    border
+    class="pa-4 d-flex flex-column overflow-initial"
     elevation="3"
+    tile
   >
     <!-- Additional Information -->
     <SectionTitle title="Additional Information" />
@@ -30,10 +30,10 @@
     <dataset-array
       v-for="(item, key, index) in finalData"
       :key="item.name + '_' + index + '_' + key"
-      :title="key"
       :current-field="finalData[key]"
-      :current-tooltips="allowedFields['properties'][key]"
       :current-key="key"
+      :current-tooltips="allowedFields['properties'][key]"
+      :title="key"
     />
   </v-card>
 </template>

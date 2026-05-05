@@ -126,7 +126,7 @@ describe("EditAdditionalInfo.vue", function () {
     wrapper.vm.createItem("fieldName", template);
     expect(wrapper.vm.overlay.template).toStrictEqual(template);
     expect(JSON.stringify(wrapper.vm.overlay.fields)).toStrictEqual(
-      JSON.stringify({ url: null, anotherField: null }),
+      JSON.stringify({ url: "", anotherField: "" }),
     );
   });
 

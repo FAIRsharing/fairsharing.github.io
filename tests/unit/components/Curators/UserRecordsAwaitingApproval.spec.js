@@ -161,18 +161,6 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
   });
 
-  // it("can update a record", async () => {
-  //   restStub = sinon.stub(Client.prototype, "executeQuery");
-  //   restStub.returns({ data: { error: false } });
-  //   await wrapper.vm.saveProcessingNotes(99, "notes of text");
-  //   // TODO: Check that the ProcessingNotes are updated
-  //   restStub.restore();
-  //   restStub = sinon.stub(Client.prototype, "executeQuery");
-  //   restStub.returns({ data: { error: { response: "Im an error" } } });
-  //   await wrapper.vm.saveProcessingNotes(99, "notes of text");
-  //   expect(wrapper.vm.error.recordID).toBe(99);
-  // });
-
   it("can assign a curator to a record", async () => {
     expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("Terazu");
 

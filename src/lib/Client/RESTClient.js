@@ -403,7 +403,6 @@ class RESTClient {
    */
   // TODO: Coverage steadfastly refuses to see this even though it is mocked and called
   // in a test (see Record.spec.js).
-  /* istanbul ignore next */
   async removeMaintainer(recordID, userToken) {
     const request = {
       method: "post",
@@ -424,7 +423,6 @@ class RESTClient {
    */
   // TODO: Mocking this in a test (5c40b02ba3d78a49a088ab6dd5145c9ea10ea24b)
   // caused it to no longer be covered!
-  /* istanbul ignore next */
   async changeWatcher(recordID, operation, userToken) {
     const request = {
       method: "post",
@@ -824,7 +822,6 @@ class RESTClient {
    */
   // Coverage steadfastly refuses to see this even though it is mocked and called
   // in a test (see EditPublicProfile.spec.js).
-  /* istanbul ignore next */
   async getUserRoles(userToken) {
     const request = {
       method: "get",
@@ -1037,7 +1034,6 @@ class RESTClient {
    * @returns {Promise}
    */
   /* Ignoring because of 401 access denied in test case */
-  /* istanbul ignore next */
   async saveSearch(saveSearchObj, jwt) {
     let _client = this;
     const request = {
@@ -1057,7 +1053,6 @@ class RESTClient {
    * @returns {Promise}
    */
   /* Ignoring because of 401 access denied in test case */
-  /* istanbul ignore next */
   async deleteSavedSearch(savedSearchId, jwt) {
     let _client = this;
     const request = {
@@ -1077,7 +1072,6 @@ class RESTClient {
    * @returns {Promise}
    */
   /* Ignoring because of 401 access denied in test case */
-  /* istanbul ignore next */
   async updateSaveSearch(saveSearchId, saveSearchObj, jwt) {
     let _client = this;
     const request = {
@@ -1088,6 +1082,68 @@ class RESTClient {
     };
     let response = await _client.executeQuery(request);
     return response.data;
+  }
+
+  /**
+   * Create processing note of the given record
+   * @param noteText {String} Processing Notes
+   * @param recordId {Number} FAIRsharing record Id
+   * @param jwt {String} the user token
+   * @return {Promise<*>}
+   */
+  async createProcessingNotes(noteText, recordId, jwt) {
+    const request = {
+      method: "post",
+      baseURL: this.baseURL + "/processing_notes/",
+      headers: this.auth_headers(jwt),
+      data: {
+        processing_note: {
+          note: noteText,
+          fairsharing_record_id: recordId,
+        },
+      },
+    };
+    let response = await this.executeQuery(request);
+    return response.data;
+  }
+
+  /**
+   * Update processing note of the given record
+   * @param noteId {Number} Processing Note Id
+   * @param noteText {String} Processing Notes
+   * @param recordId {Number} FAIRsharing record Id
+   * @param jwt {String} the user token
+   * @return {Promise<*>}
+   */
+  async updateProcessingNotes(noteId, noteText, recordId, jwt) {
+    const request = {
+      method: "put",
+      baseURL: this.baseURL + "/processing_notes/" + noteId,
+      headers: this.auth_headers(jwt),
+      data: {
+        processing_note: {
+          note: noteText,
+          fairsharing_record_id: recordId,
+        },
+      },
+    };
+    let response = await this.executeQuery(request);
+    return response.data;
+  }
+
+  /**
+   * Delete processing note of the given record
+   * @param noteId {Number} Processing Note Id
+   * @param jwt {String} the user token
+   * @return {Promise<*>}
+   */
+  async deleteProcessingNote(noteId, jwt) {
+    const request = {
+      method: "delete",
+      baseURL: this.baseURL + "/processing_notes/" + noteId,
+      headers: this.auth_headers(jwt),
+    };
+    return await this.executeQuery(request);
   }
 }
 

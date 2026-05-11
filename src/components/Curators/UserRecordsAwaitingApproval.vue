@@ -1,4 +1,16 @@
 <template>
+  <v-fade-transition>
+    <div>
+      <v-overlay
+        v-model="loading"
+        :absolute="false"
+        class="align-center justify-center"
+        opacity="0.8"
+      >
+        <Loaders />
+      </v-overlay>
+    </div>
+  </v-fade-transition>
   <v-card class="mb-2">
     <v-card-text v-if="approvalRequiredProcessed">
       <v-card-title
@@ -122,12 +134,31 @@
                       />
                     </v-card-text>
                     <v-card-actions>
+                      <v-btn
+                        v-if="item.processingNoteId"
+                        color="red"
+                        size="small"
+                        slim
+                        variant="elevated"
+                        @click="
+                          deleteProcessingNote(item);
+                          isActive.value = false;
+                        "
+                      >
+                        Delete
+                      </v-btn>
                       <v-spacer />
                       <v-btn
-                        color="primary"
-                        variant="text"
+                        color="success"
+                        size="small"
+                        slim
+                        variant="elevated"
                         @click="
-                          saveProcessingNotes(item.id, item.processingNotes);
+                          saveProcessingNotes(
+                            item.id,
+                            item.processingNotes,
+                            item,
+                          );
                           isActive.value = false;
                         "
                       >
@@ -293,6 +324,7 @@ import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecord
 import getUserApprovalsRequired from "@/lib/GraphClient/queries/curators/getUserApprovalsRequired.json";
 import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
+import Loaders from "@/components/Navigation/Loaders.vue";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -300,6 +332,7 @@ const restClient = new RestClient();
 export default {
   name: "UserRecordsAwaitingApproval",
   components: {
+    Loaders,
     Icon,
   },
   mixins: [formatDate, compareRecordDescUpdate],
@@ -385,7 +418,12 @@ export default {
             recordName: `${rec.name} (${rec.id})`,
             id: rec.id,
             type: rec.type,
-            processingNotes: rec.processingNotes,
+            processingNotes: rec.processingNotes
+              ? rec.processingNotes.note
+              : "",
+            processingNoteId: rec.processingNotes
+              ? rec.processingNotes.id
+              : null,
             hidden: false,
           };
           if (rec.creator) {
@@ -447,26 +485,68 @@ export default {
       this.curatorList.push(object);
     },
 
-    async saveProcessingNotes(idRecord, notesText) {
-      const _module = this;
-      _module.error = {
-        recordID: null,
-        general: null,
-      };
-      let preparedRecord = {
-        processing_notes: "",
-        skip_approval: true,
-      };
-      preparedRecord.processing_notes = notesText;
-      let data = {
-        record: preparedRecord,
-        id: idRecord,
-        token: _module.user().credentials.token,
-      };
-      await _module.updateRecord(data);
-      if (_module.recordUpdate.error) {
-        _module.error.general = _module.recordUpdate.message;
-        _module.error.recordID = idRecord;
+    /**
+     * Create a processing notes for a record
+     * @param idRecord {Number} - FAIRshairing record id
+     * @param notesText {String} - Processing notes text
+     * @return {Promise<void>}
+     */
+    async saveProcessingNotes(idRecord, notesText, item) {
+      const token = this.user().credentials.token;
+      try {
+        if (item.processingNoteId) {
+          this.loading = true;
+          // UPDATE EXISTING
+          await restClient.updateProcessingNotes(
+            item.processingNoteId,
+            notesText,
+            idRecord,
+            token,
+          );
+          this.loading = false;
+        } else {
+          // CREATE NEW
+          this.loading = true;
+          const response = await restClient.createProcessingNotes(
+            notesText,
+            idRecord,
+            token,
+          );
+          // Store the new ID so the next click becomes an "update"
+          const newId = response.data ? response.data.id : response.id;
+          item.processingNoteId = newId;
+          this.loading = false;
+        }
+      } catch (err) {
+        this.loading = false;
+        this.error.general = "Failed to save processing note.";
+        this.error.recordID = idRecord;
+      }
+    },
+    /**
+     * Delete a processing notes for a record
+     * @param item
+     * @return {Promise<void>}
+     */
+    async deleteProcessingNote(item) {
+      if (!item.processingNoteId) {
+        // If no ID exists, it's not in the database, just clear the text
+        item.processingNotes = "";
+        return;
+      }
+
+      try {
+        this.loading = true;
+        const token = this.user().credentials.token;
+        await restClient.deleteProcessingNote(item.processingNoteId, token);
+        // Clear local state
+        item.processingNotes = "";
+        item.processingNoteId = null;
+        this.loading = false;
+      } catch (err) {
+        this.loading = false;
+        this.error.general = "Failed to delete processing note.";
+        this.error.recordID = item.id;
       }
     },
 

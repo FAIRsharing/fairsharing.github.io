@@ -84,5 +84,221 @@ describe("RESTClient.js", function () {
     executeStub.restore();
   });
 
-  // TODO: Perhaps test other functions here...
+  it("can check saveSearch() method", async () => {
+    const saveSearchObj = {
+      name: "Test Search",
+      comments: "test query",
+      user_ids: [1],
+      url: "https://www.example.com",
+    };
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        name: "Test Search",
+        comments: "test query",
+        user_ids: [1],
+        url: "https://www.example.com",
+        creator_id: 1,
+      },
+    };
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.saveSearch(saveSearchObj, jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "post",
+      baseURL: "http://localhost:3000/saved_searches",
+      headers: client.auth_headers(jwt),
+      data: {
+        saved_search: saveSearchObj,
+      },
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check deleteSavedSearch() method", async () => {
+    const saveSearchId = 13;
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      status: 204,
+      statusText: "No Content",
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+
+    const result = await client.deleteSavedSearch(saveSearchId, jwt);
+    expect(executeStub.calledOnce).toBe(true);
+
+    const expectedRequest = {
+      method: "delete",
+      baseURL: `http://localhost:3000/saved_searches/${saveSearchId}`,
+      headers: client.auth_headers(jwt),
+    };
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check updateSaveSearch() method", async () => {
+    const saveSearchId = 13;
+    const saveSearchObj = {
+      name: "Test Search",
+      comments: "test query",
+      user_ids: [1],
+      url: "https://www.example.com",
+    };
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        name: "Test Search",
+        comments: "test query",
+        user_ids: [1],
+        url: "https://www.example.com",
+        creator_id: 1,
+      },
+    };
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.updateSaveSearch(
+      saveSearchId,
+      saveSearchObj,
+      jwt,
+    );
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "put",
+      baseURL: "http://localhost:3000/saved_searches/13",
+      headers: client.auth_headers(jwt),
+      data: {
+        saved_search: saveSearchObj,
+      },
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check createProcessingNotes() method", async () => {
+    const noteText = "This is a test processing note";
+    const recordId = 101;
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        id: 5,
+        note: noteText,
+        fairsharing_record_id: recordId,
+      },
+    };
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.createProcessingNotes(noteText, recordId, jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "post",
+      baseURL: "http://localhost:3000/processing_notes/",
+      headers: client.auth_headers(jwt),
+      data: {
+        processing_note: {
+          note: noteText,
+          fairsharing_record_id: recordId,
+        },
+      },
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+
+    // 4. Cleanup
+    executeStub.restore();
+  });
+
+  it("can check updateProcessingNotes() method", async () => {
+    const noteId = 1;
+    const noteText = "This is a test processing note";
+    const recordId = 101;
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        id: 5,
+        note: noteText,
+        fairsharing_record_id: recordId,
+      },
+    };
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.updateProcessingNotes(
+      noteId,
+      noteText,
+      recordId,
+      jwt,
+    );
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "put",
+      baseURL: "http://localhost:3000/processing_notes/1",
+      headers: client.auth_headers(jwt),
+      data: {
+        processing_note: {
+          note: noteText,
+          fairsharing_record_id: recordId,
+        },
+      },
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check deleteProcessingNote() method", async () => {
+    const noteId = 505;
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      status: 204,
+      statusText: "No Content",
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+
+    const result = await client.deleteProcessingNote(noteId, jwt);
+    expect(result).toStrictEqual(mockResponse);
+    expect(executeStub.calledOnce).toBe(true);
+
+    const expectedRequest = {
+      method: "delete",
+      baseURL: `http://localhost:3000/processing_notes/${noteId}`,
+      headers: client.auth_headers(jwt),
+    };
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
 });

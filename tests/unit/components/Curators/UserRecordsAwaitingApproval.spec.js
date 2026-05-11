@@ -161,17 +161,17 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
   });
 
-  it("can update a record", async () => {
-    restStub = sinon.stub(Client.prototype, "executeQuery");
-    restStub.returns({ data: { error: false } });
-    await wrapper.vm.saveProcessingNotes(99, "notes of text");
-    // TODO: Check that the ProcessingNotes are updated
-    restStub.restore();
-    restStub = sinon.stub(Client.prototype, "executeQuery");
-    restStub.returns({ data: { error: { response: "Im an error" } } });
-    await wrapper.vm.saveProcessingNotes(99, "notes of text");
-    expect(wrapper.vm.error.recordID).toBe(99);
-  });
+  // it("can update a record", async () => {
+  //   restStub = sinon.stub(Client.prototype, "executeQuery");
+  //   restStub.returns({ data: { error: false } });
+  //   await wrapper.vm.saveProcessingNotes(99, "notes of text");
+  //   // TODO: Check that the ProcessingNotes are updated
+  //   restStub.restore();
+  //   restStub = sinon.stub(Client.prototype, "executeQuery");
+  //   restStub.returns({ data: { error: { response: "Im an error" } } });
+  //   await wrapper.vm.saveProcessingNotes(99, "notes of text");
+  //   expect(wrapper.vm.error.recordID).toBe(99);
+  // });
 
   it("can assign a curator to a record", async () => {
     expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("Terazu");
@@ -273,5 +273,108 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(closeSpy).not.toHaveBeenCalled();
     await wrapper.setData({ dialogs: { deleteRecord: false } });
     expect(closeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("updates an existing processing note when processingNoteId is present", async () => {
+    // 1. Setup
+    const updateStub = sinon
+      .stub(Client.prototype, "updateProcessingNotes")
+      .resolves({ data: { success: true } });
+    const item = { processingNoteId: 123 };
+    const idRecord = 99;
+    const notesText = "Updated note content";
+
+    // 2. Execute
+    await wrapper.vm.saveProcessingNotes(idRecord, notesText, item);
+
+    // 3. Assertions
+    expect(updateStub.calledOnce).toBe(true);
+    // Check that it passed the correct ID and Text
+    expect(updateStub.firstCall.args[0]).toBe(123);
+    expect(updateStub.firstCall.args[1]).toBe(notesText);
+    expect(wrapper.vm.loading).toBe(false);
+
+    updateStub.restore();
+  });
+
+  it("creates a new processing note and updates the item ID when processingNoteId is absent", async () => {
+    const newNoteId = 456;
+    const createStub = sinon
+      .stub(Client.prototype, "createProcessingNotes")
+      .resolves({
+        data: { id: newNoteId },
+      });
+    const item = {};
+    const idRecord = 99;
+    const notesText = "Brand new note";
+    await wrapper.vm.saveProcessingNotes(idRecord, notesText, item);
+    expect(createStub.calledOnce).toBe(true);
+    expect(item.processingNoteId).toBe(newNoteId);
+    expect(wrapper.vm.loading).toBe(false);
+    createStub.restore();
+  });
+
+  it("sets error messages when the API call fails", async () => {
+    const createStub = sinon
+      .stub(Client.prototype, "createProcessingNotes")
+      .rejects(new Error("Network Error"));
+    const item = {};
+    const idRecord = 777;
+    wrapper.vm.error.general = "";
+    wrapper.vm.error.recordID = null;
+    await wrapper.vm.saveProcessingNotes(idRecord, "some text", item);
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.error.general).toBe("Failed to save processing note.");
+    expect(wrapper.vm.error.recordID).toBe(idRecord);
+    createStub.restore();
+  });
+
+  it("clears local text and returns early if no processingNoteId exists", async () => {
+    const item = {
+      processingNotes: "some unsaved text",
+      processingNoteId: null,
+    };
+
+    await wrapper.vm.deleteProcessingNote(item);
+
+    expect(item.processingNotes).toBe("");
+    expect(wrapper.vm.loading).toBe(false);
+  });
+
+  it("successfully deletes a note from the database", async () => {
+    const deleteStub = sinon
+      .stub(Client.prototype, "deleteProcessingNote")
+      .resolves({ data: { success: true } });
+    const item = {
+      id: 101,
+      processingNotes: "Existing note text",
+      processingNoteId: 55,
+    };
+    wrapper.vm.loading = false;
+    await wrapper.vm.deleteProcessingNote(item);
+    expect(deleteStub.calledOnce).toBe(true);
+    expect(deleteStub.firstCall.args[0]).toBe(55); // The note ID
+    expect(item.processingNotes).toBe("");
+    expect(item.processingNoteId).toBe(null);
+    expect(wrapper.vm.loading).toBe(false);
+
+    deleteStub.restore();
+  });
+
+  it("handles errors when the delete API call fails", async () => {
+    const deleteStub = sinon
+      .stub(Client.prototype, "deleteProcessingNote")
+      .rejects(new Error("Delete failed"));
+    const item = {
+      id: 202,
+      processingNoteId: 99,
+    };
+    wrapper.vm.error.general = "";
+    wrapper.vm.error.recordID = null;
+    await wrapper.vm.deleteProcessingNote(item);
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.error.general).toBe("Failed to delete processing note.");
+    expect(wrapper.vm.error.recordID).toBe(202);
+    deleteStub.restore();
   });
 });

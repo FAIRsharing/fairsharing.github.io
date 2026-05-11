@@ -486,10 +486,10 @@ export default {
     },
 
     /**
-     * Create a processing notes for a record
+     * Create processing notes for a record
      * @param idRecord {Number} - FAIRshairing record id
      * @param notesText {String} - Processing notes text
-     * @param item {Object} - Processing notes object
+     * @param item {Object} - Record object
      * @return {Promise<void>}
      */
     async saveProcessingNotes(idRecord, notesText, item) {

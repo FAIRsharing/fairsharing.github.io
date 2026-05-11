@@ -963,8 +963,6 @@ class RESTClient {
     return response.data;
   }
 
-  // This is covered in BaseFields.spec.js but doesn't show in coverage.
-  /* istanbul ignore next */
   async clearLogo(id, token) {
     let _client = this;
     const request = {

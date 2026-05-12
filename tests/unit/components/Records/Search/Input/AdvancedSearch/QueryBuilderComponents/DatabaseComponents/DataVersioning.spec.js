@@ -30,9 +30,15 @@ describe("DataVersioning.vue", () => {
 
   describe("Methods & Watchers", () => {
     it("selectedValue() updates itemSelected", () => {
+      const item = [
+        {
+          title: "SOAP",
+          value: "soap",
+        },
+      ];
       wrapper = createWrapper();
-      wrapper.vm.selectedValue(["SOAP"]);
-      expect(wrapper.vm.itemSelected).toStrictEqual(["SOAP"]);
+      wrapper.vm.selectedValue(item);
+      expect(wrapper.vm.itemSelected).toStrictEqual(["soap"]);
     });
 
     it("watches itemSelected and updates itemValue when it changes", async () => {

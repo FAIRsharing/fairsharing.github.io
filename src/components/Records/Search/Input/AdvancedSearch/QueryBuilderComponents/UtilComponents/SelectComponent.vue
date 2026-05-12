@@ -1,18 +1,20 @@
 <template>
   <v-combobox
     v-model="model"
+    :items="formattedItems"
     chips
-    :items="cleanTextList"
-    multiple
-    variant="solo"
+    class="text-capitalize advancedSearchSelect advancedSearchDialogBoxContent"
     clearable
     closable-chips
-    min-height="36px"
-    class="text-capitalize advancedSearchSelect advancedSearchDialogBoxContent"
+    color="primary"
     density="compact"
     flat
     hide-details="auto"
-    color="primary"
+    item-title="title"
+    item-value="value"
+    min-height="36px"
+    multiple
+    variant="solo"
   >
     <!--Chip slot is not required anymore-->
     <!--    <template #chip="data">-->
@@ -30,19 +32,19 @@
     <!--    </template>-->
     <template #chip="{ props, item }">
       <v-chip
-        v-bind="props"
         :text="item.raw.title"
         color="blue"
+        v-bind="props"
         variant="flat"
       ></v-chip>
     </template>
     <!-- Tooltip for the field -->
     <template #prepend>
-      <v-tooltip location="bottom" class="mr-2">
+      <v-tooltip class="mr-2" location="bottom">
         <template #activator="{ props }">
           <v-icon
-            size="x-small"
             class="mr-1 iconStyle text-white opacity-100"
+            size="x-small"
             v-bind="props"
           >
             fas fa-question-circle
@@ -85,8 +87,12 @@ export default {
         this.$emit("input", value);
       },
     },
-    cleanTextList() {
-      return this.itemList.map((item) => capitalize(this.cleanString(item)));
+
+    formattedItems() {
+      return this.itemList.map((item) => ({
+        title: capitalize(this.cleanString(item)),
+        value: item,
+      }));
     },
   },
   methods: {

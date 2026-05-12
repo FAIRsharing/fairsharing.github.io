@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { isBoolean } from "lodash";
+import { isBoolean, isObject } from "lodash";
 import { mapActions, mapGetters } from "vuex";
 
 import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/TooltipComponent.vue";
@@ -289,7 +289,16 @@ export default {
             this.queryString += params["identifier"];
             this.queryString += "=";
             if (Array.isArray(params["value"])) {
-              this.queryString += params["value"].join("+");
+              let valuesArr = [];
+              params["value"].forEach((item) => {
+                if (isObject(item)) {
+                  valuesArr.push(item.value);
+                } else {
+                  valuesArr.push(item);
+                }
+              });
+
+              this.queryString += valuesArr.join("+");
             } else if (params["value"]) {
               this.queryString += params["value"];
             }

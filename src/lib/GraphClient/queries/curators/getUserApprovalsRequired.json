@@ -12,7 +12,10 @@
         "updatedAt",
         "createdAt",
         "type",
-        "processingNotes",
+        {
+          "queryName": "processingNotes",
+          "fields": ["id", "note"]
+        },
         "priority",
         {
           "queryName": "lastEditor",

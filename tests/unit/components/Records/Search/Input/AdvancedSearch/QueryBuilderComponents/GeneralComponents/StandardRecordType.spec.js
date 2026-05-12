@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import StandardRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/StandardRecordType.vue";
+import StandardRecordType
+  from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/StandardRecordType.vue";
 
 vi.mock("@/utils/advancedSearchUtils", () => ({
   recordTypes: {
@@ -94,9 +95,14 @@ describe("StandardRecordType.vue", () => {
 
   describe("Methods", () => {
     it("selectedValue() correctly updates itemSelected", () => {
-      const selection = ["Selected via UI"];
-      wrapper.vm.selectedValue(selection);
-      expect(wrapper.vm.itemSelected).toStrictEqual(selection);
+      const item = [
+        {
+          title: "SOAP",
+          value: "soap",
+        },
+      ];
+      wrapper.vm.selectedValue(item);
+      expect(wrapper.vm.itemSelected).toStrictEqual(["soap"]);
     });
   });
 });

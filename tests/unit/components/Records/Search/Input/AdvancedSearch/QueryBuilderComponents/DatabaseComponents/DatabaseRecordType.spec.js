@@ -94,9 +94,14 @@ describe("DatabaseRecordType.vue", () => {
 
   describe("Methods", () => {
     it("selectedValue() correctly updates itemSelected", () => {
-      const selection = ["Selected via UI"];
-      wrapper.vm.selectedValue(selection);
-      expect(wrapper.vm.itemSelected).toStrictEqual(selection);
+      const item = [
+        {
+          title: "SOAP",
+          value: "soap",
+        },
+      ];
+      wrapper.vm.selectedValue(item);
+      expect(wrapper.vm.itemSelected).toStrictEqual(["soap"]);
     });
   });
 });

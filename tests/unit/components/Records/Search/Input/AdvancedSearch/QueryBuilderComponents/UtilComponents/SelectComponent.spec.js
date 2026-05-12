@@ -68,21 +68,30 @@ describe("SelectComponent.vue", () => {
     });
   });
 
-  describe("Computed Property: cleanTextList", () => {
+  describe("Computed Property: formattedItems", () => {
     it("cleans and capitalizes the itemList prop", () => {
       const wrapper = createWrapper({
         itemList: ["   APPLES   ", "baNAna", " cherries"],
       });
-      expect(wrapper.vm.cleanTextList).toStrictEqual([
-        "Apples",
-        "Banana",
-        "Cherries",
+      expect(wrapper.vm.formattedItems).toStrictEqual([
+        {
+          title: "Apples",
+          value: "   APPLES   ",
+        },
+        {
+          title: "Banana",
+          value: "baNAna",
+        },
+        {
+          title: "Cherries",
+          value: " cherries",
+        },
       ]);
     });
 
     it("returns an empty array if itemList is empty", () => {
       const wrapper = createWrapper();
-      expect(wrapper.vm.cleanTextList).toStrictEqual([]);
+      expect(wrapper.vm.formattedItems).toStrictEqual([]);
     });
   });
 

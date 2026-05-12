@@ -56,8 +56,14 @@ describe("FairassistRecordType.vue", () => {
   });
 
   it("updates itemSelected when selectedValue method is called", () => {
-    wrapper.vm.selectedValue(["Method Selection"]);
-    expect(wrapper.vm.itemSelected).toStrictEqual(["Method Selection"]);
+    const item = [
+      {
+        title: "SOAP",
+        value: "soap",
+      },
+    ];
+    wrapper.vm.selectedValue(item);
+    expect(wrapper.vm.itemSelected).toStrictEqual(["soap"]);
   });
   it("can check v-model integration with SelectComponent", async () => {
     const selectStub = wrapper.findComponent({ name: "SelectComponent" });

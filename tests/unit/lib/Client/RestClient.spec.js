@@ -24,6 +24,144 @@ describe("RESTClient.js", function () {
     expect(response).toStrictEqual([{ id: 1, name: "user" }]);
   });
 
+  it("can check deleteMessage() method", async () => {
+    const messageId = 1;
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      status: 204,
+      statusText: "No Content",
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.deleteMessage(messageId, jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "delete",
+      baseURL: "http://localhost:3000/messages/1",
+      headers: client.auth_headers(jwt),
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check getRecordsWoDOIs() method", async () => {
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        title: "testDOI",
+      },
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.getRecordsWoDOIs(jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "get",
+      baseURL: "http://localhost:3000/files/no_dois",
+      headers: client.auth_headers(jwt),
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check getRecordCreatedByMonth() method", async () => {
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        created_At: "29/03/2026",
+      },
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.getRecordCreatedByMonth(jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "get",
+      baseURL: "http://localhost:3000/files/creation_dates",
+      headers: client.auth_headers(jwt),
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check getEditByMonth() method", async () => {
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        created_At: "29/03/2026",
+      },
+    };
+
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.getEditByMonth(jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "get",
+      baseURL: "http://localhost:3000/files/edit_dates",
+      headers: client.auth_headers(jwt),
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
+  it("can check getZenodoSearch() method", async () => {
+    const text = "This is a zenodo search";
+    const jwt = "mock-jwt-token";
+    const mockResponse = {
+      data: {
+        doi: text,
+      },
+    };
+    const executeStub = sinon
+      .stub(Client.prototype, "executeQuery")
+      .resolves(mockResponse);
+
+    const client = new Client();
+    client.baseURL = "http://localhost:3000";
+    const result = await client.getZenodoSearch(text, jwt);
+    expect(result).toStrictEqual(mockResponse.data);
+    expect(executeStub.calledOnce).toBe(true);
+    const expectedRequest = {
+      method: "post",
+      baseURL: "http://localhost:3000/zenodo",
+      headers: client.auth_headers(jwt),
+      data: {
+        doi: text,
+      },
+    };
+
+    expect(executeStub.firstCall.args[0]).toMatchObject(expectedRequest);
+    executeStub.restore();
+  });
+
   it("can check clearLogo() method", async () => {
     const id = 13;
     const jwt = "mock-jwt-token";

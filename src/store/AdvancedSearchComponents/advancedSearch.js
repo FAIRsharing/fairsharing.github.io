@@ -1,5 +1,5 @@
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
-import { isBoolean } from "lodash";
+import { isBoolean, isObject } from "lodash";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
@@ -53,12 +53,28 @@ const actions = {
               fieldKey === "fairassisttype"
             ) {
               fieldKey = "type";
-              fieldTypeValue.push(params["value"]);
+              let valuesArr = [];
+              params["value"].forEach((item) => {
+                if (isObject(item)) {
+                  valuesArr.push(item.value);
+                } else {
+                  valuesArr.push(item);
+                }
+              });
+              fieldTypeValue.push(valuesArr);
               fieldTypeValue = fieldTypeValue.flatMap((value) => value);
               fieldValue = fieldTypeValue;
             } else {
               if (Array.isArray(params["value"])) {
-                fieldValue = params["value"];
+                let valuesArr = [];
+                params["value"].forEach((item) => {
+                  if (isObject(item)) {
+                    valuesArr.push(item.value);
+                  } else {
+                    valuesArr.push(item);
+                  }
+                });
+                fieldValue = valuesArr;
               } else if (isBoolean(params["value"])) {
                 fieldValue = params["value"];
               } else if (params["value"]) {

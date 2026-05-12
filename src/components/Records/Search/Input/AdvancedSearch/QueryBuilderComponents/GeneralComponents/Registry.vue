@@ -1,8 +1,8 @@
 <template>
   <SelectComponent
     v-model="model"
-    :item-value="itemValue"
     :item-list="registryTypes"
+    :item-value="itemValue"
     :tool-tip-text="toolTipText"
     @input="selectedValue"
   />
@@ -60,7 +60,8 @@ export default {
   methods: {
     ...mapActions("recordTypes", ["fetchAllRecordTypes"]),
     selectedValue(item) {
-      this.itemSelected = item;
+      let itemValue = item.map(({ value }) => value);
+      this.itemSelected = itemValue;
     },
   },
 };

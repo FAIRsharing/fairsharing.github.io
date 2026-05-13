@@ -15,10 +15,17 @@ const stringUtils = {
       return str.length > n ? str.substr(0, n - 1) + "..." : str;
     },
     toHyperLink(str) {
+      let link;
       let pattern1 =
         /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
-      let link = str.replace(pattern1, "<a href='$1' target='_blank'>$1</a>");
-
+      if (pattern1.test(str)) {
+        link = str.replace(
+          pattern1,
+          '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
+        );
+      } else {
+        link = str;
+      }
       return link;
     },
   },

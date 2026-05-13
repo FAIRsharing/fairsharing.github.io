@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import PolicyRecordType from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/PolicyRecordType.vue";
+import PolicyRecordType
+  from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/PolicyComponents/PolicyRecordType.vue";
 
 vi.mock("@/utils/advancedSearchUtils", () => ({
   recordTypes: {
@@ -95,9 +96,14 @@ describe("PolicyRecordType.vue", () => {
 
   describe("Methods", () => {
     it("selectedValue() correctly updates itemSelected", () => {
-      const selection = ["Selected via UI"];
-      wrapper.vm.selectedValue(selection);
-      expect(wrapper.vm.itemSelected).toStrictEqual(selection);
+      const item = [
+        {
+          title: "SOAP",
+          value: "soap",
+        },
+      ];
+      wrapper.vm.selectedValue(item);
+      expect(wrapper.vm.itemSelected).toStrictEqual(["soap"]);
     });
   });
 });

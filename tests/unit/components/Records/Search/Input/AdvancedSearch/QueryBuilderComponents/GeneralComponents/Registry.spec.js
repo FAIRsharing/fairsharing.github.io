@@ -47,8 +47,14 @@ describe("Registry.vue", () => {
 
   describe("Methods & Watchers", () => {
     it("selectedValue() updates itemSelected", () => {
-      wrapper.vm.selectedValue(["SOAP"]);
-      expect(wrapper.vm.itemSelected).toStrictEqual(["SOAP"]);
+      const item = [
+        {
+          title: "SOAP",
+          value: "soap",
+        },
+      ];
+      wrapper.vm.selectedValue(item);
+      expect(wrapper.vm.itemSelected).toStrictEqual(["soap"]);
     });
 
     it("watches itemSelected and updates itemValue when it changes", async () => {

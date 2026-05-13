@@ -58,7 +58,8 @@ export default {
 
   methods: {
     selectedValue(item) {
-      this.itemSelected = item;
+      let itemValue = item.map(({ value }) => value);
+      this.itemSelected = itemValue;
     },
   },
 };

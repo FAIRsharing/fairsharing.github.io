@@ -71,7 +71,7 @@ const app = createApp(App)
     config: { id: import.meta.env.VUE_APP_ANALYTICS_ID },
   })
   .use(SimpleAnalytics, {
-    skip: import.meta.env.NODE_ENV !== "production",
+    skip: import.meta.env.VITE_NODE_ENV !== "production",
   });
 app.directive("linkified", linkify);
 app.directive("safe-html", (el, binding) => {

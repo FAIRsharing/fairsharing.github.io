@@ -1,4 +1,16 @@
 <template>
+  <v-fade-transition>
+    <div>
+      <v-overlay
+        v-model="loading"
+        :absolute="false"
+        class="align-center justify-center"
+        opacity="0.8"
+      >
+        <Loaders />
+      </v-overlay>
+    </div>
+  </v-fade-transition>
   <v-col cols12>
     <v-card class="mb-2">
       <v-card-text v-if="maintenanceRequestsProcessed">
@@ -26,34 +38,31 @@
           </v-alert>
         </v-card-text>
         <v-data-table
-          :footer-props="{ 'items-per-page-options': [10, 20, 30, 40, 50] }"
           :headers="headerItems"
           :items="maintenanceRequestsProcessed"
+          :items-per-page-options="[10, 20, 30, 40, 50]"
           :loading="loading"
           :search="searches"
+          return-object
         >
-          <template v-if="recordType" #item="props">
+          <template v-if="recordType" #item="{ item }">
             <tr>
               <td>
-                {{ props.item.createdAt }}
+                {{ item.createdAt }}
               </td>
               <td>
                 <div class="d-flex align-center">
-                  <v-avatar v-if="props.item.type" class="mr-2" size="40">
-                    <Icon
-                      :height="40"
-                      :item="props.item.type"
-                      wrapper-class=""
-                    />
+                  <v-avatar v-if="item.type" class="mr-2" size="40">
+                    <Icon :height="40" :item="item.type" wrapper-class="" />
                   </v-avatar>
-                  <a :href="'/' + props.item.id">
-                    {{ props.item.recordName }}
+                  <a :href="'/' + item.id">
+                    {{ item.recordName }}
                   </a>
                 </div>
               </td>
               <td>
-                <a :href="'/users/' + props.item.userId">
-                  {{ props.item.userName }}
+                <a :href="'/users/' + item.userId">
+                  {{ item.userName }}
                 </a>
               </td>
               <td>
@@ -63,11 +72,8 @@
                   min-width="400"
                 >
                   <template #activator="{ props: menuProps }">
-                    <span
-                      style="cursor: pointer; border-bottom: 1px dashed grey"
-                      v-bind="menuProps"
-                    >
-                      {{ props.item.processingNotes || "Click to edit..." }}
+                    <span style="cursor: pointer" v-bind="menuProps">
+                      {{ item.processingNotes || "Click to edit..." }}
                     </span>
                   </template>
                   <template #default="{ isActive }">
@@ -78,7 +84,7 @@
 
                       <v-card-text class="pt-2">
                         <v-textarea
-                          v-model="props.item.processingNotes"
+                          v-model="item.processingNotes"
                           hide-details
                           label="Edit (not long words)"
                           variant="filled"
@@ -86,14 +92,28 @@
                       </v-card-text>
 
                       <v-card-actions>
+                        <v-btn
+                          v-if="item.processingNoteId"
+                          color="red"
+                          size="small"
+                          slim
+                          variant="elevated"
+                          @click="
+                            deleteProcessingNote(item);
+                            isActive.value = false;
+                          "
+                        >
+                          Delete
+                        </v-btn>
                         <v-spacer />
                         <v-btn
                           color="primary"
                           variant="text"
                           @click="
                             saveProcessingNotes(
-                              props.item.id,
-                              props.item.processingNotes,
+                              item.id,
+                              item.processingNotes,
+                              item,
                             );
                             isActive.value = false;
                           "
@@ -112,25 +132,25 @@
                     start
                     @click.stop="
                       assignMaintenanceOwner(
-                        props.item.recordName,
-                        props.item.id,
-                        props.item.userName,
-                        props.item.requestID,
+                        item.recordName,
+                        item.id,
+                        item.userName,
+                        item.requestID,
                       )
                     "
                   >
-                    far fa-check-circle
+                    fas fa-check-circle
                   </v-icon>
-                  {{ props.item.actions }}
+                  {{ item.actions }}
                   <v-icon
                     color="red"
                     end
                     @click="
                       rejectMaintenanceOwner(
-                        props.item.recordName,
-                        props.item.id,
-                        props.item.userName,
-                        props.item.requestID,
+                        item.recordName,
+                        item.id,
+                        item.userName,
+                        item.requestID,
                       )
                     "
                   >
@@ -142,104 +162,93 @@
           </template>
         </v-data-table>
       </v-card-text>
-      <v-layout justify-center row>
-        <v-dialog
-          v-model="dialogs.confirmAssignment"
-          max-width="700px"
-          persistent
-        >
-          <v-card>
-            <v-card-title class="text-h5">
-              Are you sure you want to
-              <span style="color: blue; padding-left: 5px; padding-right: 5px">
-                ACCEPT
-              </span>
-              this ownership?
-              <ul style="list-style-type: none">
-                <li>
-                  <span style="color: gray"> Record: </span>
-                  {{ dialogs.recordName }}
-                </li>
-                <li>
-                  <span style="color: gray"> User: </span>
-                  {{ dialogs.userName }}
-                </li>
-              </ul>
-            </v-card-title>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                :disabled="dialogs.disableDelButton === true"
-                color="red-darken-1"
-                persistent
-                variant="elevated"
-                @click="closeMaintenanceAssign()"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                persistent
-                variant="elevated"
-                @click="assignMaintenanceOwnConfirm('approved')"
-              >
-                OK
-              </v-btn>
-              <v-spacer />
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-layout>
-      <v-layout justify-center row>
-        <v-dialog
-          v-model="dialogs.rejectAssignment"
-          max-width="700px"
-          persistent
-        >
-          <v-card>
-            <v-card-title class="text-h5">
-              Are you sure you want to
-              <span style="color: red; padding-left: 5px; padding-right: 5px">
-                REJECT
-              </span>
-              this ownership?
-              <ul style="list-style-type: none">
-                <li>
-                  <span style="color: gray"> Record: </span>
-                  {{ dialogs.recordName }}
-                </li>
-                <li>
-                  <span style="color: gray"> User: </span>
-                  {{ dialogs.userName }}
-                </li>
-              </ul>
-            </v-card-title>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                persistent
-                variant="text"
-                @click="closeMaintenanceReject()"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                :disabled="dialogs.disableDelButton === true"
-                color="blue-darken-1"
-                persistent
-                variant="text"
-                @click="assignMaintenanceOwnConfirm('rejected')"
-              >
-                OK
-              </v-btn>
-              <v-spacer />
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-layout>
+      <v-dialog v-model="dialogs.confirmAssignment" max-width="900px">
+        <v-card>
+          <v-card-title class="text-h5">
+            Are you sure you want to
+            <span style="color: blue; padding-left: 5px; padding-right: 5px">
+              ACCEPT
+            </span>
+            this ownership?
+            <ul style="list-style-type: none">
+              <li>
+                <span style="color: gray"> Record: </span>
+                {{ dialogs.recordName }}
+              </li>
+              <li>
+                <span style="color: gray"> User: </span>
+                {{ dialogs.userName }}
+              </li>
+            </ul>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              :disabled="dialogs.disableDelButton === true"
+              color="red-darken-1"
+              persistent
+              variant="elevated"
+              @click="closeMaintenanceAssign()"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              :disabled="dialogs.disableDelButton === true"
+              color="blue-darken-1"
+              persistent
+              variant="elevated"
+              @click="assignMaintenanceOwnConfirm('approved')"
+            >
+              OK
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="dialogs.rejectAssignment" max-width="900px">
+        <v-card>
+          <v-card-title class="text-h5">
+            Are you sure you want to
+            <span style="color: red; padding-left: 5px; padding-right: 5px">
+              REJECT
+            </span>
+            this ownership?
+            <ul style="list-style-type: none">
+              <li>
+                <span style="color: gray"> Record: </span>
+                {{ dialogs.recordName }}
+              </li>
+              <li>
+                <span style="color: gray"> User: </span>
+                {{ dialogs.userName }}
+              </li>
+            </ul>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              :disabled="dialogs.disableDelButton === true"
+              color="blue-darken-1"
+              persistent
+              variant="elevated"
+              @click="closeMaintenanceReject()"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              :disabled="dialogs.disableDelButton === true"
+              color="blue-darken-1"
+              persistent
+              variant="elevated"
+              @click="assignMaintenanceOwnConfirm('rejected')"
+            >
+              OK
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-col>
 </template>
@@ -252,6 +261,7 @@ import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getPendingMaintenanceRequests from "@/lib/GraphClient/queries/curators/getPendingMaintenanceRequests.json";
 import formatDate from "@/utils/generalUtils";
+import Loaders from "@/components/Navigation/Loaders.vue";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -259,6 +269,7 @@ const restClient = new RestClient();
 export default {
   name: "MaintenanceRequests",
   components: {
+    Loaders,
     Icon,
   },
   mixins: [formatDate],
@@ -336,7 +347,12 @@ export default {
           type: item.fairsharingRecord.type,
           userName: `${item.user.username}`,
           userId: `${item.user.id}`,
-          processingNotes: item.fairsharingRecord.processingNotes,
+          processingNotes: item.fairsharingRecord.processingNotes
+            ? item.fairsharingRecord.processingNotes.note
+            : "",
+          processingNoteId: item.fairsharingRecord.processingNotes
+            ? item.fairsharingRecord.processingNotes.id
+            : null,
           requestID: item.id,
         };
         this.maintenanceRequests.push(object);
@@ -349,28 +365,72 @@ export default {
       }
     },
 
-    async saveProcessingNotes(idRecord, notesText) {
-      const _module = this;
-      _module.error = {
-        recordID: null,
-        general: null,
-      };
-      let preparedRecord = {
-        processing_notes: "",
-        skip_approval: true,
-      };
-      preparedRecord.processing_notes = notesText;
-      let data = {
-        record: preparedRecord,
-        id: idRecord,
-        token: _module.user().credentials.token,
-      };
-      await _module.updateRecord(data);
-      if (_module.recordUpdate.error) {
-        _module.error.general = _module.recordUpdate.message;
-        _module.error.recordID = idRecord;
+    /**
+     * Create processing notes for a record
+     * @param idRecord {Number} - FAIRshairing record id
+     * @param notesText {String} - Processing notes text
+     * @param item {Object} - Record object
+     * @return {Promise<void>}
+     */
+    async saveProcessingNotes(idRecord, notesText, item) {
+      const token = this.user().credentials.token;
+      try {
+        if (item.processingNoteId) {
+          this.loading = true;
+          // UPDATE EXISTING
+          await restClient.updateProcessingNotes(
+            item.processingNoteId,
+            notesText,
+            idRecord,
+            token,
+          );
+          this.loading = false;
+        } else {
+          // CREATE NEW
+          this.loading = true;
+          const response = await restClient.createProcessingNotes(
+            notesText,
+            idRecord,
+            token,
+          );
+          // Store the new ID so the next click becomes an "update"
+          const newId = response.data ? response.data.id : response.id;
+          item.processingNoteId = newId;
+          this.loading = false;
+        }
+      } catch (err) {
+        this.loading = false;
+        this.error.general = "Failed to save processing note.";
+        this.error.recordID = idRecord;
       }
     },
+    /**
+     * Delete a processing notes for a record
+     * @param item
+     * @return {Promise<void>}
+     */
+    async deleteProcessingNote(item) {
+      if (!item.processingNoteId) {
+        // If no ID exists, it's not in the database, just clear the text
+        item.processingNotes = "";
+        return;
+      }
+
+      try {
+        this.loading = true;
+        const token = this.user().credentials.token;
+        await restClient.deleteProcessingNote(item.processingNoteId, token);
+        // Clear local state
+        item.processingNotes = "";
+        item.processingNoteId = null;
+        this.loading = false;
+      } catch (err) {
+        this.loading = false;
+        this.error.general = "Failed to delete processing note.";
+        this.error.recordID = item.id;
+      }
+    },
+
     assignMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;

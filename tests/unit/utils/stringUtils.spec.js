@@ -29,11 +29,15 @@ describe("stringUtils.js", function () {
       "\\this\\: \\that\\",
     );
   });
-  it("converts text in strings to urls", () => {
+  it("can check toHyperLink() method that converts text in strings to urls", () => {
     expect(
       stringUtils.methods.toHyperLink("link to https://sirwilliamhope.org"),
     ).toBe(
       'link to <a href="https://sirwilliamhope.org" target="_blank" rel="noopener noreferrer">https://sirwilliamhope.org</a>',
     );
+  });
+
+  it("can check toHyperLink() method where input is string and not hyperlink", () => {
+    expect(stringUtils.methods.toHyperLink("Test123")).toBe("Test123");
   });
 });

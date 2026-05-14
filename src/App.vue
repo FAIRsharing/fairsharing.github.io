@@ -48,12 +48,12 @@ export default {
     ...mapState("uiController", ["UIGeneralStatus"]),
     ...mapState("introspection", ["readOnlyMode"]),
   },
-  /* v8 ignore start*/
+  /* v8 ignore start */
   async updated() {
     // very important line of code which prevents layout shifting which is considered as one negative point for SEO
     await this.$nextTick();
   },
-  /* v8 ignore stop*/
+  /* v8 ignore stop */
 };
 </script>
 

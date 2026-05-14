@@ -10,6 +10,12 @@ vi.mock("@vue/test-utils", async () => {
     const normalized = { ...options };
     const globalConfig = { ...(normalized.global || {}) };
 
+    globalConfig.directives = {
+      "safe-html": {}, // Stub the directive so Vue ignores it
+      ...(globalConfig.directives || {}),
+      ...(normalized.directives || {}),
+    };
+
     if (normalized.propsData && !normalized.props) {
       normalized.props = normalized.propsData;
     }

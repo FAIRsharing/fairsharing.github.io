@@ -16,6 +16,9 @@ const graphClientMock = vi.hoisted(() => ({
 const restClientMock = vi.hoisted(() => ({
   updateStatusMaintenanceRequest: vi.fn(),
   deleteRecord: vi.fn(),
+  updateProcessingNotes: vi.fn(),
+  createProcessingNotes: vi.fn(),
+  deleteProcessingNote: vi.fn(),
 }));
 
 // Mock RESTClient and GraphClient classes
@@ -204,33 +207,6 @@ describe("MaintenanceRequests.vue", () => {
     });
   });
 
-  describe("saveProcessingNotes", () => {
-    it("successfully calls updateRecord", async () => {
-      await wrapper.vm.saveProcessingNotes("rec-1", "New Notes");
-
-      expect(updateRecordActionSpy).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.objectContaining({
-          id: "rec-1",
-          record: { processing_notes: "New Notes", skip_approval: true },
-        }),
-      );
-    });
-
-    it("handles update error", async () => {
-      // Mock error state in store
-      store.state.record.recordUpdate = {
-        error: true,
-        message: "Server Error",
-      };
-
-      await wrapper.vm.saveProcessingNotes("rec-1", "Notes");
-
-      expect(wrapper.vm.error.general).toBe("Server Error");
-      expect(wrapper.vm.error.recordID).toBe("rec-1");
-    });
-  });
-
   describe("assignMaintenanceOwnConfirm (Complex Logic)", () => {
     // Scenario 1: Approve + Success + Record exists elsewhere (Do NOT clear notes)
     it("approves request but preserves notes if record is in approval list", async () => {
@@ -334,6 +310,117 @@ describe("MaintenanceRequests.vue", () => {
       expect(wrapper.vm.error.recordID).toBe("rec-1");
       // List should NOT change
       expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(2);
+    });
+  });
+
+  describe("Processing Notes Methods", () => {
+    let mockItem;
+    const idRecord = 123;
+    const notesText = "Updated note content";
+
+    beforeEach(() => {
+      // Reset the local item state before each test
+      mockItem = {
+        id: idRecord,
+        processingNoteId: null,
+        processingNotes: "Original notes",
+      };
+      // Reset error state in wrapper
+      wrapper.vm.error = { general: null, recordID: null };
+    });
+
+    describe("saveProcessingNotes", () => {
+      it("calls updateProcessingNotes when item already has a processingNoteId", async () => {
+        mockItem.processingNoteId = 55; // Existing ID
+        restClientMock.updateProcessingNotes.mockResolvedValue({
+          success: true,
+        });
+
+        await wrapper.vm.saveProcessingNotes(idRecord, notesText, mockItem);
+
+        expect(wrapper.vm.loading).toBe(false);
+        expect(restClientMock.updateProcessingNotes).toHaveBeenCalledWith(
+          55,
+          notesText,
+          idRecord,
+          "test-token",
+        );
+      });
+
+      it("calls createProcessingNotes and updates item ID when no ID exists", async () => {
+        // Mock response with a new ID
+        restClientMock.createProcessingNotes.mockResolvedValue({
+          data: { id: 99 },
+        });
+
+        await wrapper.vm.saveProcessingNotes(idRecord, notesText, mockItem);
+
+        expect(restClientMock.createProcessingNotes).toHaveBeenCalledWith(
+          notesText,
+          idRecord,
+          "test-token",
+        );
+        // Ensure the item object was updated with the new ID from the response
+        expect(mockItem.processingNoteId).toBe(99);
+        expect(wrapper.vm.loading).toBe(false);
+      });
+
+      it("handles errors gracefully during save", async () => {
+        restClientMock.createProcessingNotes.mockRejectedValue(
+          new Error("API Error"),
+        );
+
+        await wrapper.vm.saveProcessingNotes(idRecord, notesText, mockItem);
+
+        expect(wrapper.vm.loading).toBe(false);
+        expect(wrapper.vm.error.general).toBe(
+          "Failed to save processing note.",
+        );
+        expect(wrapper.vm.error.recordID).toBe(idRecord);
+      });
+    });
+
+    describe("deleteProcessingNote", () => {
+      it("clears local text and returns early if no processingNoteId exists", async () => {
+        mockItem.processingNoteId = null;
+
+        await wrapper.vm.deleteProcessingNote(mockItem);
+
+        expect(mockItem.processingNotes).toBe("");
+        expect(restClientMock.deleteProcessingNote).not.toHaveBeenCalled();
+      });
+
+      it("calls API and clears local state on successful delete", async () => {
+        mockItem.processingNoteId = 55;
+        restClientMock.deleteProcessingNote.mockResolvedValue({
+          success: true,
+        });
+
+        await wrapper.vm.deleteProcessingNote(mockItem);
+
+        expect(restClientMock.deleteProcessingNote).toHaveBeenCalledWith(
+          55,
+          "test-token",
+        );
+        expect(mockItem.processingNotes).toBe("");
+        expect(mockItem.processingNoteId).toBeNull();
+        expect(wrapper.vm.loading).toBe(false);
+      });
+
+      it("handles errors gracefully during delete", async () => {
+        mockItem.processingNoteId = 55;
+        restClientMock.deleteProcessingNote.mockRejectedValue(
+          new Error("Delete Failed"),
+        );
+
+        await wrapper.vm.deleteProcessingNote(mockItem);
+
+        expect(wrapper.vm.loading).toBe(false);
+        expect(wrapper.vm.error.general).toBe(
+          "Failed to delete processing note.",
+        );
+        expect(wrapper.vm.error.recordID).toBe(mockItem.id);
+      });
     });
   });
 

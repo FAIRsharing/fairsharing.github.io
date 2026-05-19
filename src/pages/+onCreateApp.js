@@ -23,7 +23,7 @@ export default async (pageContext) => {
 
   // 1. Create unique, isolated instances for this specific request
   const store = createMyStore();
-  const router = createMyRouter();
+  const router = createMyRouter(store);
 
   app.use(store);
   app.use(router);

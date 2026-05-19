@@ -134,7 +134,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/TooltipComponent.vue";
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
-import advancedSearch from "@/store";
+// import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -212,21 +212,15 @@ export default {
     //When the user is redirected to advancedsearch url directly
     //it will open the dialog box
     if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
-      );
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", true);
     }
   },
   methods: {
     ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
 
     closeDialog() {
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        false,
-      );
+      this.$store.commit("advancedSearch/setEditDialogStatus", false);
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", false);
       // Redirecting to home page after closing
       if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
         this.$router.push("/");

@@ -32,20 +32,17 @@
 </template>
 
 <script>
-import advancedSearch from "@/store";
+// import advancedSearch from "@/store";
 
 export default {
   name: "AdvancedSearchButtons",
   methods: {
     editAdvancedSearch() {
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", true);
+      this.$store.commit("advancedSearch/setEditDialogStatus", true);
     },
     openAdvancedSearch() {
       this.$router.replace({ query: null });
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
-      );
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", true);
     },
   },
 };

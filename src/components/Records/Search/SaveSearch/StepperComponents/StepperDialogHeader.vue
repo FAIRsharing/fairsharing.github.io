@@ -19,7 +19,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import saveSearch from "@/store";
+// import saveSearch from "@/store";
 
 export default {
   name: "StepperDialogHeader",
@@ -39,7 +39,7 @@ export default {
         this.resetSaveSearchDialog();
         this.$emit("restartStepper", 0);
       }
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
+      this.$store.commit("saveSearch/setSaveSearchStepperDialog", false);
     },
   },
 };

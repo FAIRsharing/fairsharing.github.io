@@ -38,7 +38,7 @@
 import QueryBuilder from "query-builder-vue-3";
 import { mapGetters } from "vuex";
 
-import advancedSearch from "@/store";
+// import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {
@@ -486,12 +486,12 @@ export default {
   watch: {
     query(newValue) {
       newValue = JSON.parse(JSON.stringify(newValue));
-      advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
+      this.$store.commit("advancedSearch/setAdvancedSearch", newValue);
       //Updating edit advanced search only if newValue has some data
       if (newValue["children"] && newValue["children"].length) {
         newValue["children"].forEach((item) => {
           if (item["children"] && item["children"].length) {
-            advancedSearch.commit(
+            this.$store.commit(
               "advancedSearch/setEditAdvancedSearch",
               newValue,
             );

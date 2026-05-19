@@ -142,7 +142,7 @@ import { mapActions, mapGetters } from "vuex";
 import SaveSearchButton from "@/components/Records/Search/SaveSearch/SaveSearchButton.vue";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import TagChips from "@/components/Records/Shared/TagChips.vue";
-import advancedSearch from "@/store";
+// import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
 
@@ -178,20 +178,20 @@ export default {
     },
     sortData() {
       switch (this.sortBy) {
-        case "Name":
-          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
-        case "Registry":
-          return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
-        case "Type":
-          return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
-        case "Status":
-          return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
-        case "Description":
-          return [
-            { key: "description", order: this.sortDesc ? "desc" : "asc" },
-          ];
-        default:
-          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Name":
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Registry":
+        return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
+      case "Type":
+        return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
+      case "Status":
+        return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
+      case "Description":
+        return [
+          { key: "description", order: this.sortDesc ? "desc" : "asc" },
+        ];
+      default:
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
       }
     },
   },
@@ -235,7 +235,8 @@ export default {
               const paramValues = subItem.split("=");
               if (paramValues[0] === "operator") {
                 searchObj["operatorIdentifier"] = paramValues[1];
-              } else {
+              }
+              else {
                 let advancedSearchParams = {
                   identifier: "",
                   value: [] || Boolean,
@@ -244,7 +245,8 @@ export default {
                 // For boolean/string values
                 if (paramValues[1] === "true" || paramValues[1] === "false") {
                   advancedSearchParams["value"] = paramValues[1];
-                } else {
+                }
+                else {
                   advancedSearchParams["value"] = paramValues[1].split("+");
                 }
                 searchObj["children"].push(advancedSearchParams);
@@ -255,13 +257,10 @@ export default {
           });
 
           //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
-          advancedSearch.commit(
-            "advancedSearch/setAdvancedSearch",
-            searchQuery,
-          );
+          this.$store.commit("advancedSearch/setAdvancedSearch", searchQuery);
 
           //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
-          advancedSearch.commit(
+          this.$store.commit(
             "advancedSearch/setEditAdvancedSearch",
             searchQuery,
           );

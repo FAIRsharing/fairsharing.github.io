@@ -33,7 +33,7 @@
 
 <script>
 import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
-import advancedSearch from "@/store";
+// import advancedSearch from "@/store";
 import { useDisplay } from "vuetify";
 
 export default {
@@ -60,10 +60,7 @@ export default {
   },
   methods: {
     openAdvanceSearch() {
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
-      );
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", true);
     },
   },
 };

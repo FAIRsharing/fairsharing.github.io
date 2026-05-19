@@ -78,6 +78,7 @@
     </div>
 
     <div
+      v-if="isMounted"
       class="navSecond d-none d-lg-flex justify-space-around align-center full-width"
     >
       <nav class="full-width">

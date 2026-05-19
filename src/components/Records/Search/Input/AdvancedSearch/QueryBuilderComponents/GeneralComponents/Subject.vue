@@ -12,8 +12,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import subjectSearch from "@/store";
-
+// import subjectSearch from "@/store";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {
@@ -59,7 +58,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            subjectSearch.commit("subjectSearch/setSearchSubjects", this.value);
+            this.$store.commit("subjectSearch/setSearchSubjects", this.value);
           }
         }
       },

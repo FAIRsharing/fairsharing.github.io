@@ -347,7 +347,7 @@ import stringUtils from "@/utils/stringUtils";
 import Alerts from "../Alerts";
 import FieldInput from "./FieldInput";
 import { diff } from "deep-object-diff";
-import record from "@/store";
+// import record from "@/store";
 
 export default {
   name: "EditAdditionalInfo",
@@ -559,7 +559,7 @@ export default {
         if (changes[change] !== null && Object.keys(changes[change]).length > 0)
           delta += 1;
       });
-      record.commit("record/setChanges", {
+      this.$store.commit("record/setChanges", {
         section: "additionalInformation",
         value: delta,
       });

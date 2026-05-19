@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import {mapActions, mapState} from "vuex";
 
-import saveSearch from "@/store";
-import { removeItem } from "@/utils/advancedSearchUtils";
+// import saveSearch from "@/store";
+import {removeItem} from "@/utils/advancedSearchUtils";
 
 export default {
   name: "UserStepper",
@@ -55,7 +55,7 @@ export default {
     },
 
     userSelected(val) {
-      saveSearch.commit("saveSearch/setUserSelected", val);
+      this.$store.commit("saveSearch/setUserSelected", val);
     },
   },
 

@@ -131,8 +131,8 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
-import advancedSearch from "@/store";
-import saveSearch from "@/store";
+// import advancedSearch from "@/store";
+// import saveSearch from "@/store";
 
 const restClient = new RESTClient();
 
@@ -222,13 +222,15 @@ export default {
         await this.getUser();
         createdSearches = this.getUserRecords.user["createdSearches"];
         savedSearches = this.getUserRecords.user["savedSearches"];
-      } else if (searchUnlinked) {
+      }
+      else if (searchUnlinked) {
         let userId = this.$route.params.id;
         let userR = await this.getPublicUser(userId);
         await this.getUser();
         createdSearches = userR.user["createdSearches"];
         savedSearches = userR.user["savedSearches"];
-      } else {
+      }
+      else {
         createdSearches = this.createdSearches;
         savedSearches = this.savedSearches;
       }
@@ -313,7 +315,7 @@ export default {
       );
 
       //Commit the updated result to store
-      saveSearch.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
+      this.$store.commit("saveSearch/setSaveSearchResult", updatedSearchResult);
 
       await this.combinedSearches(false, true);
 
@@ -332,10 +334,7 @@ export default {
      * Open advancedSearch Dialog Box
      */
     openAdvancedSearch() {
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
-      );
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", true);
     },
     /**
      * Filter creator from additional users list

@@ -326,7 +326,7 @@
 </template>
 
 <script>
-import { isEmpty, isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash-es";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import Alerts from "@/components/Editor/Alerts";
@@ -413,7 +413,8 @@ export default {
         type: function () {
           if (error) {
             return "error";
-          } else {
+          }
+          else {
             return "success";
           }
         },
@@ -455,7 +456,8 @@ export default {
             )[0];
             if (!isFound) {
               changes += 1;
-            } else {
+            }
+            else {
               let copy = JSON.parse(JSON.stringify(pub));
               if (copy.tablePosition > -1) delete copy.tablePosition;
               /* v8 ignore next 4*/
@@ -515,11 +517,13 @@ export default {
         );
         if (data.message || (Array.isArray(data) && data.length == 0)) {
           this.errors.doi = true;
-        } else {
+        }
+        else {
           let dataPublication;
           if (Array.isArray(data)) {
             dataPublication = data[0];
-          } else {
+          }
+          else {
             dataPublication = data;
           }
           if (dataPublication.metadata !== undefined) {
@@ -540,7 +544,8 @@ export default {
               if (dataPublication.metadata.journal_title) {
                 this.newPublication.journal =
                   dataPublication.metadata.journal_title;
-              } else {
+              }
+              else {
                 if (dataPublication.metadata.meeting) {
                   this.newPublication.journal =
                     dataPublication.metadata.meeting.title;
@@ -559,10 +564,12 @@ export default {
               this.newPublication.authors = authors.join("");
               this.newPublication.isCitation = false;
               this.openEditor = true;
-            } else {
+            }
+            else {
               this.errors.doi = true;
             }
-          } else {
+          }
+          else {
             /* v8 ignore start */
             // TODO: Add a query to osf.io here:
             // TODO: https://developer.osf.io/
@@ -570,7 +577,8 @@ export default {
           }
           /* v8 ignore end */
         }
-      } else {
+      }
+      else {
         /* v8 ignore next 2 */
         this.newPublication.journal =
           data["container-title-short"] ||
@@ -583,11 +591,13 @@ export default {
           let dateParts;
           if (data["published-print"]) {
             dateParts = data["published-print"]["date-parts"][0].toString();
-          } else {
+          }
+          else {
             dateParts = data["created"]["date-parts"][0].toString();
           }
           this.newPublication.year = Number(dateParts.split(",")[0]);
-        } else if (!isEmpty(data.issued)) {
+        }
+        else if (!isEmpty(data.issued)) {
           this.newPublication.year = Number(data.issued["date-parts"][0]);
         }
         let authors = [];
@@ -617,7 +627,8 @@ export default {
       /* v8 ignore next 3*/
       if (data.error || data.result[id].error) {
         this.errors.pmid = true;
-      } else {
+      }
+      else {
         const pub = data.result[id];
         let pubDate = new Date(pub["sortpubdate"]);
         let doi = this.processIDs(pub["elocationid"]);
@@ -667,7 +678,8 @@ export default {
         );
         if (editedPublication.error) {
           _module.errors.general = editedPublication.error;
-        } else {
+        }
+        else {
           editedPublication.isCitation = newPub.isCitation;
           //Commenting below code as it is causing the issue of undefined tablePosition
           // delete this.availablePublications[newPub.tablePosition];
@@ -694,7 +706,8 @@ export default {
         );
         if (createdPublication.error) {
           _module.errors.general = createdPublication.error;
-        } else {
+        }
+        else {
           this.publications.push(createdPublication);
           createdPublication.tablePosition = this.availablePublications.length;
           this.availablePublications.push(createdPublication);
@@ -704,7 +717,8 @@ export default {
       if (!_module.errors.general) {
         if (!newPub.doi) {
           _module.search = newPub.title;
-        } else {
+        }
+        else {
           _module.search = newPub.doi;
         }
         _module.newPublication = {};
@@ -725,7 +739,8 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      } else if (item.textContent.trim() === "Save and exit") {
+      }
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

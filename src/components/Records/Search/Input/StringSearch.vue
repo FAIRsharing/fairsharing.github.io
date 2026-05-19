@@ -9,22 +9,19 @@
       @submit.prevent="searchString()"
     >
       <v-text-field
+        id="fairsharing-global-search-input"
         v-model="searchTerm"
-        :class="$vuetify.display.lgAndDown ? 'v-input' : 'v-input-lg-up'"
         :placeholder="placeholder"
-        :style="{ height: responsiveHeightTextBox + 'px' }"
-        class="full-width"
+        class="search-text-field full-width"
         clearable
         density="compact"
         single-line
         variant="solo"
       />
 
-      <!--  reusable search box  -->
       <v-btn
         v-if="!showHomeSearch"
-        :class="responsiveHeight"
-        class="mt-1 mt-lg-1 ml-2"
+        class="search-btn mt-1 mt-lg-1 ml-2"
         color="primary"
         size="small"
         type="submit"
@@ -35,19 +32,15 @@
         <span class="button-text-size">Search</span>
       </v-btn>
 
-      <!--  Advance search button  -->
       <AdvancedSearch
         v-if="!showHomeSearch"
         :advanced-search-term="searchTerm"
         @clear-search-field="clearSearchField"
       />
-      <!--  home page search box  -->
+
       <v-btn
         v-if="showHomeSearch"
-        :class="[
-          'mt-1 mt-lg-1 ml-2',
-          $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
-        ]"
+        class="mt-1 mt-lg-1 ml-2 home-page-search-btn"
         color="primary"
         @click="searchStringHomePage()"
       >
@@ -55,7 +48,7 @@
         <span class="button-text-size">Search</span>
       </v-btn>
     </v-form>
-    <!--  home page exclusive check box for search  -->
+
     <div v-if="showHomeSearch" class="pt-6">
       <v-checkbox
         v-for="(checkbox, index) in registries"
@@ -76,7 +69,6 @@
 
 <script>
 import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
-import { useDisplay } from "vuetify";
 
 export default {
   name: "StringSearch",
@@ -86,10 +78,6 @@ export default {
     showHomeSearch: { default: false, type: Boolean },
     addSearchTerms: { default: false, type: Boolean },
     searchPath: { default: "/search", type: String },
-  },
-  setup() {
-    const { mdAndDown, md, lg, xl, mobile } = useDisplay();
-    return { mdAndDown, md, lg, xl, mobile };
   },
   data() {
     return {
@@ -109,48 +97,19 @@ export default {
       formValid: true,
     };
   },
-  computed: {
-    responsiveHeight: function () {
-      return {
-        "style-sm-xs": this.$vuetify.display.mdAndDown,
-        "style-md": this.$vuetify.display.md,
-        "style-lg": this.$vuetify.display.lg,
-        "style-xl": this.$vuetify.display.xl,
-      };
-    },
-    responsiveHeightTextBox: function () {
-      let boxHeight = 35;
-      if (this.$vuetify.display.xl) {
-        boxHeight = 50;
-      }
-      return boxHeight;
-    },
-  },
-
   methods: {
     searchString() {
       const _module = this;
       let query = {};
       if (_module.searchTerm) {
-        // For ticket #1505 using _module.$route.path allows this
-        // component to trigger a search on the same page, instead of going
-        // to search from a collection's page.
         if (_module.addSearchTerms) {
-          query = {
-            ..._module.$route.query,
-            q: _module.searchTerm,
-          };
-        } else {
-          query = {
-            // Changed due to: https://github.com/FAIRsharing/FAIRsharing-API/issues/625
-            q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
-          };
+          query = { ..._module.$route.query, q: _module.searchTerm };
+        }
+        else {
+          query = { q: _module.searchTerm.replace(/[^0-9a-z]/gi, " ") };
         }
       }
-      _module.$router.push({
-        path: _module.searchPath,
-        query: query,
-      });
+      _module.$router.push({ path: _module.searchPath, query: query });
       _module.$refs.form.resetValidation();
     },
     searchStringHomePage() {
@@ -160,13 +119,12 @@ export default {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
             path: "/search",
-            query: {
-              q: _module.searchTerm ? _module.searchTerm : undefined,
-            },
+            query: { q: _module.searchTerm ? _module.searchTerm : undefined },
           });
           _module.searchTerm = null;
           _module.$refs.form.resetValidation();
-        } else {
+        }
+        else {
           const selectedRegistriesValues = [];
           _module.selectedRegistries.forEach((registryItem) => {
             selectedRegistriesValues.push(registryItem.value);
@@ -177,10 +135,7 @@ export default {
             searchAnd: false,
           };
         }
-        _module.$router.push({
-          path: "/search",
-          query: query,
-        });
+        _module.$router.push({ path: "/search", query: query });
       }
       _module.$refs.form.resetValidation();
     },
@@ -192,17 +147,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-input {
+/* Refactored: Unified text field styling responsive heights with CSS Media Queries */
+.search-text-field {
   box-shadow: 0 0 0 0;
   height: 35px !important;
   margin-bottom: 7px;
-}
-.v-input-lg-up {
-  box-shadow: 0 0 0 0;
-  height: 48px;
-  margin-bottom: 15px;
-  :deep(input) {
-    height: 50px;
+
+  :deep(.v-field__input) {
+    min-height: 35px;
+  }
+
+  /* Target screen widths equivalent to Vuetify's xl breakpoint (1920px+) */
+  @media (min-width: 1920px) {
+    height: 48px;
+    margin-bottom: 15px;
+    :deep(input) {
+      height: 50px;
+    }
+    :deep(.v-field__input) {
+      min-height: 50px;
+    }
   }
 }
 
@@ -210,48 +174,50 @@ export default {
   font-size: 12px;
 }
 
-.style-xl {
-  height: 52px !important;
-  margin-bottom: 4px;
-}
-
-.style-lg {
-  height: 36px !important;
-  margin-bottom: 4px;
-}
-
-.style-md {
-  height: 32px !important;
-}
-
-.style-sm-xs {
+/* Refactored: Converted responsiveHeight computed property directly to CSS Breakpoints */
+.search-btn {
+  /* Default Mobile/Small Layout (style-sm-xs) */
   height: 40px !important;
   margin-bottom: 5px;
+
+  /* Medium Screens (style-md: 960px to 1279px) */
+  @media (min-width: 960px) and (max-width: 1279px) {
+    height: 32px !important;
+    margin-bottom: 0;
+  }
+
+  /* Large Screens (style-lg: 1280px to 1919px) */
+  @media (min-width: 1280px) and (max-width: 1919px) {
+    height: 36px !important;
+    margin-bottom: 4px;
+  }
+
+  /* Extra Large Screens (style-xl: 1920px+) */
+  @media (min-width: 1920px) {
+    height: 52px !important;
+    margin-bottom: 4px;
+  }
 }
 
-.home-search-bt {
+/* Refactored: Combined home-search-bt and home-search-bt-xl using media query */
+.home-page-search-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+  -webkit-border-radius: unset;
+  -moz-border-radius: unset;
+
+  /* Base height for lg and down */
   height: 40px !important;
-  position: absolute;
-  right: 0;
-  top: 0;
-  border-radius: unset;
-  -webkit-border-radius: unset;
-  -moz-border-radius: unset;
+
+  /* Target xl display size */
+  @media (min-width: 1920px) {
+    height: 50px !important;
+  }
 }
 
-.home-search-bt-xl {
-  height: 50px !important;
-  position: absolute;
-  right: 0;
-  top: 0;
-  border-radius: unset;
-  -webkit-border-radius: unset;
-  -moz-border-radius: unset;
-}
 .v-label-white {
   color: white;
-}
-:deep(.v-field__input) {
-  min-height: v-bind(responsiveHeightTextBox + "px");
 }
 </style>

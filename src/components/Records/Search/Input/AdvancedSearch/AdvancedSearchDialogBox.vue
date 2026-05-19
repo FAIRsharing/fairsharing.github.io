@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { isBoolean, isObject } from "lodash";
+import { isBoolean, isObject } from "lodash-es";
 import { mapActions, mapGetters } from "vuex";
 
 import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/TooltipComponent.vue";
@@ -258,7 +258,8 @@ export default {
     goToAdvancedSearch() {
       if (this.updatedAdvancedSearchText) {
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
-      } else {
+      }
+      else {
         this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       }
 
@@ -293,13 +294,15 @@ export default {
               params["value"].forEach((item) => {
                 if (isObject(item)) {
                   valuesArr.push(item.value);
-                } else {
+                }
+                else {
                   valuesArr.push(item);
                 }
               });
 
               this.queryString += valuesArr.join("+");
-            } else if (params["value"]) {
+            }
+            else if (params["value"]) {
               this.queryString += params["value"];
             }
           });
@@ -320,7 +323,8 @@ export default {
             name: "AdvancedSearchResult",
             query: this.isAdvancedSearchTerm(queryString),
           });
-        } else {
+        }
+        else {
           this.$router.push({
             name: "AdvancedSearchResult",
             query: this.noAdvancedSearchTerm(queryString),
@@ -333,7 +337,8 @@ export default {
           this.$router.push({
             query: this.isAdvancedSearchTerm(queryString),
           });
-        } else {
+        }
+        else {
           this.$router.push({
             query: this.noAdvancedSearchTerm(queryString),
           });

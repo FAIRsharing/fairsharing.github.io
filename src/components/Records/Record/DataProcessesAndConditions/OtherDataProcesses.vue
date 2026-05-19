@@ -1,13 +1,13 @@
 <template>
   <v-card
     v-if="allowedFields.properties"
-    class="pa-4 mt-15 d-flex flex-column overflow-initial"
-    elevation="3"
     border
+    class="pa-4 mt-15 d-flex flex-column overflow-initial"
     color="white"
+    elevation="3"
     tile
   >
-    <Icon item="createdAt" size="20" class="pt-2" />
+    <Icon class="pt-2" item="createdAt" size="20" />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Attributes and Conditions
     </v-card-title>
@@ -15,9 +15,9 @@
       <OtherDatasetArray
         v-for="(item, key, index) in finalData"
         :key="item.name + '_' + index + '_' + key"
-        :title="key"
         :current-item="finalData[key]"
         :current-key="key"
+        :title="key"
       />
       <!--  dataset_versioning  -->
       <DatasetBoolean field-name="data_versioning" />
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { isArray } from "lodash";
+import { isArray } from "lodash-es";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
@@ -105,7 +105,8 @@ export default {
         if (Object.keys(selectedNode[item]).length) {
           if (Object.keys(this.otherDataConditions).includes(key)) {
             this.otherDataConditions[key][item] = selectedNode[item];
-          } else {
+          }
+          else {
             this.otherDataConditions[key] = {};
             this.otherDataConditions[key][item] = selectedNode[item];
           }

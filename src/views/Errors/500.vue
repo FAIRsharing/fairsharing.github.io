@@ -1,5 +1,5 @@
 <template>
-  <v-row class="d-flex align-center" style="height: 50vh">
+  <v-row class="d-flex align-center">
     <v-col
       class="mx-auto d-flex justify-center"
       cols="12"

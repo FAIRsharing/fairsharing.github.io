@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { isArray } from "lodash";
+import { isArray } from "lodash-es";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray";
@@ -123,7 +123,8 @@ export default {
         // Special case this is a string
         if (typeof selectedNode === "string") {
           this.tempData[key].push({ Value: selectedNode });
-        } else {
+        }
+        else {
           Object.keys(selectedNode).forEach((item_key) => {
             this.tempData[key].push({ [item_key]: selectedNode[item_key] });
           });
@@ -135,7 +136,8 @@ export default {
         if (Object.keys(selectedNode[item]).length) {
           if (Object.keys(this.tempData).includes(key)) {
             this.tempData[key].push(selectedNode[item]);
-          } else {
+          }
+          else {
             this.tempData[key] = [];
             this.tempData[key].push(selectedNode[item]);
           }

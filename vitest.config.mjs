@@ -66,7 +66,7 @@ export default mergeConfig(
           "src/router/**",
           "tests/*",
           ".eslintrc.cjs",
-          "babel.config.js",
+          "babel.config.unused",
           "vite.config.mjs",
           "vitest.config.mjs",
           "vue.config.js",

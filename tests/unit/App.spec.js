@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import App from "@/App.vue"; // Adjust path if necessary
+import AppBackup from "@/App_backup.vue"; // Adjust path if necessary
 
 // Dummy components to act as stubs
 const HeaderComp = { template: '<div class="header-stub"></div>' };
@@ -16,7 +16,7 @@ const NavigationDrawer = {
   emits: ["update:modelValue"],
 };
 
-describe("App.vue", () => {
+describe("AppBackup.vue", () => {
   let store;
   let stateUI;
   let stateIntrospection;
@@ -57,7 +57,7 @@ describe("App.vue", () => {
   });
 
   const createWrapper = () => {
-    return shallowMount(App, {
+    return shallowMount(AppBackup, {
       global: {
         plugins: [store],
         mocks: {

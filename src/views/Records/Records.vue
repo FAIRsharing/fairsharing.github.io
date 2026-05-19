@@ -1,5 +1,5 @@
 <template>
-  <v-main>
+  <div>
     <v-container class="pa-0" fluid>
       <!--  Content  -->
       <v-row no-gutters>
@@ -65,12 +65,13 @@
           :absolute="false"
           class="align-center justify-center"
           opacity="0.8"
+          persistent
         >
           <Loaders />
         </v-overlay>
       </div>
     </v-fade-transition>
-  </v-main>
+  </div>
 </template>
 
 <script>

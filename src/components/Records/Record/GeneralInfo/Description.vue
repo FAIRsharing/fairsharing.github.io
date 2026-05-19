@@ -26,7 +26,7 @@
 import DOMPurify from "dompurify";
 import MarkdownIt from "markdown-it";
 import { mapGetters, mapState } from "vuex";
-import { capitalize } from "lodash";
+import { capitalize } from "lodash-es";
 
 const md = new MarkdownIt({
   html: true, // allow inline HTML in Markdown input (we will sanitize below)

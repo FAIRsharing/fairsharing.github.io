@@ -228,7 +228,7 @@
 </template>
 
 <script>
-import { capitalize, isEqual } from "lodash";
+import { capitalize, isEqual } from "lodash-es";
 import { mapGetters, mapState } from "vuex";
 
 import { isRequired, isUrl } from "@/utils/rules.js";
@@ -326,7 +326,8 @@ export default {
         let link = this.sections.dataAccess.data.licences[id];
         link.licence = newLink.licence;
         link.relation = newLink.relation.replace(/ /g, "_").toLowerCase();
-      } else {
+      }
+      else {
         let createLink = {
           fairsharingRecord: { id: this.$route.params["id"] },
           licence: newLink.licence,

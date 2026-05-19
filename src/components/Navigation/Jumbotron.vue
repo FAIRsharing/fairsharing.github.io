@@ -9,33 +9,35 @@
     }"
     class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
   >
-    <vue-particles
-      v-if="isMounted"
-      id="particles"
-      :class="{ largeScreen: xlOnly }"
-      :options="options"
-      :particles-loaded="particlesLoaded"
-    />
+    <ClientOnly>
+      <vue-particles
+        id="particles"
+        :class="{ largeScreen: xlOnly }"
+        :options="options"
+        :particles-loaded="particlesLoaded"
+      />
+    </ClientOnly>
 
     <h1
       class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
       style="z-index: 2"
     >
-      {{ getJumbotronData ? getJumbotronData.title : "" }}
+      {{ getJumbotronData.title }}
     </h1>
 
     <p
       id="subtitle"
-      v-safe-html="getJumbotronData ? getJumbotronData.subtitle : ''"
+      v-safe-html="getJumbotronData.subtitle"
       class="lato-font-medium my-4 text-primary px-1 text-center responsive-subtitle"
     />
   </section>
 </template>
 
 <script>
-import {loadFull} from "tsparticles";
+import { loadFull } from "tsparticles";
 import jumbotronData from "@/data/jumbotronData.json";
-import {useDisplay} from "vuetify";
+import { useDisplay } from "vuetify";
+import { ClientOnly } from "vike-vue/ClientOnly";
 
 const particlesInit = async (engine) => {
   await loadFull(engine);
@@ -45,14 +47,15 @@ const particlesLoaded = async (container) => {};
 
 export default {
   name: "Jumbotron",
+  components: {
+    ClientOnly,
+  },
   setup() {
-    // Bring in xlOnly safely via script composition
     const { xlOnly } = useDisplay();
     return { xlOnly };
   },
   data: () => {
     return {
-      isMounted: false, // Prevents early animation executions
       particlesInit,
       particlesLoaded,
       options: {
@@ -89,9 +92,10 @@ export default {
   },
   computed: {
     getJumbotronData() {
-      // Safe guard routing variables during server execution frames
+      // Step 1: Check if route context is safely fully-loaded on the active frame
       if (this.$route && this.$route.name) {
         let route = this.$route.name;
+
         if (
           route === "search" &&
           this.$route.query &&
@@ -99,14 +103,17 @@ export default {
         ) {
           route = this.$route.query.fairsharingRegistry;
         }
-        return jumbotronData[route.toLowerCase()] || null;
+
+        // Step 2: Ensure we look up valid keys, fallback to 'home' object instead of null
+        const targetKey = route.toLowerCase();
+        if (this.jumbotronData[targetKey]) {
+          return this.jumbotronData[targetKey];
+        }
       }
-      // Return baseline home configuration if router is unhydrated
-      return jumbotronData["home"] || null;
+
+      // Absolute fallback state for Server Side execution maps
+      return this.jumbotronData["home"] || { title: "", subtitle: "" };
     },
-  },
-  mounted() {
-    this.isMounted = true;
   },
 };
 </script>
@@ -127,16 +134,15 @@ export default {
   text-decoration: underline;
 }
 
-/* Refactored: Handle subtitle text scales fluidly using browser queries */
 .responsive-subtitle {
   @media (max-width: 959px) {
-    font-size: 0.875rem; /* lato-text-sm fallback */
+    font-size: 0.875rem;
   }
   @media (min-width: 960px) and (max-width: 1279px) {
-    font-size: 1rem; /* lato-text-md fallback */
+    font-size: 1rem;
   }
   @media (min-width: 1280px) {
-    font-size: 1.25rem; /* lato-text-lg fallback */
+    font-size: 1.25rem;
   }
 }
 </style>

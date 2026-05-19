@@ -101,7 +101,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
-import saveSearch from "@/store";
+// import saveSearch from "@/store";
 
 const restClient = new RestClient();
 export default {
@@ -162,7 +162,7 @@ export default {
         );
 
         //Commit the updated result to store
-        saveSearch.commit(
+        this.$store.commit(
           "saveSearch/setSaveSearchResult",
           updatedSearchResult,
         );

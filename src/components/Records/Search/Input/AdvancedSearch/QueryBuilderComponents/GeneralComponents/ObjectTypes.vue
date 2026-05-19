@@ -10,10 +10,9 @@
   />
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
-import objectTypes from "@/store";
-
+// import objectTypes from "@/store";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {
@@ -60,7 +59,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            objectTypes.commit("objectTypes/setObjectTypes", this.value);
+            this.$store.commit("objectTypes/setObjectTypes", this.value);
           }
         }
       },

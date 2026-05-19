@@ -12,8 +12,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import licencesSearch from "@/store";
-
+// import licencesSearch from "@/store";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {
@@ -60,10 +59,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            licencesSearch.commit(
-              "licencesSearch/setSearchLicences",
-              this.value,
-            );
+            this.$store.commit("licencesSearch/setSearchLicences", this.value);
           }
         }
       },

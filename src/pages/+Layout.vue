@@ -1,27 +1,33 @@
 <template>
   <v-app id="app">
     <v-navigation-drawer
-      v-if="$vuetify.display.mdAndDown"
+      v-if="isMounted"
       v-model="UIGeneralStatus.drawerVisibilityState"
+      class="d-md-down"
       location="left"
+      temporary
     >
       <NavigationDrawer />
     </v-navigation-drawer>
+
     <HeaderComp />
     <v-alert v-if="readOnlyMode" class="mt-4 mx-4" type="info">
       The site currently only allows viewing of records and editing is disabled.
       We hope to restore normal service as soon as possible. Please accept our
       apologies for any inconvenience
     </v-alert>
+
     <Jumbotron />
     <PublicMessages />
-    <router-view class="min-height-70vh justify-center" />
+
+    <router-view v-if="isMounted" class="min-height-70vh justify-center" />
+
     <FooterComp />
   </v-app>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 import PublicMessages from "@/components/Global/PublicMessages";
 import FooterComp from "@/components/Navigation/Footer";
@@ -42,6 +48,7 @@ export default {
     return {
       title: null,
       subtitle: null,
+      isMounted: false,
     };
   },
   computed: {
@@ -54,6 +61,9 @@ export default {
     await this.$nextTick();
   },
   /* v8 ignore stop */
+  mounted() {
+    this.isMounted = true;
+  },
 };
 </script>
 

@@ -22,6 +22,7 @@ export default defineConfig({
     host: true,
     open: true,
     port: 8080,
+    sourcemap: true,
   },
   preview: {
     host: true,
@@ -69,6 +70,7 @@ export default defineConfig({
     postcss: {
       plugins: [autoprefixer]
     },
+    devSourcemap: true
   },
   build: {
     assetsDir: 'assets',

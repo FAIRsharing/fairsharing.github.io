@@ -1,23 +1,24 @@
 <template>
   <v-container class="text-center pa-0" fluid>
-    <ClientOnly>
-      <Carousel />
-    </ClientOnly>
+    <Carousel v-if="isMounted" />
+
     <InfoBlock class="mb-12" />
     <SearchBlock />
     <CategoryBlock class="mt-12" />
     <CommunityBlock class="mt-12" />
-    <ClientOnly>
-      <v-lazy>
-        <StatisticsBlock class="my-12" />
-      </v-lazy>
-    </ClientOnly>
 
-    <ClientOnly>
-      <component :is="'script'" type="application/ld+json">
-        <span v-safe-html="JSONLD" />
-      </component>
-    </ClientOnly>
+    <v-lazy>
+      <StatisticsBlock class="my-12" />
+    </v-lazy>
+
+    <template v-if="isMounted">
+      <component
+        :is="'script'"
+        v-if="Object.keys(JSONLD).length"
+        v-safe-html="JSON.stringify(JSONLD)"
+        type="application/ld+json"
+      />
+    </template>
   </v-container>
 </template>
 
@@ -29,13 +30,10 @@ import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
 import RestClient from "@/lib/Client/RESTClient.js";
-import { ClientOnly } from "vike-vue/ClientOnly";
 
 const restClient = new RestClient();
 
-/** Component to handle the front page (landing page)
- *
- */
+/** Component to handle the front page (landing page) */
 export default {
   name: "Home",
   components: {
@@ -45,24 +43,33 @@ export default {
     CategoryBlock,
     StatisticsBlock,
     CommunityBlock,
-    ClientOnly,
   },
   data() {
     return {
       JSONLD: {},
+      isMounted: false,
     };
   },
   mounted() {
     this.getJsonld();
+    this.isMounted = true;
   },
   unmounted() {
-    if (typeof window !== "undefined" && this.$scrollTo) {
-      this.$scrollTo("body", 0, {});
+    // Fixed: Native scroll since the global scroll plugin is disabled
+    if (typeof window !== "undefined") {
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
     }
   },
   methods: {
     async getJsonld() {
-      this.JSONLD = await restClient.getHomepageJsonld();
+      const data = await restClient.getHomepageJsonld();
+      // Ensure we assign valid data so the script tag populates correctly
+      if (data) {
+        this.JSONLD = data;
+      }
     },
   },
 };

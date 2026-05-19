@@ -189,7 +189,7 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient";
-import saveSearch from "@/store";
+// import saveSearch from "@/store";
 import { isRequired } from "@/utils/rules.js";
 
 import {
@@ -286,13 +286,13 @@ export default {
       );
 
       //Hide stepper and show result section
-      saveSearch.commit("saveSearch/setShowStepper", false);
+      this.$store.commit("saveSearch/setShowStepper", false);
 
       //Check the success or error response
       if (searchResult?.error) {
-        saveSearch.commit("saveSearch/setSaveSearchStatus", false);
+        this.$store.commit("saveSearch/setSaveSearchStatus", false);
       } else {
-        saveSearch.commit("saveSearch/setSaveSearchStatus", true);
+        this.$store.commit("saveSearch/setSaveSearchStatus", true);
       }
 
       this.saveSearchProfile(searchResult);
@@ -303,7 +303,7 @@ export default {
      * Save the search result for the user profile
      */
     saveSearchProfile(data) {
-      saveSearch.commit("saveSearch/setSaveSearchResult", data);
+      this.$store.commit("saveSearch/setSaveSearchResult", data);
       //Reset the textfields
       this.searchName = "";
       this.searchComment = "";
@@ -313,7 +313,7 @@ export default {
      * Close Stepper Dialog Box method
      */
     closeStepperDialog() {
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
+      this.$store.commit("saveSearch/setSaveSearchStepperDialog", false);
     },
 
     /**

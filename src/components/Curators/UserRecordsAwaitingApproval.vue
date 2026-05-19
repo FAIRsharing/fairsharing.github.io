@@ -559,6 +559,7 @@ export default {
       } else {
         preparedRecord.curator_id = idUser;
       }
+      preparedRecord.skip_approval = true;
       let data = {
         record: preparedRecord,
         id: idRecord,

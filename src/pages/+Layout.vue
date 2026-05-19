@@ -15,13 +15,13 @@
     </v-alert>
     <Jumbotron />
     <PublicMessages />
-    <router-view class="min-height-70vh" />
+    <router-view class="min-height-70vh justify-center" />
     <FooterComp />
   </v-app>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 import PublicMessages from "@/components/Global/PublicMessages";
 import FooterComp from "@/components/Navigation/Footer";

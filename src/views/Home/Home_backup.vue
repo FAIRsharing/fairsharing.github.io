@@ -1,17 +1,15 @@
 <template>
   <v-container class="text-center pa-0" fluid>
-    <ClientOnly>
-      <Carousel />
-    </ClientOnly>
+    <Carousel />
     <InfoBlock class="mb-12" />
     <SearchBlock />
     <CategoryBlock class="mt-12" />
     <CommunityBlock class="mt-12" />
-    <ClientOnly>
-      <v-lazy>
+    <v-lazy>
+      <ClientOnly>
         <StatisticsBlock class="my-12" />
-      </v-lazy>
-    </ClientOnly>
+      </ClientOnly>
+    </v-lazy>
 
     <ClientOnly>
       <component :is="'script'" type="application/ld+json">
@@ -29,7 +27,7 @@ import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
 import RestClient from "@/lib/Client/RESTClient.js";
-import { ClientOnly } from "vike-vue/ClientOnly";
+import {ClientOnly} from "vike-vue/ClientOnly";
 
 const restClient = new RestClient();
 

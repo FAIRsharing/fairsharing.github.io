@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 
 import extraFilterChips from "@/data/extraFilterChips.json";
 import filterMapping from "@/data/FiltersLabelMapping.json";
@@ -96,7 +96,8 @@ export default {
       Object.keys(_module.$route.query).forEach(function (queryParam) {
         if (queryParam !== paramName) {
           query[queryParam] = _module.$route.query[queryParam];
-        } else {
+        }
+        else {
           if (_module.$route.query[queryParam].includes(",")) {
             let currentValues = _module.$route.query[queryParam].split(",");
             if (currentValues.includes(paramVal)) {

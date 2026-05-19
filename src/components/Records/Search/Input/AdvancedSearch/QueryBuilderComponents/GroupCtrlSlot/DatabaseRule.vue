@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { sortBy } from "lodash";
+import { sortBy } from "lodash-es";
 
 import {
   AccessMethods,

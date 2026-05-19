@@ -98,7 +98,7 @@ describe("Bootstrap & Filters Logic", () => {
       });
 
       // Note: Based on your current regex logic `replace(/([A-Z])/g, "$1")`,
-      // "camelCase" remains "camelCase". If you intend to split it, update logic in main.js.
+      // "camelCase" remains "camelCase". If you intend to split it, update logic in main.backup.js.
       it("handles camelCase based on current logic", () => {
         const result = globalFilters.cleanString("camelCase");
         // Logic check: "camelCase" -> "CamelCase" (capitalizes first char, keeps rest)

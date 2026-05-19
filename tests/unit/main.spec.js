@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { initHighchartsAccessibility } from "@/main.js";
+import { initHighchartsAccessibility } from "@/main.backup.js";
 
-// Intercept Vue's createApp before main.js runs
+// Intercept Vue's createApp before main.backup.js runs
 vi.mock("vue", async (importOriginal) => {
   const actual = await importOriginal();
 
@@ -23,7 +23,7 @@ vi.mock("vue", async (importOriginal) => {
   };
 });
 
-describe("main.js logic", () => {
+describe("main.backup.js logic", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

@@ -573,7 +573,7 @@
 </template>
 
 <script>
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import CountryFlag from "vue-country-flag-next";
 import { mapGetters, mapState } from "vuex";
 
@@ -663,7 +663,8 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          } else {
+          }
+          else {
             _module.fields.logo = {};
           }
           return;
@@ -731,7 +732,8 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        } else {
+        }
+        else {
           return true;
         }
       }

@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createMemoryHistory, createRouter, createWebHistory,} from "vue-router";
 
-import { hackSearch } from "@/router/hackSearch";
+import {hackSearch} from "@/router/hackSearch";
 import store from "@/store";
 
 import {
@@ -52,9 +52,11 @@ let routes = [
     name: "sitemap",
     path: "/sitemap.xml",
     redirect: () => {
-      window.location.assign(
-        import.meta.env.VITE_API_ENDPOINT + "/sitemap.xml",
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          import.meta.env.VITE_API_ENDPOINT + "/sitemap.xml",
+        );
+      }
     },
   },
   {
@@ -102,7 +104,8 @@ let routes = [
       let [query, modified] = hackSearch(to.query);
       if (modified) {
         next({ name: "search", query: query });
-      } else {
+      }
+      else {
         next();
       }
     },
@@ -123,12 +126,14 @@ let routes = [
     name: "fairassist",
     path: "/fairassist",
     redirect: () => {
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=FAIRassist",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=FAIRassist",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -144,7 +149,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_databases_in_policies") {
+      }
+      else if (to.params.name === "live_list_databases_in_policies") {
         return {
           name: "search",
           query: {
@@ -153,7 +159,8 @@ let routes = [
             page: 1,
           },
         };
-      } else if (to.params.name === "live_list_journal_policies") {
+      }
+      else if (to.params.name === "live_list_journal_policies") {
         return {
           name: "search",
           query: {
@@ -162,7 +169,8 @@ let routes = [
             page: 1,
           },
         };
-      } else {
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -172,9 +180,11 @@ let routes = [
     name: "object_not_found_doi",
     path: "/FAIRsharing.NFOBJT",
     redirect: () => {
-      window.location.assign(
-        "https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/object-types",
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          "https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/object-types",
+        );
+      }
     },
   },
   // Another redirection, from: https://github.com/FAIRsharing/fairsharing.github.io/issues/1741
@@ -182,18 +192,22 @@ let routes = [
     name: "raw_srao_file",
     path: "/ontology/subject/SRAO.owl",
     redirect: () => {
-      window.location.assign(
-        "https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl",
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          "https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl",
+        );
+      }
     },
   },
   {
     name: "raw_srao_file_by_version",
     path: "/ontology/subject/SRAO.owl/0.3.0",
     redirect: () => {
-      window.location.assign(
-        "https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl",
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          "https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl",
+        );
+      }
     },
   },
   {
@@ -201,14 +215,20 @@ let routes = [
     path: "/ontology/:name",
     redirect: (to) => {
       if (to.params.name.toLowerCase() === "srao") {
-        window.location.assign(
-          "https://github.com/FAIRsharing/subject-ontology",
-        );
-      } else if (to.params.name.toLowerCase() === "drao") {
-        window.location.assign(
-          "https://github.com/FAIRsharing/domain-ontology",
-        );
-      } else {
+        if (typeof window !== "undefined") {
+          window.location.assign(
+            "https://github.com/FAIRsharing/subject-ontology",
+          );
+        }
+      }
+      else if (to.params.name.toLowerCase() === "drao") {
+        if (typeof window !== "undefined") {
+          window.location.assign(
+            "https://github.com/FAIRsharing/domain-ontology",
+          );
+        }
+      }
+      else {
         return { path: "/" };
       }
     },
@@ -220,7 +240,9 @@ let routes = [
     redirect: (to) => {
       const url =
         "https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/";
-      window.location.assign(url + to.params.id);
+      if (typeof window !== "undefined") {
+        window.location.assign(url + to.params.id);
+      }
     },
   },
   /* See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1561 */
@@ -254,12 +276,14 @@ let routes = [
                         record name rather than parsed, and passing parameters means the searchAnd parameter isn't recognised
                         until the page refreshes (it's not at all clear why).
                          */
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard",
+          ].join(""),
+        );
+      }
     },
   },
   /* Even more, from #1865 as well. */
@@ -268,12 +292,14 @@ let routes = [
     path: "/databases/(repository|repositories)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Database&recordType=repository&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Database&recordType=repository&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -281,12 +307,14 @@ let routes = [
     path: "/databases/(knowledgebase|knowledgebases)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Database&recordType=knowledgebase&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Database&recordType=knowledgebase&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -294,12 +322,14 @@ let routes = [
     path: "/databases/(knowledgebase_and_repository|knowledgebases_and_repositories)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Database&recordType=knowledgebase_and_repository&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Database&recordType=knowledgebase_and_repository&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -307,12 +337,14 @@ let routes = [
     path: "/standards/(model_and_format|models_and_formats)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Standard&recordType=model_and_format&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Standard&recordType=model_and_format&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -320,12 +352,14 @@ let routes = [
     path: "/standards/(metric|metrics)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Standard&recordType=metric&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Standard&recordType=metric&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -333,12 +367,14 @@ let routes = [
     path: "/standards/(terminology_artefact|terminology_artefacts)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Standard&recordType=terminology_artefact&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Standard&recordType=terminology_artefact&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -346,12 +382,14 @@ let routes = [
     path: "/standards/(reporting_guideline|reporting_guidelines)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Standard&recordType=reporting_guideline&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Standard&recordType=reporting_guideline&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -359,12 +397,14 @@ let routes = [
     path: "/standards/(identifier_schema|identifier_schemas)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Standard&recordType=identifier_schema&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Standard&recordType=identifier_schema&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -372,12 +412,14 @@ let routes = [
     path: "/policies/(project|projects)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Policy&recordType=project&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Policy&recordType=project&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -385,12 +427,14 @@ let routes = [
     path: "/policies/(journal|journals)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Policy&recordType=journal&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Policy&recordType=journal&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -398,12 +442,14 @@ let routes = [
     path: "/policies/(institution|institutions)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Policy&recordType=institution&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Policy&recordType=institution&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -411,12 +457,14 @@ let routes = [
     path: "/policies/(society|societies)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Policy&recordType=society&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Policy&recordType=society&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -424,12 +472,14 @@ let routes = [
     path: "/policies/(journal_publisher|journal_publishers)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -437,12 +487,14 @@ let routes = [
     path: "/policies/(funder|funders)",
     redirect: () => {
       // See recommendations hack...
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/search?fairsharingRegistry=Policy&recordType=funder&page=1",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/search?fairsharingRegistry=Policy&recordType=funder&page=1",
+          ].join(""),
+        );
+      }
     },
   },
   /* End of the hackery from #1865 */
@@ -541,12 +593,14 @@ let routes = [
     name: "preservation_policy",
     path: "/preservation_policy",
     redirect: () => {
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/sustainability_and_preservation",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/sustainability_and_preservation",
+          ].join(""),
+        );
+      }
     },
   },
   {
@@ -563,21 +617,25 @@ let routes = [
     name: "old_community_curation",
     path: "/community_curation",
     redirect: () => {
-      window.location.assign(
-        [import.meta.env.VITE_HOSTNAME, "/community_champions"].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [import.meta.env.VITE_HOSTNAME, "/community_champions"].join(""),
+        );
+      }
     },
   },
   {
     name: "old_our_curators",
     path: "/community_curation/our_curators",
     redirect: () => {
-      window.location.assign(
-        [
-          import.meta.env.VITE_HOSTNAME,
-          "/community_champions/our_champions",
-        ].join(""),
-      );
+      if (typeof window !== "undefined") {
+        window.location.assign(
+          [
+            import.meta.env.VITE_HOSTNAME,
+            "/community_champions/our_champions",
+          ].join(""),
+        );
+      }
     },
   },
   // AUTHENTICATION AND USERS
@@ -785,11 +843,17 @@ export function scrollBehavior(to, from, savedPosition) {
   return false;
 }
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-  scrollBehavior,
-});
+export function createMyRouter() {
+  return createRouter({
+    // Use WebHistory only if window exists, otherwise use MemoryHistory for SSR
+    history:
+      typeof window !== "undefined"
+        ? createWebHistory()
+        : createMemoryHistory(),
+    routes,
+    scrollBehavior,
+  });
+}
 
 export async function beforeEach(to, from, next, store) {
   if (to.path !== "/maintenance" && store.state.introspection.maintenanceMode) {
@@ -808,7 +872,8 @@ export async function beforeEach(to, from, next, store) {
 export function isLoggedIn(to, from, next, store) {
   if (store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //
@@ -820,7 +885,8 @@ export function isLoggedIn(to, from, next, store) {
 export function isNotLoggedIn(to, from, next, store) {
   if (!store.state.users.user().isLoggedIn) {
     next();
-  } else {
+  }
+  else {
     next(from);
   }
 }
@@ -828,7 +894,8 @@ export function isNotLoggedIn(to, from, next, store) {
 export function isSuperCurator(to, from, next, store) {
   if (store.state.users.user().is_super_curator) {
     next();
-  } else {
+  }
+  else {
     const target = to.path;
     next({
       name: "Login", // back to safety route //
@@ -844,4 +911,4 @@ export function isMaintenanceMode(to, from, next, store) {
   next();
 }
 
-export default router;
+// export default router;

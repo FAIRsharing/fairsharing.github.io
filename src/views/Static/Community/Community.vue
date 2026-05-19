@@ -676,7 +676,7 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import { isArray } from "lodash";
+import {isArray} from "lodash-es";
 
 import Icon from "@/components/Icon";
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";

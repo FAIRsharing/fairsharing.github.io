@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {

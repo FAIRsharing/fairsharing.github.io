@@ -1,14 +1,15 @@
-import { defineConfig } from "vite";
-import { fileURLToPath, URL } from "url";
+import {defineConfig} from "vite";
+import {fileURLToPath, URL} from "url";
 import vue from "@vitejs/plugin-vue";
-import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
 import dns from "node:dns";
-import eslintPlugin from "vite-plugin-eslint";
+// import eslintPlugin from "vite-plugin-eslint";
 import path from "path";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
+import {nodePolyfills} from "vite-plugin-node-polyfills";
 import autoprefixer from "autoprefixer";
 import viteCompression from "vite-plugin-compression";
 import legacy from "@vitejs/plugin-legacy";
+import vike from "vike/plugin";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -29,16 +30,17 @@ export default defineConfig({
   },
   plugins: [
     vue({template: {transformAssetUrls}}),
+    vike(),
     vuetify({
       autoImport: true,
     }),
     legacy({
-      targets: ['defaults', 'not IE 11'], // Or your specific requirements
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime'], // Replaces your manual import
+      targets: ['defaults', 'not IE 11'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
       renderLegacyChunks: true,
       polyfills: true
     }),
-    eslintPlugin,
+    // eslintPlugin(),
     nodePolyfills(),
     viteCompression()
   ],
@@ -53,11 +55,15 @@ export default defineConfig({
   optimizeDeps: {
     include: ["vuetify"],
   },
+  ssr: {
+    // FIX: Crucial for Vike + Vuetify to prevent SSR module resolution errors
+    noExternal: ['vuetify']
+  },
   css: {
     preprocessorOptions: {
       scss: {
         additionalData: `@use "@/styles/index.scss";`,
-        api: "modern-compiler", // or "modern"
+        api: "modern-compiler",
       },
     },
     postcss: {
@@ -68,14 +74,13 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
     minify: 'oxc',
-    target: 'baseline-widely-available',
+    //target: 'baseline-widely-available',
     cssCodeSplit: true,
     chunkSizeWarningLimit: 1250,
     commonjsOptions: {transformMixedEsModules: true},
     rollupOptions: {
-      input: path.resolve(__dirname, "index.html"),
+      // FIX: Removed `input: index.backup.html` and `dir: "dist"` so Vike can map your routes.
       output: {
-        dir: "dist",
         manualChunks: {
           'vendor-vuetify': ['vuetify'],
         },

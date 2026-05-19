@@ -6,7 +6,7 @@ import {
   uniqueValues,
 } from "@/utils/advancedSearchUtils.js";
 
-let lodash = require("lodash");
+let lodash = require("lodash-es");
 
 describe("advancedSearchUtils.js", function () {
   it("method uniqueValues should result unique array without duplicate values", function () {

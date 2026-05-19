@@ -74,7 +74,7 @@ describe("AdvancedSearchDialogBox.vue", () => {
         ...props,
       },
       global: {
-        // 🚀 4. Use `plugins` to install the store naturally, just like in main.js!
+        // 🚀 4. Use `plugins` to install the store naturally, just like in main.backup.js!
         plugins: [mockStore],
         mocks: {
           // (We removed $store and _modulesNamespaceMap from here completely)

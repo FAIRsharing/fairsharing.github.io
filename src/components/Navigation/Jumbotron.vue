@@ -1,36 +1,36 @@
 <template>
-  <section
-    :style="{
-      zIndex: 2,
-      backgroundImage:
-        'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%), url(/assets/Home/BlockHero/pattern3.jpg)',
-      backgroundRepeat: 'repeat',
-      backgroundBlendMode: 'multiply',
-    }"
-    class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
-  >
-    <ClientOnly>
+  <ClientOnly>
+    <section
+      :style="{
+        zIndex: 2,
+        backgroundImage:
+          'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%), url(/assets/Home/BlockHero/pattern3.jpg)',
+        backgroundRepeat: 'repeat',
+        backgroundBlendMode: 'multiply',
+      }"
+      class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
+    >
       <vue-particles
         id="particles"
         :class="{ largeScreen: xlOnly }"
         :options="options"
         :particles-loaded="particlesLoaded"
       />
-    </ClientOnly>
 
-    <h1
-      class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
-      style="z-index: 2"
-    >
-      {{ getJumbotronData.title }}
-    </h1>
+      <h1
+        class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
+        style="z-index: 2"
+      >
+        {{ getJumbotronData.title }}
+      </h1>
 
-    <p
-      id="subtitle"
-      v-safe-html="getJumbotronData.subtitle"
-      class="lato-font-medium my-4 text-primary px-1 text-center responsive-subtitle"
-    />
-  </section>
+      <p
+        id="subtitle"
+        v-safe-html="getJumbotronData.subtitle"
+        class="lato-font-medium my-4 text-primary px-1 text-center responsive-subtitle"
+      />
+    </section>
+  </ClientOnly>
 </template>
 
 <script>

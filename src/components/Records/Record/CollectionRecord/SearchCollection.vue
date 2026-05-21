@@ -4,17 +4,17 @@
       v-if="$vuetify.display.lgAndUp"
       class="pl-0 pa-4 pt-0"
       cols="12"
-      sm="12"
-      md="4"
       lg="4"
+      md="4"
+      sm="12"
       xl="4"
     >
       <SearchInput
-        :show-search-box="true"
         :search-path="'/' + currentRecord['fairsharingRecord'].id"
+        :show-search-box="true"
       />
     </v-col>
-    <v-col id="topElement" class="pa-0" cols="12" sm="12" md="12" lg="8" xl="8">
+    <v-col id="topElement" class="pa-0" cols="12" lg="8" md="12" sm="12" xl="8">
       <!--Filtered Chips-->
       <div
         v-if="getChips.length"
@@ -24,8 +24,8 @@
       </div>
       <!--List Controller-->
       <ListController
-        class="mt-2"
         :options="{ hasPagination: true, hasSorting: false, hasListType: true }"
+        class="mt-2"
         @change-list-type="changeListType"
       />
       <!--show filter button for tablet and below-->
@@ -48,14 +48,14 @@
         ]"
       >
         <article v-if="!isColumnList">
-          <v-skeleton-loader type="image" class="mt-2" :loading="loading">
+          <v-skeleton-loader :loading="loading" class="mt-2" type="image">
             <RecordsCardStack
               v-for="item in records"
               :key="'record_' + item.id"
               :record="item"
             />
             <!--Pagination-->
-            <Pagination class="mb-4" :total-pages="totalPages" />
+            <Pagination :total-pages="totalPages" class="mb-4" />
           </v-skeleton-loader>
         </article>
       </div>
@@ -67,7 +67,7 @@
         ]"
       >
         <article v-if="isColumnList">
-          <v-skeleton-loader :loading="loading" type="image" class="mt-2">
+          <v-skeleton-loader :loading="loading" class="mt-2" type="image">
             <!-- ColumnCard view -->
             <v-row>
               <records-card-column
@@ -77,30 +77,32 @@
               />
             </v-row>
             <!--Pagination-->
-            <Pagination class="mb-4" :total-pages="totalPages" />
+            <Pagination :total-pages="totalPages" class="mb-4" />
           </v-skeleton-loader>
         </article>
       </div>
     </v-col>
     <v-fade-transition>
-      <v-dialog v-model="showFiltersSM" fullscreen :scrim="false" scrollable>
-        <v-card>
-          <v-card-title class="bg-primary text-white pb-5">
-            Add a filter
-            <v-spacer />
-            <v-btn size="x-small" @click="showFiltersSM = false">
-              <v-icon>fas fa-times</v-icon>
-            </v-btn>
-          </v-card-title>
-          <SearchInput class="pa-5" />
-        </v-card>
-      </v-dialog>
+      <div>
+        <v-dialog v-model="showFiltersSM" :scrim="false" fullscreen scrollable>
+          <v-card>
+            <v-card-title class="bg-primary text-white pb-5">
+              Add a filter
+              <v-spacer />
+              <v-btn size="x-small" @click="showFiltersSM = false">
+                <v-icon>fas fa-times</v-icon>
+              </v-btn>
+            </v-card-title>
+            <SearchInput class="pa-5" />
+          </v-card>
+        </v-dialog>
+      </div>
     </v-fade-transition>
   </v-row>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import ListController from "@/components/Records/Search/Header/ListController";
@@ -170,7 +172,8 @@ export default {
           params: returnedQuery,
           token: this.user().credentials.token,
         });
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
     },
@@ -220,10 +223,12 @@ export default {
           this.errors = false;
           returnedQuery = this.buildQueryParameters(this.currentPath);
           await this.initializeCollectionRecords(this.collectionIDs);
-        } else {
+        }
+        else {
           return false;
         }
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
       try {
@@ -231,7 +236,8 @@ export default {
           params: returnedQuery,
           token: this.user().credentials.token,
         });
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
     },

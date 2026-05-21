@@ -386,10 +386,13 @@ export default {
   },
   async mounted() {
     this.loading = true;
-    client.setHeader(this.user().credentials.token);
+    const token = this.user().credentials.token;
     //Fetching records approval awaiting data
+    client.setHeader(token);
     let data = await client.executeQuery(getUserApprovalsRequired);
+    client.setHeader(token);
     let listOfCurators = await client.executeQuery(getCuratorList);
+    client.setHeader(token);
     let hiddenRecords = await client.executeQuery(getHiddenRecords);
     this.prepareApprovalRequired(data, listOfCurators, hiddenRecords);
     this.approvalRequiredProcessed = JSON.parse(

@@ -5,9 +5,4 @@ export default {
   extends: [vikeVue],
   Layout,
   ssr: true,
-  // prerender: {
-  //   async partial() {
-  //     return ["/", "/standards", "/databases", "/policies"];
-  //   },
-  // },
 };

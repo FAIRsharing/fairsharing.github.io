@@ -1,15 +1,70 @@
 export default function title(pageContext) {
   const path = pageContext.urlPathname;
-  // console.log("pageContext::", pageContext);
+  const hash = (pageContext.urlParsed?.hash || "").toLowerCase();
+  // console.log("hash::", hash);
   // console.log("pageContext.urlPathname::", pageContext.urlPathname);
   // console.log("pageContext.urlParsed:::", pageContext.urlParsed);
+
+  //Record pages
   const record = pageContext.data?.record;
-  // If we are looking at a specific record ID
   if (record && record.name) {
     return `${record.name} | FAIRsharing`;
   }
-  if (path === "/search") return "Search | FAIRsharing";
-  if (path === "/advancedsearch") return "AdvancedSearch | FAIRsharing";
+
+  //Communites Page
+  if (path === "/communities") {
+    const communityTitles = {
+      adopters: "Adopters | Communities | FAIRsharing",
+      activities: "Activities | Communities | FAIRsharing",
+      governance: "Governance | Communities | FAIRsharing",
+      default: "Communities | FAIRsharing",
+    };
+
+    // Safely check which section is present in the hash fragment
+    const matchedSection = ["adopters", "activities", "governance"].find(
+      (section) => hash.includes(section),
+    );
+    return communityTitles[matchedSection] || communityTitles.default;
+  }
+
+  const staticTitles = {
+    "/advancedsearch": "AdvancedSearch | FAIRsharing",
+    "/organisations": "Organisations | FAIRsharing",
+    "/summary-statistics": "Summary Statistics | FAIRsharing",
+    "/new": "Adding content in FAIRsharing | FAIRsharing",
+    "/stakeholders": "Using FAIRsharing & stakeholders | FAIRsharing",
+    "/licence": "Licence | FAIRsharing",
+    "/terms": "Terms | FAIRsharing",
+    "/search": "Search | FAIRsharing",
+    "/educational": "Educational | FAIRsharing",
+    "/community_champions":
+      "FAIRsharing Community Champions Programme | FAIRsharing",
+    "/community_champions/our_champions": "Community Champions | FAIRsharing",
+    "/privacy": "Privacy Policy | FAIRsharing",
+    "/sustainability_and_preservation":
+      "FAIRsharing Sustainability | FAIRsharing",
+  };
+
+  if (staticTitles[path]) {
+    return staticTitles[path];
+  }
+
+  const searchParams = new URLSearchParams(pageContext.urlParsed?.search || "");
+  const registry = searchParams.get("fairsharingRegistry");
+
+  if (registry) {
+    const registryTitles = {
+      standard: "Standards | FAIRsharing",
+      database: "Databases | FAIRsharing",
+      policy: "Policies | FAIRsharing",
+      collection: "Collections | FAIRsharing",
+    };
+
+    const matchedTitle = registryTitles[registry.toLowerCase()];
+    if (matchedTitle) {
+      return matchedTitle;
+    }
+  }
 
   return "FAIRsharing";
 }

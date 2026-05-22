@@ -1,5 +1,5 @@
 import Client from "@/lib/GraphClient/GraphClient.js";
-import recordQuery from "@/lib/GraphClient/queries/getRecord.json";
+import recordQuery from "@/lib/GraphClient/queries/getRecordSEO.json";
 
 export async function data(pageContext) {
   //Extract the wildcard route parameter (e.g., "3493")
@@ -18,7 +18,6 @@ export async function data(pageContext) {
 
   try {
     const responseData = await client.executeQuery(recordQuery);
-
     //Extract the clean data object out to Vike's pageContext
     return {
       record: responseData?.fairsharingRecord || null,

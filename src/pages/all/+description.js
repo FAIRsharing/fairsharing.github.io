@@ -5,7 +5,6 @@ export default function description(pageContext) {
   if (record) {
     return (
       record.description ||
-      record.summary ||
       `View the full registry profile for ${record.name} on FAIRsharing.`
     );
   }

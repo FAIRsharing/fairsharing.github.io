@@ -1,0 +1,5 @@
+{
+  "queryName": "fairsharingRecord",
+  "queryParam": null,
+  "fields": ["id", "name", "description"]
+}

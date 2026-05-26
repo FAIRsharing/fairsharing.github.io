@@ -11,7 +11,7 @@ export default function title(pageContext) {
     return `${record.name} | FAIRsharing`;
   }
 
-  //Communites Page
+  //Communities Page
   if (path === "/communities") {
     const communityTitles = {
       adopters: "Adopters | Communities | FAIRsharing",

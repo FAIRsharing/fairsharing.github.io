@@ -37,8 +37,6 @@
 <script>
 import QueryBuilder from "query-builder-vue-3";
 import { mapGetters } from "vuex";
-
-// import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 import {

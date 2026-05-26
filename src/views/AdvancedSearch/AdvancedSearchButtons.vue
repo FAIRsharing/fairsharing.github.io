@@ -32,8 +32,6 @@
 </template>
 
 <script>
-// import advancedSearch from "@/store";
-
 export default {
   name: "AdvancedSearchButtons",
   methods: {

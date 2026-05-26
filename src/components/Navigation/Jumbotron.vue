@@ -43,6 +43,7 @@ const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
+// eslint-disable-next-line no-unused-vars
 const particlesLoaded = async (container) => {};
 
 export default {

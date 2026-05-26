@@ -12,7 +12,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-// import countriesSearch from "@/store";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {

@@ -11,8 +11,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
-// import licencesSearch from "@/store";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {

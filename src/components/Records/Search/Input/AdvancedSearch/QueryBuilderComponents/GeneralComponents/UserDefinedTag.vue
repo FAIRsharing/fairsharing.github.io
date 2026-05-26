@@ -10,9 +10,7 @@
   />
 </template>
 <script>
-import {mapActions, mapGetters} from "vuex";
-
-// import userDefinedTagsSearch from "@/store";
+import { mapActions, mapGetters } from "vuex";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {

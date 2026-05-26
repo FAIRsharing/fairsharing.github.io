@@ -12,7 +12,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-// import subjectSearch from "@/store";
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {

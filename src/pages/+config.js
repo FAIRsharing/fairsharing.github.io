@@ -5,7 +5,11 @@ export default {
   extends: [vikeVue],
   Layout,
   ssr: true,
-  prerender: true,
+  prerender: {
+    partial: true,
+    // Maps your fallback catch-all page straight to root index.html
+    pageContexts: [{ urlOriginal: "/" }],
+  },
   favicon: "/assets/favicon.ico",
   title: "FAIRsharing",
   viewport:

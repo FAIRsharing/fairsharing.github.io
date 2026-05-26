@@ -43,7 +43,9 @@ export default defineConfig({
     }),
     // eslintPlugin(),
     nodePolyfills(),
-    viteCompression()
+    viteCompression({
+      dir: 'dist',
+    })
   ],
   resolve: {
     alias: {

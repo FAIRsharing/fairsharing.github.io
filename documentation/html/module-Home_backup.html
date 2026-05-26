@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue</title>
+	<title>FAIRsharing.org Module: Home_backup</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,143 +81,100 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue</h1>
-    
+	<h1 class="page-title">Module: Home_backup</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div>
-    &lt;template v-if="user().is_super_curator">
-      &lt;v-autocomplete
-        v-model="organisationSelected"
-        v-model:search="searchOrganisation"
-        :items="getSearchOrganisations"
-        :loading="getLoadingStatus"
-        chips
-        class="mb-7 full-width stepperField"
-        closable-chips
-        color="primary"
-        flat
-        hide-details="auto"
-        item-title="name"
-        item-value="id"
-        label="Enter text to search for organisation(s) to associate with this saved search"
-        multiple
-        variant="underlined"
-      >
-        &lt;template #no-data>
-          &lt;div v-show="!getLoadingStatus" class="py-3 px-4">
-            No organisation found
-          &lt;/div>
-          &lt;div v-show="getLoadingStatus" class="py-3 px-4">Loading...&lt;/div>
-        &lt;/template>
-      &lt;/v-autocomplete>
-    &lt;/template>
-    &lt;template v-else>
-      &lt;v-progress-linear
-        :active="loading"
-        :indeterminate="loading"
-        color="primary"
-        height="6"
-        rounded
-      />
-      &lt;template v-if="organisationList &amp;&amp; organisationList.length">
-        &lt;v-checkbox
-          v-for="({ id, name }, index) in organisationList"
-          :key="index"
-          v-model="organisationSelected"
-          :label="name"
-          :value="id"
-        />
-      &lt;/template>
-      &lt;template v-else>
-        &lt;p v-if="!loading">No organisation found&lt;/p>
-      &lt;/template>
-    &lt;/template>
-  &lt;/div>
-&lt;/template>
 
-&lt;script>
-import { mapActions, mapGetters, mapState } from "vuex";
+<header>
+    
+</header>
 
-// import saveSearch from "@/store";
-import { removeItem } from "@/utils/advancedSearchUtils";
 
-export default {
-  name: "OrganisationStepper",
-  data() {
-    return {
-      organisationSelected: [],
-      organisationList: [],
-      searchOrganisation: null,
-      loading: false,
-    };
-  },
-  computed: {
-    ...mapState("users", ["user"]),
-    ...mapGetters("users", ["getUserRecords"]),
-    ...mapGetters("organisationSearch", [
-      "getSearchOrganisations",
-      "getLoadingStatus",
-    ]),
-  },
-  watch: {
-    searchOrganisation(val) {
-      if (!val || val.length &lt; 3) return;
-      val = val.trim();
-      this.fetchSearchOrganisations(val);
-    },
-    organisationSelected(val) {
-      this.$store.commit("saveSearch/setOrganisationSelected", val);
-    },
-  },
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Component to handle the front page (landing page)</p></div>
+        
 
-  async mounted() {
-    if (!this.user().is_super_curator) {
-      this.loading = true;
-      this.organisationList = await this.fetchUserOrganisationData();
-      this.loading = false;
-    }
-  },
+        
+<dl class="details">
+    
 
-  methods: {
-    ...mapActions("organisationSearch", ["fetchSearchOrganisations"]),
-    ...mapActions("users", ["getUser"]),
+	
 
-    /**
-     * Returns Organisation List associated to user
-     * @return {Array} - Organisation List
-     */
-    async fetchUserOrganisationData() {
-      await this.getUser();
-      let organisationsArr = this.getUserRecords.user["organisations"];
-      if (organisationsArr &amp;&amp; organisationsArr.length) {
-        return organisationsArr;
-      }
-      return [];
-    },
+	
 
-    /**
-     * Remove the selected item from selection
-     * @param item
-     * @return {Array}
-     */
-    remove(item) {
-      return removeItem(item, this.organisationSelected);
-    },
-  },
-};
-&lt;/script>
-</pre>
-    </article>
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="views_Home_Home_backup.vue.html">views/Home/Home_backup.vue</a>,
+				 <a href="views_Home_Home_backup.vue.html#sunlight-1-line-16">line 16</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -227,6 +184,10 @@ export default {
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>

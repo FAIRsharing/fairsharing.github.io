@@ -5,7 +5,7 @@ export default {
   extends: [vikeVue],
   Layout,
   ssr: true,
-
+  prerender: true,
   favicon: "/assets/favicon.ico",
   title: "FAIRsharing",
   viewport:

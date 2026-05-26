@@ -48,8 +48,8 @@
         { 'lato-text-md': $vuetify.display.xlOnly },
       ]"
     >
-      The base URL of the API is <mark>https://api.fairsharing.org</mark>; paths
-      below may only give the route rather than the full URL, e.g.
+      The base URL of the API is <mark v-text="apiEndpoint" />. Paths below may
+      only give the route rather than the full URL, e.g.
       <mark>/fairsharing_records/123</mark>.
     </p>
 
@@ -60,8 +60,8 @@
         { 'lato-text-md': $vuetify.display.xlOnly },
       ]"
     >
-      You will need to POST the following to
-      <mark>https://api.fairsharing.org/users/sign_in</mark>:
+      You will need to POST the following data to this endpoint:
+      <mark v-text="loginUrl" />
     </p>
 
     <vue-code-highlight class="code-container mt-2 mb-4" language="javascript">
@@ -147,12 +147,12 @@
     </p>
     <vue-code-highlight class="code-container mt-2 mb-4" language="javascript">
       <pre>
-curl --location --request POST 'https://api.fairsharing.org/users/sign_in' \
+curl --location --request POST '{{ loginUrl }}' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --data-raw '{"user": {"login":"your_username","password":"your_secret_password"} }'
 
-curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1' \
+curl --location --request GET '{{ recordExampleUrl }}' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer your_jwt_goes_here'
@@ -174,7 +174,7 @@ curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1
 import requests
 import json
 
-url = "https://api.fairsharing.org/users/sign_in"
+url = "{{ loginUrl }}"
 
 payload={"user": {"login":"your_username","password":"your_password"} }
 headers = {
@@ -188,7 +188,7 @@ response = requests.request("POST", url, headers=headers, data=json.dumps(payloa
 data = response.json()
 jwt = data['jwt']
 
-url = "https://api.fairsharing.org/fairsharing_records/1"
+url = "{{ recordExampleUrl }}"
 
 headers = {
   'Accept': 'application/json',
@@ -217,7 +217,7 @@ print(response.text)
 require "uri"
 require "net/http"
 
-url = URI("https://api.fairsharing.org/users/sign_in")
+url = URI("{{ loginUrl }}")
 
 http = Net::HTTP.new(url.host, url.port)
 request = Net::HTTP::Post.new(url)
@@ -231,7 +231,7 @@ response = http.request(request)
 jwt = response.read_body['jwt']
 
 
-url = URI("https://api.fairsharing.org/fairsharing_records/1")
+url = URI("{{ recordExampleUrl }}")
 
 http = Net::HTTP.new(url.host, url.port);
 request = Net::HTTP::Get.new(url)
@@ -263,7 +263,7 @@ library(tidyverse)
 library(data.table)
 
 #2. get jwt
-url&lt;-'https://api.fairsharing.org/users/sign_in'
+url&lt;-'{{ loginUrl }}'
 request&lt;-POST(url,
               add_headers(
                 "Content-Type"="application/json",
@@ -273,7 +273,7 @@ con&lt;-jsonlite::fromJSON(rawToChar(request$content))
 auth&lt;-con$jwt
 
 #3. set query
-query_url&lt;-"https://api.fairsharing.org/search/fairsharing_records?fairsharing_registry=database&countries=china&page[number]=1&page[size]=3600"
+query_url&lt;-"{{ chinaDatabaseSearchUrl }}"
 
 get_res&lt;-POST(
   query_url,
@@ -401,7 +401,7 @@ data&lt;-query_con$data
       <li>
         <a
           class="underline-effect"
-          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/fairsharing_record_schema.json"
+          :href="schemaDocumenterUrl('/model/fairsharing_record_schema.json')"
           target="_blank"
         >
           FAIRsharing Record schema
@@ -415,143 +415,190 @@ data&lt;-query_con$data
       <li>
         <a
           class="underline-effect"
-          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_schema.json"
+          :href="schemaDocumenterUrl('/model/database_schema.json')"
           target="_blank"
         >
           Database schema
         </a>
+        <ul>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/database_knowledgebase_schema.json')
+              "
+              target="_blank"
+            >
+              Pure knowledgebase schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/database_repository_schema.json')
+              "
+              target="_blank"
+            >
+              Pure repository schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl(
+                  '/model/database_knowledgebase_and_repository_schema.json',
+                )
+              "
+              target="_blank"
+            >
+              Combined repository/knowledgebase schema
+            </a>
+          </li>
+        </ul>
       </li>
-      <ul>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_knowledgebase_schema.json"
-            target="_blank"
-          >
-            Pure knowledgebase schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_repository_schema.json"
-            target="_blank"
-          >
-            Pure repository schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_knowledgebase_and_repository_schema.json"
-            target="_blank"
-          >
-            Combined repository/knowledgebase schema
-          </a>
-        </li>
-      </ul>
       <li>
         <a
           class="underline-effect"
-          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_schema.json"
+          :href="schemaDocumenterUrl('/model/standard_schema.json')"
           target="_blank"
         >
           Standard schema
         </a>
+        <ul>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/standard_identifier_schema.json')
+              "
+              target="_blank"
+            >
+              Identifier schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="schemaDocumenterUrl('/model/standard_metric_schema.json')"
+              target="_blank"
+            >
+              Metric schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="schemaDocumenterUrl('/model/standard_model_schema.json')"
+              target="_blank"
+            >
+              Model/format schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/standard_reporting_schema.json')
+              "
+              target="_blank"
+            >
+              Reporting guideline schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/standard_terminology_schema.json')
+              "
+              target="_blank"
+            >
+              Terminology artifact schema
+            </a>
+          </li>
+        </ul>
       </li>
-      <ul>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_identifier_schema.json"
-            target="_blank"
-          >
-            Identifier schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_metric_schema.json"
-            target="_blank"
-          >
-            Metric schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_model_schema.json"
-            target="_blank"
-          >
-            Model/format schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_reporting_schema.json"
-            target="_blank"
-          >
-            Reporting guideline schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_terminology_schema.json"
-            target="_blank"
-          >
-            Terminology artifact schema
-          </a>
-        </li>
-      </ul>
       <li>
         <a
           class="underline-effect"
-          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_schema.json"
+          :href="schemaDocumenterUrl('/model/policy_schema.json')"
           target="_blank"
         >
           Policy schema
         </a>
+        <ul>
+          <li>
+            <a
+              class="underline-effect"
+              :href="schemaDocumenterUrl('/model/policy_funder_schema.json')"
+              target="_blank"
+            >
+              Funder schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="schemaDocumenterUrl('/model/policy_journal_schema.json')"
+              target="_blank"
+            >
+              Journal schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="schemaDocumenterUrl('/model/policy_publisher_schema.json')"
+              target="_blank"
+            >
+              Publisher schema
+            </a>
+          </li>
+        </ul>
       </li>
-      <ul>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_funder_schema.json"
-            target="_blank"
-          >
-            Funder schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_journal_schema.json"
-            target="_blank"
-          >
-            Journal schema
-          </a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_publisher_schema.json"
-            target="_blank"
-          >
-            Publisher schema
-          </a>
-        </li>
-      </ul>
       <li>
         <a
           class="underline-effect"
-          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/collection_schema.json"
+          :href="schemaDocumenterUrl('/model/collection_schema.json')"
           target="_blank"
         >
           Collection schema
         </a>
+      </li>
+      <li>
+        <a
+          class="underline-effect"
+          :href="schemaDocumenterUrl('/model/fairassist_schema.json')"
+          target="_blank"
+        >
+          FAIRassist schema
+        </a>
+        <ul>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/fairassist_benchmark_schema.json')
+              "
+              target="_blank"
+            >
+              Benchmark schema
+            </a>
+          </li>
+          <li>
+            <a
+              class="underline-effect"
+              :href="
+                schemaDocumenterUrl('/model/fairassist_metric_schema.json')
+              "
+              target="_blank"
+            >
+              Metric schema
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
 
@@ -697,7 +744,7 @@ data&lt;-query_con$data
 
     <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
       <pre>
-        curl --location --request POST 'https://api.fairsharing.org/search/fairsharing_records?q=ADHD&fairsharing_registry=database&countries=china'
+        curl --location --request POST '{{ adhdChinaDatabaseSearchUrl }}'
         --header 'Accept: application/json'
         --header 'Content-Type: application/json'
         --header 'Authorization: Bearer your_jwt_goes_here'
@@ -1090,14 +1137,34 @@ data&lt;-query_con$data
 </template>
 
 <script>
-import { component as VueCodeHighlight } from "vue-code-highlight";
-
 import getHostname from "@/utils/generalUtils";
+import VueCodeHighlight from "./APICodeHighlight.vue";
 
 export default {
   name: "APIDoc",
   components: { VueCodeHighlight },
   mixins: [getHostname],
+  computed: {
+    apiEndpoint() {
+      return import.meta.env.VITE_API_ENDPOINT;
+    },
+    adhdChinaDatabaseSearchUrl() {
+      return this.apiUrl(
+        "/search/fairsharing_records?q=ADHD&fairsharing_registry=database&countries=china",
+      );
+    },
+    chinaDatabaseSearchUrl() {
+      return this.apiUrl(
+        "/search/fairsharing_records?fairsharing_registry=database&countries=china&page[number]=1&page[size]=3600",
+      );
+    },
+    loginUrl() {
+      return this.apiUrl("/users/sign_in");
+    },
+    recordExampleUrl() {
+      return this.apiUrl("/fairsharing_records/1");
+    },
+  },
   data: () => {
     return {
       tables: {
@@ -1263,6 +1330,16 @@ export default {
         },
       },
     };
+  },
+  methods: {
+    apiUrl(path) {
+      const endpoint = String(this.apiEndpoint || "").replace(/\/$/, "");
+      const suffix = path.startsWith("/") ? path : `/${path}`;
+      return `${endpoint}${suffix}`;
+    },
+    schemaDocumenterUrl(path) {
+      return `https://fairsharing.github.io/JSONschema-documenter/?schema_url=${this.apiUrl(path)}`;
+    },
   },
 };
 </script>

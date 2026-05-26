@@ -28,15 +28,16 @@
 
 <script>
 import { mapState } from "vuex";
-
 import PublicMessages from "@/components/Global/PublicMessages";
 import FooterComp from "@/components/Navigation/Footer";
 import HeaderComp from "@/components/Navigation/Header";
 import Jumbotron from "@/components/Navigation/Jumbotron";
 import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
+import "roboto-fontface/css/roboto/roboto-fontface.css";
+import "@mdi/font/css/materialdesignicons.css";
 
 export default {
-  name: "App2",
+  name: "App",
   components: {
     PublicMessages,
     NavigationDrawer,

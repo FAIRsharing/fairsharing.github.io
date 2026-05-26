@@ -1,9 +1,9 @@
-import { fileURLToPath } from "node:url";
+import {fileURLToPath} from "node:url";
 
-import { URL } from "url";
-import { defineConfig, mergeConfig } from "vite";
+import {URL} from "url";
+import {defineConfig, mergeConfig} from "vite";
 import viteConfig from "./vite.config.mjs";
-import { configDefaults } from "vitest/config";
+import {configDefaults} from "vitest/config";
 
 export default mergeConfig(
   viteConfig,
@@ -66,7 +66,6 @@ export default mergeConfig(
           "src/router/**",
           "tests/*",
           ".eslintrc.cjs",
-          "babel.config.unused",
           "vite.config.mjs",
           "vitest.config.mjs",
           "vue.config.js",

@@ -35,7 +35,6 @@ export default function title(pageContext) {
     "/stakeholders": "Using FAIRsharing & stakeholders | FAIRsharing",
     "/licence": "Licence | FAIRsharing",
     "/terms": "Terms | FAIRsharing",
-    "/search": "Search | FAIRsharing",
     "/educational": "Educational | FAIRsharing",
     "/community_champions":
       "FAIRsharing Community Champions Programme | FAIRsharing",

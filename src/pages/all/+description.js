@@ -43,7 +43,6 @@ export default function description(pageContext) {
     "/stakeholders": "FAIRsharing stakeholders",
     "/licence": "Using FAIRsharing content through the web or through our API",
     "/terms": "Acceptable Use Policy and Conditions of Use",
-    "/search": "Search the FAIRsharing records using advanced filtering",
     "/educational":
       "Infographics and factsheets by the FAIRsharing Team and our Community Champions, covering content and functionalities for all stakeholders",
     "/community_champions":

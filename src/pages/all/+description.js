@@ -10,7 +10,7 @@ export default function description(pageContext) {
     );
   }
 
-  //Communites Page
+  //Communities Page
   if (path === "/communities") {
     const communityTitles = {
       adopters:

@@ -1137,8 +1137,45 @@ data&lt;-query_con$data
 </template>
 
 <script>
+import { h } from "vue";
+
 import getHostname from "@/utils/generalUtils";
-import VueCodeHighlight from "./APICodeHighlight.vue";
+
+const VueCodeHighlight = {
+  name: "VueCodeHighlight",
+  props: {
+    language: {
+      type: String,
+      default: "javascript",
+    },
+  },
+  mounted() {
+    this.applyLanguageClass();
+  },
+  updated() {
+    this.applyLanguageClass();
+  },
+  methods: {
+    applyLanguageClass() {
+      const codeBlock = this.$refs.codeBlock;
+      if (!codeBlock) return;
+
+      const languageClass = `language-${this.language}`;
+      codeBlock.querySelectorAll("pre, pre > code").forEach((element) => {
+        element.className = element.className
+          .split(/\s+/)
+          .filter(
+            (className) => className && !className.startsWith("language-"),
+          )
+          .concat(languageClass)
+          .join(" ");
+      });
+    },
+  },
+  render() {
+    return h("div", { ref: "codeBlock" }, this.$slots.default?.());
+  },
+};
 
 export default {
   name: "APIDoc",

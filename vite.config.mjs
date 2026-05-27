@@ -5,7 +5,7 @@ import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
 import dns from "node:dns";
 // import eslintPlugin from "vite-plugin-eslint";
 import path from "path";
-import {nodePolyfills} from "vite-plugin-node-polyfills";
+import {nodePolyfills} from "@blocksquaredev/vite-plugin-node-polyfills";
 import autoprefixer from "autoprefixer";
 import viteCompression from "vite-plugin-compression";
 import vike from "vike/plugin";

@@ -1,6 +1,6 @@
 export default function description(pageContext) {
   const path = pageContext.urlPathname;
-  const hash = (pageContext.urlParsed?.hash || "").toLowerCase();
+  const hash = pageContext.urlParsed?.hash.toLowerCase() || "";
   //Record pages (Most dynamic, checked first)
   const record = pageContext.data?.record;
   if (record) {

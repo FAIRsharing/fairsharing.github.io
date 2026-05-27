@@ -3,7 +3,6 @@ import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
 import HighchartsVue from "highcharts-vue";
 import SimpleAnalytics from "simple-analytics-vue";
-import VueCodeHighlight from "vue-code-highlight";
 import VueGtag from "vue-gtag";
 /* import linkify to turn url within text into an actual url link */
 import linkify from "vue-3-linkify";
@@ -65,7 +64,6 @@ const app = createApp(App)
   .use(HighchartsVue)
   .use(VueScrollTo)
   .use(createMetaManager())
-  .use(VueCodeHighlight)
   .use(Vue3Sanitize)
   .use(VueGtag, {
     config: { id: import.meta.env.VUE_APP_ANALYTICS_ID },

@@ -31,7 +31,9 @@ export default defineConfig({
   },
   plugins: [
     vue({template: {transformAssetUrls}}),
-    vike(),
+    vike({
+      prerender: true
+    }),
     vuetify({
       autoImport: true,
     }),

@@ -8,7 +8,6 @@ import path from "path";
 import {nodePolyfills} from "vite-plugin-node-polyfills";
 import autoprefixer from "autoprefixer";
 import viteCompression from "vite-plugin-compression";
-import legacy from "@vitejs/plugin-legacy";
 import vike from "vike/plugin";
 
 dns.setDefaultResultOrder("verbatim");
@@ -31,20 +30,18 @@ export default defineConfig({
   },
   plugins: [
     vue({template: {transformAssetUrls}}),
-    vike({
-      prerender: true
-    }),
+    vike(),
     vuetify({
       autoImport: true,
     }),
-    legacy({
-      targets: ['defaults', 'not IE 11'],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
-      renderLegacyChunks: true,
-      polyfills: true
-    }),
+    // legacy({
+    //   targets: ['defaults', 'not IE 11'],
+    //   additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+    //   renderLegacyChunks: true,
+    //   polyfills: true
+    // }),
     // eslintPlugin(),
-    nodePolyfills(),
+    nodePolyfills({exclude: ['module']}),
     viteCompression({
       dir: 'dist',
     })
@@ -87,9 +84,9 @@ export default defineConfig({
     rollupOptions: {
       // FIX: Removed `input: index.backup.html` and `dir: "dist"` so Vike can map your routes.
       output: {
-        manualChunks: {
-          'vendor-vuetify': ['vuetify'],
-        },
+        // manualChunks: {
+        //   'vendor-vuetify': ['vuetify'],
+        // },
         format: "es"
       },
     }

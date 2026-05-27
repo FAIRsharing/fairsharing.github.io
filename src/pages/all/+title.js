@@ -1,6 +1,6 @@
 export default function title(pageContext) {
   const path = pageContext.urlPathname;
-  const hash = (pageContext.urlParsed?.hash || "").toLowerCase();
+  const hash = pageContext.urlParsed?.hash.toLowerCase() || "";
 
   //Record pages
   const record = pageContext.data?.record;

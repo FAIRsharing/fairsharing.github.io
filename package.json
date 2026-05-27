@@ -4,9 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "preview": "vite preview",
-    "build": "vite build",
+    "dev": "vike",
+    "preview": "vike preview",
+    "build": "vike build",
     "test": "vitest run",
     "test:ui": "vitest --ui --coverage.enabled=true",
     "test:coverage": "vitest run --coverage",

@@ -6,7 +6,6 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
 import SavedSearches from "@/components/Records/Record/GeneralInfo/SavedSearches.vue";
-import saveSearchStore from "@/store";
 
 // Mock visualViewport because JSDOM doesn't implement it
 Object.defineProperty(window, "visualViewport", {
@@ -39,13 +38,6 @@ vi.mock("@/lib/Client/RESTClient.js", () => ({
   })),
 }));
 
-// Mock the generic store import to intercept the commit
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
-
 describe("SavedSearches.vue", () => {
   let wrapper;
   let store;
@@ -71,6 +63,12 @@ describe("SavedSearches.vue", () => {
     mockFetchRecord = vi.fn().mockResolvedValue();
     store = createStore({
       modules: {
+        saveSearch: {
+          namespaced: true,
+          mutations: {
+            setSaveSearchResult: vi.fn(),
+          },
+        },
         record: {
           namespaced: true,
           state: {
@@ -99,7 +97,7 @@ describe("SavedSearches.vue", () => {
         },
       },
     });
-
+    vi.spyOn(store, "commit");
     wrapper = mount(SavedSearches, {
       global: {
         plugins: [vuetify, store],
@@ -182,7 +180,7 @@ describe("SavedSearches.vue", () => {
     );
 
     // 4. Verify the global store commit was fired
-    expect(saveSearchStore.commit).toHaveBeenCalledWith(
+    expect(store.commit).toHaveBeenCalledWith(
       "saveSearch/setSaveSearchResult",
       { id: "updated_search_123" }, // Our mock return value
     );

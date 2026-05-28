@@ -1,25 +1,16 @@
-/* eslint-env jest */
-
 import RestClient from "@/lib/Client/RESTClient.js";
-import router, {
+import {
   afterEach,
   beforeEach,
+  createMyRouter,
   isLoggedIn,
   isMaintenanceMode,
   isNotLoggedIn,
   isSuperCurator,
   scrollBehavior,
 } from "@/router";
-//import VueRouter from "vue-router";
-const sinon = require("sinon");
 
-/*
-const testrouter = new VueRouter(),
-    $testrouter = { push: vi.fn() };
-const $route = {
-    path: '/some/path'
-}
- */
+const sinon = require("sinon");
 
 let store = {
   state: {
@@ -36,10 +27,12 @@ let store = {
 };
 
 let restStub;
+let router;
 
 describe("Routes", () => {
   beforeAll(() => {
     window.scrollTo = vi.fn();
+    router = createMyRouter(store);
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({
       data: {
@@ -71,7 +64,9 @@ describe("Routes", () => {
       }
       if (beforeEachTester.indexOf(route.name) > -1) {
         const next = vi.fn();
-        route.beforeEnter({ path: {} }, undefined, next);
+        if (route.beforeEnter) {
+          route.beforeEnter({ path: {} }, undefined, next);
+        }
       }
     });
   });

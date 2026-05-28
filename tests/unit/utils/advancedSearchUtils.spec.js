@@ -1,15 +1,12 @@
-import { describe, expect, it, vi } from "vitest";
-// import recordTypesStore from "@/store/AdvancedSearchComponents/recordTypes";
+import { describe, expect, it } from "vitest";
 import {
   recordTypes,
   removeItem,
   uniqueValues,
 } from "@/utils/advancedSearchUtils.js";
 
-let lodash = require("lodash-es");
-
 describe("advancedSearchUtils.js", function () {
-  it("method uniqueValues should result unique array without duplicate values", function () {
+  it("method uniqueValues should result unique array without duplicate values and combine matching identifiers", function () {
     const item = [
       {
         identifier: "registry",
@@ -28,7 +25,8 @@ describe("advancedSearchUtils.js", function () {
         value: "s2",
       },
     ];
-    const result = [
+
+    const expectedResult = [
       {
         identifier: "registry",
         value: ["database"],
@@ -38,13 +36,14 @@ describe("advancedSearchUtils.js", function () {
         value: ["s1", "s2"],
       },
     ];
-    const uniqueValuesFn = uniqueValues(item);
-    lodash.uniqWith = vi.fn(() => item);
 
-    expect(uniqueValuesFn).toStrictEqual(result);
+    // Test the utility function as a black box without mocking lodash internals
+    const uniqueValuesResult = uniqueValues(item);
+
+    expect(uniqueValuesResult).toStrictEqual(expectedResult);
   });
 
-  it("method removeItem should remove the selected item from the array", function () {
+  it("method removeItem should remove the selected item and return the updated array", function () {
     let inputArr = ["A", "B", "C", "D"];
     let resultArr = ["A", "B", "C"];
 

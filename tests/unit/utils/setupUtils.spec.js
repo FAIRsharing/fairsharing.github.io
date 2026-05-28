@@ -1,108 +1,112 @@
 import { bootstrapApp, globalFilters } from "@/utils/setupUtils.js";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import store from "@/store";
-import router from "@/router";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-// Mock the Store
-vi.mock("@/store", () => ({
-  default: {
-    dispatch: vi.fn(),
-    commit: vi.fn(),
-  },
-}));
-
-// Mock the Router
-vi.mock("@/router", () => ({
-  default: {
-    replace: vi.fn(),
-  },
-}));
-
-describe("Bootstrap & Filters Logic", () => {
-  // Clear mock history before every test to ensure clean assertions
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+describe("setupUtils.js", () => {
   describe("bootstrapApp()", () => {
+    let mockStore;
+    let mockRouter;
+
+    beforeEach(() => {
+      // Create fresh mock objects for dependency injection before each test
+      mockStore = {
+        dispatch: vi.fn().mockResolvedValue(true),
+        commit: vi.fn(),
+      };
+
+      mockRouter = {
+        replace: vi.fn(),
+      };
+
+      // Suppress console.error in tests to keep the terminal output clean
+      vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
     it("dispatches the 4 required initialization actions on success", async () => {
-      // Setup: Mock dispatch to resolve successfully
-      store.dispatch.mockResolvedValue(true);
+      // Pass the mock instances directly as arguments
+      await bootstrapApp(mockStore, mockRouter);
 
-      // Execute
-      await bootstrapApp();
-
-      // Assert: Check all 4 calls
-      expect(store.dispatch).toHaveBeenCalledTimes(4);
-      expect(store.dispatch).toHaveBeenCalledWith("users/login");
-      expect(store.dispatch).toHaveBeenCalledWith(
+      expect(mockStore.dispatch).toHaveBeenCalledTimes(4);
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, "users/login");
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(
+        2,
         "introspection/fetchParameters",
       );
-      expect(store.dispatch).toHaveBeenCalledWith(
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(
+        3,
         "searchFilters/assembleFilters",
       );
-      expect(store.dispatch).toHaveBeenCalledWith("messages/setMessages");
+      expect(mockStore.dispatch).toHaveBeenNthCalledWith(
+        4,
+        "messages/setMessages",
+      );
     });
 
     it("commits maintenance mode if API returns 503 Service Unavailable", async () => {
-      // Setup: specific 503 error structure
       const error503 = { response: { status: 503 } };
-      store.dispatch.mockRejectedValueOnce(error503);
+      mockStore.dispatch.mockRejectedValueOnce(error503);
 
-      // Execute
-      await bootstrapApp();
+      await bootstrapApp(mockStore, mockRouter);
 
-      // Assert
-      expect(store.commit).toHaveBeenCalledWith(
+      expect(mockStore.commit).toHaveBeenCalledWith(
         "introspection/setMaintenanceMode",
       );
-      // Should NOT redirect to 500
-      expect(router.replace).not.toHaveBeenCalled();
+      expect(mockRouter.replace).not.toHaveBeenCalled();
     });
 
     it("redirects to /error/500 for generic errors", async () => {
-      // Setup: Generic error
       const errorGeneric = new Error("Random API Failure");
-      store.dispatch.mockRejectedValueOnce(errorGeneric);
+      mockStore.dispatch.mockRejectedValueOnce(errorGeneric);
 
-      // Execute
-      await bootstrapApp();
+      await bootstrapApp(mockStore, mockRouter);
 
-      //Assert;
-      expect(store.commit).not.toHaveBeenCalledWith(
-        "introspection/setMaintenanceMode",
+      expect(mockStore.commit).not.toHaveBeenCalled();
+      expect(mockRouter.replace).toHaveBeenCalledWith("/error/500");
+    });
+
+    it("logs a console error if bootstrap fails and router is unavailable", async () => {
+      const errorGeneric = new Error("No Router Exists");
+      mockStore.dispatch.mockRejectedValueOnce(errorGeneric);
+
+      // Pass null for the router to trigger the final catch block
+      await bootstrapApp(mockStore, null);
+
+      expect(mockStore.commit).not.toHaveBeenCalled();
+      expect(console.error).toHaveBeenCalledWith(
+        "Bootstrap failed and router instance was unavailable:",
+        errorGeneric,
       );
-      expect(router.replace).toHaveBeenCalledWith("/error/500");
     });
   });
 
   describe("Global Filters", () => {
-    describe("capitalize", () => {
+    describe("capitalize()", () => {
       it("capitalizes the first letter of a string", () => {
         expect(globalFilters.capitalize("hello")).toBe("Hello");
       });
 
-      it("returns empty string if input is null/undefined", () => {
+      it("returns an empty string if input is falsy", () => {
         expect(globalFilters.capitalize(null)).toBe("");
+        expect(globalFilters.capitalize("")).toBe("");
       });
     });
 
-    describe("cleanString", () => {
-      it("replaces underscores with spaces", () => {
-        expect(globalFilters.cleanString("hello_world")).toContain(
-          "Hello world",
-        );
+    describe("cleanString()", () => {
+      it("replaces underscores with spaces and capitalizes the first letter", () => {
+        expect(globalFilters.cleanString("hello_world")).toBe("Hello world");
       });
 
-      it("capitalizes the first letter", () => {
-        expect(globalFilters.cleanString("test_string")).toMatch(/^Test/);
+      it("adds spaces before uppercase letters (camelCase splitting)", () => {
+        // The regex replaces ([A-Z]) with " $1" and capitalizes the first char
+        expect(globalFilters.cleanString("camelCase")).toBe("Camel Case");
       });
 
-      // Note: Based on your current regex logic `replace(/([A-Z])/g, "$1")`,
-      // "camelCase" remains "camelCase". If you intend to split it, update logic in main.backup.js.
-      it("handles camelCase based on current logic", () => {
-        const result = globalFilters.cleanString("camelCase");
-        // Logic check: "camelCase" -> "CamelCase" (capitalizes first char, keeps rest)
-        expect(result).toBe("CamelCase");
+      it("returns an empty string if input is falsy", () => {
+        expect(globalFilters.cleanString(null)).toBe("");
+        expect(globalFilters.cleanString("")).toBe("");
       });
     });
   });

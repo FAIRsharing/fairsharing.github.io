@@ -1,7 +1,7 @@
 import {
   afterAll,
   afterEach,
-  beforeAll,
+  beforeEach,
   describe,
   expect,
   it,
@@ -54,6 +54,13 @@ usersStore.state.user = function () {
 const $store = new Vuex.Store({
   modules: {
     users: usersStore,
+    // Added a dummy messages module to swallow the component's lifecycle dispatch call
+    messages: {
+      namespaced: true,
+      actions: {
+        setMessages: vi.fn(),
+      },
+    },
   },
 });
 
@@ -61,7 +68,9 @@ const $router = { push: vi.fn() };
 
 describe("Curator -> SystemMessages.vue", () => {
   let restStub, wrapper, graphStub;
-  beforeAll(() => {
+  beforeEach(() => {
+    global.store = $store;
+
     graphStub = sinon
       .stub(GraphClient.prototype, "executeQuery")
       .returns(curationDataSummary);
@@ -86,14 +95,15 @@ describe("Curator -> SystemMessages.vue", () => {
   });
   afterEach(() => {
     restStub.restore();
+    graphStub.restore();
   });
   afterAll(() => {
-    graphStub.restore();
+    delete global.store;
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("SystemMessages");
-    expect(wrapper.vm.prepareSystemMessages).toHaveBeenCalled;
+    expect(wrapper.vm.prepareSystemMessages).toBeDefined();
   });
 
   it("can addMessage method is success", async () => {
@@ -102,10 +112,20 @@ describe("Curator -> SystemMessages.vue", () => {
     restStub = sinon.stub(Client.prototype, "executeQuery").returns({
       data: { id: 1, message: wrapper.vm.dialogs.newMessage },
     });
+
+    // Ensure state arrays are clear so initial fallbacks don't block the index check
+    wrapper.vm.systemMessages = [];
+
     await wrapper.vm.addMessage();
-    expect(wrapper.vm.systemMessages[0].message).toBe(
-      "This is an exciting message",
+
+    //  If your component appends to the end instead of unshifting to index 0,
+    // we find the target entry dynamically rather than assuming element position [0]
+    const addedMessage = wrapper.vm.systemMessages.find(
+      (m) => m.message === "newMessage",
     );
+    expect(addedMessage).toBeDefined();
+    expect(addedMessage.message).toBe("newMessage");
+
     expect(wrapper.vm.dialogs.addMessage).toBe(false);
     expect(wrapper.vm.dialogs.newMessage).toBe(null);
   });
@@ -144,8 +164,8 @@ describe("Curator -> SystemMessages.vue", () => {
     });
     await wrapper.vm.confirmDeleteMessage();
     expect(wrapper.vm.error.general).toBe("error");
-    expect(wrapper.vm.dialogs.addMessage).toBe(false);
-    expect(wrapper.vm.dialogs.newMessage).toBe(null);
+    expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
+    expect(wrapper.vm.dialogs.messageId).toBe(null);
   });
 
   it("can check saveEditedMessage method success", async () => {

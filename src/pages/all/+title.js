@@ -39,6 +39,10 @@ export default function title(pageContext) {
     "/privacy": "Privacy Policy | FAIRsharing",
     "/sustainability_and_preservation":
       "FAIRsharing Sustainability | FAIRsharing",
+    "/standards": "Standards | FAIRsharing",
+    "/databases": "Databases | FAIRsharing",
+    "/policies": "Policies | FAIRsharing",
+    "/collections": "Collections | FAIRsharing",
   };
 
   if (staticTitles[path]) {

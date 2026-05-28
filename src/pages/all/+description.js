@@ -52,6 +52,14 @@ export default function description(pageContext) {
       "FAIRsharing.org (“This site”) is operated by the University of Oxford. We are committed to protecting the privacy and security of your personal information (‘personal data’).",
     "/sustainability_and_preservation":
       "Since 2011, FAIRsharing is a sustainable service operating with and for the international researcher community and other stakeholders involved in the research life cycle. The FAIRsharing resource, along its core operational team, are based at the University of Oxford, UK.",
+    "/standards":
+      "A registry of terminology artefacts, models/formats, reporting guidelines, and identifier schemas.",
+    "/databases":
+      "A registry of knowledgebases and repositories of data and other digital assets.",
+    "/policies":
+      "A registry of data preservation, management and sharing policies from international funding agencies, regulators, journals, and other organisations.",
+    "/collections":
+      'Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation."',
   };
 
   if (staticDescriptions[path]) {

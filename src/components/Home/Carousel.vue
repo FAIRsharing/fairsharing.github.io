@@ -1,36 +1,34 @@
 <template>
-  <v-sheet color="transparent">
-    <v-tabs
-      v-model="tabsData.selectedTab"
-      :show-arrows="isMounted ? $vuetify.display.mdAndDown : false"
-      align-tabs="center"
-      bg-color="transparent"
-      class="height-430"
-      color="accent3"
-      slider-color="accent3"
-      slider-size="5"
+  <v-tabs
+    v-model="tabsData.selectedTab"
+    :show-arrows="isMounted ? $vuetify.display.mdAndDown : false"
+    align-tabs="center"
+    bg-color="transparent"
+    class="height-430"
+    color="accent3"
+    slider-color="accent3"
+    slider-size="5"
+  >
+    <v-tab
+      v-for="(tab, index) in tabsData.tabs"
+      :key="tab.component + '_' + index"
     >
-      <v-tab
-        v-for="(tab, index) in tabsData.tabs"
-        :key="tab.component + '_' + index"
-      >
-        {{ tab.title }}
-      </v-tab>
-    </v-tabs>
-    <v-tabs-window v-model="tabsData.selectedTab">
-      <v-tabs-window-item
-        v-for="(tabItem, tabItemIndex) in tabsData.tabs"
-        :key="tabItem + '_' + tabItemIndex"
-      >
-        <TabContent
-          :description="tabItem.description"
-          :header="tabItem.header"
-          :image="tabItem.image"
-          :link="tabItem.link"
-        />
-      </v-tabs-window-item>
-    </v-tabs-window>
-  </v-sheet>
+      {{ tab.title }}
+    </v-tab>
+  </v-tabs>
+  <v-tabs-window v-model="tabsData.selectedTab">
+    <v-tabs-window-item
+      v-for="(tabItem, tabItemIndex) in tabsData.tabs"
+      :key="tabItem + '_' + tabItemIndex"
+    >
+      <TabContent
+        :description="tabItem.description"
+        :header="tabItem.header"
+        :image="tabItem.image"
+        :link="tabItem.link"
+      />
+    </v-tabs-window-item>
+  </v-tabs-window>
 </template>
 
 <script>

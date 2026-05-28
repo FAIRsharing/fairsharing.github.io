@@ -1,19 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
-import { createStore } from "vuex";
-import saveSearch from "@/store";
+import {beforeEach, describe, expect, it, vi} from "vitest";
+import {shallowMount} from "@vue/test-utils";
+import {createStore} from "vuex";
 import ResultCard from "@/components/Records/Search/SaveSearch/StepperComponents/ResultCard.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("ResultCard.vue", () => {
   let actions;
   let getters;
-  let store;
+  let store; // Track the active Vuex store instance locally
 
   const createWrapper = (searchStatus = true) => {
     actions = {
@@ -30,9 +23,17 @@ describe("ResultCard.vue", () => {
           namespaced: true,
           getters,
           actions,
+          // Add safe mock placeholders so Vuex doesn't throw "unknown mutation type" warnings
+          mutations: {
+            setShowStepper: vi.fn(),
+            setSaveSearchStepperDialog: vi.fn(),
+          },
         },
       },
     });
+
+    // Directly spy on the commit method of the generated store instance
+    vi.spyOn(store, "commit");
 
     return shallowMount(ResultCard, {
       global: {
@@ -61,13 +62,16 @@ describe("ResultCard.vue", () => {
     it("restartStepper method performs full reset and re-opens stepper", async () => {
       const wrapper = createWrapper(false); // Usually restarts from error state
       wrapper.vm.restartStepper();
+
       expect(actions.resetSaveSearchDialog).toHaveBeenCalled();
       expect(wrapper.emitted("restartStepper")[0]).toEqual([1]);
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+
+      // Assert against the actual store spy instance instead of the removed global mock
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setShowStepper",
         true,
       );
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchStepperDialog",
         true,
       );
@@ -76,8 +80,9 @@ describe("ResultCard.vue", () => {
     it("closeStepperDialog method cleans up and emits 0 when closing", async () => {
       const wrapper = createWrapper(true);
       wrapper.vm.closeStepperDialog();
+
       expect(actions.resetSaveSearchDialog).toHaveBeenCalled();
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchStepperDialog",
         false,
       );
@@ -90,9 +95,11 @@ describe("ResultCard.vue", () => {
       const wrapper = createWrapper(false);
       const startAgainBtn = wrapper.find('[data-test="restart-btn"]');
       expect(startAgainBtn.exists()).toBe(true);
+
       await startAgainBtn.trigger("click");
+
       expect(actions.resetSaveSearchDialog).toHaveBeenCalled();
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setShowStepper",
         true,
       );
@@ -102,7 +109,9 @@ describe("ResultCard.vue", () => {
       const wrapper = createWrapper(false);
       const closeBtn = wrapper.find('[data-test="close-btn"]');
       expect(closeBtn.exists()).toBe(true);
+
       await closeBtn.trigger("click");
+
       expect(wrapper.emitted("restartStepper")[0]).toEqual([0]);
     });
   });

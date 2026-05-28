@@ -1,19 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import saveSearch from "@/store";
 import StepperDialogHeader from "@/components/Records/Search/SaveSearch/StepperComponents/StepperDialogHeader.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("StepperDialogHeader.vue", () => {
   let actions;
   let getters;
-  let store;
+  let store; // Track the active Vuex store instance locally
 
   const createWrapper = (searchStatus = false) => {
     actions = {
@@ -30,9 +23,13 @@ describe("StepperDialogHeader.vue", () => {
           namespaced: true,
           getters,
           actions,
+          mutations: { setSaveSearchStepperDialog: vi.fn() }, // Safe placeholder for the commit
         },
       },
     });
+
+    // Directly spy on the commit method of the generated store instance
+    vi.spyOn(store, "commit");
 
     return shallowMount(StepperDialogHeader, {
       global: {
@@ -63,10 +60,13 @@ describe("StepperDialogHeader.vue", () => {
   it("can check closeStepperDialog method resets and emits restartStepper when search status is SUCCESS (true)", async () => {
     const wrapper = createWrapper(true);
     await wrapper.find(".v-icon-stub").trigger("click");
+
     expect(actions.resetSaveSearchDialog).toHaveBeenCalled();
     expect(wrapper.emitted()).toHaveProperty("restartStepper");
     expect(wrapper.emitted("restartStepper")[0]).toEqual([0]);
-    expect(saveSearch.commit).toHaveBeenCalledWith(
+
+    // Assert against the actual store spy instance instead of the removed global import mock
+    expect(store.commit).toHaveBeenCalledWith(
       "saveSearch/setSaveSearchStepperDialog",
       false,
     );

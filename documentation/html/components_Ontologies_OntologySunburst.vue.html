@@ -92,7 +92,9 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;highcharts v-if="!loadingData" :options="sunburstOptions" />
+  &lt;div class="highcharts-wrapper">
+    &lt;highcharts v-if="!loadingData" :options="sunburstOptions" />
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
@@ -101,6 +103,7 @@ import { useTheme } from "vuetify";
 import Highcharts from "highcharts";
 import Sunburst from "highcharts/modules/sunburst";
 import Exporting from "highcharts/modules/exporting";
+import { defineAsyncComponent } from "vue"; //Implement Sunburst module for Highcharts
 
 //Implement Sunburst module for Highcharts
 // check if Sunburst is a function, if not try .default
@@ -118,6 +121,14 @@ if (typeof Exporting === "function") {
 
 export default {
   name: "OntologySunburst",
+  components: {
+    // Register highcharts asynchronously so it bypasses Server-Side Compilation checks safely
+    highcharts: defineAsyncComponent(() =>
+      import("highcharts-vue").then(
+        (module) => module.Chart || module.default.Chart || module,
+      ),
+    ),
+  },
   props: {
     itemClicked: { default: null, type: Object },
   },

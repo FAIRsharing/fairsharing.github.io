@@ -43,6 +43,7 @@ export default function title(pageContext) {
     "/databases": "Databases | FAIRsharing",
     "/policies": "Policies | FAIRsharing",
     "/collections": "Collections | FAIRsharing",
+    "/browse/subject": "Subject Browser| FAIRsharing",
   };
 
   if (staticTitles[path]) {

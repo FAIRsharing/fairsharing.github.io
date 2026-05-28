@@ -1,5 +1,7 @@
 <template>
-  <highcharts v-if="!loadingData" :options="sunburstOptions" />
+  <div class="highcharts-wrapper">
+    <highcharts v-if="!loadingData" :options="sunburstOptions" />
+  </div>
 </template>
 
 <script>
@@ -8,6 +10,7 @@ import { useTheme } from "vuetify";
 import Highcharts from "highcharts";
 import Sunburst from "highcharts/modules/sunburst";
 import Exporting from "highcharts/modules/exporting";
+import { defineAsyncComponent } from "vue"; //Implement Sunburst module for Highcharts
 
 //Implement Sunburst module for Highcharts
 // check if Sunburst is a function, if not try .default
@@ -25,6 +28,14 @@ if (typeof Exporting === "function") {
 
 export default {
   name: "OntologySunburst",
+  components: {
+    // Register highcharts asynchronously so it bypasses Server-Side Compilation checks safely
+    highcharts: defineAsyncComponent(() =>
+      import("highcharts-vue").then(
+        (module) => module.Chart || module.default.Chart || module,
+      ),
+    ),
+  },
   props: {
     itemClicked: { default: null, type: Object },
   },

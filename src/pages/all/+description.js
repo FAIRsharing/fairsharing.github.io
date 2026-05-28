@@ -60,6 +60,8 @@ export default function description(pageContext) {
       "A registry of data preservation, management and sharing policies from international funding agencies, regulators, journals, and other organisations.",
     "/collections":
       'Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation."',
+    "/browse/subject":
+      "Subject Browser helps you navigate the subjects hierarchy and find the standards, repositories, and policies relevant to you.",
   };
 
   if (staticDescriptions[path]) {

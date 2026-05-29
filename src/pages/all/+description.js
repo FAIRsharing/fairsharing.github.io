@@ -60,6 +60,8 @@ export default function description(pageContext) {
       "A registry of data preservation, management and sharing policies from international funding agencies, regulators, journals, and other organisations.",
     "/collections":
       'Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation."',
+    "/fairassist":
+      'FAIRsharing provides a registry that stores records relating to FAIR assistance and evaluation, initially developed as part of the OSTrails project but open to all assessment tools. The types of records within this registry are defined here, as well as how those record types align with community-developed frameworks and standards."',
     "/browse/subject":
       "Subject Browser helps you navigate the subjects hierarchy and find the standards, repositories, and policies relevant to you.",
   };
@@ -70,24 +72,34 @@ export default function description(pageContext) {
 
   // Search pages (Robust URL query extraction via URLSearchParams)
   const searchParams = new URLSearchParams(pageContext.urlParsed?.search || "");
-  const registry = searchParams.get("fairsharingRegistry");
+  if (path === "/search") {
+    const registry = searchParams.get("fairsharingRegistry");
+    const allowedRegistries = [
+      "standard",
+      "database",
+      "policy",
+      "collection",
+      "fairassist",
+    ];
+    const defaultSearchTitle = "Search | FAIRsharing";
 
-  if (registry) {
-    const registryDescriptions = {
-      standard:
-        "A registry of terminology artefacts, models/formats, reporting guidelines, and identifier schemas.",
-      database:
-        "A registry of knowledgebases and repositories of data and other digital assets.",
-      policy:
-        "A registry of data preservation, management and sharing policies from international funding agencies, regulators, journals, and other organisations.",
-      collection:
-        "Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation.",
-    };
+    if (registry) {
+      const normalizedRegistry = registry.toLowerCase();
 
-    const matchedDescription = registryDescriptions[registry.toLowerCase()];
-    if (matchedDescription) {
-      return matchedDescription;
+      // heck if the param is one of your specific keys
+      if (allowedRegistries.includes(normalizedRegistry)) {
+        const registryTitles = {
+          standard: "Standards | FAIRsharing",
+          database: "Databases | FAIRsharing",
+          policy: "Policies | FAIRsharing",
+          collection: "Collections | FAIRsharing",
+          fairassist: "Fairassist | FAIRsharing",
+        };
+
+        return registryTitles[normalizedRegistry];
+      }
     }
+    return defaultSearchTitle;
   }
 
   //Global Fallback

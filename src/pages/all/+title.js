@@ -43,6 +43,7 @@ export default function title(pageContext) {
     "/databases": "Databases | FAIRsharing",
     "/policies": "Policies | FAIRsharing",
     "/collections": "Collections | FAIRsharing",
+    "/fairassist": "Fairassist | FAIRsharing",
     "/browse/subject": "Subject Browser| FAIRsharing",
   };
 
@@ -51,20 +52,34 @@ export default function title(pageContext) {
   }
 
   const searchParams = new URLSearchParams(pageContext.urlParsed?.search || "");
-  const registry = searchParams.get("fairsharingRegistry");
+  if (path === "/search") {
+    const registry = searchParams.get("fairsharingRegistry");
+    const allowedRegistries = [
+      "standard",
+      "database",
+      "policy",
+      "collection",
+      "fairassist",
+    ];
+    const defaultSearchTitle = "Search | FAIRsharing";
 
-  if (registry) {
-    const registryTitles = {
-      standard: "Standards | FAIRsharing",
-      database: "Databases | FAIRsharing",
-      policy: "Policies | FAIRsharing",
-      collection: "Collections | FAIRsharing",
-    };
+    if (registry) {
+      const normalizedRegistry = registry.toLowerCase();
 
-    const matchedTitle = registryTitles[registry.toLowerCase()];
-    if (matchedTitle) {
-      return matchedTitle;
+      // heck if the param is one of your specific keys
+      if (allowedRegistries.includes(normalizedRegistry)) {
+        const registryTitles = {
+          standard: "Standards | FAIRsharing",
+          database: "Databases | FAIRsharing",
+          policy: "Policies | FAIRsharing",
+          collection: "Collections | FAIRsharing",
+          fairassist: "Fairassist | FAIRsharing",
+        };
+
+        return registryTitles[normalizedRegistry];
+      }
     }
+    return defaultSearchTitle;
   }
 
   return "FAIRsharing";

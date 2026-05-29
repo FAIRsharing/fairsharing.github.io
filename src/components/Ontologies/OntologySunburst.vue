@@ -174,7 +174,7 @@ export default {
     if (typeof window !== "undefined") {
       this.isBrowser = true;
 
-      // 1. Await module initialization
+      // Await module initialization
       const { default: Highcharts } = await import("highcharts");
       const { default: Sunburst } = await import("highcharts/modules/sunburst");
       const { default: Exporting } = await import(
@@ -193,8 +193,11 @@ export default {
         Exporting.default(Highcharts);
       }
 
-      // 2. FIX: Flip flag strictly AFTER modules attach to Highcharts
-      this.modulesReady = true;
+      //Flip flag strictly AFTER modules attach to Highcharts
+      this.$nextTick(() => {
+        this.isBrowser = true;
+        this.modulesReady = true;
+      });
     }
 
     if (this.tree) {

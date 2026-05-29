@@ -77,18 +77,17 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: true,
     minify: 'oxc',
-    //target: 'baseline-widely-available',
     cssCodeSplit: true,
     chunkSizeWarningLimit: 1250,
     commonjsOptions: {transformMixedEsModules: true},
     rollupOptions: {
-      // FIX: Removed `input: index.backup.html` and `dir: "dist"` so Vike can map your routes.
       output: {
-        // manualChunks: {
-        //   'vendor-vuetify': ['vuetify'],
-        // },
         format: "es"
       },
+    },
+    modulePreload: {
+      polyfill: false,
+      resolveDependencies: () => []
     }
   }
 });

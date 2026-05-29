@@ -2,13 +2,11 @@
   command = "npm run build"
   publish = "dist/client"
 
-#ALWAYS let static assets (.js, .css, images) and pre-rendered .json files pass through safely
-[[redirects]]
-  from = "/assets/*"
-  status = 200
-
-#Forward all other routing requests to Vike's serverless rendering function
+# Forward all routing requests to Vike's serverless rendering function.
+# force = false ensures Netlify checks for real static files (like /assets/*)
+# on disk first. It only redirects to the function if the file doesn't exist.
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/render" # Change this if your function is named differently (e.g., /_api, /server)
+  to = "/.netlify/functions/render"
   status = 200
+  force = false

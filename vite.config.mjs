@@ -3,12 +3,11 @@ import {fileURLToPath, URL} from "url";
 import vue from "@vitejs/plugin-vue";
 import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
 import dns from "node:dns";
-// import eslintPlugin from "vite-plugin-eslint";
 import path from "path";
 import {nodePolyfills} from "@blocksquaredev/vite-plugin-node-polyfills";
 import autoprefixer from "autoprefixer";
-import viteCompression from "vite-plugin-compression";
 import vike from "vike/plugin";
+import {compression} from "vite-plugin-compression2";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -34,18 +33,12 @@ export default defineConfig({
     vuetify({
       autoImport: true,
     }),
-    // legacy({
-    //   targets: ['defaults', 'not IE 11'],
-    //   additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
-    //   renderLegacyChunks: true,
-    //   polyfills: true
-    // }),
-    // eslintPlugin(),
     nodePolyfills({exclude: ['module']}),
-    viteCompression({
-      dir: 'dist',
-    })
-  ],
+    compression({
+      include: /\.(html|xml|css|json|js|mjs|svg)$/i,
+      exclude: [/\x00/, /dist\/server\//], // Completely leaves Vike's server chunks alone
+      threshold: 1024 // Only compress files larger than 1KB
+    })  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -55,11 +48,14 @@ export default defineConfig({
     extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue", ".svg"],
   },
   optimizeDeps: {
-    include: ["vuetify"],
+    include: ['vue-code-highlight', 'highcharts', 'highcharts-vue'],
   },
   ssr: {
-    // FIX: Crucial for Vike + Vuetify to prevent SSR module resolution errors
-    noExternal: ['vuetify']
+    //  Crucial for Vike + Vuetify to prevent SSR module resolution errors
+    noExternal: ['vue-code-highlight', 'highcharts', 'highcharts-vue', 'vuetify'],
+  },
+  define: {
+    'module.exports': '{}'
   },
   css: {
     preprocessorOptions: {
@@ -78,16 +74,25 @@ export default defineConfig({
     sourcemap: true,
     minify: 'oxc',
     cssCodeSplit: true,
-    chunkSizeWarningLimit: 1250,
-    commonjsOptions: {transformMixedEsModules: true},
+    chunkSizeWarningLimit: 2000,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      include: [/vue-code-highlight/, /node_modules/]
+    },
     rollupOptions: {
       output: {
-        format: "es"
+        format: "es",
+        inlineDynamicImports: false,
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('highcharts')) return 'vendor-charts';
+            if (id.includes('vuetify') || id.includes('@mdi')) return 'vendor-ui';
+            if (id.includes('vue-code-highlight') || id.includes('prism')) return 'vendor-highlight';
+            return 'vendor-core'; // All other node_modules go here
+          }
+        }
       },
     },
-    modulePreload: {
-      polyfill: false,
-      resolveDependencies: () => []
-    }
+    modulePreload: false,
   }
 });

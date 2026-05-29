@@ -1,6 +1,7 @@
 export default function description(pageContext) {
   const path = pageContext.urlPathname;
-  const hash = pageContext.urlParsed?.hash.toLowerCase() || "";
+  // const hashRaw = pageContext.urlParsed?.hash || "";
+  // const hash = hashRaw.toLowerCase();
   //Record pages (Most dynamic, checked first)
   const record = pageContext.data?.record;
   if (record) {
@@ -11,25 +12,25 @@ export default function description(pageContext) {
   }
 
   //Communities Page
-  if (path === "/communities") {
-    const communityTitles = {
-      adopters:
-        "Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organisations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters. Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.",
-      activities:
-        "FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.",
-      governance:
-        "Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n" +
-        "The operational team is based in the Data Readiness Group, at the University of Oxford, supported by the Bodleian Library for DOI generation and access to the ORCID member-only API.",
-      default:
-        "FAIRsharing is a community-driven resource with users and collaborators across all disciplines. We work together with our stakeholders to enable the FAIR Principles by promoting the value and the use of standards, databases and policies.",
-    };
-
-    // Safely check which section is present in the hash fragment
-    const matchedSection = ["adopters", "activities", "governance"].find(
-      (section) => hash.includes(section),
-    );
-    return communityTitles[matchedSection] || communityTitles.default;
-  }
+  // if (path === "/communities") {
+  //   const communityTitles = {
+  //     adopters:
+  //       "Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organisations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters. Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.",
+  //     activities:
+  //       "FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.",
+  //     governance:
+  //       "Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n" +
+  //       "The operational team is based in the Data Readiness Group, at the University of Oxford, supported by the Bodleian Library for DOI generation and access to the ORCID member-only API.",
+  //     default:
+  //       "FAIRsharing is a community-driven resource with users and collaborators across all disciplines. We work together with our stakeholders to enable the FAIR Principles by promoting the value and the use of standards, databases and policies.",
+  //   };
+  //
+  //   // Safely check which section is present in the hash fragment
+  //   const matchedSection = ["adopters", "activities", "governance"].find(
+  //     (section) => hash.includes(section),
+  //   );
+  //   return communityTitles[matchedSection] || communityTitles.default;
+  // }
 
   // 2. Static Route Descriptions (Clean lookup table)
   const staticDescriptions = {
@@ -64,6 +65,8 @@ export default function description(pageContext) {
       'FAIRsharing provides a registry that stores records relating to FAIR assistance and evaluation, initially developed as part of the OSTrails project but open to all assessment tools. The types of records within this registry are defined here, as well as how those record types align with community-developed frameworks and standards."',
     "/browse/subject":
       "Subject Browser helps you navigate the subjects hierarchy and find the standards, repositories, and policies relevant to you.",
+    "/communities":
+      "FAIRsharing is a community-driven resource with users and collaborators across all disciplines. We work together with our stakeholders to enable the FAIR Principles by promoting the value and the use of standards, databases and policies.",
   };
 
   if (staticDescriptions[path]) {

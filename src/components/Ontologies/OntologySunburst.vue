@@ -1,13 +1,16 @@
 <template>
   <div class="highcharts-wrapper">
-    <highcharts
-      v-if="!loadingData && isBrowser && modulesReady"
-      :options="sunburstOptions"
-    />
+    <ClientOnly>
+      <highcharts
+        v-if="!loadingData && isBrowser && modulesReady"
+        :options="sunburstOptions"
+      />
+    </ClientOnly>
   </div>
 </template>
 
 <script>
+import { ClientOnly } from "vike-vue/ClientOnly";
 import { defineAsyncComponent } from "vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 import { useTheme } from "vuetify";
@@ -15,6 +18,7 @@ import { useTheme } from "vuetify";
 export default {
   name: "OntologySunburst",
   components: {
+    ClientOnly,
     highcharts: defineAsyncComponent(() =>
       import("highcharts-vue").then(
         (module) => module.Chart || module.default.Chart || module,
@@ -194,10 +198,7 @@ export default {
       }
 
       //Flip flag strictly AFTER modules attach to Highcharts
-      this.$nextTick(() => {
-        this.isBrowser = true;
-        this.modulesReady = true;
-      });
+      this.modulesReady = true;
     }
 
     if (this.tree) {

@@ -36,7 +36,8 @@ export default defineConfig({
     nodePolyfills({exclude: ['module']}),
     compression({
       include: /\.(html|xml|css|json|js|mjs|svg)$/i,
-      exclude: [/\x00/, /dist\/server\//], // Completely leaves Vike's server chunks alone
+      // eslint-disable-next-line no-control-regex
+      exclude: [/\x00/, /dist\/server\//],
       threshold: 1024 // Only compress files larger than 1KB
     })  ],
   resolve: {

@@ -9,7 +9,7 @@ export default function title(pageContext) {
     return `${record.name} | FAIRsharing`;
   }
 
-  // //Communities Page
+  //Communities Page
   // if (path === "/communities") {
   //   const communityTitles = {
   //     adopters: "Adopters | Communities | FAIRsharing",

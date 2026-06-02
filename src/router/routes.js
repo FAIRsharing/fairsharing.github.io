@@ -5,7 +5,8 @@ export const Record = () => import("@/views/Records/Record");
 export const Records = () => import("@/views/Records/Records");
 export const NewRecord = () => import("@/views/CreateRecord/NewRecord");
 export const Editor = () => import("@/views/CreateRecord/Editor");
-export const Login = () => import("@/views/Users/Login/Login");
+// export const Login = () => import("@/views/Users/Login/Login");
+export { default as Login } from "@/views/Users/Login/Login.vue";
 export const Signup = () => import("@/views/Users/Signup");
 export const ConfirmAccount = () => import("@/views/Users/ConfirmAccount.vue");
 export const ResendConfirmation = () =>

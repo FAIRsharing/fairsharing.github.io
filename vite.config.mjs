@@ -44,7 +44,7 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
       "source-map-js": "source-map",
-      'query-builder-vue-3': path.resolve(__dirname, 'node_modules/query-builder-vue-3/dist/query-builder-vue-3.js'),
+      'query-builder-vue-3': path.resolve(__dirname, 'src/utils/query-builder-vue-3/dist/query-builder-vue-3.js'),
     },
     extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue", ".svg"],
   },
@@ -81,17 +81,16 @@ export default defineConfig({
       include: [/vue-code-highlight/, /node_modules/]
     },
     rollupOptions: {
+      // onwarn(warning, warn) {
+      //   if (warning.code === 'COMMONJS_VARIABLE_IN_ESM') return;
+      //   warn(warning);
+      // },
       output: {
         format: "es",
         inlineDynamicImports: false,
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('highcharts')) return 'vendor-charts';
-            if (id.includes('vuetify') || id.includes('@mdi')) return 'vendor-ui';
-            if (id.includes('vue-code-highlight') || id.includes('prism')) return 'vendor-highlight';
-            return 'vendor-core'; // All other node_modules go here
-          }
-        }
+        // manualChunks: {
+        //     'vendor-vuetify': ['vuetify'],
+        // },
       },
     },
     modulePreload: false,

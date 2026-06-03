@@ -8,6 +8,7 @@ import {nodePolyfills} from "@blocksquaredev/vite-plugin-node-polyfills";
 import autoprefixer from "autoprefixer";
 import vike from "vike/plugin";
 import {compression} from "vite-plugin-compression2";
+import {cjsInterop} from "vite-plugin-cjs-interop";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -33,6 +34,9 @@ export default defineConfig({
     vuetify({
       autoImport: true,
     }),
+    cjsInterop({
+      dependencies: ['highcharts', 'highcharts-vue']
+    }),
     nodePolyfills({exclude: ['module']}),
     compression({
       include: /\.(html|xml|css|json|js|mjs|svg)$/i,
@@ -49,12 +53,15 @@ export default defineConfig({
     extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue", ".svg"],
   },
   optimizeDeps: {
-    include: ['vue-code-highlight', 'highcharts', 'highcharts-vue'],
+    // include: ['highcharts', 'highcharts-vue', 'vuetify'],
+    include: ['highcharts', 'highcharts-vue'],
   },
-  ssr: {
-    //  Crucial for Vike + Vuetify to prevent SSR module resolution errors
-    noExternal: ['vue-code-highlight', 'highcharts', 'highcharts-vue', 'vuetify'],
-  },
+  // ssr: {
+  //   //  Crucial for Vike + Vuetify to prevent SSR module resolution errors
+  //   // noExternal: ['highcharts', 'highcharts-vue', 'vuetify'],
+  //   // noExternal: [/^vuetify/, '@mdi/font']
+  //   noExternal: true,
+  // },
   define: {
     'module.exports': '{}'
   },
@@ -81,13 +88,14 @@ export default defineConfig({
       include: [/vue-code-highlight/, /node_modules/]
     },
     rollupOptions: {
+      preserveEntrySignatures: 'strict',
       // onwarn(warning, warn) {
       //   if (warning.code === 'COMMONJS_VARIABLE_IN_ESM') return;
       //   warn(warning);
       // },
       output: {
         format: "es",
-        inlineDynamicImports: false,
+        // inlineDynamicImports: false,
         // manualChunks: {
         //     'vendor-vuetify': ['vuetify'],
         // },

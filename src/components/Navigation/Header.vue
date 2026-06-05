@@ -20,58 +20,71 @@
         />
         <nav class="d-none d-lg-flex">
           <ul class="d-flex flex-row align-center flex-wrap px-0">
-            <v-menu
-              v-if="!user().isLoggedIn"
-              :close-on-content-click="closeMenuStatus"
-              class="mt-5"
-              max-height="90vh"
-              transition="slide-y-transition"
-            >
-              <template #activator="{ props }">
-                <v-btn
-                  :size="isMounted && xl ? 'x-large' : undefined"
-                  class="responsive-btn mr-1 mt-sm-1 bg-accent3"
-                  elevation="3"
-                  v-bind="props"
-                  @click="closePopup(false)"
-                >
-                  Login
-                  <v-icon class="ml-1" size="small"> fas fa-sign-in-alt</v-icon>
-                </v-btn>
-              </template>
-              <Login
-                :pop-up="true"
-                :redirect="false"
-                @close-popup="closePopup"
-              />
-            </v-menu>
-            <div v-else class="d-flex align-center">
-              <v-btn
-                :size="isMounted && xl ? 'x-large' : undefined"
-                class="responsive-btn mr-1 mt-sm-1 bg-green"
-                elevation="2"
-                to="/accounts/profile"
+            <template v-if="isMounted">
+              <v-menu
+                v-if="!user().isLoggedIn"
+                :close-on-content-click="closeMenuStatus"
+                class="mt-5"
+                max-height="90vh"
+                transition="slide-y-transition"
               >
-                <v-icon class="mr-1" color="white"> fas fa-user-circle</v-icon>
-                <span class="text-white ellipse-150">{{
-                  user().credentials.username
-                }}</span>
-              </v-btn>
-              <v-btn
-                class="bg-red mt-1"
-                height="30"
-                size="x-small"
-                variant="elevated"
-                width="30"
-              >
-                <v-icon
-                  color="white"
-                  icon="fas fa-power-off"
-                  size="20"
-                  @click="logoutUser()"
+                <template #activator="{ props }">
+                  <v-btn
+                    :size="xl ? 'x-large' : undefined"
+                    class="responsive-btn mr-1 mt-sm-1 bg-accent3"
+                    elevation="3"
+                    v-bind="props"
+                    @click="closePopup(false)"
+                  >
+                    Login
+                    <v-icon class="ml-1" size="small">
+                      fas fa-sign-in-alt</v-icon
+                    >
+                  </v-btn>
+                </template>
+                <Login
+                  :pop-up="true"
+                  :redirect="false"
+                  @close-popup="closePopup"
                 />
+              </v-menu>
+              <div v-else class="d-flex align-center">
+                <v-btn
+                  :size="xl ? 'x-large' : undefined"
+                  class="responsive-btn mr-1 mt-sm-1 bg-green"
+                  elevation="2"
+                  to="/accounts/profile"
+                >
+                  <v-icon class="mr-1" color="white">
+                    fas fa-user-circle</v-icon
+                  >
+                  <span class="text-white ellipse-150">{{
+                    user().credentials.username
+                  }}</span>
+                </v-btn>
+                <v-btn
+                  class="bg-red mt-1"
+                  height="30"
+                  size="x-small"
+                  variant="elevated"
+                  width="30"
+                >
+                  <v-icon
+                    color="white"
+                    icon="fas fa-power-off"
+                    size="20"
+                    @click="logoutUser()"
+                  />
+                </v-btn>
+              </div>
+            </template>
+
+            <template v-else>
+              <v-btn class="responsive-btn mr-1 mt-sm-1" disabled elevation="3">
+                Login
+                <v-icon class="ml-1" size="small"> fas fa-sign-in-alt</v-icon>
               </v-btn>
-            </div>
+            </template>
           </ul>
         </nav>
       </div>
@@ -89,7 +102,7 @@
           >
             <v-btn
               :color="item.color"
-              :size="isMounted && xl ? 'x-large' : undefined"
+              :size="xl ? 'x-large' : undefined"
               :to="item.link"
               :variant="!item.active ? 'outlined' : 'elevated'"
               class="mr-1 mt-sm-1 menuLinks responsive-btn"
@@ -114,9 +127,9 @@
 </template>
 
 <script>
-import { isEmpty } from "lodash-es";
-import { mapActions, mapState } from "vuex";
-import { useDisplay } from "vuetify";
+import {isEmpty} from "lodash-es";
+import {mapActions, mapState} from "vuex";
+import {useDisplay} from "vuetify";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import Login from "@/views/Users/Login/Login";
@@ -287,10 +300,9 @@ header {
   }
 }
 
-/* New CSS Sizing Rule to replace Javascript padding calculations safely */
 .responsive-btn {
   @media (max-width: 1279px) {
-    height: 32px !important; // Mimics vuetify 'small' sizing footprint
+    height: 32px !important;
     font-size: 0.75rem !important;
   }
 }

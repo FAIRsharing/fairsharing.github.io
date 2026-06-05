@@ -1,29 +1,11 @@
 export default function title(pageContext) {
   const path = pageContext.urlPathname;
-  // const hashRaw = pageContext.urlParsed?.hash || "";
-  // const hash = hashRaw.toLowerCase();
 
   //Record pages
   const record = pageContext.data?.record;
   if (record && record.name) {
     return `${record.name} | FAIRsharing`;
   }
-
-  //Communities Page
-  // if (path === "/communities") {
-  //   const communityTitles = {
-  //     adopters: "Adopters | Communities | FAIRsharing",
-  //     activities: "Activities | Communities | FAIRsharing",
-  //     governance: "Governance | Communities | FAIRsharing",
-  //     default: "Communities | FAIRsharing",
-  //   };
-  //
-  //   // Safely check which section is present in the hash fragment
-  //   const matchedSection = ["adopters", "activities", "governance"].find(
-  //     (section) => hash.includes(section),
-  //   );
-  //   return communityTitles[matchedSection] || communityTitles.default;
-  // }
 
   const staticTitles = {
     "/advancedsearch": "AdvancedSearch | FAIRsharing",
@@ -47,6 +29,7 @@ export default function title(pageContext) {
     "/fairassist": "Fairassist | FAIRsharing",
     "/browse/subject": "Subject Browser| FAIRsharing",
     "/communities": "Communities| FAIRsharing",
+    "/api_doc": "API DOC| FAIRsharing",
   };
 
   if (staticTitles[path]) {

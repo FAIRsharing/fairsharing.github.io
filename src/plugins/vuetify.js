@@ -8,6 +8,7 @@ import * as directives from "vuetify/directives";
 export default createVuetify({
   components,
   directives,
+  ssr: true,
   theme: {
     defaultTheme: "fairSharingTheme",
     themes: {

@@ -15,7 +15,8 @@ import "vue-json-pretty/lib/styles.css";
 
 export default async (pageContext) => {
   const { app } = pageContext;
-  const isServer = typeof window === "undefined";
+  // const isServer = typeof window === "undefined";
+  const isServer = import.meta.env.SSR;
 
   // Create unique, isolated instances for this specific request
   const store = createMyStore();

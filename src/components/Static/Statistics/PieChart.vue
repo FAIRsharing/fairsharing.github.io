@@ -1,43 +1,19 @@
 <template>
-  <highcharts :ref="nameChart" :options="optionChartPie" />
+  <div>
+    <component
+      :is="chartComponent"
+      v-if="modulesReady"
+      :ref="nameChart"
+      :options="optionChartPie"
+    />
+  </div>
 </template>
 
 <script>
-import Highcharts from "highcharts";
-import { Chart } from "highcharts-vue"; //Pie (Highcharts);
-import Exporting from "highcharts/modules/exporting";
-
-//Pie (Highcharts);
-const colourPalete = [
-  "#aec7e8",
-  "#ffbb78",
-  "#98df8a",
-  "#ff9896",
-  "#c5b0d5",
-  "#c49c94",
-  "#f7b6d2",
-  "#c7c7c7",
-  "#dbdb8d",
-  "#9edae5",
-];
-Highcharts.setOptions({
-  lang: {
-    thousandsSep: ",",
-  },
-  colors: colourPalete,
-});
-
-if (typeof Exporting === "function") {
-  Exporting(Highcharts);
-} else if (typeof Exporting.default === "function") {
-  Exporting.default(Highcharts);
-}
+import { markRaw } from "vue";
 
 export default {
   name: "PieChart",
-  components: {
-    highcharts: Chart,
-  },
   props: {
     refName: {
       type: String,
@@ -54,6 +30,8 @@ export default {
   },
   data() {
     return {
+      modulesReady: false,
+      chartComponent: null, // This will hold the Highcharts component
       nameChart: "",
       optionChartPie: {
         chart: {
@@ -102,7 +80,8 @@ export default {
                   function (e) {
                     if (this.options.url) {
                       location.href = this.options.url;
-                    } else {
+                    }
+                    else {
                       e.stopPropagation();
                     }
                   },
@@ -127,7 +106,47 @@ export default {
       },
     };
   },
-  mounted: function () {
+  mounted: async function () {
+    if (!import.meta.env.SSR) {
+      // Import the Vue wrapper component alongside Highcharts
+      const { Chart } = await import("highcharts-vue");
+      const { default: Highcharts } = await import("highcharts");
+      const { default: Exporting } = await import(
+        "highcharts/modules/exporting"
+      );
+
+      const colourPalete = [
+        "#aec7e8",
+        "#ffbb78",
+        "#98df8a",
+        "#ff9896",
+        "#c5b0d5",
+        "#c49c94",
+        "#f7b6d2",
+        "#c7c7c7",
+        "#dbdb8d",
+        "#9edae5",
+      ];
+
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ",",
+        },
+        colors: colourPalete,
+      });
+
+      if (typeof Exporting === "function") {
+        Exporting(Highcharts);
+      }
+      else if (Exporting && typeof Exporting.default === "function") {
+        Exporting.default(Highcharts);
+      }
+
+      this.chartComponent = markRaw(Chart);
+
+      // Flip the flag to tell the template it is safe to render the chart
+      this.modulesReady = true;
+    }
     this.optionChartPie.title.text = this.fieldsChart.title;
     this.optionChartPie.series[0].data = this.fieldsChart.data;
     this.nameChart = this.refName;

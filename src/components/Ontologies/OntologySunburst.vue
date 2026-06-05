@@ -1,24 +1,20 @@
 <template>
   <div class="highcharts-wrapper">
-    <ClientOnly>
-      <highcharts
-        v-if="!loadingData && isBrowser && modulesReady"
-        :options="sunburstOptions"
-      />
-    </ClientOnly>
+    <highcharts
+      v-if="!loadingData && isBrowser && modulesReady"
+      :options="sunburstOptions"
+    />
   </div>
 </template>
 
 <script>
-import { ClientOnly } from "vike-vue/ClientOnly";
-import { defineAsyncComponent } from "vue";
-import { mapActions, mapGetters, mapState } from "vuex";
-import { useTheme } from "vuetify";
+import {defineAsyncComponent} from "vue";
+import {mapActions, mapGetters, mapState} from "vuex";
+import {useTheme} from "vuetify";
 
 export default {
   name: "OntologySunburst",
   components: {
-    ClientOnly,
     highcharts: defineAsyncComponent(() =>
       import("highcharts-vue").then(
         (module) => module.Chart || module.default.Chart || module,

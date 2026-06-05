@@ -34,14 +34,9 @@
 </template>
 
 <script>
-import { loadFull } from "tsparticles";
 import jumbotronData from "@/data/jumbotronData.json";
-import { useDisplay } from "vuetify";
-import { ClientOnly } from "vike-vue/ClientOnly";
-
-const particlesInit = async (engine) => {
-  await loadFull(engine);
-};
+import {useDisplay} from "vuetify";
+import {ClientOnly} from "vike-vue/ClientOnly";
 
 // eslint-disable-next-line no-unused-vars
 const particlesLoaded = async (container) => {};
@@ -57,7 +52,6 @@ export default {
   },
   data: () => {
     return {
-      particlesInit,
       particlesLoaded,
       options: {
         background: { color: { value: "transparent" } },

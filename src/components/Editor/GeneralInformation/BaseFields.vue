@@ -573,16 +573,16 @@
 </template>
 
 <script>
-import { isEmpty } from "lodash-es";
+import {isEmpty} from "lodash-es";
 import CountryFlag from "vue-country-flag-next";
-import { mapGetters, mapState } from "vuex";
+import {mapGetters, mapState} from "vuex";
 
 import Icon from "@/components/Icon";
 import Loaders from "@/components/Navigation/Loaders.vue";
 import StatusPills from "@/components/Records/Shared/StatusPills";
 import RESTClient from "@/lib/Client/RESTClient";
-import getAPIEndPoint, { toBase64 } from "@/utils/generalUtils";
-import { isImage, isLongEnough, isRequired, isUrl } from "@/utils/rules.js";
+import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
+import {isImage, isLongEnough, isRequired, isUrl} from "@/utils/rules.js";
 
 import DatabaseWarning from "./DatabaseWarning";
 
@@ -663,8 +663,7 @@ export default {
           // submits with no image uploaded.
           if (_module.currentRecord.fairsharingRecord.urlForLogo) {
             _module.fields.delete("logo");
-          }
-          else {
+          } else {
             _module.fields.logo = {};
           }
           return;
@@ -732,8 +731,7 @@ export default {
       if (_module.possibleDuplicates.length > 0) {
         if (_module.submitRecord) {
           return false;
-        }
-        else {
+        } else {
           return true;
         }
       }
@@ -782,8 +780,8 @@ export default {
   display: none;
 }
 
-:deep .v-list-subheader {
-  &__text {
+:deep(.v-list-subheader) {
+  .v-list-subheader__text {
     width: 100%;
   }
 }

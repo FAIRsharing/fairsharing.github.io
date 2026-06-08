@@ -1,27 +1,3 @@
 export function onBeforePrerenderStart() {
-  return [
-    "/",
-    "/all",
-    "/advancedsearch",
-    "/organisations",
-    "/summary-statistics",
-    "/new",
-    "/stakeholders",
-    "/licence",
-    "/terms",
-    "/educational",
-    "/community_champions",
-    "/community_champions/our_champions",
-    "/privacy",
-    "/sustainability_and_preservation",
-    "/standards",
-    "/databases",
-    "/policies",
-    "/collections",
-    "/fairassist",
-    "/browse/subject",
-    "/communities",
-    "/api_doc",
-    "/search"
-  ];
+  return ["/", "/all", "/advancedsearch", "/organisations"];
 }

@@ -76,7 +76,7 @@ export default defineConfig(({  isSsrBuild }) => {
     build: {
       assetsDir: 'assets',
       sourcemap: true,
-      minify: !isSsrBuild ? 'esbuild' : false,
+      minify: !isSsrBuild ? 'oxc' : false,
       reportCompressedSize: false, // Prevents phantom chunk terminal crash
       cssCodeSplit: true,
       chunkSizeWarningLimit: 2000,

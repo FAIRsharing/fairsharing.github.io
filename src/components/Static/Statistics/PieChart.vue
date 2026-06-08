@@ -106,6 +106,14 @@ export default {
       },
     };
   },
+  created() {
+    this.optionChartPie.title.text = this.fieldsChart.title;
+    this.optionChartPie.series[0].data = this.fieldsChart.data;
+    this.nameChart = this.refName;
+    if (!this.linkWork) {
+      this.optionChartPie.series[0].point.events.click = null;
+    }
+  },
   mounted: async function () {
     if (!import.meta.env.SSR) {
       // Import the Vue wrapper component alongside Highcharts
@@ -146,12 +154,6 @@ export default {
 
       // Flip the flag to tell the template it is safe to render the chart
       this.modulesReady = true;
-    }
-    this.optionChartPie.title.text = this.fieldsChart.title;
-    this.optionChartPie.series[0].data = this.fieldsChart.data;
-    this.nameChart = this.refName;
-    if (!this.linkWork) {
-      this.optionChartPie.series[0].point.events.click = null;
     }
   },
 };

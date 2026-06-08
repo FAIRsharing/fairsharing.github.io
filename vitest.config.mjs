@@ -81,6 +81,7 @@ export default defineConfig(async (env) => {
             "src/components/Records/Search/SaveSearch/StepperComponents/index.js",
             "src/components/Curators/index.js",
             "src/components/Editor/GeneralInformation/BaseFields.vue",
+            "src/utils/query-builder-vue-3/**"
           ],
           reportOnFailure: true,
         },

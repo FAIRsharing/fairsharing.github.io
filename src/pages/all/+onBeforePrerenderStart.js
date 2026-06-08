@@ -18,7 +18,6 @@ export function onBeforePrerenderStart() {
     "/databases",
     "/policies",
     "/collections",
-    "/search?fairsharingRegistry=FAIRassist",
     "/browse/subject",
     "/communities",
     "/api_doc",

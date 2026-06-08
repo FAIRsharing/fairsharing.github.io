@@ -1,3 +1,27 @@
 export function onBeforePrerenderStart() {
-  return ["/", "/all", "/advancedsearch", "/organisations"];
+  return [
+    "/",
+    "/all",
+    "/advancedsearch",
+    "/organisations",
+    "/summary-statistics",
+    "/new",
+    "/stakeholders",
+    "/licence",
+    "/terms",
+    "/educational",
+    "/community_champions",
+    "/community_champions/our_champions",
+    "/privacy",
+    "/sustainability_and_preservation",
+    "/standards",
+    "/databases",
+    "/policies",
+    "/collections",
+    "/search?fairsharingRegistry=FAIRassist",
+    "/browse/subject",
+    "/communities",
+    "/api_doc",
+    "/search",
+  ];
 }

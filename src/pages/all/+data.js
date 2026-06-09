@@ -22,6 +22,7 @@ export async function data(pageContext) {
  */
 async function recordPage(paramURL) {
   // Mirror the core execution logic from the recorddata.js action
+  paramURL = "1";
   const client = new Client();
   const individualizedPayload = {
     ...recordQuery,

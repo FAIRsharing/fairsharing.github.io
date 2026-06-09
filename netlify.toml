@@ -7,6 +7,6 @@
 # on disk first. It only redirects to the function if the file doesn't exist.
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/render"
+  to = "/index.html"
   status = 200
   force = false

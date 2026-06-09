@@ -49,6 +49,7 @@ export default defineConfig(({  isSsrBuild }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
         "source-map-js": "source-map",
         'query-builder-vue-3': path.resolve(__dirname, 'src/utils/query-builder-vue-3/dist/query-builder-vue-3.js'),
+        vue: path.resolve("./node_modules/vue")
       },
       extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue", ".svg"],
     },

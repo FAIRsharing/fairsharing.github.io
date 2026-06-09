@@ -35,16 +35,16 @@ export async function onBeforePrerenderStart() {
     const records = responseData?.allFairsharingRecords || [];
     const dynamicRoutes = records.map((record) => `/${record.id}`);
 
-    // 🌟 Read the batch environment variable (Defaults to batch 1 if not passed)
+    // Read the batch environment variable (Defaults to batch 1 if not passed)
     const batch = parseInt(process.env.BUILD_BATCH || "1", 10);
-    const batchSize = 1500; // Limits each execution thread to 2,500 pages to keep memory low
+    const batchSize = 1500; // Limits each execution thread to 1,500 pages to keep memory low
 
     const startIdx = (batch - 1) * batchSize;
     const endIdx = startIdx + batchSize;
     const slicedDynamicRoutes = dynamicRoutes.slice(startIdx, endIdx);
 
     console.log(
-      `\n🚀 Building Batch #${batch} (Processing records ${startIdx} to ${Math.min(endIdx, dynamicRoutes.length)} out of ${dynamicRoutes.length})`,
+      `Building Batch #${batch} (Processing records ${startIdx} to ${Math.min(endIdx, dynamicRoutes.length)} out of ${dynamicRoutes.length})`,
     );
 
     // Only include static routes on the first batch so they don't reset or clear between cycles

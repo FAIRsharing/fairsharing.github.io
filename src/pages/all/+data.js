@@ -43,6 +43,7 @@ async function recordPage(paramURL) {
       client.executeQuery(individualizedQuery),
       timeoutPromise,
     ]);
+
     //Extract the clean data object out to Vike's pageContext
     return {
       record: responseData?.fairsharingRecord || null,

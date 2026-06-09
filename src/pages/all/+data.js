@@ -4,7 +4,12 @@ import recordQuery from "@/lib/GraphClient/queries/getRecordSEO.json";
 export async function data(pageContext) {
   const paramURL = pageContext.routeParams["*"];
 
-  if (!paramURL || paramURL.trim() === "" || paramURL === "index") {
+  if (
+    !paramURL ||
+    paramURL.trim() === "" ||
+    paramURL === "index" ||
+    paramURL === "all"
+  ) {
     return { record: null };
   }
 
@@ -28,18 +33,25 @@ async function recordPage(paramURL) {
     id: paramURL,
   };
 
+  //Promise that rejects automatically after 5 seconds
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("GraphQL backend timeout")), 5000),
+  );
+
   try {
-    const responseData = await client.executeQuery(individualizedQuery);
+    const responseData = await Promise.race([
+      client.executeQuery(individualizedQuery),
+      timeoutPromise,
+    ]);
     //Extract the clean data object out to Vike's pageContext
     return {
       record: responseData?.fairsharingRecord || null,
     };
   }
   catch (error) {
-    console.error(
-      "Failed to execute server-side SEO query for ID:",
-      paramURL,
-      error,
+    console.warn(
+      `⚠️ Skipping static data for ID [${paramURL}]:`,
+      error.message || error,
     );
     return { record: null };
   }

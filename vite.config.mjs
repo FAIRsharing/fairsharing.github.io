@@ -80,7 +80,7 @@ export default defineConfig(({  isSsrBuild }) => {
       reportCompressedSize: false, // Prevents phantom chunk terminal crash
       cssCodeSplit: true,
       chunkSizeWarningLimit: 2000,
-      emptyOutDir: true,
+      emptyOutDir: false,
       commonjsOptions: {
         transformMixedEsModules: true,
         include: [/vue-code-highlight/, /node_modules/]

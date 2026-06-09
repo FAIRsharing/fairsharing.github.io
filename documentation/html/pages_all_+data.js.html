@@ -116,11 +116,14 @@ export async function data(pageContext) {
 async function recordPage(paramURL) {
   // Mirror the core execution logic from the recorddata.js action
   const client = new Client();
-  recordQuery.queryParam = {
-    id: paramURL,
+  const individualizedPayload = {
+    ...recordQuery,
+    queryParam: {
+      id: paramURL,
+    },
   };
   try {
-    const responseData = await client.executeQuery(recordQuery);
+    const responseData = await client.executeQuery(individualizedPayload);
     //Extract the clean data object out to Vike's pageContext
     return {
       record: responseData?.fairsharingRecord || null,

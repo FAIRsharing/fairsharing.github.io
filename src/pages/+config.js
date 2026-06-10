@@ -10,6 +10,7 @@ export default {
     parallel: false, // Disables multi-threaded race conditions
     keepDistServer: true, // Prevents Vike from deleting dist/server/ mid-build
   },
+  hooksTimeout: false,
   favicon: "/assets/favicon.ico",
   title: "FAIRsharing",
   viewport:

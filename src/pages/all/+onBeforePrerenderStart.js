@@ -90,7 +90,7 @@ export async function onBeforePrerenderStart() {
     "/search",
   ];
 
-  const batchSize = 750;
+  const batchSize = 250;
   const batch = Number.parseInt(import.meta.env.VITE_BUILD_BATCH || "1", 10);
 
   const startId = (batch - 1) * batchSize + 1;

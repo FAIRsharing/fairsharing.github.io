@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-BATCH_SIZE=750
+BATCH_SIZE=250
 LAST_ID=8298
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 

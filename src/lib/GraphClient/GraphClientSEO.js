@@ -139,9 +139,13 @@ class GraphQLClientSEO {
     this.headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
+      // 🌟 Disguise Axios as a standard Chrome web browser to bypass WAF blocks
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+      // Force standard compression formats
+      "Accept-Encoding": "gzip, deflate",
     };
 
-    // Fallback checking to prevent missing env variables on build platforms
     const clientId = import.meta.env.VITE_CLIENT_ID;
     if (clientId) {
       this.headers["X-Client-Id"] = clientId;

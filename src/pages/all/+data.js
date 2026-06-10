@@ -90,11 +90,19 @@ async function recordPage(paramURL) {
     };
   }
   catch (error) {
-    console.error(
-      "Failed to execute server-side SEO query for ID:",
-      paramURL,
-      error,
-    );
+    console.error("Failed to execute server-side SEO query for ID:", paramURL);
+
+    // 🌟 Expose the hidden JSON error object sent back by the Rails backend
+    if (error.response && error.response.data) {
+      console.error(
+        "API Error Response:",
+        JSON.stringify(error.response.data, null, 2),
+      );
+    }
+    else {
+      console.error(error.message);
+    }
+
     return { record: null };
   }
 }

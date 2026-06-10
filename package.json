@@ -6,11 +6,7 @@
   "scripts": {
     "dev": "vike dev",
     "preview": "vike preview",
-    "build:chunk1": "cross-env BUILD_BATCH=1 vike build",
-    "build:chunk2": "cross-env BUILD_BATCH=2 vike build",
-    "build:chunk3": "cross-env BUILD_BATCH=3 vike build",
-    "build:chunk4": "cross-env BUILD_BATCH=4 vike build",
-    "build": "npm run build:chunk1 && npm run build:chunk2 && npm run build:chunk3 && npm run build:chunk4 && rimraf dist/server",
+    "build": "vike build && rimraf dist/server",
     "test": "vitest run",
     "test:ui": "vitest --ui --coverage.enabled=true",
     "test:coverage": "vitest run --coverage",

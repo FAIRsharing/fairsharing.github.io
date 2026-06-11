@@ -2,7 +2,7 @@
 set -e
 
 BATCH_SIZE=250
-LAST_ID=500
+LAST_ID=8298
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
 rimraf .prerender-chunks dist

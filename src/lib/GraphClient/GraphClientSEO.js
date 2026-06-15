@@ -1,19 +1,18 @@
 import axios from "axios";
-import Fragments from "./queries/fragments/fragments.json";
+import Fragments from "./queries/fragments/fragments.json" with { type: "json" };
 
 class GraphQLClientSEO {
   constructor() {
-    // 1. If an instance already exists, return it immediately without altering state
+    //If an instance already exists, return it immediately without altering state
     if (GraphQLClientSEO._instance) {
       return GraphQLClientSEO._instance;
     }
 
-    // 2. Otherwise, this is the true first initialization
+    // Otherwise, this is the true first initialization
     this.initalizeHeader();
 
     // Ensure we handle trailing/missing slashes cleanly
-    const baseEndpoint =
-      import.meta.env.VITE_API_ENDPOINT || "https://dev-api.fairsharing.org";
+    const baseEndpoint = process.env.VITE_API_ENDPOINT;
     this.url = `${baseEndpoint.replace(/\/$/, "")}/graphql`;
 
     GraphQLClientSEO._instance = this;
@@ -45,7 +44,7 @@ class GraphQLClientSEO {
     let client = this;
     const fullQuery = {
       method: "post",
-      url: client.url, // 🌟 FIXED: Use 'url' instead of 'baseURL' so the exact path is targeted cleanly
+      url: client.url, //Use 'url' instead of 'baseURL' so the exact path is targeted cleanly
       data: queryString,
       headers: client.headers,
     };
@@ -69,15 +68,13 @@ class GraphQLClientSEO {
           typeof query.queryParam[key] === "number"
         ) {
           queryString += `${key}:${query.queryParam[key]} `;
-        }
-        else if (typeof query.queryParam[key] === "string") {
+        } else if (typeof query.queryParam[key] === "string") {
           const regExp = /\(|\)|\{|\}/g;
           const hasBrackets = regExp.test(query.queryParam[key]);
 
           if (hasBrackets) queryString += `${key}:${query.queryParam[key]}`;
           else queryString += `${key}:"${query.queryParam[key]}" `;
-        }
-        else {
+        } else {
           let param = [];
           query.queryParam[key].forEach(function (paramVal) {
             typeof paramVal !== "number"
@@ -102,19 +99,16 @@ class GraphQLClientSEO {
             for (let subField of myRef) {
               if (typeof subField === "string") {
                 queryString += ` ${subField}`;
-              }
-              else {
+              } else {
                 queryString += ` ${client.buildQuery(subField)}`;
               }
             }
-          }
-          else {
+          } else {
             queryString += ` ${field.name}{`;
             field.fields.forEach(function (subField) {
               if (typeof subField === "string") {
                 queryString += `${subField} `;
-              }
-              else {
+              } else {
                 queryString += `${client.buildQuery(subField)}`;
               }
             });
@@ -146,7 +140,7 @@ class GraphQLClientSEO {
       "Accept-Encoding": "gzip, deflate",
     };
 
-    const clientId = import.meta.env.VITE_CLIENT_ID;
+    const clientId = process.env.VITE_CLIENT_ID;
     if (clientId) {
       this.headers["X-Client-Id"] = clientId;
     }

@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vike dev",
     "preview": "vike preview",
-    "clean:chunks": "rimraf .prerender-chunks dist",
-    "build": "bash scripts/build-prerender-chunks.sh",
+    "build": "bash scripts/build-prerender.sh",
     "test": "vitest run",
     "test:ui": "vitest --ui --coverage.enabled=true",
     "test:coverage": "vitest run --coverage",

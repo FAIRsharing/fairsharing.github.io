@@ -18,9 +18,7 @@ export async function data(pageContext) {
 
   const routeValue = normalizeDoi(paramURL);
   const isNumericId = /^\d+$/.test(routeValue);
-
   let record = null;
-
   if (isNumericId) {
     record = records.find((r) => String(r.id) === routeValue);
   }

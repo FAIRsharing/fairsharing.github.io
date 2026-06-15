@@ -54,7 +54,7 @@ fi
 # Netlify: skip the long batched build and do one light build only.
 if [ "${SKIP_FULL_PRERENDER:-false}" = "true" ]; then
   echo "Skipping full prerender"
-  PRERENDER_FULL=false VITE_BUILD_BATCH=1 VITE_BUILD_BATCH_SIZE="$BATCH_SIZE" vike build
+  PRERENDER_FULL=false VITE_BUILD_BATCH=1 VITE_BUILD_BATCH_SIZE=1 vike build
   exit 0
 fi
 

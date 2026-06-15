@@ -1,5 +1,5 @@
 {
   "queryName": "allFairsharingRecords",
   "queryParam": null,
-  "fields": ["id", "name", "description"]
+  "fields": ["id", "name", "description", "doi"]
 }

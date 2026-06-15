@@ -1,5 +1,15 @@
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
 
+function normalizeDoi(value) {
+  return decodeURIComponent(String(value))
+    .trim()
+    .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
+    .replace(/^doi:/i, "")
+    .replace(/^10\.\d{4,9}\//i, "")
+    .replace(/^\//, "")
+    .replace(/\/$/, "");
+}
+
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
     "/",
@@ -25,43 +35,33 @@ export async function onBeforePrerenderStart() {
     "/search",
   ];
 
-  // If the environment variable is set to skip full prerendering, return only static routes. It is done to do lighter build in netlify
   if (process.env.SKIP_FULL_PRERENDER === "true") {
     return staticRoutes;
   }
 
   const batchSize = Number.parseInt(
-    import.meta.env.VITE_BUILD_BATCH_SIZE || "250",
+    process.env.VITE_BUILD_BATCH_SIZE || "250",
     10,
   );
-  const batch = Number.parseInt(import.meta.env.VITE_BUILD_BATCH || "1", 10);
+  const batch = Number.parseInt(process.env.VITE_BUILD_BATCH || "1", 10);
 
   const startId = (batch - 1) * batchSize + 1;
   const endId = batch * batchSize;
 
-  const maxId = records.reduce((max, record) => {
+  const dynamicRoutes = records.flatMap((record) => {
     const id = Number(record.id);
-    return Number.isFinite(id) ? Math.max(max, id) : max;
-  }, 0);
+    if (id < startId || id > endId) return [];
 
-  const dynamicRoutes = records
-    .filter((record) => {
-      const id = Number(record.id);
-      return id >= startId && id <= endId;
-    })
-    .sort((a, b) => Number(a.id) - Number(b.id))
-    .map((record) => `/${record.id}`);
+    const routes = [`/${record.id}`];
 
-  console.log(
-    `Building Batch #${batch} - Processing IDs ${startId} to ${Math.min(
-      endId,
-      maxId,
-    )} out of max ID ${maxId}`,
-  );
+    if (record.doi) {
+      routes.push(`/${normalizeDoi(record.doi)}`);
+    }
 
-  if (dynamicRoutes.length === 0) {
-    console.log(`No records found for batch #${batch}.`);
-  }
+    return routes;
+  });
 
-  return batch === 1 ? [...staticRoutes, ...dynamicRoutes] : dynamicRoutes;
+  const uniqueRoutes = [...new Set(dynamicRoutes)];
+
+  return batch === 1 ? [...staticRoutes, ...uniqueRoutes] : uniqueRoutes;
 }

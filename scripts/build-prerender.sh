@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# your build steps here
+START_TIME=$(date +%s)
+END_TIME=$(date +%s)
+ELAPSED=$((END_TIME - START_TIME))
+echo "Total build time: ${ELAPSED} seconds"
 
 BATCH_SIZE=250
 GENERATED_JSON="src/lib/Prerender/fairsharingRecords.generated.json"

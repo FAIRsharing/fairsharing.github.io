@@ -31,10 +31,10 @@ export async function onBeforePrerenderStart() {
   }
 
   const batchSize = Number.parseInt(
-    import.meta.env.VITE_BUILD_BATCH_SIZE || "250",
+    process.env.VITE_BUILD_BATCH_SIZE || "250",
     10,
   );
-  const batch = Number.parseInt(import.meta.env.VITE_BUILD_BATCH || "1", 10);
+  const batch = Number.parseInt(process.env.VITE_BUILD_BATCH || "1", 10);
 
   const startId = (batch - 1) * batchSize + 1;
   const endId = batch * batchSize;

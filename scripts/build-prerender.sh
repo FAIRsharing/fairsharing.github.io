@@ -1,23 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# your build steps here
-START_TIME=$(date +%s)
-END_TIME=$(date +%s)
-ELAPSED=$((END_TIME - START_TIME))
-echo "Total build time: ${ELAPSED} seconds"
 
+START_TIME=$(date +%s)
 BATCH_SIZE=250
 GENERATED_JSON="src/lib/Prerender/fairsharingRecords.generated.json"
 OUTPUT_DIR=".prerender-output"
 
 mkdir -p src/lib/Prerender
 
-# Generate the records JSON only if it does not already exist.
-if [ -f "$GENERATED_JSON" ]; then
-  echo "Using existing generated file: $GENERATED_JSON"
-else
-  echo "Generating records file from API..."
-  node --input-type=module <<'NODE'
+echo "Generating records file from API..."
+node --input-type=module <<'NODE'
 import "dotenv/config";
 import fs from "node:fs";
 import path from "node:path";
@@ -33,7 +25,6 @@ const outFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.jso
 
 fs.writeFileSync(outFile, JSON.stringify(records, null, 2), "utf8");
 NODE
-fi
 
 LAST_ID=$(node --input-type=module <<'NODE'
 import fs from "node:fs";
@@ -56,14 +47,15 @@ if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
   exit 1
 fi
 
-# Netlify: skip the long batched build and do one light build only.
 if [ "${SKIP_FULL_PRERENDER:-false}" = "true" ]; then
   echo "Skipping full prerender"
   PRERENDER_FULL=false VITE_BUILD_BATCH=1 VITE_BUILD_BATCH_SIZE=1 vike build
+  END_TIME=$(date +%s)
+  ELAPSED=$((END_TIME - START_TIME))
+  echo "Total build time: ${ELAPSED} seconds"
   exit 0
 fi
 
-# Local / production: full batched prerender.
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
 npx rimraf "$OUTPUT_DIR" dist
@@ -90,3 +82,7 @@ mkdir -p dist/client
 cp -R "$OUTPUT_DIR/client"/. dist/client/
 
 npx rimraf "$OUTPUT_DIR" dist/server
+
+END_TIME=$(date +%s)
+ELAPSED=$((END_TIME - START_TIME))
+echo "Total build time: ${ELAPSED} seconds"

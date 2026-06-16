@@ -1,15 +1,5 @@
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
 
-function normalizeDoi(value) {
-  return decodeURIComponent(String(value))
-    .trim()
-    .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
-    .replace(/^doi:/i, "")
-    .replace(/^10\.\d{4,9}\//i, "")
-    .replace(/^\//, "")
-    .replace(/\/$/, "");
-}
-
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
     "/",
@@ -35,7 +25,8 @@ export async function onBeforePrerenderStart() {
     "/search",
   ];
 
-  if (process.env.SKIP_FULL_PRERENDER === "true") {
+  const skipFull = process.env.SKIP_FULL_PRERENDER === "true";
+  if (skipFull) {
     return staticRoutes;
   }
 
@@ -48,20 +39,36 @@ export async function onBeforePrerenderStart() {
   const startId = (batch - 1) * batchSize + 1;
   const endId = batch * batchSize;
 
-  const dynamicRoutes = records.flatMap((record) => {
+  const maxId = records.reduce((max, record) => {
     const id = Number(record.id);
-    if (id < startId || id > endId) return [];
+    return Number.isFinite(id) ? Math.max(max, id) : max;
+  }, 0);
 
-    const routes = [`/${record.id}`];
+  const dynamicRoutes = records
+    .filter((record) => {
+      const id = Number(record.id);
+      return id >= startId && id <= endId;
+    })
+    .sort((a, b) => Number(a.id) - Number(b.id))
+    .flatMap((record) => {
+      const routes = [`/${record.id}`];
+      if (record.doi) {
+        let doiRoute = record.doi.replace(/^10\.\d{4,9}\/+/i, "");
+        routes.push(`/${doiRoute}`);
+      }
+      return routes;
+    });
 
-    if (record.doi) {
-      routes.push(`/${normalizeDoi(record.doi)}`);
-    }
+  console.log(
+    `Building Batch #${batch} - Processing IDs ${startId} to ${Math.min(
+      endId,
+      maxId,
+    )} out of max ID ${maxId}`,
+  );
 
-    return routes;
-  });
+  if (dynamicRoutes.length === 0) {
+    console.log(`No records found for batch #${batch}.`);
+  }
 
-  const uniqueRoutes = [...new Set(dynamicRoutes)];
-
-  return batch === 1 ? [...staticRoutes, ...uniqueRoutes] : uniqueRoutes;
+  return batch === 1 ? [...staticRoutes, ...dynamicRoutes] : dynamicRoutes;
 }

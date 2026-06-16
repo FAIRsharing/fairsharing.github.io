@@ -4,6 +4,7 @@ set -euo pipefail
 START_TIME=$(date +%s)
 BATCH_SIZE=250
 GENERATED_JSON="src/lib/Prerender/fairsharingRecords.generated.json"
+BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 
 mkdir -p src/lib/Prerender
@@ -47,15 +48,20 @@ if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
   exit 1
 fi
 
+# Netlify: skip the full batch loop and do one light build.
 if [ "${SKIP_FULL_PRERENDER:-false}" = "true" ]; then
+  echo '{"batch":1,"batchSize":1,"skipFull":true}' > "$BUILD_CONTEXT"
   echo "Skipping full prerender"
-  PRERENDER_FULL=false VITE_BUILD_BATCH=1 VITE_BUILD_BATCH_SIZE=1 vike build
+
+  PRERENDER_FULL=false vike build
+
   END_TIME=$(date +%s)
   ELAPSED=$((END_TIME - START_TIME))
   echo "Total build time: ${ELAPSED} seconds"
   exit 0
 fi
 
+# Local / production: full batched prerender.
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
 npx rimraf "$OUTPUT_DIR" dist
@@ -69,9 +75,10 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
     end_id="$LAST_ID"
   fi
 
+  echo "{\"batch\":$batch,\"batchSize\":$BATCH_SIZE,\"skipFull\":false}" > "$BUILD_CONTEXT"
   echo "Building chunk $batch / $TOTAL_BATCHES: IDs $start_id to $end_id"
 
-  PRERENDER_FULL=true VITE_BUILD_BATCH="$batch" VITE_BUILD_BATCH_SIZE="$BATCH_SIZE" vike build
+  PRERENDER_FULL=true vike build
 
   cp -R dist/client/. "$OUTPUT_DIR/client/"
   npx rimraf dist

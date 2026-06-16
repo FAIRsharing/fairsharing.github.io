@@ -1,4 +1,5 @@
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
+import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
 
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
@@ -26,15 +27,13 @@ export async function onBeforePrerenderStart() {
   ];
 
   // If the environment variable is set to skip full prerendering, return only static routes. It is done to do lighter build in netlify
-  if (process.env.SKIP_FULL_PRERENDER === "true") {
+  if (buildContext.skipFull) {
     return staticRoutes;
   }
 
-  const batchSize = Number.parseInt(
-    process.env.VITE_BUILD_BATCH_SIZE || "250",
-    10,
-  );
-  const batch = Number.parseInt(process.env.VITE_BUILD_BATCH || "1", 10);
+  const batchSize = buildContext.batchSize || 250;
+
+  const batch = buildContext.batch || 1;
 
   const startId = (batch - 1) * batchSize + 1;
   const endId = batch * batchSize;

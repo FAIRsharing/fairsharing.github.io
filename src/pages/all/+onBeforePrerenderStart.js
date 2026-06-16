@@ -25,16 +25,16 @@ export async function onBeforePrerenderStart() {
     "/search",
   ];
 
-  const skipFull = process.env.SKIP_FULL_PRERENDER === "true";
-  if (skipFull) {
+  // If the environment variable is set to skip full prerendering, return only static routes. It is done to do lighter build in netlify
+  if (process.env.SKIP_FULL_PRERENDER === "true") {
     return staticRoutes;
   }
 
   const batchSize = Number.parseInt(
-    process.env.VITE_BUILD_BATCH_SIZE || "250",
+    import.meta.env.VITE_BUILD_BATCH_SIZE || "250",
     10,
   );
-  const batch = Number.parseInt(process.env.VITE_BUILD_BATCH || "1", 10);
+  const batch = Number.parseInt(import.meta.env.VITE_BUILD_BATCH || "1", 10);
 
   const startId = (batch - 1) * batchSize + 1;
   const endId = batch * batchSize;

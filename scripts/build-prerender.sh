@@ -3,7 +3,6 @@ set -euo pipefail
 
 START_TIME=$(date +%s)
 BATCH_SIZE=250
-GENERATED_JSON="src/lib/Prerender/fairsharingRecords.generated.json"
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 
@@ -92,4 +91,6 @@ npx rimraf "$OUTPUT_DIR" dist/server
 
 END_TIME=$(date +%s)
 ELAPSED=$((END_TIME - START_TIME))
-echo "Total build time: ${ELAPSED} seconds"
+MINUTES=$((ELAPSED / 60))
+SECONDS_REMAINING=$((ELAPSED % 60))
+echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"

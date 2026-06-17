@@ -7,6 +7,7 @@ export default {
   Layout,
   ssr: true,
   prerender: {
+    partial: true,
     parallel: false, // Disables multi-threaded race conditions
     keepDistServer: true, // Prevents Vike from deleting dist/server/ mid-build
   },

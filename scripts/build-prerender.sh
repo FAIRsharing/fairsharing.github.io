@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Load local .env values if present.
+set -a
+[ -f .env ] && . ./.env
+set +a
+
 START_TIME=$(date +%s)
 BATCH_SIZE=500
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
+FULL_PRERENDER="${FULL_PRERENDER:-true}"
 
 mkdir -p src/lib/Prerender
 
@@ -18,20 +24,17 @@ import getAllFairsharingRecordsQuery from "./src/lib/GraphClient/queries/getAllF
 import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisations.json" with { type: "json" };
 
 const graphClientSEO = new GraphClientSEO();
-const allPayload = structuredClone(getAllFairsharingRecordsQuery);
-const responseData = await graphClientSEO.executeQuery(allPayload);
 
+const allRecordsPayload = structuredClone(getAllFairsharingRecordsQuery);
+const responseData = await graphClientSEO.executeQuery(allRecordsPayload);
 const records = responseData?.allFairsharingRecords || [];
-const outFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
-
-fs.writeFileSync(outFile, JSON.stringify(records, null, 2), "utf8");
+const recordsOutFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
+fs.writeFileSync(recordsOutFile, JSON.stringify(records, null, 2), "utf8");
 
 const allOrganisationsPayload = structuredClone(getAllOrganisationsQuery);
 const responseOrganisationsData = await graphClientSEO.executeQuery(allOrganisationsPayload);
-
 const organisations = responseOrganisationsData?.allOrganisations || [];
 const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");
-
 fs.writeFileSync(organisationsOutFile, JSON.stringify(organisations, null, 2), "utf8");
 NODE
 
@@ -56,20 +59,23 @@ if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
   exit 1
 fi
 
-# Netlify: skip the full batch loop and do one light build.
-if [ "${SKIP_FULL_PRERENDER:-false}" = "true" ]; then
-  echo '{"batch":1,"batchSize":1,"skipFull":true}' > "$BUILD_CONTEXT"
+# Light build path: skip the full batch loop and do one light build.
+if [ "$FULL_PRERENDER" != "true" ]; then
+  printf '{"batch":1,"batchSize":1,"skipFull":true}\n' > "$BUILD_CONTEXT"
   echo "Skipping full prerender"
 
   PRERENDER_FULL=false vike build
+  npx rimraf dist/server
 
   END_TIME=$(date +%s)
   ELAPSED=$((END_TIME - START_TIME))
-  echo "Total build time: ${ELAPSED} seconds"
+  MINUTES=$((ELAPSED / 60))
+  SECONDS_REMAINING=$((ELAPSED % 60))
+  echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"
   exit 0
 fi
 
-# Local / production: full batched prerender.
+# Full batched prerender.
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
 npx rimraf "$OUTPUT_DIR" dist
@@ -83,7 +89,7 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
     end_id="$LAST_ID"
   fi
 
-  echo "{\"batch\":$batch,\"batchSize\":$BATCH_SIZE,\"skipFull\":false}" > "$BUILD_CONTEXT"
+  printf '{"batch":%s,"batchSize":%s,"skipFull":false}\n' "$batch" "$BATCH_SIZE" > "$BUILD_CONTEXT"
   echo "Building chunk $batch / $TOTAL_BATCHES: IDs $start_id to $end_id"
 
   PRERENDER_FULL=true vike build

@@ -1,4 +1,5 @@
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
+import organisations from "@/lib/Prerender/organisations.generated.json";
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
 
 export async function onBeforePrerenderStart() {
@@ -26,13 +27,11 @@ export async function onBeforePrerenderStart() {
     "/search",
   ];
 
-  // If the environment variable is set to skip full prerendering, return only static routes. It is done to do lighter build in netlify
   if (buildContext.skipFull) {
     return staticRoutes;
   }
 
   const batchSize = buildContext.batchSize || 250;
-
   const batch = buildContext.batch || 1;
 
   const startId = (batch - 1) * batchSize + 1;
@@ -43,20 +42,20 @@ export async function onBeforePrerenderStart() {
     return Number.isFinite(id) ? Math.max(max, id) : max;
   }, 0);
 
-  const dynamicRoutes = records
+  const recordRoutes = records
     .filter((record) => {
       const id = Number(record.id);
       return id >= startId && id <= endId;
     })
     .sort((a, b) => Number(a.id) - Number(b.id))
-    .flatMap((record) => {
-      const routes = [`/${record.id}`];
-      if (record.doi) {
-        let doiRoute = record.doi.replace(/^10\.\d{4,9}\/+/i, "");
-        routes.push(`/${doiRoute}`);
-      }
-      return routes;
-    });
+    .map((record) => `/${record.id}`);
+
+  const organisationRoutes = organisations
+    .filter((org) => {
+      const id = Number(org.id);
+      return id >= startId && id <= endId;
+    })
+    .map((org) => `/organisations/${org.id}`);
 
   console.log(
     `Building Batch #${batch} - Processing IDs ${startId} to ${Math.min(
@@ -65,9 +64,11 @@ export async function onBeforePrerenderStart() {
     )} out of max ID ${maxId}`,
   );
 
-  if (dynamicRoutes.length === 0) {
+  if (recordRoutes.length === 0) {
     console.log(`No records found for batch #${batch}.`);
   }
+
+  const dynamicRoutes = [...new Set([...recordRoutes, ...organisationRoutes])];
 
   return batch === 1 ? [...staticRoutes, ...dynamicRoutes] : dynamicRoutes;
 }

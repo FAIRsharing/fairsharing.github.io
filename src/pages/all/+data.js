@@ -1,15 +1,5 @@
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
 
-function normalizeDoi(value) {
-  return decodeURIComponent(String(value))
-    .trim()
-    .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
-    .replace(/^doi:/i, "")
-    .replace(/^10\.\d{4,9}\//i, "")
-    .replace(/^\//, "")
-    .replace(/\/$/, "");
-}
-
 export async function data(pageContext) {
   const paramURL = pageContext.routeParams["*"];
 
@@ -17,17 +7,10 @@ export async function data(pageContext) {
     return { record: null };
   }
 
-  const routeValue = normalizeDoi(paramURL);
-  const isNumericId = /^\d+$/.test(routeValue);
-
-  let record = null;
-
-  if (isNumericId) {
-    record = records.find((r) => String(r.id) === routeValue);
-  }
-  else {
-    record = records.find((r) => normalizeDoi(r.doi || "") === routeValue);
+  if (!/^\d+$/.test(paramURL)) {
+    return { record: null };
   }
 
+  const record = records.find((r) => String(r.id) === String(paramURL));
   return { record: record || null };
 }

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 START_TIME=$(date +%s)
-BATCH_SIZE=250
+BATCH_SIZE=500
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 
@@ -15,6 +15,7 @@ import fs from "node:fs";
 import path from "node:path";
 import GraphClientSEO from "./src/lib/GraphClient/GraphClientSEO.js";
 import getAllFairsharingRecordsQuery from "./src/lib/GraphClient/queries/getAllFairsharingRecords.json" with { type: "json" };
+import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisations.json" with { type: "json" };
 
 const graphClientSEO = new GraphClientSEO();
 const allPayload = structuredClone(getAllFairsharingRecordsQuery);
@@ -24,6 +25,14 @@ const records = responseData?.allFairsharingRecords || [];
 const outFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
 
 fs.writeFileSync(outFile, JSON.stringify(records, null, 2), "utf8");
+
+const allOrganisationsPayload = structuredClone(getAllOrganisationsQuery);
+const responseOrganisationsData = await graphClientSEO.executeQuery(allOrganisationsPayload);
+
+const organisations = responseOrganisationsData?.allOrganisations || [];
+const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");
+
+fs.writeFileSync(organisationsOutFile, JSON.stringify(organisations, null, 2), "utf8");
 NODE
 
 LAST_ID=$(node --input-type=module <<'NODE'

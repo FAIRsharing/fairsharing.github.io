@@ -80,7 +80,7 @@ export default defineConfig(({  isSsrBuild }) => {
       minify: !isSsrBuild ? 'oxc' : false,
       reportCompressedSize: false, // Prevents phantom chunk terminal crash
       cssCodeSplit: true,
-      chunkSizeWarningLimit: 2000,
+      chunkSizeWarningLimit: 4000,
       emptyOutDir: false,
       commonjsOptions: {
         transformMixedEsModules: true,

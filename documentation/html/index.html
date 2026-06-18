@@ -131,10 +131,13 @@
 </code></pre>
 <p>The site uses Vike prerendering with a batched build process so large route sets can be generated safely.</p>
 <h3>Build modes</h3>
-<h4>Run the full batched prerender:</h4>
-<p><code>FULL_PRERENDER=true npm run build</code></p>
+<p><code>VITE_FULL_PRERENDER</code> controls the build behavior.</p>
+<h4>Full build</h4>
+<p>Fetches API data, generates the prerender JSON files, and runs the full batched prerender:</p>
+<pre class="prettyprint source lang-bash"><code>FULL_PRERENDER=true npm run build
+</code></pre>
 <h4>Run the light build path:</h4>
-<p><code>FULL_PRERENDER=false npm run build</code></p>
+<p><code>VITE_FULL_PRERENDER=false npm run build</code></p>
 <p>The light build path skips the long prerender loop and is useful for limited build environments such as Netlify.</p>
 <p>How the build works</p>
 <p>The build script:</p>

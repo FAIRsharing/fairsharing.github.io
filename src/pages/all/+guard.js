@@ -1,5 +1,6 @@
-import {redirect} from "vike/abort";
+import { redirect } from "vike/abort";
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
+import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
 
 function normalizeDoi(value) {
   return decodeURIComponent(String(value))
@@ -12,6 +13,9 @@ function normalizeDoi(value) {
 }
 
 export async function guard(pageContext) {
+  if (buildContext.skipFull) {
+    return;
+  }
   const paramURL = pageContext.routeParams["*"];
 
   if (!paramURL || /^\d+$/.test(paramURL)) {

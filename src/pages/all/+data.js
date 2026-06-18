@@ -1,6 +1,9 @@
 import records from "@/lib/Prerender/fairsharingRecords.generated.json";
-
+import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
 export async function data(pageContext) {
+  if (buildContext.skipFull) {
+    return { record: null };
+  }
   const paramURL = pageContext.routeParams["*"];
 
   if (!paramURL || paramURL.trim() === "" || paramURL === "index") {

@@ -1,9 +1,14 @@
-import records from "@/lib/Prerender/fairsharingRecords.generated.json";
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
+
 export async function data(pageContext) {
   if (buildContext.skipFull) {
     return { record: null };
   }
+
+  //Below file is used in full build, it is generated in full build step, so we need to import it dynamically to avoid errors in partial build
+  const { default: records } = await import(
+    "@/lib/Prerender/fairsharingRecords.generated.json"
+  );
   const paramURL = pageContext.routeParams["*"];
 
   if (!paramURL || paramURL.trim() === "" || paramURL === "index") {

@@ -1,5 +1,4 @@
 import { redirect } from "vike/abort";
-import records from "@/lib/Prerender/fairsharingRecords.generated.json";
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
 
 function normalizeDoi(value) {
@@ -24,6 +23,10 @@ export async function guard(pageContext) {
 
   const routeValue = normalizeDoi(paramURL);
 
+  //Below file is used in full build, it is generated in full build step, so we need to import it dynamically to avoid errors in partial build
+  const { default: records } = await import(
+    "@/lib/Prerender/fairsharingRecords.generated.json"
+  );
   const record = records.find((r) => {
     const recordDoi = normalizeDoi(r.doi || "");
     return recordDoi === routeValue || recordDoi.endsWith(routeValue);

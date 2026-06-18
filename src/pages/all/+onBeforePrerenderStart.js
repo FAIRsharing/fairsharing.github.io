@@ -1,5 +1,3 @@
-import records from "@/lib/Prerender/fairsharingRecords.generated.json";
-import organisations from "@/lib/Prerender/organisations.generated.json";
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
 
 export async function onBeforePrerenderStart() {
@@ -30,6 +28,15 @@ export async function onBeforePrerenderStart() {
   if (buildContext.skipFull) {
     return staticRoutes;
   }
+
+  //Below file is used in full build, it is generated in full build step, so we need to import it dynamically to avoid errors in partial build
+  const { default: records } = await import(
+    "@/lib/Prerender/fairsharingRecords.generated.json"
+  );
+
+  const { default: organisations } = await import(
+    "@/lib/Prerender/organisations.generated.json"
+  );
 
   const batchSize = buildContext.batchSize || 500;
   const batch = buildContext.batch || 1;

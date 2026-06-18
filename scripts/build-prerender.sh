@@ -10,7 +10,7 @@ START_TIME=$(date +%s)
 BATCH_SIZE=500
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
-FULL_PRERENDER="${FULL_PRERENDER:-true}"
+VITE_FULL_PRERENDER="${VITE_FULL_PRERENDER:-true}"
 
 mkdir -p src/lib/Prerender
 
@@ -60,7 +60,7 @@ if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
 fi
 
 # Light build path: skip the full batch loop and do one light build.
-if [ "$FULL_PRERENDER" != "true" ]; then
+if [ "$VITE_FULL_PRERENDER" != "true" ]; then
   printf '{"batch":1,"batchSize":1,"skipFull":true}\n' > "$BUILD_CONTEXT"
   echo "Skipping full prerender"
 

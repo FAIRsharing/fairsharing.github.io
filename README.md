@@ -40,13 +40,19 @@ The site uses Vike prerendering with a batched build process so large route sets
 
 ### Build modes
 
-#### Run the full batched prerender:
+`VITE_FULL_PRERENDER` controls the build behavior.
 
-```FULL_PRERENDER=true npm run build```
+#### Full build
+
+Fetches API data, generates the prerender JSON files, and runs the full batched prerender:
+
+```bash
+FULL_PRERENDER=true npm run build
+```
 
 #### Run the light build path:
 
-```FULL_PRERENDER=false npm run build```
+```VITE_FULL_PRERENDER=false npm run build```
 
 The light build path skips the long prerender loop and is useful for limited build environments such as Netlify.
 

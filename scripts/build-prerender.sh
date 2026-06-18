@@ -14,6 +14,23 @@ VITE_FULL_PRERENDER="${VITE_FULL_PRERENDER:-true}"
 
 mkdir -p src/lib/Prerender
 
+# Light build path: skip API fetch and skip generated JSON entirely.
+if [ "$VITE_FULL_PRERENDER" != "true" ]; then
+  printf '{"batch":1,"batchSize":1,"skipFull":true}\n' > "$BUILD_CONTEXT"
+  echo "Skipping full prerender"
+
+  PRERENDER_FULL=false vike build
+  npx rimraf dist/server
+
+  END_TIME=$(date +%s)
+  ELAPSED=$((END_TIME - START_TIME))
+  MINUTES=$((ELAPSED / 60))
+  SECONDS_REMAINING=$((ELAPSED % 60))
+  echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"
+  exit 0
+fi
+
+# Full build path: fetch API data and write generated JSON files.
 echo "Generating records file from API..."
 node --input-type=module <<'NODE'
 import "dotenv/config";
@@ -23,9 +40,6 @@ import GraphClientSEO from "./src/lib/GraphClient/GraphClientSEO.js";
 import getAllFairsharingRecordsQuery from "./src/lib/GraphClient/queries/getAllFairsharingRecords.json" with { type: "json" };
 import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisations.json" with { type: "json" };
 
-const recordsOutFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
-const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");
-
 const graphClientSEO = new GraphClientSEO();
 
 async function fetchOrReuse(query, outFile, keyName) {
@@ -33,7 +47,6 @@ async function fetchOrReuse(query, outFile, keyName) {
     const payload = structuredClone(query);
     const response = await graphClientSEO.executeQuery(payload);
     const data = response?.[keyName] || [];
-
     fs.writeFileSync(outFile, JSON.stringify(data, null, 2), "utf8");
     console.log(`Wrote ${outFile} (${data.length} items)`);
     return true;
@@ -44,7 +57,6 @@ async function fetchOrReuse(query, outFile, keyName) {
       );
       return true;
     }
-
     console.error(
       `API fetch failed and no cached file exists for ${outFile}. Reason: ${error?.message || error}`,
     );
@@ -90,23 +102,6 @@ if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
   exit 1
 fi
 
-# Light build path: skip the full batch loop and do one light build.
-if [ "$VITE_FULL_PRERENDER" != "true" ]; then
-  printf '{"batch":1,"batchSize":1,"skipFull":true}\n' > "$BUILD_CONTEXT"
-  echo "Skipping full prerender"
-
-  PRERENDER_FULL=false vike build
-  npx rimraf dist/server
-
-  END_TIME=$(date +%s)
-  ELAPSED=$((END_TIME - START_TIME))
-  MINUTES=$((ELAPSED / 60))
-  SECONDS_REMAINING=$((ELAPSED % 60))
-  echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"
-  exit 0
-fi
-
-# Full batched prerender.
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
 npx rimraf "$OUTPUT_DIR" dist

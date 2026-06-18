@@ -23,19 +23,50 @@ import GraphClientSEO from "./src/lib/GraphClient/GraphClientSEO.js";
 import getAllFairsharingRecordsQuery from "./src/lib/GraphClient/queries/getAllFairsharingRecords.json" with { type: "json" };
 import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisations.json" with { type: "json" };
 
+const recordsOutFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
+const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");
+
 const graphClientSEO = new GraphClientSEO();
 
-const allRecordsPayload = structuredClone(getAllFairsharingRecordsQuery);
-const responseData = await graphClientSEO.executeQuery(allRecordsPayload);
-const records = responseData?.allFairsharingRecords || [];
-const recordsOutFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
-fs.writeFileSync(recordsOutFile, JSON.stringify(records, null, 2), "utf8");
+async function fetchOrReuse(query, outFile, keyName) {
+  try {
+    const payload = structuredClone(query);
+    const response = await graphClientSEO.executeQuery(payload);
+    const data = response?.[keyName] || [];
 
-const allOrganisationsPayload = structuredClone(getAllOrganisationsQuery);
-const responseOrganisationsData = await graphClientSEO.executeQuery(allOrganisationsPayload);
-const organisations = responseOrganisationsData?.allOrganisations || [];
-const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");
-fs.writeFileSync(organisationsOutFile, JSON.stringify(organisations, null, 2), "utf8");
+    fs.writeFileSync(outFile, JSON.stringify(data, null, 2), "utf8");
+    console.log(`Wrote ${outFile} (${data.length} items)`);
+    return true;
+  } catch (error) {
+    if (fs.existsSync(outFile)) {
+      console.warn(
+        `API fetch failed for ${outFile}, reusing existing file. Reason: ${error?.message || error}`,
+      );
+      return true;
+    }
+
+    console.error(
+      `API fetch failed and no cached file exists for ${outFile}. Reason: ${error?.message || error}`,
+    );
+    return false;
+  }
+}
+
+const okRecords = await fetchOrReuse(
+  getAllFairsharingRecordsQuery,
+  recordsOutFile,
+  "allFairsharingRecords",
+);
+
+const okOrganisations = await fetchOrReuse(
+  getAllOrganisationsQuery,
+  organisationsOutFile,
+  "allOrganisations",
+);
+
+if (!okRecords || !okOrganisations) {
+  process.exit(1);
+}
 NODE
 
 LAST_ID=$(node --input-type=module <<'NODE'

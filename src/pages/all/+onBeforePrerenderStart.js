@@ -31,7 +31,7 @@ export async function onBeforePrerenderStart() {
     return staticRoutes;
   }
 
-  const batchSize = buildContext.batchSize || 250;
+  const batchSize = buildContext.batchSize || 500;
   const batch = buildContext.batch || 1;
 
   const startId = (batch - 1) * batchSize + 1;

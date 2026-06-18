@@ -118,14 +118,48 @@
 <h1>FAIRsharing.org</h1>
 <p>Welcome to the new FAIRsharing.org website.</p>
 <h2>Compiles and hot-reloads for development</h2>
-<pre class="prettyprint source"><code>npm run dev
+<pre class="prettyprint source lang-bash"><code>npm run dev
 </code></pre>
 <h2>Test with vitest &amp; generate coverage</h2>
-<pre class="prettyprint source"><code>npm run test:ui
+<pre class="prettyprint source lang-bash"><code>npm run test:ui
 </code></pre>
 <h2>Generate the documentation locally</h2>
-<pre class="prettyprint source"><code>npm run doc:full
-</code></pre></article>
+<pre class="prettyprint source lang-bash"><code>npm run doc:full
+</code></pre>
+<h2>Build and prerender</h2>
+<pre class="prettyprint source lang-bash"><code>npm run build
+</code></pre>
+<p>The site uses Vike prerendering with a batched build process so large route sets can be generated safely.</p>
+<h3>Build modes</h3>
+<h4>Run the full batched prerender:</h4>
+<p><code>FULL_PRERENDER=true npm run build</code></p>
+<h4>Run the light build path:</h4>
+<p><code>FULL_PRERENDER=false npm run build</code></p>
+<p>The light build path skips the long prerender loop and is useful for limited build environments such as Netlify.</p>
+<p>How the build works</p>
+<p>The build script:</p>
+<ol>
+<li>Fetches record data and organisation data from the API,</li>
+<li>Writes generated JSON files into src/lib/Prerender/,</li>
+<li>Writes the current batch context into src/lib/Prerender/build-context.json,</li>
+<li>Prerenders routes in batches,</li>
+<li>Copies the final prerender output into dist/client.</li>
+</ol>
+<h4>Environment variables</h4>
+<ul>
+<li>FULL_PRERENDER controls whether the full batch prerender runs.</li>
+<li>BATCH_SIZE controls how many record pages are processed per batch.</li>
+<li>BUILD_CONTEXT is written during the build so Vike can read the current batch information.</li>
+</ul>
+<h4>Generated files</h4>
+<p>These files are created during build and should not be committed:</p>
+<ul>
+<li>src/lib/Prerender/fairsharingRecords.generated.json</li>
+<li>src/lib/Prerender/organisations.generated.json</li>
+<li>src/lib/Prerender/build-context.json</li>
+<li>.prerender-output/</li>
+<li>dist/</li>
+</ul></article>
     </section>
 
 

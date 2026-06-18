@@ -397,8 +397,8 @@ export default {
     },
     checkEndpoint() {
       if (
-        import.meta.env.VITE_API_ENDPOINT === "https://api.fairsharing.org" ||
-        import.meta.env.VITE_API_ENDPOINT === "http://127.0.0.1:3000"
+        import.meta.env.VITE_NODE_ENV === "production" ||
+        import.meta.env.VITE_NODE_ENV === "local"
       ) {
         return true;
       }

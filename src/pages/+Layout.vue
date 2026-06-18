@@ -1,7 +1,6 @@
 <template>
-  <v-app id="app">
+  <v-app v-if="isMounted" id="app">
     <v-navigation-drawer
-      v-if="isMounted"
       v-model="UIGeneralStatus.drawerVisibilityState"
       class="d-md-down"
       location="left"
@@ -20,7 +19,7 @@
     <Jumbotron />
     <PublicMessages />
 
-    <router-view v-if="isMounted" class="min-height-70vh justify-center" />
+    <router-view class="min-height-70vh justify-center" />
 
     <FooterComp />
   </v-app>

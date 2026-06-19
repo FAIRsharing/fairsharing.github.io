@@ -1,4 +1,5 @@
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
+import { normalizeDoi } from "@/lib/Prerender/prerenderUtils.shared.js";
 
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
@@ -54,7 +55,15 @@ export async function onBeforePrerenderStart() {
       return id >= startId && id <= endId;
     })
     .sort((a, b) => Number(a.id) - Number(b.id))
-    .map((record) => `/${record.id}`);
+    .flatMap((record) => {
+      const routes = [`/${record.id}`];
+
+      if (record.doi) {
+        routes.push(`/${normalizeDoi(record.doi)}`);
+      }
+
+      return routes;
+    });
 
   const organisationRoutes = organisations
     .filter((org) => {

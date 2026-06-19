@@ -17,10 +17,6 @@ export async function data(pageContext) {
     return { record: null };
   }
 
-  // if (!/^\d+$/.test(paramURL)) {
-  //   return { record: null };
-  // }
-
   const routeValue = normalizeDoi(paramURL);
 
   const record = records.find((r) => {

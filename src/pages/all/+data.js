@@ -1,5 +1,4 @@
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
-import { readGeneratedRecords } from "@/lib/Prerender/prerenderUtils.js";
 
 export async function data(pageContext) {
   if (buildContext.skipFull) {
@@ -7,7 +6,10 @@ export async function data(pageContext) {
   }
 
   //Below file is used in full build, it is generated in full build step, so we need to import it dynamically to avoid errors in partial build
-  const records = readGeneratedRecords();
+  const { readGeneratedRecords } = await import(
+    "@/lib/Prerender/prerenderUtils.server.js"
+  );
+  const records = await readGeneratedRecords();
   const paramURL = pageContext.routeParams["*"];
 
   if (!paramURL || paramURL.trim() === "" || paramURL === "index") {

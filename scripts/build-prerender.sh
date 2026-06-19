@@ -5,20 +5,32 @@ set -euo pipefail
 set -a
 [ -f .env ] && . ./.env
 set +a
-
+export PRERENDER_ROOT="$(pwd)"
 START_TIME=$(date +%s)
 BATCH_SIZE=500
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
+CACHE_DIR=".prerender-cache"
 VITE_FULL_PRERENDER="${VITE_FULL_PRERENDER:-true}"
 
-mkdir -p src/lib/Prerender
+PROJECT_ROOT="$(pwd)"
+RECORDS_JSON="$PROJECT_ROOT/src/lib/Prerender/fairsharingRecords.generated.json"
+ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
+
+mkdir -p src/lib/Prerender "$CACHE_DIR"
 
 # Light build path: skip API fetch and skip generated JSON entirely.
 if [ "$VITE_FULL_PRERENDER" != "true" ]; then
-  printf '{"batch":1,"batchSize":1,"skipFull":true}\n' > "$BUILD_CONTEXT"
+    printf '{
+      "batch": 1,
+      "batchSize": 1,
+      "skipFull": true,
+      "recordsFile": "%s",
+      "organisationsFile": "%s"
+    }\n' "$RECORDS_JSON" "$ORG_JSON" > "$BUILD_CONTEXT"
   echo "Skipping full prerender"
-
+  
+  npx rimraf dist
   PRERENDER_FULL=false vike build
   npx rimraf dist/server
 
@@ -30,7 +42,18 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
   exit 0
 fi
 
-# Full build path: fetch API data and write generated JSON files.
+# Full build path:
+# restore cached files first so API downtime does not break the build.
+if [ -f "$CACHE_DIR/fairsharingRecords.generated.json" ]; then
+  cp "$CACHE_DIR/fairsharingRecords.generated.json" "$RECORDS_JSON"
+  echo "Restored cached records JSON"
+fi
+
+if [ -f "$CACHE_DIR/organisations.generated.json" ]; then
+  cp "$CACHE_DIR/organisations.generated.json" "$ORG_JSON"
+  echo "Restored cached organisations JSON"
+fi
+
 echo "Generating records file from API..."
 node --input-type=module <<'NODE'
 import "dotenv/config";
@@ -39,6 +62,7 @@ import path from "node:path";
 import GraphClientSEO from "./src/lib/GraphClient/GraphClientSEO.js";
 import getAllFairsharingRecordsQuery from "./src/lib/GraphClient/queries/getAllFairsharingRecords.json" with { type: "json" };
 import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisations.json" with { type: "json" };
+
 const recordsOutFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
 const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");
 const graphClientSEO = new GraphClientSEO();
@@ -58,6 +82,7 @@ async function fetchOrReuse(query, outFile, keyName) {
       );
       return true;
     }
+
     console.error(
       `API fetch failed and no cached file exists for ${outFile}. Reason: ${error?.message || error}`,
     );
@@ -81,6 +106,10 @@ if (!okRecords || !okOrganisations) {
   process.exit(1);
 }
 NODE
+
+# Save freshly generated files into cache for future builds.
+cp "$RECORDS_JSON" "$CACHE_DIR/fairsharingRecords.generated.json"
+cp "$ORG_JSON" "$CACHE_DIR/organisations.generated.json"
 
 LAST_ID=$(node --input-type=module <<'NODE'
 import fs from "node:fs";
@@ -116,7 +145,13 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
     end_id="$LAST_ID"
   fi
 
-  printf '{"batch":%s,"batchSize":%s,"skipFull":false}\n' "$batch" "$BATCH_SIZE" > "$BUILD_CONTEXT"
+  printf '{
+    "batch": %s,
+    "batchSize": %s,
+    "skipFull": false,
+    "recordsFile": "%s",
+    "organisationsFile": "%s"
+  }\n' "$batch" "$BATCH_SIZE" "$RECORDS_JSON" "$ORG_JSON" > "$BUILD_CONTEXT"
   echo "Building chunk $batch / $TOTAL_BATCHES: IDs $start_id to $end_id"
 
   PRERENDER_FULL=true vike build

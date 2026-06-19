@@ -1,14 +1,15 @@
-import { redirect } from "vike/abort";
-import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
-import {
-  normalizeDoi,
-  readGeneratedRecords,
-} from "@/lib/Prerender/prerenderUtils.js";
+import {redirect} from "vike/abort";
+import buildContext from "@/lib/Prerender/build-context.json" with {type: "json"};
+import {normalizeDoi} from "@/lib/Prerender/prerenderUtils.shared.js";
 
 export async function guard(pageContext) {
   if (buildContext.skipFull) {
     return;
   }
+
+  const { readGeneratedRecords } = await import(
+    "@/lib/Prerender/prerenderUtils.server.js"
+  );
 
   const paramURL = pageContext.routeParams["*"];
   if (!paramURL || /^\d+$/.test(paramURL)) {
@@ -16,7 +17,7 @@ export async function guard(pageContext) {
   }
 
   const routeValue = normalizeDoi(paramURL);
-  const records = readGeneratedRecords();
+  const records = await readGeneratedRecords();
 
   const record = records.find((r) => {
     const recordDoi = normalizeDoi(r.doi || "");

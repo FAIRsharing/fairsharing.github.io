@@ -1,8 +1,4 @@
 import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
-import {
-  readGeneratedOrganisations,
-  readGeneratedRecords,
-} from "@/lib/Prerender/prerenderUtils.js";
 
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
@@ -33,9 +29,13 @@ export async function onBeforePrerenderStart() {
     return staticRoutes;
   }
 
-  const records = readGeneratedRecords();
+  const { readGeneratedRecords, readGeneratedOrganisations } = await import(
+    "@/lib/Prerender/prerenderUtils.server.js"
+  );
 
-  const organisations = readGeneratedOrganisations();
+  const records = await readGeneratedRecords();
+
+  const organisations = await readGeneratedOrganisations();
 
   const batchSize = buildContext.batchSize || 500;
   const batch = buildContext.batch || 1;

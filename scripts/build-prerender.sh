@@ -7,7 +7,7 @@ set -a
 set +a
 export PRERENDER_ROOT="$(pwd)"
 START_TIME=$(date +%s)
-BATCH_SIZE=500
+BATCH_SIZE=5
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 CACHE_DIR=".prerender-cache"
@@ -29,7 +29,7 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
       "organisationsFile": "%s"
     }\n' "$RECORDS_JSON" "$ORG_JSON" > "$BUILD_CONTEXT"
   echo "Skipping full prerender"
-  
+
   npx rimraf dist
   PRERENDER_FULL=false vike build
   npx rimraf dist/server
@@ -126,7 +126,7 @@ const lastId = records.reduce((max, record) => {
 process.stdout.write(String(lastId));
 NODE
 )
-
+LAST_ID=5
 if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
   echo "Could not fetch LAST_ID"
   exit 1

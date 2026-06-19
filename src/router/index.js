@@ -1,53 +1,49 @@
-import {
-  createMemoryHistory,
-  createRouter,
-  createWebHistory,
-} from "vue-router";
-import { hackSearch } from "@/router/hackSearch";
+import {createMemoryHistory, createRouter, createWebHistory,} from "vue-router";
+import {hackSearch} from "@/router/hackSearch";
 
 // 1. FIXED: Static store import removed from here!
 import {
-  AdvancedSearchRecords,
-  APIDoc,
-  Community,
-  CommunityCuration,
-  ConfirmAccount,
-  Curator,
-  CuratorCohorts,
-  Editor,
-  EditProfile,
-  EditPublicProfile,
-  Educational,
-  Graph,
-  Home,
-  Licence,
-  Login,
-  LoginFailure,
-  Maintenance,
-  New,
-  NewRecord,
-  NotFound,
-  OauthLogin,
-  OntologyBrowser,
-  Organisation,
-  OrganisationsList,
-  Privacy,
-  PublicProfile,
-  Record,
-  Records,
-  RequestNewPassword,
-  ResendConfirmation,
-  ResetPassword,
-  SendOrcidLoginEmail,
-  ServerError,
-  Signup,
-  Stakeholders,
-  Stat,
-  SustainabilityAndPreservation,
-  Terms,
-  Timeline,
-  User,
-  UsersList,
+    AdvancedSearchRecords,
+    APIDoc,
+    Community,
+    CommunityCuration,
+    ConfirmAccount,
+    Curator,
+    CuratorCohorts,
+    Editor,
+    EditProfile,
+    EditPublicProfile,
+    Educational,
+    Graph,
+    Home,
+    Licence,
+    Login,
+    LoginFailure,
+    Maintenance,
+    New,
+    NewRecord,
+    NotFound,
+    OauthLogin,
+    OntologyBrowser,
+    Organisation,
+    OrganisationsList,
+    Privacy,
+    PublicProfile,
+    Record,
+    Records,
+    RequestNewPassword,
+    ResendConfirmation,
+    ResetPassword,
+    SendOrcidLoginEmail,
+    ServerError,
+    Signup,
+    Stakeholders,
+    Stat,
+    SustainabilityAndPreservation,
+    Terms,
+    Timeline,
+    User,
+    UsersList,
 } from "./routes.js";
 
 export async function afterEach(to) {
@@ -133,8 +129,7 @@ export function createMyRouter(store) {
         let [query, modified] = hackSearch(to.query);
         if (modified) {
           next({ name: "search", query: query });
-        }
-        else {
+        } else {
           next();
         }
       },
@@ -176,8 +171,7 @@ export function createMyRouter(store) {
               page: 1,
             },
           };
-        }
-        else if (to.params.name === "live_list_databases_in_policies") {
+        } else if (to.params.name === "live_list_databases_in_policies") {
           return {
             name: "search",
             query: {
@@ -186,8 +180,7 @@ export function createMyRouter(store) {
               page: 1,
             },
           };
-        }
-        else if (to.params.name === "live_list_journal_policies") {
+        } else if (to.params.name === "live_list_journal_policies") {
           return {
             name: "search",
             query: {
@@ -196,8 +189,7 @@ export function createMyRouter(store) {
               page: 1,
             },
           };
-        }
-        else {
+        } else {
           return { path: "/" };
         }
       },
@@ -245,15 +237,13 @@ export function createMyRouter(store) {
               "https://github.com/FAIRsharing/subject-ontology",
             );
           }
-        }
-        else if (to.params.name.toLowerCase() === "drao") {
+        } else if (to.params.name.toLowerCase() === "drao") {
           if (typeof window !== "undefined") {
             window.location.assign(
               "https://github.com/FAIRsharing/domain-ontology",
             );
           }
-        }
-        else {
+        } else {
           return { path: "/" };
         }
       },
@@ -809,12 +799,13 @@ export async function beforeEach(to, from, next, store) {
     return next({ path: "maintenance" });
   }
 
-  if (typeof document !== "undefined") {
-    document.title =
-      to.meta.title !== undefined
-        ? "FAIRsharing | " + to.meta.title
-        : "FAIRsharing";
-  }
+  //Commenting since the title is handled via +/pages/all/title.js
+  // if (typeof document !== "undefined") {
+  //   document.title =
+  //     to.meta.title !== undefined
+  //       ? "FAIRsharing | " + to.meta.title
+  //       : "FAIRsharing";
+  // }
 
   if (store.state.users.user().isLoggedIn) {
     await store.dispatch("users/validateUserToken");
@@ -825,8 +816,7 @@ export async function beforeEach(to, from, next, store) {
 export function isLoggedIn(to, from, next, store) {
   if (store.state.users.user().isLoggedIn) {
     next();
-  }
-  else {
+  } else {
     const target = to.path;
     next({
       name: "Login",
@@ -838,8 +828,7 @@ export function isLoggedIn(to, from, next, store) {
 export function isNotLoggedIn(to, from, next, store) {
   if (!store.state.users.user().isLoggedIn) {
     next();
-  }
-  else {
+  } else {
     next(from);
   }
 }
@@ -847,8 +836,7 @@ export function isNotLoggedIn(to, from, next, store) {
 export function isSuperCurator(to, from, next, store) {
   if (store.state.users.user().is_super_curator) {
     next();
-  }
-  else {
+  } else {
     const target = to.path;
     next({
       name: "Login",

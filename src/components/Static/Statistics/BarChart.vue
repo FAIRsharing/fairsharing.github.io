@@ -12,7 +12,7 @@
 <script>
 // import markRaw to tell Vue 3 not to make the component itself reactive,
 // which improves performance and avoids Vue warnings.
-import {markRaw} from "vue";
+import { markRaw } from "vue";
 
 export default {
   name: "BarChart",
@@ -96,12 +96,10 @@ export default {
   },
   created() {
     // Map props synchronously so they are available immediately on creation
-    if (this.fieldsChart) {
-      this.optionChartBars.title.text = this.fieldsChart.title;
-      this.optionChartBars.xAxis.title.text = this.fieldsChart.textXAxis;
-      this.optionChartBars.yAxis.title.text = this.fieldsChart.textYAxis;
-      this.optionChartBars.series = this.fieldsChart.series;
-    }
+    this.optionChartBars.title.text = this.fieldsChart.title;
+    this.optionChartBars.xAxis.title.text = this.fieldsChart.textXAxis;
+    this.optionChartBars.yAxis.title.text = this.fieldsChart.textYAxis;
+    this.optionChartBars.series = this.fieldsChart.series;
 
     this.nameChart = this.refName;
 
@@ -142,7 +140,8 @@ export default {
 
       if (typeof Exporting === "function") {
         Exporting(Highcharts);
-      } else if (Exporting && typeof Exporting.default === "function") {
+      }
+      else if (Exporting && typeof Exporting.default === "function") {
         Exporting.default(Highcharts);
       }
 

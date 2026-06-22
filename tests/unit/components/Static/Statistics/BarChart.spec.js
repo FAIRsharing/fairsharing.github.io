@@ -1,57 +1,130 @@
-import { shallowMount } from "@vue/test-utils";
-import { beforeEach, describe, expect, it } from "vitest";
-import { nextTick } from "vue";
+import { flushPromises, shallowMount } from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import BarChart from "@/components/Static/Statistics/BarChart.vue";
+
+const setOptionsMock = vi.fn();
+const exportingMock = vi.fn();
+
+vi.mock("highcharts-vue", () => ({
+  Chart: {
+    name: "HighchartsChart",
+    props: ["options"],
+    template: "<div class='highcharts-chart'></div>",
+  },
+}));
+
+vi.mock("highcharts", () => ({
+  default: {
+    setOptions: setOptionsMock,
+  },
+}));
+
+vi.mock("highcharts/modules/exporting", () => ({
+  default: exportingMock,
+}));
 
 describe("BarChart.vue", () => {
   let wrapper;
 
-  // Re-render a clean instance before each test to prevent shared state leakage
+  const fieldsChart = {
+    title: "This a bar chart",
+    textXAxis: "X Axis Label",
+    textYAxis: "Y Axis Label",
+    series: [
+      {
+        name: "Records",
+        data: [
+          {
+            name: "database",
+            y: 50,
+            z: 83.3,
+          },
+          {
+            name: "policy",
+            y: 10,
+            z: 16.7,
+          },
+        ],
+      },
+    ],
+  };
+
   beforeEach(async () => {
+    vi.clearAllMocks();
+
     wrapper = shallowMount(BarChart, {
       props: {
-        refName: "Name of the chart",
-        fieldsChart: {
-          title: "This a bar chart",
-          textXAxis: "X axis",
-          textYAxis: "Y axis",
-          series: [
-            { name: "USA", data: [{ y: 50 }] },
-            { name: "EU", data: [{ y: 100 }] },
-          ],
-        },
+        refName: "Name of the Bar chart",
+        fieldsChart,
       },
     });
 
-    // Wait for the asynchronous mounted() hook to complete
-    await nextTick();
+    await flushPromises();
   });
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toBe("BarChart");
-    expect(wrapper.vm.optionChartBars.title.text).toBe("This a bar chart");
-    expect(wrapper.vm.nameChart).toBe("Name of the chart");
-    expect(wrapper.vm.optionChartBars.series[1].name).toBe("EU");
   });
 
-  it("can use not percentage", async () => {
-    const noPercentWrapper = shallowMount(BarChart, {
+  it("maps chart props into Highcharts options", () => {
+    expect(wrapper.vm.optionChartBars.title.text).toBe("This a bar chart");
+    expect(wrapper.vm.optionChartBars.xAxis.title.text).toBe("X Axis Label");
+    expect(wrapper.vm.optionChartBars.yAxis.title.text).toBe("Y Axis Label");
+    expect(wrapper.vm.optionChartBars.series).toEqual(fieldsChart.series);
+    expect(wrapper.vm.nameChart).toBe("Name of the Bar chart");
+  });
+
+  it("loads Highcharts modules on mount", () => {
+    expect(wrapper.vm.modulesReady).toBe(true);
+    expect(wrapper.vm.chartComponent).toBeTruthy();
+
+    expect(setOptionsMock).toHaveBeenCalledWith({
+      lang: {
+        thousandsSep: ",",
+      },
+      colors: [
+        "#aec7e8",
+        "#ffbb78",
+        "#98df8a",
+        "#ff9896",
+        "#c5b0d5",
+        "#c49c94",
+        "#f7b6d2",
+        "#c7c7c7",
+        "#dbdb8d",
+        "#9edae5",
+      ],
+    });
+
+    expect(exportingMock).toHaveBeenCalled();
+  });
+
+  it("renders chart component after modules are ready", () => {
+    const chart = wrapper.findComponent({ name: "HighchartsChart" });
+
+    expect(chart.exists()).toBe(true);
+    expect(chart.props("options")).toEqual(wrapper.vm.optionChartBars);
+  });
+
+  it("shows percentage in tooltip by default", () => {
+    expect(wrapper.vm.optionChartBars.tooltip.pointFormat).toContain(
+      "{point.y} ({point.z:.1f}%)",
+    );
+  });
+
+  it("does not show percentage in tooltip when showPercent is false", async () => {
+    wrapper = shallowMount(BarChart, {
       props: {
-        refName: "Name of the chart",
+        refName: "Name of the Bar chart",
+        fieldsChart,
         showPercent: false,
-        fieldsChart: {
-          title: "",
-          textXAxis: "X axis",
-          textYAxis: "X axis",
-          series: [],
-        },
       },
     });
 
-    // Wait for mounted() to run for this specific instance
-    await nextTick();
+    await flushPromises();
 
-    expect(noPercentWrapper.vm.optionChartBars.tooltip.pointFormat).toBe(
+    expect(wrapper.vm.optionChartBars.tooltip.pointFormat).toBe(
       '<tr><td style="padding:0">Records: </td>' +
         '<td style="padding:0"><b>{point.y}</b></td></tr>',
     );

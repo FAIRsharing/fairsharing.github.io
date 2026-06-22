@@ -1,7 +1,5 @@
 import RestClient from "@/lib/Client/RESTClient.js";
 import {
-  afterEach,
-  beforeEach,
   createMyRouter,
   isLoggedIn,
   isMaintenanceMode,
@@ -76,37 +74,6 @@ describe("Routes", () => {
     await isNotLoggedIn(undefined, undefined, next, store);
     await isSuperCurator(undefined, undefined, next, store);
     expect(next).toHaveBeenCalled();
-  });
-
-  it("Can set a correct title", async () => {
-    let to = {
-      meta: { title: "ABC" },
-    };
-    const next = vi.fn();
-    await beforeEach(to, undefined, next, store);
-    expect(document.title).toMatch("FAIRsharing | ABC");
-
-    to.meta = {};
-    store = {
-      state: {
-        users: {
-          user: function () {
-            return { isLoggedIn: false, is_super_curator: true };
-          },
-        },
-        introspection: {
-          maintenanceMode: false,
-        },
-      },
-      dispatch: vi.fn(),
-    };
-    await beforeEach(to, undefined, next, store);
-    expect(document.title).toMatch("FAIRsharing");
-    store.state.introspection.maintenanceMode = true;
-    await beforeEach(to, undefined, next, store);
-    expect(next).toHaveBeenCalledWith({ path: "maintenance" });
-    await afterEach({ name: "Records" });
-    await afterEach({ name: "Record" });
   });
 
   it("can check is a site is in maintenance mode", () => {

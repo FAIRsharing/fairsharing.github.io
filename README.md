@@ -12,6 +12,11 @@
 
 Welcome to the new FAIRsharing.org website.
 
+> 📘 **System Architecture:** For a comprehensive technical deep-dive into how our SEO routing, Vike file-based caching,
+> and page rendering pipeline operate, read the [Architecture Guide](./README_architecture.md).
+
+---
+
 ## Compiles and hot-reloads for development
 
 ```bash
@@ -46,9 +51,7 @@ The site uses Vike prerendering with a batched build process so large route sets
 
 Fetches API data, generates the prerender JSON files, and runs the full batched prerender:
 
-```bash
-FULL_PRERENDER=true npm run build
-```
+```VITE_FULL_PRERENDER=true npm run build```
 
 #### Run the light build path:
 

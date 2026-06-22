@@ -117,6 +117,11 @@
 <p><a href="https://fairsharing.org/"><img src="https://api.fairsharing.org/FAIRsharing-sdp.svg" alt="FAIRsharing.org"></a></p>
 <h1>FAIRsharing.org</h1>
 <p>Welcome to the new FAIRsharing.org website.</p>
+<blockquote>
+<p>📘 <strong>System Architecture:</strong> For a comprehensive technical deep-dive into how our SEO routing, Vike file-based caching,
+and page rendering pipeline operate, read the <a href="./README_architecture.md">Architecture Guide</a>.</p>
+</blockquote>
+<hr>
 <h2>Compiles and hot-reloads for development</h2>
 <pre class="prettyprint source lang-bash"><code>npm run dev
 </code></pre>
@@ -134,8 +139,7 @@
 <p><code>VITE_FULL_PRERENDER</code> controls the build behavior.</p>
 <h4>Full build</h4>
 <p>Fetches API data, generates the prerender JSON files, and runs the full batched prerender:</p>
-<pre class="prettyprint source lang-bash"><code>FULL_PRERENDER=true npm run build
-</code></pre>
+<p><code>VITE_FULL_PRERENDER=true npm run build</code></p>
 <h4>Run the light build path:</h4>
 <p><code>VITE_FULL_PRERENDER=false npm run build</code></p>
 <p>The light build path skips the long prerender loop and is useful for limited build environments such as Netlify.</p>

@@ -47,7 +47,7 @@ export default async (pageContext) => {
       "highcharts/modules/accessibility"
     );
     const { default: SimpleAnalytics } = await import("simple-analytics-vue");
-    // const { default: VueGtag } = await import("vue-gtag");
+    const { default: VueGtag } = await import("vue-gtag");
     const { default: VueScrollTo } = await import("vue-scrollto");
     const { default: Particles } = await import("@tsparticles/vue3");
     const { loadFull } = await import("tsparticles");
@@ -63,11 +63,11 @@ export default async (pageContext) => {
       })
       .use(HighchartsVue)
       .use(VueScrollTo)
-      // .use(VueGtag, {
-      //   config: { id: import.meta.env.VUE_APP_ANALYTICS_ID },
-      // })
+      .use(VueGtag, {
+        config: { id: process.env.VUE_APP_ANALYTICS_ID },
+      })
       .use(SimpleAnalytics, {
-        skip: import.meta.env.VITE_NODE_ENV !== "production",
+        skip: process.env.VITE_NODE_ENV !== "local",
       });
   }
 

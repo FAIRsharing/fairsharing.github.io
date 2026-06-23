@@ -361,6 +361,15 @@
         "url": "https://zenodo.org/record/8186609/files/FAIRsharing%20for%20you_%20librarians%20and%20trainers.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "trainers"
+      },
+      {
+        "id": "developers_and_curators",
+        "logo": "developers_and_curators.png",
+        "text": "",
+        "doi": "10.5281/zenodo.8186594",
+        "url": "https://zenodo.org/records/8186594/files/FAIRsharing%20for%20you_%20developers%20and%20curators.pdf?download=1",
+        "copyButtonStatus": false,
+        "hash": "developers"
       }
     ]
   }

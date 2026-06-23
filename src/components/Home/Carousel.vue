@@ -1,13 +1,13 @@
 <template>
   <v-tabs
     v-model="tabsData.selectedTab"
-    :show-arrows="$vuetify.display.mdAndDown"
+    :show-arrows="isMounted ? $vuetify.display.mdAndDown : false"
     align-tabs="center"
-    slider-size="5"
-    class="height-430"
     bg-color="transparent"
+    class="height-430"
     color="accent3"
     slider-color="accent3"
+    slider-size="5"
   >
     <v-tab
       v-for="(tab, index) in tabsData.tabs"
@@ -22,8 +22,8 @@
       :key="tabItem + '_' + tabItemIndex"
     >
       <TabContent
-        :header="tabItem.header"
         :description="tabItem.description"
+        :header="tabItem.header"
         :image="tabItem.image"
         :link="tabItem.link"
       />
@@ -40,6 +40,7 @@ export default {
   components: { TabContent },
   data: () => {
     return {
+      isMounted: false,
       tabsData: {
         selectedTab: 0,
         tabs: homePageData.blockTabs,
@@ -47,6 +48,7 @@ export default {
     };
   },
   mounted() {
+    this.isMounted = true;
     this.cycleTabs();
   },
   methods: {

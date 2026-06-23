@@ -1,11 +1,10 @@
 <template>
   <v-row class="text-white pt-5 footer-container justify-center">
-    <!--  Footer Blocks  -->
     <v-col
       v-for="(block, index) in footerData"
       :key="block.header + '_' + index"
-      xl="auto"
       class="flex-column align-center d-flex"
+      xl="auto"
     >
       <h4 class="min-width-200 mb-2">
         {{ block.header }}
@@ -17,16 +16,16 @@
         >
           <router-link
             v-if="item['urlType'] === 'internal'"
-            class="underline-effect"
             :to="item.url"
+            class="underline-effect"
           >
             <i v-if="item.icon" :class="item.icon" />
             {{ item.title }}
           </router-link>
           <a
             v-else
-            class="underline-effect"
             :href="item.url"
+            class="underline-effect"
             rel="noreferer,noopener"
             target="_blank"
           >
@@ -36,23 +35,20 @@
         </li>
       </ul>
     </v-col>
-    <!--  Dash style for footer  -->
     <div class="footer-dash" />
-    <!--  JumpToTop button  -->
     <v-slide-y-reverse-transition>
       <v-fab
         v-show="fab"
-        v-scroll-to="'body'"
         v-scroll="onScroll"
-        icon="fas fa-angle-up"
-        color="primary"
-        position="fixed"
         app
         appear
+        color="primary"
+        icon="fas fa-angle-up"
+        position="fixed"
         style="right: 72px; bottom: 50px; left: auto"
+        @click="scrollToTop"
       />
     </v-slide-y-reverse-transition>
-    <!--  Licence and copy right  -->
     <v-row class="d-flex flex-row justify-center align-center mb-2 pt-6">
       <p class="mb-0 mr-2">© FAIRsharing 2009-Present | Licenced under</p>
       <a
@@ -62,10 +58,10 @@
         target="_blank"
         >Creative Commons by Share Alike 4.0 International</a
       >
-      <a href="/licence" class="underline-effect"
+      <a class="underline-effect" href="/licence"
         ><img
-          src="/assets/Home/Footer/FAIRsharingCC-BY-SA.png"
           alt="fairsharing licence"
+          src="/assets/Home/Footer/FAIRsharingCC-BY-SA.png"
       /></a>
     </v-row>
   </v-row>
@@ -88,10 +84,19 @@ export default {
       const top = window.scrollY || e.target.scrollTop || 0;
       this.fab = top > 700;
     },
+    scrollToTop() {
+      if (typeof window !== "undefined") {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    },
   },
 };
 </script>
-<style scoped lang="scss">
+
+<style lang="scss" scoped>
 li {
   min-width: 200px;
 }

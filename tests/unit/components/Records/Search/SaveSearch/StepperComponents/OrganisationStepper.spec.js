@@ -1,17 +1,10 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { flushPromises, shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
 
-// 1. Mock the direct store import
-import saveSearch from "@/store";
+// 1. Removed the direct saveSearch/store import
 import { removeItem } from "@/utils/advancedSearchUtils";
 import OrganisationStepper from "@/components/Records/Search/SaveSearch/StepperComponents/OrganisationStepper.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 // 2. Mock the utility function
 vi.mock("@/utils/advancedSearchUtils", () => ({
@@ -21,6 +14,7 @@ vi.mock("@/utils/advancedSearchUtils", () => ({
 describe("OrganisationStepper.vue", () => {
   let actions;
   let getters;
+  let store; // Track the active Vuex store instance locally
 
   const createWrapper = (isSuperCurator = false, stateOverrides = {}) => {
     actions = {
@@ -37,7 +31,7 @@ describe("OrganisationStepper.vue", () => {
       ...stateOverrides,
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         users: {
           namespaced: true,
@@ -57,8 +51,18 @@ describe("OrganisationStepper.vue", () => {
             fetchSearchOrganisations: actions.fetchSearchOrganisations,
           },
         },
+        // Added the missing saveSearch module to intercept the commits safely
+        saveSearch: {
+          namespaced: true,
+          mutations: {
+            setOrganisationSelected: vi.fn(),
+          },
+        },
       },
     });
+
+    // Directly spy on the commit method of the generated store instance
+    vi.spyOn(store, "commit");
 
     return shallowMount(OrganisationStepper, {
       global: {
@@ -90,8 +94,8 @@ describe("OrganisationStepper.vue", () => {
       await autocomplete.vm.$emit("update:modelValue", newSelection);
 
       expect(wrapper.vm.organisationSelected).toEqual(newSelection);
-      // Verify the watcher also fired and committed to the store
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      // Verify the watcher also fired and committed to the store instance
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setOrganisationSelected",
         newSelection,
       );
@@ -148,7 +152,8 @@ describe("OrganisationStepper.vue", () => {
       wrapper.vm.organisationSelected = selection;
       await wrapper.vm.$nextTick();
 
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      // Verify against the active spied store
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setOrganisationSelected",
         selection,
       );
@@ -166,7 +171,7 @@ describe("OrganisationStepper.vue", () => {
     });
 
     it("calls the removeItem utility with the correct arguments and returns the result", () => {
-      const wrapper = createWrapper(true); // Super curator or regular doesn't matter for this method
+      const wrapper = createWrapper(true);
 
       // 1. Set up initial component state
       const initialList = [1, 2, 3];
@@ -180,10 +185,7 @@ describe("OrganisationStepper.vue", () => {
       const result = wrapper.vm.remove(2);
 
       // 4. Assertions
-      // Check if the utility was called with (the_item, the_current_list)
       expect(removeItem).toHaveBeenCalledWith(2, initialList);
-
-      // Check if the method returns exactly what the utility returned
       expect(result).toEqual(mockProcessedList);
     });
   });

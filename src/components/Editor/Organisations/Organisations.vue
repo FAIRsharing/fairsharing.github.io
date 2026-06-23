@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import Loaders from "../../Navigation/Loaders";
@@ -194,7 +194,8 @@ export default {
           )[0];
           if (!found) {
             changes += 1;
-          } else if (!isEqual(link, found)) {
+          }
+          else if (!isEqual(link, found)) {
             changes += 1;
           }
         });
@@ -245,7 +246,8 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      } else if (item.textContent.trim() === "Save and exit") {
+      }
+      else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

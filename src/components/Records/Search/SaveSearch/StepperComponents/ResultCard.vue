@@ -82,7 +82,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import saveSearch from "@/store";
+// import saveSearch from "@/store";
 
 export default {
   name: "ResultCard",
@@ -103,8 +103,8 @@ export default {
     restartStepper() {
       this.resetSaveSearchDialog();
       this.$emit("restartStepper", 1);
-      saveSearch.commit("saveSearch/setShowStepper", true);
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", true);
+      this.$store.commit("saveSearch/setShowStepper", true);
+      this.$store.commit("saveSearch/setSaveSearchStepperDialog", true);
     },
 
     /**
@@ -114,7 +114,7 @@ export default {
       if (this.getSaveSearchStatus) {
         this.resetSaveSearchDialog();
       }
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", false);
+      this.$store.commit("saveSearch/setSaveSearchStepperDialog", false);
       this.resetSaveSearchDialog();
       this.$emit("restartStepper", 0);
     },

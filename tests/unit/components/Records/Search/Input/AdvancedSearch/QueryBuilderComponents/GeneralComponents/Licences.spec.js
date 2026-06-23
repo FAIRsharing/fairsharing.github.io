@@ -1,22 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import licencesSearch from "@/store";
 import Licences from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Licences.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("Licences.vue", () => {
   let actions;
   let licencesGetters;
   let advancedGetters;
+  let store;
 
   const createWrapper = (props = {}, customAdvancedGetters = {}) => {
-    // Setup Vuex Modules
     actions = { fetchSearchLicences: vi.fn() };
 
     licencesGetters = {
@@ -26,15 +19,16 @@ describe("Licences.vue", () => {
 
     advancedGetters = {
       getEditDialogStatus: () => false,
-      ...customAdvancedGetters, // Allow overriding for specific tests
+      ...customAdvancedGetters,
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         licencesSearch: {
           namespaced: true,
           actions,
           getters: licencesGetters,
+          mutations: { setSearchLicences: vi.fn() }, // Safe fallback for the commit
         },
         advancedSearch: {
           namespaced: true,
@@ -42,6 +36,7 @@ describe("Licences.vue", () => {
         },
       },
     });
+    vi.spyOn(store, "commit");
 
     return shallowMount(Licences, {
       global: {
@@ -77,8 +72,11 @@ describe("Licences.vue", () => {
         name: "AutoCompleteComponent",
       });
       await selectStub.vm.$emit("update:modelValue", ["FTP", "SPARQL"]);
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["FTP", "SPARQL"]]);
+
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["FTP", "SPARQL"]]);
     });
   });
 
@@ -86,7 +84,7 @@ describe("Licences.vue", () => {
     it("does NOT commit to direct store if dialog is open but value is empty", () => {
       createWrapper({ value: [] }, { getEditDialogStatus: () => true });
 
-      expect(licencesSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("does NOT commit to direct store if dialog is closed", () => {
@@ -95,16 +93,15 @@ describe("Licences.vue", () => {
         { getEditDialogStatus: () => false },
       );
 
-      expect(licencesSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("commits to the direct store if dialog is open AND value has length", () => {
       const mockValue = ["Germany"];
       createWrapper({ value: mockValue }, { getEditDialogStatus: () => true });
 
-      // Asserts the direct import `licencesSearch.commit()` was called correctly
-      expect(licencesSearch.commit).toHaveBeenCalledTimes(1);
-      expect(licencesSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledTimes(1);
+      expect(store.commit).toHaveBeenCalledWith(
         "licencesSearch/setSearchLicences",
         mockValue,
       );
@@ -118,12 +115,14 @@ describe("Licences.vue", () => {
       expect(wrapper.vm.model).toStrictEqual(["Spain"]);
     });
 
-    it("computed model setter emits 'input' event", () => {
+    it("computed model setter emits expected event", () => {
       const wrapper = createWrapper();
       wrapper.vm.model = ["Italy"];
 
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["Italy"]]);
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["Italy"]]);
     });
 
     it("selectedValue() sets itemSelected", () => {

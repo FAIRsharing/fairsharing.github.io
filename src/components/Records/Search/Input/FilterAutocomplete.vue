@@ -83,7 +83,7 @@
 import { mapGetters, mapState } from "vuex";
 
 import clearString from "@/utils/stringUtils";
-import { capitalize } from "lodash";
+import { capitalize } from "lodash-es";
 
 export default {
   name: "FilterAutocomplete",
@@ -128,7 +128,8 @@ export default {
             currentParams[filterName] = encodeURIComponent(
               _module.selectedValues.join(","),
             );
-          } else {
+          }
+          else {
             let newParam = [];
             _module.selectedValues.forEach(function (val) {
               newParam.push(encodeURIComponent(val));
@@ -141,7 +142,8 @@ export default {
             query: currentParams,
           });
         }
-      } else {
+      }
+      else {
         if (
           _module.selectedValues === null ||
           _module.selectedValues.length === 0
@@ -152,7 +154,8 @@ export default {
             name: _module.$route.name,
             query: currentParams,
           });
-        } else {
+        }
+        else {
           let newParams = [];
           let existingValues =
             currentParams[_module.filter.filterName].split(",");

@@ -53,7 +53,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 
-import saveSearch from "@/store";
+// import saveSearch from "@/store";
 import { removeItem } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -78,7 +78,7 @@ export default {
     },
 
     policySelected(val) {
-      saveSearch.commit("saveSearch/setPolicySelected", val);
+      this.$store.commit("saveSearch/setPolicySelected", val);
     },
   },
   async mounted() {

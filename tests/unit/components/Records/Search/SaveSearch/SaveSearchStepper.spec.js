@@ -2,14 +2,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
 
-// 1. Mock Direct Store Import
-import saveSearch from "@/store";
 import SaveSearchStepper from "@/components/Records/Search/SaveSearch/SaveSearchStepper.vue";
 
-// 3. Mock the RESTClient Class
+// 1. Mock the RESTClient Class
 const { mockSaveSearchAPI } = vi.hoisted(() => ({
   mockSaveSearchAPI: vi.fn(),
 }));
+
 vi.mock("@/lib/Client/RESTClient", () => {
   return {
     default: vi.fn(() => ({
@@ -17,12 +16,6 @@ vi.mock("@/lib/Client/RESTClient", () => {
     })),
   };
 });
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 // 2. Mock Utils
 vi.mock("@/utils/rules.js", () => ({
@@ -33,6 +26,7 @@ describe("SaveSearchStepper.vue", () => {
   let actions;
   let saveSearchGetters;
   let advancedSearchGetters;
+  let store; // Track the active Vuex store instance locally
 
   const createWrapper = (
     isSuperCurator = false,
@@ -54,7 +48,7 @@ describe("SaveSearchStepper.vue", () => {
       getAdvancedSearchQuery: () => ({ query: "test" }),
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         users: {
           namespaced: true,
@@ -70,6 +64,13 @@ describe("SaveSearchStepper.vue", () => {
         saveSearch: {
           namespaced: true,
           getters: saveSearchGetters,
+          // Placeholder mutations to prevent Vuex "unknown mutation" warnings
+          mutations: {
+            setSaveSearchStepperDialog: vi.fn(),
+            setShowStepper: vi.fn(),
+            setSaveSearchStatus: vi.fn(),
+            setSaveSearchResult: vi.fn(),
+          },
         },
         advancedSearch: {
           namespaced: true,
@@ -77,6 +78,9 @@ describe("SaveSearchStepper.vue", () => {
         },
       },
     });
+
+    // Directly spy on the commit method of the generated store instance
+    vi.spyOn(store, "commit");
 
     return shallowMount(SaveSearchStepper, {
       global: {
@@ -121,25 +125,25 @@ describe("SaveSearchStepper.vue", () => {
       expect(actions.getUser).toHaveBeenCalledTimes(1);
       expect(wrapper.vm.isSuperCurator).toBe(true);
     });
-  });
 
-  it("updates data and fetches user when dialog opens (Regular User)", async () => {
-    const wrapper = createWrapper(false); // User is NOT super curator
+    it("updates data and fetches user when dialog opens (Regular User)", async () => {
+      const wrapper = createWrapper(false); // User is NOT super curator
 
-    await wrapper.vm.$options.watch.getSaveSearchStepperDialog.call(
-      wrapper.vm,
-      true,
-    );
-    expect(wrapper.vm.stepperDialog).toBe(true);
-    expect(actions.getUser).toHaveBeenCalledTimes(1);
-    expect(wrapper.vm.isSuperCurator).toBe(false);
+      await wrapper.vm.$options.watch.getSaveSearchStepperDialog.call(
+        wrapper.vm,
+        true,
+      );
+      expect(wrapper.vm.stepperDialog).toBe(true);
+      expect(actions.getUser).toHaveBeenCalledTimes(1);
+      expect(wrapper.vm.isSuperCurator).toBe(false);
+    });
   });
 
   describe("Methods: closeStepperDialog & restartStepper", () => {
     it("closeStepperDialog commits to the direct store", () => {
       const wrapper = createWrapper();
       wrapper.vm.closeStepperDialog();
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchStepperDialog",
         false,
       );
@@ -160,6 +164,7 @@ describe("SaveSearchStepper.vue", () => {
       mockSaveSearchAPI.mockResolvedValueOnce(mockSuccessResponse);
       wrapper.vm.searchName = "My Search";
       wrapper.vm.searchComment = "Test Comment";
+
       await wrapper.vm.saveSearch();
 
       expect(mockSaveSearchAPI).toHaveBeenCalledTimes(1);
@@ -176,19 +181,21 @@ describe("SaveSearchStepper.vue", () => {
         "fake-token",
       );
 
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      // Verify the commits hit the local active store spy
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setShowStepper",
         false,
       );
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchStatus",
         true,
       ); // True because no error
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchResult",
         mockSuccessResponse,
       );
-      // 3. Verify Form Reset
+
+      // Verify Form Reset
       expect(wrapper.vm.searchName).toBe("");
       expect(wrapper.vm.searchComment).toBe("");
       expect(wrapper.vm.loading).toBe(false);
@@ -198,16 +205,18 @@ describe("SaveSearchStepper.vue", () => {
       const wrapper = createWrapper(false);
       const mockErrorResponse = { error: "Something went wrong" };
       mockSaveSearchAPI.mockResolvedValueOnce(mockErrorResponse);
+
       await wrapper.vm.saveSearch();
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setShowStepper",
         false,
       );
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchStatus",
         false,
       ); // False because of error
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchResult",
         mockErrorResponse,
       );
@@ -216,7 +225,9 @@ describe("SaveSearchStepper.vue", () => {
     it("falls back to user().id if getUserSelected array is empty", async () => {
       const wrapper = createWrapper(false, true, { getUserSelected: () => [] });
       mockSaveSearchAPI.mockResolvedValueOnce({ status: "success" });
+
       await wrapper.vm.saveSearch();
+
       expect(mockSaveSearchAPI).toHaveBeenCalledWith(
         expect.objectContaining({
           user_ids: [1],

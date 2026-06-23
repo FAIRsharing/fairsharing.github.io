@@ -22,31 +22,33 @@ import searchFilters from "./searchFilters.js";
 import uiController from "./uiController";
 import users from "./users.js";
 
-// Create a new store instance.
-const store = createStore({
-  namespaced: true,
-  modules: {
-    searchFilters,
-    records,
-    record,
-    introspection,
-    users,
-    uiController,
-    editor,
-    messages,
-    ontologyBrowser: ontologyBrowser,
-    advancedSearch,
-    subjectSearch,
-    recordTypes,
-    organisationSearch,
-    objectTypes,
-    userDefinedTagsSearch,
-    domainsSearch,
-    taxonomiesSearch,
-    licencesSearch,
-    countriesSearch,
-    saveSearch,
-  },
-});
+export function createMyStore() {
+  // Create a new store instance.
+  return createStore({
+    namespaced: true,
+    modules: {
+      searchFilters,
+      records,
+      record,
+      introspection,
+      users,
+      uiController,
+      editor,
+      messages,
+      ontologyBrowser: ontologyBrowser,
+      advancedSearch,
+      subjectSearch,
+      recordTypes,
+      organisationSearch,
+      objectTypes,
+      userDefinedTagsSearch,
+      domainsSearch,
+      taxonomiesSearch,
+      licencesSearch,
+      countriesSearch,
+      saveSearch,
+    },
+  });
+}
 
-export default store;
+// export default store;

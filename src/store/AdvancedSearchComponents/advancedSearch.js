@@ -1,5 +1,5 @@
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
-import { isBoolean, isObject } from "lodash";
+import { isBoolean, isObject } from "lodash-es";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
@@ -57,31 +57,37 @@ const actions = {
               params["value"].forEach((item) => {
                 if (isObject(item)) {
                   valuesArr.push(item.value);
-                } else {
+                }
+                else {
                   valuesArr.push(item);
                 }
               });
               fieldTypeValue.push(valuesArr);
               fieldTypeValue = fieldTypeValue.flatMap((value) => value);
               fieldValue = fieldTypeValue;
-            } else {
+            }
+            else {
               if (Array.isArray(params["value"])) {
                 let valuesArr = [];
                 params["value"].forEach((item) => {
                   if (isObject(item)) {
                     valuesArr.push(item.value);
-                  } else {
+                  }
+                  else {
                     valuesArr.push(item);
                   }
                 });
                 fieldValue = valuesArr;
-              } else if (isBoolean(params["value"])) {
+              }
+              else if (isBoolean(params["value"])) {
                 fieldValue = params["value"];
-              } else if (params["value"]) {
+              }
+              else if (params["value"]) {
                 //When string is boolean value, convert to boolean format
                 if (params["value"] === "true" || params["value"] === "false") {
                   fieldValue = JSON.parse(params["value"]);
-                } else {
+                }
+                else {
                   fieldValue = [params["value"]];
                 }
               }
@@ -89,7 +95,8 @@ const actions = {
             if (fieldValue && fieldValue.length) {
               fieldValue = fieldValue.map((e) => e.toLowerCase());
               fieldsObj[fieldKey] = fieldValue;
-            } else if (isBoolean(fieldValue)) {
+            }
+            else if (isBoolean(fieldValue)) {
               fieldsObj[fieldKey] = fieldValue;
             }
           });
@@ -121,7 +128,8 @@ const actions = {
         q: state.advancedSearchText,
         where: whereObj,
       };
-    } else {
+    }
+    else {
       commit("setAdvancedSearchText", "");
       ADVANCED_TAGS.queryParam = {
         where: whereObj,
@@ -134,10 +142,12 @@ const actions = {
       if (!response["error"]) {
         commit("setError", false);
         commit("setAdvancedSearchResponse", response["advancedSearch"]);
-      } else {
+      }
+      else {
         commit("setError", true);
       }
-    } catch (error) {
+    }
+    catch (error) {
       /* istanbul ignore next */
       commit("setError", true);
     }

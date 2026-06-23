@@ -2,14 +2,14 @@
   <v-pagination
     v-model="page"
     :length="totalPages"
+    :total-visible="$vuetify.display.mdAndUp ? 7 : 3"
     active-color="primary"
     variant="elevated"
-    :total-visible="$vuetify.display.mdAndUp ? 7 : 3"
   />
 </template>
 
 <script>
-import { throttle } from "lodash";
+import { throttle } from "lodash-es";
 
 /** Component to handle the advanced search filters for the searchFairsharingRecords query.
  * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
@@ -45,7 +45,8 @@ export default {
         if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
           _module.currentPageLocal = 1;
           _module.page = _module.currentPageLocal;
-        } else {
+        }
+        else {
           _module.currentPageLocal = Number(newVal.page);
           _module.page = _module.currentPageLocal;
         }
@@ -61,7 +62,8 @@ export default {
     if (!Object.prototype.hasOwnProperty.call(_module.$route.query, "page")) {
       _module.currentPageLocal = 1;
       _module.page = _module.currentPageLocal;
-    } else {
+    }
+    else {
       _module.currentPageLocal = Number(_module.$route.query.page);
       _module.page = _module.currentPageLocal;
     }
@@ -104,7 +106,8 @@ export default {
       if (!disable) {
         this.allowPaginate = false;
         this.PaginatePermission();
-      } else {
+      }
+      else {
         this.allowPaginate = true;
       }
     },

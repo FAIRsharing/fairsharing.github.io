@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Home_backup.html">Home_backup</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
 				</ul>
 			</li>
 			
@@ -235,7 +235,6 @@ import { mapActions, mapGetters } from "vuex";
 import SaveSearchButton from "@/components/Records/Search/SaveSearch/SaveSearchButton.vue";
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue";
 import TagChips from "@/components/Records/Shared/TagChips.vue";
-import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
 
@@ -271,20 +270,20 @@ export default {
     },
     sortData() {
       switch (this.sortBy) {
-        case "Name":
-          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
-        case "Registry":
-          return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
-        case "Type":
-          return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
-        case "Status":
-          return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
-        case "Description":
-          return [
-            { key: "description", order: this.sortDesc ? "desc" : "asc" },
-          ];
-        default:
-          return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Name":
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
+      case "Registry":
+        return [{ key: "registry", order: this.sortDesc ? "desc" : "asc" }];
+      case "Type":
+        return [{ key: "type", order: this.sortDesc ? "desc" : "asc" }];
+      case "Status":
+        return [{ key: "status", order: this.sortDesc ? "desc" : "asc" }];
+      case "Description":
+        return [
+          { key: "description", order: this.sortDesc ? "desc" : "asc" },
+        ];
+      default:
+        return [{ key: "name", order: this.sortDesc ? "desc" : "asc" }];
       }
     },
   },
@@ -328,7 +327,8 @@ export default {
               const paramValues = subItem.split("=");
               if (paramValues[0] === "operator") {
                 searchObj["operatorIdentifier"] = paramValues[1];
-              } else {
+              }
+              else {
                 let advancedSearchParams = {
                   identifier: "",
                   value: [] || Boolean,
@@ -337,7 +337,8 @@ export default {
                 // For boolean/string values
                 if (paramValues[1] === "true" || paramValues[1] === "false") {
                   advancedSearchParams["value"] = paramValues[1];
-                } else {
+                }
+                else {
                   advancedSearchParams["value"] = paramValues[1].split("+");
                 }
                 searchObj["children"].push(advancedSearchParams);
@@ -348,13 +349,10 @@ export default {
           });
 
           //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
-          advancedSearch.commit(
-            "advancedSearch/setAdvancedSearch",
-            searchQuery,
-          );
+          this.$store.commit("advancedSearch/setAdvancedSearch", searchQuery);
 
           //Committing the URL query param to setEditAdvancedSearch mutation in appropriate format to execute the edit advanced search
-          advancedSearch.commit(
+          this.$store.commit(
             "advancedSearch/setEditAdvancedSearch",
             searchQuery,
           );
@@ -453,7 +451,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Fri May 29th 2026
+		on Tue Jun 23rd 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

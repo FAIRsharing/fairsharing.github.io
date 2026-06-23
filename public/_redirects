@@ -1,2 +1,6 @@
-# Netlify settings for single-page application
-/*    /index.html   200
+# 1. Redirect the root URL to the actual page Vike generated
+/    /all    301
+
+# 2. Fallback for client-side routing (only if an index.html exists at the root later)
+# If you don't have a root index.html, remove or comment out the line below:
+# /* /index.html   200

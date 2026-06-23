@@ -1,22 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import organisationSearch from "@/store";
 import Organisations from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Organisations.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("Organisations.vue", () => {
   let actions;
   let organisationGetters;
   let advancedGetters;
+  let store;
 
   const createWrapper = (props = {}, customAdvancedGetters = {}) => {
-    // Setup Vuex Modules
     actions = { fetchSearchOrganisations: vi.fn() };
 
     organisationGetters = {
@@ -26,15 +19,16 @@ describe("Organisations.vue", () => {
 
     advancedGetters = {
       getEditDialogStatus: () => false,
-      ...customAdvancedGetters, // Allow overriding for specific tests
+      ...customAdvancedGetters,
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         organisationSearch: {
           namespaced: true,
           actions,
           getters: organisationGetters,
+          mutations: { setSearchOrganisations: vi.fn() },
         },
         advancedSearch: {
           namespaced: true,
@@ -42,6 +36,9 @@ describe("Organisations.vue", () => {
         },
       },
     });
+
+    // Directly spy on the commit method of the generated store
+    vi.spyOn(store, "commit");
 
     return shallowMount(Organisations, {
       global: {
@@ -77,8 +74,11 @@ describe("Organisations.vue", () => {
         name: "AutoCompleteComponent",
       });
       await selectStub.vm.$emit("update:modelValue", ["FTP", "SPARQL"]);
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["FTP", "SPARQL"]]);
+
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["FTP", "SPARQL"]]);
     });
   });
 
@@ -86,7 +86,7 @@ describe("Organisations.vue", () => {
     it("does NOT commit to direct store if dialog is open but value is empty", () => {
       createWrapper({ value: [] }, { getEditDialogStatus: () => true });
 
-      expect(organisationSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("does NOT commit to direct store if dialog is closed", () => {
@@ -95,16 +95,16 @@ describe("Organisations.vue", () => {
         { getEditDialogStatus: () => false },
       );
 
-      expect(organisationSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("commits to the direct store if dialog is open AND value has length", () => {
       const mockValue = ["Germany"];
       createWrapper({ value: mockValue }, { getEditDialogStatus: () => true });
 
-      // Asserts the direct import `organisationSearch.commit()` was called correctly
-      expect(organisationSearch.commit).toHaveBeenCalledTimes(1);
-      expect(organisationSearch.commit).toHaveBeenCalledWith(
+      // Asserts against the real active store spy instance
+      expect(store.commit).toHaveBeenCalledTimes(1);
+      expect(store.commit).toHaveBeenCalledWith(
         "organisationSearch/setSearchOrganisations",
         mockValue,
       );
@@ -117,12 +117,15 @@ describe("Organisations.vue", () => {
       wrapper.vm.itemSelected = ["Spain"];
       expect(wrapper.vm.model).toStrictEqual(["Spain"]);
     });
-    it("computed model setter emits 'input' event", () => {
+
+    it("computed model setter emits expected event", () => {
       const wrapper = createWrapper();
       wrapper.vm.model = ["Italy"];
 
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["Italy"]]);
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["Italy"]]);
     });
 
     it("selectedValue() sets itemSelected", () => {

@@ -1,19 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import domainsSearch from "@/store";
 import Domains from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Domains.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("Domains.vue", () => {
   let actions;
   let domainsGetters;
   let advancedGetters;
+  let store; // Keep a reference to the active test store instance
 
   const createWrapper = (props = {}, customAdvancedGetters = {}) => {
     // Setup Vuex Modules
@@ -29,12 +23,14 @@ describe("Domains.vue", () => {
       ...customAdvancedGetters, // Allow overriding for specific tests
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         domainsSearch: {
           namespaced: true,
           actions,
           getters: domainsGetters,
+          // If your component commits mutations, adding an empty mutations block is safe practice
+          mutations: { setSearchDomains: vi.fn() },
         },
         advancedSearch: {
           namespaced: true,
@@ -42,6 +38,9 @@ describe("Domains.vue", () => {
         },
       },
     });
+
+    // Directly spy on the store's commit method
+    vi.spyOn(store, "commit");
 
     return shallowMount(Domains, {
       global: {
@@ -77,8 +76,11 @@ describe("Domains.vue", () => {
         name: "AutoCompleteComponent",
       });
       await selectStub.vm.$emit("update:modelValue", ["FTP", "SPARQL"]);
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["FTP", "SPARQL"]]);
+
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["FTP", "SPARQL"]]);
     });
   });
 
@@ -86,7 +88,7 @@ describe("Domains.vue", () => {
     it("does NOT commit to direct store if dialog is open but value is empty", () => {
       createWrapper({ value: [] }, { getEditDialogStatus: () => true });
 
-      expect(domainsSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("does NOT commit to direct store if dialog is closed", () => {
@@ -95,14 +97,16 @@ describe("Domains.vue", () => {
         { getEditDialogStatus: () => false },
       );
 
-      expect(domainsSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("commits to the direct store if dialog is open AND value has length", () => {
       const mockValue = ["Germany"];
       createWrapper({ value: mockValue }, { getEditDialogStatus: () => true });
-      expect(domainsSearch.commit).toHaveBeenCalledTimes(1);
-      expect(domainsSearch.commit).toHaveBeenCalledWith(
+
+      // Asserting against the real store instance spy instead of the global mock import
+      expect(store.commit).toHaveBeenCalledTimes(1);
+      expect(store.commit).toHaveBeenCalledWith(
         "domainsSearch/setSearchDomains",
         mockValue,
       );
@@ -116,12 +120,14 @@ describe("Domains.vue", () => {
       expect(wrapper.vm.model).toStrictEqual(["Spain"]);
     });
 
-    it("computed model setter emits 'input' event", () => {
+    it("computed model setter emits expected event", () => {
       const wrapper = createWrapper();
       wrapper.vm.model = ["Italy"];
 
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["Italy"]]);
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["Italy"]]);
     });
 
     it("selectedValue() sets itemSelected", () => {

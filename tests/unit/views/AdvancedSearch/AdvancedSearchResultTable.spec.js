@@ -3,13 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 import { createStore } from "vuex";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
-import advancedSearch from "@/store";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 vi.mock("@/utils/recordsCardUtils", () => ({
   default: {
@@ -26,7 +19,6 @@ describe("AdvancedSearchResultTable.vue", () => {
   let store;
   let vuetify;
   let mockFetchAction;
-  let originalLocation;
 
   const mockRoute = { query: {} };
 
@@ -44,6 +36,10 @@ describe("AdvancedSearchResultTable.vue", () => {
               getterOverrides.query || { fields: [] },
           },
           actions: { fetchAdvancedSearchResults: mockFetchAction },
+          mutations: {
+            setEditAdvancedSearch: vi.fn(),
+            setAdvancedSearch: vi.fn(),
+          },
         },
       },
     });
@@ -51,6 +47,8 @@ describe("AdvancedSearchResultTable.vue", () => {
 
   const mountComponent = (getters = {}, routeQuery = {}) => {
     store = createVuexStore(getters);
+    vi.spyOn(store, "commit");
+
     vuetify = createVuetify();
     mockRoute.query = routeQuery;
 
@@ -69,14 +67,15 @@ describe("AdvancedSearchResultTable.vue", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
-    originalLocation = window.location;
-    delete window.location;
-    window.location = { href: "" };
+
+    vi.stubGlobal("location", {
+      href: "",
+    });
   });
 
   afterEach(() => {
     if (wrapper) wrapper.unmount();
-    window.location = originalLocation;
+    vi.unstubAllGlobals();
   });
 
   it("renders ErrorPage when getErrorStatus is true", () => {
@@ -94,11 +93,9 @@ describe("AdvancedSearchResultTable.vue", () => {
   // --- COMPUTED PROPERTY TESTS ---
 
   it("computes noPagination correctly", () => {
-    // Empty array = true (no pagination)
     wrapper = mountComponent({ response: [] });
     expect(wrapper.vm.noPagination).toBe(true);
 
-    // Array with items = false (show pagination)
     wrapper = mountComponent({ response: [{ id: 1 }] });
     expect(wrapper.vm.noPagination).toBe(false);
   });
@@ -121,6 +118,7 @@ describe("AdvancedSearchResultTable.vue", () => {
     wrapper.vm.sortDesc = false;
     expect(wrapper.vm.sortData).toEqual([{ key: "registry", order: "asc" }]);
   });
+
   it("computes sortData correctly for Type", () => {
     wrapper = mountComponent();
     wrapper.vm.sortBy = "Type";
@@ -130,6 +128,7 @@ describe("AdvancedSearchResultTable.vue", () => {
     wrapper.vm.sortDesc = false;
     expect(wrapper.vm.sortData).toEqual([{ key: "type", order: "asc" }]);
   });
+
   it("computes sortData correctly for Status", () => {
     wrapper = mountComponent();
     wrapper.vm.sortBy = "Status";
@@ -139,6 +138,7 @@ describe("AdvancedSearchResultTable.vue", () => {
     wrapper.vm.sortDesc = false;
     expect(wrapper.vm.sortData).toEqual([{ key: "status", order: "asc" }]);
   });
+
   it("computes sortData correctly for Description", () => {
     wrapper = mountComponent();
     wrapper.vm.sortBy = "Description";
@@ -170,13 +170,10 @@ describe("AdvancedSearchResultTable.vue", () => {
     ];
     wrapper = mountComponent({ response: mockData });
 
-    // Trigger the download
     wrapper.vm.downloadResults();
 
-    // Verify Blob creation
     expect(global.URL.createObjectURL).toHaveBeenCalled();
-
-    // Verify it assigned the mocked blob URL to the window location
+    // Verify our stub location URL caught the payload assignment
     expect(window.location.href).toBe("blob:mock-url");
   });
 
@@ -186,47 +183,41 @@ describe("AdvancedSearchResultTable.vue", () => {
       wrapper.vm.recordPublicationsLength({ publications: [1, 2, 3] }),
     ).toBe(3);
     expect(wrapper.vm.recordPublicationsLength({ publications: [] })).toBe(0);
-    expect(wrapper.vm.recordPublicationsLength({})).toBe(0); // missing property
+    expect(wrapper.vm.recordPublicationsLength({})).toBe(0);
   });
 
   it("parses URL query parameters and dispatches store actions on mount", () => {
-    // We must provide a string formatted exactly how fetchQueryParams expects it
     const testRouteQuery = {
       operator: "AND",
       fields: "(operator=OR&registry=true+false)",
       q: "searchterm",
     };
 
-    // Mount triggers mounted(), which calls fetchQueryParams()
     wrapper = mountComponent(
-      { response: [], query: { fields: [] } }, // Ensure requirements to run the if-block are met
+      { response: [], query: { fields: [] } },
       testRouteQuery,
     );
 
-    // 1. Check direct store commits
-    expect(advancedSearch.commit).toHaveBeenCalledWith(
+    expect(store.commit).toHaveBeenCalledWith(
       "advancedSearch/setAdvancedSearch",
       expect.any(Object),
     );
-    expect(advancedSearch.commit).toHaveBeenCalledWith(
+    expect(store.commit).toHaveBeenCalledWith(
       "advancedSearch/setEditAdvancedSearch",
       expect.any(Object),
     );
 
-    // Inspect the exact object that was built and committed by the parser
-    const committedPayload = advancedSearch.commit.mock.calls[0][1];
+    const committedPayload = store.commit.mock.calls[0][1];
     expect(committedPayload.operatorIdentifier).toBe("AND");
     expect(committedPayload.children[0].operatorIdentifier).toBe("OR");
     expect(committedPayload.children[0].children[0].identifier).toBe(
       "registry",
     );
-    // "true+false" splits to ["true", "false"] in your logic
     expect(committedPayload.children[0].children[0].value).toEqual([
       "true",
       "false",
     ]);
 
-    // 2. Check Vuex mapped action
     expect(mockFetchAction).toHaveBeenCalledWith(
       expect.any(Object),
       "searchterm",

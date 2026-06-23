@@ -129,12 +129,11 @@
 </template>
 
 <script>
-import { isBoolean, isObject } from "lodash";
+import { isBoolean, isObject } from "lodash-es";
 import { mapActions, mapGetters } from "vuex";
 
 import TooltipComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/TooltipComponent.vue";
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
-import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -212,21 +211,15 @@ export default {
     //When the user is redirected to advancedsearch url directly
     //it will open the dialog box
     if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
-      );
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", true);
     }
   },
   methods: {
     ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
 
     closeDialog() {
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        false,
-      );
+      this.$store.commit("advancedSearch/setEditDialogStatus", false);
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", false);
       // Redirecting to home page after closing
       if (this.$route.fullPath.toLowerCase() === "/advancedsearch") {
         this.$router.push("/");
@@ -258,7 +251,8 @@ export default {
     goToAdvancedSearch() {
       if (this.updatedAdvancedSearchText) {
         this.fetchAdvancedSearchResults(this.updatedAdvancedSearchText);
-      } else {
+      }
+      else {
         this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       }
 
@@ -293,13 +287,15 @@ export default {
               params["value"].forEach((item) => {
                 if (isObject(item)) {
                   valuesArr.push(item.value);
-                } else {
+                }
+                else {
                   valuesArr.push(item);
                 }
               });
 
               this.queryString += valuesArr.join("+");
-            } else if (params["value"]) {
+            }
+            else if (params["value"]) {
               this.queryString += params["value"];
             }
           });
@@ -320,7 +316,8 @@ export default {
             name: "AdvancedSearchResult",
             query: this.isAdvancedSearchTerm(queryString),
           });
-        } else {
+        }
+        else {
           this.$router.push({
             name: "AdvancedSearchResult",
             query: this.noAdvancedSearchTerm(queryString),
@@ -333,7 +330,8 @@ export default {
           this.$router.push({
             query: this.isAdvancedSearchTerm(queryString),
           });
-        } else {
+        }
+        else {
           this.$router.push({
             query: this.noAdvancedSearchTerm(queryString),
           });

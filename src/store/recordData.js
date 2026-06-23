@@ -1,4 +1,4 @@
-import { isEmpty, isEqual } from "lodash";
+import {isEmpty, isEqual} from "lodash-es";
 // import Vue from "vue";
 import RESTClient from "@/lib/Client/RESTClient.js";
 
@@ -8,7 +8,7 @@ import recordRelationsQuery from "../lib/GraphClient/queries/editor/getRecordRel
 import recordQuery from "../lib/GraphClient/queries/getRecord.json";
 import recordHistory from "../lib/GraphClient/queries/getRecordHistory.json";
 import recordOrganisationsQuery from "../lib/GraphClient/queries/getRecordOrganisations.json";
-import { initEditorSections } from "./utils.js";
+import {initEditorSections} from "./utils.js";
 
 let client = new Client();
 let restClient = new RESTClient();

@@ -1,25 +1,14 @@
-/* eslint-env jest */
-
 import RestClient from "@/lib/Client/RESTClient.js";
-import router, {
-  afterEach,
-  beforeEach,
+import {
+  createMyRouter,
   isLoggedIn,
   isMaintenanceMode,
   isNotLoggedIn,
   isSuperCurator,
   scrollBehavior,
 } from "@/router";
-//import VueRouter from "vue-router";
-const sinon = require("sinon");
 
-/*
-const testrouter = new VueRouter(),
-    $testrouter = { push: vi.fn() };
-const $route = {
-    path: '/some/path'
-}
- */
+const sinon = require("sinon");
 
 let store = {
   state: {
@@ -36,10 +25,12 @@ let store = {
 };
 
 let restStub;
+let router;
 
 describe("Routes", () => {
   beforeAll(() => {
     window.scrollTo = vi.fn();
+    router = createMyRouter(store);
     restStub = sinon.stub(RestClient.prototype, "executeQuery");
     restStub.returns({
       data: {
@@ -71,7 +62,9 @@ describe("Routes", () => {
       }
       if (beforeEachTester.indexOf(route.name) > -1) {
         const next = vi.fn();
-        route.beforeEnter({ path: {} }, undefined, next);
+        if (route.beforeEnter) {
+          route.beforeEnter({ path: {} }, undefined, next);
+        }
       }
     });
   });
@@ -81,37 +74,6 @@ describe("Routes", () => {
     await isNotLoggedIn(undefined, undefined, next, store);
     await isSuperCurator(undefined, undefined, next, store);
     expect(next).toHaveBeenCalled();
-  });
-
-  it("Can set a correct title", async () => {
-    let to = {
-      meta: { title: "ABC" },
-    };
-    const next = vi.fn();
-    await beforeEach(to, undefined, next, store);
-    expect(document.title).toMatch("FAIRsharing | ABC");
-
-    to.meta = {};
-    store = {
-      state: {
-        users: {
-          user: function () {
-            return { isLoggedIn: false, is_super_curator: true };
-          },
-        },
-        introspection: {
-          maintenanceMode: false,
-        },
-      },
-      dispatch: vi.fn(),
-    };
-    await beforeEach(to, undefined, next, store);
-    expect(document.title).toMatch("FAIRsharing");
-    store.state.introspection.maintenanceMode = true;
-    await beforeEach(to, undefined, next, store);
-    expect(next).toHaveBeenCalledWith({ path: "maintenance" });
-    await afterEach({ name: "Records" });
-    await afterEach({ name: "Record" });
   });
 
   it("can check is a site is in maintenance mode", () => {

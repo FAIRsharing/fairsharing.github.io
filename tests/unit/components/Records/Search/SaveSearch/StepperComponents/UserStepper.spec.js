@@ -3,15 +3,8 @@ import { flushPromises, shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import UserStepper from "@/components/Records/Search/SaveSearch/StepperComponents/UserStepper.vue";
 
-import saveSearch from "@/store";
-// 2. Mock utility
+// 1. Mock utility helper
 import { removeItem } from "@/utils/advancedSearchUtils";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 vi.mock("@/utils/advancedSearchUtils", () => ({
   removeItem: vi.fn(),
@@ -19,7 +12,7 @@ vi.mock("@/utils/advancedSearchUtils", () => ({
 
 describe("UserStepper.vue", () => {
   let actions;
-  let store;
+  let store; // Track the active Vuex store instance locally
 
   const createWrapper = (isSuperCurator = true, usersList = []) => {
     actions = {
@@ -36,8 +29,18 @@ describe("UserStepper.vue", () => {
           },
           actions,
         },
+        // Added the missing saveSearch module to safely intercept watcher commits
+        saveSearch: {
+          namespaced: true,
+          mutations: {
+            setUserSelected: vi.fn(),
+          },
+        },
       },
     });
+
+    // Directly spy on the commit method of the newly generated store instance
+    vi.spyOn(store, "commit");
 
     return shallowMount(UserStepper, {
       global: {
@@ -92,12 +95,11 @@ describe("UserStepper.vue", () => {
       const autocomplete = wrapper.findComponent({ name: "v-autocomplete" });
       const newSelection = [{ id: 1, username: "admin" }];
 
-      // wrapper.vm.userSelected = newSelection;
-      // await wrapper.vm.$nextTick();
       await autocomplete.vm.$emit("update:modelValue", newSelection);
       expect(wrapper.vm.userSelected).toEqual(newSelection);
 
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+      // Asserts against the actual store instance spy instead of the removed global mock
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setUserSelected",
         newSelection,
       );

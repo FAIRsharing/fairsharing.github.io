@@ -64,7 +64,7 @@
       <mark v-text="loginUrl" />
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="javascript">
+    <CodeBlock class="code-container mt-2 mb-4" language="javascript">
       <pre>
 {
    "user":
@@ -75,7 +75,7 @@
 }
  </pre
       >
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -86,7 +86,7 @@
       A successful response will return something like the following:
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="javascript">
+    <CodeBlock class="code-container mt-2 mb-4" language="javascript">
       <pre>
 {
    "success": true,
@@ -105,7 +105,7 @@
 }
  </pre
       >
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -118,7 +118,7 @@
       given, and you'll need this for any further interactions with the API. The
       way it should be used is to send headers with each request, as follows:
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="javascript">
+    <CodeBlock class="code-container mt-2 mb-4" language="javascript">
       <pre>
 {
    "Accept": "application/json",
@@ -127,7 +127,7 @@
 }
  </pre
       >
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
@@ -145,7 +145,7 @@
     >
       cURL
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="javascript">
+    <CodeBlock class="code-container mt-2 mb-4" language="javascript">
       <pre>
 curl --location --request POST '{{ loginUrl }}' \
 --header 'Accept: application/json' \
@@ -158,7 +158,7 @@ curl --location --request GET '{{ recordExampleUrl }}' \
 --header 'Authorization: Bearer your_jwt_goes_here'
  </pre
       >
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -168,7 +168,7 @@ curl --location --request GET '{{ recordExampleUrl }}' \
     >
       Python
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="python">
+    <CodeBlock class="code-container mt-2 mb-4" language="python">
       <pre>
 
 import requests
@@ -201,7 +201,7 @@ response = requests.request("GET", url, headers=headers)
 print(response.text)
  </pre
       >
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 font-weight-bold lato-font-medium lato-text-sm',
@@ -211,7 +211,7 @@ print(response.text)
       Ruby
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 
 require "uri"
@@ -243,7 +243,7 @@ response = http.request(request)
 puts response.read_body
 </pre
       >
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -254,7 +254,7 @@ puts response.read_body
       R (user contributed)
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 #1. load packages
 library(RCurl)
@@ -288,7 +288,7 @@ query_con&lt;-fromJSON(rawToChar(get_res$content))
 #4. see results
 data&lt;-query_con$data
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Available queries</h2>
     <p
@@ -350,7 +350,7 @@ data&lt;-query_con$data
       An example is shown below:
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
     "fairsharing_record":
@@ -380,7 +380,7 @@ data&lt;-query_con$data
     }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -400,8 +400,8 @@ data&lt;-query_con$data
     <ul>
       <li>
         <a
-          class="underline-effect"
           :href="schemaDocumenterUrl('/model/fairsharing_record_schema.json')"
+          class="underline-effect"
           target="_blank"
         >
           FAIRsharing Record schema
@@ -414,8 +414,8 @@ data&lt;-query_con$data
     <ul>
       <li>
         <a
-          class="underline-effect"
           :href="schemaDocumenterUrl('/model/database_schema.json')"
+          class="underline-effect"
           target="_blank"
         >
           Database schema
@@ -423,10 +423,10 @@ data&lt;-query_con$data
         <ul>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/database_knowledgebase_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Pure knowledgebase schema
@@ -434,10 +434,10 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/database_repository_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Pure repository schema
@@ -445,12 +445,12 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl(
                   '/model/database_knowledgebase_and_repository_schema.json',
                 )
               "
+              class="underline-effect"
               target="_blank"
             >
               Combined repository/knowledgebase schema
@@ -460,8 +460,8 @@ data&lt;-query_con$data
       </li>
       <li>
         <a
-          class="underline-effect"
           :href="schemaDocumenterUrl('/model/standard_schema.json')"
+          class="underline-effect"
           target="_blank"
         >
           Standard schema
@@ -469,10 +469,10 @@ data&lt;-query_con$data
         <ul>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/standard_identifier_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Identifier schema
@@ -480,8 +480,8 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="schemaDocumenterUrl('/model/standard_metric_schema.json')"
+              class="underline-effect"
               target="_blank"
             >
               Metric schema
@@ -489,8 +489,8 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="schemaDocumenterUrl('/model/standard_model_schema.json')"
+              class="underline-effect"
               target="_blank"
             >
               Model/format schema
@@ -498,10 +498,10 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/standard_reporting_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Reporting guideline schema
@@ -509,10 +509,10 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/standard_terminology_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Terminology artifact schema
@@ -522,8 +522,8 @@ data&lt;-query_con$data
       </li>
       <li>
         <a
-          class="underline-effect"
           :href="schemaDocumenterUrl('/model/policy_schema.json')"
+          class="underline-effect"
           target="_blank"
         >
           Policy schema
@@ -531,8 +531,8 @@ data&lt;-query_con$data
         <ul>
           <li>
             <a
-              class="underline-effect"
               :href="schemaDocumenterUrl('/model/policy_funder_schema.json')"
+              class="underline-effect"
               target="_blank"
             >
               Funder schema
@@ -540,8 +540,8 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="schemaDocumenterUrl('/model/policy_journal_schema.json')"
+              class="underline-effect"
               target="_blank"
             >
               Journal schema
@@ -549,8 +549,8 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="schemaDocumenterUrl('/model/policy_publisher_schema.json')"
+              class="underline-effect"
               target="_blank"
             >
               Publisher schema
@@ -560,8 +560,8 @@ data&lt;-query_con$data
       </li>
       <li>
         <a
-          class="underline-effect"
           :href="schemaDocumenterUrl('/model/collection_schema.json')"
+          class="underline-effect"
           target="_blank"
         >
           Collection schema
@@ -569,8 +569,8 @@ data&lt;-query_con$data
       </li>
       <li>
         <a
-          class="underline-effect"
           :href="schemaDocumenterUrl('/model/fairassist_schema.json')"
+          class="underline-effect"
           target="_blank"
         >
           FAIRassist schema
@@ -578,10 +578,10 @@ data&lt;-query_con$data
         <ul>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/fairassist_benchmark_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Benchmark schema
@@ -589,10 +589,10 @@ data&lt;-query_con$data
           </li>
           <li>
             <a
-              class="underline-effect"
               :href="
                 schemaDocumenterUrl('/model/fairassist_metric_schema.json')
               "
+              class="underline-effect"
               target="_blank"
             >
               Metric schema
@@ -641,7 +641,7 @@ data&lt;-query_con$data
       the following data would remove subject 3 from the record created in the
       previous step (by sending only 1 and 2).
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
     "fairsharing_record":
@@ -650,7 +650,7 @@ data&lt;-query_con$data
     }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -662,7 +662,7 @@ data&lt;-query_con$data
       following URLs:
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 
 /search/domains
@@ -673,7 +673,7 @@ data&lt;-query_con$data
 /search/publications
 /search/record_types
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
@@ -742,14 +742,14 @@ data&lt;-query_con$data
       Example:
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
         curl --location --request POST '{{ adhdChinaDatabaseSearchUrl }}'
         --header 'Accept: application/json'
         --header 'Content-Type: application/json'
         --header 'Authorization: Bearer your_jwt_goes_here'
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <h3 class="text-h6 text-xl-h5 mt-4 mb-2">Complex parameters</h3>
     <p
@@ -775,7 +775,7 @@ data&lt;-query_con$data
     >
       The IDs for these may be found as above:
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 
 /search/licences
@@ -783,7 +783,7 @@ data&lt;-query_con$data
 /search/grants
 /search/fairsharing_records
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
     <h3 class="text-h6 text-xl-h5 mt-4 mb-2">Licences:</h3>
     <p
       :class="[
@@ -793,7 +793,7 @@ data&lt;-query_con$data
     >
       POST the following to <mark>/licence_links</mark>
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
   "licence_link":
@@ -804,7 +804,7 @@ data&lt;-query_con$data
   }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -864,7 +864,7 @@ data&lt;-query_con$data
       record, if the organisation funds the resource to which the record refers.
       So, creation is as follows:
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
   "organisation_link":
@@ -875,7 +875,7 @@ data&lt;-query_con$data
    }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
@@ -907,7 +907,7 @@ data&lt;-query_con$data
     >
       <mark>POST /grants</mark> with these data:
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
   "grant": {
@@ -923,7 +923,7 @@ data&lt;-query_con$data
       }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
@@ -940,7 +940,7 @@ data&lt;-query_con$data
     >
       <mark>POST /organisations</mark>
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
   "organisation": {
@@ -960,7 +960,7 @@ data&lt;-query_con$data
   }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <p
       :class="[
@@ -998,7 +998,7 @@ data&lt;-query_con$data
       record, the record to which it links and what the relationship between
       them is. These can be created as follows:
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
   "record_association": {
@@ -1008,7 +1008,7 @@ data&lt;-query_con$data
   }
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
@@ -1048,7 +1048,7 @@ data&lt;-query_con$data
       As an alternative, you can use
       <mark>PUT /fairsharing_records/1</mark> with the following data structure:
     </p>
-    <vue-code-highlight class="code-container mt-2 mb-4" language="ruby">
+    <CodeBlock class="code-container mt-2 mb-4" language="ruby">
       <pre>
 {
   "record_association_attributes": [
@@ -1063,7 +1063,7 @@ data&lt;-query_con$data
   ]
 }
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
     <p
       :class="[
         'mb-4 lato-font-medium lato-text-sm',
@@ -1116,11 +1116,11 @@ data&lt;-query_con$data
       data will be provided. For example:
     </p>
 
-    <vue-code-highlight class="code-container mt-2 mb-4" language="bash">
+    <CodeBlock class="code-container mt-2 mb-4" language="bash">
       <pre>
          curl -i -H "Accept: application/ld+json" "https://fairsharing.org/FAIRsharing.vr52p3"
       </pre>
-    </vue-code-highlight>
+    </CodeBlock>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Contact</h2>
     <p
@@ -1140,66 +1140,16 @@ data&lt;-query_con$data
 import { h } from "vue";
 
 import getHostname from "@/utils/generalUtils";
+import CodeBlock from "@/components/Static/APIDoc/CodeBlock.vue";
 
-const VueCodeHighlight = {
-  name: "VueCodeHighlight",
+export default {
+  name: "APIDoc",
+  components: { CodeBlock },
+  mixins: [getHostname],
   props: {
     language: {
       type: String,
       default: "javascript",
-    },
-  },
-  mounted() {
-    this.applyLanguageClass();
-  },
-  updated() {
-    this.applyLanguageClass();
-  },
-  methods: {
-    applyLanguageClass() {
-      const codeBlock = this.$refs.codeBlock;
-      if (!codeBlock) return;
-
-      const languageClass = `language-${this.language}`;
-      codeBlock.querySelectorAll("pre, pre > code").forEach((element) => {
-        element.className = element.className
-          .split(/\s+/)
-          .filter(
-            (className) => className && !className.startsWith("language-"),
-          )
-          .concat(languageClass)
-          .join(" ");
-      });
-    },
-  },
-  render() {
-    return h("div", { ref: "codeBlock" }, this.$slots.default?.());
-  },
-};
-
-export default {
-  name: "APIDoc",
-  components: { VueCodeHighlight },
-  mixins: [getHostname],
-  computed: {
-    apiEndpoint() {
-      return import.meta.env.VITE_API_ENDPOINT;
-    },
-    adhdChinaDatabaseSearchUrl() {
-      return this.apiUrl(
-        "/search/fairsharing_records?q=ADHD&fairsharing_registry=database&countries=china",
-      );
-    },
-    chinaDatabaseSearchUrl() {
-      return this.apiUrl(
-        "/search/fairsharing_records?fairsharing_registry=database&countries=china&page[number]=1&page[size]=3600",
-      );
-    },
-    loginUrl() {
-      return this.apiUrl("/users/sign_in");
-    },
-    recordExampleUrl() {
-      return this.apiUrl("/fairsharing_records/1");
     },
   },
   data: () => {
@@ -1368,6 +1318,33 @@ export default {
       },
     };
   },
+  computed: {
+    apiEndpoint() {
+      return import.meta.env.VITE_API_ENDPOINT;
+    },
+    adhdChinaDatabaseSearchUrl() {
+      return this.apiUrl(
+        "/search/fairsharing_records?q=ADHD&fairsharing_registry=database&countries=china",
+      );
+    },
+    chinaDatabaseSearchUrl() {
+      return this.apiUrl(
+        "/search/fairsharing_records?fairsharing_registry=database&countries=china&page[number]=1&page[size]=3600",
+      );
+    },
+    loginUrl() {
+      return this.apiUrl("/users/sign_in");
+    },
+    recordExampleUrl() {
+      return this.apiUrl("/fairsharing_records/1");
+    },
+  },
+  mounted() {
+    this.applyLanguageClass();
+  },
+  updated() {
+    this.applyLanguageClass();
+  },
   methods: {
     apiUrl(path) {
       const endpoint = String(this.apiEndpoint || "").replace(/\/$/, "");
@@ -1377,6 +1354,24 @@ export default {
     schemaDocumenterUrl(path) {
       return `https://fairsharing.github.io/JSONschema-documenter/?schema_url=${this.apiUrl(path)}`;
     },
+    applyLanguageClass() {
+      const codeBlock = this.$refs.codeBlock;
+      if (!codeBlock) return;
+
+      const languageClass = `language-${this.language}`;
+      codeBlock.querySelectorAll("pre, pre > code").forEach((element) => {
+        element.className = element.className
+          .split(/\s+/)
+          .filter(
+            (className) => className && !className.startsWith("language-"),
+          )
+          .concat(languageClass)
+          .join(" ");
+      });
+    },
+  },
+  render() {
+    return h("div", { ref: "codeBlock" }, this.$slots.default?.());
   },
 };
 </script>

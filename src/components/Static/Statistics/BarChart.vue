@@ -1,43 +1,21 @@
 <template>
   <div>
-    <highcharts :ref="nameChart" :options="optionChartBars" />
+    <component
+      :is="chartComponent"
+      v-if="modulesReady"
+      :ref="nameChart"
+      :options="optionChartBars"
+    />
   </div>
 </template>
 
 <script>
-import Highcharts from "highcharts";
-import { Chart } from "highcharts-vue";
-import Exporting from "highcharts/modules/exporting";
-
-const colourPalete = [
-  "#aec7e8",
-  "#ffbb78",
-  "#98df8a",
-  "#ff9896",
-  "#c5b0d5",
-  "#c49c94",
-  "#f7b6d2",
-  "#c7c7c7",
-  "#dbdb8d",
-  "#9edae5",
-];
-Highcharts.setOptions({
-  lang: {
-    thousandsSep: ",",
-  },
-  colors: colourPalete,
-});
-if (typeof Exporting === "function") {
-  Exporting(Highcharts);
-} else if (typeof Exporting.default === "function") {
-  Exporting.default(Highcharts);
-}
+// import markRaw to tell Vue 3 not to make the component itself reactive,
+// which improves performance and avoids Vue warnings.
+import { markRaw } from "vue";
 
 export default {
   name: "BarChart",
-  components: {
-    highcharts: Chart,
-  },
   props: {
     refName: {
       type: String,
@@ -54,6 +32,8 @@ export default {
   },
   data() {
     return {
+      modulesReady: false,
+      chartComponent: null, // This will hold the Highcharts component
       nameChart: "",
       optionChartBars: {
         chart: {
@@ -102,32 +82,74 @@ export default {
         },
         series: [],
         exporting: {
-          enabled: true, // explicit enable
+          enabled: true,
           sourceWidth: 1500,
           sourceHeight: 1600,
           scale: 1,
           filename: "FAIRsharing BarChart",
           buttons: {
-            contextButton: {
-              // You can customize the menu symbol or position here if needed
-              // symbol: 'menu',
-              // align: 'right',
-            },
+            contextButton: {},
           },
         },
       },
     };
   },
-  mounted: function () {
+  created() {
+    // Map props synchronously so they are available immediately on creation
     this.optionChartBars.title.text = this.fieldsChart.title;
     this.optionChartBars.xAxis.title.text = this.fieldsChart.textXAxis;
     this.optionChartBars.yAxis.title.text = this.fieldsChart.textYAxis;
     this.optionChartBars.series = this.fieldsChart.series;
+
     this.nameChart = this.refName;
+
     if (!this.showPercent) {
       this.optionChartBars.tooltip.pointFormat =
         '<tr><td style="padding:0">Records: </td>' +
         '<td style="padding:0"><b>{point.y}</b></td></tr>';
+    }
+  },
+  mounted: async function () {
+    if (!import.meta.env.SSR) {
+      // Import the Vue wrapper component alongside Highcharts
+      const { Chart } = await import("highcharts-vue");
+      const { default: Highcharts } = await import("highcharts");
+      const { default: Exporting } = await import(
+        "highcharts/modules/exporting"
+      );
+
+      const colourPalete = [
+        "#aec7e8",
+        "#ffbb78",
+        "#98df8a",
+        "#ff9896",
+        "#c5b0d5",
+        "#c49c94",
+        "#f7b6d2",
+        "#c7c7c7",
+        "#dbdb8d",
+        "#9edae5",
+      ];
+
+      Highcharts.setOptions({
+        lang: {
+          thousandsSep: ",",
+        },
+        colors: colourPalete,
+      });
+
+      if (typeof Exporting === "function") {
+        Exporting(Highcharts);
+      }
+      else if (Exporting && typeof Exporting.default === "function") {
+        Exporting.default(Highcharts);
+      }
+
+      // Assign the dynamically imported component and mark it as raw
+      this.chartComponent = markRaw(Chart);
+
+      //Render the chart
+      this.modulesReady = true;
     }
   },
 };

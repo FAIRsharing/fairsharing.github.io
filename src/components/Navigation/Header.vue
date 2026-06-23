@@ -1,133 +1,111 @@
 <template>
-  <v-app-bar
-    id="mainHeader"
-    :class="[
-      { largeScreen: $vuetify.display.xl },
-      { smallScreen: $vuetify.display.mdAndDown },
-    ]"
-    class="header-container"
-    height="150px"
-  >
+  <v-app-bar id="mainHeader" class="header-container">
     <v-app-bar-nav-icon
-      v-if="$vuetify.display.mdAndDown"
+      class="d-block d-lg-none"
       @click.stop="toggleDrawerLeft"
     />
-    <!-- First Level Menu -->
-    <div
-      :class="{ 'full-width': $vuetify.display.mdAndDown }"
-      class="navFirst d-flex"
-    >
-      <router-link to="/">
+
+    <div class="navFirst d-flex">
+      <router-link
+        :active-class="isMounted ? 'router-link-active' : ''"
+        :exact-active-class="isMounted ? 'router-link-exact-active' : ''"
+        to="/"
+      >
         <img alt="FAIRsharing logo" src="/assets/fairsharing-logo.svg" />
       </router-link>
       <div class="d-flex justify-start align-center custom-width">
         <string-search
-          v-if="$vuetify.display.sm || $vuetify.display.mdAndUp"
-          :class="$vuetify.display.lgAndDown ? 'flex-grow-1' : 'full-width'"
+          class="d-none d-sm-block header-search-width"
           placeholder="Search through all content"
         />
-        <nav>
-          <ul
-            v-if="$vuetify.display.lgAndUp"
-            class="d-flex flex-row align-center flex-wrap px-0"
-          >
-            <!-- LOGIN -->
-            <v-menu
-              v-if="!user().isLoggedIn"
-              :close-on-content-click="closeMenuStatus"
-              class="mt-5"
-              max-height="90vh"
-              transition="slide-y-transition"
-            >
-              <template #activator="{ props }">
-                <v-btn
-                  :size="
-                    $vuetify.display.xl
-                      ? 'x-large'
-                      : $vuetify.display.mdAndDown
-                        ? 'small'
-                        : undefined
-                  "
-                  class="mr-1 mt-sm-1 bg-accent3"
-                  elevation="3"
-                  v-bind="props"
-                  @click="closePopup(false)"
-                >
-                  Login
-                  <v-icon class="ml-1" size="small"> fas fa-sign-in-alt</v-icon>
-                </v-btn>
-              </template>
-              <Login
-                :pop-up="true"
-                :redirect="false"
-                @close-popup="closePopup"
-              />
-            </v-menu>
-            <div v-else class="d-flex align-center">
-              <v-btn
-                :size="
-                  $vuetify.display.xl
-                    ? 'x-large'
-                    : $vuetify.display.mdAndDown
-                      ? 'small'
-                      : undefined
-                "
-                class="mr-1 mt-sm-1 bg-green"
-                elevation="2"
-                to="/accounts/profile"
+        <nav class="d-none d-lg-flex">
+          <ul class="d-flex flex-row align-center flex-wrap px-0">
+            <template v-if="isMounted">
+              <v-menu
+                v-if="!user().isLoggedIn"
+                :close-on-content-click="closeMenuStatus"
+                class="mt-5"
+                max-height="90vh"
+                transition="slide-y-transition"
               >
-                <v-icon class="mr-1" color="white"> fas fa-user-circle</v-icon>
-
-                <span class="text-white ellipse-150">{{
-                  user().credentials.username
-                }}</span>
-              </v-btn>
-              <v-btn
-                class="bg-red mt-1"
-                height="30"
-                size="x-small"
-                variant="elevated"
-                width="30"
-              >
-                <v-icon
-                  color="white"
-                  icon="fas fa-power-off"
-                  size="20"
-                  @click="logoutUser()"
+                <template #activator="{ props }">
+                  <v-btn
+                    :size="xl ? 'x-large' : undefined"
+                    class="responsive-btn mr-1 mt-sm-1 bg-accent3"
+                    elevation="3"
+                    v-bind="props"
+                    @click="closePopup(false)"
+                  >
+                    Login
+                    <v-icon class="ml-1" size="small">
+                      fas fa-sign-in-alt</v-icon
+                    >
+                  </v-btn>
+                </template>
+                <Login
+                  :pop-up="true"
+                  :redirect="false"
+                  @close-popup="closePopup"
                 />
+              </v-menu>
+              <div v-else class="d-flex align-center">
+                <v-btn
+                  :size="xl ? 'x-large' : undefined"
+                  class="responsive-btn mr-1 mt-sm-1 bg-green"
+                  elevation="2"
+                  to="/accounts/profile"
+                >
+                  <v-icon class="mr-1" color="white">
+                    fas fa-user-circle</v-icon
+                  >
+                  <span class="text-white ellipse-150">{{
+                    user().credentials.username
+                  }}</span>
+                </v-btn>
+                <v-btn
+                  class="bg-red mt-1"
+                  height="30"
+                  size="x-small"
+                  variant="elevated"
+                  width="30"
+                >
+                  <v-icon
+                    color="white"
+                    icon="fas fa-power-off"
+                    size="20"
+                    @click="logoutUser()"
+                  />
+                </v-btn>
+              </div>
+            </template>
+
+            <template v-else>
+              <v-btn class="responsive-btn mr-1 mt-sm-1" disabled elevation="3">
+                Login
+                <v-icon class="ml-1" size="small"> fas fa-sign-in-alt</v-icon>
               </v-btn>
-            </div>
+            </template>
           </ul>
         </nav>
       </div>
     </div>
-    <!-- Second Level Menu -->
+
     <div
-      v-if="$vuetify.display.lgAndUp"
-      class="navSecond d-flex justify-space-around align-center full-width"
+      v-if="isMounted"
+      class="navSecond d-none d-lg-flex justify-space-around align-center full-width"
     >
       <nav class="full-width">
-        <ul
-          v-if="$vuetify.display.lgAndUp"
-          class="d-flex flex-row align-center px-0 justify-space-around"
-        >
+        <ul class="d-flex flex-row align-center px-0 justify-space-around">
           <li
             v-for="(item, itemIndex) in links"
             :key="'navBarTopMenuItem_' + itemIndex"
           >
             <v-btn
-              :class="{ 'px-2': $vuetify.display.lgAndDown }"
               :color="item.color"
-              :size="
-                $vuetify.display.xl
-                  ? 'x-large'
-                  : $vuetify.display.mdAndDown
-                    ? 'small'
-                    : undefined
-              "
+              :size="xl ? 'x-large' : undefined"
               :to="item.link"
               :variant="!item.active ? 'outlined' : 'elevated'"
-              class="mr-1 mt-sm-1 menuLinks"
+              class="mr-1 mt-sm-1 menuLinks responsive-btn"
               max-width="184px"
               min-width="167px"
               width="100%"
@@ -149,8 +127,9 @@
 </template>
 
 <script>
-import { isEmpty } from "lodash";
-import { mapActions, mapState } from "vuex";
+import {isEmpty} from "lodash-es";
+import {mapActions, mapState} from "vuex";
+import {useDisplay} from "vuetify";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import Login from "@/views/Users/Login/Login";
@@ -158,8 +137,13 @@ import Login from "@/views/Users/Login/Login";
 export default {
   name: "HeaderComp",
   components: { StringSearch, Login },
+  setup() {
+    const { xl } = useDisplay();
+    return { xl };
+  },
   data: function () {
     return {
+      isMounted: false,
       closeMenuStatus: false,
       drawerLeft: false,
       links: [
@@ -227,21 +211,21 @@ export default {
     ...mapState("users", ["user"]),
     currentParameter() {
       let currentQuery = this.$route.query;
-      if (!isEmpty(currentQuery)) {
-        return currentQuery;
-      } else {
-        return { fairsharingRegistry: this.$route.name };
-      }
+      return !isEmpty(currentQuery)
+        ? currentQuery
+        : { fairsharingRegistry: this.$route.name };
     },
   },
   watch: {
     currentParameter: {
       handler(newVal) {
-        const _module = this;
-        _module.setCurrentActiveButton(newVal.fairsharingRegistry);
+        this.setCurrentActiveButton(newVal.fairsharingRegistry);
       },
       deep: true,
     },
+  },
+  mounted() {
+    this.isMounted = true;
   },
   methods: {
     ...mapActions("users", ["logout"]),
@@ -260,7 +244,6 @@ export default {
         link.name === newValue ? (link.active = true) : (link.active = false);
       });
     },
-
     async logoutUser() {
       await this.logout();
       await this.$router.push({ name: "Login" });
@@ -281,34 +264,68 @@ header {
 .header-container {
   border-bottom: 3px dashed #253442;
   position: relative !important;
-  height: 150px;
-  max-height: 150px;
   background-color: #f5f5f5 !important;
+  height: 150px !important;
+  max-height: 150px !important;
+
+  :deep(.v-toolbar__content) {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 4px 16px;
+    height: 150px !important;
+  }
+
+  @media (max-width: 1279px) {
+    height: 100px !important;
+    max-height: 100px !important;
+
+    :deep(.v-toolbar__content) {
+      height: 100px !important;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  @media (min-width: 1920px) {
+    height: 170px !important;
+    max-height: 170px !important;
+
+    :deep(.v-toolbar__content) {
+      height: 170px !important;
+    }
+
+    :deep(.menuLinks) {
+      min-width: 260px !important;
+    }
+  }
 }
 
-.header-container:deep(.v-toolbar__content) {
-  flex-direction: column;
-  align-items: stretch;
-  padding: 4px 16px;
+.responsive-btn {
+  @media (max-width: 1279px) {
+    height: 32px !important;
+    font-size: 0.75rem !important;
+  }
 }
 
-.smallScreen {
-  height: 100px !important;
-  max-height: 100px !important;
+.navFirst {
+  @media (max-width: 1279px) {
+    width: 100% !important;
+  }
 }
 
-.smallScreen:deep(.v-toolbar__content) {
-  height: 100px !important;
-  flex-direction: row;
-  align-items: center;
+.menuLinks {
+  @media (max-width: 1279px) {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
 }
 
-.largeScreen {
-  height: 170px !important;
-  max-height: 170px !important;
-}
+.header-search-width {
+  flex-grow: 1 !important;
 
-.largeScreen:deep(.menuLinks) {
-  min-width: 260px !important;
+  @media (min-width: 1920px) {
+    flex-grow: 0 !important;
+    width: 100% !important;
+  }
 }
 </style>

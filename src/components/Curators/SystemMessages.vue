@@ -173,7 +173,7 @@ import { mapState } from "vuex";
 import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getMessages from "@/lib/GraphClient/queries/getMessages.json";
-import store from "@/store";
+// import store from "@/store";
 import formatDate from "@/utils/generalUtils";
 
 const restClient = new RestClient();
@@ -261,7 +261,7 @@ export default {
             m.message = message;
           }
         });
-        await store.dispatch("messages/setMessages");
+        await this.$store.dispatch("messages/setMessages");
       }
     },
 

@@ -27,13 +27,12 @@ behavior with a robust **Static Site Generation (SSG)** and pre-rendered framewo
 The transition from a pure client-side model to Static Site Generation (SSG) fundamentally changes how data and HTML
 interact:
 
-| Feature                    | Before Vike (SPA)                                  | After Vike (SSG / Pre-rendered)                          |
-|:---------------------------|:---------------------------------------------------|:---------------------------------------------------------|
-| **Initial HTML Delivery**  | Blank canvas (`<div id="app"></div>`)              | Fully populated HTML content with metadata               |
-| **SEO Indexability**       | Low/Delayed (Reliant on crawler JS execution)      | **Excellent** (Instantaneous indexing of text and links) |
-| **Data Fetching**          | Occurs in the user's browser on every page load    | Cached locally and compiled into HTML at build time      |
-| **Server/API Load**        | High volume of concurrent runtime API hits         | Zero runtime API dependency for core static pages        |
-| **Performance (TTFB/FCP)** | Slower initial render while downloading JS bundles | Near-instantaneous First Contentful Paint (FCP)          |
+| Feature                   | Before Vike (SPA)                               | After Vike (SSG / Pre-rendered)                          |
+|:--------------------------|:------------------------------------------------|:---------------------------------------------------------|
+| **Initial HTML Delivery** | Blank canvas (`<div id="app"></div>`)           | Fully populated HTML content with metadata               |
+| **SEO Indexability**      | Low/Delayed (Reliant on crawler JS execution)   | **Excellent** (Instantaneous indexing of text and links) |
+| **Data Fetching**         | Occurs in the user's browser on every page load | Cached locally and compiled into HTML at build time      |
+| **Server/API Load**       | High volume of concurrent runtime API hits      | Zero runtime API dependency                              |
 
 ---
 
@@ -54,22 +53,24 @@ Prerendering over 8,000 dense data pages in a single execution thread causes Nod
 errors. To bypass this limit, an orchestrating Bash script splits the build into micro-batches:
 
 * The system calculates the highest available record ID dynamically.
-* The build is segmented into chunks of **250 pages** at a time.
+* The build is segmented into chunks of **750 pages** at a time.
 * Vite compiles a chunk, exports the built assets to an isolated folder, wipes the memory clean, and moves to the next
   batch.
 * Once all chunks are safely built, they are merged back into a unified `dist/client` directory.
 
 ### 3.3. Performance Optimization: File-Based API Caching
 
-Running a multi-batch loop means the build engine runs over 30 separate iterations. If each iteration made a fresh
-network request to pull thousands of records, it would slow down the build and risk triggering API rate limits or
-firewalls.
+The application maximizes build speed and efficiency by reducing network dependencies to **exactly one API call**.
+Before
+the sharded build loop even begins, the orchestrating Bash script executes an isolated query using the project's
+existing getAllFairsharingRecords.json and getAllOrganisationsSEO.json layouts. The entire data payload is written
+directly into a temporary, generated Prerender folder. Every subsequent Vike batch then reads these local files from
+disk in under a millisecond, ensuring blistering fast compilation times.
 
-> **The Caching Solution:**
-> The orchestrating Bash script executes a single, isolated query using the project's existing
-`getAllFairsharingRecords.json` layout *before* the build loop starts. The entire payload is written to a temporary
-> local file: `.prerender-records-cache.json`. Every subsequent Vike batch reads this local file from disk in under a
-> millisecond, reducing network dependencies to **exactly one API call**.
+> **The Problem This Solves:**
+> Because the build engine runs over 30 separate iterations, making a fresh network request to pull thousands of dense
+> records on every single loop would drastically stall the pipeline. This proactive caching strategy safely immunizes the
+> build process against API rate limits, server firewalls, and network latency spikes..
 
 ---
 
@@ -103,17 +104,16 @@ firewalls.
 The core routing control panel lives entirely inside the `src/pages/` directory. Vike relies on a specific file-naming
 convention where directory structures define application routing paths.
 
-| Control File Name                    | Functional Scope & Architectural Responsibility                                                                             |
-|:-------------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
-| **`+Page.vue`**                      | The foundational single-file Vue UI component. Dictates what the end user sees.                                             |
-| **`+data.js`**                       | Orchestrates build-time or navigation-time data fetching for the corresponding page tree.                                   |
-| **`+title.js`**                      | Evaluates route arguments to return precise HTML `<title>` strings for browser frames and indexing bots.                    |
-| **`+description.js`**                | Outputs structural meta descriptions mapped directly to individual pages.                                                   |
-| **`+onBeforePrerenderStart.js`**     | Programmatically calculates and registers the full array of URLs that Vike must compile into hard HTML files at build time. |
-| **`+onCreateApp.js`**                | Initializes the browser application environment (e.g., loading pinia stores, global mixins, or UI plugins).                 |
-| **`+guard.js` / `+guard.server.js`** | Enforces immediate server-side validation checks, access credentials, and direct route redirection paths.                   |
-| **`+layout.vue`**                    | Provides unified visual wrappers (e.g., standard site headers, system menus, and footer blocks).                            |
-| **`+config.js`**                     | Sets page-level Vike configurations, including custom prerendering behaviors.                                               |
+| Control File Name                | Functional Scope & Architectural Responsibility                                                                             |
+|:---------------------------------|:----------------------------------------------------------------------------------------------------------------------------|
+| **`+Page.vue`**                  | The foundational single-file Vue UI component. Dictates what the end user sees.                                             |
+| **`+data.js`**                   | Orchestrates build-time or navigation-time data fetching for the corresponding page tree.                                   |
+| **`+title.js`**                  | Evaluates route arguments to return precise HTML `<title>` strings for browser frames and indexing bots.                    |
+| **`+description.js`**            | Outputs structural meta descriptions mapped directly to individual pages.                                                   |
+| **`+onBeforePrerenderStart.js`** | Programmatically calculates and registers the full array of URLs that Vike must compile into hard HTML files at build time. |
+| **`+onCreateApp.js`**            | Initializes the browser application environment (e.g., loading pinia stores, global mixins, or UI plugins).                 |
+| **`+layout.vue`**                | Provides unified visual wrappers (e.g., standard site headers, system menus, and footer blocks).                            |
+| **`+config.js`**                 | Sets page-level Vike configurations, including custom prerendering behaviors.                                               |
 
 ---
 

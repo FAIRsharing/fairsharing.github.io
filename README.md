@@ -47,7 +47,7 @@ The site uses Vike prerendering with a batched build process so large route sets
 
 `VITE_FULL_PRERENDER` controls the build behavior.
 
-#### Full build
+#### Run the Full build
 
 Fetches API data, generates the prerender JSON files, and runs the full batched prerender:
 
@@ -71,7 +71,7 @@ The build script:
 
 #### Environment variables
 
-* FULL_PRERENDER controls whether the full batch prerender runs.
+* VITE_FULL_PRERENDER controls whether the full batch prerender runs.
 * BATCH_SIZE controls how many record pages are processed per batch.
 * BUILD_CONTEXT is written during the build so Vike can read the current batch information.
 

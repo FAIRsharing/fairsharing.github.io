@@ -61,7 +61,7 @@ import fs from "node:fs";
 import path from "node:path";
 import GraphClientSEO from "./src/lib/GraphClient/GraphClientSEO.js";
 import getAllFairsharingRecordsQuery from "./src/lib/GraphClient/queries/getAllFairsharingRecords.json" with { type: "json" };
-import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisations.json" with { type: "json" };
+import getAllOrganisationsQuery from "./src/lib/GraphClient/queries/getAllOrganisationsSEO.json" with { type: "json" };
 
 const recordsOutFile = path.resolve("src/lib/Prerender/fairsharingRecords.generated.json");
 const organisationsOutFile = path.resolve("src/lib/Prerender/organisations.generated.json");

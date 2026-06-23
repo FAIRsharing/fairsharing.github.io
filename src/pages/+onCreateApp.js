@@ -64,10 +64,10 @@ export default async (pageContext) => {
       .use(HighchartsVue)
       .use(VueScrollTo)
       .use(VueGtag, {
-        config: { id: process.env.VUE_APP_ANALYTICS_ID },
+        config: { id: import.meta.env.VITE_ANALYTICS_ID },
       })
       .use(SimpleAnalytics, {
-        skip: process.env.VITE_NODE_ENV !== "local",
+        skip: !import.meta.env.PROD,
       });
   }
 

@@ -12,7 +12,7 @@
 <script>
 import { mapState } from "vuex";
 
-import saveSearch from "@/store";
+// import saveSearch from "@/store";
 
 export default {
   name: "SaveSearchButton",
@@ -26,7 +26,7 @@ export default {
      * Save the advancedSearch Results
      */
     async saveSearchResults() {
-      saveSearch.commit("saveSearch/setSaveSearchStepperDialog", true);
+      this.$store.commit("saveSearch/setSaveSearchStepperDialog", true);
     },
     /**
      * Goto To login page if user is not loggedIn

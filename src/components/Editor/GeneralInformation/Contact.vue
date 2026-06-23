@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import { mapGetters } from "vuex";
 
 import { isEmail, isOrcid, isRequired } from "@/utils/rules.js";
@@ -191,7 +191,8 @@ export default {
       if (this.formValid && !this.submitted) {
         if (this.menu.index || this.menu.index === 0) {
           this.contacts[this.menu.index] = this.menu.content;
-        } else {
+        }
+        else {
           this.contacts[this.contacts.length] = this.menu.content;
         }
         this.menu.show = false;

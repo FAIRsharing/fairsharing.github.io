@@ -12,8 +12,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import organisationSearch from "@/store";
-
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {
@@ -65,7 +63,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            organisationSearch.commit(
+            this.$store.commit(
               "organisationSearch/setSearchOrganisations",
               this.value,
             );

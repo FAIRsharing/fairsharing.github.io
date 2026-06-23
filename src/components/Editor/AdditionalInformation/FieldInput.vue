@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import { mapGetters, mapMutations } from "vuex";
 
 import { isUrl } from "@/utils/rules.js";
@@ -145,7 +145,8 @@ export default {
       if (!this.fields[this.fieldName]) {
         if (!this.subfieldName) {
           this.fields[this.fieldName] = null;
-        } else {
+        }
+        else {
           this.fields[this.fieldName] = {};
         }
       }

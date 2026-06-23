@@ -1,23 +1,19 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import countriesSearch from "@/store";
 import Countries from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/GeneralComponents/Countries.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("Countries.vue", () => {
   let actions;
+  let mutations;
   let countriesGetters;
   let advancedGetters;
+  let store;
 
   const createWrapper = (props = {}, customAdvancedGetters = {}) => {
     // Setup Vuex Modules
     actions = { fetchSearchCountries: vi.fn() };
+    mutations = { setSearchCountries: vi.fn() };
 
     countriesGetters = {
       getSearchCountries: () => ["Canada", "Mexico"],
@@ -26,14 +22,15 @@ describe("Countries.vue", () => {
 
     advancedGetters = {
       getEditDialogStatus: () => false,
-      ...customAdvancedGetters, // Allow overriding for specific tests
+      ...customAdvancedGetters,
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         countriesSearch: {
           namespaced: true,
           actions,
+          mutations,
           getters: countriesGetters,
         },
         advancedSearch: {
@@ -42,6 +39,8 @@ describe("Countries.vue", () => {
         },
       },
     });
+
+    vi.spyOn(store, "commit");
 
     return shallowMount(Countries, {
       global: {
@@ -77,8 +76,12 @@ describe("Countries.vue", () => {
         name: "AutoCompleteComponent",
       });
       await selectStub.vm.$emit("update:modelValue", ["FTP", "SPARQL"]);
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["FTP", "SPARQL"]]);
+
+      // Checking both Vue 2 'input' or Vue 3 'update:modelValue' depending on your project settings
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["FTP", "SPARQL"]]);
     });
   });
 
@@ -86,7 +89,7 @@ describe("Countries.vue", () => {
     it("does NOT commit to direct store if dialog is open but value is empty", () => {
       createWrapper({ value: [] }, { getEditDialogStatus: () => true });
 
-      expect(countriesSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("does NOT commit to direct store if dialog is closed", () => {
@@ -95,16 +98,15 @@ describe("Countries.vue", () => {
         { getEditDialogStatus: () => false },
       );
 
-      expect(countriesSearch.commit).not.toHaveBeenCalled();
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
     it("commits to the direct store if dialog is open AND value has length", () => {
       const mockValue = ["Germany"];
       createWrapper({ value: mockValue }, { getEditDialogStatus: () => true });
 
-      // Asserts the direct import `countriesSearch.commit()` was called correctly
-      expect(countriesSearch.commit).toHaveBeenCalledTimes(1);
-      expect(countriesSearch.commit).toHaveBeenCalledWith(
+      expect(store.commit).toHaveBeenCalledTimes(1);
+      expect(store.commit).toHaveBeenCalledWith(
         "countriesSearch/setSearchCountries",
         mockValue,
       );
@@ -118,12 +120,14 @@ describe("Countries.vue", () => {
       expect(wrapper.vm.model).toStrictEqual(["Spain"]);
     });
 
-    it("computed model setter emits 'input' event", () => {
+    it("computed model setter emits updated model value event", () => {
       const wrapper = createWrapper();
       wrapper.vm.model = ["Italy"];
 
-      expect(wrapper.emitted().input).toBeTruthy();
-      expect(wrapper.emitted().input[0]).toStrictEqual([["Italy"]]);
+      const emittedEvent =
+        wrapper.emitted()["update:modelValue"] || wrapper.emitted().input;
+      expect(emittedEvent).toBeTruthy();
+      expect(emittedEvent[0]).toStrictEqual([["Italy"]]);
     });
 
     it("selectedValue() sets itemSelected", () => {

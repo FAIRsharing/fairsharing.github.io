@@ -1,13 +1,13 @@
 <template>
-  <v-row style="height: 50vh" class="d-flex align-center">
+  <v-row class="d-flex align-center">
     <v-col
+      class="mx-auto d-flex justify-center"
       cols="12"
       lg="4"
       md="12"
       sm="12"
-      class="mx-auto d-flex justify-center"
     >
-      <v-img src="/assets/Errors/404.png" class="contain" width="500px" />
+      <v-img class="contain" eager src="/assets/Errors/404.png" width="500px" />
     </v-col>
   </v-row>
 </template>

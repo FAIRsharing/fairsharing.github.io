@@ -1,14 +1,14 @@
 <template>
-  <v-main>
+  <div>
     <!--Jump to top arrow button -->
     <v-fade-transition v-if="getLoadingStatus">
       <JumpToTop v-if="scrollStatus" />
       <!--Loader-->
       <div>
         <v-overlay
+          :absolute="false"
           :model-value="getLoadingStatus"
           class="align-center justify-center"
-          :absolute="false"
           opacity="0.8"
         >
           <Loaders />
@@ -16,7 +16,7 @@
       </div>
     </v-fade-transition>
     <!--Search result -->
-    <v-container fluid class="pa-0">
+    <v-container class="pa-0" fluid>
       <v-row v-if="$vuetify.display.mdAndDown">
         <v-col>
           <AdvancedSearchButtons />
@@ -26,10 +26,10 @@
         <!-- Advanced search selection left column-->
         <v-col
           v-if="$vuetify.display.lgAndUp"
+          class="d-flex mt-2 ml-2"
           cols="12"
           lg="4"
           xl="3"
-          class="d-flex mt-2 ml-2"
         >
           <AdvancedSearchSelection />
         </v-col>
@@ -44,10 +44,10 @@
 
     <!--Save Search Stepper in Dialog Box -->
     <SaveSearchStepper />
-  </v-main>
+  </div>
 </template>
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 
 import JumpToTop from "@/components/Navigation/jumpToTop.vue";
 import Loaders from "@/components/Navigation/Loaders.vue";

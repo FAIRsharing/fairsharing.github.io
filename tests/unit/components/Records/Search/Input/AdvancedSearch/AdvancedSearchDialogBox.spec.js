@@ -14,7 +14,7 @@ const { mockCommit, mockUniqueValues, mockRouterPush, mockFetchSearchResults } =
     };
   });
 
-// 2. Mock direct store imports
+// 2. Mock direct store imports (fallback safety)
 vi.mock("@/store", () => ({
   default: {
     commit: mockCommit,
@@ -23,12 +23,10 @@ vi.mock("@/store", () => ({
 
 // 3. Mock utility functions
 vi.mock("@/utils/advancedSearchUtils", async (importOriginal) => {
-  // 1. Grab all the real exports from the actual file
   const actual = await importOriginal();
-
   return {
-    ...actual, // 2. Spread the real exports (this restores 'recordTypes'!)
-    uniqueValues: mockUniqueValues, // 3. Override just this one with our spy
+    ...actual,
+    uniqueValues: mockUniqueValues,
   };
 });
 
@@ -41,13 +39,12 @@ describe("AdvancedSearchDialogBox.vue", () => {
     routeData = { fullPath: "/", path: "/" },
     props = {},
   ) => {
-    // 🚀 3. Build a REAL Vuex store for the test!
+    //Build a REAL Vuex store for the test!
     const mockStore = createStore({
       modules: {
         advancedSearch: {
           namespaced: true,
           getters: {
-            // Map our dynamic test getters, or fall back to defaults
             getAdvancedSearch: () =>
               getters["advancedSearch/getAdvancedSearch"] ?? {
                 operatorIdentifier: "_and",
@@ -60,8 +57,19 @@ describe("AdvancedSearchDialogBox.vue", () => {
             getAdvancedSearchDialogStatus: () =>
               getters["advancedSearch/getAdvancedSearchDialogStatus"] ?? false,
           },
+          // Add spy routing directly to mutations so this.$store.commit captures calls cleanly
+          mutations: {
+            setAdvancedSearchDialogStatus(state, payload) {
+              mockCommit(
+                "advancedSearch/setAdvancedSearchDialogStatus",
+                payload,
+              );
+            },
+            setEditDialogStatus(state, payload) {
+              mockCommit("advancedSearch/setEditDialogStatus", payload);
+            },
+          },
           actions: {
-            // Inject our spy directly into the real Vuex action slot
             fetchAdvancedSearchResults: mockFetchSearchResults,
           },
         },
@@ -74,10 +82,8 @@ describe("AdvancedSearchDialogBox.vue", () => {
         ...props,
       },
       global: {
-        // 🚀 4. Use `plugins` to install the store naturally, just like in main.js!
         plugins: [mockStore],
         mocks: {
-          // (We removed $store and _modulesNamespaceMap from here completely)
           $route: routeData,
           $router: {
             push: mockRouterPush,
@@ -92,6 +98,15 @@ describe("AdvancedSearchDialogBox.vue", () => {
           QueryBuilderView: true,
           TooltipComponent: true,
           "router-link": true,
+          "v-row": true,
+          "v-dialog": true,
+          "v-card": true,
+          "v-btn": true,
+          "v-icon": true,
+          "v-text-field": true,
+          "v-card-title": true,
+          "v-card-text": true,
+          "v-card-actions": true,
         },
       },
     });
@@ -103,7 +118,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
 
   describe("Lifecycle Hooks (mounted)", () => {
     it("commits to open the dialog if the user navigates directly to /advancedsearch", () => {
-      // Mount with a specific route
       wrapper = createWrapper(
         {},
         { fullPath: "/advancedsearch", path: "/advancedsearch" },
@@ -125,16 +139,14 @@ describe("AdvancedSearchDialogBox.vue", () => {
   describe("Computed Properties", () => {
     it("isContinue disables the Proceed button (returns true) when fields are empty", () => {
       wrapper = createWrapper();
-      // Default mock has no children, so it should be disabled
       expect(wrapper.vm.isContinue).toBe(true);
     });
 
     it("isContinue enables the Proceed button (returns false) when a valid field exists", () => {
-      // Create a fake populated store state
       const populatedStoreData = {
         children: [
           {
-            children: [{ value: "test-value" }], // Simulating a filled out query builder rule
+            children: [{ value: "test-value" }],
           },
         ],
       };
@@ -143,7 +155,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
         "advancedSearch/getAdvancedSearch": populatedStoreData,
       });
 
-      // Should now be enabled (false)
       expect(wrapper.vm.isContinue).toBe(false);
     });
   });
@@ -157,7 +168,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
 
       wrapper.vm.closeDialog();
 
-      // Should close both dialog flags
       expect(mockCommit).toHaveBeenCalledWith(
         "advancedSearch/setEditDialogStatus",
         false,
@@ -167,10 +177,7 @@ describe("AdvancedSearchDialogBox.vue", () => {
         false,
       );
 
-      // Because we mounted it on /advancedsearch, it should route back to home
       expect(mockRouterPush).toHaveBeenCalledWith("/");
-
-      // Local dialog state should be false
       expect(wrapper.vm.dialog).toBe(false);
     });
 
@@ -181,7 +188,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
     });
 
     it("goToAdvancedSearch() dispatches action, emits event, and navigates", () => {
-      // 1. Setup mock query builder data
       const mockQueryBuilderState = {
         operatorIdentifier: "_and",
         children: [
@@ -197,34 +203,21 @@ describe("AdvancedSearchDialogBox.vue", () => {
         "advancedSearch/getAdvancedSearch": mockQueryBuilderState,
       });
 
-      // Override the uniqueValues mock to return the child array exactly as-is for this test
       mockUniqueValues.mockReturnValueOnce([
         { identifier: "domain", value: "Science" },
       ]);
 
-      // 2. Set the local data so it triggers the `if (this.updatedAdvancedSearchText)` block
       wrapper.vm.updatedAdvancedSearchText = "my-search";
-
-      // 3. Fire the method
       wrapper.vm.goToAdvancedSearch();
-
-      // 4. Assertions
-      // Did it fetch results via mapActions?
-      // expect(mockDispatch).toHaveBeenCalledWith(
-      //   "advancedSearch/fetchAdvancedSearchResults",
-      //   "my-search",
-      // );
 
       expect(mockFetchSearchResults).toHaveBeenCalledWith(
         expect.anything(),
         "my-search",
       );
 
-      // Did it emit the clear event?
       expect(wrapper.emitted().clearSearchField).toBeTruthy();
       expect(wrapper.emitted().clearSearchField[0]).toEqual([true]);
 
-      // Did it format the query string correctly and push to router?
       expect(mockRouterPush).toHaveBeenCalledWith({
         name: "AdvancedSearchResult",
         query: {
@@ -234,7 +227,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
         },
       });
 
-      // Did it close the dialog afterwards?
       expect(mockCommit).toHaveBeenCalledWith(
         "advancedSearch/setEditDialogStatus",
         false,
@@ -243,38 +235,32 @@ describe("AdvancedSearchDialogBox.vue", () => {
 
     describe("Query Parameter Formatters", () => {
       it("noAdvancedSearchTerm() constructs the correct object using the store's operator", () => {
-        // 1. Mount the wrapper and inject a specific operator into our fake Vuex getter
         const wrapper = createWrapper({
           "advancedSearch/getAdvancedSearch": {
-            operatorIdentifier: "_OR", // Let's test with _OR to make sure it's reading the store
+            operatorIdentifier: "_OR",
             children: [],
           },
         });
 
         const mockQueryString = "(domain=Science+Nature)";
-
-        // 2. Call the method
         const result = wrapper.vm.noAdvancedSearchTerm(mockQueryString);
 
-        // 3. Assert it returns the exact expected object signature
         expect(result).toStrictEqual({
           operator: "_OR",
           fields: "(domain=Science+Nature)",
         });
       });
 
-      // Bonus: Let's knock out isAdvancedSearchTerm while we are right here!
       it("isAdvancedSearchTerm() constructs the correct object including the search term", () => {
         const wrapper = createWrapper({
           "advancedSearch/getAdvancedSearch": {
             operatorIdentifier: "_AND",
             children: [],
           },
-          "advancedSearch/getAdvancedSearchText": "Genetics", // Inject the search text
+          "advancedSearch/getAdvancedSearchText": "Genetics",
         });
 
         const mockQueryString = "(country=UK)";
-
         const result = wrapper.vm.isAdvancedSearchTerm(mockQueryString);
 
         expect(result).toStrictEqual({
@@ -292,8 +278,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
         "advancedSearch/getAdvancedSearchText": "Watched Text",
       });
 
-      // Trigger the watcher by manually changing the simulated getter and forcing an update
-      // Alternatively, we can just call the watcher function directly since it's a unit test:
       wrapper.vm.$options.watch.getEditDialogStatus.call(wrapper.vm, true);
 
       expect(wrapper.vm.dialog).toBe(true);
@@ -305,7 +289,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
         const wrapper = createWrapper();
         const mockReset = vi.fn();
 
-        // 1. Create a fake "this" context that mimics the component's state
         const fakeContext = {
           dialog: false,
           $refs: {
@@ -313,13 +296,11 @@ describe("AdvancedSearchDialogBox.vue", () => {
           },
         };
 
-        // 2. Call the watcher, but bind it to our fakeContext instead of wrapper.vm!
         wrapper.vm.$options.watch.getAdvancedSearchDialogStatus.call(
           fakeContext,
           true,
         );
 
-        // 3. Run assertions against the fakeContext
         expect(fakeContext.dialog).toBe(true);
         expect(mockReset).toHaveBeenCalledOnce();
       });
@@ -329,7 +310,7 @@ describe("AdvancedSearchDialogBox.vue", () => {
         const mockReset = vi.fn();
 
         const fakeContext = {
-          dialog: true, // Start true so we can watch it change to false
+          dialog: true,
           $refs: {
             inputRef: { reset: mockReset },
           },
@@ -347,7 +328,6 @@ describe("AdvancedSearchDialogBox.vue", () => {
       it("safely updates dialog and does not crash if inputRef is undefined", () => {
         const wrapper = createWrapper();
 
-        // Provide an empty $refs object to simulate the DOM not rendering the text field yet
         const fakeContext = {
           dialog: false,
           $refs: {},

@@ -11,9 +11,6 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
-
-import domainsSearch from "@/store";
-
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {
@@ -60,7 +57,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            domainsSearch.commit("domainsSearch/setSearchDomains", this.value);
+            this.$store.commit("domainsSearch/setSearchDomains", this.value);
           }
         }
       },

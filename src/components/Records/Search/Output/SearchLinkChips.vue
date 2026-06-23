@@ -10,8 +10,8 @@
         v-for="(chip, index) in chips"
         :key="chip.label + '_' + index"
         :color="getChipColor(chip)"
-        variant="flat"
         class="mr-2 my-1"
+        variant="flat"
         @click.prevent="updateSearchQuery(chip)"
       >
         <KeywordTooltip
@@ -29,16 +29,16 @@
       <v-chip
         v-if="remainTagCount !== 0 && remainTagCount !== 1"
         disabled
-        variant="outlined"
         label
+        variant="outlined"
       >
         {{ `+${remainTagCount} more tags` }}
       </v-chip>
       <v-chip
         v-else-if="remainTagCount === 1"
         disabled
-        variant="outlined"
         label
+        variant="outlined"
       >
         {{ `one more tag` }}
       </v-chip>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
@@ -85,7 +85,8 @@ export default {
       });
       if (!currentQuery[chip.type]) {
         currentQuery[chip.type] = encodeURIComponent(chip.label);
-      } else {
+      }
+      else {
         let terms = currentQuery[chip.type].split(",");
         terms.push(encodeURIComponent(chip.label));
         currentQuery[chip.type] = terms

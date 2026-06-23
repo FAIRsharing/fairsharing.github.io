@@ -1,25 +1,25 @@
 <template>
-  <v-main>
-    <v-container class="text-center pa-0" fluid>
-      <Carousel />
-      <InfoBlock class="mb-12" />
-      <SearchBlock />
-      <CategoryBlock class="mt-12" />
-      <CommunityBlock class="mt-12" />
-      <v-lazy>
-        <StatisticsBlock class="my-12" />
-      </v-lazy>
-    </v-container>
-    <!-- This html is from a safe source -->
+  <v-container class="text-center pa-0" fluid>
+    <Carousel v-if="isMounted" />
 
-    <!--    <script-->
-    <!--      type="application/ld+json"-->
-    <!--      v-safe-html="JSONLD"-->
-    <!--    />-->
-    <component :is="'script'" type="application/ld+json">
-      <span v-safe-html="JSONLD" />
-    </component>
-  </v-main>
+    <InfoBlock class="mb-12" />
+    <SearchBlock />
+    <CategoryBlock class="mt-12" />
+    <CommunityBlock class="mt-12" />
+
+    <v-lazy>
+      <StatisticsBlock class="my-12" />
+    </v-lazy>
+
+    <template v-if="isMounted">
+      <component
+        :is="'script'"
+        v-if="Object.keys(JSONLD).length"
+        v-safe-html="JSON.stringify(JSONLD)"
+        type="application/ld+json"
+      />
+    </template>
+  </v-container>
 </template>
 
 <script>
@@ -33,9 +33,7 @@ import RestClient from "@/lib/Client/RESTClient.js";
 
 const restClient = new RestClient();
 
-/** Component to handle the front page (landing page)
- *
- */
+/** Component to handle the front page (landing page) */
 export default {
   name: "Home",
   components: {
@@ -49,17 +47,29 @@ export default {
   data() {
     return {
       JSONLD: {},
+      isMounted: false,
     };
   },
   mounted() {
     this.getJsonld();
+    this.isMounted = true;
   },
   unmounted() {
-    this.$scrollTo("body", 0, {});
+    // Fixed: Native scroll since the global scroll plugin is disabled
+    if (typeof window !== "undefined") {
+      window.scrollTo({
+        top: 0,
+        behavior: "instant",
+      });
+    }
   },
   methods: {
     async getJsonld() {
-      this.JSONLD = await restClient.getHomepageJsonld();
+      const data = await restClient.getHomepageJsonld();
+      // Ensure we assign valid data so the script tag populates correctly
+      if (data) {
+        this.JSONLD = data;
+      }
     },
   },
 };

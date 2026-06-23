@@ -1,6 +1,5 @@
-import { shallowMount } from "@vue/test-utils";
-import { RouterLinkStub } from "@vue/test-utils";
-import { isEqual } from "lodash";
+import { RouterLinkStub, shallowMount } from "@vue/test-utils";
+import { isEqual } from "lodash-es";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 

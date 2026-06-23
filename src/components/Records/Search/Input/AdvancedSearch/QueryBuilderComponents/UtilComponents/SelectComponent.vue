@@ -58,7 +58,7 @@
 
 <script>
 import stringUtils from "@/utils/stringUtils";
-import { capitalize } from "lodash";
+import { capitalize } from "lodash-es";
 
 export default {
   name: "SelectComponent",

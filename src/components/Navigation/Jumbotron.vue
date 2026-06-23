@@ -1,79 +1,64 @@
 <template>
-  <section
-    v-if="getJumbotronData"
-    :style="[
-      'z-index: 2',
-      {
+  <ClientOnly>
+    <section
+      :style="{
+        zIndex: 2,
         backgroundImage:
-          'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%),url(' +
-          '/assets/Home/BlockHero/pattern3.jpg',
+          'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%), url(/assets/Home/BlockHero/pattern3.jpg)',
         backgroundRepeat: 'repeat',
         backgroundBlendMode: 'multiply',
-      },
-    ]"
-    class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
-  >
-    <vue-particles
-      id="particles"
-      :class="{ largeScreen: $vuetify.display.xlOnly }"
-      :options="options"
-      :particles-loaded="particlesLoaded"
-    />
-    <h1
-      class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
-      style="z-index: 2"
+      }"
+      class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock position-relative"
     >
-      {{ getJumbotronData.title }}
-    </h1>
-    <p
-      id="subtitle"
-      v-safe-html="getJumbotronData.subtitle"
-      :class="[
-        'lato-font-medium my-4 text-primary px-1 text-center',
-        {
-          'lato-text-md': $vuetify.display.mdOnly,
-          'lato-text-lg': $vuetify.display.lgAndUp,
-          'lato-text-sm': $vuetify.display.smAndDown,
-        },
-      ]"
-    />
-  </section>
+      <vue-particles
+        id="particles"
+        :class="{ largeScreen: xlOnly }"
+        :options="options"
+        :particles-loaded="particlesLoaded"
+      />
+
+      <h1
+        class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium text-white"
+        style="z-index: 2"
+      >
+        {{ getJumbotronData.title }}
+      </h1>
+
+      <p
+        id="subtitle"
+        v-safe-html="getJumbotronData.subtitle"
+        class="lato-font-medium my-4 text-primary px-1 text-center responsive-subtitle"
+      />
+    </section>
+  </ClientOnly>
 </template>
 
 <script>
-import { loadFull } from "tsparticles";
-
 import jumbotronData from "@/data/jumbotronData.json";
-
-// These consts appear to be called by the tests but aren't shown as covered.
-/* v8 ignore start */
-const particlesInit = async (engine) => {
-  await loadFull(engine);
-};
+import {useDisplay} from "vuetify";
+import {ClientOnly} from "vike-vue/ClientOnly";
 
 // eslint-disable-next-line no-unused-vars
-const particlesLoaded = async (container) => {
-  //console.log("Particles container loaded", container);
-};
-/* v8 ignore stop */
+const particlesLoaded = async (container) => {};
+
 export default {
   name: "Jumbotron",
+  components: {
+    ClientOnly,
+  },
+  setup() {
+    const { xlOnly } = useDisplay();
+    return { xlOnly };
+  },
   data: () => {
     return {
-      particlesInit,
       particlesLoaded,
       options: {
-        background: {
-          color: {
-            value: "transparent",
-          },
-        },
+        background: { color: { value: "transparent" } },
         fullScreen: { enable: false },
         fpsLimit: 60,
         particles: {
-          color: {
-            value: "#1F8EBF",
-          },
+          color: { value: "#1F8EBF" },
           links: {
             color: "#1F8EBF",
             distance: 100,
@@ -81,9 +66,7 @@ export default {
             opacity: 0.5,
             width: 2,
           },
-          collisions: {
-            enable: true,
-          },
+          collisions: { enable: true },
           move: {
             direction: "none",
             enable: true,
@@ -92,23 +75,10 @@ export default {
             speed: 1,
             straight: false,
           },
-          number: {
-            // density: {
-            //   enable: true,
-            //   value_area: 300
-            // },
-            value: 50,
-          },
-          opacity: {
-            value: 0.5,
-          },
-          shape: {
-            type: null,
-          },
-          size: {
-            random: true,
-            value: 5,
-          },
+          number: { value: 50 },
+          opacity: { value: 0.5 },
+          shape: { type: null },
+          size: { random: true, value: 5 },
         },
         detectRetina: true,
       },
@@ -117,27 +87,31 @@ export default {
   },
   computed: {
     getJumbotronData() {
-      if (this.$route.name) {
+      // Step 1: Check if route context is safely fully-loaded on the active frame
+      if (this.$route && this.$route.name) {
         let route = this.$route.name;
+
         if (
           route === "search" &&
+          this.$route.query &&
           Object.keys(this.$route.query).includes("fairsharingRegistry")
         ) {
           route = this.$route.query.fairsharingRegistry;
         }
-        return jumbotronData[route.toLowerCase()] || null;
+
+        // Step 2: Ensure we look up valid keys, fallback to 'home' object instead of null
+        const targetKey = route.toLowerCase();
+        if (this.jumbotronData[targetKey]) {
+          return this.jumbotronData[targetKey];
+        }
       }
-      return null;
+
+      // Absolute fallback state for Server Side execution maps
+      return this.jumbotronData["home"] || { title: "", subtitle: "" };
     },
   },
 };
 </script>
-
-<!--<style scoped>-->
-<!--section {-->
-<!--  height: 250px;-->
-<!--}-->
-<!--</style>-->
 
 <style>
 #particles canvas {
@@ -153,5 +127,17 @@ export default {
 #subtitle a {
   color: white;
   text-decoration: underline;
+}
+
+.responsive-subtitle {
+  @media (max-width: 959px) {
+    font-size: 0.875rem;
+  }
+  @media (min-width: 960px) and (max-width: 1279px) {
+    font-size: 1rem;
+  }
+  @media (min-width: 1280px) {
+    font-size: 1.25rem;
+  }
 }
 </style>

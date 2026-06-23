@@ -7,7 +7,7 @@ coverage
 documentation/*
 .eslintrc.cjs
 .github/*
-babel.config.js
+babel.config.unused
 package.json
 README.md
 vite.config.mjs

@@ -1,8 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
+import { ref } from "vue";
 
 import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearch.vue";
 
+// 1. Setup reactive references we can alter dynamically inside individual tests
+const mockXl = ref(false);
+const mockMdAndDown = ref(false);
+
+// 2. Mock 'useDisplay' from Vuetify directly to control composition API output
+vi.mock("vuetify", async (importOriginal) => {
+  const original = await importOriginal();
+  return {
+    ...original,
+    useDisplay: () => ({
+      xl: mockXl,
+      mdAndDown: mockMdAndDown,
+    }),
+  };
+});
+
+// 3. Mock the Vuex store commit tracking via hoisted architecture
 const { mockCommit } = vi.hoisted(() => {
   return { mockCommit: vi.fn() };
 });
@@ -14,22 +32,21 @@ vi.mock("@/store", () => ({
 
 describe("AdvancedSearch.vue", () => {
   let wrapper;
-  const createWrapper = (props = {}, displayMock = {}) => {
+
+  const createWrapper = (props = {}) => {
     return shallowMount(AdvancedSearch, {
       props,
       global: {
         mocks: {
-          $vuetify: {
-            display: {
-              lgAndDown: false,
-              xl: false,
-              mdAndDown: false,
-              ...displayMock, // Override defaults with specific test cases
-            },
+          // Keep fallback store binding if component pulls globally outside Vuex plugin mapping
+          $store: {
+            commit: mockCommit,
           },
         },
         stubs: {
-          "v-btn": true,
+          "v-btn": {
+            template: '<button class="v-btn-stub"><slot /></button>',
+          },
           "v-icon": true,
           AdvancedSearchDialogBox: true,
         },
@@ -39,53 +56,61 @@ describe("AdvancedSearch.vue", () => {
 
   beforeEach(() => {
     mockCommit.mockClear();
+    // Reset reactive display behaviors back to default states
+    mockXl.value = false;
+    mockMdAndDown.value = false;
   });
 
-  describe("Responsive Vuetify Classes and Sizes", () => {
-    it("applies 'advancedTextXl' and 'x-large' size when showHomeSearch is false AND xl is true", () => {
-      wrapper = createWrapper(
-        { showHomeSearch: false },
-        { xl: true, mdAndDown: false },
-      );
-      const btn = wrapper.findComponent({ name: "v-btn" });
+  describe("Responsive Vuetify Sizes", () => {
+    it("applies 'x-large' size when showHomeSearch is false AND xl display is true", async () => {
+      mockXl.value = true;
+      mockMdAndDown.value = false;
 
-      expect(btn.classes()).toContain("advancedTextXl");
+      wrapper = createWrapper({ showHomeSearch: false });
+      await wrapper.vm.$nextTick();
+
+      const btn = wrapper.find(".v-btn-stub");
+
       expect(btn.attributes("size")).toBe("x-large");
+      expect(btn.classes()).toContain("advanced-header-btn");
     });
 
-    it("applies 'advancedTextMd' and 'large' size when showHomeSearch is false AND mdAndDown is true", () => {
-      wrapper = createWrapper(
-        { showHomeSearch: false },
-        { xl: false, mdAndDown: true },
-      );
-      const btn = wrapper.findComponent({ name: "v-btn" });
+    it("applies 'large' size when showHomeSearch is false AND mdAndDown display is true", async () => {
+      mockXl.value = false;
+      mockMdAndDown.value = true;
 
-      expect(btn.classes()).toContain("advancedTextMd");
+      wrapper = createWrapper({ showHomeSearch: false });
+
+      // Wait for the mounted() hook data mutation (isMounted = true) to re-render the DOM template updates
+      await wrapper.vm.$nextTick();
+
+      const btn = wrapper.find(".v-btn-stub");
+
       expect(btn.attributes("size")).toBe("large");
+      expect(btn.classes()).toContain("advanced-header-btn");
     });
   });
 
   describe("Methods and Store Commits", () => {
-    it("triggers openAdvanceSearch when the Home Search (first) button is clicked", async () => {
-      const wrapper = createWrapper({ showHomeSearch: true });
-      const firstBtn = wrapper.findComponent({ name: "v-btn" });
-      expect(firstBtn.classes()).toContain("px-6");
-      await firstBtn.trigger("click");
+    it("triggers openAdvanceSearch when the Home Search button is clicked", async () => {
+      wrapper = createWrapper({ showHomeSearch: true });
+      const homeBtn = wrapper.find(".v-btn-stub");
 
-      // 4. Assert our hoisted store mock was called correctly!
+      expect(homeBtn.classes()).toContain("home-search-btn");
+      await homeBtn.trigger("click");
+
       expect(mockCommit).toHaveBeenCalledOnce();
       expect(mockCommit).toHaveBeenCalledWith(
         "advancedSearch/setAdvancedSearchDialogStatus",
         true,
       );
     });
-    it("commits to the advancedSearch store when openAdvanceSearch is called", () => {
+
+    it("commits to the advancedSearch store when openAdvanceSearch is executed manually", () => {
       wrapper = createWrapper();
 
-      // Trigger the method
       wrapper.vm.openAdvanceSearch();
 
-      // 4. Assert directly against the standalone spy!
       expect(mockCommit).toHaveBeenCalledOnce();
       expect(mockCommit).toHaveBeenCalledWith(
         "advancedSearch/setAdvancedSearchDialogStatus",
@@ -93,10 +118,11 @@ describe("AdvancedSearch.vue", () => {
       );
     });
 
-    it("triggers openAdvanceSearch when the button is clicked", async () => {
-      wrapper = createWrapper();
-      const btn = wrapper.findComponent({ name: "v-btn" });
-      await btn.trigger("click");
+    it("triggers openAdvanceSearch when the header style button is clicked", async () => {
+      wrapper = createWrapper({ showHomeSearch: false });
+      const headerBtn = wrapper.find(".v-btn-stub");
+
+      await headerBtn.trigger("click");
       expect(mockCommit).toHaveBeenCalledOnce();
     });
   });

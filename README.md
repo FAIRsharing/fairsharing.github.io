@@ -12,23 +12,79 @@
 
 Welcome to the new FAIRsharing.org website.
 
+> 📘 **System Architecture:** For a comprehensive technical deep-dive into how our SEO routing, Vike file-based caching,
+> and page rendering pipeline operate, read the [Architecture Guide](./README_architecture.md).
+
+---
+
 ## Compiles and hot-reloads for development
 
-```
+```bash
 npm run dev
 ```
 
 ## Test with vitest & generate coverage
 
-```
+```bash
 npm run test:ui
 ```
 
 ## Generate the documentation locally
 
-```
+```bash
 npm run doc:full
 ```
+
+## Build and prerender
+
+```bash
+npm run build
+```
+
+The site uses Vike prerendering with a batched build process so large route sets can be generated safely.
+
+### Build modes
+
+`VITE_FULL_PRERENDER` controls the build behavior.
+
+#### Run the Full build
+
+Fetches API data, generates the prerender JSON files, and runs the full batched prerender:
+
+```VITE_FULL_PRERENDER=true npm run build```
+
+#### Run the light build path:
+
+```VITE_FULL_PRERENDER=false npm run build```
+
+The light build path skips the long prerender loop and is useful for limited build environments such as Netlify.
+
+How the build works
+
+The build script:
+
+1. Fetches record data and organisation data from the API,
+2. Writes generated JSON files into src/lib/Prerender/,
+3. Writes the current batch context into src/lib/Prerender/build-context.json,
+4. Prerenders routes in batches,
+5. Copies the final prerender output into dist/client.
+
+#### Environment variables
+
+* VITE_FULL_PRERENDER controls whether the full batch prerender runs.
+* BATCH_SIZE controls how many record pages are processed per batch.
+* BUILD_CONTEXT is written during the build so Vike can read the current batch information.
+
+#### Generated files
+
+These files are created during build and should not be committed:
+
+* src/lib/Prerender/fairsharingRecords.generated.json
+* src/lib/Prerender/organisations.generated.json
+* src/lib/Prerender/build-context.json
+* .prerender-output/
+* dist/
+
 
 
 

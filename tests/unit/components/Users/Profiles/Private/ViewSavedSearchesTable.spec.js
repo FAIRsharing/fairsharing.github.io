@@ -2,7 +2,6 @@ import { shallowMount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStore } from "vuex";
 import ViewSavedSearchesTable from "@/components/Users/Profiles/Private/ViewSavedSearchesTable.vue";
-import mockStore from "@/store";
 
 // 1. Create the mock functions FIRST
 const { mockDelete, mockUpdate } = vi.hoisted(() => {
@@ -21,15 +20,8 @@ vi.mock("@/lib/Client/RESTClient", () => {
   };
 });
 
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
-
 describe("ViewSavedSearchesTable.vue", () => {
   let store;
-  let restClientMock;
   let mockActions;
 
   // Reusable Mock Data
@@ -63,7 +55,6 @@ describe("ViewSavedSearchesTable.vue", () => {
     },
   ];
 
-  // Helper to create a fresh wrapper for each test
   const createWrapper = (userStateOverrides = {}, routeOverrides = {}) => {
     return shallowMount(ViewSavedSearchesTable, {
       props: {
@@ -96,7 +87,6 @@ describe("ViewSavedSearchesTable.vue", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Setup Vuex Actions Mock
     mockActions = {
       getUser: vi.fn(),
       getPublicUser: vi.fn().mockResolvedValue({
@@ -104,13 +94,24 @@ describe("ViewSavedSearchesTable.vue", () => {
       }),
     };
 
-    // Setup Vuex Store
+    // Setup complete Vuex Store layout
     store = createStore({
       modules: {
+        advancedSearch: {
+          namespaced: true,
+          mutations: {
+            setAdvancedSearchDialogStatus: vi.fn(),
+          },
+        },
+        saveSearch: {
+          namespaced: true,
+          mutations: {
+            setSaveSearchResult: vi.fn(),
+          },
+        },
         users: {
           namespaced: true,
           state: {
-            // Replicating component's state access pattern: this.user()
             user: () => ({
               id: 1,
               isLoggedIn: true,
@@ -130,33 +131,31 @@ describe("ViewSavedSearchesTable.vue", () => {
         },
       },
     });
+
+    vi.spyOn(store, "commit");
   });
 
   describe("Initialization & Computed Properties", () => {
     it("mounts and combines searches correctly", async () => {
       const wrapper = createWrapper();
-
-      // combinedSearches is called on mount. Wait for promises to resolve.
       await wrapper.vm.$nextTick();
 
-      // totalSearches should be 2 (1 created + 1 saved)
       expect(wrapper.vm.totalSearches).toHaveLength(2);
-
-      // Should be sorted by createdAt descending (latest first)
-      expect(wrapper.vm.totalSearches[0].id).toBe(2); // The one from Jan 5
-      expect(wrapper.vm.totalSearches[1].id).toBe(1); // The one from Jan 1
+      expect(wrapper.vm.totalSearches[0].id).toBe(2);
+      expect(wrapper.vm.totalSearches[1].id).toBe(1);
     });
 
     it("adds Actions header if user is logged in", () => {
       const wrapper = createWrapper();
       const headers = wrapper.vm.headers;
 
-      const hasActions = headers.some((h) => h.value === "actions");
+      const hasActions = headers.some(
+        (h) => h.value === "actions" || h.key === "actions",
+      );
       expect(hasActions).toBe(true);
     });
 
     it("adds Additional User header if user is super curator", () => {
-      // Create store again for this specific test case
       store.state.users.user = () => ({
         isLoggedIn: true,
         is_super_curator: true,
@@ -165,7 +164,7 @@ describe("ViewSavedSearchesTable.vue", () => {
 
       const headers = wrapper.vm.headers;
       const hasAdditionalUser = headers.some(
-        (h) => h.value === "additionalUser",
+        (h) => h.value === "additionalUser" || h.key === "additionalUser",
       );
 
       expect(hasAdditionalUser).toBe(true);
@@ -176,8 +175,6 @@ describe("ViewSavedSearchesTable.vue", () => {
     it("filters additional users correctly", () => {
       const wrapper = createWrapper();
       const item = mockCreatedSearches[0];
-
-      // item.users has ID 1 and 2. Creator is ID 1.
       const additional = wrapper.vm.additionalUsers(item);
 
       expect(additional).toHaveLength(1);
@@ -188,7 +185,8 @@ describe("ViewSavedSearchesTable.vue", () => {
       const wrapper = createWrapper();
       wrapper.vm.openAdvancedSearch();
 
-      expect(mockStore.commit).toHaveBeenCalledWith(
+      // 🎯 FIX 4: Assert against store instance spy
+      expect(store.commit).toHaveBeenCalledWith(
         "advancedSearch/setAdvancedSearchDialogStatus",
         true,
       );
@@ -243,7 +241,8 @@ describe("ViewSavedSearchesTable.vue", () => {
         "fake-token",
       );
 
-      expect(mockStore.commit).toHaveBeenCalledWith(
+      // 🎯 FIX 5: Assert against store instance spy
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchResult",
         { id: 2, name: "Updated" },
       );

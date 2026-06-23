@@ -1,45 +1,39 @@
 <template>
   <div class="d-flex mx-2">
-    <!--  On Search Block  -->
     <v-btn
       v-if="showHomeSearch"
-      :class="[
-        'mt-1',
-        $vuetify.display.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
-      ]"
-      class="mb-13 px-6"
+      class="home-search-btn mb-13 px-6 mt-1"
       color="primary"
       @click="openAdvanceSearch()"
     >
       <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
       <span>Advanced Search</span>
     </v-btn>
-    <!--  On Header Block  -->
+
     <v-btn
       v-else
-      :class="$vuetify.display.xl ? 'advancedTextXl' : 'advancedTextMd'"
       :size="
-        $vuetify.display.xl
+        isMounted && xl
           ? 'x-large'
-          : $vuetify.display.mdAndDown
+          : isMounted && mdAndDown
             ? 'large'
             : undefined
       "
-      class="mr-10 bg-primary"
+      class="advanced-header-btn mr-10 bg-primary"
       elevation="2"
       @click="openAdvanceSearch()"
     >
       <v-icon class="mr-1" size="small"> fab fa-searchengin</v-icon>
       <span>Advanced Search</span>
     </v-btn>
-    <!--Dialog Box -->
+
     <AdvancedSearchDialogBox />
   </div>
 </template>
 
 <script>
 import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
-import advancedSearch from "@/store";
+import { useDisplay } from "vuetify";
 
 export default {
   name: "AdvancedSearch",
@@ -50,41 +44,55 @@ export default {
       type: Boolean,
     },
   },
+  setup() {
+    const { xl, mdAndDown } = useDisplay();
+    return { xl, mdAndDown };
+  },
   data: () => {
     return {
+      isMounted: false,
       dialog: false,
     };
   },
+  mounted() {
+    this.isMounted = true;
+  },
   methods: {
     openAdvanceSearch() {
-      advancedSearch.commit(
-        "advancedSearch/setAdvancedSearchDialogStatus",
-        true,
-      );
+      this.$store.commit("advancedSearch/setAdvancedSearchDialogStatus", true);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.home-search-bt {
+/* Refactored: Consolidated home-search-bt and home-search-bt-xl using media query */
+.home-search-btn {
+  right: 0;
+  top: 0;
+  border-radius: unset;
+
+  /* Default height for lg and down (40px) */
   height: 40px !important;
-  right: 0;
-  top: 0;
-  border-radius: unset;
+
+  /* Target xl displays (1920px and up) */
+  @media (min-width: 1920px) {
+    height: 50px !important;
+  }
 }
-.home-search-bt-xl {
-  height: 50px !important;
-  right: 0;
-  top: 0;
-  border-radius: unset;
+
+/* Refactored: Converted dynamic font sizing checks directly to CSS media queries */
+.advanced-header-btn {
+  /* Default Desktop / Medium Font Size (advancedTextMd) */
+  font-size: 14px;
+
+  /* Target Extra Large Screens (advancedTextXl) */
+  @media (min-width: 1920px) {
+    font-size: 18px; /* Set this to match your project's advancedTextXl font size */
+  }
 }
 
 .button-text-size {
   font-size: 13px;
-}
-
-.advancedTextMd {
-  font-size: 14px;
 }
 </style>

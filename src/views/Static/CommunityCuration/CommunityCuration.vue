@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import { capitalize } from "lodash";
+import { capitalize } from "lodash-es";
 
 import PieChart from "@/components/Static/Statistics/PieChart.vue";
 import communityCurationCohorts from "@/data/communityCurationCohorts.json";

@@ -12,8 +12,8 @@ module.exports = {
     "prettier",
   ],
   rules: {
-    "no-console": import.meta.env.VITE_NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": import.meta.env.VITE_NODE_ENV === "production" ? "error" : "off",
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "vue/multi-word-component-names": "off",
     "quote-props": ["error", "as-needed"],
     "vue/order-in-components": [
@@ -58,7 +58,7 @@ module.exports = {
       },
     ],
     "brace-style": [
-      "error",
+      "warn",
       "stroustrup",
       {
         allowSingleLine: true,

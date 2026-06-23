@@ -18,7 +18,7 @@ describe("PublicMessages.vue", () => {
   let wrapper;
 
   beforeAll(() => {
-    import.meta.env.VITE_API_ENDPOINT = "https://dev-api.fairsharing.org";
+    import.meta.env.VITE_API_ENDPOINT = "https://dev-api.abc.org";
   });
 
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe("PublicMessages.vue", () => {
   });
 
   it("can check is_development method when vite end point does NOT include 'dev-api'", () => {
-    import.meta.env.VITE_API_ENDPOINT = "https://test-api.fairsharing.org";
+    import.meta.env.VITE_API_ENDPOINT = "https://test-api.abc.org";
     expect(wrapper.vm.is_development()).toBe(false);
   });
 

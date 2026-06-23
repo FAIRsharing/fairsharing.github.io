@@ -1,18 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
-import saveSearch from "@/store";
 import SaveSearchButton from "@/components/Records/Search/SaveSearch/SaveSearchButton.vue";
-
-vi.mock("@/store", () => ({
-  default: {
-    commit: vi.fn(),
-  },
-}));
 
 describe("SaveSearchButton.vue", () => {
   let mockRouter;
   let mockRoute;
+  let store; // Track the active Vuex store instance locally
 
   const createWrapper = (
     isLoggedIn = false,
@@ -28,7 +22,7 @@ describe("SaveSearchButton.vue", () => {
       fullPath: fullPath,
     };
 
-    const store = createStore({
+    store = createStore({
       modules: {
         users: {
           namespaced: true,
@@ -38,8 +32,18 @@ describe("SaveSearchButton.vue", () => {
             }),
           },
         },
+        // Added the missing saveSearch module to handle the mutation commit safely
+        saveSearch: {
+          namespaced: true,
+          mutations: {
+            setSaveSearchStepperDialog: vi.fn(),
+          },
+        },
       },
     });
+
+    // Directly spy on the commit method of the generated store instance
+    vi.spyOn(store, "commit");
 
     return shallowMount(SaveSearchButton, {
       global: {
@@ -63,31 +67,44 @@ describe("SaveSearchButton.vue", () => {
   });
 
   describe("Template @click Logic", () => {
-    it("calls goToLogin() when the user is NOT logged in", async () => {
-      const wrapper = createWrapper(false); // isLoggedIn = false
-      const goToLoginSpy = vi.spyOn(wrapper.vm, "goToLogin");
-      const saveSearchSpy = vi.spyOn(wrapper.vm, "saveSearchResults");
+    it("calls goToLogin() routing logic when the user is NOT logged in", async () => {
+      const wrapper = createWrapper(
+        false,
+        "/advanced-search",
+        "/advanced-search?type=database",
+      );
+
       await wrapper.findComponent({ name: "v-btn" }).trigger("click");
-      expect(goToLoginSpy).toHaveBeenCalledTimes(1);
-      expect(saveSearchSpy).not.toHaveBeenCalled();
+
+      // Asserts that routing to login happened because the user wasn't logged in
+      expect(mockRouter.push).toHaveBeenCalledWith({
+        path: "/accounts/login",
+        query: { goTo: "/advanced-search?type=database" },
+      });
+      expect(store.commit).not.toHaveBeenCalled();
     });
 
-    it("calls saveSearchResults() when the user IS logged in", async () => {
+    it("calls saveSearchResults() store logic when the user IS logged in", async () => {
       const wrapper = createWrapper(true); // isLoggedIn = true
-      const goToLoginSpy = vi.spyOn(wrapper.vm, "goToLogin");
-      const saveSearchSpy = vi.spyOn(wrapper.vm, "saveSearchResults");
+
       await wrapper.findComponent({ name: "v-btn" }).trigger("click");
-      expect(saveSearchSpy).toHaveBeenCalledTimes(1);
-      expect(goToLoginSpy).not.toHaveBeenCalled();
+
+      // Asserts that the store dialog was triggered because the user was logged in
+      expect(store.commit).toHaveBeenCalledWith(
+        "saveSearch/setSaveSearchStepperDialog",
+        true,
+      );
+      expect(mockRouter.push).not.toHaveBeenCalled();
     });
   });
 
   describe("Methods: saveSearchResults", () => {
-    it("commits 'setSaveSearchStepperDialog' to the direct store import", async () => {
+    it("commits 'setSaveSearchStepperDialog' to the store instance", async () => {
       const wrapper = createWrapper();
       await wrapper.vm.saveSearchResults();
-      expect(saveSearch.commit).toHaveBeenCalledTimes(1);
-      expect(saveSearch.commit).toHaveBeenCalledWith(
+
+      expect(store.commit).toHaveBeenCalledTimes(1);
+      expect(store.commit).toHaveBeenCalledWith(
         "saveSearch/setSaveSearchStepperDialog",
         true,
       );
@@ -114,13 +131,14 @@ describe("SaveSearchButton.vue", () => {
     });
 
     it("does NOTHING if the user is already on the login page", async () => {
-      // Set the current path to the login page
       const wrapper = createWrapper(
         false,
         "/accounts/login",
         "/accounts/login",
       );
+
       await wrapper.vm.goToLogin();
+
       expect(mockRouter.push).not.toHaveBeenCalled();
     });
   });

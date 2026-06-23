@@ -482,7 +482,6 @@ import SearchOrganisationRecords from "@/components/Organisations/SearchOrganisa
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json";
-import saveSearch from "@/store";
 import { isImage, isRequired, isUrl } from "@/utils/rules.js";
 import stringUtils from "@/utils/stringUtils";
 import NotFound from "@/views/Errors/404";
@@ -630,7 +629,8 @@ export default {
           this.error = false;
         }
         this.loading = false;
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
         this.loading = false;
       }
@@ -653,7 +653,8 @@ export default {
         alt_names = this.editedOrganisation.alternativeNames
           .split(",")
           .map((item) => item.trim());
-      } catch {
+      }
+      catch {
         alt_names = [];
       }
       this.logoLoading = true;
@@ -731,7 +732,8 @@ export default {
     formatUser(user) {
       if (user.orcid) {
         return `${user.username} (${user.orcid})`;
-      } else {
+      }
+      else {
         return user.username;
       }
     },
@@ -826,7 +828,7 @@ export default {
           this.user().credentials.token,
         );
         //Commit the updated result to store
-        saveSearch.commit(
+        this.$store.commit(
           "saveSearch/setSaveSearchResult",
           updatedSearchResult,
         );

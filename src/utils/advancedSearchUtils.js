@@ -1,5 +1,5 @@
-import { uniqWith } from "lodash";
-import { mapGetters } from "vuex";
+import {uniqWith} from "lodash-es";
+import {mapGetters} from "vuex";
 
 /**
  * Removes duplicate values in a set and returns unique values

@@ -12,8 +12,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import countriesSearch from "@/store";
-
 import AutoCompleteComponent from "../UtilComponents/AutoCompleteComponent.vue";
 
 export default {
@@ -63,7 +61,7 @@ export default {
       handler(open) {
         if (open) {
           if (this.value && this.value.length) {
-            countriesSearch.commit(
+            this.$store.commit(
               "countriesSearch/setSearchCountries",
               this.value,
             );

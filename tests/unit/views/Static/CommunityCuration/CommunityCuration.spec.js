@@ -1,5 +1,4 @@
 import { shallowMount } from "@vue/test-utils";
-import VueCodeHighlight from "vue-code-highlight";
 import { createVuetify } from "vuetify";
 
 import CommunityCuration from "@/views/Static/CommunityCuration/CommunityCuration";
@@ -13,9 +12,6 @@ describe("CommunityCuration.vue", function () {
     wrapper = shallowMount(CommunityCuration, {
       global: {
         plugins: [vuetify],
-        components: {
-          VueCodeHighlight,
-        },
         stubs: {
           PieChart: true,
         },

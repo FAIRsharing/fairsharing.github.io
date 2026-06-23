@@ -26,3 +26,13 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify
+
+# Build file for SEO generation
+src/lib/Prerender/fairsharingRecords.generated.json
+src/lib/Prerender/organisations.generated.json
+.prerender-output/
+.prerender-cache/
+src/lib/Prerender/build-context.json

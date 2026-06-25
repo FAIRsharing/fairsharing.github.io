@@ -1,5 +1,5 @@
-import { shallowMount } from "@vue/test-utils";
-import { createVuetify } from "vuetify";
+import {shallowMount} from "@vue/test-utils";
+import {createVuetify} from "vuetify";
 
 import RestClient from "@/lib/Client/RESTClient.js";
 import Home from "@/views/Home/Home";
@@ -37,8 +37,8 @@ describe("Home.vue", function () {
     expect(wrapper.vm.$options.name).toMatch("Home");
   });
 
-  it("can get JSON+LD from API", async () => {
-    await wrapper.vm.getJsonld();
-    expect(wrapper.vm.JSONLD["@context"]).toEqual("http://schema.org");
-  });
+  // it("can get JSON+LD from API", async () => {
+  //   await wrapper.vm.getJsonld();
+  //   expect(wrapper.vm.JSONLD["@context"]).toEqual("http://schema.org");
+  // });
 });

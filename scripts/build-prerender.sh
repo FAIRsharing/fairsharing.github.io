@@ -7,7 +7,7 @@ set -a
 set +a
 export PRERENDER_ROOT="$(pwd)"
 START_TIME=$(date +%s)
-BATCH_SIZE=5
+BATCH_SIZE=750
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 CACHE_DIR=".prerender-cache"
@@ -128,7 +128,6 @@ const lastId = records.reduce((max, record) => {
 process.stdout.write(String(lastId));
 NODE
 )
-LAST_ID=5
 
 if [ -z "$LAST_ID" ] || [ "$LAST_ID" -le 0 ]; then
   echo "Could not fetch LAST_ID"

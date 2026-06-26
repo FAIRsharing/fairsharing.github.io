@@ -1,5 +1,5 @@
-import {shallowMount} from "@vue/test-utils";
-import {createVuetify} from "vuetify";
+import { shallowMount } from "@vue/test-utils";
+import { createVuetify } from "vuetify";
 
 import RestClient from "@/lib/Client/RESTClient.js";
 import Home from "@/views/Home/Home";

@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
+import {shallowMount} from "@vue/test-utils";
 import FooterComp from "@/components/Navigation/Footer.vue";
 
 // 1. Mock the imported JSON data so our tests are predictable and isolated
@@ -97,6 +97,19 @@ describe("FooterComp.vue", () => {
       delete global.window;
       expect(() => wrapper.vm.onScroll({})).not.toThrow();
       global.window = originalWindow;
+    });
+
+    it("scrolls to the top when scrollToTop is called", () => {
+      const originalScrollTo = window.scrollTo;
+      const scrollToSpy = vi.fn();
+      window.scrollTo = scrollToSpy;
+      wrapper.vm.scrollToTop();
+      expect(scrollToSpy).toHaveBeenCalledWith({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      window.scrollTo = originalScrollTo;
     });
   });
 });

@@ -1,6 +1,6 @@
-import { shallowMount } from "@vue/test-utils";
+import {shallowMount} from "@vue/test-utils";
 import sinon from "sinon";
-import { createVuetify } from "vuetify";
+import {createVuetify} from "vuetify";
 import Vuex from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
@@ -10,7 +10,9 @@ import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
 
-// Initializing context for mounting
+vi.mock("vike-vue/useData", () => ({
+  useData: () => ({}),
+}));
 
 // Initializing store states and getters
 users.state.user = function () {

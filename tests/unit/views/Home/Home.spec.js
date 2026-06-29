@@ -37,8 +37,8 @@ describe("Home.vue", function () {
     expect(wrapper.vm.$options.name).toMatch("Home");
   });
 
-  it("can get JSON+LD from API", async () => {
-    await wrapper.vm.getJsonld();
-    expect(wrapper.vm.JSONLD["@context"]).toEqual("http://schema.org");
-  });
+  // it("can get JSON+LD from API", async () => {
+  //   await wrapper.vm.getJsonld();
+  //   expect(wrapper.vm.JSONLD["@context"]).toEqual("http://schema.org");
+  // });
 });

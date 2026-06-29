@@ -1,11 +1,13 @@
-import { RouterLinkStub, shallowMount } from "@vue/test-utils";
-import { isEqual } from "lodash-es";
-import { createVuetify } from "vuetify";
+import {RouterLinkStub, shallowMount} from "@vue/test-utils";
+import {isEqual} from "lodash-es";
+import {createVuetify} from "vuetify";
 import Vuex from "vuex";
 
 import Header from "@/components/Navigation/Header.vue";
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
+
+const routerPush = vi.fn();
 
 const vuetify = createVuetify();
 
@@ -68,7 +70,7 @@ describe("Header.vue", function () {
         ],
       };
     },
-    mocks: { $store, $route },
+    mocks: { $store, $route, $router: { push: routerPush } },
     stubs: {
       RouterLink: RouterLinkStub,
     },
@@ -114,5 +116,32 @@ describe("Header.vue", function () {
         expect(item.active).toBe(false);
       }
     });
+  });
+
+  it("logs out and redirects to Login", async () => {
+    const push = vi.fn();
+
+    const localStore = new Vuex.Store({
+      modules: {
+        uiController: uiControllerStore,
+        users: usersStore,
+      },
+    });
+
+    const localWrapper = shallowMount(Header, {
+      vuetify,
+      mocks: {
+        $store: localStore,
+        $route,
+        $router: { push },
+      },
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
+    });
+
+    await localWrapper.vm.logoutUser();
+
+    expect(push).toHaveBeenCalledWith({ name: "Login" });
   });
 });

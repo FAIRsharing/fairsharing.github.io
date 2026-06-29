@@ -14,6 +14,8 @@ export default {
   hooksTimeout: false,
   favicon: "/assets/favicon.ico",
   title: "FAIRsharing",
+  description:
+    "A curated, informative and educational resource on data and metadata standards, databases and policies.",
   viewport:
     "width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no",
 };

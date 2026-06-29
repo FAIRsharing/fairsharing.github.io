@@ -1,5 +1,5 @@
-import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
-import { normalizeDoi } from "@/lib/Prerender/prerenderUtils.shared.js";
+import buildContext from "@/lib/Prerender/build-context.json" with {type: "json"};
+import {normalizeDoi} from "@/lib/Prerender/prerenderUtils.shared.js";
 
 export async function data(pageContext) {
   if (buildContext.skipFull) {
@@ -18,14 +18,15 @@ export async function data(pageContext) {
   }
 
   const routeValue = normalizeDoi(paramURL);
+  const isNumericRoute = /^\d+$/.test(routeValue);
 
   const record = records.find((r) => {
+    if (isNumericRoute) {
+      return String(r.id) === routeValue;
+    }
+
     const recordDoi = normalizeDoi(r.doi || "");
-    return (
-      String(r.id) === routeValue ||
-      recordDoi === routeValue ||
-      recordDoi.endsWith(routeValue)
-    );
+    return recordDoi === routeValue;
   });
 
   if (!record) {

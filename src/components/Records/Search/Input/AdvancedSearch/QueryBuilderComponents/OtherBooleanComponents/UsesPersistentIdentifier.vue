@@ -3,7 +3,7 @@
     v-model="model"
     :item-value="itemValue"
     :tool-tip-text="toolTipText"
-    @input="selectedValue"
+    @update:model-value="selectedValue"
   />
 </template>
 
@@ -15,15 +15,15 @@ export default {
   components: { RadioComponent },
   props: {
     value: {
-      type: String,
+      type: [String, Boolean],
       default: "",
     },
   },
   emits: ["input"],
   data: () => {
     return {
-      itemValue: "",
-      itemSelected: "",
+      itemValue: null,
+      itemSelected: null,
       toolTipText: "Does it have persistent identifiers?",
     };
   },
@@ -44,6 +44,7 @@ export default {
   },
   mounted() {
     //Pre-fill selected values on edit advanced search fields
+    console.log("this.value::", this.value);
     this.itemValue = this.value;
   },
 

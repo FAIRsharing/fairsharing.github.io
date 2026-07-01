@@ -7,29 +7,29 @@
   <!--    class="mt-0"-->
   <!--  />-->
   <v-radio-group
-    inline
+    :model-value="modelValue"
     class="mt-0 ml-1 advancedSearchRadio advancedSearchDialogBoxContent"
     hide-details="auto"
-    :model-value="model"
+    inline
     @update:model-value="$emit('update:modelValue', $event)"
   >
-    <v-radio color="success" value="true" class="mr-6 radioButtons">
+    <v-radio class="mr-6 radioButtons" color="success" value="true">
       <template #label>
         <div class="text-white">Yes</div>
       </template>
     </v-radio>
-    <v-radio color="error" value="false" class="radioButtons">
+    <v-radio class="radioButtons" color="error" value="false">
       <template #label>
         <div class="text-white">No</div>
       </template>
     </v-radio>
     <!-- Tooltip for the field -->
     <template #prepend>
-      <v-tooltip location="bottom" class="mr-2">
+      <v-tooltip class="mr-2" location="bottom">
         <template #activator="{ props }">
           <v-icon
-            size="x-small"
             class="mr-1 iconStyle text-white opacity-100"
+            size="x-small"
             v-bind="props"
           >
             fas fa-question-circle
@@ -45,7 +45,7 @@
 export default {
   name: "RadioComponent",
   props: {
-    itemValue: {
+    modelValue: {
       type: String,
       default: null,
     },
@@ -54,16 +54,16 @@ export default {
       default: null,
     },
   },
-  emits: ["input", "update:modelValue"],
-  computed: {
-    model: {
-      get() {
-        return this.itemValue;
-      },
-      set(itemValue) {
-        this.$emit("input", itemValue);
-      },
-    },
-  },
+  emits: ["update:modelValue"],
+  // computed: {
+  //   model: {
+  //     get() {
+  //       return this.itemValue;
+  //     },
+  //     set(itemValue) {
+  //       this.$emit("input", itemValue);
+  //     },
+  //   },
+  // },
 };
 </script>

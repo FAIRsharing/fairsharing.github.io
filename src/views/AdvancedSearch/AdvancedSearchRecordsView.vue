@@ -10,6 +10,7 @@
           :model-value="getLoadingStatus"
           class="align-center justify-center"
           opacity="0.8"
+          persistent
         >
           <Loaders />
         </v-overlay>

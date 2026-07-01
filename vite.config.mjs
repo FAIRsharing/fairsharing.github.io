@@ -12,6 +12,7 @@ dns.setDefaultResultOrder("verbatim");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const BUILD_OUTPUT_DIR = process.env.BUILD_OUTPUT_DIR ?? "dist";
 
 export default defineConfig(({  isSsrBuild }) => {
 
@@ -75,6 +76,7 @@ export default defineConfig(({  isSsrBuild }) => {
     },
 
     build: {
+      outDir: BUILD_OUTPUT_DIR,
       assetsDir: 'assets',
       sourcemap: true,
       minify: !isSsrBuild ? 'oxc' : false,

@@ -5,13 +5,16 @@ set -euo pipefail
 set -a
 [ -f .env ] && . ./.env
 set +a
+
 export PRERENDER_ROOT="$(pwd)"
-START_TIME=$(date +%s)
+START_TIME=$(date +%Y%m%d%H%M%S)
 BATCH_SIZE=750
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 CACHE_DIR=".prerender-cache"
 VITE_FULL_PRERENDER="${VITE_FULL_PRERENDER:-true}"
+BUILD_OUTPUT_DIR="${BUILD_OUTPUT_DIR:-dist_${START_TIME}}"
+LIVE_DIST_LINK="${LIVE_DIST_LINK:-dist}"
 
 PROJECT_ROOT="$(pwd)"
 JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/dist/jsonld}"
@@ -19,6 +22,16 @@ RECORDS_JSON="$PROJECT_ROOT/src/lib/Prerender/fairsharingRecords.generated.json"
 ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 
 mkdir -p src/lib/Prerender "$CACHE_DIR"
+
+switch_live_dist() {
+  if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
+    echo "$LIVE_DIST_LINK must be a symlink before running this script"
+    exit 1
+  fi
+
+  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.tmp"
+  mv -f "$LIVE_DIST_LINK.tmp" "$LIVE_DIST_LINK"
+}
 
 # Light build path: skip API fetch and skip generated JSON entirely.
 if [ "$VITE_FULL_PRERENDER" != "true" ]; then
@@ -32,9 +45,11 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
     }\n' "$RECORDS_JSON" "$ORG_JSON" "$JSONLD_DIR"> "$BUILD_CONTEXT"
   echo "Skipping full prerender"
 
-  npx rimraf dist/client dist/server
-  PRERENDER_FULL=false vike build
-  npx rimraf dist/server
+  npx rimraf "$BUILD_OUTPUT_DIR/client" "$BUILD_OUTPUT_DIR/server"
+  BUILD_OUTPUT_DIR="$BUILD_OUTPUT_DIR" PRERENDER_FULL=false vike build
+  npx rimraf "$BUILD_OUTPUT_DIR/server"
+
+  switch_live_dist
 
   END_TIME=$(date +%s)
   ELAPSED=$((END_TIME - START_TIME))
@@ -136,7 +151,7 @@ fi
 
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
-npx rimraf "$OUTPUT_DIR" dist/client dist/server
+npx rimraf "$OUTPUT_DIR" "$BUILD_OUTPUT_DIR/client" "$BUILD_OUTPUT_DIR/server"
 mkdir -p "$OUTPUT_DIR/client"
 
 for batch in $(seq 1 "$TOTAL_BATCHES"); do
@@ -157,17 +172,18 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
   }\n' "$batch" "$BATCH_SIZE" "$RECORDS_JSON" "$ORG_JSON" "$JSONLD_DIR"> "$BUILD_CONTEXT"
   echo "Building chunk $batch / $TOTAL_BATCHES: IDs $start_id to $end_id"
 
-  PRERENDER_FULL=true vike build
+  BUILD_OUTPUT_DIR="$BUILD_OUTPUT_DIR" PRERENDER_FULL=true vike build
 
-  cp -R dist/client/. "$OUTPUT_DIR/client/"
-  npx rimraf dist/client dist/server
+  cp -R "$BUILD_OUTPUT_DIR/client/." "$OUTPUT_DIR/client/"
+  npx rimraf "$BUILD_OUTPUT_DIR/client" "$BUILD_OUTPUT_DIR/server"
 done
 
-npx rimraf dist/client dist/server
-mkdir -p dist/client
-cp -R "$OUTPUT_DIR/client"/. dist/client/
+npx rimraf "$BUILD_OUTPUT_DIR/client" "$BUILD_OUTPUT_DIR/server"
+mkdir -p "$BUILD_OUTPUT_DIR/client"
+cp -R "$OUTPUT_DIR/client"/. "$BUILD_OUTPUT_DIR/client/"
 
-npx rimraf "$OUTPUT_DIR" dist/server
+npx rimraf "$OUTPUT_DIR" "$BUILD_OUTPUT_DIR/server"
+switch_live_dist
 
 END_TIME=$(date +%s)
 ELAPSED=$((END_TIME - START_TIME))

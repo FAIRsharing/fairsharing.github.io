@@ -1,5 +1,5 @@
-import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
-import { normalizeDoi } from "@/lib/Prerender/prerenderUtils.shared.js";
+import buildContext from "@/lib/Prerender/build-context.json" with {type: "json"};
+import {normalizeDoi} from "@/lib/Prerender/prerenderUtils.shared.js";
 
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
@@ -58,8 +58,13 @@ export async function onBeforePrerenderStart() {
     .flatMap((record) => {
       const routes = [`/${record.id}`];
 
-      if (record.doi) {
-        routes.push(`/${normalizeDoi(record.doi)}`);
+      const doi = normalizeDoi(record.doi || "");
+      if (doi) {
+        routes.push(`/${doi}`);
+        const doiSuffix = doi.replace(/^10\.\d{4,9}\//i, "");
+        if (doiSuffix && doiSuffix !== doi) {
+          routes.push(`/${doiSuffix}`);
+        }
       }
 
       return routes;

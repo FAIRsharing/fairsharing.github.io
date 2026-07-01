@@ -10,15 +10,6 @@
     <v-lazy>
       <StatisticsBlock class="my-12" />
     </v-lazy>
-
-    <template v-if="isMounted">
-      <component
-        :is="'script'"
-        v-if="Object.keys(JSONLD).length"
-        v-safe-html="JSON.stringify(JSONLD)"
-        type="application/ld+json"
-      />
-    </template>
   </v-container>
 </template>
 
@@ -29,9 +20,6 @@ import CommunityBlock from "@/components/Home/CommunityBlock";
 import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
-import RestClient from "@/lib/Client/RESTClient.js";
-
-const restClient = new RestClient();
 
 /** Component to handle the front page (landing page) */
 export default {
@@ -46,31 +34,19 @@ export default {
   },
   data() {
     return {
-      JSONLD: {},
       isMounted: false,
     };
   },
   mounted() {
-    this.getJsonld();
     this.isMounted = true;
   },
   unmounted() {
-    // Fixed: Native scroll since the global scroll plugin is disabled
     if (typeof window !== "undefined") {
       window.scrollTo({
         top: 0,
         behavior: "instant",
       });
     }
-  },
-  methods: {
-    async getJsonld() {
-      const data = await restClient.getHomepageJsonld();
-      // Ensure we assign valid data so the script tag populates correctly
-      if (data) {
-        this.JSONLD = data;
-      }
-    },
   },
 };
 </script>

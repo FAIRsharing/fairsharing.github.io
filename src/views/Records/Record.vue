@@ -170,10 +170,6 @@
         />
       </div>
     </v-container>
-    <!-- This html is from a safe source -->
-    <component :is="'script'" type="application/ld+json">
-      <span v-safe-html="JSONLD" />
-    </component>
     <v-dialog v-model="history.show" class="pa-0" fullscreen persistent>
       <v-card>
         <v-card-title
@@ -335,6 +331,7 @@
 </template>
 
 <script>
+import { useData } from "vike-vue/useData";
 import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
@@ -395,7 +392,9 @@ export default {
   emits: ["updateHead", "showDialog"],
   setup() {
     const theme = useTheme();
-    return { theme };
+    const data = useData();
+
+    return { theme, data };
   },
   data: () => {
     return {
@@ -546,9 +545,7 @@ export default {
       }
       return finalCardBackColor;
     },
-    JSONLD() {
-      return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
-    },
+
     currentRoute() {
       let id = this.$route.params["id"];
       if (id !== undefined && id.includes("FAIRsharing.")) {

@@ -14,6 +14,7 @@ CACHE_DIR=".prerender-cache"
 VITE_FULL_PRERENDER="${VITE_FULL_PRERENDER:-true}"
 
 PROJECT_ROOT="$(pwd)"
+JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/dist/jsonld}"
 RECORDS_JSON="$PROJECT_ROOT/src/lib/Prerender/fairsharingRecords.generated.json"
 ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 
@@ -26,11 +27,12 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
       "batchSize": 1,
       "skipFull": true,
       "recordsFile": "%s",
-      "organisationsFile": "%s"
-    }\n' "$RECORDS_JSON" "$ORG_JSON" > "$BUILD_CONTEXT"
+      "organisationsFile": "%s",
+      "jsonldDir": "%s"
+    }\n' "$RECORDS_JSON" "$ORG_JSON" "$JSONLD_DIR"> "$BUILD_CONTEXT"
   echo "Skipping full prerender"
 
-  npx rimraf dist
+  npx rimraf dist/client dist/server
   PRERENDER_FULL=false vike build
   npx rimraf dist/server
 
@@ -134,7 +136,7 @@ fi
 
 TOTAL_BATCHES=$(( (LAST_ID + BATCH_SIZE - 1) / BATCH_SIZE ))
 
-npx rimraf "$OUTPUT_DIR" dist
+npx rimraf "$OUTPUT_DIR" dist/client dist/server
 mkdir -p "$OUTPUT_DIR/client"
 
 for batch in $(seq 1 "$TOTAL_BATCHES"); do
@@ -150,17 +152,18 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
     "batchSize": %s,
     "skipFull": false,
     "recordsFile": "%s",
-    "organisationsFile": "%s"
-  }\n' "$batch" "$BATCH_SIZE" "$RECORDS_JSON" "$ORG_JSON" > "$BUILD_CONTEXT"
+    "organisationsFile": "%s",
+    "jsonldDir": "%s"
+  }\n' "$batch" "$BATCH_SIZE" "$RECORDS_JSON" "$ORG_JSON" "$JSONLD_DIR"> "$BUILD_CONTEXT"
   echo "Building chunk $batch / $TOTAL_BATCHES: IDs $start_id to $end_id"
 
   PRERENDER_FULL=true vike build
 
   cp -R dist/client/. "$OUTPUT_DIR/client/"
-  npx rimraf dist
+  npx rimraf dist/client dist/server
 done
 
-npx rimraf dist
+npx rimraf dist/client dist/server
 mkdir -p dist/client
 cp -R "$OUTPUT_DIR/client"/. dist/client/
 

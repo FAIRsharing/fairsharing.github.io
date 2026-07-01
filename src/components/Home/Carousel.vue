@@ -4,7 +4,6 @@
     :show-arrows="isMounted ? $vuetify.display.mdAndDown : false"
     align-tabs="center"
     bg-color="transparent"
-    class="height-430"
     color="accent3"
     slider-color="accent3"
     slider-size="5"

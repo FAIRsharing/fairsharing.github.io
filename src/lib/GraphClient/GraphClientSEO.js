@@ -133,7 +133,7 @@ class GraphQLClientSEO {
     this.headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
-      // 🌟 Disguise Axios as a standard Chrome web browser to bypass WAF blocks
+      // Disguise Axios as a standard Chrome web browser to bypass WAF blocks
       "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
       // Force standard compression formats

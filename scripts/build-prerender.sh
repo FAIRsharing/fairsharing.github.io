@@ -31,8 +31,6 @@ switch_live_dist() {
     mv "$LIVE_DIST_LINK" "${LIVE_DIST_LINK}_backup_${START_TIME}"
   fi
 
-#  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.tmp"
-#  mv -f "$LIVE_DIST_LINK.tmp" "$LIVE_DIST_LINK"
   ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.new"
   mv -f "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
 }
@@ -43,6 +41,12 @@ sync_jsonld_release() {
     cp -R "$JSONLD_DIR"/. "$BUILD_OUTPUT_DIR/jsonld/"
   fi
 }
+# Below method will keep last 3 dist. Can be uncommented if we want to keep only last 3 dist releases.
+#cleanup_old_releases() {
+ # ls -1dt dist_* 2>/dev/null | tail -n +4 | while read -r old_release; do
+  #  [ -n "$old_release" ] && rm -rf -- "$old_release"
+  # done
+# }
 
 
 # Light build path: skip API fetch and skip generated JSON entirely.
@@ -63,9 +67,10 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
 
   sync_jsonld_release
   switch_live_dist
+  #cleanup_old_releases
 
   END_TIME=$(date +%s)
-  ELAPSED=$((END_TIME - START_TIME))
+  ELAPSED=$((END_TIME - START_EPOCH))
   MINUTES=$((ELAPSED / 60))
   SECONDS_REMAINING=$((ELAPSED % 60))
   echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"

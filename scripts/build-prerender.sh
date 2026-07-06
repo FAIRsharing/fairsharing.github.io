@@ -8,6 +8,7 @@ set +a
 
 export PRERENDER_ROOT="$(pwd)"
 START_TIME=$(date +%Y%m%d%H%M%S)
+START_EPOCH=$(date +%s)
 BATCH_SIZE=750
 BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
@@ -25,13 +26,24 @@ mkdir -p src/lib/Prerender "$CACHE_DIR"
 
 switch_live_dist() {
   if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
-    echo "$LIVE_DIST_LINK must be a symlink before running this script"
-    exit 1
+#    echo "$LIVE_DIST_LINK must be a symlink before running this script"
+#    exit 1
+    mv "$LIVE_DIST_LINK" "${LIVE_DIST_LINK}_backup_${START_TIME}"
   fi
 
-  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.tmp"
-  mv -f "$LIVE_DIST_LINK.tmp" "$LIVE_DIST_LINK"
+#  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.tmp"
+#  mv -f "$LIVE_DIST_LINK.tmp" "$LIVE_DIST_LINK"
+  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.new"
+  mv -f "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
 }
+
+sync_jsonld_release() {
+  if [ -d "$JSONLD_DIR" ]; then
+    mkdir -p "$BUILD_OUTPUT_DIR/jsonld"
+    cp -R "$JSONLD_DIR"/. "$BUILD_OUTPUT_DIR/jsonld/"
+  fi
+}
+
 
 # Light build path: skip API fetch and skip generated JSON entirely.
 if [ "$VITE_FULL_PRERENDER" != "true" ]; then
@@ -49,6 +61,7 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
   BUILD_OUTPUT_DIR="$BUILD_OUTPUT_DIR" PRERENDER_FULL=false vike build
   npx rimraf "$BUILD_OUTPUT_DIR/server"
 
+  sync_jsonld_release
   switch_live_dist
 
   END_TIME=$(date +%s)
@@ -183,10 +196,11 @@ mkdir -p "$BUILD_OUTPUT_DIR/client"
 cp -R "$OUTPUT_DIR/client"/. "$BUILD_OUTPUT_DIR/client/"
 
 npx rimraf "$OUTPUT_DIR" "$BUILD_OUTPUT_DIR/server"
+sync_jsonld_release
 switch_live_dist
 
 END_TIME=$(date +%s)
-ELAPSED=$((END_TIME - START_TIME))
+ELAPSED=$((END_TIME - START_EPOCH))
 MINUTES=$((ELAPSED / 60))
 SECONDS_REMAINING=$((ELAPSED % 60))
 echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"

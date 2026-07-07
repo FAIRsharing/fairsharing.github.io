@@ -389,47 +389,47 @@
     <!-- Tools table ends -->
 
     <!-- Activities   -->
-    <section id="activities">
-      <h3 class="text-h4 my-4">Activities</h3>
-      <p
-        :class="[
-          'mb-2 lato-font-medium lato-text-sm',
-          { 'lato-text-md': $vuetify.display.xl },
-        ]"
-      >
-        FAIRsharing is not just a registry. The team behind FAIRsharing is
-        involved in a number of FAIR-enabling activities, delivering guidance,
-        tools and services with and for a variety of stakeholders. As these
-        activities mature, we will implement or connect them in/to the
-        FAIRsharing resource itself.
-      </p>
-      <p
-        :class="[
-          'mb-2 lato-font-medium lato-text-sm',
-          { 'lato-text-md': $vuetify.display.xl },
-        ]"
-      >
-        Some of these activities are part of funded projects and of national or
-        international consortia, while others are volunteer efforts that fall
-        under a variety of umbrella organisations, such as working groups (WG)
-        and learned societies.
-      </p>
-      <b
-        :class="[
-          'mb-2 lato-font-medium lato-text-sm',
-          { 'lato-text-md': $vuetify.display.xl },
-        ]"
-      >
-        Our activities are classified using the three GO-FAIR pillar structures
-        (change, build, train) and are outlined here.
-      </b>
-      <!--Activities table-->
-      <ActivitiesStaticTable class="mb-16 mt-2" />
-    </section>
+    <!--    <section id="activities">-->
+    <!--      <h3 class="text-h4 my-4">Activities</h3>-->
+    <!--      <p-->
+    <!--        :class="[-->
+    <!--          'mb-2 lato-font-medium lato-text-sm',-->
+    <!--          { 'lato-text-md': $vuetify.display.xl },-->
+    <!--        ]"-->
+    <!--      >-->
+    <!--        FAIRsharing is not just a registry. The team behind FAIRsharing is-->
+    <!--        involved in a number of FAIR-enabling activities, delivering guidance,-->
+    <!--        tools and services with and for a variety of stakeholders. As these-->
+    <!--        activities mature, we will implement or connect them in/to the-->
+    <!--        FAIRsharing resource itself.-->
+    <!--      </p>-->
+    <!--      <p-->
+    <!--        :class="[-->
+    <!--          'mb-2 lato-font-medium lato-text-sm',-->
+    <!--          { 'lato-text-md': $vuetify.display.xl },-->
+    <!--        ]"-->
+    <!--      >-->
+    <!--        Some of these activities are part of funded projects and of national or-->
+    <!--        international consortia, while others are volunteer efforts that fall-->
+    <!--        under a variety of umbrella organisations, such as working groups (WG)-->
+    <!--        and learned societies.-->
+    <!--      </p>-->
+    <!--      <b-->
+    <!--        :class="[-->
+    <!--          'mb-2 lato-font-medium lato-text-sm',-->
+    <!--          { 'lato-text-md': $vuetify.display.xl },-->
+    <!--        ]"-->
+    <!--      >-->
+    <!--        Our activities are classified using the three GO-FAIR pillar structures-->
+    <!--        (change, build, train) and are outlined here.-->
+    <!--      </b>-->
+    <!--      &lt;!&ndash;Activities table&ndash;&gt;-->
+    <!--      &lt;!&ndash;      <ActivitiesStaticTable class="mb-16 mt-2" />&ndash;&gt;-->
+    <!--    </section>-->
 
     <!-- Governance   -->
     <section id="governance">
-      <h3 class="text-h4 mb-4">Governance</h3>
+      <h3 class="text-h4 mb-4 mt-10">Governance</h3>
       <!--   Meet the team   -->
       <a id="team" />
       <h4 class="text-h5 mb-2">
@@ -676,10 +676,10 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import {isArray} from "lodash-es";
+import { isArray } from "lodash-es";
 
 import Icon from "@/components/Icon";
-import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+// import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
 
@@ -700,7 +700,7 @@ const handleScroll = () => {
  * */
 export default {
   name: "Community",
-  components: { Icon, ActivitiesStaticTable },
+  components: { Icon },
   title: "This will be the community page",
   data: () => {
     return {
@@ -757,8 +757,7 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      }
-      else {
+      } else {
         return org.url;
       }
     },

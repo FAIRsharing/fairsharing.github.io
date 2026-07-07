@@ -387,7 +387,7 @@
       </v-col>
     </v-row>
     <!-- Tools table ends -->
-
+    <!--Commenting activities section as per ticket https://github.com/FAIRsharing/fairsharing.github.io/issues/2812 -->
     <!-- Activities   -->
     <!--    <section id="activities">-->
     <!--      <h3 class="text-h4 my-4">Activities</h3>-->
@@ -676,7 +676,7 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import { isArray } from "lodash-es";
+import {isArray} from "lodash-es";
 
 import Icon from "@/components/Icon";
 // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";

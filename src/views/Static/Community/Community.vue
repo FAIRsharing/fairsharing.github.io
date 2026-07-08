@@ -263,7 +263,7 @@
         >
           <v-img
             v-if="item.image"
-            :src="item.image"
+            :src="assetPath(item.image)"
             class="contain"
             height="120"
             max-height="250px"
@@ -452,7 +452,10 @@
           ]"
         >
           <v-avatar size="160">
-            <v-img :src="profileItem.profileImg" style="filter: grayscale(1)" />
+            <v-img
+              :src="assetPath(profileItem.profileImg)"
+              style="filter: grayscale(1)"
+            />
           </v-avatar>
           <p
             v-safe-html="profileItem.name"

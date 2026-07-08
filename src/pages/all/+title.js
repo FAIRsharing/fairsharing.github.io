@@ -28,7 +28,7 @@ export default function title(pageContext) {
     "/collections": "Collections | FAIRsharing",
     "/fairassist": "Fairassist | FAIRsharing",
     "/browse/subject": "Subject Browser| FAIRsharing",
-    "/communities": "Communities| FAIRsharing",
+    "/communities": "Communities | FAIRsharing",
     "/api_doc": "API DOC| FAIRsharing",
   };
 

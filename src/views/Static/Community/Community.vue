@@ -229,7 +229,7 @@
         >
           <v-img
             v-if="item.image"
-            :src="item.image"
+            :src="assetPath(item.image)"
             class="contain"
             height="120"
             max-height="250px"
@@ -676,7 +676,7 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import {isArray} from "lodash-es";
+import { isArray } from "lodash-es";
 
 import Icon from "@/components/Icon";
 // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
@@ -760,6 +760,13 @@ export default {
       } else {
         return org.url;
       }
+    },
+    assetPath(path) {
+      if (!path) {
+        return "";
+      }
+
+      return path.startsWith("/") ? path : `/${path.replace(/^\.?\//, "")}`;
     },
   },
 };

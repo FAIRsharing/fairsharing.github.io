@@ -50,7 +50,7 @@
         class="text-white bg-green"
         elevation="2"
         height="40"
-        href="/community_champions/our_champions"
+        to="/community_champions/our_champions"
       >
         Meet our community champions
       </v-btn>
@@ -209,8 +209,7 @@ export default {
       }
       if (tempSubjects[subj]) {
         tempSubjects[subj] = tempSubjects[subj] + 1;
-      }
-      else {
+      } else {
         tempSubjects[subj] = 1;
       }
     });

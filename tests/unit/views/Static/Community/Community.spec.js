@@ -142,6 +142,16 @@ describe("Community.vue", () => {
     });
   });
 
+  describe("assetPath", () => {
+    it("path is not available", () => {
+      expect(wrapper.vm.assetPath()).toBe("");
+    });
+    it("path is available", () => {
+      const path = "assets/images/test.jpg";
+      expect(wrapper.vm.assetPath(path)).toBe("/assets/images/test.jpg");
+    });
+  });
+
   // --- WATCHERS ---
 
   describe("watch: $route", () => {

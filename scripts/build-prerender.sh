@@ -5,7 +5,7 @@ umask 022
 TIMESTAMP="$(date +%Y%m%d%H%M%S)"
 BUILD_OUTPUT_DIR="dist_${TIMESTAMP}"
 DIST_LINK="dist"
-JSONLD_DIR="${JSONLD_DIR:-$(pwd)/dist/jsonld}"
+JSONLD_DIR="${JSONLD_DIR:-$(pwd)/jsonld}"
 
 normalise_tree_permissions() {
   local target="$1"

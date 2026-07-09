@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+umask 022
 
 # Load local .env values if present.
 set -a
@@ -22,7 +23,33 @@ JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/dist/jsonld}"
 RECORDS_JSON="$PROJECT_ROOT/src/lib/Prerender/fairsharingRecords.generated.json"
 ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 
-mkdir -p src/lib/Prerender "$CACHE_DIR"
+npx rimraf "$OUTPUT_DIR" "$CACHE_DIR"
+
+ensure_dir_755() {
+  mkdir -p "$@"
+  chmod 755 "$@"
+}
+
+ensure_file_644() {
+  chmod 644 "$@"
+}
+
+normalise_tree_permissions() {
+  local target
+
+  for target in "$@"; do
+    [ -e "$target" ] || continue
+
+    if [ -d "$target" ]; then
+      find "$target" -type d -exec chmod 755 {} +
+      find "$target" -type f -exec chmod 644 {} +
+    elif [ -f "$target" ]; then
+      chmod 644 "$target"
+    fi
+  done
+}
+
+ensure_dir_755 src/lib/Prerender
 
 switch_live_dist() {
   if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
@@ -37,8 +64,9 @@ switch_live_dist() {
 
 sync_jsonld_release() {
   if [ -d "$JSONLD_DIR" ]; then
-    mkdir -p "$BUILD_OUTPUT_DIR/jsonld"
+    ensure_dir_755 "$BUILD_OUTPUT_DIR/jsonld"
     cp -R "$JSONLD_DIR"/. "$BUILD_OUTPUT_DIR/jsonld/"
+    normalise_tree_permissions "$BUILD_OUTPUT_DIR/jsonld"
   fi
 }
 # Below method will keep last 3 dist. Can be uncommented if we want to keep only last 3 dist releases.
@@ -59,11 +87,13 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
       "organisationsFile": "%s",
       "jsonldDir": "%s"
     }\n' "$RECORDS_JSON" "$ORG_JSON" "$JSONLD_DIR"> "$BUILD_CONTEXT"
+  ensure_file_644 "$BUILD_CONTEXT"
   echo "Skipping full prerender"
 
   npx rimraf "$BUILD_OUTPUT_DIR/client" "$BUILD_OUTPUT_DIR/server"
   BUILD_OUTPUT_DIR="$BUILD_OUTPUT_DIR" PRERENDER_FULL=false vike build
   npx rimraf "$BUILD_OUTPUT_DIR/server"
+  normalise_tree_permissions "$BUILD_OUTPUT_DIR"
 
   sync_jsonld_release
   switch_live_dist
@@ -75,18 +105,6 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
   SECONDS_REMAINING=$((ELAPSED % 60))
   echo "Total build time: ${MINUTES}m ${SECONDS_REMAINING}s"
   exit 0
-fi
-
-# Full build path:
-# restore cached files first so API downtime does not break the build.
-if [ -f "$CACHE_DIR/fairsharingRecords.generated.json" ]; then
-  cp "$CACHE_DIR/fairsharingRecords.generated.json" "$RECORDS_JSON"
-  echo "Restored cached records JSON"
-fi
-
-if [ -f "$CACHE_DIR/organisations.generated.json" ]; then
-  cp "$CACHE_DIR/organisations.generated.json" "$ORG_JSON"
-  echo "Restored cached organisations JSON"
 fi
 
 echo "Generating records file from API..."
@@ -142,9 +160,7 @@ if (!okRecords || !okOrganisations) {
 }
 NODE
 
-# Save freshly generated files into cache for future builds.
-cp "$RECORDS_JSON" "$CACHE_DIR/fairsharingRecords.generated.json"
-cp "$ORG_JSON" "$CACHE_DIR/organisations.generated.json"
+ensure_file_644 "$RECORDS_JSON" "$ORG_JSON"
 
 LAST_ID=$(node --input-type=module <<'NODE'
 import fs from "node:fs";
@@ -188,6 +204,7 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
     "organisationsFile": "%s",
     "jsonldDir": "%s"
   }\n' "$batch" "$BATCH_SIZE" "$RECORDS_JSON" "$ORG_JSON" "$JSONLD_DIR"> "$BUILD_CONTEXT"
+  ensure_file_644 "$BUILD_CONTEXT"
   echo "Building chunk $batch / $TOTAL_BATCHES: IDs $start_id to $end_id"
 
   BUILD_OUTPUT_DIR="$BUILD_OUTPUT_DIR" PRERENDER_FULL=true vike build
@@ -197,8 +214,9 @@ for batch in $(seq 1 "$TOTAL_BATCHES"); do
 done
 
 npx rimraf "$BUILD_OUTPUT_DIR/client" "$BUILD_OUTPUT_DIR/server"
-mkdir -p "$BUILD_OUTPUT_DIR/client"
+ensure_dir_755 "$BUILD_OUTPUT_DIR/client"
 cp -R "$OUTPUT_DIR/client"/. "$BUILD_OUTPUT_DIR/client/"
+normalise_tree_permissions "$BUILD_OUTPUT_DIR"
 
 npx rimraf "$OUTPUT_DIR" "$BUILD_OUTPUT_DIR/server"
 sync_jsonld_release

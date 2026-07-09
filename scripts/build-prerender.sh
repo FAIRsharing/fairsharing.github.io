@@ -18,7 +18,7 @@ switch_live_dist() {
   local next_link="${DIST_LINK}.new.$$"
 
   ln -sfn "$BUILD_OUTPUT_DIR" "$next_link"
-  mv -f "$next_link" "$DIST_LINK"
+  mv -Tf "$next_link" "$DIST_LINK"
 }
 
 if [ -e "$BUILD_OUTPUT_DIR" ]; then

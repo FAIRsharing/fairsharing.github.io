@@ -1,6 +1,5 @@
 import vikeVue from "vike-vue/config";
 import Layout from "./+Layout.vue";
-// import vuetify from "@manderley/vike-vue-vuetify/config";
 
 export default {
   extends: [vikeVue],

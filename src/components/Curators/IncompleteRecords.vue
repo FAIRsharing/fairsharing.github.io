@@ -75,7 +75,10 @@
                       wrapper-class=""
                     />
                   </v-avatar>
-                  <a :href="'/' + props.item.id">
+                  <a
+                    :href="'/' + props.item.id"
+                    @click.prevent="navigateTo(props.item.id)"
+                  >
                     {{ props.item.recordNameID }}
                   </a>
                 </div>
@@ -118,6 +121,7 @@ import RestClient from "@/lib/Client/RESTClient";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getIncompleteRecords from "@/lib/GraphClient/queries/curators/getIncompleteRecords.json";
 import formatDateIso from "@/utils/generalUtils";
+import navigateTo from "@/utils/generalUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -127,7 +131,7 @@ export default {
   components: {
     Icon,
   },
-  mixins: [formatDateIso],
+  mixins: [formatDateIso, navigateTo],
   props: {
     headerItems: {
       type: Array,
@@ -204,7 +208,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.incompleteRecords.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

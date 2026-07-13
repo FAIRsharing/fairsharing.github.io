@@ -37,7 +37,10 @@
                       wrapper-class=""
                     />
                   </v-avatar>
-                  <a :href="'/' + props.item.id">
+                  <a
+                    :href="'/' + props.item.id"
+                    @click.prevent="navigateTo(props.item.id)"
+                  >
                     {{ props.item.recordNameID }}
                   </a>
                 </div>
@@ -53,7 +56,12 @@
                   {{ props.item.creator }}
                 </div>
                 <div v-else>
-                  <a :href="'/users/' + props.item.idCreator">
+                  <a
+                    :href="'/users/' + props.item.idCreator"
+                    @click.prevent="
+                      navigateTo('/users/' + props.item.idCreator)
+                    "
+                  >
                     {{ props.item.creator }}
                   </a>
                 </div>
@@ -73,6 +81,7 @@ import Icon from "@/components/Icon";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json";
 import formatDate from "@/utils/generalUtils";
+import navigateTo from "@/utils/generalUtils";
 
 const client = new GraphClient();
 
@@ -81,7 +90,7 @@ export default {
   components: {
     Icon,
   },
-  mixins: [formatDate],
+  mixins: [formatDate, navigateTo],
   props: {
     headerItems: {
       type: Array,
@@ -124,13 +133,15 @@ export default {
         object.createdAt = this.formatDate(item.createdAt);
         if (item.curator) {
           object.curator = item.curator.username;
-        } else {
+        }
+        else {
           object.curator = "none";
         }
         if (item.creator) {
           object.creator = item.creator.username;
           object.idCreator = item.creator.id;
-        } else {
+        }
+        else {
           object.creator = "unknown";
         }
         this.hiddenRecords.push(object);

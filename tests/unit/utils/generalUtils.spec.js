@@ -65,7 +65,6 @@ describe("generalUtils.js", function () {
       configurable: true,
     });
     generalUtils.methods.navigateTo(dummyPath);
-
     expect(assignMock).toHaveBeenCalledWith(dummyPath);
   });
 

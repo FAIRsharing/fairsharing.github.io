@@ -18,7 +18,7 @@ BUILD_OUTPUT_DIR="${BUILD_OUTPUT_DIR:-dist_${START_TIME}}"
 LIVE_DIST_LINK="${LIVE_DIST_LINK:-dist}"
 
 PROJECT_ROOT="$(pwd)"
-JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/dist/jsonld}"
+JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/jsonld}"
 RECORDS_JSON="$PROJECT_ROOT/src/lib/Prerender/fairsharingRecords.generated.json"
 ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 

@@ -33,7 +33,7 @@
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
-      <v-row class="block-category">
+      <v-row class="block-category justify-center">
         <v-col
           v-for="(tab, index) in contentTabs"
           :key="tab.name + '_' + index"

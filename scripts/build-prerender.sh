@@ -25,6 +25,7 @@ ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 mkdir -p src/lib/Prerender "$CACHE_DIR"
 
 switch_live_dist() {
+  local abs_build_output_dir
   abs_build_output_dir="$(cd "$(dirname "$BUILD_OUTPUT_DIR")" && pwd)/$(basename "$BUILD_OUTPUT_DIR")"
 
   if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
@@ -32,7 +33,8 @@ switch_live_dist() {
   fi
 
   ln -sfn "$abs_build_output_dir" "$LIVE_DIST_LINK.new"
-  mv -f "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
+  rm -f "$LIVE_DIST_LINK"
+  mv "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
 
   ls -ld "$LIVE_DIST_LINK"
   readlink "$LIVE_DIST_LINK" || true

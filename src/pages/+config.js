@@ -7,6 +7,8 @@ export default {
   ssr: true,
   prerender: {
     partial: true,
+    trailingSlash: false,
+    disableUrlNormalization: true,
     parallel: false, // Disables multi-threaded race conditions
     keepDistServer: true, // Prevents Vike from deleting dist/server/ mid-build
   },

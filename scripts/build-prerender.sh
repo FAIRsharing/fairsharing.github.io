@@ -25,14 +25,17 @@ ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 mkdir -p src/lib/Prerender "$CACHE_DIR"
 
 switch_live_dist() {
+  abs_build_output_dir="$(cd "$(dirname "$BUILD_OUTPUT_DIR")" && pwd)/$(basename "$BUILD_OUTPUT_DIR")"
+
   if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
-#    echo "$LIVE_DIST_LINK must be a symlink before running this script"
-#    exit 1
     mv "$LIVE_DIST_LINK" "${LIVE_DIST_LINK}_backup_${START_TIME}"
   fi
 
-  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.new"
+  ln -sfn "$abs_build_output_dir" "$LIVE_DIST_LINK.new"
   mv -f "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
+
+  ls -ld "$LIVE_DIST_LINK"
+  readlink "$LIVE_DIST_LINK" || true
 }
 
 sync_jsonld_release() {

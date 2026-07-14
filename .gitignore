@@ -37,3 +37,4 @@ src/lib/Prerender/organisations.generated.json
 .prerender-output/
 .prerender-cache/
 src/lib/Prerender/build-context.json
+jsonld/*.jsonld

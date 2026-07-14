@@ -11,7 +11,6 @@ export default {
     keepDistServer: true, // Prevents Vike from deleting dist/server/ mid-build
   },
   trailingSlash: false,
-  disableUrlNormalization: true,
   hooksTimeout: false,
   favicon: "/assets/favicon.ico",
   title: "FAIRsharing",

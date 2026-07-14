@@ -37,6 +37,9 @@ const generalUtils = {
         return 1;
       }
     },
+    navigateTo(path) {
+      window.location.assign(path);
+    },
   },
 };
 

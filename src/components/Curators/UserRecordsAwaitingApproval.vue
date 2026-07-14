@@ -94,7 +94,7 @@
                 <v-avatar v-if="item.type" class="mr-2" size="40">
                   <Icon :height="40" :item="item.type" wrapper-class="" />
                 </v-avatar>
-                <a :href="'/' + item.id">
+                <a :href="'/' + item.id" @click.prevent="navigateTo(item.id)">
                   {{ item.recordName }}
                 </a>
               </div>
@@ -104,7 +104,10 @@
                 {{ item.lastEditor }}
               </div>
               <div v-else>
-                <a :href="'/users/' + item.idLastEditor">
+                <a
+                  :href="'/users/' + item.idLastEditor"
+                  @click.prevent="navigateTo('/users/' + item.idLastEditor)"
+                >
                   {{ item.lastEditor }}
                 </a>
               </div>
@@ -195,6 +198,7 @@
                       <a
                         :href="'/' + item.id + '/edit'"
                         style="padding-left: 12px"
+                        @click.prevent="navigateTo('/' + item.id + '/edit')"
                       >
                         Edit
                       </a>
@@ -210,7 +214,10 @@
                 {{ item.creator }}
               </div>
               <div v-else>
-                <a :href="'/users/' + item.idCreator">
+                <a
+                  :href="'/users/' + item.idCreator"
+                  @click.prevent="navigateTo('/users/' + item.idCreator)"
+                >
                   {{ item.creator }}
                 </a>
               </div>
@@ -313,8 +320,8 @@
 </template>
 
 <script>
-import { mergeProps } from "vue";
-import { mapActions, mapState } from "vuex";
+import {mergeProps} from "vue";
+import {mapActions, mapState} from "vuex";
 
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -324,6 +331,7 @@ import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecord
 import getUserApprovalsRequired from "@/lib/GraphClient/queries/curators/getUserApprovalsRequired.json";
 import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
+import navigateTo from "@/utils/generalUtils";
 import Loaders from "@/components/Navigation/Loaders.vue";
 
 const client = new GraphClient();
@@ -335,7 +343,7 @@ export default {
     Loaders,
     Icon,
   },
-  mixins: [formatDate, compareRecordDescUpdate],
+  mixins: [formatDate, compareRecordDescUpdate, navigateTo],
   props: {
     headerItems: {
       type: Array,

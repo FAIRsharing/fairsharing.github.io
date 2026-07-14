@@ -18,21 +18,35 @@ BUILD_OUTPUT_DIR="${BUILD_OUTPUT_DIR:-dist_${START_TIME}}"
 LIVE_DIST_LINK="${LIVE_DIST_LINK:-dist}"
 
 PROJECT_ROOT="$(pwd)"
-JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/dist/jsonld}"
+JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/jsonld}"
 RECORDS_JSON="$PROJECT_ROOT/src/lib/Prerender/fairsharingRecords.generated.json"
 ORG_JSON="$PROJECT_ROOT/src/lib/Prerender/organisations.generated.json"
 
 mkdir -p src/lib/Prerender "$CACHE_DIR"
 
+normalise_tree_permissions() {
+  local target
+  target="$(cd "$1" && pwd)"
+
+  find "$target" -type d -exec chmod 755 {} +
+  find "$target" -type f -exec chmod 644 {} +
+  chmod 755 "$target"
+}
+
 switch_live_dist() {
+  local abs_build_output_dir
+  abs_build_output_dir="$(cd "$(dirname "$BUILD_OUTPUT_DIR")" && pwd)/$(basename "$BUILD_OUTPUT_DIR")"
+
   if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
-#    echo "$LIVE_DIST_LINK must be a symlink before running this script"
-#    exit 1
     mv "$LIVE_DIST_LINK" "${LIVE_DIST_LINK}_backup_${START_TIME}"
   fi
 
-  ln -sfn "$BUILD_OUTPUT_DIR" "$LIVE_DIST_LINK.new"
-  mv -f "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
+  ln -sfn "$abs_build_output_dir" "$LIVE_DIST_LINK.new"
+  rm -f "$LIVE_DIST_LINK"
+  mv "$LIVE_DIST_LINK.new" "$LIVE_DIST_LINK"
+
+  ls -ld "$LIVE_DIST_LINK"
+  readlink "$LIVE_DIST_LINK" || true
 }
 
 sync_jsonld_release() {
@@ -66,6 +80,7 @@ if [ "$VITE_FULL_PRERENDER" != "true" ]; then
   npx rimraf "$BUILD_OUTPUT_DIR/server"
 
   sync_jsonld_release
+  normalise_tree_permissions "$BUILD_OUTPUT_DIR"
   switch_live_dist
   #cleanup_old_releases
 
@@ -202,6 +217,7 @@ cp -R "$OUTPUT_DIR/client"/. "$BUILD_OUTPUT_DIR/client/"
 
 npx rimraf "$OUTPUT_DIR" "$BUILD_OUTPUT_DIR/server"
 sync_jsonld_release
+normalise_tree_permissions "$BUILD_OUTPUT_DIR"
 switch_live_dist
 
 END_TIME=$(date +%s)

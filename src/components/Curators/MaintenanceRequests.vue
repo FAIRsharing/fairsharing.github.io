@@ -55,13 +55,16 @@
                   <v-avatar v-if="item.type" class="mr-2" size="40">
                     <Icon :height="40" :item="item.type" wrapper-class="" />
                   </v-avatar>
-                  <a :href="'/' + item.id">
+                  <a :href="'/' + item.id" @click.prevent="navigateTo(item.id)">
                     {{ item.recordName }}
                   </a>
                 </div>
               </td>
               <td>
-                <a :href="'/users/' + item.userId">
+                <a
+                  :href="'/users/' + item.userId"
+                  @click.prevent="navigateTo('/users/' + item.userId)"
+                >
                   {{ item.userName }}
                 </a>
               </td>
@@ -261,6 +264,7 @@ import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import getPendingMaintenanceRequests from "@/lib/GraphClient/queries/curators/getPendingMaintenanceRequests.json";
 import formatDate from "@/utils/generalUtils";
+import navigateTo from "@/utils/generalUtils";
 import Loaders from "@/components/Navigation/Loaders.vue";
 
 const client = new GraphClient();
@@ -272,7 +276,7 @@ export default {
     Loaders,
     Icon,
   },
-  mixins: [formatDate],
+  mixins: [formatDate, navigateTo],
   props: {
     headerItems: {
       type: Array,

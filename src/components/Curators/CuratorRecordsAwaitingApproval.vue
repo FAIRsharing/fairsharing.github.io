@@ -80,7 +80,7 @@
                 <v-avatar v-if="item.type" class="mr-2" size="40">
                   <Icon :height="40" :item="item.type" wrapper-class="" />
                 </v-avatar>
-                <a :href="'/' + item.id">
+                <a :href="'/' + item.id" @click.prevent="navigateTo(item.id)">
                   {{ item.recordName }}
                 </a>
               </div>
@@ -90,7 +90,10 @@
                 {{ item.lastEditor }}
               </div>
               <div v-else>
-                <a :href="'/users/' + item.idLastEditor">
+                <a
+                  :href="'/users/' + item.idLastEditor"
+                  @click.prevent="navigateTo('/users/' + item.idLastEditor)"
+                >
                   {{ item.lastEditor }}
                 </a>
               </div>
@@ -179,6 +182,7 @@
                       <a
                         :href="'/' + item.id + '/edit'"
                         style="padding-left: 12px"
+                        @click.prevent="navigateTo('/' + item.id + '/edit')"
                       >
                         Edit
                       </a>
@@ -194,7 +198,10 @@
                 {{ item.creator }}
               </div>
               <div v-else>
-                <a :href="'/users/' + item.idCreator">
+                <a
+                  :href="'/users/' + item.idCreator"
+                  @click.prevent="navigateTo('/users/' + item.idCreator)"
+                >
                   {{ item.creator }}
                 </a>
               </div>
@@ -308,6 +315,7 @@ import getCuratorList from "@/lib/GraphClient/queries/curators/getCuratorList.js
 import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecords.json";
 import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
+import navigateTo from "@/utils/generalUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -317,7 +325,7 @@ export default {
   components: {
     Icon,
   },
-  mixins: [formatDate, compareRecordDescUpdate],
+  mixins: [formatDate, compareRecordDescUpdate, navigateTo],
   props: {
     headerItems: {
       type: Array,
@@ -414,12 +422,14 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          } else {
+          }
+          else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          } else {
+          }
+          else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
@@ -432,7 +442,8 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          } else {
+          }
+          else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -458,7 +469,8 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        } else if (role === "curator") {
+        }
+        else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -489,7 +501,8 @@ export default {
             token,
           );
           this.loading = false;
-        } else {
+        }
+        else {
           // CREATE NEW
           this.loading = true;
           const response = await restClient.createProcessingNotes(
@@ -502,7 +515,8 @@ export default {
           item.processingNoteId = newId;
           this.loading = false;
         }
-      } catch (err) {
+      }
+      catch (err) {
         this.loading = false;
         this.error.general = "Failed to save processing note.";
         this.error.recordID = idRecord;
@@ -528,7 +542,8 @@ export default {
         item.processingNotes = "";
         item.processingNoteId = null;
         this.loading = false;
-      } catch (err) {
+      }
+      catch (err) {
         this.loading = false;
         this.error.general = "Failed to delete processing note.";
         this.error.recordID = item.id;
@@ -540,7 +555,8 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      } else {
+      }
+      else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -593,7 +609,8 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );
@@ -613,7 +630,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

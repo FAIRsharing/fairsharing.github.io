@@ -1,6 +1,5 @@
 import vikeVue from "vike-vue/config";
 import Layout from "./+Layout.vue";
-// import vuetify from "@manderley/vike-vue-vuetify/config";
 
 export default {
   extends: [vikeVue],
@@ -8,6 +7,8 @@ export default {
   ssr: true,
   prerender: {
     partial: true,
+    trailingSlash: false,
+    disableUrlNormalization: true,
     parallel: false, // Disables multi-threaded race conditions
     keepDistServer: true, // Prevents Vike from deleting dist/server/ mid-build
   },

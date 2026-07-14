@@ -56,6 +56,18 @@ describe("generalUtils.js", function () {
     expect(generalUtils.methods.compareRecordDescUpdate(a, b)).toBe(1);
   });
 
+  it("can check navigateTo method", function () {
+    let dummyPath = "/test";
+    const assignMock = vi.fn();
+    Object.defineProperty(window, "location", {
+      value: { assign: assignMock },
+      writable: true,
+      configurable: true,
+    });
+    generalUtils.methods.navigateTo(dummyPath);
+    expect(assignMock).toHaveBeenCalledWith(dummyPath);
+  });
+
   it("can check LightenDarkenColor function", function () {
     expect(LightenDarkenColor("#aaa222", 50)).toBe("#fff333");
     expect(LightenDarkenColor("#ffffff", 50)).toBe("#ffffff");

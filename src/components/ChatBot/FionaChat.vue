@@ -53,7 +53,7 @@
 </template>
 <script>
 export default {
-  name: "FionaChat.vue",
+  name: "FionaChat",
   data: () => {
     return {
       isOpen: false,

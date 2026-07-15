@@ -3,47 +3,47 @@
     <div class="fairsharing-chat">
       <Transition name="chat-window">
         <section
-          v-if="isOpen"
-          id="fairsharing-chat-window"
-          :class="[
+            v-if="isOpen"
+            id="fairsharing-chat-window"
+            :class="[
             'fairsharing-chat__window',
             {
               'fairsharing-chat__window--maximized': isMaximized,
             },
           ]"
-          aria-label="FAIRsharing assistant"
-          role="dialog"
+            aria-label="FAIRsharing assistant"
+            role="dialog"
         >
           <header class="fairsharing-chat__header">
             <span>FAIRsharing Assistant</span>
 
             <div class="fairsharing-chat__header-actions">
               <button
-                :aria-label="
+                  :aria-label="
                   isMaximized ? 'Restore chat window' : 'Maximize chat window'
                 "
-                class="fairsharing-chat__header-button"
-                type="button"
-                @click="toggleMaximize"
+                  class="fairsharing-chat__header-button"
+                  type="button"
+                  @click="toggleMaximize"
               >
                 <svg v-if="!isMaximized" aria-hidden="true" viewBox="0 0 24 24">
                   <path
-                    d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm1 2v12h12V6H6Z"
+                      d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm1 2v12h12V6H6Z"
                   />
                 </svg>
 
                 <svg v-else aria-hidden="true" viewBox="0 0 24 24">
                   <path
-                    d="M8 4h11a1 1 0 0 1 1 1v11h-2V6H8V4Zm-3 4h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm1 2v8h9v-8H6Z"
+                      d="M8 4h11a1 1 0 0 1 1 1v11h-2V6H8V4Zm-3 4h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm1 2v8h9v-8H6Z"
                   />
                 </svg>
               </button>
 
               <button
-                aria-label="Close chat"
-                class="fairsharing-chat__header-button fairsharing-chat__close"
-                type="button"
-                @click="closeChat"
+                  aria-label="Close chat"
+                  class="fairsharing-chat__header-button fairsharing-chat__close"
+                  type="button"
+                  @click="closeChat"
               >
                 &times;
               </button>
@@ -51,26 +51,26 @@
           </header>
 
           <iframe
-            :src="chatUrl + chatId"
-            allow="clipboard-read; clipboard-write"
-            class="fairsharing-chat__iframe"
-            loading="lazy"
-            title="FAIRsharing Assistant"
+              :src="chatUrl + chatId"
+              allow="clipboard-read; clipboard-write"
+              class="fairsharing-chat__iframe"
+              loading="lazy"
+              title="FAIRsharing Assistant"
           />
         </section>
       </Transition>
 
       <v-btn
-        :aria-expanded="isOpen"
-        :aria-label="isOpen ? 'Close chat' : 'Open chat'"
-        aria-controls="fairsharing-chat-window"
-        class="fairsharing-chat__button"
-        icon
-        @click="toggleChat"
+          :aria-expanded="isOpen"
+          :aria-label="isOpen ? 'Close chat' : 'Open chat'"
+          aria-controls="fairsharing-chat-window"
+          class="fairsharing-chat__button"
+          icon
+          @click="toggleChat"
       >
         <svg v-if="!isOpen" aria-hidden="true" viewBox="0 0 24 24">
           <path
-            d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 5h12V7H6v2Zm0 4h8v-2H6v2Z"
+              d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 5h12V7H6v2Zm0 4h8v-2H6v2Z"
           />
         </svg>
 
@@ -188,10 +188,10 @@ export default {
   background: white;
   box-shadow: 0 12px 40px rgb(0 0 0 / 30%);
   transition:
-    width 180ms ease,
-    height 180ms ease,
-    inset 180ms ease,
-    border-radius 180ms ease;
+      width 180ms ease,
+      height 180ms ease,
+      inset 180ms ease,
+      border-radius 180ms ease;
 }
 
 .fairsharing-chat__window--maximized {
@@ -258,8 +258,8 @@ export default {
 .chat-window-enter-active,
 .chat-window-leave-active {
   transition:
-    opacity 180ms ease,
-    transform 180ms ease;
+      opacity 180ms ease,
+      transform 180ms ease;
 }
 
 .chat-window-enter-from,

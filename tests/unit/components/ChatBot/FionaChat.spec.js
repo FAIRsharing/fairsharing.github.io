@@ -1,6 +1,6 @@
-import {afterEach, beforeEach, describe, expect, it, vi} from "vitest";
-import {mount} from "@vue/test-utils";
-import {nextTick} from "vue";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { mount } from "@vue/test-utils";
+import { nextTick } from "vue";
 
 import FionaChat from "@/components/ChatBot/FionaChat.vue";
 
@@ -12,6 +12,16 @@ describe("FionaChat", () => {
     document.body.innerHTML = '<div id="app"></div>';
     wrapper = mount(FionaChat, {
       attachTo: "#app",
+      global: {
+        stubs: {
+          VBtn: {
+            template:
+              '<button class="v-btn-stub" v-bind="$attrs"><slot /></button>',
+          },
+          Transition: false,
+          Teleport: true,
+        },
+      },
     });
   });
 

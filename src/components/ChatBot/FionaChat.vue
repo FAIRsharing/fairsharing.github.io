@@ -23,7 +23,7 @@
           </header>
 
           <iframe
-            :src="chatUrl"
+            :src="chatUrl + chatId"
             allow="clipboard-read; clipboard-write"
             class="fairsharing-chat__iframe"
             loading="lazy"
@@ -57,8 +57,8 @@ export default {
   data: () => {
     return {
       isOpen: false,
-      chatUrl:
-        "https://aicc.uksouth.cloudapp.azure.com/chat/9abeb5c7-1854-4bac-b482-2cd2ab39f246",
+      chatUrl: "https://aicc.uksouth.cloudapp.azure.com/chat/",
+      chatId: import.meta.env.VITE_FIONA_CHAT_ID,
     };
   },
   beforeUnmount() {

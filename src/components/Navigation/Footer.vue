@@ -42,10 +42,11 @@
         v-scroll="onScroll"
         app
         appear
+        class="scroll-to-top"
         color="primary"
         icon="fas fa-angle-up"
+        location="bottom end"
         position="fixed"
-        style="right: 72px; bottom: 50px; left: auto"
         @click="scrollToTop"
       />
     </v-slide-y-reverse-transition>
@@ -112,5 +113,10 @@ li {
   left: 0;
   width: 100%;
   border-top: 3px dashed #253442;
+}
+:deep(.scroll-to-top) {
+  right: 66px !important;
+  bottom: 50px !important;
+  left: auto !important;
 }
 </style>

@@ -32,12 +32,12 @@
         </section>
       </Transition>
 
-      <button
+      <v-btn
         :aria-expanded="isOpen"
         :aria-label="isOpen ? 'Close chat' : 'Open chat'"
         aria-controls="fairsharing-chat-window"
         class="fairsharing-chat__button"
-        type="button"
+        icon
         @click="toggleChat"
       >
         <svg v-if="!isOpen" aria-hidden="true" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
         </svg>
 
         <span v-else aria-hidden="true">&times;</span>
-      </button>
+      </v-btn>
     </div>
   </Teleport>
 </template>
@@ -87,7 +87,7 @@ export default {
 .fairsharing-chat {
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  bottom: 80px;
   z-index: 10000;
 }
 
@@ -101,7 +101,6 @@ export default {
   border-radius: 50%;
   background: #186f65;
   color: white;
-  box-shadow: 0 8px 25px rgb(0 0 0 / 25%);
   cursor: pointer;
 }
 

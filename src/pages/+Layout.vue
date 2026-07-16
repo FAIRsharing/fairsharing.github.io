@@ -20,7 +20,7 @@
     <PublicMessages />
 
     <router-view class="min-height-70vh justify-center" />
-
+    <FionaChat />
     <FooterComp />
   </v-app>
 </template>
@@ -34,6 +34,7 @@ import Jumbotron from "@/components/Navigation/Jumbotron";
 import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
+import FionaChat from "@/components/ChatBot/FionaChat.vue";
 
 export default {
   name: "App",
@@ -43,6 +44,7 @@ export default {
     FooterComp,
     HeaderComp,
     Jumbotron,
+    FionaChat,
   },
   data() {
     return {

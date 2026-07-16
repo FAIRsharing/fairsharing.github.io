@@ -176,6 +176,29 @@ const article_zenodo_5 = {
   URL: "https://doi.org/10.1126/science.2781282",
 };
 
+const article_zenodo_api = {
+  created: "2026-06-29T16:45:25.276360+00:00",
+  doi: "10.5281/zenodo.20703770",
+  doi_url: "https://doi.org/10.5281/zenodo.20703770",
+  metadata: {
+    title: "FAIR Assessment – ESRF-PaNOSC Pilot - Conceptual Requirements",
+    doi: "10.5281/zenodo.20703770",
+    publication_date: "2026-06-29",
+    creators: [
+      {
+        name: "Duyme, Renaud",
+      },
+    ],
+    resource_type: {
+      title: "Publication",
+      type: "publication",
+    },
+  },
+  links: {
+    doi: "https://doi.org/10.5281/zenodo.20703770",
+  },
+};
+
 describe("EditPublications.vue", function () {
   let wrapper;
   beforeEach(() => {
@@ -309,6 +332,25 @@ describe("EditPublications.vue", function () {
     const getDOIButton = wrapper.get("[data-testid='getDOI-button']");
     getDOIButton.trigger("click");
     await wrapper.vm.getDOI();
+    expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
+    fetchStub.restore();
+  });
+
+  it("can get a Zenodo DOI from the DOI endpoint", async () => {
+    fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+    fetchStub.returns({ data: article_zenodo_api });
+    const expectedArticle = {
+      authors: "Duyme, Renaud; ",
+      doi: "10.5281/zenodo.20703770",
+      title: "FAIR Assessment – ESRF-PaNOSC Pilot - Conceptual Requirements",
+      journal: null,
+      url: "https://doi.org/10.5281/zenodo.20703770",
+      year: 2026,
+      isCitation: false,
+    };
+    wrapper.vm.search = "10.5281/zenodo.20703770";
+    await wrapper.vm.getDOI();
+    expect(wrapper.vm.errors.doi).toBe(null);
     expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
     fetchStub.restore();
   });

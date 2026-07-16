@@ -326,7 +326,7 @@
 </template>
 
 <script>
-import { isEmpty, isEqual } from "lodash-es";
+import { isEqual } from "lodash-es";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 import Alerts from "@/components/Editor/Alerts";
@@ -413,8 +413,7 @@ export default {
         type: function () {
           if (error) {
             return "error";
-          }
-          else {
+          } else {
             return "success";
           }
         },
@@ -456,8 +455,7 @@ export default {
             )[0];
             if (!isFound) {
               changes += 1;
-            }
-            else {
+            } else {
               let copy = JSON.parse(JSON.stringify(pub));
               if (copy.tablePosition > -1) delete copy.tablePosition;
               /* v8 ignore next 4*/
@@ -496,6 +494,103 @@ export default {
       pub.isCitation = !pub.isCitation;
       this.publications.index = pub;
     },
+    extractPublicationYear(dateValue) {
+      if (dateValue === undefined || dateValue === null) {
+        return null;
+      }
+      if (typeof dateValue === "number") {
+        return dateValue;
+      }
+      if (typeof dateValue === "string") {
+        let year = Number(dateValue.split("-")[0]);
+        return Number.isNaN(year) ? null : year;
+      }
+      if (Array.isArray(dateValue)) {
+        return this.extractPublicationYear(dateValue[0]);
+      }
+      if (dateValue["date-parts"]) {
+        return this.extractPublicationYear(dateValue["date-parts"][0]);
+      }
+      return null;
+    },
+    isZenodoPublication(dataPublication) {
+      let metadata = dataPublication.metadata;
+      return (
+        metadata !== undefined &&
+        (metadata.upload_type === "publication" ||
+          (metadata.resource_type &&
+            metadata.resource_type.type &&
+            metadata.resource_type.type === "publication"))
+      );
+    },
+    setZenodoPublication(dataPublication) {
+      if (!this.isZenodoPublication(dataPublication)) {
+        return false;
+      }
+
+      let metadata = dataPublication.metadata;
+      let year = this.extractPublicationYear(metadata.publication_date);
+      if (year === null) {
+        year = this.extractPublicationYear(dataPublication.created);
+      }
+
+      let authors = [];
+      if (metadata.creators) {
+        metadata.creators.forEach(function (a) {
+          if (a.name) authors.push(a.name + "; ");
+        });
+      }
+
+      this.newPublication = {
+        journal: metadata.journal_title || metadata.meeting?.title || null,
+        doi: dataPublication.doi || metadata.doi || null,
+        title: metadata.title || dataPublication.title,
+        url: dataPublication.links?.doi || dataPublication.doi_url || null,
+        year: year,
+        authors: authors.join(""),
+        isCitation: false,
+      };
+      this.openEditor = true;
+      return true;
+    },
+    setCrossrefPublication(data) {
+      let year = this.extractPublicationYear(data["published-print"]);
+      if (year === null) {
+        year = this.extractPublicationYear(data["published-online"]);
+      }
+      if (year === null) {
+        year = this.extractPublicationYear(data.published);
+      }
+      if (year === null) {
+        year = this.extractPublicationYear(data.issued);
+      }
+      if (year === null) {
+        year = this.extractPublicationYear(data.created);
+      }
+
+      let authors = [];
+      if (data.author) {
+        data.author.forEach(function (a) {
+          let author = [a.family, a.given].filter(Boolean).join(", ");
+          if (!author) author = a.name;
+          if (author) authors.push(author + "; ");
+        });
+      }
+
+      this.newPublication = {
+        journal:
+          data["container-title-short"] ||
+          data["container-title"] ||
+          data["title"],
+        doi: data["DOI"],
+        title: data.title,
+        url: data["URL"],
+        year: year,
+        authors: authors.join(""),
+        isCitation: false,
+      };
+      this.openEditor = true;
+    },
     async getDOI() {
       if (!this.search) {
         this.showEmptySearch = true;
@@ -527,45 +622,7 @@ export default {
             dataPublication = data;
           }
           if (dataPublication.metadata !== undefined) {
-            if (
-              dataPublication.metadata.upload_type === "publication" ||
-              (dataPublication.metadata.resource_type &&
-                dataPublication.metadata.resource_type.type &&
-                dataPublication.metadata.resource_type.type === "publication")
-            ) {
-              this.newPublication = {
-                journal: null,
-                doi: null,
-                title: null,
-                url: null,
-                year: null,
-                authors: null,
-              };
-              if (dataPublication.metadata.journal_title) {
-                this.newPublication.journal =
-                  dataPublication.metadata.journal_title;
-              }
-              else {
-                if (dataPublication.metadata.meeting) {
-                  this.newPublication.journal =
-                    dataPublication.metadata.meeting.title;
-                }
-              }
-              this.newPublication.doi = dataPublication.doi;
-              this.newPublication.title = dataPublication.metadata.title;
-              this.newPublication.url = dataPublication.links.doi;
-              this.newPublication.year = Number(
-                dataPublication.metadata.publication_date.split("-")[0],
-              );
-              let authors = [];
-              dataPublication.metadata.creators.forEach(function (a) {
-                authors.push(a.name + "; ");
-              });
-              this.newPublication.authors = authors.join("");
-              this.newPublication.isCitation = false;
-              this.openEditor = true;
-            }
-            else {
+            if (!this.setZenodoPublication(dataPublication)) {
               this.errors.doi = true;
             }
           }
@@ -579,34 +636,14 @@ export default {
         }
       }
       else {
-        /* v8 ignore next 2 */
-        this.newPublication.journal =
-          data["container-title-short"] ||
-          data["container-title"] ||
-          data["title"];
-        this.newPublication.doi = data["DOI"];
-        this.newPublication.title = data.title;
-        this.newPublication.url = data["URL"];
-        if (data["created"]) {
-          let dateParts;
-          if (data["published-print"]) {
-            dateParts = data["published-print"]["date-parts"][0].toString();
+        if (data.metadata !== undefined) {
+          if (!this.setZenodoPublication(data)) {
+            this.errors.doi = true;
           }
-          else {
-            dateParts = data["created"]["date-parts"][0].toString();
-          }
-          this.newPublication.year = Number(dateParts.split(",")[0]);
         }
-        else if (!isEmpty(data.issued)) {
-          this.newPublication.year = Number(data.issued["date-parts"][0]);
+        else {
+          this.setCrossrefPublication(data);
         }
-        let authors = [];
-        data.author.forEach(function (a) {
-          authors.push(a.family + ", " + a.given + "; ");
-        });
-        this.newPublication.authors = authors.join("");
-        this.newPublication.isCitation = false;
-        this.openEditor = true;
       }
       this.doiLoader = false;
     },
@@ -627,8 +664,7 @@ export default {
       /* v8 ignore next 3*/
       if (data.error || data.result[id].error) {
         this.errors.pmid = true;
-      }
-      else {
+      } else {
         const pub = data.result[id];
         let pubDate = new Date(pub["sortpubdate"]);
         let doi = this.processIDs(pub["elocationid"]);
@@ -678,8 +714,7 @@ export default {
         );
         if (editedPublication.error) {
           _module.errors.general = editedPublication.error;
-        }
-        else {
+        } else {
           editedPublication.isCitation = newPub.isCitation;
           //Commenting below code as it is causing the issue of undefined tablePosition
           // delete this.availablePublications[newPub.tablePosition];
@@ -706,8 +741,7 @@ export default {
         );
         if (createdPublication.error) {
           _module.errors.general = createdPublication.error;
-        }
-        else {
+        } else {
           this.publications.push(createdPublication);
           createdPublication.tablePosition = this.availablePublications.length;
           this.availablePublications.push(createdPublication);
@@ -717,8 +751,7 @@ export default {
       if (!_module.errors.general) {
         if (!newPub.doi) {
           _module.search = newPub.title;
-        }
-        else {
+        } else {
           _module.search = newPub.doi;
         }
         _module.newPublication = {};
@@ -739,8 +772,7 @@ export default {
       if (item.textContent.trim() === "Save and continue") {
         this.continueLoader = true;
         this.exitLoader = false;
-      }
-      else if (item.textContent.trim() === "Save and exit") {
+      } else if (item.textContent.trim() === "Save and exit") {
         this.continueLoader = false;
         this.exitLoader = true;
       }

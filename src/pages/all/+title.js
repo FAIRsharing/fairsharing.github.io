@@ -29,7 +29,8 @@ export default function title(pageContext) {
     "/fairassist": "Fairassist | FAIRsharing",
     "/browse/subject": "Subject Browser| FAIRsharing",
     "/communities": "Communities | FAIRsharing",
-    "/api_doc": "API DOC| FAIRsharing",
+    "/api_doc": "API DOC | FAIRsharing",
+    "/curator": "Curator | FAIRsharing",
   };
 
   if (staticTitles[path]) {

@@ -7,11 +7,10 @@ export default {
   ssr: true,
   prerender: {
     partial: true,
-    trailingSlash: false,
-    disableUrlNormalization: true,
     parallel: false, // Disables multi-threaded race conditions
     keepDistServer: true, // Prevents Vike from deleting dist/server/ mid-build
   },
+  trailingSlash: false,
   hooksTimeout: false,
   favicon: "/assets/favicon.ico",
   title: "FAIRsharing",

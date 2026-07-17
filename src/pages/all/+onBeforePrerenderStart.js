@@ -1,5 +1,5 @@
-import buildContext from "@/lib/Prerender/build-context.json" with {type: "json"};
-import {normalizeDoi} from "@/lib/Prerender/prerenderUtils.shared.js";
+import buildContext from "@/lib/Prerender/build-context.json" with { type: "json" };
+import { normalizeDoi } from "@/lib/Prerender/prerenderUtils.shared.js";
 
 export async function onBeforePrerenderStart() {
   const staticRoutes = [
@@ -24,6 +24,7 @@ export async function onBeforePrerenderStart() {
     "/communities",
     "/api_doc",
     "/search",
+    "/curator",
   ];
 
   if (buildContext.skipFull) {

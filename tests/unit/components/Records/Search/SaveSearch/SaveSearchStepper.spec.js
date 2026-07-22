@@ -11,9 +11,11 @@ const { mockSaveSearchAPI } = vi.hoisted(() => ({
 
 vi.mock("@/lib/Client/RESTClient", () => {
   return {
-    default: vi.fn(() => ({
-      saveSearch: mockSaveSearchAPI,
-    })),
+    default: vi.fn(function () {
+      return {
+        saveSearch: mockSaveSearchAPI,
+      };
+    }),
   };
 });
 

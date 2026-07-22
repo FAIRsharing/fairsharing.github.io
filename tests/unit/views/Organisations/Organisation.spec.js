@@ -13,36 +13,44 @@ const { mockDeleteOrganisation, mockEditOrganisation, mockUpdateSaveSearch } =
 
 vi.mock("@/lib/GraphClient/GraphClient.js", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      executeQuery: vi.fn().mockResolvedValue({
-        organisation: {
-          id: 1,
-          name: "Test Org",
-          homepage: "https://test.org",
-          rorLink: "https://ror.org/test",
-          urlForLogo: "/media/logo.png",
-          alternativeNames: ["Alt1", "Alt2"],
-          types: ["Institute"],
-          users: [
-            { id: 1, username: "testuser", orcid: "0000-0000-0000-0000" },
-          ],
-          parentOrganisations: [],
-          childOrganisations: [],
-          countries: [{ id: 1, name: "France" }],
-          savedSearches: [],
-        },
-      }),
-    })),
+    default: vi.fn(function () {
+      return {
+        executeQuery: vi.fn().mockResolvedValue({
+          organisation: {
+            id: 1,
+            name: "Test Org",
+            homepage: "https://test.org",
+            rorLink: "https://ror.org/test",
+            urlForLogo: "/media/logo.png",
+            alternativeNames: ["Alt1", "Alt2"],
+            types: ["Institute"],
+            users: [
+              {
+                id: 1,
+                username: "testuser",
+                orcid: "0000-0000-0000-0000",
+              },
+            ],
+            parentOrganisations: [],
+            childOrganisations: [],
+            countries: [{ id: 1, name: "France" }],
+            savedSearches: [],
+          },
+        }),
+      };
+    }),
   };
 });
 
 vi.mock("@/lib/Client/RESTClient.js", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      editOrganisation: mockEditOrganisation,
-      deleteOrganisation: mockDeleteOrganisation,
-      updateSaveSearch: mockUpdateSaveSearch,
-    })),
+    default: vi.fn(function () {
+      return {
+        editOrganisation: mockEditOrganisation,
+        deleteOrganisation: mockDeleteOrganisation,
+        updateSaveSearch: mockUpdateSaveSearch,
+      };
+    }),
   };
 });
 
@@ -111,6 +119,12 @@ describe("Organisation.vue", () => {
           actions: {
             getOrganisationsTypes: mockGetOrgTypes,
             getCountries: mockGetCountries,
+          },
+        },
+        saveSearch: {
+          namespaced: true,
+          mutations: {
+            setSaveSearchResult: vi.fn(),
           },
         },
       },

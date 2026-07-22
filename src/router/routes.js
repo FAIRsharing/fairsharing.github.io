@@ -1,3 +1,4 @@
+export const Documentation = () => import("@/views/Static/Documentation/Documentation.vue");
 export const Home = () => import("@/views/Home/Home.vue");
 export const NotFound = () => import("@/views/Errors/404");
 export const ServerError = () => import("@/views/Errors/500");

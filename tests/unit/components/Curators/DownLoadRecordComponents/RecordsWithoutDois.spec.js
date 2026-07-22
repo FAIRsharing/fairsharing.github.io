@@ -9,9 +9,11 @@ const { mockGetRecordsWoDOIs } = vi.hoisted(() => ({
 
 vi.mock("@/lib/Client/RESTClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      getRecordsWoDOIs: mockGetRecordsWoDOIs,
-    })),
+    default: vi.fn(function () {
+      return {
+        getRecordsWoDOIs: mockGetRecordsWoDOIs,
+      };
+    }),
   };
 });
 

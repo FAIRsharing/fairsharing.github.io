@@ -10,9 +10,11 @@ const { mockGetEditByMonth } = vi.hoisted(() => ({
 // 2. Mock RestClient
 vi.mock("@/lib/Client/RESTClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      getEditByMonth: mockGetEditByMonth,
-    })),
+    default: vi.fn(function () {
+      return {
+        getEditByMonth: mockGetEditByMonth,
+      };
+    }),
   };
 });
 

@@ -48,6 +48,9 @@ describe("PolicyStepper.vue", () => {
         },
         saveSearch: {
           namespaced: true,
+          mutations: {
+            setPolicySelected: vi.fn(),
+          },
           getters: {
             getPolicyRecords: getters.getPolicyRecords,
             getLoadingStatus: getters.getLoadingStatus,

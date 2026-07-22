@@ -1,4 +1,4 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
@@ -119,7 +119,7 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     });
   });
 
-  afterEach(() => {
+  afterAll(() => {
     graphStub.restore();
     restStub.restore();
   });
@@ -168,7 +168,6 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.approvalRequiredProcessed[0].curator).toMatch("Michae");
 
     // TODO: Check that the curator are updated in the record
-    restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: { response: "Im an error" } } });
     await wrapper.vm.assignCurator(11, 1, "Michael Smith");
     expect(wrapper.vm.error.recordID).toBe(11);
@@ -179,7 +178,6 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   it("can approve a record", async () => {
     //Correct approval
     wrapper.vm.dialogs.recordID = 100;
-    restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: false } });
     await wrapper.vm.confirmApproval();
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(2);
@@ -193,9 +191,7 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.dialogs.approveChanges).toBe(false);
     expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(11);
     //There is an error in the Client query
-    restStub.restore();
     wrapper.vm.dialogs.recordID = 101;
-    restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: { response: { data: "error" } } } });
     await wrapper.vm.confirmApproval();
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
@@ -208,9 +204,7 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
     expect(wrapper.vm.dialogs.approveChanges).toBe(false);
 
-    restStub.restore();
     wrapper.vm.dialogs.recordID = 102;
-    restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: { response: { data: "error" } } } });
     await wrapper.vm.confirmApproval();
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
@@ -220,7 +214,6 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
   it("can delete a record", async () => {
     //There is an error in the Client query
     wrapper.vm.dialogs.recordID = 102;
-    restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: { response: { data: "error" } } } });
     await wrapper.vm.confirmDelete();
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
@@ -230,8 +223,6 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
 
     //Correct deleted
     wrapper.vm.dialogs.recordID = 102;
-    restStub.restore();
-    restStub = sinon.stub(Client.prototype, "executeQuery");
     restStub.returns({ data: { error: false } });
     await wrapper.vm.confirmDelete();
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(0);

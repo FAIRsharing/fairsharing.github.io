@@ -13,10 +13,12 @@ const { mockDelete, mockUpdate } = vi.hoisted(() => {
 
 vi.mock("@/lib/Client/RESTClient", () => {
   return {
-    default: vi.fn(() => ({
-      deleteSavedSearch: mockDelete,
-      updateSaveSearch: mockUpdate,
-    })),
+    default: vi.fn(function () {
+      return {
+        deleteSavedSearch: mockDelete,
+        updateSaveSearch: mockUpdate,
+      };
+    }),
   };
 });
 

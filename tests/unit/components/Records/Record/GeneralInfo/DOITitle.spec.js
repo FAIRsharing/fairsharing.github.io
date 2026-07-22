@@ -37,7 +37,9 @@ describe("DOITitle.vue", function () {
       readAsDataURL,
       target: fileContents,
     };
-    window.Image = vi.fn(() => dummyFileReader);
+    window.Image = vi.fn(function () {
+      return dummyFileReader;
+    });
   });
 
   it("can be instantiated", async () => {

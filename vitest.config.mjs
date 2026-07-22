@@ -51,6 +51,7 @@ export default defineConfig(async (env) => {
         include: ["tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
         coverage: {
           provider: "v8", // or 'istanbul'
+          include: ["src/**/*.js"],
           // In v3, 'all' is true by default, which might "drop" your %
           // because it now counts untested files.
           all: false, // Set to false to match Vitest 2 behavior if preferred

@@ -190,19 +190,21 @@ global.IntersectionObserver = class IntersectionObserver {
 // --- 3. window.matchMedia Polyfill ---
 // CRITICAL for $vuetify.display (mdAndDown, lgAndUp, etc.)
 // We default 'matches' to false, meaning the test assumes "Desktop" view by default.
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(), // deprecated
+      removeListener: vi.fn(), // deprecated
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}
 
 // --- 4. Mock global CSS support ---
 // Prevents errors in some Vuetify computed properties

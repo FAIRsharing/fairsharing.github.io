@@ -10,9 +10,27 @@ export default defineConfig(async (env) => {
     ? await viteConfig(env)
     : await viteConfig;
 
+  // The production build generates this ignored file before Vite starts.
+  // Tests run from a clean checkout, so resolve it to a committed fallback.
+  const buildContextAlias = {
+    find: "@/lib/Prerender/build-context.json",
+    replacement: fileURLToPath(
+      new URL("./tests/fixtures/build-context.json", import.meta.url),
+    ),
+  };
+  const baseAliases = Object.entries(baseConfig.resolve?.alias ?? {}).map(
+    ([find, replacement]) => ({ find, replacement }),
+  );
+
   // 2. Merge the unpacked configuration object with your Vitest overrides
   return mergeConfig(
-    baseConfig,
+    {
+      ...baseConfig,
+      resolve: {
+        ...baseConfig.resolve,
+        alias: [buildContextAlias, ...baseAliases],
+      },
+    },
     {
       plugins: [
         {

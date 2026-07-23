@@ -4,35 +4,40 @@ import {defineConfig, mergeConfig} from "vite";
 import viteConfig from "./vite.config.mjs";
 import {configDefaults} from "vitest/config";
 
+const VIRTUAL_BUILD_CONTEXT_ID = "\0virtual:build-context";
+const BUILD_CONTEXT_IMPORT = "@/lib/Prerender/build-context.json";
+
 export default defineConfig(async (env) => {
   // 1. Safely unpack vite.config.mjs if it's wrapped in a function callback
   const baseConfig = typeof viteConfig === "function"
     ? await viteConfig(env)
     : await viteConfig;
 
-  // The production build generates this ignored file before Vite starts.
-  // Tests run from a clean checkout, so resolve it to a committed fallback.
-  const buildContextAlias = {
-    find: "@/lib/Prerender/build-context.json",
-    replacement: fileURLToPath(
-      new URL("./tests/fixtures/build-context.json", import.meta.url),
-    ),
-  };
-  const baseAliases = Object.entries(baseConfig.resolve?.alias ?? {}).map(
-    ([find, replacement]) => ({ find, replacement }),
-  );
-
   // 2. Merge the unpacked configuration object with your Vitest overrides
   return mergeConfig(
-    {
-      ...baseConfig,
-      resolve: {
-        ...baseConfig.resolve,
-        alias: [buildContextAlias, ...baseAliases],
-      },
-    },
+    baseConfig,
     {
       plugins: [
+        {
+          name: "virtual-build-context",
+          enforce: "pre",
+          resolveId(source) {
+            const normalizedSource = source.replaceAll("\\", "/");
+            if (
+              source === BUILD_CONTEXT_IMPORT ||
+              normalizedSource.endsWith(
+                "/src/lib/Prerender/build-context.json",
+              )
+            ) {
+              return VIRTUAL_BUILD_CONTEXT_ID;
+            }
+          },
+          load(id) {
+            if (id === VIRTUAL_BUILD_CONTEXT_ID) {
+              return "export default { batch: 1, batchSize: 1, skipFull: true };";
+            }
+          },
+        },
         {
           name: "stub-missing-css",
           resolveId(source) {

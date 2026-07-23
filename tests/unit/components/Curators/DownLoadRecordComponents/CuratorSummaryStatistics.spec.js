@@ -15,7 +15,9 @@ const { mockClientInstance } = vi.hoisted(() => {
 
 vi.mock("@/lib/GraphClient/GraphClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => mockClientInstance),
+    default: vi.fn(function () {
+      return mockClientInstance;
+    }),
   };
 });
 

@@ -165,6 +165,8 @@ describe("Edit -> DataAccess.vue", function () {
   it("handles save and exit with redirect", async () => {
     const btn = { textContent: "Save and exit" };
     const pushCalls = $router.push.mock.calls.length;
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({ data: "GG!" });
     await wrapper.vm.saveRecord(true, btn);
     expect($router.push).toHaveBeenCalledTimes(pushCalls + 1);
   });

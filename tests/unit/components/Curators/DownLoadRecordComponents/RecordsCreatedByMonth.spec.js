@@ -9,9 +9,11 @@ const { mockGetRecordCreatedByMonth } = vi.hoisted(() => ({
 
 vi.mock("@/lib/Client/RESTClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      getRecordCreatedByMonth: mockGetRecordCreatedByMonth,
-    })),
+    default: vi.fn(function () {
+      return {
+        getRecordCreatedByMonth: mockGetRecordCreatedByMonth,
+      };
+    }),
   };
 });
 

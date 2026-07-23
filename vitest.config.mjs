@@ -4,6 +4,9 @@ import {defineConfig, mergeConfig} from "vite";
 import viteConfig from "./vite.config.mjs";
 import {configDefaults} from "vitest/config";
 
+const VIRTUAL_BUILD_CONTEXT_ID = "\0virtual:build-context";
+const BUILD_CONTEXT_IMPORT = "@/lib/Prerender/build-context.json";
+
 export default defineConfig(async (env) => {
   // 1. Safely unpack vite.config.mjs if it's wrapped in a function callback
   const baseConfig = typeof viteConfig === "function"
@@ -15,6 +18,26 @@ export default defineConfig(async (env) => {
     baseConfig,
     {
       plugins: [
+        {
+          name: "virtual-build-context",
+          enforce: "pre",
+          resolveId(source) {
+            const normalizedSource = source.replaceAll("\\", "/");
+            if (
+              source === BUILD_CONTEXT_IMPORT ||
+              normalizedSource.endsWith(
+                "/src/lib/Prerender/build-context.json",
+              )
+            ) {
+              return VIRTUAL_BUILD_CONTEXT_ID;
+            }
+          },
+          load(id) {
+            if (id === VIRTUAL_BUILD_CONTEXT_ID) {
+              return "export default { batch: 1, batchSize: 1, skipFull: true };";
+            }
+          },
+        },
         {
           name: "stub-missing-css",
           resolveId(source) {
@@ -51,6 +74,7 @@ export default defineConfig(async (env) => {
         include: ["tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
         coverage: {
           provider: "v8", // or 'istanbul'
+          include: ["src/**/*.js"],
           // In v3, 'all' is true by default, which might "drop" your %
           // because it now counts untested files.
           all: false, // Set to false to match Vitest 2 behavior if preferred

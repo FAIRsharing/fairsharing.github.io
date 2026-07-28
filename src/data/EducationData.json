@@ -370,6 +370,15 @@
         "url": "https://zenodo.org/records/8186594/files/FAIRsharing%20for%20you_%20developers%20and%20curators.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "developers"
+      },
+      {
+        "id": "behind_the_scenes",
+        "logo": "behind_the_scenes.png",
+        "text": "",
+        "doi": "10.5281/zenodo.21628854",
+        "url": "https://zenodo.org/records/21628855/files/v1.0%20-%20FAIRsharing%20behind%20the%20scenes_The%20FAIRness%20of%20FAIRsharing.pdf?download=1",
+        "copyButtonStatus": false,
+        "hash": "developers"
       }
     ]
   }

@@ -101,7 +101,7 @@
     "node-gyp": "^12.3.0",
     "npm-check": "^6.0.1",
     "path": "*",
-    "postcss": "^8.4.21",
+    "postcss": "^8.5.24",
     "prettier": "3.4.2",
     "resize-observer-polyfill": "^1.5.1",
     "rimraf": "^6.1.3",

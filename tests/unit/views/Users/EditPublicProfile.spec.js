@@ -38,12 +38,19 @@ let $store = new Vuex.Store({
 $router.go = vi.fn();
 
 describe("EditPublicProfile.vue", function () {
-  let wrapper, restStubProfile, restStubRole, restStubUser;
+  let wrapper,
+    restStubProfile,
+    restStubRole,
+    restStubUser,
+    restStubUpdateUser,
+    restStubDeleteUser;
 
   beforeAll(() => {
     restStubProfile = sinon.stub(Client.prototype, "getProfileTypes");
     restStubRole = sinon.stub(Client.prototype, "getUserRoles");
     restStubUser = sinon.stub(Client.prototype, "getPublicUser");
+    restStubUpdateUser = sinon.stub(Client.prototype, "editPublicUser");
+    restStubDeleteUser = sinon.stub(Client.prototype, "deletePublicUser");
     restStubProfile.returns(["profile 1", "profile 2"]);
     restStubRole.returns([
       {
@@ -62,11 +69,15 @@ describe("EditPublicProfile.vue", function () {
       role: "user",
       deactivated: false,
     });
+    restStubUpdateUser.resolves({ error: false });
+    restStubDeleteUser.resolves({ error: false });
   });
   afterAll(() => {
     restStubRole.restore();
     restStubProfile.restore();
     restStubUser.restore();
+    restStubUpdateUser.restore();
+    restStubDeleteUser.restore();
   });
 
   beforeEach(async () => {

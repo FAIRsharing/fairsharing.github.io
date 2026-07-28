@@ -24,13 +24,17 @@ const restClientMock = vi.hoisted(() => ({
 // Mock RESTClient and GraphClient classes
 vi.mock("@/lib/Client/RESTClient.js", () => {
   return {
-    default: vi.fn().mockImplementation(() => restClientMock),
+    default: vi.fn(function () {
+      return restClientMock;
+    }),
   };
 });
 
 vi.mock("@/lib/GraphClient/GraphClient", () => {
   return {
-    default: vi.fn().mockImplementation(() => graphClientMock),
+    default: vi.fn(function () {
+      return graphClientMock;
+    }),
   };
 });
 

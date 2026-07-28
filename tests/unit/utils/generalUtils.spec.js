@@ -94,7 +94,9 @@ describe("generalUtils.js", function () {
         }),
       result: "vv",
     };
-    window.FileReader = vi.fn(() => dummy);
+    window.FileReader = vi.fn(function () {
+      return dummy;
+    });
     toBase64(mFile);
     dummy.onload();
     dummy.onerror("a");

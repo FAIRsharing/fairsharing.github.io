@@ -16,6 +16,7 @@ import {
     Educational,
     Graph,
     Home,
+    Documentation,
     Licence,
     Login,
     LoginFailure,
@@ -90,6 +91,11 @@ export function createMyRouter(store) {
       name: "Home",
       path: "/",
       component: Home,
+    },
+    {
+      name: "Documentation",
+      path: "/documentation",
+      component: Documentation,
     },
     {
       name: "Graph",

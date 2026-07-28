@@ -190,19 +190,21 @@ global.IntersectionObserver = class IntersectionObserver {
 // --- 3. window.matchMedia Polyfill ---
 // CRITICAL for $vuetify.display (mdAndDown, lgAndUp, etc.)
 // We default 'matches' to false, meaning the test assumes "Desktop" view by default.
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
+if (typeof window !== "undefined") {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(), // deprecated
+      removeListener: vi.fn(), // deprecated
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+}
 
 // --- 4. Mock global CSS support ---
 // Prevents errors in some Vuetify computed properties
@@ -224,14 +226,16 @@ if (!Object.groupBy) {
   };
 }
 
-// Prevent accidental network access to local API endpoints in unit tests.
+// Prevent unit tests from reaching API and embedded-service endpoints.
 const nativeFetch = globalThis.fetch ? globalThis.fetch.bind(globalThis) : null;
 const mockedFetch = async (input, init) => {
   const url = typeof input === "string" ? input : (input && input.url) || "";
   if (
     url.includes("localhost:3000") ||
     url.includes("127.0.0.1:3000") ||
-    url.includes("undefined/graphql")
+    url.includes("undefined/graphql") ||
+    url.includes("dev-api.fairsharing.org") ||
+    url.includes("aicc.uksouth.cloudapp.azure.com")
   ) {
     return new Response(JSON.stringify({}), {
       status: 200,
@@ -246,14 +250,15 @@ if (typeof window !== "undefined") {
   window.fetch = globalThis.fetch;
 }
 
-// Short-circuit GraphQL requests that would otherwise target localhost in tests.
+// Short-circuit GraphQL requests to configured development endpoints in tests.
 const originalGetData = GraphQLClient.prototype.getData;
 GraphQLClient.prototype.getData = async function (queryString) {
   const url = this.url || "";
   if (
     url.includes("localhost:3000") ||
     url.includes("127.0.0.1:3000") ||
-    url.includes("undefined/graphql")
+    url.includes("undefined/graphql") ||
+    url.includes("dev-api.fairsharing.org")
   ) {
     return { data: { data: {} } };
   }
@@ -266,6 +271,7 @@ RESTClient.prototype.executeQuery = async function (query) {
   if (
     url.includes("localhost:3000") ||
     url.includes("127.0.0.1:3000") ||
+    url.includes("dev-api.fairsharing.org") ||
     url.startsWith("undefined") ||
     url.includes("/undefined/")
   ) {

@@ -33,9 +33,11 @@ const { mockUpdateSaveSearch } = vi.hoisted(() => {
 
 // Now Vitest can safely use it here!
 vi.mock("@/lib/Client/RESTClient.js", () => ({
-  default: vi.fn().mockImplementation(() => ({
-    updateSaveSearch: mockUpdateSaveSearch,
-  })),
+  default: vi.fn(function () {
+    return {
+      updateSaveSearch: mockUpdateSaveSearch,
+    };
+  }),
 }));
 
 describe("SavedSearches.vue", () => {

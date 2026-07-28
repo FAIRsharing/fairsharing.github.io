@@ -12,6 +12,9 @@ describe("FionaChat", () => {
     document.body.innerHTML = '<div id="app"></div>';
     wrapper = mount(FionaChat, {
       attachTo: "#app",
+      data: () => ({
+        chatUrl: "about:blank#",
+      }),
       global: {
         stubs: {
           VBtn: {

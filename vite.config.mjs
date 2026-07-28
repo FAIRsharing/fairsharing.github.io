@@ -24,7 +24,7 @@ export default defineConfig(({  isSsrBuild }) => {
   });
 
   // Force it to ONLY run on the client build (The Vike-native way)
-  polyfills.apply = (config, env) => !env.isSsrBuild;
+  polyfills.apply = (config, env) => !env.isSsrBuild && env.mode !== "test";
 
   return {
     base: "/",

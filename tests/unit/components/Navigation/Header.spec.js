@@ -4,6 +4,7 @@ import {createVuetify} from "vuetify";
 import Vuex from "vuex";
 
 import Header from "@/components/Navigation/Header.vue";
+import RESTClient from "@/lib/Client/RESTClient.js";
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
 
@@ -120,6 +121,9 @@ describe("Header.vue", function () {
 
   it("logs out and redirects to Login", async () => {
     const push = vi.fn();
+    const logoutSpy = vi
+      .spyOn(RESTClient.prototype, "logout")
+      .mockResolvedValue({ error: false });
 
     const localStore = new Vuex.Store({
       modules: {
@@ -143,5 +147,6 @@ describe("Header.vue", function () {
     await localWrapper.vm.logoutUser();
 
     expect(push).toHaveBeenCalledWith({ name: "Login" });
+    logoutSpy.mockRestore();
   });
 });

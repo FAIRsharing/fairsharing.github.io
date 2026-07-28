@@ -80,7 +80,7 @@
       <h3 class="text-h3 mb-4 mt-5">Adopters</h3>
 
       <p>
-        A broad range of <a href="/stakeholders">stakeholders</a> come to
+        A broad range of stakeholders come to
         FAIRsharing from across all research domains. However, adopters use
         FAIRsharing specifically to do one or more of the following:
       </p>

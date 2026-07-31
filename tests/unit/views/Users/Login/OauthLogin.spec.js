@@ -134,7 +134,7 @@ describe("Login.vue", () => {
   it("uses the default redirect path when return_to is missing", async () => {
     await mountComponent();
     await wrapper.vm.login();
-    expect($router.push).toHaveBeenCalledWith({ path: "accounts/profile" });
+    expect($router.push).toHaveBeenCalledWith({ path: "/accounts/profile" });
   });
 
   it("passes jwt and expiry to oauthLogin", async () => {

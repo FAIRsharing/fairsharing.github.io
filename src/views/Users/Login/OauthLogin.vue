@@ -38,12 +38,13 @@ export default {
         jwt: paramsArray.jwt,
         expiry: paramsArray.expiry,
       });
-      let path;
-      if (paramsArray.return_to) {
-        path = paramsArray.return_to;
-      } else {
-        path = "accounts/profile";
-      }
+      const returnTo = paramsArray.return_to;
+      const path =
+        typeof returnTo === "string" &&
+        returnTo.startsWith("/") &&
+        !returnTo.startsWith("//")
+          ? returnTo
+          : "/accounts/profile";
       _module.$router.push({
         path: path,
       });

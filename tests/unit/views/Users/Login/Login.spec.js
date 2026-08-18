@@ -171,8 +171,10 @@ describe("Login.vue", () => {
   });
 
   it("generates correct oauth links", () => {
-    expect(wrapper.vm.returnTo()).toEqual("?return_to=/123");
+    expect(wrapper.vm.getCurrentLocation()).toEqual("?origin=%2F123");
     wrapper.vm.$route.query = {};
-    expect(wrapper.vm.returnTo()).toEqual("");
+    expect(wrapper.vm.getCurrentLocation()).toEqual(
+      "?origin=%2Faccounts%2Fprofile",
+    );
   });
 });

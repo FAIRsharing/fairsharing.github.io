@@ -279,28 +279,27 @@ export default {
         }
       }
     },
-    returnTo() {
-      const _module = this;
-      const goTo = _module.$route.query.goTo;
-      if (goTo) {
-        return `?return_to=${goTo}`;
-      }
-      return "";
-    },
     getCurrentLocation() {
-      let loc = this.$router.currentRoute.path;
-      let params = this.$route.query;
-      let query = Object.keys(params)
-        .map((k) => `${k}=${params[k]}`)
-        .join("&")
-        .replace("next=", "");
-      let origin;
-      if (params.length > 0) {
-        origin = encodeURI(`${loc}`);
-      } else {
-        origin = encodeURI(`${loc}?${query}`);
+      const goTo = this.$route.query.goTo;
+      let origin = "/accounts/profile";
+
+      if (this.isLocalPath(goTo)) {
+        origin = goTo;
+      } else if (
+        this.$route.path !== "/accounts/login" &&
+        this.isLocalPath(this.$route.fullPath)
+      ) {
+        origin = this.$route.fullPath;
       }
-      return `?origin=${origin}`;
+
+      return `?${new URLSearchParams({ origin }).toString()}`;
+    },
+    isLocalPath(path) {
+      return (
+        typeof path === "string" &&
+        path.startsWith("/") &&
+        !path.startsWith("//")
+      );
     },
     checkEndpoint() {
       if (

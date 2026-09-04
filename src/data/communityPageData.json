@@ -446,6 +446,35 @@
           "homepage": "https://osai.dome-ml.org/ai-ecosystem",
           "usage_image": "osai_screenshot.png",
           "id": "osai"
+        },
+        {
+          "organisations": [
+            {
+              "name": "Center for Marine Environmental Sciences (MARUM)",
+              "url": "https://www.marum.de",
+              "id": 427
+            }
+          ],
+          "contacts": [
+            {
+              "name": "J. Weiser",
+              "url": "mailto:jweiser@marum.de",
+              "id": "j_weiser"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API"
+          ],
+          "name": "EOSC EDEN",
+          "types": [
+            "(Meta)data retrieval/integration"
+          ],
+          "logo": "eosc_eden.png",
+          "status": "In progress",
+          "description": "As part of building the \"EDEN service registry\", we harvest metadata on (currently) ~100 research data repositories and their services, combine what each repository publishes about itself with what re3data and FAIRsharing hold about it, and harmonise the result into DCAT/RDF in a triple store.",
+          "homepage": "(https://eden-fidelis.eu",
+          "usage_image": "",
+          "id": "eosc_eden"
         }
       ]
     }

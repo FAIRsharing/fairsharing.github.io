@@ -14,8 +14,18 @@ BUILD_CONTEXT="src/lib/Prerender/build-context.json"
 OUTPUT_DIR=".prerender-output"
 CACHE_DIR=".prerender-cache"
 VITE_FULL_PRERENDER="${VITE_FULL_PRERENDER:-true}"
-BUILD_OUTPUT_DIR="${BUILD_OUTPUT_DIR:-dist_${START_TIME}}"
 LIVE_DIST_LINK="${LIVE_DIST_LINK:-dist}"
+
+# Local/server deployments use timestamped releases so LIVE_DIST_LINK can be
+# switched atomically. CI publish directories must be real directories: Netlify
+# rejects a publish path when any component is a symlink outside the checkout.
+if [ -z "${BUILD_OUTPUT_DIR:-}" ]; then
+  if [ "${CI:-false}" = "true" ] || [ "${NETLIFY:-false}" = "true" ]; then
+    BUILD_OUTPUT_DIR="$LIVE_DIST_LINK"
+  else
+    BUILD_OUTPUT_DIR="dist_${START_TIME}"
+  fi
+fi
 
 PROJECT_ROOT="$(pwd)"
 JSONLD_DIR="${JSONLD_DIR:-$PROJECT_ROOT/jsonld}"
@@ -37,6 +47,11 @@ switch_live_dist() {
   local abs_build_output_dir
   abs_build_output_dir="$(cd "$(dirname "$BUILD_OUTPUT_DIR")" && pwd)/$(basename "$BUILD_OUTPUT_DIR")"
 
+  # The CI build writes directly to the configured publish directory.
+  if [ "$BUILD_OUTPUT_DIR" = "$LIVE_DIST_LINK" ]; then
+    return
+  fi
+
   if [ -e "$LIVE_DIST_LINK" ] && [ ! -L "$LIVE_DIST_LINK" ]; then
     mv "$LIVE_DIST_LINK" "${LIVE_DIST_LINK}_backup_${START_TIME}"
   fi
@@ -48,6 +63,16 @@ switch_live_dist() {
   ls -ld "$LIVE_DIST_LINK"
   readlink "$LIVE_DIST_LINK" || true
 }
+
+prepare_build_output() {
+  # A reused workspace may still contain a link made by a local build. Remove
+  # only that link before CI writes the publish directory in place.
+  if [ "$BUILD_OUTPUT_DIR" = "$LIVE_DIST_LINK" ] && [ -L "$BUILD_OUTPUT_DIR" ]; then
+    rm -f -- "$BUILD_OUTPUT_DIR"
+  fi
+}
+
+prepare_build_output
 
 sync_jsonld_release() {
   if [ -d "$JSONLD_DIR" ]; then

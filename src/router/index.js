@@ -275,6 +275,18 @@ export function createMyRouter(store) {
       path: "/HUPOPSI",
       redirect: "/HUPO-PSI",
     },
+    // This redirection hack for the next two URLs is described at:
+    // https://github.com/FAIRsharing/FAIRsharing-API/issues/1647
+    {
+      name: "escape_fair",
+      path: "/ESCAPE-FAIR",
+      redirect: "/Astronomy-FAIR",
+    },
+    {
+      name: "escape_resources",
+      path: "/ESCAPE-Resources",
+      redirect: "/Astronomy-Resources",
+    },
     {
       name: "communities_activities",
       path: "/communities/activities",

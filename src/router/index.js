@@ -280,12 +280,12 @@ export function createMyRouter(store) {
     {
       name: "escape_fair",
       path: "/ESCAPE-FAIR",
-      redirect: "/NEW_ABBR_HERE",
+      redirect: "/Astronomy-FAIR",
     },
     {
       name: "escape_resources",
       path: "/ESCAPE-Resources",
-      redirect: "/NEW_ABBR_HERE",
+      redirect: "/Astronomy-Resources",
     },
     {
       name: "communities_activities",

@@ -39,6 +39,7 @@
     "highcharts-vue": "2.0.1",
     "immutable": "^5.1.9",
     "jquery": "^3.5.1",
+    "js-yaml": "^3.15.2",
     "json-to-graphql-query": "^2.2.5",
     "linkify-it": "^5.0.2",
     "lodash": "^4.17.21",

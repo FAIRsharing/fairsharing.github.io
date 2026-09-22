@@ -7,7 +7,7 @@
       <v-container fluid>
         <v-row dense>
           <v-col cols="12" lg="6" md="6" sm="12">
-            <h1 class="header" :class="{ smallerHeading: $vuetify.display.xs }">
+            <h1 :class="{ smallerHeading: $vuetify.display.xs }" class="header">
               {{
                 alumniCurator
                   ? "Alumni Community Champions"
@@ -17,13 +17,13 @@
           </v-col>
           <v-col cols="12" lg="2" md="2" sm="12">
             <v-btn
-              elevation="2"
-              class="full-width text-white text-md-caption text-lg-body-1 font-weight-medium"
-              height="40"
               :class="[
                 alumniCurator ? 'bg-green' : 'bg-accent3',
                 { 'mb-2': $vuetify.display.smAndDown },
               ]"
+              class="full-width text-white text-md-caption text-lg-body-1 font-weight-medium"
+              elevation="2"
+              height="40"
               style="text-transform: uppercase !important"
               @click="listAlumni()"
             >
@@ -33,21 +33,21 @@
           <v-col cols="12" lg="2" md="2" sm="12">
             <v-select
               v-model="year"
-              variant="solo"
               :items="yearList"
-              label="Year"
               density="compact"
+              label="Year"
+              variant="solo"
               @update:model-value="selectYear()"
             />
           </v-col>
           <v-col cols="12" lg="2" md="2" sm="12">
             <v-btn
-              elevation="2"
-              class="full-width text-white bg-green text-md-caption text-lg-body-1 font-weight-medium"
               :class="{ 'mt-n4 mb-4': $vuetify.display.smAndDown }"
+              class="full-width text-white bg-green text-md-caption text-lg-body-1 font-weight-medium"
+              elevation="2"
               height="40"
-              href="/community_champions"
               style="text-transform: uppercase !important"
+              to="/community_champions"
             >
               Community champions
             </v-btn>
@@ -82,9 +82,9 @@
             v-for="card in currentCohort"
             :key="card.id"
             cols="12"
-            sm="12"
-            md="4"
             lg="3"
+            md="4"
+            sm="12"
             xl="2"
           >
             <v-card class="full-width">
@@ -94,10 +94,10 @@
                     ? `/assets/Community/profiles/${card.logo}`
                     : '/assets/Community/profiles/profileplaceholder.png'
                 "
-                class="text-white align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                cover
                 aspect-ratio="1"
+                class="text-white align-end"
+                cover
+                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               >
                 <v-card-actions style="position: absolute; top: 0; right: 7px">
                   <div :class="card.show_more ? 'showMore' : 'showLess'">
@@ -107,15 +107,15 @@
                     />
                   </div>
                 </v-card-actions>
-                <div class="socialLinks" :class="{ hide: !card.show_more }">
+                <div :class="{ hide: !card.show_more }" class="socialLinks">
                   <v-list class="align-baseline bg-transparent">
                     <v-list-item v-if="card.orcid" dark>
                       <a
                         :href="`https://orcid.org/${card.orcid}`"
-                        target="_blank"
                         class="d-flex align-center"
+                        target="_blank"
                       >
-                        <v-icon start class="mr-2">
+                        <v-icon class="mr-2" start>
                           {{ "fab fa-orcid" }} </v-icon
                         ><span>{{ card.orcid }}</span></a
                       >
@@ -123,9 +123,9 @@
                     <v-list-item v-if="card.twitter" dark>
                       <a
                         :href="`https://twitter.com/${card.twitter}`"
-                        target="_blank"
                         class="d-flex align-center"
-                        ><v-icon start class="mr-2">
+                        target="_blank"
+                        ><v-icon class="mr-2" start>
                           {{ "fab fa-twitter" }} </v-icon
                         ><span>@{{ card.twitter }}</span></a
                       >
@@ -133,9 +133,9 @@
                     <v-list-item v-if="card.mastodon" dark>
                       <a
                         :href="`https://${card.mastodon}`"
-                        target="_blank"
                         class="d-flex align-center"
-                        ><v-icon start class="mr-2">
+                        target="_blank"
+                        ><v-icon class="mr-2" start>
                           {{ "fab fa-mastodon" }} </v-icon
                         ><span>@{{ card.mastodon }}</span></a
                       >
@@ -143,9 +143,9 @@
                     <v-list-item v-if="card.linkedin" dark>
                       <a
                         :href="`https://linkedin.com/in/${card.linkedin}`"
-                        target="_blank"
                         class="d-flex align-center"
-                        ><v-icon start class="mr-2">
+                        target="_blank"
+                        ><v-icon class="mr-2" start>
                           {{ "fab fa-linkedin" }} </v-icon
                         ><span>{{ card.linkedin }}</span></a
                       >
@@ -157,11 +157,11 @@
                     class="mb-n5 mt-n4"
                   >
                     <v-chip
+                      :href="skill.url"
                       class="pa-1 text-white bg-pink"
                       color="pink"
                       label
                       size="small"
-                      :href="skill.url"
                       target="_blank"
                     >
                       {{ skill.name }}
@@ -200,8 +200,6 @@
               </v-img>
 
               <v-card-text
-                class="text--primary"
-                style="height: 100%"
                 :style="
                   $vuetify.display.xlOnly
                     ? 'height: 115px'
@@ -209,6 +207,7 @@
                       ? 'height: 135px'
                       : 'height: 100%'
                 "
+                class="text--primary"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :
@@ -246,22 +245,22 @@
 
               <v-card-actions v-if="card.id" class="pa-0 full-width mb-n1">
                 <v-btn
-                  color="primary"
                   :href="`/users/${card.id}`"
                   class="full-width"
-                  variant="flat"
+                  color="primary"
                   height="48px"
+                  variant="flat"
                 >
-                  <v-icon start class="mr-2">
+                  <v-icon class="mr-2" start>
                     {{ "fas fa-user-circle" }}
                   </v-icon>
                   <span
-                    class="text-truncate text-capitalize full-width"
                     :style="
                       $vuetify.display.xs
                         ? 'max-width: 166px'
                         : 'max-width: 236px'
                     "
+                    class="text-truncate text-capitalize full-width"
                   >
                     Meet {{ card.name }}</span
                   >
@@ -329,7 +328,8 @@ export default {
             );
           },
         );
-      } else {
+      }
+      else {
         this.error = true;
       }
     },
@@ -349,7 +349,8 @@ export default {
           },
         );
         this.year = null;
-      } else {
+      }
+      else {
         this.year = new Date().getFullYear();
         this.getCuratorsList(new Date().getFullYear());
       }
@@ -358,7 +359,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .showLess {
   &:after {
     content: "";

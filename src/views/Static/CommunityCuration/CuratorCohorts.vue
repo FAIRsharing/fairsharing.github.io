@@ -208,7 +208,6 @@
                       : 'height: 100%'
                 "
                 class="text--primary"
-                style="height: 100%"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :

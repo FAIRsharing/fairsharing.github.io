@@ -318,13 +318,17 @@
             gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
           >
             <v-card-title>
-              <h4 style="word-break: initial">
+              <h4 style="word-break: initial; white-space: normal">
                 <a :id="tool.id" :href="tool.homepage" target="_blank">
                   {{ tool.name }}
                 </a>
               </h4>
             </v-card-title>
-            <v-card-subtitle v-if="tool.description">
+            <v-card-subtitle
+              v-if="tool.description"
+              class="pb-4"
+              style="word-break: initial"
+            >
               {{ tool.description }}
             </v-card-subtitle>
           </v-img>
@@ -699,7 +703,6 @@
  * @namespace Static
  */
 import { isArray } from "lodash-es";
-
 import Icon from "@/components/Icon";
 // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";

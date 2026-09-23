@@ -223,6 +223,7 @@ export default {
       }
       if (
         _module.currentRecord["fairsharingRecord"].registry === "FAIRassist" ||
+        _module.currentRecord["fairsharingRecord"].registry === "Fairassist" ||
         _module.currentRecord["fairsharingRecord"].registry === "Standard"
       ) {
         _module.tabsData.tabs["related_fairassist_components"] = {

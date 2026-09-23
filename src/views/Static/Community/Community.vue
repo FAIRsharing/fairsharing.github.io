@@ -336,7 +336,7 @@
           <v-card-text
             :style="
               $vuetify.display.xl
-                ? 'height: 320px'
+                ? 'height: 350px'
                 : $vuetify.display.mdAndUp
                   ? 'height: 350px'
                   : 'height: 100%'

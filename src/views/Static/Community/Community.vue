@@ -80,9 +80,9 @@
       <h3 class="text-h3 mb-4 mt-5">Adopters</h3>
 
       <p>
-        A broad range of stakeholders come to
-        FAIRsharing from across all research domains. However, adopters use
-        FAIRsharing specifically to do one or more of the following:
+        A broad range of stakeholders come to FAIRsharing from across all
+        research domains. However, adopters use FAIRsharing specifically to do
+        one or more of the following:
       </p>
 
       <ol type="i">
@@ -338,20 +338,27 @@
                   : 'height: 100%'
             "
             class="text--primary"
-            style="height: 100%"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
               <span v-for="(org, i) in tool.organisations" :key="org.id">
                 <v-tooltip v-if="org.tooltip" location="bottom">
                   <template #activator="{ props }">
-                    <a :href="orgUrl(org)" class="d-inline-block" v-bind="props"
+                    <a
+                      :href="orgUrl(org)"
+                      class="d-inline-block"
+                      v-bind="props"
+                      @click.prevent.stop="navigateTo(orgUrl(org))"
                       >{{ org.name }}
                     </a>
                   </template>
                   <span>{{ org.tooltip }}</span>
                 </v-tooltip>
-                <a v-else :href="orgUrl(org)" class="d-inline-block"
+                <a
+                  v-else
+                  :href="orgUrl(org)"
+                  class="d-inline-block"
+                  @click.prevent.stop="navigateTo(orgUrl(org))"
                   >{{ org.name }}
                 </a>
                 <span v-if="i + 1 < tool.organisations.length">, </span>
@@ -359,25 +366,37 @@
             </div>
             <div v-if="tool.status">Status: {{ tool.status }}</div>
             <div v-if="tool.contacts && tool.contacts.length">
-              Contacts:<br />
+              Contacts:
               <span v-for="contact in tool.contacts" :key="contact.id">
-                <v-chip class="ma-2" size="x-small">
+                <v-chip
+                  class="ma-2 text-primary"
+                  size="small"
+                  variant="outlined"
+                >
                   <a :href="contact.url">{{ contact.name }}</a>
                 </v-chip>
               </span>
             </div>
             <div v-if="tool.methods && tool.methods.length">
-              Methods of using FAIRsharing:<br />
+              Methods of using FAIRsharing:
               <span v-for="method in tool.methods" :key="tool.name + method">
-                <v-chip class="ma-2" size="x-small">
+                <v-chip
+                  class="ma-2 text-primary multiline-chip"
+                  size="small"
+                  variant="outlined"
+                >
                   {{ method }}
                 </v-chip>
               </span>
             </div>
             <div v-if="tool.types && tool.types.length">
-              Type of resource:<br />
+              Type of resource:
               <span v-for="type in tool.types" :key="tool.name + type">
-                <v-chip class="ma-2" size="x-small">
+                <v-chip
+                  class="ma-2 text-primary multiline-chip"
+                  size="small"
+                  variant="outlined"
+                >
                   {{ type }}
                 </v-chip>
               </span>
@@ -685,6 +704,7 @@ import Icon from "@/components/Icon";
 // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
+import navigateTo from "@/utils/generalUtils";
 
 const handleScroll = () => {
   // Check if we are at the top
@@ -704,6 +724,7 @@ const handleScroll = () => {
 export default {
   name: "Community",
   components: { Icon },
+  mixins: [navigateTo],
   title: "This will be the community page",
   data: () => {
     return {
@@ -859,5 +880,16 @@ td {
 
 .word-break {
   white-space: break-spaces;
+}
+.multiline-chip {
+  height: auto !important;
+  min-height: 26px;
+  padding: 2px 10px;
+  text-align: center;
+}
+
+.multiline-chip :deep(.v-chip__content),
+.multiline-chip :deep(.v-chip__label) {
+  white-space: normal !important;
 }
 </style>

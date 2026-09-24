@@ -263,7 +263,7 @@
 &lt;/template>
 
 &lt;script>
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
@@ -314,16 +314,18 @@ export default {
           count: 0,
         };
       }
-      if (
-        _module.currentRecord["fairsharingRecord"].registry === "FAIRassist" ||
-        _module.currentRecord["fairsharingRecord"].registry === "Standard"
-      ) {
-        _module.tabsData.tabs["related_fairassist_components"] = {
-          registry: ["FAIRassist"],
-          data: [],
-          count: 0,
-        };
-      }
+      // if (
+      //   _module.currentRecord["fairsharingRecord"].registry?.toLowerCase() ===
+      //     "fairassist" ||
+      //   _module.currentRecord["fairsharingRecord"].registry === "Standard"
+      // ) {
+      //As per the discussion with the team, we are displaying the FAIRassist components for all the record types. https://github.com/FAIRsharing/fairsharing.github.io/pull/2877#issuecomment-5811643400
+      _module.tabsData.tabs["related_fairassist_components"] = {
+        registry: ["FAIRassist"],
+        data: [],
+        count: 0,
+      };
+      // }
       if (
         Object.keys(_module.currentRecord["fairsharingRecord"]).includes(
           "recordAssociations",

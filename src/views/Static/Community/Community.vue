@@ -299,13 +299,14 @@
       <v-col
         v-for="tool in tables.toolsTable.data"
         :key="tool.id"
+        class="d-flex"
         cols="12"
         lg="3"
         md="4"
         sm="12"
         xl="2"
       >
-        <v-card class="full-width">
+        <v-card class="full-width h-100 d-flex flex-column">
           <v-img
             :src="
               tool.logo
@@ -313,36 +314,24 @@
                 : '/assets/Community/tools/toolplaceholder.png'
             "
             aspect-ratio="1"
-            class="text-white align-end"
+            class="text-white align-end flex-grow-0"
             cover
             gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
           >
             <v-card-title>
-              <h4 style="word-break: initial; white-space: normal">
+              <h4 class="text-unwrap">
                 <a :id="tool.id" :href="tool.homepage" target="_blank">
                   {{ tool.name }}
                 </a>
               </h4>
             </v-card-title>
-            <v-card-subtitle
-              v-if="tool.description"
-              class="pb-4"
-              style="word-break: initial"
-            >
+
+            <v-card-subtitle v-if="tool.description" class="pb-4 text-unwrap">
               {{ tool.description }}
             </v-card-subtitle>
           </v-img>
 
-          <v-card-text
-            :style="
-              $vuetify.display.xl
-                ? 'height: 350px'
-                : $vuetify.display.mdAndUp
-                  ? 'height: 350px'
-                  : 'height: 100%'
-            "
-            class="text--primary"
-          >
+          <v-card-text class="text--primary flex-grow-1">
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
               <span v-for="(org, i) in tool.organisations" :key="org.id">
@@ -353,22 +342,28 @@
                       class="d-inline-block"
                       v-bind="props"
                       @click.prevent.stop="navigateTo(orgUrl(org))"
-                      >{{ org.name }}
+                    >
+                      {{ org.name }}
                     </a>
                   </template>
                   <span>{{ org.tooltip }}</span>
                 </v-tooltip>
+
                 <a
                   v-else
                   :href="orgUrl(org)"
                   class="d-inline-block"
                   @click.prevent.stop="navigateTo(orgUrl(org))"
-                  >{{ org.name }}
+                >
+                  {{ org.name }}
                 </a>
+
                 <span v-if="i + 1 < tool.organisations.length">, </span>
               </span>
             </div>
+
             <div v-if="tool.status">Status: {{ tool.status }}</div>
+
             <div v-if="tool.contacts && tool.contacts.length">
               Contacts:
               <span v-for="contact in tool.contacts" :key="contact.id">
@@ -381,6 +376,7 @@
                 </v-chip>
               </span>
             </div>
+
             <div v-if="tool.methods && tool.methods.length">
               Methods of using FAIRsharing:
               <span v-for="method in tool.methods" :key="tool.name + method">
@@ -393,6 +389,7 @@
                 </v-chip>
               </span>
             </div>
+
             <div v-if="tool.types && tool.types.length">
               Type of resource:
               <span v-for="type in tool.types" :key="tool.name + type">
@@ -702,9 +699,8 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import { isArray } from "lodash-es";
-import Icon from "@/components/Icon";
-// import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import {isArray} from "lodash-es";
+import Icon from "@/components/Icon"; // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
 import navigateTo from "@/utils/generalUtils";
@@ -784,7 +780,8 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      } else {
+      }
+      else {
         return org.url;
       }
     },
@@ -881,6 +878,10 @@ td {
   -webkit-column-count: 2;
 }
 
+.text-unwrap {
+  word-break: initial;
+  white-space: normal;
+}
 .word-break {
   white-space: break-spaces;
 }

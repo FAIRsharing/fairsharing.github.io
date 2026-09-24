@@ -326,7 +326,10 @@
               </h4>
             </v-card-title>
 
-            <v-card-subtitle v-if="tool.description" class="pb-4 text-unwrap">
+            <v-card-subtitle
+              v-if="tool.description"
+              class="pb-4 text-unwrap opacity-100 text-white"
+            >
               {{ tool.description }}
             </v-card-subtitle>
           </v-img>
@@ -699,7 +702,7 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import {isArray} from "lodash-es";
+import { isArray } from "lodash-es";
 import Icon from "@/components/Icon"; // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
@@ -780,8 +783,7 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      }
-      else {
+      } else {
         return org.url;
       }
     },

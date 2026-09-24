@@ -386,7 +386,7 @@ import graphQuery from "@/lib/GraphClient/queries/getGraphRelations.json";
 import NotFound from "@/views/Errors/404.vue";
 
 const graphClient = new GraphClient();
-const graph = new Graph();
+const graph = new Graph({ multi: true });
 const Sigma =
   typeof sigmaModule === "function" ? sigmaModule : sigmaModule.default;
 const getNodeImageProgram =

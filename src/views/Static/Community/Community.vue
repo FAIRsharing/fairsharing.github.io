@@ -785,8 +785,7 @@ export default {
     orgUrl(org) {
       if (org.id) {
         return `/organisations/${org.id}`;
-      }
-      else {
+      } else {
         return org.url;
       }
     },

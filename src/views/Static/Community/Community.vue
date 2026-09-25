@@ -80,9 +80,9 @@
       <h3 class="text-h3 mb-4 mt-5">Adopters</h3>
 
       <p>
-        A broad range of stakeholders come to
-        FAIRsharing from across all research domains. However, adopters use
-        FAIRsharing specifically to do one or more of the following:
+        A broad range of stakeholders come to FAIRsharing from across all
+        research domains. However, adopters use FAIRsharing specifically to do
+        one or more of the following:
       </p>
 
       <ol type="i">
@@ -299,13 +299,14 @@
       <v-col
         v-for="tool in tables.toolsTable.data"
         :key="tool.id"
+        class="d-flex"
         cols="12"
         lg="3"
         md="4"
         sm="12"
         xl="2"
       >
-        <v-card class="full-width">
+        <v-card class="full-width h-100 d-flex flex-column">
           <v-img
             :src="
               tool.logo
@@ -313,71 +314,93 @@
                 : '/assets/Community/tools/toolplaceholder.png'
             "
             aspect-ratio="1"
-            class="text-white align-end"
+            class="text-white align-end flex-grow-0"
             cover
             gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
           >
             <v-card-title>
-              <h4 style="word-break: initial">
+              <h4 class="text-unwrap">
                 <a :id="tool.id" :href="tool.homepage" target="_blank">
                   {{ tool.name }}
                 </a>
               </h4>
             </v-card-title>
-            <v-card-subtitle v-if="tool.description">
+
+            <v-card-subtitle
+              v-if="tool.description"
+              class="pb-4 text-unwrap opacity-100 text-white tool-subtitle"
+            >
               {{ tool.description }}
             </v-card-subtitle>
           </v-img>
 
-          <v-card-text
-            :style="
-              $vuetify.display.xl
-                ? 'height: 320px'
-                : $vuetify.display.mdAndUp
-                  ? 'height: 350px'
-                  : 'height: 100%'
-            "
-            class="text--primary"
-            style="height: 100%"
-          >
+          <v-card-text class="text--primary flex-grow-1">
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
               <span v-for="(org, i) in tool.organisations" :key="org.id">
                 <v-tooltip v-if="org.tooltip" location="bottom">
                   <template #activator="{ props }">
-                    <a :href="orgUrl(org)" class="d-inline-block" v-bind="props"
-                      >{{ org.name }}
+                    <a
+                      :href="orgUrl(org)"
+                      class="d-inline-block"
+                      v-bind="props"
+                      @click.prevent.stop="navigateTo(orgUrl(org))"
+                    >
+                      {{ org.name }}
                     </a>
                   </template>
                   <span>{{ org.tooltip }}</span>
                 </v-tooltip>
-                <a v-else :href="orgUrl(org)" class="d-inline-block"
-                  >{{ org.name }}
+
+                <a
+                  v-else
+                  :href="orgUrl(org)"
+                  class="d-inline-block"
+                  @click.prevent.stop="navigateTo(orgUrl(org))"
+                >
+                  {{ org.name }}
                 </a>
+
                 <span v-if="i + 1 < tool.organisations.length">, </span>
               </span>
             </div>
+
             <div v-if="tool.status">Status: {{ tool.status }}</div>
+
             <div v-if="tool.contacts && tool.contacts.length">
-              Contacts:<br />
+              Contacts:
               <span v-for="contact in tool.contacts" :key="contact.id">
-                <v-chip class="ma-2" size="x-small">
+                <v-chip
+                  class="ma-2 text-primary"
+                  size="small"
+                  variant="outlined"
+                >
                   <a :href="contact.url">{{ contact.name }}</a>
                 </v-chip>
               </span>
             </div>
+
             <div v-if="tool.methods && tool.methods.length">
-              Methods of using FAIRsharing:<br />
+              Methods of using FAIRsharing:
               <span v-for="method in tool.methods" :key="tool.name + method">
-                <v-chip class="ma-2" size="x-small">
+                <v-chip
+                  class="ma-2 text-primary multiline-chip"
+                  size="small"
+                  variant="outlined"
+                >
                   {{ method }}
                 </v-chip>
               </span>
             </div>
+
             <div v-if="tool.types && tool.types.length">
-              Type of resource:<br />
+              Type of resource:
               <span v-for="type in tool.types" :key="tool.name + type">
-                <v-chip class="ma-2" size="x-small">
+                <v-chip
+                  class="ma-2 text-primary multiline-chip"
+                  size="small"
+                  variant="outlined"
+                >
                   {{ type }}
                 </v-chip>
               </span>
@@ -679,12 +702,11 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import { isArray } from "lodash-es";
-
-import Icon from "@/components/Icon";
-// import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import {isArray} from "lodash-es";
+import Icon from "@/components/Icon"; // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
+import navigateTo from "@/utils/generalUtils";
 
 const handleScroll = () => {
   // Check if we are at the top
@@ -704,6 +726,7 @@ const handleScroll = () => {
 export default {
   name: "Community",
   components: { Icon },
+  mixins: [navigateTo],
   title: "This will be the community page",
   data: () => {
     return {
@@ -857,7 +880,51 @@ td {
   -webkit-column-count: 2;
 }
 
+.text-unwrap {
+  word-break: initial;
+  white-space: normal;
+}
+
 .word-break {
   white-space: break-spaces;
+}
+
+.multiline-chip {
+  height: auto !important;
+  min-height: 26px;
+  padding: 2px 10px;
+  text-align: center;
+}
+
+.multiline-chip :deep(.v-chip__content),
+.multiline-chip :deep(.v-chip__label) {
+  white-space: normal !important;
+}
+
+.tool-subtitle {
+  height: 100%;
+  max-height: 260px;
+  white-space: normal;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: none;
+
+  &:hover {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: white transparent;
+    &::after {
+      content: "Scroll for more";
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      color: white;
+      background-color: black;
+      width: 100%;
+      text-align: center;
+    }
+  }
 }
 </style>

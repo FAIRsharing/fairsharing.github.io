@@ -328,7 +328,7 @@
 
             <v-card-subtitle
               v-if="tool.description"
-              class="pb-4 text-unwrap opacity-100 text-white"
+              class="pb-4 text-unwrap opacity-100 text-white tool-subtitle"
             >
               {{ tool.description }}
             </v-card-subtitle>
@@ -702,7 +702,7 @@
  * All static pages will be handle through this namespace
  * @namespace Static
  */
-import { isArray } from "lodash-es";
+import {isArray} from "lodash-es";
 import Icon from "@/components/Icon"; // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
@@ -884,9 +884,11 @@ td {
   word-break: initial;
   white-space: normal;
 }
+
 .word-break {
   white-space: break-spaces;
 }
+
 .multiline-chip {
   height: auto !important;
   min-height: 26px;
@@ -897,5 +899,32 @@ td {
 .multiline-chip :deep(.v-chip__content),
 .multiline-chip :deep(.v-chip__label) {
   white-space: normal !important;
+}
+
+.tool-subtitle {
+  height: 100%;
+  max-height: 260px;
+  white-space: normal;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: none;
+
+  &:hover {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: white transparent;
+    &::after {
+      content: "Scroll for more";
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      color: white;
+      background-color: black;
+      width: 100%;
+      text-align: center;
+    }
+  }
 }
 </style>

@@ -273,19 +273,11 @@
 
 <script>
 import CountryFlag from "vue-country-flag-next";
-import { mapActions, mapState } from "vuex";
+import {mapActions, mapState} from "vuex";
 
 import RESTClient from "@/lib/Client/RESTClient.js";
-import { toBase64 } from "@/utils/generalUtils";
-import {
-  isBluesky,
-  isEmail,
-  isImage,
-  isLongEnough,
-  isMastodon,
-  isRequired,
-  isUrl,
-} from "@/utils/rules.js";
+import {toBase64} from "@/utils/generalUtils";
+import {isBluesky, isEmail, isImage, isLongEnough, isMastodon, isRequired, isUrl,} from "@/utils/rules.js";
 
 const restClient = new RESTClient();
 
@@ -295,6 +287,7 @@ export default {
   emits: ["imageTooBig"],
   data: () => {
     return {
+      formData: null,
       data: {
         profileTypes: [],
         organisations: [],
@@ -424,27 +417,6 @@ export default {
   computed: {
     ...mapState("users", ["user", "messages"]),
     ...mapState("editor", ["organisations", "organisationsTypes", "countries"]),
-    formData: function () {
-      if (this.user().metadata.preferences) {
-        return {
-          username: this.user().credentials.username,
-          email: this.user().metadata.email,
-          preferences_hide: this.user().metadata["preferences"]["hide_email"],
-          preferences_send:
-            this.user().metadata["preferences"]["email_updates"],
-          preferences_orcid:
-            this.user().metadata["preferences"]["push_to_orcid"],
-          first_name: this.user().metadata.first_name,
-          last_name: this.user().metadata.last_name,
-          homepage: this.user().metadata.homepage,
-          profile_type: this.user().metadata.profile_type,
-          orcid: this.user().metadata.orcid,
-          mastodon: this.user().metadata.mastodon,
-          bluesky: this.user().metadata.bluesky,
-        };
-      }
-      return null;
-    },
   },
   watch: {
     "newOrganisation.data.logo": {
@@ -481,6 +453,7 @@ export default {
     ]);
     this.data.organisations = this.organisations;
     this.userOrganisations = this.user().records.organisations;
+    this.setFormData();
     this.loading = false;
   },
   methods: {
@@ -584,6 +557,30 @@ export default {
       this.$emit("imageTooBig", true);
       this.imageTooBig = true;
       return false;
+    },
+
+    setFormData() {
+      const user = this.user();
+
+      if (!user.metadata.preferences) {
+        this.formData = null;
+        return;
+      }
+
+      this.formData = {
+        username: user.credentials.username,
+        email: user.metadata.email,
+        preferences_hide: user.metadata.preferences.hide_email ?? false,
+        preferences_send: user.metadata.preferences.email_updates ?? false,
+        preferences_orcid: user.metadata.preferences.push_to_orcid ?? false,
+        first_name: user.metadata.first_name,
+        last_name: user.metadata.last_name,
+        homepage: user.metadata.homepage,
+        profile_type: user.metadata.profile_type,
+        orcid: user.metadata.orcid,
+        mastodon: user.metadata.mastodon,
+        bluesky: user.metadata.bluesky,
+      };
     },
   },
 };

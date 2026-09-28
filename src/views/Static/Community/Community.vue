@@ -328,7 +328,13 @@
 
             <v-card-subtitle
               v-if="tool.description"
+              :class="{
+                'is-overflowing': overflowingSubtitles[tool.id],
+                'is-at-bottom': subtitleAtBottom[tool.id],
+              }"
               class="pb-4 text-unwrap opacity-100 text-white tool-subtitle"
+              @mouseenter="checkOverflow($event, tool.id)"
+              @scroll="checkScrollPosition($event, tool.id)"
             >
               {{ tool.description }}
             </v-card-subtitle>
@@ -741,6 +747,8 @@ export default {
       currentAnchor: "",
       Icon,
       customIcons: customIcons,
+      overflowingSubtitles: {},
+      subtitleAtBottom: {},
     };
   },
   watch: {
@@ -793,6 +801,34 @@ export default {
       }
 
       return path.startsWith("/") ? path : `/${path.replace(/^\.?\//, "")}`;
+    },
+    /**
+     * Checks if the content of the provided element is overflowing vertically
+     * and updates the overflowingSubtitles map with the result.
+     *
+     * @param {Event} event - The event object that contains the currentTarget element to be checked.
+     * @param {string} toolId - The unique identifier for the tool to associate with the overflow result.
+     * @return {void} - Does not return a value. Updates the overflowingSubtitles property.
+     */
+    checkOverflow(event, toolId) {
+      const element = event.currentTarget;
+
+      this.overflowingSubtitles[toolId] =
+        element.scrollHeight > element.clientHeight;
+    },
+
+    /**
+     * Checks the scroll position of an element and updates the subtitleAtBottom state for the given toolId.
+     *
+     * @param {Event} event The scroll event containing the current target element.
+     * @param {string|number} toolId The identifier for the tool whose scroll position state is being updated.
+     * @return {void} Does not return a value.
+     */
+    checkScrollPosition(event, toolId) {
+      const element = event.currentTarget;
+
+      this.subtitleAtBottom[toolId] =
+        element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
     },
   },
 };
@@ -907,23 +943,33 @@ td {
   white-space: normal;
   overflow-y: hidden;
   overflow-x: hidden;
-  scrollbar-gutter: stable;
-  scrollbar-width: none;
 
-  &:hover {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: white transparent;
-    &::after {
-      content: "Scroll for more";
+  &.is-overflowing {
+    &:hover {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: white transparent;
+      padding-bottom: 30px !important;
+    }
+
+    &:hover::after {
       position: absolute;
-      right: 0;
-      left: 0;
+      display: block;
       bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
       color: white;
       background-color: black;
-      width: 100%;
       text-align: center;
+    }
+
+    &:not(.is-at-bottom):hover::after {
+      content: "Scroll down for more";
+    }
+
+    &.is-at-bottom:hover::after {
+      content: "Scroll up";
     }
   }
 }

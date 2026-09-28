@@ -173,9 +173,9 @@
       &lt;h3 class="text-h3 mb-4 mt-5">Adopters&lt;/h3>
 
       &lt;p>
-        A broad range of stakeholders come to
-        FAIRsharing from across all research domains. However, adopters use
-        FAIRsharing specifically to do one or more of the following:
+        A broad range of stakeholders come to FAIRsharing from across all
+        research domains. However, adopters use FAIRsharing specifically to do
+        one or more of the following:
       &lt;/p>
 
       &lt;ol type="i">
@@ -392,13 +392,14 @@
       &lt;v-col
         v-for="tool in tables.toolsTable.data"
         :key="tool.id"
+        class="d-flex"
         cols="12"
         lg="3"
         md="4"
         sm="12"
         xl="2"
       >
-        &lt;v-card class="full-width">
+        &lt;v-card class="full-width h-100 d-flex flex-column">
           &lt;v-img
             :src="
               tool.logo
@@ -406,71 +407,99 @@
                 : '/assets/Community/tools/toolplaceholder.png'
             "
             aspect-ratio="1"
-            class="text-white align-end"
+            class="text-white align-end flex-grow-0"
             cover
             gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
           >
             &lt;v-card-title>
-              &lt;h4 style="word-break: initial">
+              &lt;h4 class="text-unwrap">
                 &lt;a :id="tool.id" :href="tool.homepage" target="_blank">
                   {{ tool.name }}
                 &lt;/a>
               &lt;/h4>
             &lt;/v-card-title>
-            &lt;v-card-subtitle v-if="tool.description">
+
+            &lt;v-card-subtitle
+              v-if="tool.description"
+              :class="{
+                'is-overflowing': overflowingSubtitles[tool.id],
+                'is-at-bottom': subtitleAtBottom[tool.id],
+              }"
+              class="pb-4 text-unwrap opacity-100 text-white tool-subtitle"
+              @mouseenter="checkOverflow($event, tool.id)"
+              @scroll="checkScrollPosition($event, tool.id)"
+            >
               {{ tool.description }}
             &lt;/v-card-subtitle>
           &lt;/v-img>
 
-          &lt;v-card-text
-            :style="
-              $vuetify.display.xl
-                ? 'height: 320px'
-                : $vuetify.display.mdAndUp
-                  ? 'height: 350px'
-                  : 'height: 100%'
-            "
-            class="text--primary"
-            style="height: 100%"
-          >
+          &lt;v-card-text class="text--primary flex-grow-1">
             &lt;div v-if="tool.organisations &amp;&amp; tool.organisations.length">
               Organisation :
               &lt;span v-for="(org, i) in tool.organisations" :key="org.id">
                 &lt;v-tooltip v-if="org.tooltip" location="bottom">
                   &lt;template #activator="{ props }">
-                    &lt;a :href="orgUrl(org)" class="d-inline-block" v-bind="props"
-                      >{{ org.name }}
+                    &lt;a
+                      :href="orgUrl(org)"
+                      class="d-inline-block"
+                      v-bind="props"
+                      @click.prevent.stop="navigateTo(orgUrl(org))"
+                    >
+                      {{ org.name }}
                     &lt;/a>
                   &lt;/template>
                   &lt;span>{{ org.tooltip }}&lt;/span>
                 &lt;/v-tooltip>
-                &lt;a v-else :href="orgUrl(org)" class="d-inline-block"
-                  >{{ org.name }}
+
+                &lt;a
+                  v-else
+                  :href="orgUrl(org)"
+                  class="d-inline-block"
+                  @click.prevent.stop="navigateTo(orgUrl(org))"
+                >
+                  {{ org.name }}
                 &lt;/a>
+
                 &lt;span v-if="i + 1 &lt; tool.organisations.length">, &lt;/span>
               &lt;/span>
             &lt;/div>
+
             &lt;div v-if="tool.status">Status: {{ tool.status }}&lt;/div>
+
             &lt;div v-if="tool.contacts &amp;&amp; tool.contacts.length">
-              Contacts:&lt;br />
+              Contacts:
               &lt;span v-for="contact in tool.contacts" :key="contact.id">
-                &lt;v-chip class="ma-2" size="x-small">
+                &lt;v-chip
+                  class="ma-2 text-primary"
+                  size="small"
+                  variant="outlined"
+                >
                   &lt;a :href="contact.url">{{ contact.name }}&lt;/a>
                 &lt;/v-chip>
               &lt;/span>
             &lt;/div>
+
             &lt;div v-if="tool.methods &amp;&amp; tool.methods.length">
-              Methods of using FAIRsharing:&lt;br />
+              Methods of using FAIRsharing:
               &lt;span v-for="method in tool.methods" :key="tool.name + method">
-                &lt;v-chip class="ma-2" size="x-small">
+                &lt;v-chip
+                  class="ma-2 text-primary multiline-chip"
+                  size="small"
+                  variant="outlined"
+                >
                   {{ method }}
                 &lt;/v-chip>
               &lt;/span>
             &lt;/div>
+
             &lt;div v-if="tool.types &amp;&amp; tool.types.length">
-              Type of resource:&lt;br />
+              Type of resource:
               &lt;span v-for="type in tool.types" :key="tool.name + type">
-                &lt;v-chip class="ma-2" size="x-small">
+                &lt;v-chip
+                  class="ma-2 text-primary multiline-chip"
+                  size="small"
+                  variant="outlined"
+                >
                   {{ type }}
                 &lt;/v-chip>
               &lt;/span>
@@ -773,11 +802,10 @@
  * @namespace Static
  */
 import { isArray } from "lodash-es";
-
-import Icon from "@/components/Icon";
-// import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import Icon from "@/components/Icon"; // import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityData from "@/data/communityPageData.json";
 import customIcons from "@/plugins/icons";
+import navigateTo from "@/utils/generalUtils";
 
 const handleScroll = () => {
   // Check if we are at the top
@@ -797,6 +825,7 @@ const handleScroll = () => {
 export default {
   name: "Community",
   components: { Icon },
+  mixins: [navigateTo],
   title: "This will be the community page",
   data: () => {
     return {
@@ -811,6 +840,8 @@ export default {
       currentAnchor: "",
       Icon,
       customIcons: customIcons,
+      overflowingSubtitles: {},
+      subtitleAtBottom: {},
     };
   },
   watch: {
@@ -863,6 +894,34 @@ export default {
       }
 
       return path.startsWith("/") ? path : `/${path.replace(/^\.?\//, "")}`;
+    },
+    /**
+     * Checks if the content of the provided element is overflowing vertically
+     * and updates the overflowingSubtitles map with the result.
+     *
+     * @param {Event} event - The event object that contains the currentTarget element to be checked.
+     * @param {string} toolId - The unique identifier for the tool to associate with the overflow result.
+     * @return {void} - Does not return a value. Updates the overflowingSubtitles property.
+     */
+    checkOverflow(event, toolId) {
+      const element = event.currentTarget;
+
+      this.overflowingSubtitles[toolId] =
+        element.scrollHeight > element.clientHeight;
+    },
+
+    /**
+     * Checks the scroll position of an element and updates the subtitleAtBottom state for the given toolId.
+     *
+     * @param {Event} event The scroll event containing the current target element.
+     * @param {string|number} toolId The identifier for the tool whose scroll position state is being updated.
+     * @return {void} Does not return a value.
+     */
+    checkScrollPosition(event, toolId) {
+      const element = event.currentTarget;
+
+      this.subtitleAtBottom[toolId] =
+        element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
     },
   },
 };
@@ -950,8 +1009,62 @@ td {
   -webkit-column-count: 2;
 }
 
+.text-unwrap {
+  word-break: initial;
+  white-space: normal;
+}
+
 .word-break {
   white-space: break-spaces;
+}
+
+.multiline-chip {
+  height: auto !important;
+  min-height: 26px;
+  padding: 2px 10px;
+  text-align: center;
+}
+
+.multiline-chip :deep(.v-chip__content),
+.multiline-chip :deep(.v-chip__label) {
+  white-space: normal !important;
+}
+
+.tool-subtitle {
+  height: 100%;
+  max-height: 260px;
+  white-space: normal;
+  overflow-y: hidden;
+  overflow-x: hidden;
+
+  &amp;.is-overflowing {
+    &amp;:hover {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: white transparent;
+      padding-bottom: 30px !important;
+    }
+
+    &amp;:hover::after {
+      position: absolute;
+      display: block;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      color: white;
+      background-color: black;
+      text-align: center;
+    }
+
+    &amp;:not(.is-at-bottom):hover::after {
+      content: "Scroll down for more";
+    }
+
+    &amp;.is-at-bottom:hover::after {
+      content: "Scroll up";
+    }
+  }
 }
 &lt;/style>
 </pre>
@@ -999,7 +1112,7 @@ td {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
 	
-		on Tue Sep 22nd 2026
+		on Mon Sep 28th 2026
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

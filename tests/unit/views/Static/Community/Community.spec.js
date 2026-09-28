@@ -46,7 +46,6 @@ describe("Community.vue", () => {
   });
 
   const globalMountOptions = {
-    // 🌟 3. Install Vuetify as a plugin
     plugins: [vuetify],
     mocks: {
       $vuetify: {
@@ -206,6 +205,108 @@ describe("Community.vue", () => {
       window.dispatchEvent(new Event("scroll"));
 
       expect(history.replaceState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("subtitle scrolling", () => {
+    describe("checkOverflow", () => {
+      it("sets overflowingSubtitles to true when content exceeds the visible height", () => {
+        const toolId = "tool-1";
+
+        const event = {
+          currentTarget: {
+            scrollHeight: 300,
+            clientHeight: 260,
+            scrollTop: 0,
+          },
+        };
+
+        wrapper.vm.checkOverflow(event, toolId);
+
+        expect(wrapper.vm.overflowingSubtitles[toolId]).toBe(true);
+      });
+
+      it("sets overflowingSubtitles to false when content fits", () => {
+        const toolId = "tool-1";
+
+        const event = {
+          currentTarget: {
+            scrollHeight: 200,
+            clientHeight: 260,
+            scrollTop: 0,
+          },
+        };
+
+        wrapper.vm.checkOverflow(event, toolId);
+
+        expect(wrapper.vm.overflowingSubtitles[toolId]).toBe(false);
+      });
+
+      it("calls checkScrollPosition", () => {
+        const toolId = "tool-1";
+
+        const event = {
+          currentTarget: {
+            scrollHeight: 300,
+            clientHeight: 260,
+            scrollTop: 0,
+          },
+        };
+
+        wrapper.vm.checkOverflow(event, toolId);
+
+        expect(wrapper.vm.overflowingSubtitles[toolId]).toBe(true);
+      });
+    });
+
+    describe("checkScrollPosition", () => {
+      it("sets subtitleAtBottom to false when not at the bottom", () => {
+        const toolId = "tool-1";
+
+        const event = {
+          currentTarget: {
+            scrollHeight: 500,
+            clientHeight: 260,
+            scrollTop: 100,
+          },
+        };
+
+        wrapper.vm.checkScrollPosition(event, toolId);
+
+        expect(wrapper.vm.subtitleAtBottom[toolId]).toBe(false);
+      });
+
+      it("sets subtitleAtBottom to true when scrolled to the bottom", () => {
+        const toolId = "tool-1";
+
+        const event = {
+          currentTarget: {
+            scrollHeight: 500,
+            clientHeight: 260,
+            scrollTop: 240,
+          },
+        };
+
+        wrapper.vm.checkScrollPosition(event, toolId);
+
+        expect(wrapper.vm.subtitleAtBottom[toolId]).toBe(true);
+      });
+
+      it("allows a 1px rounding difference when determining the bottom", () => {
+        const toolId = "tool-1";
+
+        const event = {
+          currentTarget: {
+            scrollHeight: 500,
+            clientHeight: 260,
+            scrollTop: 239,
+          },
+        };
+
+        wrapper.vm.checkScrollPosition(event, toolId);
+
+        expect(wrapper.vm.subtitleAtBottom[toolId]).toBe(true);
+      });
     });
   });
 });

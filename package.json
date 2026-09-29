@@ -53,7 +53,7 @@
     "tar": "^7.5.22",
     "trace-unhandled": "^2.0.1",
     "tsparticles": "^3.5.0",
-    "undici": "^6.28.0",
+    "undici": "^6.29.0",
     "vike": "^0.4.259",
     "vike-vue": "^0.9.11",
     "vue": "^3.4.35",

@@ -15,14 +15,29 @@ import EditProfile from "@/views/Users/EditProfile.vue";
 userStore.state.user = function () {
   return {
     metadata: {
+      email: "test@example.com",
+      first_name: "Test",
+      last_name: "User",
+      homepage: "",
+      mastodon: "",
+      bluesky: "",
+      orcid: null,
+      profile_type: "profile 1",
+      third_party: false,
       preferences: {
         hide_email: true,
+        email_updates: false,
+        push_to_orcid: false,
       },
-      profile_type: "profile 1",
     },
+
     credentials: {
       username: "username",
       token: "123",
+    },
+
+    records: {
+      organisations: [],
     },
   };
 };
@@ -199,5 +214,21 @@ describe("EditPrivateProfile.vue", () => {
     wrapper.vm.newOrganisation.data.country_ids = [{ id: 1, label: "b" }];
     wrapper.vm.removeCountry({ id: 1, label: "b" });
     expect(wrapper.vm.newOrganisation.data.country_ids).toStrictEqual([]);
+  });
+
+  it("can update profile preferences locally", async () => {
+    expect(wrapper.vm.formData.preferences_hide).toBe(true);
+    expect(wrapper.vm.formData.preferences_send).toBe(false);
+    expect(wrapper.vm.formData.preferences_orcid).toBe(false);
+
+    wrapper.vm.formData.preferences_hide = false;
+    wrapper.vm.formData.preferences_send = true;
+    wrapper.vm.formData.preferences_orcid = true;
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.formData.preferences_hide).toBe(false);
+    expect(wrapper.vm.formData.preferences_send).toBe(true);
+    expect(wrapper.vm.formData.preferences_orcid).toBe(true);
   });
 });

@@ -31,6 +31,12 @@
                     documentation </a
                   >.
                 </v-col>
+                <v-col class="mt-2" cols="12" v-if="calculatedNow">
+                  This graph was generated now.
+                </v-col>
+                <v-col class="mt-2" cols="12" v-else>
+                  This graph was generated from saved data.
+                </v-col>
               </v-row>
 
               <v-row class="mt-3" no-gutters>
@@ -356,6 +362,7 @@ export default {
       networkGraph: networkGraph,
       layoutRendering: false,
       renderingError: null,
+      calculatedNow: false,
     };
   },
   computed: {
@@ -396,8 +403,7 @@ export default {
       }
       try {
         await _module.plotGraph();
-      }
-      catch (error) {
+      } catch (error) {
         console.error("Graph Rendering Error:", error);
         _module.renderingError =
           "The network graph could not be initialized in this browser.";
@@ -427,8 +433,7 @@ export default {
           canvas.getContext("webgl2", contextOptions) ||
           canvas.getContext("webgl", contextOptions) ||
           canvas.getContext("experimental-webgl", contextOptions);
-      }
-      catch {
+      } catch {
         return false;
       }
 
@@ -469,6 +474,7 @@ export default {
           this.type = "N/A";
           this.initialized = true;
         } else {
+          this.calculatedNow = response.fairsharingGraph.calculatedNow;
           this.graphData = response.fairsharingGraph.data;
           this.loading = false;
           this.registry = this.graphData.registry;

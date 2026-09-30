@@ -31,10 +31,10 @@
                     documentation </a
                   >.
                 </v-col>
-                <v-col class="mt-2" cols="12" v-if="calculatedNow">
+                <v-col v-if="calculatedNow" class="mt-2" cols="12">
                   This graph was generated now.
                 </v-col>
-                <v-col class="mt-2" cols="12" v-else>
+                <v-col v-else class="mt-2" cols="12">
                   This graph was generated from saved data.
                 </v-col>
               </v-row>

@@ -124,10 +124,10 @@
                     documentation &lt;/a
                   >.
                 &lt;/v-col>
-                &lt;v-col class="mt-2" cols="12" v-if="calculatedNow">
+                &lt;v-col v-if="calculatedNow" class="mt-2" cols="12">
                   This graph was generated now.
                 &lt;/v-col>
-                &lt;v-col class="mt-2" cols="12" v-else>
+                &lt;v-col v-else class="mt-2" cols="12">
                   This graph was generated from saved data.
                 &lt;/v-col>
               &lt;/v-row>

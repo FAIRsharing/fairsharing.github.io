@@ -28,8 +28,11 @@
                     href="https://fairsharing.gitbook.io/fairsharing/about-our-records/network-graphs"
                     target="_blank"
                   >
-                    documentation </a
-                  >.
+                    documentation
+                  </a>.
+                </v-col>
+                <v-col v-if="graphData['generated']" class="mt-2" cols="12">
+                  This graph was generated at: {{ graphData['generated'] }}.
                 </v-col>
               </v-row>
 
@@ -249,7 +252,15 @@
               </v-container>
             </v-card-text>
           </div>
-          <div id="sigma-container" />
+          <v-alert
+            v-if="renderingError"
+            class="ma-4"
+            type="error"
+            variant="tonal"
+          >
+            {{ renderingError }}
+          </v-alert>
+          <div v-show="!renderingError" id="sigma-container" />
         </v-card>
 
         <v-fade-transition>
@@ -274,8 +285,8 @@
 <script>
 import Graph from "graphology";
 import forceAtlas2 from "graphology-layout-forceatlas2";
-import Sigma from "sigma";
-import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
+import sigmaModule from "sigma";
+import nodeImageProgramModule from "sigma/rendering/webgl/programs/node.image";
 
 import Loaders from "@/components/Navigation/Loaders";
 import networkGraph from "@/data/networkGraph.json";
@@ -285,7 +296,13 @@ import graphQuery from "@/lib/GraphClient/queries/getGraphRelations.json";
 import NotFound from "@/views/Errors/404.vue";
 
 const graphClient = new GraphClient();
-const graph = new Graph();
+const graph = new Graph({ multi: true });
+const Sigma =
+  typeof sigmaModule === "function" ? sigmaModule : sigmaModule.default;
+const getNodeImageProgram =
+  typeof nodeImageProgramModule === "function"
+    ? nodeImageProgramModule
+    : nodeImageProgramModule.default;
 let container;
 let renderer;
 
@@ -341,6 +358,7 @@ export default {
       buttonsActive: false,
       networkGraph: networkGraph,
       layoutRendering: false,
+      renderingError: null
     };
   },
   computed: {
@@ -373,10 +391,53 @@ export default {
         return;
       }
       container = document.getElementById("sigma-container");
-      await _module.plotGraph();
+      if (!_module.isWebGLAvailable()) {
+        _module.renderingError =
+          "The network graph cannot be displayed because WebGL is unavailable in this browser.";
+        _module.layoutRendering = false;
+        return;
+      }
+      try {
+        await _module.plotGraph();
+      } catch (error) {
+        console.error("Graph Rendering Error:", error);
+        _module.renderingError =
+          "The network graph could not be initialized in this browser.";
+        _module.layoutRendering = false;
+      }
     });
   },
+  beforeUnmount() {
+    if (renderer) {
+      renderer.kill();
+      renderer = null;
+    }
+    container = null;
+    graph.clear();
+  },
   methods: {
+    isWebGLAvailable() {
+      const canvas = document.createElement("canvas");
+      const contextOptions = {
+        preserveDrawingBuffer: false,
+        antialias: false,
+      };
+      let context = null;
+
+      try {
+        context =
+          canvas.getContext("webgl2", contextOptions) ||
+          canvas.getContext("webgl", contextOptions) ||
+          canvas.getContext("experimental-webgl", contextOptions);
+      } catch {
+        return false;
+      }
+
+      if (!context) return false;
+
+      context.getExtension("WEBGL_lose_context")?.loseContext();
+      return true;
+    },
     async getData() {
       this.loading = true;
       this.legend.types = {
@@ -437,7 +498,7 @@ export default {
       renderer = new Sigma(graph, container, {
         allowInvalidContainer: true,
         nodeProgramClasses: {
-          image: getNodeProgramImage(),
+          image: getNodeImageProgram(),
         },
       });
 

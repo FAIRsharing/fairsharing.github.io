@@ -1,5 +1,5 @@
 {
   "queryName": "fairsharingGraph",
   "queryParam": null,
-  "fields": ["calculatedNow", "data"]
+  "fields": ["data"]
 }

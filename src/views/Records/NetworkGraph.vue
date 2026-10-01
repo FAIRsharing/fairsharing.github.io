@@ -28,14 +28,11 @@
                     href="https://fairsharing.gitbook.io/fairsharing/about-our-records/network-graphs"
                     target="_blank"
                   >
-                    documentation </a
-                  >.
+                    documentation
+                  </a>.
                 </v-col>
-                <v-col v-if="calculatedNow" class="mt-2" cols="12">
-                  This graph was generated now.
-                </v-col>
-                <v-col v-else class="mt-2" cols="12">
-                  This graph was generated from saved data.
+                <v-col v-if="graphData['generated']" class="mt-2" cols="12">
+                  This graph was generated at: {{ graphData['generated'] }}.
                 </v-col>
               </v-row>
 
@@ -361,8 +358,7 @@ export default {
       buttonsActive: false,
       networkGraph: networkGraph,
       layoutRendering: false,
-      renderingError: null,
-      calculatedNow: false,
+      renderingError: null
     };
   },
   computed: {
@@ -474,7 +470,6 @@ export default {
           this.type = "N/A";
           this.initialized = true;
         } else {
-          this.calculatedNow = response.fairsharingGraph.calculatedNow;
           this.graphData = response.fairsharingGraph.data;
           this.loading = false;
           this.registry = this.graphData.registry;

@@ -1,140 +1,72 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Class: GraphQLClient</title>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: GraphQLClient</title>
 
-	<!--[if lt IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
-
-	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
-
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
 
 <body>
 
-<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
-<div class="container">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
-		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-        </button>
-	</div>
-	<div class="navbar-collapse collapse" id="topNavigation">
-		<ul class="nav navbar-nav">
-			
-			<li class="dropdown">
-				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="Static.html">Static</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
-				</ul>
-			</li>
-			
-		</ul>
-        
-            <div class="col-sm-3 col-md-3">
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        
-	</div>
+<div id="main">
 
-</div>
-</div>
+    <h1 class="page-title">Class: GraphQLClient</h1>
+
+    
 
 
-<div class="container" id="toc-content">
-<div class="row">
 
-	
-	<div class="col-md-8">
-	
-		<div id="main">
-			
 
-	<h1 class="page-title">Class: GraphQLClient</h1>
 <section>
 
 <header>
     
-        <h2>
-        GraphQLClient
-        </h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>GraphQLClient<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h2>
         
     
 </header>
-
 
 <article>
     <div class="container-overview">
     
         
-<hr>
-<dt>
-    <h4 class="name" id="GraphQLClient"><span class="type-signature"></span>new GraphQLClient()</h4>
-    
-    
-</dt>
-<dd>
 
     
-    <div class="description">
-        <p>The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
+
+    
+    <h4 class="name" id="GraphQLClient"><span class="type-signature"></span>new GraphQLClient<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
 Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
 also careful, its constructor is async !!</p>
-    </div>
-    
+</div>
 
-    
 
-    
 
-    
-    
 
-    
+
+
+
+
+
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -144,52 +76,53 @@ also careful, its constructor is async !!</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
-				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-10">line 10</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>, <a href="lib_GraphClient_GraphClient.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <ul>
 <li>to use this object you need to do &quot;await new ClassName()&quot; or use .then(callback)</li>
@@ -207,18 +140,19 @@ also careful, its constructor is async !!</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
     
     </div>
+
+    
 
     
 
@@ -235,32 +169,35 @@ also careful, its constructor is async !!</p>
     
         <h3 class="subsection-title">Methods</h3>
 
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="buildQuery"><span class="type-signature"></span>buildQuery(query)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Transform the JSON query into a string for graphQL</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
         
+            
 
-<table class="params table table-striped">
+    
+
+    
+    <h4 class="name" id="buildQuery"><span class="type-signature"></span>buildQuery<span class="signature">(query)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Transform the JSON query into a string for graphQL</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -289,7 +226,6 @@ also careful, its constructor is async !!</p>
             
                 
 <span class="param-type">Object</span>
-
 
 
             
@@ -306,17 +242,12 @@ also careful, its constructor is async !!</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -326,52 +257,53 @@ also careful, its constructor is async !!</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
-				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-58">line 58</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>, <a href="lib_GraphClient_GraphClient.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <p>{query: queryString} - a valid graphQL query string to execute</p>
 </div>
@@ -387,42 +319,44 @@ also careful, its constructor is async !!</p>
 <span class="param-type">Object</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="executeQuery"><span class="type-signature">&lt;async> </span>executeQuery(query)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Execute the given query (coming from a json file, see /queries/getRecords.json)</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="executeQuery"><span class="type-signature">(async) </span>executeQuery<span class="signature">(query)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Execute the given query (coming from a json file, see /queries/getRecords.json)</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -451,7 +385,6 @@ also careful, its constructor is async !!</p>
             
                 
 <span class="param-type">Object</span>
-
 
 
             
@@ -469,17 +402,12 @@ sending to the API.</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -489,52 +417,53 @@ sending to the API.</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
-				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-25">line 25</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>, <a href="lib_GraphClient_GraphClient.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -546,42 +475,44 @@ sending to the API.</p></td>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getData"><span class="type-signature">&lt;async> </span>getData(queryString)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Takes the query, post it with axios and returns the raw data</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getData"><span class="type-signature">(async) </span>getData<span class="signature">(queryString)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Takes the query, post it with axios and returns the raw data</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -612,7 +543,6 @@ sending to the API.</p></td>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -627,17 +557,12 @@ sending to the API.</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -647,52 +572,53 @@ sending to the API.</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
-				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-42">line 42</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>, <a href="lib_GraphClient_GraphClient.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <ul>
 <li>an axios promise representing the server response.</li>
@@ -710,42 +636,44 @@ sending to the API.</p></td>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="setHeader"><span class="type-signature"></span>setHeader(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Add the authorization token to the headers</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="setHeader"><span class="type-signature"></span>setHeader<span class="signature">(jwt)</span><span class="type-signature"></span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Add the authorization token to the headers</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -776,7 +704,6 @@ sending to the API.</p></td>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -791,17 +718,12 @@ sending to the API.</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -811,54 +733,56 @@ sending to the API.</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
-				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-132">line 132</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>, <a href="lib_GraphClient_GraphClient.js.html#line132">line 132</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-</dd>
 
-        </dl>
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     
@@ -871,136 +795,19 @@ sending to the API.</p></td>
 
 
 
-		</div>
-	</div>
-
-	<div class="clearfix"></div>
-
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
-	
-
-</div>
 </div>
 
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
+</nav>
 
-    <div class="modal fade" id="searchResults">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Search results</h4>
-          </div>
-          <div class="modal-body"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div>
-
+<br class="clear">
 
 <footer>
-
-
-	<span class="copyright">
-	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
-	</span>
-
-<span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
-	
-		on Tue Oct 13th 2026
-	
-	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
-</span>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Oct 13 2026 13:10:04 GMT+0000 (Coordinated Universal Time)
 </footer>
 
-<script src="scripts/docstrap.lib.js"></script>
-<script src="scripts/toc.js"></script>
-
-    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
-
-
-<script>
-$( function () {
-	$( "[id*='$']" ).each( function () {
-		var $this = $( this );
-
-		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
-	} );
-
-	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
-		var $this = $( this );
-
-		var example = $this.find( "code" );
-		exampleText = example.html();
-		var lang = /{@lang (.*?)}/.exec( exampleText );
-		if ( lang && lang[1] ) {
-			exampleText = exampleText.replace( lang[0], "" );
-			example.html( exampleText );
-			lang = lang[1];
-		} else {
-			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
-			lang = langClassMatch ? langClassMatch[1] : "javascript";
-		}
-
-		if ( lang ) {
-
-			$this
-			.addClass( "sunlight-highlight-" + lang )
-			.addClass( "linenums" )
-			.html( example.html() );
-
-		}
-	} );
-
-	Sunlight.highlightAll( {
-		lineNumbers : true,
-		showMenu : true,
-		enableDoclinks : true
-	} );
-
-	$.catchAnchorLinks( {
-        navbarOffset: 10
-	} );
-	$( "#toc" ).toc( {
-		anchorName  : function ( i, heading, prefix ) {
-			return $( heading ).attr( "id" ) || ( prefix + i );
-		},
-		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
-		showAndHide : false,
-		smoothScrolling: true
-	} );
-
-	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
-	$( '.dropdown-toggle' ).dropdown();
-
-    $( "table" ).each( function () {
-      var $this = $( this );
-      $this.addClass('table');
-    } );
-
-} );
-</script>
-
-
-
-<!--Navigation and Symbol Display-->
-
-
-<!--Google Analytics-->
-
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            SearcherDisplay.init();
-        });
-    </script>
-
-
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>

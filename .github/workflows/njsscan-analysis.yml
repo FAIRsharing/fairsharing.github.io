@@ -8,6 +8,12 @@ on:
     branches:
       - master
   push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
   njsscan:
@@ -15,13 +21,14 @@ jobs:
     name: njsscan code scanning
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: nodejsscan scan
         id: njsscan
-        uses: ajinabraham/njsscan-action@master
+        uses: ajinabraham/njsscan-action@c7b65a3590ade829628b2b3c87b34ac0ce666a79
         with:
           args: '--sarif --output results.sarif .'
       - name: Upload njsscan report
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@f3c49fd1ef3281abc41069b3dd22807a60c963f6
         with:
           sarif_file: results.sarif
+          category: njsscan

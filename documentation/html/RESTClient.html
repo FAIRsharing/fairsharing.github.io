@@ -1,139 +1,71 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Class: RESTClient</title>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: RESTClient</title>
 
-	<!--[if lt IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
-
-	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
-
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
 
 <body>
 
-<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
-<div class="container">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
-		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-        </button>
-	</div>
-	<div class="navbar-collapse collapse" id="topNavigation">
-		<ul class="nav navbar-nav">
-			
-			<li class="dropdown">
-				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="Static.html">Static</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
-				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li>
-				</ul>
-			</li>
-			
-		</ul>
-        
-            <div class="col-sm-3 col-md-3">
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        
-	</div>
+<div id="main">
 
-</div>
-</div>
+    <h1 class="page-title">Class: RESTClient</h1>
+
+    
 
 
-<div class="container" id="toc-content">
-<div class="row">
 
-	
-	<div class="col-md-8">
-	
-		<div id="main">
-			
 
-	<h1 class="page-title">Class: RESTClient</h1>
 <section>
 
 <header>
     
-        <h2>
-        RESTClient
-        </h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>RESTClient<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
-
 
 <article>
     <div class="container-overview">
     
         
-<hr>
-<dt>
-    <h4 class="name" id="RESTClient"><span class="type-signature"></span>new RESTClient()</h4>
-    
-    
-</dt>
-<dd>
 
     
-    <div class="description">
-        <p>The RESTClient is a singleton class that handles the connection and data exchange from the back-end
+
+    
+    <h4 class="name" id="RESTClient"><span class="type-signature"></span>new RESTClient<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>The RESTClient is a singleton class that handles the connection and data exchange from the back-end
 REST API.</p>
-    </div>
-    
+</div>
 
-    
 
-    
 
-    
-    
 
-    
+
+
+
+
+
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -143,55 +75,59 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-9">line 9</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-</dd>
+
+
+
+
+
+
+
+
+
+
+
 
     
     </div>
+
+    
 
     
 
@@ -208,32 +144,35 @@ REST API.</p>
     
         <h3 class="subsection-title">Methods</h3>
 
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="auth_headers"><span class="type-signature"></span>auth_headers(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Method to add authorisation to the headers.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
         
+            
 
-<table class="params table table-striped">
+    
+
+    
+    <h4 class="name" id="auth_headers"><span class="type-signature"></span>auth_headers<span class="signature">(jwt)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Method to add authorisation to the headers.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -273,17 +212,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -293,52 +227,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-30">line 30</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line30">line 30</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <ul>
 <li>headers with authorisation field added</li>
@@ -356,42 +291,44 @@ REST API.</p>
 <span class="param-type">JSON</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="canClaim"><span class="type-signature">&lt;async> </span>canClaim(recordID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="canClaim"><span class="type-signature">(async) </span>canClaim<span class="signature">(recordID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -420,7 +357,6 @@ REST API.</p>
             
                 
 <span class="param-type">Integer</span>
-
 
 
             
@@ -446,7 +382,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -461,17 +396,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -481,52 +411,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-388">line 388</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line388">line 388</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -538,42 +469,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="canEdit"><span class="type-signature">&lt;async> </span>canEdit(recordID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Determine if a user has permission to edit this record.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="canEdit"><span class="type-signature">(async) </span>canEdit<span class="signature">(recordID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Determine if a user has permission to edit this record.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -602,7 +535,6 @@ REST API.</p>
             
                 
 <span class="param-type">Integer</span>
-
 
 
             
@@ -628,7 +560,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -643,17 +574,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -663,52 +589,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-355">line 355</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line355">line 355</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -720,42 +647,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="changeWatcher"><span class="type-signature">&lt;async> </span>changeWatcher(recordID, operation, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Add or remove an watcher to/from a FairsharingRecord.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="changeWatcher"><span class="type-signature">(async) </span>changeWatcher<span class="signature">(recordID, operation, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Add or remove an watcher to/from a FairsharingRecord.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -784,7 +713,6 @@ REST API.</p>
             
                 
 <span class="param-type">Integer</span>
-
 
 
             
@@ -810,7 +738,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -834,7 +761,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -849,17 +775,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -869,52 +790,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-426">line 426</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line426">line 426</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -926,42 +848,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="claimRecord"><span class="type-signature">&lt;async> </span>claimRecord(recordID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="claimRecord"><span class="type-signature">(async) </span>claimRecord<span class="signature">(recordID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -992,7 +916,6 @@ REST API.</p>
 <span class="param-type">Integer</span>
 
 
-
             
             </td>
 
@@ -1016,7 +939,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -1031,17 +953,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -1051,52 +968,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-371">line 371</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line371">line 371</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -1108,42 +1026,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="confirmAccount"><span class="type-signature">&lt;async> </span>confirmAccount(token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Validate the account given the corresponding token</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="confirmAccount"><span class="type-signature">(async) </span>confirmAccount<span class="signature">(token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Validate the account given the corresponding token</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -1174,7 +1094,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -1189,17 +1108,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -1209,52 +1123,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-111">line 111</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line111">line 111</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -1266,42 +1181,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createAccount"><span class="type-signature">&lt;async> </span>createAccount(userLogin)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Method to create a new user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createAccount"><span class="type-signature">(async) </span>createAccount<span class="signature">(userLogin)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Method to create a new user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -1332,7 +1249,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -1347,17 +1263,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -1367,52 +1278,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-95">line 95</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <p>response - server response</p>
 </div>
@@ -1428,42 +1340,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createGrant"><span class="type-signature">&lt;async> </span>createGrant(grant, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Create a given grant</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createGrant"><span class="type-signature">(async) </span>createGrant<span class="signature">(grant, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Create a given grant</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -1494,7 +1408,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -1518,7 +1431,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -1533,17 +1445,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -1553,52 +1460,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-665">line 665</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line665">line 665</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -1610,42 +1518,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createLicenceLink"><span class="type-signature">&lt;async> </span>createLicenceLink(licenceLink, token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Create new a licence link</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createLicenceLink"><span class="type-signature">(async) </span>createLicenceLink<span class="signature">(licenceLink, token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Create new a licence link</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -1676,7 +1586,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -1700,7 +1609,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -1715,17 +1623,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -1735,52 +1638,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-484">line 484</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line484">line 484</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -1792,42 +1696,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createMessage"><span class="type-signature">&lt;async> </span>createMessage(message, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the given message</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createMessage"><span class="type-signature">(async) </span>createMessage<span class="signature">(message, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the given message</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -1858,7 +1764,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -1882,7 +1787,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -1897,17 +1801,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -1917,52 +1816,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-859">line 859</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line859">line 859</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -1974,42 +1874,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createNewUserDefinedTag"><span class="type-signature">&lt;async> </span>createNewUserDefinedTag(term, token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Create a new user defined tag in the database for users to tag their records.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createNewUserDefinedTag"><span class="type-signature">(async) </span>createNewUserDefinedTag<span class="signature">(term, token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Create a new user defined tag in the database for users to tag their records.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -2040,7 +1942,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2064,7 +1965,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2079,17 +1979,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -2099,52 +1994,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-465">line 465</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line465">line 465</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -2156,42 +2052,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createOrganisation"><span class="type-signature">&lt;async> </span>createOrganisation(organisation, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Create a given organisation</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createOrganisation"><span class="type-signature">(async) </span>createOrganisation<span class="signature">(organisation, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Create a given organisation</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -2222,7 +2120,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -2246,7 +2143,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2261,17 +2157,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -2281,52 +2172,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-611">line 611</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line611">line 611</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -2338,42 +2230,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createOrganisationLink"><span class="type-signature">&lt;async> </span>createOrganisationLink(organisationLink, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Create a new link between an organisation, a record and an optional grant.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createOrganisationLink"><span class="type-signature">(async) </span>createOrganisationLink<span class="signature">(organisationLink, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Create a new link between an organisation, a record and an optional grant.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -2404,7 +2298,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -2428,7 +2321,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2443,17 +2335,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -2463,52 +2350,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-683">line 683</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line683">line 683</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -2520,42 +2408,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createProcessingNotes"><span class="type-signature">&lt;async> </span>createProcessingNotes(noteText, recordId, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Create processing note of the given record</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createProcessingNotes"><span class="type-signature">(async) </span>createProcessingNotes<span class="signature">(noteText, recordId, jwt)</span><span class="type-signature"> &rarr; {Promise.&lt;*>}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Create processing note of the given record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -2586,7 +2476,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2608,7 +2497,6 @@ REST API.</p>
             
                 
 <span class="param-type">Number</span>
-
 
 
             
@@ -2634,7 +2522,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2649,17 +2536,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -2669,52 +2551,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-1092">line 1092</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line1092">line 1092</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -2726,42 +2609,44 @@ REST API.</p>
 <span class="param-type">Promise.&lt;*></span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="createRecord"><span class="type-signature">&lt;async> </span>createRecord(record, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Post the given object to the API to create the corresponding record.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="createRecord"><span class="type-signature">(async) </span>createRecord<span class="signature">(record, jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Post the given object to the API to create the corresponding record.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -2810,7 +2695,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2825,17 +2709,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -2845,52 +2724,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-321">line 321</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line321">line 321</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -2902,42 +2782,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="delete"><span class="type-signature">&lt;async> </span>delete(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete the user's account (they must be logged in).</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="delete"><span class="type-signature">(async) </span>delete<span class="signature">(jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete the user's account (they must be logged in).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -2968,7 +2850,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -2983,17 +2864,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -3003,52 +2879,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-80">line 80</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -3060,42 +2937,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteLicenceLink"><span class="type-signature">&lt;async> </span>deleteLicenceLink(id, token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete the given licence</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteLicenceLink"><span class="type-signature">(async) </span>deleteLicenceLink<span class="signature">(id, token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete the given licence</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -3126,7 +3005,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -3150,7 +3028,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -3165,17 +3042,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -3185,52 +3057,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-502">line 502</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line502">line 502</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -3242,42 +3115,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteMessage"><span class="type-signature">&lt;async> </span>deleteMessage(messageId, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the given message</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteMessage"><span class="type-signature">(async) </span>deleteMessage<span class="signature">(messageId, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the given message</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -3308,7 +3183,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -3332,7 +3206,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -3347,17 +3220,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -3367,52 +3235,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-876">line 876</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line876">line 876</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -3424,42 +3293,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteOrganisation"><span class="type-signature">&lt;async> </span>deleteOrganisation(organisationId, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete the given organisation link</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteOrganisation"><span class="type-signature">(async) </span>deleteOrganisation<span class="signature">(organisationId, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete the given organisation link</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -3490,7 +3361,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -3514,7 +3384,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -3529,17 +3398,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -3549,52 +3413,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-648">line 648</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line648">line 648</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -3606,42 +3471,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteOrganisationLink"><span class="type-signature">&lt;async> </span>deleteOrganisationLink(linkID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete the given organisation link</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteOrganisationLink"><span class="type-signature">(async) </span>deleteOrganisationLink<span class="signature">(linkID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete the given organisation link</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -3672,7 +3539,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -3696,7 +3562,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -3711,17 +3576,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -3731,52 +3591,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-720">line 720</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line720">line 720</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -3788,42 +3649,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteProcessingNote"><span class="type-signature">&lt;async> </span>deleteProcessingNote(noteId, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete processing note of the given record</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteProcessingNote"><span class="type-signature">(async) </span>deleteProcessingNote<span class="signature">(noteId, jwt)</span><span class="type-signature"> &rarr; {Promise.&lt;*>}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete processing note of the given record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -3854,7 +3717,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -3878,7 +3740,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -3893,17 +3754,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -3913,52 +3769,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-1138">line 1138</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line1138">line 1138</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -3970,42 +3827,44 @@ REST API.</p>
 <span class="param-type">Promise.&lt;*></span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deletePublicUser"><span class="type-signature">&lt;async> </span>deletePublicUser(userID, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete the user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deletePublicUser"><span class="type-signature">(async) </span>deletePublicUser<span class="signature">(userID, jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete the user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -4054,7 +3913,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -4069,17 +3927,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -4089,52 +3942,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-289">line 289</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line289">line 289</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -4146,42 +4000,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteRecord"><span class="type-signature">&lt;async> </span>deleteRecord(id, token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Delete Record</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteRecord"><span class="type-signature">(async) </span>deleteRecord<span class="signature">(id, token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Delete Record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -4212,7 +4068,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -4236,7 +4091,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -4251,17 +4105,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -4271,52 +4120,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-778">line 778</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line778">line 778</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -4328,42 +4178,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="deleteRelations"><span class="type-signature">&lt;async> </span>deleteRelations(options)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Deletes the relationships as an array of items containing a targetID, a sourceID and a labelID</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="deleteRelations"><span class="type-signature">(async) </span>deleteRelations<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Deletes the relationships as an array of items containing a targetID, a sourceID and a labelID</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -4394,7 +4246,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -4409,17 +4260,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -4429,52 +4275,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-586">line 586</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line586">line 586</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -4486,42 +4333,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="editOrganisation"><span class="type-signature">&lt;async> </span>editOrganisation(organisation, id, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Edit a given organisation</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="editOrganisation"><span class="type-signature">(async) </span>editOrganisation<span class="signature">(organisation, id, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Edit a given organisation</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -4552,7 +4401,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -4574,7 +4422,6 @@ REST API.</p>
             
                 
 <span class="param-type">Number</span>
-
 
 
             
@@ -4600,7 +4447,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -4615,17 +4461,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -4635,52 +4476,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-630">line 630</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line630">line 630</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -4692,42 +4534,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="editPublicUser"><span class="type-signature">&lt;async> </span>editPublicUser(newUser, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Edit the current logged in user profile</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="editPublicUser"><span class="type-signature">(async) </span>editPublicUser<span class="signature">(newUser, jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Edit the current logged in user profile</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -4758,7 +4602,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -4782,7 +4625,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -4797,17 +4639,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -4817,52 +4654,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-273">line 273</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line273">line 273</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -4874,42 +4712,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="editUser"><span class="type-signature">&lt;async> </span>editUser(newUser, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Edit the current logged in user profile</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="editUser"><span class="type-signature">(async) </span>editUser<span class="signature">(newUser, jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Edit the current logged in user profile</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -4940,7 +4780,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -4964,7 +4803,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -4979,17 +4817,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -4999,52 +4832,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-257">line 257</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line257">line 257</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5056,42 +4890,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="executeQuery"><span class="type-signature">&lt;async> </span>executeQuery(query)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Trigger the given query with Axios</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="executeQuery"><span class="type-signature">(async) </span>executeQuery<span class="signature">(query)</span><span class="type-signature"> &rarr; {Promise.&lt;*>}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Trigger the given query with Axios</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -5131,17 +4967,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -5151,52 +4982,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-893">line 893</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line893">line 893</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5208,42 +5040,44 @@ REST API.</p>
 <span class="param-type">Promise.&lt;*></span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="extraMetadataFields"><span class="type-signature">&lt;async> </span>extraMetadataFields(type, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the extra metadata fields for a RecordType</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="extraMetadataFields"><span class="type-signature">(async) </span>extraMetadataFields<span class="signature">(type, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get the extra metadata fields for a RecordType</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -5274,7 +5108,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -5298,7 +5131,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -5313,17 +5145,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -5333,52 +5160,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-737">line 737</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line737">line 737</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5390,42 +5218,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getEditByMonth"><span class="type-signature">&lt;async> </span>getEditByMonth(token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get count of edits by month</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getEditByMonth"><span class="type-signature">(async) </span>getEditByMonth<span class="signature">(token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get count of edits by month</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -5456,7 +5286,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -5471,17 +5300,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -5491,52 +5315,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-938">line 938</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line938">line 938</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5548,48 +5373,45 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getHomepageJsonld"><span class="type-signature">&lt;async> </span>getHomepageJsonld()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get JSON+LD for homepage.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getHomepageJsonld"><span class="type-signature">(async) </span>getHomepageJsonld<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
 
-    
+
+
+<div class="description">
+    <p>Get JSON+LD for homepage.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -5599,52 +5421,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-1001">line 1001</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line1001">line 1001</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5656,48 +5479,45 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getProfileTypes"><span class="type-signature">&lt;async> </span>getProfileTypes()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the list of available profile types for a user.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getProfileTypes"><span class="type-signature">(async) </span>getProfileTypes<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
 
-    
+
+
+<div class="description">
+    <p>Get the list of available profile types for a user.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -5707,52 +5527,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-808">line 808</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line808">line 808</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5764,42 +5585,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getPublicUser"><span class="type-signature">&lt;async> </span>getPublicUser(jwt, id)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the current user data</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getPublicUser"><span class="type-signature">(async) </span>getPublicUser<span class="signature">(jwt, id)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get the current user data</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -5857,17 +5680,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -5877,52 +5695,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-226">line 226</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line226">line 226</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -5934,42 +5753,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getRecordCreatedByMonth"><span class="type-signature">&lt;async> </span>getRecordCreatedByMonth(token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get count of records created by month</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getRecordCreatedByMonth"><span class="type-signature">(async) </span>getRecordCreatedByMonth<span class="signature">(token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get count of records created by month</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -6000,7 +5821,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -6015,17 +5835,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6035,52 +5850,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-922">line 922</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line922">line 922</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -6092,42 +5908,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getRecordsWoDOIs"><span class="type-signature">&lt;async> </span>getRecordsWoDOIs(token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get records without DOIS</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getRecordsWoDOIs"><span class="type-signature">(async) </span>getRecordsWoDOIs<span class="signature">(token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get records without DOIS</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -6158,7 +5976,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -6173,17 +5990,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6193,52 +6005,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-906">line 906</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line906">line 906</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -6250,48 +6063,45 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getStatisticsData"><span class="type-signature">&lt;async> </span>getStatisticsData()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get statistics data without users</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getStatisticsData"><span class="type-signature">(async) </span>getStatisticsData<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
 
-    
+
+
+<div class="description">
+    <p>Get statistics data without users</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6301,52 +6111,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-987">line 987</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line987">line 987</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -6358,42 +6169,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getUser"><span class="type-signature">&lt;async> </span>getUser(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the current user data</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getUser"><span class="type-signature">(async) </span>getUser<span class="signature">(jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get the current user data</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -6433,17 +6246,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6453,52 +6261,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-210">line 210</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line210">line 210</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -6510,42 +6319,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getUserRoles"><span class="type-signature">&lt;async> </span>getUserRoles(token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the list of available roles for a user.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getUserRoles"><span class="type-signature">(async) </span>getUserRoles<span class="signature">(token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get the list of available roles for a user.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -6574,7 +6385,6 @@ REST API.</p>
             
                 
 <span class="param-type">String</span>
-
 
 
             
@@ -6591,17 +6401,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6611,52 +6416,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-825">line 825</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line825">line 825</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -6668,42 +6474,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getUsersList"><span class="type-signature">&lt;async> </span>getUsersList(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get all users list</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getUsersList"><span class="type-signature">(async) </span>getUsersList<span class="signature">(jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get all users list</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -6743,17 +6551,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6763,52 +6566,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-241">line 241</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line241">line 241</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -6820,42 +6624,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="getZenodoSearch"><span class="type-signature">&lt;async> </span>getZenodoSearch(call, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get Zenodo call</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="getZenodoSearch"><span class="type-signature">(async) </span>getZenodoSearch<span class="signature">(call, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Get Zenodo call</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -6886,7 +6692,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -6910,7 +6715,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -6925,17 +6729,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -6945,52 +6744,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-954">line 954</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line954">line 954</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -7002,42 +6802,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="login"><span class="type-signature">&lt;async> </span>login(username, password)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Method to log in the user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="login"><span class="type-signature">(async) </span>login<span class="signature">(username, password)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Method to log in the user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -7095,17 +6897,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -7115,52 +6912,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-42">line 42</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line42">line 42</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 <div class="param-desc">
     <ul>
 <li>the response of the server</li>
@@ -7178,42 +6976,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="logout"><span class="type-signature">&lt;async> </span>logout(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Logout the user from the back, expiring the current jwt.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="logout"><span class="type-signature">(async) </span>logout<span class="signature">(jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Logout the user from the back, expiring the current jwt.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -7244,7 +7044,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -7259,17 +7058,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -7279,52 +7073,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-65">line 65</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line65">line 65</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -7336,42 +7131,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="removeMaintainer"><span class="type-signature">&lt;async> </span>removeMaintainer(recordID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Remove an existing maintainer from a FairsharingRecord.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="removeMaintainer"><span class="type-signature">(async) </span>removeMaintainer<span class="signature">(recordID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Remove an existing maintainer from a FairsharingRecord.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -7402,7 +7199,6 @@ REST API.</p>
 <span class="param-type">Integer</span>
 
 
-
             
             </td>
 
@@ -7426,7 +7222,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -7441,17 +7236,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -7461,52 +7251,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-406">line 406</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line406">line 406</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -7518,42 +7309,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="requestResetPwd"><span class="type-signature">&lt;async> </span>requestResetPwd(email)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Method to send a reset password link to the given email address</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="requestResetPwd"><span class="type-signature">(async) </span>requestResetPwd<span class="signature">(email)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Method to send a reset password link to the given email address</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -7584,7 +7377,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -7599,17 +7391,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -7619,52 +7406,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-126">line 126</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line126">line 126</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -7676,42 +7464,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="resendConfirmation"><span class="type-signature">&lt;async> </span>resendConfirmation(user)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Resend the validation link for a given user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="resendConfirmation"><span class="type-signature">(async) </span>resendConfirmation<span class="signature">(user)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Resend the validation link for a given user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -7740,7 +7530,6 @@ REST API.</p>
             
                 
 <span class="param-type">Object</span>
-
 
 
             
@@ -7757,17 +7546,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -7777,52 +7561,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-144">line 144</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line144">line 144</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -7834,42 +7619,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="resetPassword"><span class="type-signature">&lt;async> </span>resetPassword(user)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Reset the password of the given user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="resetPassword"><span class="type-signature">(async) </span>resetPassword<span class="signature">(user)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Reset the password of the given user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -7900,7 +7687,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -7915,17 +7701,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -7935,52 +7716,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-160">line 160</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line160">line 160</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -7992,42 +7774,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="resetPasswordWithoutToken"><span class="type-signature">&lt;async> </span>resetPasswordWithoutToken(jwt, user)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Changes the password of the logged in user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="resetPasswordWithoutToken"><span class="type-signature">(async) </span>resetPasswordWithoutToken<span class="signature">(jwt, user)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Changes the password of the logged in user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -8058,7 +7842,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -8082,7 +7865,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -8097,17 +7879,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -8117,52 +7894,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-177">line 177</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line177">line 177</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -8174,42 +7952,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="reviewRecord"><span class="type-signature">&lt;async> </span>reviewRecord(recordID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Attempt to create a RecordReview for a user for a FairsharingRecord.</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="reviewRecord"><span class="type-signature">(async) </span>reviewRecord<span class="signature">(recordID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Attempt to create a RecordReview for a user for a FairsharingRecord.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -8240,7 +8020,6 @@ REST API.</p>
 <span class="param-type">Integer</span>
 
 
-
             
             </td>
 
@@ -8264,7 +8043,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -8279,17 +8057,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -8299,52 +8072,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-446">line 446</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line446">line 446</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -8356,42 +8130,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="saveRelations"><span class="type-signature">&lt;async> </span>saveRelations(options)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Saves the relationships as an array of items containing a targetID, a sourceID and a labelID</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="saveRelations"><span class="type-signature">(async) </span>saveRelations<span class="signature">(options)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Saves the relationships as an array of items containing a targetID, a sourceID and a labelID</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -8422,7 +8198,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -8437,17 +8212,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -8457,52 +8227,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-563">line 563</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line563">line 563</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -8514,42 +8285,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="sendOrcidVerification"><span class="type-signature">&lt;async> </span>sendOrcidVerification(user)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Send the verification link for a given user</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="sendOrcidVerification"><span class="type-signature">(async) </span>sendOrcidVerification<span class="signature">(user)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Send the verification link for a given user</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -8580,7 +8353,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -8595,17 +8367,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -8615,52 +8382,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-1016">line 1016</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line1016">line 1016</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -8672,42 +8440,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="updateLicenceLink"><span class="type-signature">&lt;async> </span>updateLicenceLink(licenceLink, token)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the licenceLink</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="updateLicenceLink"><span class="type-signature">(async) </span>updateLicenceLink<span class="signature">(licenceLink, token)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the licenceLink</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -8738,7 +8508,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -8762,7 +8531,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -8777,17 +8545,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -8797,52 +8560,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-519">line 519</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line519">line 519</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -8854,42 +8618,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="updateMessage"><span class="type-signature">&lt;async> </span>updateMessage(message, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the given message</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="updateMessage"><span class="type-signature">(async) </span>updateMessage<span class="signature">(message, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the given message</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -8920,7 +8686,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -8944,7 +8709,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -8959,17 +8723,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -8979,52 +8738,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-842">line 842</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line842">line 842</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -9036,42 +8796,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="updateOrganisationLink"><span class="type-signature">&lt;async> </span>updateOrganisationLink(organisationLink, linkID, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the organisationLink given from linkID input with the given organisationLink</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="updateOrganisationLink"><span class="type-signature">(async) </span>updateOrganisationLink<span class="signature">(organisationLink, linkID, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the organisationLink given from linkID input with the given organisationLink</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -9102,7 +8864,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -9124,7 +8885,6 @@ REST API.</p>
             
                 
 <span class="param-type">Number</span>
-
 
 
             
@@ -9150,7 +8910,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -9165,17 +8924,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -9185,52 +8939,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-702">line 702</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line702">line 702</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -9242,42 +8997,44 @@ REST API.</p>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="updateProcessingNotes"><span class="type-signature">&lt;async> </span>updateProcessingNotes(noteId, noteText, recordId, jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update processing note of the given record</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="updateProcessingNotes"><span class="type-signature">(async) </span>updateProcessingNotes<span class="signature">(noteId, noteText, recordId, jwt)</span><span class="type-signature"> &rarr; {Promise.&lt;*>}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update processing note of the given record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -9308,7 +9065,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -9330,7 +9086,6 @@ REST API.</p>
             
                 
 <span class="param-type">String</span>
-
 
 
             
@@ -9356,7 +9111,6 @@ REST API.</p>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -9380,7 +9134,6 @@ REST API.</p>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -9395,17 +9148,12 @@ REST API.</p>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -9415,52 +9163,53 @@ REST API.</p>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-1116">line 1116</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line1116">line 1116</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -9472,42 +9221,44 @@ REST API.</p>
 <span class="param-type">Promise.&lt;*></span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="updateRecord"><span class="type-signature">&lt;async> </span>updateRecord(record)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the given record</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="updateRecord"><span class="type-signature">(async) </span>updateRecord<span class="signature">(record)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the given record</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -9538,7 +9289,6 @@ REST API.</p>
 <span class="param-type">Object</span>
 
 
-
             
             </td>
 
@@ -9554,17 +9304,12 @@ and the user token</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -9574,52 +9319,53 @@ and the user token</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-338">line 338</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line338">line 338</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -9631,42 +9377,44 @@ and the user token</p></td>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="updateStatusMaintenanceRequest"><span class="type-signature">&lt;async> </span>updateStatusMaintenanceRequest(maintenanceRequest, newStatus, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Update the maintenanceRequest given the new status value</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="updateStatusMaintenanceRequest"><span class="type-signature">(async) </span>updateStatusMaintenanceRequest<span class="signature">(maintenanceRequest, newStatus, userToken)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Update the maintenanceRequest given the new status value</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -9697,7 +9445,6 @@ and the user token</p></td>
 <span class="param-type">Number</span>
 
 
-
             
             </td>
 
@@ -9719,7 +9466,6 @@ and the user token</p></td>
             
                 
 <span class="param-type">string</span>
-
 
 
             
@@ -9745,7 +9491,6 @@ and the user token</p></td>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -9760,17 +9505,12 @@ and the user token</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -9780,52 +9520,53 @@ and the user token</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-756">line 756</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line756">line 756</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -9837,42 +9578,44 @@ and the user token</p></td>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="validateToken"><span class="type-signature">&lt;async> </span>validateToken(jwt)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Verify that the given JWT is still valid</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="validateToken"><span class="type-signature">(async) </span>validateToken<span class="signature">(jwt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Verify that the given JWT is still valid</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -9903,7 +9646,6 @@ and the user token</p></td>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -9918,17 +9660,12 @@ and the user token</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -9938,52 +9675,53 @@ and the user token</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-303">line 303</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line303">line 303</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -9995,42 +9733,44 @@ and the user token</p></td>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
-
-        
-
     
-</dd>
+
+
+
+
 
         
             
-<hr>
-<dt>
-    <h4 class="name" id="verifyPassword"><span class="type-signature">&lt;async> </span>verifyPassword(password)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Verify the validity of the given password</p>
-    </div>
-    
 
     
 
     
+    <h4 class="name" id="verifyPassword"><span class="type-signature">(async) </span>verifyPassword<span class="signature">(password)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
 
     
-    
-        <h5>Parameters:</h5>
-        
 
-<table class="params table table-striped">
+
+
+<div class="description">
+    <p>Verify the validity of the given password</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
     <thead>
     <tr>
         
@@ -10061,7 +9801,6 @@ and the user token</p></td>
 <span class="param-type">String</span>
 
 
-
             
             </td>
 
@@ -10076,17 +9815,12 @@ and the user token</p></td>
     </tbody>
 </table>
 
-    
 
-    
+
+
+
+
 <dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
@@ -10096,52 +9830,53 @@ and the user token</p></td>
 
     
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
-	
+    
 
+    
 
+    
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>,
-				 <a href="lib_Client_RESTClient.js.html#sunlight-1-line-193">line 193</a>
-			</li>
-		</ul>
-	</dd>
-	
+    
 
-	
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_Client_RESTClient.js.html">lib/Client/RESTClient.js</a>, <a href="lib_Client_RESTClient.js.html#line193">line 193</a>
+    </li></ul></dd>
+    
 
-	
+    
 
-	
+    
+
+    
 </dl>
 
 
-    
 
-    
 
-    
 
-    
 
-    
 
-    
-    <h5>Returns:</h5>
-    
-            
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
 
 
 <dl>
@@ -10153,17 +9888,16 @@ and the user token</p></td>
 <span class="param-type">Promise</span>
 
 
-
     </dd>
 </dl>
 
+    
+
+
+
+
 
         
-
-    
-</dd>
-
-        </dl>
     
 
     
@@ -10176,136 +9910,19 @@ and the user token</p></td>
 
 
 
-		</div>
-	</div>
-
-	<div class="clearfix"></div>
-
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
-	
-
-</div>
 </div>
 
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
+</nav>
 
-    <div class="modal fade" id="searchResults">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Search results</h4>
-          </div>
-          <div class="modal-body"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div>
-
+<br class="clear">
 
 <footer>
-
-
-	<span class="copyright">
-	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
-	</span>
-
-<span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a>
-	
-		on Thu Oct 1st 2026
-	
-	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
-</span>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Oct 13 2026 10:30:00 GMT+0000 (Coordinated Universal Time)
 </footer>
 
-<script src="scripts/docstrap.lib.js"></script>
-<script src="scripts/toc.js"></script>
-
-    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
-
-
-<script>
-$( function () {
-	$( "[id*='$']" ).each( function () {
-		var $this = $( this );
-
-		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
-	} );
-
-	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
-		var $this = $( this );
-
-		var example = $this.find( "code" );
-		exampleText = example.html();
-		var lang = /{@lang (.*?)}/.exec( exampleText );
-		if ( lang && lang[1] ) {
-			exampleText = exampleText.replace( lang[0], "" );
-			example.html( exampleText );
-			lang = lang[1];
-		} else {
-			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
-			lang = langClassMatch ? langClassMatch[1] : "javascript";
-		}
-
-		if ( lang ) {
-
-			$this
-			.addClass( "sunlight-highlight-" + lang )
-			.addClass( "linenums" )
-			.html( example.html() );
-
-		}
-	} );
-
-	Sunlight.highlightAll( {
-		lineNumbers : true,
-		showMenu : true,
-		enableDoclinks : true
-	} );
-
-	$.catchAnchorLinks( {
-        navbarOffset: 10
-	} );
-	$( "#toc" ).toc( {
-		anchorName  : function ( i, heading, prefix ) {
-			return $( heading ).attr( "id" ) || ( prefix + i );
-		},
-		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
-		showAndHide : false,
-		smoothScrolling: true
-	} );
-
-	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
-	$( '.dropdown-toggle' ).dropdown();
-
-    $( "table" ).each( function () {
-      var $this = $( this );
-      $this.addClass('table');
-    } );
-
-} );
-</script>
-
-
-
-<!--Navigation and Symbol Display-->
-
-
-<!--Google Analytics-->
-
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            SearcherDisplay.init();
-        });
-    </script>
-
-
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>

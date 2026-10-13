@@ -37,16 +37,16 @@ export default {
   methods: {
     setRecordLabels(label) {
       switch (label) {
-        case "standard":
-          return "Linked Standards";
-        case "database":
-          return "Linked Databases";
-        case "policy":
-          return "Linked Policies";
-        case "collection":
-          return "Linked Collections";
-        case "fairassist":
-          return "Linked FAIRassist";
+      case "standard":
+        return "Linked Standards";
+      case "database":
+        return "Linked Databases";
+      case "policy":
+        return "Linked Policies";
+      case "collection":
+        return "Linked Collections";
+      case "fairassist":
+        return "Linked FAIRassist";
       }
     },
   },
@@ -73,17 +73,10 @@ h4:before {
 }
 
 .counter-style {
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.05, #253442),
-    color-stop(1, #5a7087)
-  );
-  background: -moz-linear-gradient(top, #253442 5%, #5a7087 100%);
   background-color: #253442;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
+  background-image: linear-gradient(to bottom, #253442 5%, #5a7087 100%);
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
   display: inline-block;

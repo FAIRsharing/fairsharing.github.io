@@ -44,7 +44,7 @@
     "linkify-it": "^5.0.2",
     "lodash": "^4.17.21",
     "lodash-es": "^4.18.1",
-    "moment": "^2.29.1",
+    "moment": "^2.31.0",
     "nanoid": "^3.3.18",
     "roboto-fontface": "^0.10.0",
     "shiki": "^4.1.0",

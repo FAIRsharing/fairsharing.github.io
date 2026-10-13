@@ -13,8 +13,7 @@
   "opts": {
     "encoding": "utf8",
     "destination": "./documentation/html/",
-    "recurse": true,
-    "template": "./node_modules/ink-docstrap/template"
+    "recurse": true
   },
   "templates": {
     "cleverLinks": true,

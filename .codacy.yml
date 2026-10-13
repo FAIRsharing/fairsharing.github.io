@@ -1,0 +1,5 @@
+exclude_paths:
+  - "package-lock.json"
+  - "documentation/**"
+  - "coverage/**"
+  - "dist/**"

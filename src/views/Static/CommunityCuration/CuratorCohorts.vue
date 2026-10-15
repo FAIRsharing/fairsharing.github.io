@@ -214,21 +214,21 @@
                   <span v-for="(org, i) in card.organisation" :key="org.id">
                     <v-tooltip v-if="org.tooltip" location="bottom">
                       <template #activator="{ props }">
-                        <a
-                          :href="`/organisations/${org.id}`"
+                        <router-link
+                          :to="`/organisations/${org.id}`"
                           class="d-inline-block"
                           v-bind="props"
                           >{{ org.name }}
-                        </a>
+                        </router-link>
                       </template>
                       <span>{{ org.tooltip }}</span>
                     </v-tooltip>
-                    <a
+                    <router-link
                       v-else
-                      :href="`/organisations/${org.id}`"
+                      :to="`/organisations/${org.id}`"
                       class="d-inline-block"
                       >{{ org.name }}
-                    </a>
+                    </router-link>
                     <span v-if="i + 1 < card.organisation.length">, </span>
                   </span>
                 </div>

@@ -71,13 +71,14 @@ export default defineConfig(async (env) => {
         transformMode: {
           web: [/\.[jt]sx$/],
         },
-        include: ["tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+        include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+          "tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
         coverage: {
           provider: "v8", // or 'istanbul'
           include: ["src/**/*.js"],
           // In v3, 'all' is true by default, which might "drop" your %
           // because it now counts untested files.
-          all: false, // Set to false to match Vitest 2 behavior if preferred
+          all: true,
           ignoreEmptyLines: true,
           reporter: ["html", "lcov", "text", "json-summary"],
           thresholds: {
@@ -94,7 +95,7 @@ export default defineConfig(async (env) => {
             "src/store/index.js",
             "src/plugins/**",
             "src/router/**",
-            "tests/*",
+            "tests/**",
             ".eslintrc.cjs",
             "vite.config.mjs",
             "vitest.config.mjs",

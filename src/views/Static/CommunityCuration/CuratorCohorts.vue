@@ -245,7 +245,7 @@
 
               <v-card-actions v-if="card.id" class="pa-0 full-width mb-n1">
                 <v-btn
-                  :href="`/users/${card.id}`"
+                  :to="`/users/${card.id}`"
                   class="full-width"
                   color="primary"
                   height="48px"

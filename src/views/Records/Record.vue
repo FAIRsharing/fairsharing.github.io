@@ -7,6 +7,7 @@
           :absolute="false"
           class="align-center justify-center"
           opacity="0.8"
+          persistent
         >
           <Loaders />
         </v-overlay>
@@ -221,7 +222,12 @@
             Cancel
           </v-btn>
 
-          <v-btn color="success" variant="elevated" @click="confirmDelete()">
+          <v-btn
+            :loading="loading"
+            color="success"
+            variant="elevated"
+            @click="confirmDelete()"
+          >
             DELETE
           </v-btn>
 
@@ -321,8 +327,8 @@
 </template>
 
 <script>
-import {useData} from "vike-vue/useData";
-import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+import { useData } from "vike-vue/useData";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
@@ -349,7 +355,7 @@ import NotFound from "@/views/Errors/404";
 
 import Hidden from "../Errors/Hidden";
 import Tombstone from "../Errors/Tombstone";
-import {useTheme} from "vuetify";
+import { useTheme } from "vuetify";
 
 const client = new RestClient();
 export default {
@@ -878,6 +884,7 @@ export default {
      */
     async confirmDelete() {
       const _module = this;
+      _module.loading = true;
       _module.dialogs.disableButton = true;
       let data = await client.deleteRecord(
         _module.dialogs.recordID,
@@ -890,6 +897,7 @@ export default {
         this.$router.go();
       }
       _module.dialogs.deleteRecord = false;
+      _module.loading = false;
     },
     claimRecordMenu(recordName, recordID) {
       const _module = this;

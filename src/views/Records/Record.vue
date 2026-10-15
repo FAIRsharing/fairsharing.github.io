@@ -218,17 +218,23 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="error" variant="elevated" @click="closeDeleteMenu()">
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="error"
+            variant="elevated"
+            @click="closeDeleteMenu()"
+          >
             Cancel
           </v-btn>
 
           <v-btn
+            :disabled="deleteCountdown > 0"
             :loading="loading"
             color="success"
             variant="elevated"
             @click="confirmDelete()"
           >
-            DELETE
+            {{ deleteCountdown > 0 ? `DELETE (${deleteCountdown})` : "DELETE" }}
           </v-btn>
 
           <v-spacer />
@@ -327,8 +333,8 @@
 </template>
 
 <script>
-import { useData } from "vike-vue/useData";
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import {useData} from "vike-vue/useData";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
@@ -355,7 +361,7 @@ import NotFound from "@/views/Errors/404";
 
 import Hidden from "../Errors/Hidden";
 import Tombstone from "../Errors/Tombstone";
-import { useTheme } from "vuetify";
+import {useTheme} from "vuetify";
 
 const client = new RestClient();
 export default {
@@ -456,6 +462,8 @@ export default {
         stopMaintainRecord: false,
       },
       loading: false,
+      deleteCountdown: 5,
+      deleteTimer: null,
     };
   },
   head: {
@@ -658,6 +666,9 @@ export default {
     }
     _module.loading = false;
     _module.$emit("showDialog", !_module.loading);
+  },
+  beforeUnmount() {
+    this.clearDeleteCountdown();
   },
   methods: {
     closeHistory() {
@@ -892,12 +903,13 @@ export default {
       );
       if (data.error) {
         _module.error = "error deleting record";
+        this.dialogs.deleteRecord = false;
+        this.loading = false;
+        this.dialogs.disableButton = false;
       } else {
         // Redirect to current record to show it has gone...
-        this.$router.go();
+        this.$router.go(0);
       }
-      _module.dialogs.deleteRecord = false;
-      _module.loading = false;
     },
     claimRecordMenu(recordName, recordID) {
       const _module = this;
@@ -928,11 +940,10 @@ export default {
       _module.dialogs.recordName = recordName;
       _module.dialogs.recordID = recordID;
       _module.dialogs.deleteRecord = true;
-      /* istanbul ignore next */ setTimeout(function () {
-        _module.dialogs.disableDelButton = false;
-      }, 5000);
+      _module.startDeleteCountdown();
     },
     closeDeleteMenu() {
+      this.clearDeleteCountdown();
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
     },
@@ -1263,6 +1274,25 @@ export default {
       // Re-display the menu.
       await this.getMenuButtons();
       await this.checkAlerts();
+    },
+    startDeleteCountdown() {
+      this.clearDeleteCountdown();
+      this.deleteCountdown = 5;
+      this.deleteTimer = setInterval(() => {
+        if (this.deleteCountdown > 1) {
+          this.deleteCountdown--;
+        } else {
+          this.deleteCountdown = 0;
+          this.clearDeleteCountdown();
+        }
+      }, 1000);
+    },
+
+    clearDeleteCountdown() {
+      if (this.deleteTimer) {
+        clearInterval(this.deleteTimer);
+        this.deleteTimer = null;
+      }
     },
   },
   metaInfo() {

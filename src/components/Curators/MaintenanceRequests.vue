@@ -75,7 +75,11 @@
                   min-width="400"
                 >
                   <template #activator="{ props: menuProps }">
-                    <span style="cursor: pointer" v-bind="menuProps">
+                    <span
+                      style="cursor: pointer"
+                      v-bind="menuProps"
+                      @click="processingNotesDraft = item.processingNotes || ''"
+                    >
                       {{ item.processingNotes || "Click to edit..." }}
                     </span>
                   </template>
@@ -87,7 +91,7 @@
 
                       <v-card-text class="pt-2">
                         <v-textarea
-                          v-model="item.processingNotes"
+                          v-model="processingNotesDraft"
                           hide-details
                           label="Edit (not long words)"
                           variant="filled"
@@ -110,12 +114,14 @@
                         </v-btn>
                         <v-spacer />
                         <v-btn
-                          color="primary"
-                          variant="text"
+                          color="success"
+                          size="small"
+                          slim
+                          variant="elevated"
                           @click="
                             saveProcessingNotes(
                               item.id,
-                              item.processingNotes,
+                              processingNotesDraft,
                               item,
                             );
                             isActive.value = false;
@@ -304,6 +310,7 @@ export default {
       approvalRequired: [],
       recordType: {},
       loading: false,
+      processingNotesDraft: "",
     };
   },
   computed: {
@@ -378,34 +385,36 @@ export default {
      */
     async saveProcessingNotes(idRecord, notesText, item) {
       const token = this.user().credentials.token;
+
+      this.loading = true;
+
       try {
         if (item.processingNoteId) {
-          this.loading = true;
-          // UPDATE EXISTING
           await restClient.updateProcessingNotes(
             item.processingNoteId,
             notesText,
             idRecord,
             token,
           );
-          this.loading = false;
         } else {
-          // CREATE NEW
-          this.loading = true;
           const response = await restClient.createProcessingNotes(
             notesText,
             idRecord,
             token,
           );
-          // Store the new ID so the next click becomes an "update"
-          const newId = response.data ? response.data.id : response.id;
-          item.processingNoteId = newId;
-          this.loading = false;
+
+          item.processingNoteId = response.data
+            ? response.data.id
+            : response.id;
         }
+
+        // Only update the displayed note after successful save.
+        item.processingNotes = notesText;
       } catch (err) {
-        this.loading = false;
         this.error.general = "Failed to save processing note.";
         this.error.recordID = idRecord;
+      } finally {
+        this.loading = false;
       }
     },
     /**

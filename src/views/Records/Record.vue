@@ -18,6 +18,28 @@
       <div v-if="error">
         <NotFound />
       </div>
+      <!-- Delete error -->
+      <v-alert
+        v-if="deleteError"
+        border="start"
+        class="ma-4"
+        closable
+        title="Unable to delete record"
+        type="error"
+        variant="tonal"
+        @click:close="deleteError = false"
+      >
+        This record could not be deleted. Please contact the FAIRsharing team at
+        <a
+          :href="`mailto:contact@fairsharing.org?subject=${encodeURIComponent(
+            `Unable to delete FAIRsharing record (recordID: ${currentRecord.fairsharingRecord.id})`,
+          )}`"
+          class="font-weight-bold"
+        >
+          contact@fairsharing.org
+        </a>
+        for assistance.
+      </v-alert>
 
       <!--   Action Menu & Alert   -->
       <v-row v-if="!target && queryTriggered" class="mx-1">
@@ -464,6 +486,7 @@ export default {
       loading: false,
       deleteCountdown: 5,
       deleteTimer: null,
+      deleteError: false,
     };
   },
   head: {
@@ -902,12 +925,12 @@ export default {
         this.user().credentials.token,
       );
       if (data.error) {
-        _module.error = "error deleting record";
+        _module.deleteError = true;
         this.dialogs.deleteRecord = false;
         this.loading = false;
         this.dialogs.disableButton = false;
       } else {
-        // Redirect to current record to show it has gone...
+        //Successfully deleted — reload the current page.
         this.$router.go(0);
       }
     },

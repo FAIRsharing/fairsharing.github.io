@@ -19,7 +19,7 @@
       class="d-flex pa-4 data-holder flex-row mt-4 align-center min-height-40"
       style="border: 2px dotted darkorange"
     >
-      <b class="width-200">Dataset Deprecation reason</b>
+      <b class="width-200">Deprecation reason</b>
       <div class="d-flex full-width ml-md-12 ml-13">
         <p class="ma-0 bg-warning text-white">
           {{ getField("metadata").deprecation_reason }}

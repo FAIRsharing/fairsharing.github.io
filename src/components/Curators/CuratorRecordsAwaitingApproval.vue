@@ -105,7 +105,11 @@
                 min-width="400"
               >
                 <template #activator="{ props: menuProps }">
-                  <span style="cursor: pointer" v-bind="menuProps">
+                  <span
+                    style="cursor: pointer"
+                    v-bind="menuProps"
+                    @click="processingNotesDraft = item.processingNotes || ''"
+                  >
                     {{ item.processingNotes || "Click to edit..." }}
                   </span>
                 </template>
@@ -116,7 +120,7 @@
                     </v-card-title>
                     <v-card-text class="pt-2">
                       <v-textarea
-                        v-model="item.processingNotes"
+                        v-model="processingNotesDraft"
                         hide-details
                         label="Edit (not long words)"
                         variant="filled"
@@ -138,12 +142,14 @@
                       </v-btn>
                       <v-spacer />
                       <v-btn
-                        color="primary"
-                        variant="text"
+                        color="success"
+                        size="small"
+                        slim
+                        variant="elevated"
                         @click="
                           saveProcessingNotes(
                             item.id,
-                            item.processingNotes,
+                            processingNotesDraft,
                             item,
                           );
                           isActive.value = false;
@@ -355,6 +361,7 @@ export default {
       recordType: {},
       loading: false,
       curatorList: [],
+      processingNotesDraft: "",
     };
   },
   computed: {
@@ -422,14 +429,12 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          }
-          else {
+          } else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          }
-          else {
+          } else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
@@ -442,8 +447,7 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          }
-          else {
+          } else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -469,8 +473,7 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        }
-        else if (role === "curator") {
+        } else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -490,36 +493,36 @@ export default {
      */
     async saveProcessingNotes(idRecord, notesText, item) {
       const token = this.user().credentials.token;
+
+      this.loading = true;
+
       try {
         if (item.processingNoteId) {
-          this.loading = true;
-          // UPDATE EXISTING
           await restClient.updateProcessingNotes(
             item.processingNoteId,
             notesText,
             idRecord,
             token,
           );
-          this.loading = false;
-        }
-        else {
-          // CREATE NEW
-          this.loading = true;
+        } else {
           const response = await restClient.createProcessingNotes(
             notesText,
             idRecord,
             token,
           );
-          // Store the new ID so the next click becomes an "update"
-          const newId = response.data ? response.data.id : response.id;
-          item.processingNoteId = newId;
-          this.loading = false;
+
+          item.processingNoteId = response.data
+            ? response.data.id
+            : response.id;
         }
-      }
-      catch (err) {
-        this.loading = false;
+
+        // Only update the displayed note after successful save.
+        item.processingNotes = notesText;
+      } catch (err) {
         this.error.general = "Failed to save processing note.";
         this.error.recordID = idRecord;
+      } finally {
+        this.loading = false;
       }
     },
     /**
@@ -542,8 +545,7 @@ export default {
         item.processingNotes = "";
         item.processingNoteId = null;
         this.loading = false;
-      }
-      catch (err) {
+      } catch (err) {
         this.loading = false;
         this.error.general = "Failed to delete processing note.";
         this.error.recordID = item.id;
@@ -555,8 +557,7 @@ export default {
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      }
-      else {
+      } else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -609,8 +610,7 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );
@@ -630,8 +630,7 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      }
-      else {
+      } else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );

@@ -37,7 +37,25 @@
           {{ error.general }}
         </v-alert>
       </v-card-text>
-
+      <v-alert
+        v-if="processingNoteError"
+        class="mb-4"
+        closable
+        title="Unable to save processing notes"
+        type="error"
+        variant="tonal"
+        @click:close="processingNoteError = null"
+      >
+        {{ processingNoteError }}
+        Please
+        <a
+          class="font-weight-bold text-decoration-underline"
+          href="mailto:contact@fairsharing.org"
+        >
+          email us
+        </a>
+        for assistance.
+      </v-alert>
       <v-data-table
         :headers="headerItems"
         :items="approvalRequiredProcessed"
@@ -324,8 +342,8 @@
 </template>
 
 <script>
-import {mergeProps} from "vue";
-import {mapActions, mapState} from "vuex";
+import { mergeProps } from "vue";
+import { mapActions, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -378,6 +396,7 @@ export default {
       loading: false,
       curatorList: [],
       processingNotesDraft: "",
+      processingNoteError: null,
     };
   },
   computed: {
@@ -514,29 +533,52 @@ export default {
       this.loading = true;
 
       try {
+        let response;
         if (item.processingNoteId) {
-          await restClient.updateProcessingNotes(
+          response = await restClient.updateProcessingNotes(
             item.processingNoteId,
             notesText,
             idRecord,
             token,
           );
         } else {
-          const response = await restClient.createProcessingNotes(
+          response = await restClient.createProcessingNotes(
             notesText,
             idRecord,
             token,
           );
-
-          item.processingNoteId = response.data
-            ? response.data.id
-            : response.id;
         }
 
+        // Handle API and network errors
+
+        if (response?.error) {
+          const error = response.error;
+          console.error("Failed to save processing notes:", error);
+          if (error.response) {
+            console.error("HTTP status:", error.response.status);
+            console.error("Server response:", error.response.data);
+          } else if (error.request) {
+            console.error("No response received from server:", error.message);
+          } else {
+            console.error("Request failed:", error.message);
+          }
+          this.processingNoteError = `The processing notes for record ${idRecord} could not be saved.`;
+          return false;
+        }
+        // Update local state only after successful API response
+        if (!item.processingNoteId) {
+          const newId = response.data ? response.data.id : response.id;
+          if (newId == null) {
+            throw new Error("Processing note ID missing from server response");
+          }
+          item.processingNoteId = newId;
+        }
         // Only update the displayed note after successful save.
         item.processingNotes = notesText;
+        return true;
       } catch (err) {
         this.error.general = "Failed to save processing note.";
+        this.processingNoteError = `The processing notes for record ${idRecord} could not be saved.`;
         this.error.recordID = idRecord;
       } finally {
         this.loading = false;

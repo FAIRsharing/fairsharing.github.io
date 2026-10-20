@@ -491,10 +491,9 @@ export default {
 
       try {
         const result = await saveProcessingNotes(
-          item.id,
-          this.processingNotesDraft,
-          item,
-          this.user().credentials.token,
+            item,
+            this.processingNotesDraft,
+            this.user().credentials.token,
         );
 
         if (!result.success) {
@@ -503,6 +502,9 @@ export default {
         }
 
         isActive.value = false;
+      } catch (error) {
+        console.error("Failed to save processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
       } finally {
         this.loading = false;
       }
@@ -530,6 +532,9 @@ export default {
         }
 
         isActive.value = false;
+      } catch (error) {
+        console.error("Failed to delete processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
       } finally {
         this.loading = false;
       }

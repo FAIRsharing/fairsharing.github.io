@@ -41,7 +41,7 @@
         v-if="processingNoteError"
         class="mb-4"
         closable
-        title="Unable to save processing notes"
+        title="Unable to update processing notes"
         type="error"
         variant="tonal"
         @click:close="processingNoteError = null"
@@ -165,10 +165,7 @@
                         size="small"
                         slim
                         variant="elevated"
-                        @click="
-                          deleteProcessingNote(item);
-                          isActive.value = false;
-                        "
+                        @click="deleteProcessingNoteAndClose(item, isActive)"
                       >
                         Delete
                       </v-btn>
@@ -178,14 +175,7 @@
                         size="small"
                         slim
                         variant="elevated"
-                        @click="
-                          saveProcessingNotes(
-                            item.id,
-                            processingNotesDraft,
-                            item,
-                          );
-                          isActive.value = false;
-                        "
+                        @click="saveProcessingNotesAndClose(item, isActive)"
                       >
                         Save
                       </v-btn>
@@ -342,8 +332,8 @@
 </template>
 
 <script>
-import { mergeProps } from "vue";
-import { mapActions, mapState } from "vuex";
+import {mergeProps} from "vue";
+import {mapActions, mapState} from "vuex";
 
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -531,7 +521,6 @@ export default {
       const token = this.user().credentials.token;
 
       this.loading = true;
-
       try {
         let response;
         if (item.processingNoteId) {
@@ -562,7 +551,7 @@ export default {
           } else {
             console.error("Request failed:", error.message);
           }
-          this.processingNoteError = `The processing notes for record ${idRecord} could not be saved.`;
+          this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
           return false;
         }
         // Update local state only after successful API response
@@ -578,7 +567,7 @@ export default {
         return true;
       } catch (err) {
         this.error.general = "Failed to save processing note.";
-        this.processingNoteError = `The processing notes for record ${idRecord} could not be saved.`;
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
         this.error.recordID = idRecord;
       } finally {
         this.loading = false;
@@ -589,25 +578,38 @@ export default {
      * @param item
      * @return {Promise<void>}
      */
-    async deleteProcessingNote(item) {
+    async deleteProcessingNotes(item) {
+      this.processingNoteError = null;
       if (!item.processingNoteId) {
-        // If no ID exists, it's not in the database, just clear the text
+        // No note exists in the database
         item.processingNotes = "";
-        return;
+        return true;
       }
 
+      this.loading = true;
       try {
-        this.loading = true;
         const token = this.user().credentials.token;
-        await restClient.deleteProcessingNote(item.processingNoteId, token);
-        // Clear local state
+        const response = await restClient.deleteProcessingNote(
+          item.processingNoteId,
+          token,
+        );
+
+        // Handle API and network errors
+        if (response?.data?.error) {
+          console.error("Failed to delete processing note:", response.error);
+          this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
+          return false;
+        }
+        // Clear local state only after successful deletion
         item.processingNotes = "";
         item.processingNoteId = null;
+        return true;
+      } catch (error) {
+        console.error("Unexpected error deleting processing note:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
+        return false;
+      } finally {
         this.loading = false;
-      } catch (err) {
-        this.loading = false;
-        this.error.general = "Failed to delete processing note.";
-        this.error.recordID = item.id;
       }
     },
 
@@ -714,6 +716,37 @@ export default {
     closeDeleteMenu() {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
+    },
+    /**
+     * Save processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise<void>}
+     */
+    async saveProcessingNotesAndClose(item, isActive) {
+      const saved = await this.saveProcessingNotes(
+        item.id,
+        this.processingNotesDraft,
+        item,
+      );
+
+      if (saved) {
+        isActive.value = false;
+      }
+    },
+
+    /**
+     * Delete processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise<void>}
+     */
+    async deleteProcessingNoteAndClose(item, isActive) {
+      const deleted = await this.deleteProcessingNotes(item);
+
+      if (deleted) {
+        isActive.value = false;
+      }
     },
   },
 };

@@ -5,13 +5,12 @@ const restClient = new RestClient();
 /**
  * Create or update processing notes for a record.
  *
- * @param {number} idRecord - FAIRsharing record ID.
- * @param {string} notesText - Processing notes text.
  * @param {Object} item - Record object.
+ * @param {string} notesText - Processing notes text.
  * @param {string} token - Authentication token.
  * @returns {Promise<{success: boolean, error?: string}>}
  */
-export async function saveProcessingNotes(idRecord, notesText, item, token) {
+export async function saveProcessingNotes(item, notesText, token) {
   try {
     let response;
 
@@ -19,14 +18,14 @@ export async function saveProcessingNotes(idRecord, notesText, item, token) {
       response = await restClient.updateProcessingNotes(
         item.processingNoteId,
         notesText,
-        idRecord,
+        item.id,
         token,
       );
     }
     else {
       response = await restClient.createProcessingNotes(
         notesText,
-        idRecord,
+        item.id,
         token,
       );
     }

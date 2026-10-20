@@ -24,7 +24,25 @@
           {{ error.general }}
         </v-alert>
       </v-card-text>
-
+      <v-alert
+        v-if="processingNoteError"
+        class="mb-4"
+        closable
+        title="Unable to update processing notes"
+        type="error"
+        variant="tonal"
+        @click:close="processingNoteError = null"
+      >
+        {{ processingNoteError }}
+        Please
+        <a
+          class="font-weight-bold text-decoration-underline"
+          href="mailto:contact@fairsharing.org"
+        >
+          email us
+        </a>
+        for assistance.
+      </v-alert>
       <v-data-table
         :headers="headerItems"
         :items="approvalRequiredProcessed"
@@ -114,8 +132,20 @@
                   </span>
                 </template>
                 <template #default="{ isActive }">
-                  <v-card class="pa-2">
-                    <v-card-title class="mt-2 text-h6">
+                  <v-card class="pa-2 position-relative">
+                    <v-btn
+                      aria-label="Close processing notes editor"
+                      class="position-absolute"
+                      color="black"
+                      icon
+                      size="x-small"
+                      style="top: 4px; right: 4px; z-index: 2"
+                      variant="elevated"
+                      @click="isActive.value = false"
+                    >
+                      <v-icon icon="fas fa-xmark" />
+                    </v-btn>
+                    <v-card-title class="mt-2 text-h6 pr-12">
                       Update Processing Notes
                     </v-card-title>
                     <v-card-text class="pt-2">
@@ -129,31 +159,23 @@
                     <v-card-actions>
                       <v-btn
                         v-if="item.processingNoteId"
+                        :loading="loading"
                         color="red"
                         size="small"
                         slim
                         variant="elevated"
-                        @click="
-                          deleteProcessingNote(item);
-                          isActive.value = false;
-                        "
+                        @click="deleteProcessingNoteAndClose(item, isActive)"
                       >
                         Delete
                       </v-btn>
                       <v-spacer />
                       <v-btn
+                        :loading="loading"
                         color="success"
                         size="small"
                         slim
                         variant="elevated"
-                        @click="
-                          saveProcessingNotes(
-                            item.id,
-                            processingNotesDraft,
-                            item,
-                          );
-                          isActive.value = false;
-                        "
+                        @click="saveProcessingNotesAndClose(item, isActive)"
                       >
                         Save
                       </v-btn>
@@ -322,6 +344,10 @@ import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecord
 import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
 import navigateTo from "@/utils/generalUtils";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -362,6 +388,7 @@ export default {
       loading: false,
       curatorList: [],
       processingNotesDraft: "",
+      processingNoteError: null,
     };
   },
   computed: {
@@ -429,12 +456,14 @@ export default {
           if (rec.creator) {
             object.creator = rec.creator.username.substring(0, 10);
             object.idCreator = rec.creator.id;
-          } else {
+          }
+          else {
             object.creator = "unknown";
           }
           if (rec.priority) {
             object.priority = "Priority";
-          } else {
+          }
+          else {
             object.priority = "";
           }
           const index = hiddenRecords.hiddenRecords.findIndex(
@@ -447,7 +476,8 @@ export default {
           if (rec.lastEditor) {
             object.lastEditor = rec.lastEditor.username;
             object.idLastEditor = rec.lastEditor.id;
-          } else {
+          }
+          else {
             object.lastEditor = "unknown";
           }
           this.approvalRequired.push(object);
@@ -473,7 +503,8 @@ export default {
         let role = item.role.name;
         if (role === "super_curator") {
           listSuper.push(object);
-        } else if (role === "curator") {
+        }
+        else if (role === "curator") {
           listCurator.push(object);
         }
       });
@@ -485,79 +516,13 @@ export default {
       this.curatorList.push(object);
     },
 
-    /**
-     * Create a processing notes for a record
-     * @param idRecord {Number} - FAIRshairing record id
-     * @param notesText {String} - Processing notes text
-     * @return {Promise<void>}
-     */
-    async saveProcessingNotes(idRecord, notesText, item) {
-      const token = this.user().credentials.token;
-
-      this.loading = true;
-
-      try {
-        if (item.processingNoteId) {
-          await restClient.updateProcessingNotes(
-            item.processingNoteId,
-            notesText,
-            idRecord,
-            token,
-          );
-        } else {
-          const response = await restClient.createProcessingNotes(
-            notesText,
-            idRecord,
-            token,
-          );
-
-          item.processingNoteId = response.data
-            ? response.data.id
-            : response.id;
-        }
-
-        // Only update the displayed note after successful save.
-        item.processingNotes = notesText;
-      } catch (err) {
-        this.error.general = "Failed to save processing note.";
-        this.error.recordID = idRecord;
-      } finally {
-        this.loading = false;
-      }
-    },
-    /**
-     * Delete a processing notes for a record
-     * @param item
-     * @return {Promise<void>}
-     */
-    async deleteProcessingNote(item) {
-      if (!item.processingNoteId) {
-        // If no ID exists, it's not in the database, just clear the text
-        item.processingNotes = "";
-        return;
-      }
-
-      try {
-        this.loading = true;
-        const token = this.user().credentials.token;
-        await restClient.deleteProcessingNote(item.processingNoteId, token);
-        // Clear local state
-        item.processingNotes = "";
-        item.processingNoteId = null;
-        this.loading = false;
-      } catch (err) {
-        this.loading = false;
-        this.error.general = "Failed to delete processing note.";
-        this.error.recordID = item.id;
-      }
-    },
-
     async assignCurator(idRecord, idUser, nameUser) {
       const _module = this;
       let preparedRecord = {};
       if (nameUser === "none") {
         preparedRecord.curator_id = null;
-      } else {
+      }
+      else {
         preparedRecord.curator_id = idUser;
       }
       let data = {
@@ -610,7 +575,8 @@ export default {
       if (_module.recordUpdate.error) {
         _module.error.general = _module.recordUpdate.message;
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );
@@ -630,7 +596,8 @@ export default {
       if (data.error) {
         _module.error.general = "error deleting record";
         _module.error.recordID = _module.dialogs.recordID;
-      } else {
+      }
+      else {
         const index = _module.approvalRequiredProcessed.findIndex(
           (element) => element.id === _module.dialogs.recordID,
         );
@@ -654,6 +621,64 @@ export default {
     closeDeleteMenu() {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
+    },
+
+    /**
+     * Save processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise<void>}
+     */
+    async saveProcessingNotesAndClose(item, isActive) {
+      this.loading = true;
+      this.processingNoteError = null;
+
+      try {
+        const result = await saveProcessingNotes(
+          item.id,
+          this.processingNotesDraft,
+          item,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
+        isActive.value = false;
+      }
+      finally {
+        this.loading = false;
+      }
+    },
+
+    /**
+     * Delete processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise<void>}
+     */
+    async deleteProcessingNoteAndClose(item, isActive) {
+      this.loading = true;
+      this.processingNoteError = null;
+
+      try {
+        const result = await deleteProcessingNotes(
+          item,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
+        isActive.value = false;
+      }
+      finally {
+        this.loading = false;
+      }
     },
   },
 };

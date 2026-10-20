@@ -146,8 +146,20 @@
                   </span>
                 </template>
                 <template #default="{ isActive }">
-                  <v-card class="pa-2">
-                    <v-card-title class="mt-2 text-h6">
+                  <v-card class="pa-2 position-relative">
+                    <v-btn
+                      aria-label="Close processing notes editor"
+                      class="position-absolute"
+                      color="black"
+                      icon
+                      size="x-small"
+                      style="top: 4px; right: 4px; z-index: 2"
+                      variant="elevated"
+                      @click="isActive.value = false"
+                    >
+                      <v-icon icon="fas fa-xmark" />
+                    </v-btn>
+                    <v-card-title class="mt-2 text-h6 pr-12">
                       Update Processing Notes
                     </v-card-title>
                     <v-card-text class="pt-2">
@@ -161,6 +173,7 @@
                     <v-card-actions>
                       <v-btn
                         v-if="item.processingNoteId"
+                        :loading="loading"
                         color="red"
                         size="small"
                         slim
@@ -171,6 +184,7 @@
                       </v-btn>
                       <v-spacer />
                       <v-btn
+                        :loading="loading"
                         color="success"
                         size="small"
                         slim
@@ -332,8 +346,8 @@
 </template>
 
 <script>
-import {mergeProps} from "vue";
-import {mapActions, mapState} from "vuex";
+import { mergeProps } from "vue";
+import { mapActions, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -345,6 +359,10 @@ import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
 import navigateTo from "@/utils/generalUtils";
 import Loaders from "@/components/Navigation/Loaders.vue";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -510,109 +528,6 @@ export default {
       this.curatorList.push(object);
     },
 
-    /**
-     * Create processing notes for a record
-     * @param idRecord {Number} - FAIRshairing record id
-     * @param notesText {String} - Processing notes text
-     * @param item {Object} - Record object
-     * @return {Promise<void>}
-     */
-    async saveProcessingNotes(idRecord, notesText, item) {
-      const token = this.user().credentials.token;
-
-      this.loading = true;
-      try {
-        let response;
-        if (item.processingNoteId) {
-          response = await restClient.updateProcessingNotes(
-            item.processingNoteId,
-            notesText,
-            idRecord,
-            token,
-          );
-        } else {
-          response = await restClient.createProcessingNotes(
-            notesText,
-            idRecord,
-            token,
-          );
-        }
-
-        // Handle API and network errors
-
-        if (response?.error) {
-          const error = response.error;
-          console.error("Failed to save processing notes:", error);
-          if (error.response) {
-            console.error("HTTP status:", error.response.status);
-            console.error("Server response:", error.response.data);
-          } else if (error.request) {
-            console.error("No response received from server:", error.message);
-          } else {
-            console.error("Request failed:", error.message);
-          }
-          this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
-          return false;
-        }
-        // Update local state only after successful API response
-        if (!item.processingNoteId) {
-          const newId = response.data ? response.data.id : response.id;
-          if (newId == null) {
-            throw new Error("Processing note ID missing from server response");
-          }
-          item.processingNoteId = newId;
-        }
-        // Only update the displayed note after successful save.
-        item.processingNotes = notesText;
-        return true;
-      } catch (err) {
-        this.error.general = "Failed to save processing note.";
-        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
-        this.error.recordID = idRecord;
-      } finally {
-        this.loading = false;
-      }
-    },
-    /**
-     * Delete a processing notes for a record
-     * @param item
-     * @return {Promise<void>}
-     */
-    async deleteProcessingNotes(item) {
-      this.processingNoteError = null;
-      if (!item.processingNoteId) {
-        // No note exists in the database
-        item.processingNotes = "";
-        return true;
-      }
-
-      this.loading = true;
-      try {
-        const token = this.user().credentials.token;
-        const response = await restClient.deleteProcessingNote(
-          item.processingNoteId,
-          token,
-        );
-
-        // Handle API and network errors
-        if (response?.data?.error) {
-          console.error("Failed to delete processing note:", response.error);
-          this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
-          return false;
-        }
-        // Clear local state only after successful deletion
-        item.processingNotes = "";
-        item.processingNoteId = null;
-        return true;
-      } catch (error) {
-        console.error("Unexpected error deleting processing note:", error);
-        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
-        return false;
-      } finally {
-        this.loading = false;
-      }
-    },
-
     async assignCurator(idRecord, idUser, nameUser) {
       const _module = this;
       let preparedRecord = {};
@@ -717,6 +632,7 @@ export default {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
     },
+
     /**
      * Save processing notes and close the menu
      * @param item
@@ -724,14 +640,25 @@ export default {
      * @return {Promise<void>}
      */
     async saveProcessingNotesAndClose(item, isActive) {
-      const saved = await this.saveProcessingNotes(
-        item.id,
-        this.processingNotesDraft,
-        item,
-      );
+      this.loading = true;
+      this.processingNoteError = null;
 
-      if (saved) {
+      try {
+        const result = await saveProcessingNotes(
+          item.id,
+          this.processingNotesDraft,
+          item,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
         isActive.value = false;
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -742,10 +669,23 @@ export default {
      * @return {Promise<void>}
      */
     async deleteProcessingNoteAndClose(item, isActive) {
-      const deleted = await this.deleteProcessingNotes(item);
+      this.loading = true;
+      this.processingNoteError = null;
 
-      if (deleted) {
+      try {
+        const result = await deleteProcessingNotes(
+          item,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
         isActive.value = false;
+      } finally {
+        this.loading = false;
       }
     },
   },

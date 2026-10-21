@@ -428,7 +428,7 @@ export default {
         newStatus,
         this.user().credentials.token,
       );
-      /* v8 ignore start */
+
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
           (element) => element.requestID === _module.dialogs.requestId,
@@ -444,20 +444,35 @@ export default {
               (element) => element.id === _module.dialogs.recordID,
             ) < 0
           ) {
-            await _module.saveProcessingNotes(_module.dialogs.recordID, null);
+            const item = _module.maintenanceRequests.find(
+              (record) => record.id === _module.dialogs.recordID,
+            );
+
+            if (item) {
+              const result = await deleteProcessingNotes(
+                item,
+                _module.user().credentials.token,
+              );
+
+              if (!result.success) {
+                _module.processingNoteError = result.error;
+              }
+            }
           }
         }
-      } else {
+      }
+      else {
         _module.error.general = "error assigning " + newStatus;
         _module.error.recordID = _module.dialogs.recordID;
       }
       if (newStatus === "approved") {
         _module.dialogs.confirmAssignment = false;
-      } else {
+      }
+      else {
         _module.dialogs.rejectAssignment = false;
       }
     },
-    /* v8 ignore end */
+
     rejectMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;
@@ -474,7 +489,8 @@ export default {
     compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
-      } else {
+      }
+      else {
         return 1;
       }
     },
@@ -491,9 +507,9 @@ export default {
 
       try {
         const result = await saveProcessingNotes(
-            item,
-            this.processingNotesDraft,
-            this.user().credentials.token,
+          item,
+          this.processingNotesDraft,
+          this.user().credentials.token,
         );
 
         if (!result.success) {
@@ -502,10 +518,12 @@ export default {
         }
 
         isActive.value = false;
-      } catch (error) {
+      }
+      catch (error) {
         console.error("Failed to save processing notes:", error);
         this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
-      } finally {
+      }
+      finally {
         this.loading = false;
       }
     },
@@ -532,10 +550,12 @@ export default {
         }
 
         isActive.value = false;
-      } catch (error) {
+      }
+      catch (error) {
         console.error("Failed to delete processing notes:", error);
         this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
-      } finally {
+      }
+      finally {
         this.loading = false;
       }
     },

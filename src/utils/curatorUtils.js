@@ -13,23 +13,22 @@ const restClient = new RestClient();
 export async function saveProcessingNotes(item, notesText, token) {
   try {
     let response;
-
+    let itemId = item?.recordID ?? item?.id;
     if (item.processingNoteId) {
       response = await restClient.updateProcessingNotes(
         item.processingNoteId,
         notesText,
-        item.id,
+        itemId,
         token,
       );
     }
     else {
       response = await restClient.createProcessingNotes(
         notesText,
-        item.id,
+        itemId,
         token,
       );
     }
-
     // Handle API and network errors
     const error = response?.error ?? response?.data?.error;
 

@@ -174,8 +174,20 @@
                   &lt;/span>
                 &lt;/template>
                 &lt;template #default="{ isActive }">
-                  &lt;v-card class="pa-2">
-                    &lt;v-card-title class="mt-2 text-h6">
+                  &lt;v-card class="pa-2 position-relative">
+                    &lt;v-btn
+                      aria-label="Close processing notes editor"
+                      class="position-absolute"
+                      color="black"
+                      icon
+                      size="x-small"
+                      style="top: 4px; right: 4px; z-index: 2"
+                      variant="elevated"
+                      @click="isActive.value = false"
+                    >
+                      &lt;v-icon icon="fas fa-xmark" />
+                    &lt;/v-btn>
+                    &lt;v-card-title class="mt-2 text-h6 pr-12">
                       Update Processing Notes
                     &lt;/v-card-title>
                     &lt;v-card-text class="pt-2">
@@ -189,6 +201,7 @@
                     &lt;v-card-actions>
                       &lt;v-btn
                         v-if="item.processingNoteId"
+                        :loading="loading"
                         color="red"
                         size="small"
                         slim
@@ -199,6 +212,7 @@
                       &lt;/v-btn>
                       &lt;v-spacer />
                       &lt;v-btn
+                        :loading="loading"
                         color="success"
                         size="small"
                         slim
@@ -360,8 +374,8 @@
 &lt;/template>
 
 &lt;script>
-import {mergeProps} from "vue";
-import {mapActions, mapState} from "vuex";
+import { mergeProps } from "vue";
+import { mapActions, mapState } from "vuex";
 
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -373,6 +387,10 @@ import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
 import navigateTo from "@/utils/generalUtils";
 import Loaders from "@/components/Navigation/Loaders.vue";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -538,109 +556,6 @@ export default {
       this.curatorList.push(object);
     },
 
-    /**
-     * Create processing notes for a record
-     * @param idRecord {Number} - FAIRshairing record id
-     * @param notesText {String} - Processing notes text
-     * @param item {Object} - Record object
-     * @return {Promise&lt;void>}
-     */
-    async saveProcessingNotes(idRecord, notesText, item) {
-      const token = this.user().credentials.token;
-
-      this.loading = true;
-      try {
-        let response;
-        if (item.processingNoteId) {
-          response = await restClient.updateProcessingNotes(
-            item.processingNoteId,
-            notesText,
-            idRecord,
-            token,
-          );
-        } else {
-          response = await restClient.createProcessingNotes(
-            notesText,
-            idRecord,
-            token,
-          );
-        }
-
-        // Handle API and network errors
-
-        if (response?.error) {
-          const error = response.error;
-          console.error("Failed to save processing notes:", error);
-          if (error.response) {
-            console.error("HTTP status:", error.response.status);
-            console.error("Server response:", error.response.data);
-          } else if (error.request) {
-            console.error("No response received from server:", error.message);
-          } else {
-            console.error("Request failed:", error.message);
-          }
-          this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
-          return false;
-        }
-        // Update local state only after successful API response
-        if (!item.processingNoteId) {
-          const newId = response.data ? response.data.id : response.id;
-          if (newId == null) {
-            throw new Error("Processing note ID missing from server response");
-          }
-          item.processingNoteId = newId;
-        }
-        // Only update the displayed note after successful save.
-        item.processingNotes = notesText;
-        return true;
-      } catch (err) {
-        this.error.general = "Failed to save processing note.";
-        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
-        this.error.recordID = idRecord;
-      } finally {
-        this.loading = false;
-      }
-    },
-    /**
-     * Delete a processing notes for a record
-     * @param item
-     * @return {Promise&lt;void>}
-     */
-    async deleteProcessingNotes(item) {
-      this.processingNoteError = null;
-      if (!item.processingNoteId) {
-        // No note exists in the database
-        item.processingNotes = "";
-        return true;
-      }
-
-      this.loading = true;
-      try {
-        const token = this.user().credentials.token;
-        const response = await restClient.deleteProcessingNote(
-          item.processingNoteId,
-          token,
-        );
-
-        // Handle API and network errors
-        if (response?.data?.error) {
-          console.error("Failed to delete processing note:", response.error);
-          this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
-          return false;
-        }
-        // Clear local state only after successful deletion
-        item.processingNotes = "";
-        item.processingNoteId = null;
-        return true;
-      } catch (error) {
-        console.error("Unexpected error deleting processing note:", error);
-        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
-        return false;
-      } finally {
-        this.loading = false;
-      }
-    },
-
     async assignCurator(idRecord, idUser, nameUser) {
       const _module = this;
       let preparedRecord = {};
@@ -745,6 +660,7 @@ export default {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
     },
+
     /**
      * Save processing notes and close the menu
      * @param item
@@ -752,14 +668,27 @@ export default {
      * @return {Promise&lt;void>}
      */
     async saveProcessingNotesAndClose(item, isActive) {
-      const saved = await this.saveProcessingNotes(
-        item.id,
-        this.processingNotesDraft,
-        item,
-      );
+      this.loading = true;
+      this.processingNoteError = null;
 
-      if (saved) {
+      try {
+        const result = await saveProcessingNotes(
+          item,
+          this.processingNotesDraft,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
         isActive.value = false;
+      } catch (error) {
+        console.error("Failed to save processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
+      } finally {
+        this.loading = false;
       }
     },
 
@@ -770,10 +699,25 @@ export default {
      * @return {Promise&lt;void>}
      */
     async deleteProcessingNoteAndClose(item, isActive) {
-      const deleted = await this.deleteProcessingNotes(item);
+      this.loading = true;
+      this.processingNoteError = null;
 
-      if (deleted) {
+      try {
+        const result = await deleteProcessingNotes(
+          item,
+          this.user().credentials.token,
+        );
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
         isActive.value = false;
+      } catch (error) {
+        console.error("Failed to delete processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
+      } finally {
+        this.loading = false;
       }
     },
   },
@@ -821,13 +765,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#deleteProcessingNotes">deleteProcessingNotes</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#saveProcessingNotes">saveProcessingNotes</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Oct 20 2026 09:57:00 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Oct 21 2026 14:29:42 GMT+0100 (British Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

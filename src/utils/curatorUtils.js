@@ -8,7 +8,7 @@ const restClient = new RestClient();
  * @param {Object} item - Record object.
  * @param {string} notesText - Processing notes text.
  * @param {string} token - Authentication token.
- * @returns {Promise<{success: boolean, error?: string}>}
+ * @returns {Promise<{success: boolean, error: string}>}
  */
 export async function saveProcessingNotes(item, notesText, token) {
   try {
@@ -78,7 +78,7 @@ export async function saveProcessingNotes(item, notesText, token) {
  *
  * @param {Object} item - Record object.
  * @param {string} token - Authentication token.
- * @returns {Promise<{success: boolean, error?: string}>}
+ * @returns {Promise<{success: boolean, error: string}>}
  */
 export async function deleteProcessingNotes(item, token) {
   if (!item.processingNoteId) {

@@ -78,4 +78,83 @@ describe("FionaChat", () => {
 
     expect(wrapper.vm.isOpen).toBe(false);
   });
+
+  it("can check toggleChat method", async () => {
+    wrapper.vm.isOpen = true;
+
+    wrapper.vm.toggleChat();
+    wrapper.vm.isOpen = false;
+
+    expect(wrapper.vm.isMaximized).toBe(false);
+  });
+
+  describe("toggleMaximize", () => {
+    it("can check toggleMaximize method", async () => {
+      wrapper.vm.isMaximized = true;
+      wrapper.vm.toggleMaximize();
+      expect(wrapper.vm.isMaximized).toBe(false);
+    });
+
+    it("toggles maximize button when clicked", async () => {
+      // Open chat window
+      document.querySelector(".fairsharing-chat__button").click();
+      await nextTick();
+
+      // Maximize chat window
+      document.querySelector('[aria-label="Maximize chat window"]').click();
+      await nextTick();
+
+      expect(wrapper.vm.isMaximized).toBe(true);
+      expect(
+        document.querySelector(".fairsharing-chat__window--maximized"),
+      ).not.toBeNull();
+    });
+  });
+
+  describe("handleKeydown", () => {
+    it("does nothing when a key other than Escape is pressed", () => {
+      wrapper.vm.isOpen = true;
+      wrapper.vm.isMaximized = true;
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Enter",
+      });
+
+      const result = wrapper.vm.handleKeydown(event);
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.isOpen).toBe(true);
+      expect(wrapper.vm.isMaximized).toBe(true);
+    });
+
+    it("restores the chat when Escape is pressed while maximized", () => {
+      wrapper.vm.isOpen = true;
+      wrapper.vm.isMaximized = true;
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Escape",
+      });
+
+      const result = wrapper.vm.handleKeydown(event);
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.isMaximized).toBe(false);
+      expect(wrapper.vm.isOpen).toBe(true);
+    });
+
+    it("closes the chat when Escape is pressed while not maximized", () => {
+      wrapper.vm.isOpen = true;
+      wrapper.vm.isMaximized = false;
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Escape",
+      });
+
+      const result = wrapper.vm.handleKeydown(event);
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.isOpen).toBe(false);
+      expect(wrapper.vm.isMaximized).toBe(false);
+    });
+  });
 });

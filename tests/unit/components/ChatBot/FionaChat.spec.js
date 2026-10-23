@@ -151,7 +151,6 @@ describe("FionaChat", () => {
       });
 
       const result = wrapper.vm.handleKeydown(event);
-
       expect(result).toBe(true);
       expect(wrapper.vm.isOpen).toBe(false);
       expect(wrapper.vm.isMaximized).toBe(false);

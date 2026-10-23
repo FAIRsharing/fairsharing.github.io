@@ -1,14 +1,14 @@
-import { describe, expect, it } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import {describe, expect, it} from "vitest";
+import {shallowMount} from "@vue/test-utils";
 
 import DownloadRecords from "@/components/Curators/DownloadRecords.vue";
 
 import {
-  CuratorSummaryStatistics,
-  RecordEditsByMonth,
-  RecordsCreatedByMonth,
-  RecordsNeedingReview,
-  RecordsWithoutDois,
+    CuratorSummaryStatistics,
+    RecordEditsByMonth,
+    RecordsCreatedByMonth,
+    RecordsNeedingReview,
+    RecordsWithoutDois,
 } from "@/components/Curators/DownLoadRecordsComponents";
 
 describe("Curator -> DownloadRecords.vue", () => {
@@ -39,6 +39,9 @@ describe("Curator -> DownloadRecords.vue", () => {
     const wrapper = shallowMount(DownloadRecords, {
       global: {
         stubs: {
+          VRow: {
+            template: "<div><slot /></div>",
+          },
           VCol: {
             template: "<div><slot /></div>",
           },

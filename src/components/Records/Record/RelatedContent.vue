@@ -115,14 +115,13 @@
                           v-bind="props"
                         >
                           {{ label }}
-                          <span
-                            v-if="
-                              indexLabel !== 0 &&
-                              item.recordAssocLabel.length !== 1
-                            "
-                            style="color: black !important"
-                            >and</span
-                          >
+                          <!--                          <span-->
+                          <!--                            v-if="-->
+                          <!--                              indexLabel !== 0 &&-->
+                          <!--                              item.recordAssocLabel.length !== 1-->
+                          <!--                            "-->
+                          <!--                            style="color: black !important"-->
+                          <!--                            >and</span>-->
                         </span>
                       </template>
                       <span

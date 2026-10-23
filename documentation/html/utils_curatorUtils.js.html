@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/curatorUtils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/curatorUtils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import RestClient from "@/lib/Client/RESTClient.js";
+
+const restClient = new RestClient();
+
+/**
+ * Create or update processing notes for a record.
+ *
+ * @param {Object} item - Record object.
+ * @param {string} notesText - Processing notes text.
+ * @param {string} token - Authentication token.
+ * @returns {Promise&lt;{success: boolean, error: string}>}
+ */
+export async function saveProcessingNotes(item, notesText, token) {
+  try {
+    let response;
+    let itemId = item?.recordID ?? item?.id;
+    if (item.processingNoteId) {
+      response = await restClient.updateProcessingNotes(
+        item.processingNoteId,
+        notesText,
+        itemId,
+        token,
+      );
+    }
+    else {
+      response = await restClient.createProcessingNotes(
+        notesText,
+        itemId,
+        token,
+      );
+    }
+    // Handle API and network errors
+    const error = response?.error ?? response?.data?.error;
+
+    if (error) {
+      console.error("Failed to save processing notes:", error);
+
+      return {
+        success: false,
+        error: `The processing notes for record ${item.recordName} could not be saved.`,
+      };
+    }
+
+    // Ensure the API returned a response
+    if (!response) {
+      throw new Error("No response received from server");
+    }
+
+    // Update local state only after successful API response
+    if (!item.processingNoteId) {
+      const newId = response.data?.id ?? response.id;
+
+      if (newId == null) {
+        throw new Error("Processing note ID missing from server response");
+      }
+
+      item.processingNoteId = newId;
+    }
+
+    item.processingNotes = notesText;
+
+    return {
+      success: true,
+    };
+  }
+  catch (error) {
+    console.error("Unexpected error saving processing notes:", error);
+
+    return {
+      success: false,
+      error: `The processing notes for record ${item.recordName} could not be saved.`,
+    };
+  }
+}
+
+/**
+ * Delete processing notes for a record.
+ *
+ * @param {Object} item - Record object.
+ * @param {string} token - Authentication token.
+ * @returns {Promise&lt;{success: boolean, error: string}>}
+ */
+export async function deleteProcessingNotes(item, token) {
+  if (!item.processingNoteId) {
+    item.processingNotes = "";
+
+    return {
+      success: true,
+    };
+  }
+
+  try {
+    const response = await restClient.deleteProcessingNote(
+      item.processingNoteId,
+      token,
+    );
+
+    // Handle API and network errors
+    const error = response?.error ?? response?.data?.error;
+
+    if (error) {
+      console.error("Failed to delete processing note:", error);
+
+      return {
+        success: false,
+        error: `The processing notes for record ${item.recordName} could not be deleted.`,
+      };
+    }
+
+    // Ensure the API returned a response
+    if (!response) {
+      throw new Error("No response received from server");
+    }
+
+    // Clear local state only after successful deletion
+    item.processingNotes = "";
+    item.processingNoteId = null;
+
+    return {
+      success: true,
+    };
+  }
+  catch (error) {
+    console.error("Unexpected error deleting processing note:", error);
+
+    return {
+      success: false,
+      error: `The processing notes for record ${item.recordName} could not be deleted.`,
+    };
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#deleteProcessingNotes">deleteProcessingNotes</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#saveProcessingNotes">saveProcessingNotes</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Oct 23 2026 14:02:02 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

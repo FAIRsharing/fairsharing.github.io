@@ -108,21 +108,12 @@
                     {{ item.object }}
                     <v-tooltip location="top">
                       <template #activator="{ props }">
-                        <span
-                          v-for="(label, indexLabel) in item.recordAssocLabel"
-                          :key="label + '_' + indexLabel"
-                          class="text-red mouse-info"
-                          v-bind="props"
-                        >
-                          {{ label }}
-                          <span
-                            v-if="
-                              indexLabel !== 0 &&
-                              item.recordAssocLabel.length !== 1
-                            "
-                            style="color: black !important"
-                            >and</span
-                          >
+                        <span class="text-red mouse-info" v-bind="props">
+                          {{
+                            item.recordAssocLabel.length > 1
+                              ? `${item.recordAssocLabel.slice(0, -1).join(" ")} and ${item.recordAssocLabel.at(-1)}`
+                              : item.recordAssocLabel.join("")
+                          }}
                         </span>
                       </template>
                       <span
@@ -170,7 +161,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";

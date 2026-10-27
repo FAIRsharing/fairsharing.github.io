@@ -9,6 +9,16 @@ import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
+import {
+  VBtnStub,
+  VDataTableStub,
+  VDialogStub,
+  VMenuStub,
+  VTextareaStub,
+  VTextFieldStub,
+} from "../../../stubs/index.js";
+import sinon from "sinon";
+import { defineComponent, h } from "vue";
 
 let curationDataSummary = dataDashboard.curationSummary;
 
@@ -57,6 +67,13 @@ const store = new Vuex.Store({
     users: usersStore,
   },
 });
+const editDialogStub = defineComponent({
+  name: "VEditDialog",
+  setup(_, { slots }) {
+    // Renders whatever is placed inside the <v-edit-dialog> tags
+    return () => h("div", slots.default?.());
+  },
+});
 
 // Mock Router
 const $router = { push: vi.fn() };
@@ -80,6 +97,16 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
       global: {
         plugins: [store],
         mocks: { $router },
+        stubs: {
+          "v-edit-dialog": editDialogStub,
+          VEditDialog: editDialogStub,
+          VBtn: VBtnStub,
+          VDataTable: VDataTableStub,
+          VDialog: VDialogStub,
+          VMenu: VMenuStub,
+          VTextarea: VTextareaStub,
+          VTextField: VTextFieldStub,
+        },
       },
       props: {
         headerItems: header,
@@ -94,7 +121,8 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
 
   it("can be mounted", () => {
     expect(wrapper.vm.$options.name).toMatch("CuratorRecordsAwaitingApproval");
-    // Check if method was called (assuming prepareApprovalRequired is called on mount)
+
+    expect(wrapper.vm.prepareApprovalRequired).toHaveBeenCalled;
     // Note: checking private methods is discouraged, but maintaining legacy test logic:
     expect(wrapper.vm.approvalRequiredProcessed.length).toBe(3);
     expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch(
@@ -247,5 +275,115 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
     expect(closeSpy).not.toHaveBeenCalled();
     await wrapper.setData({ dialogs: { deleteRecord: false } });
     expect(closeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("updates an existing processing note when processingNoteId is present", async () => {
+    // 1. Setup
+    const updateStub = sinon
+      .stub(Client.prototype, "updateProcessingNotes")
+      .resolves({ data: { success: true } });
+    const item = { processingNoteId: 123 };
+    const idRecord = 99;
+    const notesText = "Updated note content";
+
+    // 2. Execute
+    await wrapper.vm.saveProcessingNotes(idRecord, notesText, item);
+
+    // 3. Assertions
+    expect(updateStub.calledOnce).toBe(true);
+    // Check that it passed the correct ID and Text
+    expect(updateStub.firstCall.args[0]).toBe(123);
+    expect(updateStub.firstCall.args[1]).toBe(notesText);
+    expect(wrapper.vm.loading).toBe(false);
+
+    updateStub.restore();
+  });
+
+  it("creates a new processing note and updates the item ID when processingNoteId is absent", async () => {
+    const newNoteId = 456;
+    const createStub = sinon
+      .stub(Client.prototype, "createProcessingNotes")
+      .resolves({
+        data: { id: newNoteId },
+      });
+    const item = {};
+    const idRecord = 99;
+    const notesText = "Brand new note";
+    await wrapper.vm.saveProcessingNotes(idRecord, notesText, item);
+    expect(createStub.calledOnce).toBe(true);
+    expect(item.processingNoteId).toBe(newNoteId);
+    expect(wrapper.vm.loading).toBe(false);
+    createStub.restore();
+  });
+
+  it("sets error messages when the API call fails", async () => {
+    const createStub = sinon
+      .stub(Client.prototype, "createProcessingNotes")
+      .rejects(new Error("Network Error"));
+    const item = {};
+    const idRecord = 777;
+    wrapper.vm.error.general = "";
+    wrapper.vm.error.recordID = null;
+    await wrapper.vm.saveProcessingNotes(idRecord, "some text", item);
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.error.general).toBe("Failed to save processing note.");
+    expect(wrapper.vm.error.recordID).toBe(idRecord);
+    createStub.restore();
+  });
+
+  it("clears local text and returns early if no processingNoteId exists", async () => {
+    const item = {
+      processingNotes: "some unsaved text",
+      processingNoteId: null,
+    };
+
+    await wrapper.vm.deleteProcessingNote(item);
+
+    expect(item.processingNotes).toBe("");
+    expect(wrapper.vm.loading).toBe(false);
+  });
+
+  it("successfully deletes a note from the database", async () => {
+    const deleteStub = sinon
+      .stub(Client.prototype, "deleteProcessingNote")
+      .resolves({ data: { success: true } });
+    const item = {
+      id: 101,
+      processingNotes: "Existing note text",
+      processingNoteId: 55,
+    };
+    wrapper.vm.loading = false;
+    await wrapper.vm.deleteProcessingNote(item);
+    expect(deleteStub.calledOnce).toBe(true);
+    expect(deleteStub.firstCall.args[0]).toBe(55); // The note ID
+    expect(item.processingNotes).toBe("");
+    expect(item.processingNoteId).toBe(null);
+    expect(wrapper.vm.loading).toBe(false);
+
+    deleteStub.restore();
+  });
+
+  it("handles errors when the delete API call fails", async () => {
+    const deleteStub = sinon
+      .stub(Client.prototype, "deleteProcessingNote")
+      .rejects(new Error("Delete failed"));
+    const item = {
+      id: 202,
+      processingNoteId: 99,
+    };
+    wrapper.vm.error.general = "";
+    wrapper.vm.error.recordID = null;
+    await wrapper.vm.deleteProcessingNote(item);
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.error.general).toBe("Failed to delete processing note.");
+    expect(wrapper.vm.error.recordID).toBe(202);
+    deleteStub.restore();
+  });
+
+  it("updates the search field using v-model", async () => {
+    const searchField = wrapper.find('[data-test="v-text-field"]');
+    expect(searchField.exists()).toBe(true);
+    await searchField.setValue("ShareSfhare");
+    expect(wrapper.vm.searches).toBe("ShareSfhare");
   });
 });

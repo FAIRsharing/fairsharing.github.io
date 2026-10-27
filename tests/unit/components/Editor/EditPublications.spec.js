@@ -81,65 +81,6 @@ const article = {
     },
   ],
 };
-
-const article_zenodo_1 = {
-  metadata: {
-    journal_title: "Science",
-    publication_date: "1989-3-12",
-    title:
-      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    creators: [
-      {
-        name: "Baulieu, E.",
-      },
-    ],
-    upload_type: "publication",
-  },
-  doi: "10.1126/science.2781282",
-  links: {
-    doi: "https://doi.org/10.1126%2Fscience.2781282",
-  },
-};
-
-const article_zenodo_2 = {
-  metadata: {
-    meeting: {
-      title: "Science2",
-    },
-    publication_date: "1989-3-12",
-    title:
-      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    creators: [
-      {
-        name: "Baulieu, E.",
-      },
-    ],
-    upload_type: "publication",
-  },
-  doi: "10.1126/science.2781282",
-  links: {
-    doi: "https://doi.org/10.1126%2Fscience.2781282",
-  },
-};
-
-const article_zenodo_3 = {
-  metadata: {
-    publication_date: "1989-3-12",
-    title:
-      "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-    creators: [
-      {
-        name: "Baulieu, E.",
-      },
-    ],
-    upload_type: "publication",
-  },
-  doi: "10.1126/science.2781282",
-  links: {
-    doi: "https://doi.org/10.1126%2Fscience.2781282",
-  },
-};
-
 const article_zenodo_4 = {
   metadata: {
     publication_date: "1989-3-12",
@@ -157,25 +98,6 @@ const article_zenodo_4 = {
     doi: "https://doi.org/10.1126%2Fscience.2781282",
   },
 };
-
-const article_zenodo_5 = {
-  "container-title-short": "Nat. Dave.",
-  "container-title": "Nature Communications",
-  title:
-    "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
-  issued: {
-    "date-parts": [1989],
-  },
-  author: [
-    {
-      given: "E.",
-      family: "Baulieu",
-    },
-  ],
-  DOI: "10.1126/science.2781282",
-  URL: "https://doi.org/10.1126/science.2781282",
-};
-
 const article_zenodo_api = {
   created: "2026-06-29T16:45:25.276360+00:00",
   doi: "10.5281/zenodo.20703770",
@@ -283,6 +205,14 @@ describe("EditPublications.vue", function () {
           VForm: true, // or repeat the object
           VDialog: true,
           VTextField: true,
+          "v-tooltip": {
+            render() {
+              return h("div", [
+                this.$slots.activator?.({ props: {} }),
+                this.$slots.default?.(),
+              ]);
+            },
+          },
         },
       },
     });
@@ -644,5 +574,334 @@ describe("EditPublications.vue", function () {
     expect(okButton.exists()).toBe(true);
     await okButton.trigger("click");
     expect(wrapper.vm.showEmptySearch).toBe(false);
+  });
+
+  it.each([
+    [undefined, null],
+    [null, null],
+    [2020, 2020],
+    ["2021-03-12", 2021],
+    ["not-a-date", null],
+    [[2022, 3, 12], 2022],
+    [{ "date-parts": [[2023, 4, 5]] }, 2023],
+    [{ unexpected: true }, null],
+  ])("extracts a year from %j", (input, expected) => {
+    expect(wrapper.vm.extractPublicationYear(input)).toBe(expected);
+  });
+
+  it("recognises supported Zenodo publication types", () => {
+    expect(wrapper.vm.isZenodoPublication({})).toBe(false);
+    expect(wrapper.vm.isZenodoPublication({ metadata: {} })).toBeFalsy();
+    expect(
+      wrapper.vm.isZenodoPublication({
+        metadata: { upload_type: "publication" },
+      }),
+    ).toBe(true);
+    expect(
+      wrapper.vm.isZenodoPublication({
+        metadata: { resource_type: { type: "publication" } },
+      }),
+    ).toBe(true);
+    expect(
+      wrapper.vm.isZenodoPublication({
+        metadata: { resource_type: { type: "dataset" } },
+      }),
+    ).toBe(false);
+    expect(wrapper.vm.setZenodoPublication({ metadata: {} })).toBe(false);
+  });
+
+  it("uses Zenodo fallback fields and its creation date", () => {
+    expect(
+      wrapper.vm.setZenodoPublication({
+        created: "2020-01-02",
+        title: "Fallback title",
+        doi_url: "https://example.org/publication",
+        metadata: {
+          upload_type: "publication",
+          creators: [{ name: "Author" }, {}],
+          meeting: { title: "Conference" },
+        },
+      }),
+    ).toBe(true);
+    expect(wrapper.vm.newPublication).toEqual({
+      journal: "Conference",
+      doi: null,
+      title: "Fallback title",
+      url: "https://example.org/publication",
+      year: 2020,
+      authors: "Author; ",
+      isCitation: false,
+    });
+  });
+
+  it("uses Crossref date, author, and journal fallbacks", () => {
+    wrapper.vm.setCrossrefPublication({
+      "published-online": { "date-parts": [[2021]] },
+      "container-title": "Journal",
+      title: "Paper",
+      author: [{ name: "Organisation" }, {}, { family: "Doe" }],
+    });
+    expect(wrapper.vm.newPublication.year).toBe(2021);
+    expect(wrapper.vm.newPublication.journal).toBe("Journal");
+    expect(wrapper.vm.newPublication.authors).toBe("Organisation; Doe; ");
+
+    wrapper.vm.setCrossrefPublication({
+      published: { "date-parts": [[2022]] },
+      title: "Title as journal",
+    });
+    expect(wrapper.vm.newPublication.year).toBe(2022);
+    expect(wrapper.vm.newPublication.journal).toBe("Title as journal");
+    expect(wrapper.vm.newPublication.authors).toBe("");
+
+    wrapper.vm.setCrossrefPublication({
+      "published-print": { "date-parts": [[2023]] },
+      title: "Print",
+    });
+    expect(wrapper.vm.newPublication.year).toBe(2023);
+
+    wrapper.vm.setCrossrefPublication({
+      issued: { "date-parts": [[2024]] },
+      title: "Issued",
+    });
+    expect(wrapper.vm.newPublication.year).toBe(2024);
+  });
+
+  it("extracts a DOI from PubMed identifiers", () => {
+    expect(wrapper.vm.processIDs(null)).toBe(null);
+    expect(wrapper.vm.processIDs("pmid: 123")).toBe(null);
+    expect(wrapper.vm.processIDs("pmid: 123. doi: 10.1000/example")).toBe(
+      "10.1000/example",
+    );
+  });
+
+  it("imports a PubMed result with a DOI", async () => {
+    const getPMID = vi
+      .spyOn(ExternalClient.prototype, "getPMID")
+      .mockResolvedValue({
+        result: {
+          123: {
+            title: "Paper",
+            fulljournalname: "Journal",
+            sortpubdate: "2020/01/01",
+            authors: [{ name: "A" }, { name: "B" }],
+            uid: "123",
+            elocationid: "doi: 10.1000/example",
+          },
+        },
+      });
+
+    try {
+      wrapper.vm.search = " 123 ";
+      await wrapper.vm.getPMID();
+      expect(getPMID).toHaveBeenCalledWith("123");
+      expect(wrapper.vm.newPublication).toMatchObject({
+        title: "Paper",
+        journal: "Journal",
+        year: 2020,
+        authors: "A, B",
+        pubmed_id: "123",
+        doi: "10.1000/example",
+        url: "https://doi.org/10.1000/example",
+        isCitation: false,
+      });
+      expect(wrapper.vm.openEditor).toBe(true);
+      expect(wrapper.vm.loadingPub).toBe(false);
+    } finally {
+      getPMID.mockRestore();
+    }
+  });
+
+  it("imports a PubMed result without a DOI", async () => {
+    const getPMID = vi
+      .spyOn(ExternalClient.prototype, "getPMID")
+      .mockResolvedValue({
+        result: {
+          123: {
+            title: "Paper",
+            fulljournalname: "Journal",
+            sortpubdate: "2020/01/01",
+            authors: [],
+            uid: "123",
+            elocationid: "",
+          },
+        },
+      });
+
+    try {
+      wrapper.vm.search = "123";
+      await wrapper.vm.getPMID();
+      expect(wrapper.vm.newPublication.doi).toBeUndefined();
+      expect(wrapper.vm.newPublication.url).toBe(
+        "https://pubmed.ncbi.nlm.nih.gov/123",
+      );
+    } finally {
+      getPMID.mockRestore();
+    }
+  });
+
+  it("handles publication creation success and failure", async () => {
+    const initialAvailableCount = wrapper.vm.availablePublications.length;
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.onFirstCall().resolves({
+      data: { id: 3, title: "New paper" },
+    });
+    restStub.onSecondCall().resolves({
+      data: { error: { response: { data: "Failed" } } },
+    });
+
+    try {
+      wrapper.vm.newPublication = { title: "New paper", isCitation: false };
+      await wrapper.vm.addPublication();
+      expect(wrapper.vm.publications.find((pub) => pub.id === 3)).toMatchObject(
+        {
+          title: "New paper",
+          tablePosition: initialAvailableCount,
+        },
+      );
+      expect(wrapper.vm.search).toBe("New paper");
+      expect(wrapper.vm.openEditor).toBe(false);
+
+      wrapper.vm.newPublication = { title: "Failed paper" };
+      await wrapper.vm.addPublication();
+      expect(wrapper.vm.errors.general.response.data).toBe("Failed");
+    } finally {
+      restStub.restore();
+      restStub = null;
+    }
+  });
+
+  it("handles publication editing success and failure", async () => {
+    const edit = vi
+      .spyOn(RestClient.prototype, "editPublication")
+      .mockResolvedValueOnce({ id: 1, title: "Edited paper" })
+      .mockResolvedValueOnce({ error: { response: { data: "Failed" } } });
+
+    try {
+      wrapper.vm.currentPublicationIndex = 0;
+      wrapper.vm.newPublication = {
+        id: 1,
+        title: "Edited paper",
+        doi: "10.1000/edited",
+        isCitation: true,
+      };
+      await wrapper.vm.addPublication();
+      expect(wrapper.vm.publications[0]).toMatchObject({
+        title: "Edited paper",
+        isCitation: true,
+      });
+      expect(wrapper.vm.search).toBe("10.1000/edited");
+
+      wrapper.vm.currentPublicationIndex = 0;
+      wrapper.vm.newPublication = { id: 1, title: "Failed edit" };
+      await wrapper.vm.addPublication();
+      expect(wrapper.vm.errors.general.response.data).toBe("Failed");
+    } finally {
+      edit.mockRestore();
+    }
+  });
+
+  it("edits and removes publications through their buttons", async () => {
+    const edit = vi.spyOn(wrapper.vm, "editPublication");
+    const remove = vi.spyOn(wrapper.vm, "removePublication");
+
+    // Render the curator-only edit control.
+    $store.state.users.user = () => ({
+      is_curator: true,
+      credentials: { token: "thisisatoken" },
+    });
+    await nextTick();
+
+    const buttons = wrapper.findAll("v-btn-stub");
+    const editButton = buttons.find((button) =>
+      button.text().includes("fas fa-pen"),
+    );
+    const removeButton = buttons.find((button) =>
+      button.text().includes("fas fa-trash"),
+    );
+
+    expect(editButton).toBeDefined();
+    expect(removeButton).toBeDefined();
+
+    await editButton.trigger("click");
+    expect(edit).toHaveBeenCalledWith(expect.objectContaining({ id: 1 }), 0);
+
+    await removeButton.trigger("click");
+    expect(remove).toHaveBeenCalledWith(0);
+    expect(
+      wrapper.vm.publications.some((publication) => publication.id === 1),
+    ).toBe(false);
+  });
+
+  it("toggles a citation through its switch", async () => {
+    const toggle = vi.spyOn(wrapper.vm, "toggleCitation");
+    const citationSwitch = wrapper.findAllComponents({ name: "v-switch" })[0];
+
+    expect(citationSwitch.exists()).toBe(true);
+    await citationSwitch.vm.$emit("update:modelValue", true);
+
+    expect(toggle).toHaveBeenCalledWith(0);
+    expect(wrapper.vm.publications[0].isCitation).toBe(true);
+  });
+
+  it("opens a blank publication through the create button", async () => {
+    await wrapper
+      .get("[data-testid='createNewPublication-button']")
+      .trigger("click");
+
+    expect(wrapper.vm.openEditor).toBe(true);
+    expect(wrapper.vm.newPublication).toMatchObject({
+      doi: "",
+      title: "",
+      isCitation: false,
+    });
+  });
+
+  it("shows a PubMed error returned by the client", async () => {
+    const getPMID = vi
+      .spyOn(ExternalClient.prototype, "getPMID")
+      .mockResolvedValue({ error: "Not found" });
+
+    try {
+      wrapper.vm.search = "123";
+      await wrapper.vm.getPMID();
+
+      expect(wrapper.vm.errors.pmid).toBe(true);
+      expect(wrapper.vm.loadingPub).toBe(false);
+      await nextTick();
+      expect(wrapper.text()).toContain("PubMed ID not found");
+    } finally {
+      getPMID.mockRestore();
+    }
+  });
+
+  it("imports an array result from the Zenodo fallback", async () => {
+    const getDOI = vi
+      .spyOn(ExternalClient.prototype, "getDOI")
+      .mockResolvedValue({ error: "Not found" });
+    const getZenodoSearch = vi
+      .spyOn(RestClient.prototype, "getZenodoSearch")
+      .mockResolvedValue([
+        {
+          metadata: {
+            upload_type: "publication",
+            title: "Zenodo paper",
+            publication_date: "2022-01-01",
+          },
+          doi: "10.5281/zenodo.123",
+        },
+      ]);
+
+    try {
+      wrapper.vm.search = "10.5281/zenodo.123";
+      await wrapper.vm.getDOI();
+
+      expect(wrapper.vm.errors.doi).toBe(null);
+      expect(wrapper.vm.newPublication.title).toBe("Zenodo paper");
+      expect(wrapper.vm.newPublication.year).toBe(2022);
+      expect(wrapper.vm.doiLoader).toBe(false);
+    } finally {
+      getDOI.mockRestore();
+      getZenodoSearch.mockRestore();
+    }
   });
 });

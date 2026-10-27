@@ -521,21 +521,13 @@ describe("MaintenanceRequests.vue", () => {
     const navigateSpy = vi
       .spyOn(wrapper.vm, "navigateTo")
       .mockImplementation(() => {});
-
     const recordLink = wrapper.find('a[href="/rec-1"]');
-
     expect(recordLink.exists()).toBe(true);
-
     await recordLink.trigger("click");
-
     expect(navigateSpy).toHaveBeenCalledWith("rec-1");
-
     const userLink = wrapper.find('a[href="/users/u1"]');
-
     expect(userLink.exists()).toBe(true);
-
     await userLink.trigger("click");
-
     expect(navigateSpy).toHaveBeenCalledWith("/users/u1");
   });
 

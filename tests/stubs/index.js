@@ -4,3 +4,4 @@ export { VDialogStub } from "./VDialogStub.js";
 export { VMenuStub } from "./VMenuStub.js";
 export { VBtnStub } from "./VBtnStub.js";
 export { VTextareaStub } from "./VTextareaStub.js";
+export { VAutocompleteStub } from "./VAutocompleteStub.js";

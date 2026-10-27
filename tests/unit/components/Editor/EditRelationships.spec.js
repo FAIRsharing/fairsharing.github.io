@@ -5,6 +5,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import EditRelationships from "@/components/Editor/EditRelationships.vue";
+import { VAutocompleteStub, VTextFieldStub } from "../../../stubs/index.js";
 
 const vuetify = createVuetify({ components, directives });
 
@@ -104,6 +105,8 @@ describe("EditRelationships.vue", () => {
             template: '<div class="v-card-actions-stub"><slot /></div>',
           },
           VForm: { template: '<div class="v-form-stub"><slot /></div>' },
+          VTextField: VTextFieldStub,
+          VAutocomplete: VAutocompleteStub,
           // Stub children components to isolate the test
           Alerts: true,
           Icon: true,
@@ -145,31 +148,73 @@ describe("EditRelationships.vue", () => {
   it("closes the relations panel when Cancel button is clicked", async () => {
     await wrapper.setData({
       showRelationsPanel: true,
-      addingRelation: { id: 1, name: "Test" },
+      addingRelation: {
+        id: 1,
+        linkedRecord: {
+          id: 1,
+          name: "Test",
+          registry: "database",
+          type: "database",
+        },
+        recordAssocLabel: null,
+      },
     });
-    wrapper.vm.showRelationsPanel = false;
+
+    expect(wrapper.vm.showRelationsPanel).toBe(true);
+    const cancelButton = wrapper.get(".v-dialog-stub .bg-error");
+    await cancelButton.trigger("click");
     expect(wrapper.vm.showRelationsPanel).toBe(false);
   });
 
   it("prevents duplicate relationships in addItem method", async () => {
     const existing = {
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: { relation: "part_of" },
     };
     wrapper.vm.sections.relations.data.recordAssociations = [existing];
     wrapper.vm.addingRelation = {
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: { relation: "part_of" },
+    };
+    wrapper.vm.labelsFilter = {
+      database: true,
     };
 
     wrapper.vm.addItem();
     expect(wrapper.vm.duplicateRelationship).toBe(true);
+    // Verify that the duplicate was not added.
+
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
+      1,
+    );
+
+    expect(wrapper.vm.sections.relations.data.recordAssociations[0]).toEqual(
+      existing,
+    );
   });
 
   it("can check for label filter in addItem method", async () => {
     wrapper.vm.addingRelation = {
       id: 1,
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: { relation: "part_of" },
     };
     wrapper.vm.labelsFilter = {
@@ -236,11 +281,34 @@ describe("EditRelationships.vue", () => {
   });
 
   it("watches associations and commits 0 changes when equal to initialData", async () => {
-    wrapper.vm.sections.relations.initialData.recordAssociations = [{ id: 1 }];
-    wrapper.vm.sections.relations.data.recordAssociations = [{ id: 1 }];
+    const association = {
+      id: 1,
+      linkedRecord: {
+        id: 1,
+        name: "Test Record",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
 
-    await wrapper.vm.$options.watch.associations.handler.call(wrapper.vm);
+      recordAssocLabel: {
+        relation: "part_of",
+      },
+    };
 
+    wrapper.vm.labelsFilter = {
+      database: true,
+    };
+
+    wrapper.vm.sections.relations.initialData.recordAssociations = [
+      structuredClone(association),
+    ];
+
+    wrapper.vm.sections.relations.data.recordAssociations = [
+      structuredClone(association),
+    ];
+
+    await wrapper.vm.$nextTick();
     expect(mutations.setChanges).toHaveBeenCalledWith(expect.anything(), {
       section: "relations",
       value: 0,
@@ -251,28 +319,52 @@ describe("EditRelationships.vue", () => {
     wrapper.vm.$scrollTo = vi.fn();
 
     const existing = {
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: "part_of",
     };
+
+    wrapper.vm.labelsFilter = {
+      database: true,
+    };
+
     wrapper.vm.sections.relations.data.recordAssociations = [existing];
 
-    // addingRelation with a string label instead of an object
+    // New relationship with a different record
     wrapper.vm.addingRelation = {
       id: 99,
-      linkedRecord: { name: "New Record" },
-      recordAssocLabel: "is_related_to",
+      linkedRecord: {
+        id: 99,
+        name: "New Record",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+
+      recordAssocLabel: {
+        relation: "is_related_to",
+      },
     };
 
     wrapper.vm.addItem();
-
     expect(wrapper.vm.duplicateRelationship).toBe(false);
     expect(wrapper.vm.sections.relations.data.recordAssociations[0].new).toBe(
       true,
     );
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
+      2,
+    );
 
-    // Wait for nextTick to cover the $scrollTo call
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.$scrollTo).toHaveBeenCalled();
+    expect(wrapper.vm.$scrollTo).toHaveBeenCalledWith("#association_99", 450, {
+      container: "#associatedRecords",
+      easing: "ease-in",
+    });
   });
 
   it("getRelations handles targets that are not in the default registries array", () => {
@@ -313,22 +405,55 @@ describe("EditRelationships.vue", () => {
     expect(store.state.editor.availableRecords[19].isActive).toBe(false); // i < 15 logic
   });
 
-  it("removeItem correctly filters out the selected association", () => {
-    const itemToKeep = { linkedRecord: { id: 1 }, recordAssocLabelId: 10 };
-    const itemToRemove = { linkedRecord: { id: 2 }, recordAssocLabelId: 20 };
+  it("removeItem correctly filters out the selected association", async () => {
+    const itemToKeep = {
+      linkedRecord: {
+        id: 1,
+        name: "Record A",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+
+      recordAssocLabelId: 10,
+      recordAssocLabel: "part_of",
+    };
+
+    const itemToRemove = {
+      linkedRecord: {
+        id: 2,
+        name: "Record B",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+      recordAssocLabelId: 20,
+      recordAssocLabel: "is_related_to",
+    };
+
+    wrapper.vm.labelsFilter = {
+      database: true,
+    };
 
     wrapper.vm.sections.relations.data.recordAssociations = [
       itemToKeep,
       itemToRemove,
     ];
-    wrapper.vm.removeItem(itemToRemove);
 
-    expect(wrapper.vm.sections.relations.data.recordAssociations.length).toBe(
+    await wrapper.vm.$nextTick();
+    wrapper.vm.removeItem(itemToRemove);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
       1,
     );
+
     expect(
       wrapper.vm.sections.relations.data.recordAssociations[0].linkedRecord.id,
     ).toBe(1);
+
+    expect(wrapper.vm.sections.relations.data.recordAssociations[0]).toEqual(
+      itemToKeep,
+    );
   });
 
   it("can toggle relations panel state", async () => {
@@ -338,15 +463,42 @@ describe("EditRelationships.vue", () => {
   });
 
   describe("getAssociations", () => {
-    it("returns all associations if labelsFilter is null", () => {
+    it("returns all associations if labelsFilter is null", async () => {
+      const assoc = [
+        {
+          id: 1,
+          linkedRecord: {
+            id: 1,
+            name: "Record A",
+            abbreviation: null,
+            registry: "database",
+            type: "database",
+          },
+          recordAssocLabel: "part_of",
+        },
+
+        {
+          id: 2,
+          linkedRecord: {
+            id: 2,
+            name: "Record B",
+            abbreviation: null,
+            registry: "database",
+            type: "database",
+          },
+          recordAssocLabel: "is_related_to",
+        },
+      ];
+
       wrapper.vm.labelsFilter = null;
       wrapper.vm.searchAssociations = "ignored";
-      const assoc = [{ id: 1 }, { id: 2 }];
-      vi.spyOn(wrapper.vm, "associations", "get").mockReturnValue(assoc);
+      wrapper.vm.sections.relations.data.recordAssociations = assoc;
+      await wrapper.vm.$nextTick();
       expect(wrapper.vm.getAssociations).toEqual(assoc);
+      expect(wrapper.vm.getAssociations).toHaveLength(2);
     });
 
-    it("filters by NAME only when abbreviation is null", () => {
+    it("filters by NAME only when abbreviation is null", async () => {
       wrapper.vm.labelsFilter = { database: true };
       wrapper.vm.searchAssociations = "Test";
 
@@ -357,6 +509,9 @@ describe("EditRelationships.vue", () => {
           registry: "database",
           type: "database",
         },
+        recordAssocLabel: {
+          relation: "part_of",
+        },
       };
       const noMatch = {
         linkedRecord: {
@@ -365,6 +520,9 @@ describe("EditRelationships.vue", () => {
           registry: "database",
           type: "database",
         },
+        recordAssocLabel: {
+          relation: "is_related_to",
+        },
       };
 
       vi.spyOn(wrapper.vm, "associations", "get").mockReturnValue([
@@ -372,9 +530,11 @@ describe("EditRelationships.vue", () => {
         noMatch,
       ]);
 
+      await wrapper.vm.$nextTick();
       const result = wrapper.vm.getAssociations;
       expect(result).toHaveLength(1);
       expect(result[0].linkedRecord.name).toBe("My Test Record");
+      expect(result[0].recordAssocLabel.relation).toBe("part_of");
     });
 
     it("filters associations correctly when abbreviation is NOT null", async () => {
@@ -419,10 +579,26 @@ describe("EditRelationships.vue", () => {
       expect(result[0].linkedRecord.name).toBe("Full Name");
     });
 
-    it("returns unfiltered associations if labelsFilter is null", () => {
+    it("returns unfiltered associations if labelsFilter is null", async () => {
+      const association = {
+        linkedRecord: {
+          id: 1,
+          name: "Test Record",
+          abbreviation: null,
+          registry: "database",
+          type: "database",
+        },
+
+        recordAssocLabel: {
+          relation: "part_of",
+        },
+      };
+
       wrapper.vm.labelsFilter = null;
-      wrapper.vm.sections.relations.data.recordAssociations = [{ id: 1 }];
-      expect(wrapper.vm.getAssociations.length).toBe(1);
+      wrapper.vm.sections.relations.data.recordAssociations = [association];
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.getAssociations).toHaveLength(1);
+      expect(wrapper.vm.getAssociations[0]).toEqual(association);
     });
   });
 });

@@ -5,3 +5,7 @@ export { VMenuStub } from "./VMenuStub.js";
 export { VBtnStub } from "./VBtnStub.js";
 export { VTextareaStub } from "./VTextareaStub.js";
 export { VAutocompleteStub } from "./VAutocompleteStub.js";
+export { VLazyStub } from "./VLazyStub.js";
+export { VSwitchStub } from "./VSwitchStub.js";
+export { VTooltipStub } from "./VTooltipStub.js";
+export { VFormStub } from "./VFormStub.js";

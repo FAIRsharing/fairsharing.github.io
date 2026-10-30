@@ -257,7 +257,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import {mapActions, mapState} from "vuex";
 
 import Icon from "@/components/Icon";
 import RestClient from "@/lib/Client/RESTClient.js";
@@ -389,7 +389,8 @@ export default {
             token,
           );
           this.loading = false;
-        } else {
+        }
+        else {
           // CREATE NEW
           this.loading = true;
           const response = await restClient.createProcessingNotes(
@@ -402,7 +403,8 @@ export default {
           item.processingNoteId = newId;
           this.loading = false;
         }
-      } catch (err) {
+      }
+      catch (err) {
         this.loading = false;
         this.error.general = "Failed to save processing note.";
         this.error.recordID = idRecord;
@@ -428,7 +430,8 @@ export default {
         item.processingNotes = "";
         item.processingNoteId = null;
         this.loading = false;
-      } catch (err) {
+      }
+      catch (err) {
         this.loading = false;
         this.error.general = "Failed to delete processing note.";
         this.error.recordID = item.id;
@@ -460,7 +463,7 @@ export default {
         newStatus,
         this.user().credentials.token,
       );
-      /* v8 ignore start */
+
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
           (element) => element.requestID === _module.dialogs.requestId,
@@ -479,17 +482,19 @@ export default {
             await _module.saveProcessingNotes(_module.dialogs.recordID, null);
           }
         }
-      } else {
+      }
+      else {
         _module.error.general = "error assigning " + newStatus;
         _module.error.recordID = _module.dialogs.recordID;
       }
       if (newStatus === "approved") {
         _module.dialogs.confirmAssignment = false;
-      } else {
+      }
+      else {
         _module.dialogs.rejectAssignment = false;
       }
     },
-    /* v8 ignore end */
+
     rejectMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;
@@ -506,7 +511,8 @@ export default {
     compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
-      } else {
+      }
+      else {
         return 1;
       }
     },

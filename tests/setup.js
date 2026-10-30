@@ -6,6 +6,9 @@ import RESTClient from "@/lib/Client/RESTClient.js";
 vi.mock("@vue/test-utils", async () => {
   const actual = await vi.importActual("@vue/test-utils");
 
+  // Render default slots of stubbed components in shallowMount().
+  actual.config.global.renderStubDefaultSlot = true;
+
   const normalizeOptions = (options = {}) => {
     const normalized = { ...options };
     const globalConfig = { ...(normalized.global || {}) };

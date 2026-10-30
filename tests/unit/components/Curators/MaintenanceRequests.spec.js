@@ -1,13 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import {beforeEach, describe, expect, it, vi} from "vitest";
+import {flushPromises, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import MaintenanceRequests from "@/components/Curators/MaintenanceRequests.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient";
+import {VBtnStub, VDataTableStub, VDialogStub, VMenuStub, VTextareaStub, VTextFieldStub,} from "../../../stubs";
 
-// -------------------------------------------------------------------------
-// 1. MOCK EXTERNAL DEPENDENCIES
-// -------------------------------------------------------------------------
 const graphClientMock = vi.hoisted(() => ({
   setHeader: vi.fn(),
   executeQuery: vi.fn(),
@@ -73,11 +71,8 @@ describe("MaintenanceRequests.vue", () => {
   let restUpdateSpy;
   let updateRecordActionSpy;
 
-  beforeEach(() => {
-    // Reset mocks
+  beforeEach(async () => {
     vi.clearAllMocks();
-
-    // 2. SETUP SPIES
     // Get the instance methods from the mocked classes
     const graphInstance = new GraphClient();
     graphQuerySpy = graphInstance.executeQuery;
@@ -86,10 +81,8 @@ describe("MaintenanceRequests.vue", () => {
     const restInstance = new RestClient();
     restUpdateSpy = restInstance.updateStatusMaintenanceRequest;
     restUpdateSpy.mockResolvedValue({ error: false });
-
     updateRecordActionSpy = vi.fn().mockResolvedValue({});
 
-    // 3. SETUP VUEX
     store = new Vuex.Store({
       modules: {
         users: {
@@ -110,21 +103,25 @@ describe("MaintenanceRequests.vue", () => {
       },
     });
 
-    // 4. MOUNT COMPONENT
     wrapper = shallowMount(MaintenanceRequests, {
       global: {
         plugins: [store],
         stubs: {
           "v-edit-dialog": true,
           VEditDialog: true,
+          VDataTable: VDataTableStub,
+          VTextField: VTextFieldStub,
+          VDialog: VDialogStub,
+          VMenu: VMenuStub,
+          VBtn: VBtnStub,
+          VTextarea: VTextareaStub,
         },
       },
       props: {
         headerItems: [],
       },
-      // Mock Mixin
-      mixins: [{ methods: { formatDate: (d) => `Formatted: ${d}` } }],
     });
+    await flushPromises();
   });
 
   describe("Initialization (Mounted)", () => {
@@ -474,5 +471,187 @@ describe("MaintenanceRequests.vue", () => {
     // The method loops at the end and calls formatDate
     expect(wrapper.vm.maintenanceRequests[0].createdAt).toBe("Jan 1, 2023");
     expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe("Jan 1, 2020");
+  });
+
+  it("updates the search field using v-model", async () => {
+    const searchField = wrapper.find('[data-test="v-text-field"]');
+    expect(searchField.exists()).toBe(true);
+    await searchField.setValue("ShareSfhare");
+    expect(wrapper.vm.searches).toBe("ShareSfhare");
+  });
+
+  it("renders records with and without processing notes and types", async () => {
+    await wrapper.setData({
+      maintenanceRequestsProcessed: [
+        {
+          id: "rec-1",
+          recordName: "Record A (rec-1)",
+          type: "dataset",
+          userName: "User A",
+          userId: "u1",
+          createdAt: "Jan 1, 2023",
+          processingNotes: "Existing notes",
+          processingNoteId: 10,
+          requestID: "req-1",
+        },
+        {
+          id: "rec-2",
+          recordName: "Record B (rec-2)",
+          type: null,
+          userName: "User B",
+          userId: "u2",
+          createdAt: "Feb 1, 2023",
+          processingNotes: "",
+          processingNoteId: null,
+          requestID: "req-2",
+        },
+      ],
+    });
+
+    expect(wrapper.text()).toContain("Record A");
+    expect(wrapper.text()).toContain("Record B");
+
+    expect(wrapper.text()).toContain("Existing notes");
+    expect(wrapper.text()).toContain("Click to edit...");
+
+    expect(wrapper.findAll("v-avatar-stub")).toHaveLength(1);
+  });
+
+  it("navigates to record and user pages", async () => {
+    const navigateSpy = vi
+      .spyOn(wrapper.vm, "navigateTo")
+      .mockImplementation(() => {});
+    const recordLink = wrapper.find('a[href="/rec-1"]');
+    expect(recordLink.exists()).toBe(true);
+    await recordLink.trigger("click");
+    expect(navigateSpy).toHaveBeenCalledWith("rec-1");
+    const userLink = wrapper.find('a[href="/users/u1"]');
+    expect(userLink.exists()).toBe(true);
+    await userLink.trigger("click");
+    expect(navigateSpy).toHaveBeenCalledWith("/users/u1");
+  });
+
+  it("updates processing notes through the textarea", async () => {
+    const textarea = wrapper.find('[data-test="v-textarea"]');
+
+    expect(textarea.exists()).toBe(true);
+
+    await textarea.setValue("Updated processing notes");
+
+    expect(wrapper.vm.maintenanceRequestsProcessed[0].processingNotes).toBe(
+      "Updated processing notes",
+    );
+  });
+
+  it("closes the rejection dialog when Cancel is clicked", async () => {
+    wrapper.vm.rejectMaintenanceOwner("Record A", "rec-1", "User A", "req-1");
+
+    await wrapper.vm.$nextTick();
+
+    const dialog = wrapper.find('[data-test="v-dialog"]');
+
+    const cancelButton = dialog
+      .findAll("button")
+      .find((button) => button.text().trim() === "Cancel");
+
+    expect(cancelButton).toBeDefined();
+
+    await cancelButton.trigger("click");
+
+    expect(wrapper.vm.dialogs.rejectAssignment).toBe(false);
+  });
+
+  it("closes the approval dialog when Cancel is clicked", async () => {
+    wrapper.vm.assignMaintenanceOwner("Record A", "rec-1", "User A", "req-1");
+
+    await wrapper.vm.$nextTick();
+
+    const dialog = wrapper.find('[data-test="v-dialog"]');
+
+    const cancelButton = dialog
+      .findAll("button")
+      .find((button) => button.text().trim() === "Cancel");
+
+    expect(cancelButton).toBeDefined();
+
+    await cancelButton.trigger("click");
+
+    expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
+  });
+
+  it("deletes processing notes when Delete is clicked", async () => {
+    restClientMock.deleteProcessingNote.mockResolvedValue({
+      success: true,
+    });
+
+    const item = wrapper.vm.maintenanceRequestsProcessed[0];
+
+    item.processingNoteId = 10;
+    item.processingNotes = "Existing notes";
+
+    await wrapper.vm.$nextTick();
+
+    const deleteButton = wrapper
+      .findAll("button")
+      .find((button) => button.text().trim() === "Delete");
+
+    expect(deleteButton).toBeDefined();
+
+    await deleteButton.trigger("click");
+
+    await flushPromises();
+
+    expect(restClientMock.deleteProcessingNote).toHaveBeenCalledWith(
+      10,
+      "test-token",
+    );
+
+    expect(item.processingNotes).toBe("");
+    expect(item.processingNoteId).toBeNull();
+  });
+
+  it("saves processing notes when Save is clicked", async () => {
+    // Mock successful API response
+    restClientMock.updateProcessingNotes.mockResolvedValue({
+      success: true,
+    });
+
+    // Get the first record
+    const item = wrapper.vm.maintenanceRequestsProcessed[0];
+
+    // Ensure the record has an existing processing note
+    item.processingNoteId = 10;
+    item.processingNotes = "Original processing notes";
+
+    await wrapper.vm.$nextTick();
+
+    // Find textarea
+    const textarea = wrapper.find('[data-test="v-textarea"]');
+
+    expect(textarea.exists()).toBe(true);
+
+    await textarea.setValue("Updated processing notes");
+
+    // Find Save button
+    const saveButton = wrapper
+      .findAll("button")
+      .find((button) => button.text().trim() === "Save");
+
+    expect(saveButton).toBeDefined();
+
+    // Click Save
+    await saveButton.trigger("click");
+
+    await flushPromises();
+
+    // Verify API call
+    expect(restClientMock.updateProcessingNotes).toHaveBeenCalledWith(
+      10,
+      "Updated processing notes",
+      item.id,
+      "test-token",
+    );
+
+    expect(wrapper.vm.loading).toBe(false);
   });
 });

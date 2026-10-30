@@ -11,6 +11,14 @@ import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
+import {
+  VBtnStub,
+  VDataTableStub,
+  VDialogStub,
+  VMenuStub,
+  VTextareaStub,
+  VTextFieldStub,
+} from "../../../stubs/index.js";
 
 let curationDataSummary = dataDashboard.curationSummary;
 
@@ -111,6 +119,12 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
         stubs: {
           "v-edit-dialog": editDialogStub,
           VEditDialog: editDialogStub,
+          VBtn: VBtnStub,
+          VDataTable: VDataTableStub,
+          VDialog: VDialogStub,
+          VMenu: VMenuStub,
+          VTextarea: VTextareaStub,
+          VTextField: VTextFieldStub,
         },
       },
       props: {
@@ -355,5 +369,12 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(wrapper.vm.error.general).toBe("Failed to delete processing note.");
     expect(wrapper.vm.error.recordID).toBe(202);
     deleteStub.restore();
+  });
+
+  it("updates the search field using v-model", async () => {
+    const searchField = wrapper.find('[data-test="v-text-field"]');
+    expect(searchField.exists()).toBe(true);
+    await searchField.setValue("ShareSfhare");
+    expect(wrapper.vm.searches).toBe("ShareSfhare");
   });
 });

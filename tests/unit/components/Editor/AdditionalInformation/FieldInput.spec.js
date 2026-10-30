@@ -2,7 +2,6 @@ import { mount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import FieldInput from "@/components/Editor/AdditionalInformation/FieldInput.vue";
 import { createStore } from "vuex";
-
 // 1. Mock External Utils and Mixins
 vi.mock("@/utils/rules.js", () => ({
   isUrl: vi.fn(() => "is-url-rule"),
@@ -289,5 +288,25 @@ describe("FieldInput.vue", () => {
     );
     // <span v-else class="ml-1"> no </span>
     expect(wrapper.text()).toContain("no");
+  });
+
+  it("covers fieldCheck fallback when field is undefined", () => {
+    wrapper = mountComponent(
+      {
+        fieldProps: {
+          type: "string",
+        },
+      },
+      {},
+    );
+
+    // Remove the field initialized by target() during rendering
+    delete store.state.record.sections.additionalInformation.data.testField;
+
+    const result = wrapper.vm.fieldCheck();
+
+    expect(result).toEqual({
+      testField: null,
+    });
   });
 });

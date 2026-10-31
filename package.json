@@ -97,7 +97,7 @@
     "eslint-plugin-vue": "^10.11.1",
     "eslint-plugin-vuetify": "^2.4.0",
     "fs": "*",
-    "happy-dom": "^20.0.10",
+    "happy-dom": "^21.0.4",
     "jsdoc": "^4.0.4",
     "jsdoc-vuejs": "^4.0.0",
     "linkifyjs": "^3.0.5",

@@ -52,7 +52,25 @@
           {{ error.general }}
         &lt;/v-alert>
       &lt;/v-card-text>
-
+      &lt;v-alert
+        v-if="processingNoteError"
+        class="mb-4"
+        closable
+        title="Unable to update processing notes"
+        type="error"
+        variant="tonal"
+        @click:close="processingNoteError = null"
+      >
+        {{ processingNoteError }}
+        Please
+        &lt;a
+          class="font-weight-bold text-decoration-underline"
+          href="mailto:contact@fairsharing.org"
+        >
+          email us
+        &lt;/a>
+        for assistance.
+      &lt;/v-alert>
       &lt;v-data-table
         :headers="headerItems"
         :items="approvalRequiredProcessed"
@@ -133,18 +151,34 @@
                 min-width="400"
               >
                 &lt;template #activator="{ props: menuProps }">
-                  &lt;span style="cursor: pointer" v-bind="menuProps">
+                  &lt;span
+                    style="cursor: pointer"
+                    v-bind="menuProps"
+                    @click="processingNotesDraft = item.processingNotes || ''"
+                  >
                     {{ item.processingNotes || "Click to edit..." }}
                   &lt;/span>
                 &lt;/template>
                 &lt;template #default="{ isActive }">
-                  &lt;v-card class="pa-2">
-                    &lt;v-card-title class="mt-2 text-h6">
+                  &lt;v-card class="pa-2 position-relative">
+                    &lt;v-btn
+                      aria-label="Close processing notes editor"
+                      class="position-absolute"
+                      color="black"
+                      icon
+                      size="x-small"
+                      style="top: 4px; right: 4px; z-index: 2"
+                      variant="elevated"
+                      @click="isActive.value = false"
+                    >
+                      &lt;v-icon icon="fas fa-xmark" />
+                    &lt;/v-btn>
+                    &lt;v-card-title class="mt-2 text-h6 pr-12">
                       Update Processing Notes
                     &lt;/v-card-title>
                     &lt;v-card-text class="pt-2">
                       &lt;v-textarea
-                        v-model="item.processingNotes"
+                        v-model="processingNotesDraft"
                         hide-details
                         label="Edit (not long words)"
                         variant="filled"
@@ -153,29 +187,23 @@
                     &lt;v-card-actions>
                       &lt;v-btn
                         v-if="item.processingNoteId"
+                        :loading="loading"
                         color="red"
                         size="small"
                         slim
                         variant="elevated"
-                        @click="
-                          deleteProcessingNote(item);
-                          isActive.value = false;
-                        "
+                        @click="deleteProcessingNoteAndClose(item, isActive)"
                       >
                         Delete
                       &lt;/v-btn>
                       &lt;v-spacer />
                       &lt;v-btn
-                        color="primary"
-                        variant="text"
-                        @click="
-                          saveProcessingNotes(
-                            item.id,
-                            item.processingNotes,
-                            item,
-                          );
-                          isActive.value = false;
-                        "
+                        :loading="loading"
+                        color="success"
+                        size="small"
+                        slim
+                        variant="elevated"
+                        @click="saveProcessingNotesAndClose(item, isActive)"
                       >
                         Save
                       &lt;/v-btn>
@@ -344,6 +372,10 @@ import getHiddenRecords from "@/lib/GraphClient/queries/curators/getHiddenRecord
 import formatDate from "@/utils/generalUtils";
 import compareRecordDescUpdate from "@/utils/generalUtils";
 import navigateTo from "@/utils/generalUtils";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -383,6 +415,8 @@ export default {
       recordType: {},
       loading: false,
       curatorList: [],
+      processingNotesDraft: "",
+      processingNoteError: null,
     };
   },
   computed: {
@@ -510,74 +544,6 @@ export default {
       this.curatorList.push(object);
     },
 
-    /**
-     * Create a processing notes for a record
-     * @param idRecord {Number} - FAIRshairing record id
-     * @param notesText {String} - Processing notes text
-     * @return {Promise&lt;void>}
-     */
-    async saveProcessingNotes(idRecord, notesText, item) {
-      const token = this.user().credentials.token;
-      try {
-        if (item.processingNoteId) {
-          this.loading = true;
-          // UPDATE EXISTING
-          await restClient.updateProcessingNotes(
-            item.processingNoteId,
-            notesText,
-            idRecord,
-            token,
-          );
-          this.loading = false;
-        }
-        else {
-          // CREATE NEW
-          this.loading = true;
-          const response = await restClient.createProcessingNotes(
-            notesText,
-            idRecord,
-            token,
-          );
-          // Store the new ID so the next click becomes an "update"
-          const newId = response.data ? response.data.id : response.id;
-          item.processingNoteId = newId;
-          this.loading = false;
-        }
-      }
-      catch (err) {
-        this.loading = false;
-        this.error.general = "Failed to save processing note.";
-        this.error.recordID = idRecord;
-      }
-    },
-    /**
-     * Delete a processing notes for a record
-     * @param item
-     * @return {Promise&lt;void>}
-     */
-    async deleteProcessingNote(item) {
-      if (!item.processingNoteId) {
-        // If no ID exists, it's not in the database, just clear the text
-        item.processingNotes = "";
-        return;
-      }
-
-      try {
-        this.loading = true;
-        const token = this.user().credentials.token;
-        await restClient.deleteProcessingNote(item.processingNoteId, token);
-        // Clear local state
-        item.processingNotes = "";
-        item.processingNoteId = null;
-        this.loading = false;
-      }
-      catch (err) {
-        this.loading = false;
-        this.error.general = "Failed to delete processing note.";
-        this.error.recordID = item.id;
-      }
-    },
-
     async assignCurator(idRecord, idUser, nameUser) {
       const _module = this;
       let preparedRecord = {};
@@ -684,6 +650,71 @@ export default {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
     },
+
+    /**
+     * Save processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise&lt;void>}
+     */
+    async saveProcessingNotesAndClose(item, isActive) {
+      this.loading = true;
+      this.processingNoteError = null;
+
+      try {
+        const result = await saveProcessingNotes(
+          item,
+          this.processingNotesDraft,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
+        isActive.value = false;
+      }
+      catch (error) {
+        console.error("Failed to save processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
+      }
+      finally {
+        this.loading = false;
+      }
+    },
+
+    /**
+     * Delete processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise&lt;void>}
+     */
+    async deleteProcessingNoteAndClose(item, isActive) {
+      this.loading = true;
+      this.processingNoteError = null;
+
+      try {
+        const result = await deleteProcessingNotes(
+          item,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
+        isActive.value = false;
+      }
+      catch (error) {
+        console.error("Failed to delete processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
+      }
+      finally {
+        this.loading = false;
+      }
+    },
   },
 };
 &lt;/script>
@@ -733,13 +764,13 @@ export default {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li></ul><h3>Namespaces</h3><ul><li><a href="Static.html">Static</a></li></ul><h3>Classes</h3><ul><li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#deleteProcessingNotes">deleteProcessingNotes</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isBluesky">isBluesky</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isEmailOrUrl">isEmailOrUrl</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isMastodon">isMastodon</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#recordTypes">recordTypes</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#saveProcessingNotes">saveProcessingNotes</a></li><li><a href="global.html#states">states</a></li><li><a href="global.html#uniqueValues">uniqueValues</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Oct 26 2026 12:22:03 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Oct 26 2026 15:22:03 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

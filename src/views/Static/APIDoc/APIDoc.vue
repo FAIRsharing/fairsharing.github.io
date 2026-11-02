@@ -44,7 +44,7 @@
     >
       In cases where we deem clients to be making excessive rapid or repeated
       queries we reserve the right to disable the user account under which the
-      client is operating. We would contact users before doing this.
+      client is operating. We will make every reasonable effort to contact users before doing this.
     </p>
 
 

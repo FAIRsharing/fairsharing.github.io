@@ -9,6 +9,15 @@ import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils.js";
+
+vi.mock("@/utils/curatorUtils.js", () => ({
+  saveProcessingNotes: vi.fn(),
+  deleteProcessingNotes: vi.fn(),
+}));
 
 let curationDataSummary = dataDashboard.curationSummary;
 
@@ -137,17 +146,6 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
     vi.useRealTimers();
   });
 
-  it("can update a record", async () => {
-    // Default mock is success from beforeEach
-    await wrapper.vm.saveProcessingNotes(99, "notes of text");
-    // TODO: Check that the ProcessingNotes are updated
-
-    // Change mock to error
-    restSpy.mockReturnValue({ data: { error: { response: "Im an error" } } });
-    await wrapper.vm.saveProcessingNotes(99, "notes of text");
-    expect(wrapper.vm.error.recordID).toBe(99);
-  });
-
   it("can assign a curator to a record", async () => {
     expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("Terazu");
 
@@ -247,5 +245,171 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
     expect(closeSpy).not.toHaveBeenCalled();
     await wrapper.setData({ dialogs: { deleteRecord: false } });
     expect(closeSpy).toHaveBeenCalledTimes(1);
+  });
+  describe("saveProcessingNotesAndClose", () => {
+    const token = 123;
+
+    let item;
+    let isActive;
+
+    beforeEach(() => {
+      vi.clearAllMocks();
+
+      item = {
+        id: 99,
+        recordName: "Test Record",
+        processingNoteId: 123,
+        processingNotes: "Original note",
+      };
+
+      isActive = {
+        value: true,
+      };
+
+      wrapper.vm.processingNotesDraft = "Updated note content";
+      wrapper.vm.processingNoteError = null;
+      wrapper.vm.loading = false;
+    });
+
+    it("calls saveProcessingNotes with the correct arguments", async () => {
+      saveProcessingNotes.mockResolvedValue({
+        success: true,
+      });
+
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+
+      expect(saveProcessingNotes).toHaveBeenCalledWith(
+        item,
+        "Updated note content",
+        token,
+      );
+    });
+
+    it("keeps the menu open when saving fails", async () => {
+      saveProcessingNotes.mockResolvedValue({
+        success: false,
+        error: "Failed to save processing notes.",
+      });
+
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.processingNoteError).toBe(
+        "Failed to save processing notes.",
+      );
+      expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("resets loading when the utility throws an error", async () => {
+      const error = new Error("Unexpected server error");
+      saveProcessingNotes.mockRejectedValue(error);
+      const consoleSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+
+      try {
+        await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+        expect(wrapper.vm.loading).toBe(false);
+        expect(isActive.value).toBe(true);
+        expect(wrapper.vm.processingNoteError).toBe(
+          "The processing notes for record Test Record could not be saved.",
+        );
+        expect(consoleSpy).toHaveBeenCalledWith(
+          "Failed to save processing notes:",
+          error,
+        );
+      }
+      finally {
+        consoleSpy.mockRestore();
+      }
+    });
+  });
+
+  describe("deleteProcessingNoteAndClose", () => {
+    const token = 123;
+    let item;
+    let isActive;
+    let consoleSpy;
+
+    beforeEach(() => {
+      vi.clearAllMocks();
+
+      item = {
+        id: 99,
+        recordName: "Test Record",
+        processingNoteId: 123,
+        processingNotes: "Existing note",
+      };
+
+      isActive = {
+        value: true,
+      };
+
+      wrapper.vm.processingNoteError = null;
+      wrapper.vm.loading = false;
+      consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
+
+    it("calls deleteProcessingNotes with the correct arguments", async () => {
+      deleteProcessingNotes.mockResolvedValue({
+        success: true,
+      });
+
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(item, token);
+    });
+
+    it("keeps the menu open when deletion fails", async () => {
+      deleteProcessingNotes.mockResolvedValue({
+        success: false,
+        error: "Failed to delete processing notes.",
+      });
+
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.processingNoteError).toBe(
+        "Failed to delete processing notes.",
+      );
+      expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("handles unexpected errors and displays an error message", async () => {
+      const error = new Error("Unexpected server error");
+
+      deleteProcessingNotes.mockRejectedValue(error);
+
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+
+      expect(wrapper.vm.processingNoteError).toBe(
+        "The processing notes for record Test Record could not be deleted.",
+      );
+
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.loading).toBe(false);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to delete processing notes:",
+        error,
+      );
+    });
+
+    // it("resets loading when deletion fails", async () => {
+    //   deleteProcessingNotes.mockResolvedValue({
+    //     success: false,
+    //     error: "Server unavailable",
+    //   });
+    //
+    //   await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+    //
+    //   expect(wrapper.vm.loading).toBe(false);
+    //   expect(wrapper.vm.processingNoteError).toBe("Server unavailable");
+    //   expect(isActive.value).toBe(true);
+    // });
   });
 });

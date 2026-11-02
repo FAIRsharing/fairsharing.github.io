@@ -11,6 +11,15 @@ import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 
 import dataDashboard from "../../../fixtures/curationDashboardData.json";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils.js";
+
+vi.mock("@/utils/curatorUtils.js", () => ({
+  saveProcessingNotes: vi.fn(),
+  deleteProcessingNotes: vi.fn(),
+}));
 
 let curationDataSummary = dataDashboard.curationSummary;
 
@@ -254,106 +263,170 @@ describe("Curator -> UserRecordsAwaitingApproval.vue", () => {
     expect(closeSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("updates an existing processing note when processingNoteId is present", async () => {
-    // 1. Setup
-    const updateStub = sinon
-      .stub(Client.prototype, "updateProcessingNotes")
-      .resolves({ data: { success: true } });
-    const item = { processingNoteId: 123 };
-    const idRecord = 99;
-    const notesText = "Updated note content";
+  describe("saveProcessingNotesAndClose", () => {
+    const token = 123;
 
-    // 2. Execute
-    await wrapper.vm.saveProcessingNotes(idRecord, notesText, item);
+    let item;
+    let isActive;
 
-    // 3. Assertions
-    expect(updateStub.calledOnce).toBe(true);
-    // Check that it passed the correct ID and Text
-    expect(updateStub.firstCall.args[0]).toBe(123);
-    expect(updateStub.firstCall.args[1]).toBe(notesText);
-    expect(wrapper.vm.loading).toBe(false);
+    beforeEach(() => {
+      vi.clearAllMocks();
 
-    updateStub.restore();
-  });
+      item = {
+        id: 99,
+        recordName: "Test Record",
+        processingNoteId: 123,
+        processingNotes: "Original note",
+      };
 
-  it("creates a new processing note and updates the item ID when processingNoteId is absent", async () => {
-    const newNoteId = 456;
-    const createStub = sinon
-      .stub(Client.prototype, "createProcessingNotes")
-      .resolves({
-        data: { id: newNoteId },
+      isActive = {
+        value: true,
+      };
+
+      wrapper.vm.processingNotesDraft = "Updated note content";
+      wrapper.vm.processingNoteError = null;
+      wrapper.vm.loading = false;
+    });
+
+    it("calls saveProcessingNotes with the correct arguments", async () => {
+      saveProcessingNotes.mockResolvedValue({
+        success: true,
       });
-    const item = {};
-    const idRecord = 99;
-    const notesText = "Brand new note";
-    await wrapper.vm.saveProcessingNotes(idRecord, notesText, item);
-    expect(createStub.calledOnce).toBe(true);
-    expect(item.processingNoteId).toBe(newNoteId);
-    expect(wrapper.vm.loading).toBe(false);
-    createStub.restore();
+
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+
+      expect(saveProcessingNotes).toHaveBeenCalledWith(
+        item,
+        "Updated note content",
+        token,
+      );
+    });
+
+    it("keeps the menu open when saving fails", async () => {
+      saveProcessingNotes.mockResolvedValue({
+        success: false,
+        error: "Failed to save processing notes.",
+      });
+
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.processingNoteError).toBe(
+        "Failed to save processing notes.",
+      );
+      expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("resets loading when the utility throws an error", async () => {
+      const error = new Error("Unexpected server error");
+      saveProcessingNotes.mockRejectedValue(error);
+      const consoleSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+
+      try {
+        await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+        expect(wrapper.vm.loading).toBe(false);
+        expect(isActive.value).toBe(true);
+        expect(wrapper.vm.processingNoteError).toBe(
+          "The processing notes for record Test Record could not be saved.",
+        );
+        expect(consoleSpy).toHaveBeenCalledWith(
+          "Failed to save processing notes:",
+          error,
+        );
+      }
+      finally {
+        consoleSpy.mockRestore();
+      }
+    });
   });
 
-  it("sets error messages when the API call fails", async () => {
-    const createStub = sinon
-      .stub(Client.prototype, "createProcessingNotes")
-      .rejects(new Error("Network Error"));
-    const item = {};
-    const idRecord = 777;
-    wrapper.vm.error.general = "";
-    wrapper.vm.error.recordID = null;
-    await wrapper.vm.saveProcessingNotes(idRecord, "some text", item);
-    expect(wrapper.vm.loading).toBe(false);
-    expect(wrapper.vm.error.general).toBe("Failed to save processing note.");
-    expect(wrapper.vm.error.recordID).toBe(idRecord);
-    createStub.restore();
-  });
+  describe("deleteProcessingNoteAndClose", () => {
+    const token = 123;
+    let item;
+    let isActive;
+    let consoleSpy;
 
-  it("clears local text and returns early if no processingNoteId exists", async () => {
-    const item = {
-      processingNotes: "some unsaved text",
-      processingNoteId: null,
-    };
+    beforeEach(() => {
+      vi.clearAllMocks();
 
-    await wrapper.vm.deleteProcessingNote(item);
+      item = {
+        id: 99,
+        recordName: "Test Record",
+        processingNoteId: 123,
+        processingNotes: "Existing note",
+      };
 
-    expect(item.processingNotes).toBe("");
-    expect(wrapper.vm.loading).toBe(false);
-  });
+      isActive = {
+        value: true,
+      };
 
-  it("successfully deletes a note from the database", async () => {
-    const deleteStub = sinon
-      .stub(Client.prototype, "deleteProcessingNote")
-      .resolves({ data: { success: true } });
-    const item = {
-      id: 101,
-      processingNotes: "Existing note text",
-      processingNoteId: 55,
-    };
-    wrapper.vm.loading = false;
-    await wrapper.vm.deleteProcessingNote(item);
-    expect(deleteStub.calledOnce).toBe(true);
-    expect(deleteStub.firstCall.args[0]).toBe(55); // The note ID
-    expect(item.processingNotes).toBe("");
-    expect(item.processingNoteId).toBe(null);
-    expect(wrapper.vm.loading).toBe(false);
+      wrapper.vm.processingNoteError = null;
+      wrapper.vm.loading = false;
+      consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
 
-    deleteStub.restore();
-  });
+    afterEach(() => {
+      consoleSpy.mockRestore();
+    });
 
-  it("handles errors when the delete API call fails", async () => {
-    const deleteStub = sinon
-      .stub(Client.prototype, "deleteProcessingNote")
-      .rejects(new Error("Delete failed"));
-    const item = {
-      id: 202,
-      processingNoteId: 99,
-    };
-    wrapper.vm.error.general = "";
-    wrapper.vm.error.recordID = null;
-    await wrapper.vm.deleteProcessingNote(item);
-    expect(wrapper.vm.loading).toBe(false);
-    expect(wrapper.vm.error.general).toBe("Failed to delete processing note.");
-    expect(wrapper.vm.error.recordID).toBe(202);
-    deleteStub.restore();
+    it("calls deleteProcessingNotes with the correct arguments", async () => {
+      deleteProcessingNotes.mockResolvedValue({
+        success: true,
+      });
+
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(item, token);
+    });
+
+    it("keeps the menu open when deletion fails", async () => {
+      deleteProcessingNotes.mockResolvedValue({
+        success: false,
+        error: "Failed to delete processing notes.",
+      });
+
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.processingNoteError).toBe(
+        "Failed to delete processing notes.",
+      );
+      expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("handles unexpected errors and displays an error message", async () => {
+      const error = new Error("Unexpected server error");
+
+      deleteProcessingNotes.mockRejectedValue(error);
+
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+
+      expect(wrapper.vm.processingNoteError).toBe(
+        "The processing notes for record Test Record could not be deleted.",
+      );
+
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.loading).toBe(false);
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to delete processing notes:",
+        error,
+      );
+    });
+
+    // it("resets loading when deletion fails", async () => {
+    //   deleteProcessingNotes.mockResolvedValue({
+    //     success: false,
+    //     error: "Server unavailable",
+    //   });
+    //
+    //   await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+    //
+    //   expect(wrapper.vm.loading).toBe(false);
+    //   expect(wrapper.vm.processingNoteError).toBe("Server unavailable");
+    //   expect(isActive.value).toBe(true);
+    // });
   });
 });

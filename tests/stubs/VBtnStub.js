@@ -1,12 +1,23 @@
 export const VBtnStub = {
   name: "VBtn",
-  props: ["disabled"],
+  inheritAttrs: false,
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
   template: `
-      <button
-          :disabled="disabled"
-          v-bind="$attrs"
-      >
-        <slot />
-      </button>
-    `,
+    <button
+      type="button"
+      :disabled="disabled"
+      v-bind="$attrs"
+    >
+      <slot />
+    </button>
+  `,
 };

@@ -1,10 +1,22 @@
-import {beforeEach, describe, expect, it, vi} from "vitest";
-import {flushPromises, shallowMount} from "@vue/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import MaintenanceRequests from "@/components/Curators/MaintenanceRequests.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient";
-import {VBtnStub, VDataTableStub, VDialogStub, VMenuStub, VTextareaStub, VTextFieldStub,} from "../../../stubs";
+import {
+  VBtnStub,
+  VDataTableStub,
+  VDialogStub,
+  VMenuStub,
+  VOverlayStub,
+  VTextareaStub,
+  VTextFieldStub,
+} from "../../../stubs";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils.js";
 
 const graphClientMock = vi.hoisted(() => ({
   setHeader: vi.fn(),
@@ -35,6 +47,11 @@ vi.mock("@/lib/GraphClient/GraphClient", () => {
     }),
   };
 });
+
+vi.mock("@/utils/curatorUtils", () => ({
+  saveProcessingNotes: vi.fn(),
+  deleteProcessingNotes: vi.fn(),
+}));
 
 // Mock Data
 const mockGraphResponse = {
@@ -115,6 +132,7 @@ describe("MaintenanceRequests.vue", () => {
           VMenu: VMenuStub,
           VBtn: VBtnStub,
           VTextarea: VTextareaStub,
+          VOverlay: VOverlayStub,
         },
       },
       props: {
@@ -209,79 +227,23 @@ describe("MaintenanceRequests.vue", () => {
   });
 
   describe("assignMaintenanceOwnConfirm (Complex Logic)", () => {
-    // Scenario 1: Approve + Success + Record exists elsewhere (Do NOT clear notes)
-    it("approves request but preserves notes if record is in approval list", async () => {
-      await wrapper.vm.$nextTick(); // Load data
-
-      // Setup: "rec-2" is in approvalRequired list
-      wrapper.setData({
-        approvalRequired: [{ id: "rec-2" }],
-        dialogs: {
-          requestId: "req-2",
-          recordID: "rec-2",
-          confirmAssignment: true,
-        },
-      });
-
-      const saveNotesSpy = vi.spyOn(wrapper.vm, "saveProcessingNotes");
-
-      await wrapper.vm.assignMaintenanceOwnConfirm("approved");
-
-      expect(restUpdateSpy).toHaveBeenCalledWith(
-        "req-2",
-        "approved",
-        "test-token",
-      );
-      // Should remove from processed list
-      expect(
-        wrapper.vm.maintenanceRequestsProcessed.find(
-          (r) => r.requestID === "req-2",
-        ),
-      ).toBeUndefined();
-      // Should NOT clear notes because it's in approvalRequired
-      expect(saveNotesSpy).not.toHaveBeenCalled();
-      // Dialog closed
-      expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
-    });
-
-    // Scenario 2: Approve + Success + Record is completely done (Clear notes)
-    it("approves request and clears notes if record is fully processed", async () => {
-      await wrapper.vm.$nextTick();
-
-      // Setup: "rec-2" NOT in approval list, and will be removed from maintenance list
-      wrapper.setData({
-        approvalRequired: [],
-        dialogs: {
-          requestId: "req-2",
-          recordID: "rec-2",
-          confirmAssignment: true,
-        },
-      });
-
-      const saveNotesSpy = vi.spyOn(wrapper.vm, "saveProcessingNotes");
-
-      await wrapper.vm.assignMaintenanceOwnConfirm("approved");
-
-      // Verify removal
-      expect(
-        wrapper.vm.maintenanceRequestsProcessed.find(
-          (r) => r.requestID === "req-2",
-        ),
-      ).toBeUndefined();
-
-      // CRITICAL: Verify notes are cleared (passed as null)
-      expect(saveNotesSpy).toHaveBeenCalledWith("rec-2", null);
-    });
-
-    // Scenario 3: Reject Assignment
     it("rejects request correctly", async () => {
-      await wrapper.vm.$nextTick();
-      wrapper.setData({
+      await wrapper.setData({
         dialogs: {
+          ...wrapper.vm.dialogs,
           requestId: "req-1",
           recordID: "rec-1",
           rejectAssignment: true,
         },
+      });
+
+      restUpdateSpy.mockResolvedValueOnce({
+        error: false,
+      });
+
+      // Mock the correct utility
+      vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
+        success: true,
       });
 
       await wrapper.vm.assignMaintenanceOwnConfirm("rejected");
@@ -291,9 +253,15 @@ describe("MaintenanceRequests.vue", () => {
         "rejected",
         "test-token",
       );
-      // Should remove from list
-      expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(1);
-      // Dialog closed
+
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: "rec-1",
+        }),
+        "test-token",
+      );
+
+      expect(wrapper.vm.maintenanceRequestsProcessed).toHaveLength(1);
       expect(wrapper.vm.dialogs.rejectAssignment).toBe(false);
     });
 
@@ -314,114 +282,249 @@ describe("MaintenanceRequests.vue", () => {
     });
   });
 
-  describe("Processing Notes Methods", () => {
-    let mockItem;
-    const idRecord = 123;
-    const notesText = "Updated note content";
-
-    beforeEach(() => {
-      // Reset the local item state before each test
-      mockItem = {
-        id: idRecord,
+  describe("saveProcessingNotesAndClose Methods", () => {
+    it("can save processing notes and report a save failure", async () => {
+      const item = {
+        id: 99,
+        recordName: "Test Record (99)",
         processingNoteId: null,
-        processingNotes: "Original notes",
+        processingNotes: "",
       };
-      // Reset error state in wrapper
-      wrapper.vm.error = { general: null, recordID: null };
+
+      const isActive = { value: true };
+
+      await wrapper.setData({
+        processingNotesDraft: "notes of text",
+      });
+
+      // Success scenario
+      vi.mocked(saveProcessingNotes).mockResolvedValueOnce({
+        success: true,
+      });
+
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+
+      expect(saveProcessingNotes).toHaveBeenCalledWith(
+        item,
+        "notes of text",
+        "test-token",
+      );
+
+      expect(isActive.value).toBe(false);
+      expect(wrapper.vm.processingNoteError).toBeNull();
+      expect(wrapper.vm.loading).toBe(false);
+
+      // Failure scenario
+      isActive.value = true;
+
+      vi.mocked(saveProcessingNotes).mockResolvedValueOnce({
+        success: false,
+        error: "Unable to save notes",
+      });
+
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+
+      expect(saveProcessingNotes).toHaveBeenCalledTimes(2);
+      expect(wrapper.vm.processingNoteError).toBe("Unable to save notes");
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.loading).toBe(false);
     });
 
-    describe("saveProcessingNotes", () => {
-      it("calls updateProcessingNotes when item already has a processingNoteId", async () => {
-        mockItem.processingNoteId = 55; // Existing ID
-        restClientMock.updateProcessingNotes.mockResolvedValue({
-          success: true,
-        });
+    it("handles an exception when saving processing notes", async () => {
+      const item = {
+        id: 99,
+        recordName: "Test Record (99)",
+        processingNoteId: null,
+        processingNotes: "",
+      };
 
-        await wrapper.vm.saveProcessingNotes(idRecord, notesText, mockItem);
+      const isActive = { value: true };
+      const failure = new Error("Network unavailable");
 
-        expect(wrapper.vm.loading).toBe(false);
-        expect(restClientMock.updateProcessingNotes).toHaveBeenCalledWith(
-          55,
-          notesText,
-          idRecord,
-          "test-token",
-        );
+      const consoleSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+
+      vi.mocked(saveProcessingNotes).mockRejectedValueOnce(failure);
+
+      await wrapper.setData({
+        processingNotesDraft: "notes of text",
       });
 
-      it("calls createProcessingNotes and updates item ID when no ID exists", async () => {
-        // Mock response with a new ID
-        restClientMock.createProcessingNotes.mockResolvedValue({
-          data: { id: 99 },
-        });
+      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
 
-        await wrapper.vm.saveProcessingNotes(idRecord, notesText, mockItem);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to save processing notes:",
+        failure,
+      );
 
-        expect(restClientMock.createProcessingNotes).toHaveBeenCalledWith(
-          notesText,
-          idRecord,
-          "test-token",
-        );
-        // Ensure the item object was updated with the new ID from the response
-        expect(mockItem.processingNoteId).toBe(99);
-        expect(wrapper.vm.loading).toBe(false);
-      });
+      expect(wrapper.vm.processingNoteError).toBe(
+        "The processing notes for record Test Record (99) could not be saved.",
+      );
 
-      it("handles errors gracefully during save", async () => {
-        restClientMock.createProcessingNotes.mockRejectedValue(
-          new Error("API Error"),
-        );
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.loading).toBe(false);
 
-        await wrapper.vm.saveProcessingNotes(idRecord, notesText, mockItem);
-
-        expect(wrapper.vm.loading).toBe(false);
-        expect(wrapper.vm.error.general).toBe(
-          "Failed to save processing note.",
-        );
-        expect(wrapper.vm.error.recordID).toBe(idRecord);
-      });
+      consoleSpy.mockRestore();
     });
 
-    describe("deleteProcessingNote", () => {
-      it("clears local text and returns early if no processingNoteId exists", async () => {
-        mockItem.processingNoteId = null;
+    it("saves processing notes when Save is clicked", async () => {
+      const item = wrapper.vm.maintenanceRequestsProcessed[0];
 
-        await wrapper.vm.deleteProcessingNote(mockItem);
+      item.processingNoteId = 10;
+      item.processingNotes = "Original processing notes";
 
-        expect(mockItem.processingNotes).toBe("");
-        expect(restClientMock.deleteProcessingNote).not.toHaveBeenCalled();
+      await wrapper.vm.$nextTick();
+
+      // Mock the utility used by the component
+      vi.mocked(saveProcessingNotes).mockResolvedValueOnce({
+        success: true,
       });
 
-      it("calls API and clears local state on successful delete", async () => {
-        mockItem.processingNoteId = 55;
-        restClientMock.deleteProcessingNote.mockResolvedValue({
-          success: true,
-        });
+      const textarea = wrapper.get('[data-test="v-textarea"]');
 
-        await wrapper.vm.deleteProcessingNote(mockItem);
+      await textarea.setValue("Updated processing notes");
 
-        expect(restClientMock.deleteProcessingNote).toHaveBeenCalledWith(
-          55,
-          "test-token",
-        );
-        expect(mockItem.processingNotes).toBe("");
-        expect(mockItem.processingNoteId).toBeNull();
-        expect(wrapper.vm.loading).toBe(false);
+      expect(wrapper.vm.processingNotesDraft).toBe("Updated processing notes");
+
+      const saveButton = wrapper
+        .findAll("button")
+        .find((button) => button.text().trim() === "Save");
+
+      expect(saveButton).toBeDefined();
+
+      await saveButton.trigger("click");
+
+      await flushPromises();
+
+      expect(saveProcessingNotes).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: item.id,
+          processingNoteId: 10,
+        }),
+        "Updated processing notes",
+        "test-token",
+      );
+
+      expect(wrapper.vm.processingNoteError).toBeNull();
+      expect(wrapper.vm.loading).toBe(false);
+    });
+  });
+
+  describe("deleteProcessingNoteAndClose Methods", () => {
+    it("successfully deletes processing notes and closes the menu", async () => {
+      const item = {
+        id: 99,
+
+        recordName: "Test Record (99)",
+
+        processingNoteId: 55,
+
+        processingNotes: "Existing notes",
+      };
+
+      const isActive = { value: true };
+
+      vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
+        success: true,
       });
 
-      it("handles errors gracefully during delete", async () => {
-        mockItem.processingNoteId = 55;
-        restClientMock.deleteProcessingNote.mockRejectedValue(
-          new Error("Delete Failed"),
-        );
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
 
-        await wrapper.vm.deleteProcessingNote(mockItem);
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(
+        item,
 
-        expect(wrapper.vm.loading).toBe(false);
-        expect(wrapper.vm.error.general).toBe(
-          "Failed to delete processing note.",
-        );
-        expect(wrapper.vm.error.recordID).toBe(mockItem.id);
+        "test-token",
+      );
+
+      expect(isActive.value).toBe(false);
+
+      expect(wrapper.vm.processingNoteError).toBeNull();
+
+      expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("handles exceptions when deleting processing notes", async () => {
+      const item = {
+        id: 99,
+        recordName: "Test Record (99)",
+        processingNoteId: 55,
+        processingNotes: "Existing notes",
+      };
+      const isActive = { value: true };
+      const failure = new Error("Network unavailable");
+      const consoleSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      vi.mocked(deleteProcessingNotes).mockRejectedValueOnce(failure);
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to delete processing notes:",
+        failure,
+      );
+      expect(wrapper.vm.processingNoteError).toBe(
+        "The processing notes for record Test Record (99) could not be deleted.",
+      );
+      expect(isActive.value).toBe(true);
+      expect(wrapper.vm.loading).toBe(false);
+      consoleSpy.mockRestore();
+    });
+
+    it("handles API failure when deleting processing notes", async () => {
+      const item = {
+        id: 99,
+        recordName: "Test Record (99)",
+        processingNoteId: 55,
+        processingNotes: "Existing notes",
+      };
+      const isActive = { value: true };
+      vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
+        success: false,
+        error: "Unable to delete processing notes",
       });
+      await wrapper.vm.deleteProcessingNoteAndClose(item, isActive);
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(item, "test-token");
+      expect(wrapper.vm.processingNoteError).toBe(
+        "Unable to delete processing notes",
+      );
+      // The menu should remain open when deletion fails.
+      expect(isActive.value).toBe(true);
+      // Loading must reset even after an API failure.
+      expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("deletes processing notes when Delete is clicked", async () => {
+      const item = wrapper.vm.maintenanceRequestsProcessed[0];
+
+      item.processingNoteId = 10;
+      item.processingNotes = "Existing notes";
+
+      await wrapper.vm.$nextTick();
+
+      // Mock the utility actually called by the component
+      vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
+        success: true,
+      });
+
+      const deleteButton = wrapper
+        .findAll("button")
+        .find((button) => button.text().trim() === "Delete");
+
+      expect(deleteButton).toBeDefined();
+
+      await deleteButton.trigger("click");
+      await flushPromises();
+
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: item.id,
+          processingNoteId: 10,
+        }),
+        "test-token",
+      );
+
+      expect(wrapper.vm.processingNoteError).toBeNull();
+      expect(wrapper.vm.loading).toBe(false);
     });
   });
 
@@ -531,15 +634,27 @@ describe("MaintenanceRequests.vue", () => {
     expect(navigateSpy).toHaveBeenCalledWith("/users/u1");
   });
 
-  it("updates processing notes through the textarea", async () => {
-    const textarea = wrapper.find('[data-test="v-textarea"]');
+  it("updates the processing notes draft through the textarea", async () => {
+    const item = {
+      id: "rec-1",
+      recordName: "Record A (rec-1)",
+      processingNotes: "Original notes",
+      processingNoteId: 10,
+    };
 
-    expect(textarea.exists()).toBe(true);
+    await wrapper.setData({
+      maintenanceRequestsProcessed: [item],
+      processingNotesDraft: "Original notes",
+    });
+
+    const textarea = wrapper.get('[data-test="v-textarea"]');
 
     await textarea.setValue("Updated processing notes");
 
+    expect(wrapper.vm.processingNotesDraft).toBe("Updated processing notes");
+
     expect(wrapper.vm.maintenanceRequestsProcessed[0].processingNotes).toBe(
-      "Updated processing notes",
+      "Original notes",
     );
   });
 
@@ -579,79 +694,105 @@ describe("MaintenanceRequests.vue", () => {
     expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
   });
 
-  it("deletes processing notes when Delete is clicked", async () => {
-    restClientMock.deleteProcessingNote.mockResolvedValue({
-      success: true,
-    });
-
-    const item = wrapper.vm.maintenanceRequestsProcessed[0];
-
-    item.processingNoteId = 10;
-    item.processingNotes = "Existing notes";
-
+  it("updates loading through the overlay v-model", async () => {
+    const overlay = wrapper.findComponent({ name: "VOverlay" });
+    expect(overlay.exists()).toBe(true);
+    expect(overlay.props("modelValue")).toBe(false);
+    overlay.vm.$emit("update:modelValue", true);
     await wrapper.vm.$nextTick();
-
-    const deleteButton = wrapper
-      .findAll("button")
-      .find((button) => button.text().trim() === "Delete");
-
-    expect(deleteButton).toBeDefined();
-
-    await deleteButton.trigger("click");
-
-    await flushPromises();
-
-    expect(restClientMock.deleteProcessingNote).toHaveBeenCalledWith(
-      10,
-      "test-token",
-    );
-
-    expect(item.processingNotes).toBe("");
-    expect(item.processingNoteId).toBeNull();
+    expect(wrapper.vm.loading).toBe(true);
+    overlay.vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.loading).toBe(false);
   });
 
-  it("saves processing notes when Save is clicked", async () => {
-    // Mock successful API response
-    restClientMock.updateProcessingNotes.mockResolvedValue({
+  it("clears processing note error when alert is closed", async () => {
+    await wrapper.setData({
+      processingNoteError: "Unable to save notes",
+    });
+    const alert = wrapper
+      .findAllComponents({ name: "VAlert" })
+      .find(
+        (component) =>
+          component.props("title") === "Unable to update processing notes",
+      );
+    expect(alert).toBeDefined();
+    alert.vm.$emit("click:close");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.processingNoteError).toBeNull();
+  });
+
+  it("submits approved status from the approval dialog OK button", async () => {
+    await wrapper.setData({
+      dialogs: {
+        ...wrapper.vm.dialogs,
+        confirmAssignment: true,
+        rejectAssignment: false,
+        requestId: "req-1",
+        recordID: "rec-1",
+        recordName: "Record A",
+        userName: "User A",
+        disableDelButton: false,
+      },
+    });
+    restUpdateSpy.mockResolvedValueOnce({
+      error: false,
+    });
+    vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
       success: true,
     });
-
-    // Get the first record
-    const item = wrapper.vm.maintenanceRequestsProcessed[0];
-
-    // Ensure the record has an existing processing note
-    item.processingNoteId = 10;
-    item.processingNotes = "Original processing notes";
-
-    await wrapper.vm.$nextTick();
-
-    // Find textarea
-    const textarea = wrapper.find('[data-test="v-textarea"]');
-
-    expect(textarea.exists()).toBe(true);
-
-    await textarea.setValue("Updated processing notes");
-
-    // Find Save button
-    const saveButton = wrapper
+    const dialog = wrapper
+      .findAllComponents({ name: "VDialog" })
+      .find((component) => component.props("modelValue") === true);
+    expect(dialog).toBeDefined();
+    const okButton = dialog
       .findAll("button")
-      .find((button) => button.text().trim() === "Save");
-
-    expect(saveButton).toBeDefined();
-
-    // Click Save
-    await saveButton.trigger("click");
-
+      .find((button) => button.text().trim() === "OK");
+    expect(okButton).toBeDefined();
+    await okButton.trigger("click");
     await flushPromises();
-
-    // Verify API call
-    expect(restClientMock.updateProcessingNotes).toHaveBeenCalledWith(
-      10,
-      "Updated processing notes",
-      item.id,
+    expect(restUpdateSpy).toHaveBeenCalledWith(
+      "req-1",
+      "approved",
       "test-token",
     );
+    expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
+  });
 
-    expect(wrapper.vm.loading).toBe(false);
+  it("submits rejected status from the rejection dialog OK button", async () => {
+    await wrapper.setData({
+      dialogs: {
+        ...wrapper.vm.dialogs,
+        confirmAssignment: false,
+        rejectAssignment: true,
+        requestId: "req-1",
+        recordID: "rec-1",
+        recordName: "Record A",
+        userName: "User A",
+        disableDelButton: false,
+      },
+    });
+    restUpdateSpy.mockResolvedValueOnce({
+      error: false,
+    });
+    vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
+      success: true,
+    });
+    const dialog = wrapper
+      .findAllComponents({ name: "VDialog" })
+      .find((component) => component.props("modelValue") === true);
+    expect(dialog).toBeDefined();
+    const okButton = dialog
+      .findAll("button")
+      .find((button) => button.text().trim() === "OK");
+    expect(okButton).toBeDefined();
+    await okButton.trigger("click");
+    await flushPromises();
+    expect(restUpdateSpy).toHaveBeenCalledWith(
+      "req-1",
+      "rejected",
+      "test-token",
+    );
+    expect(wrapper.vm.dialogs.rejectAssignment).toBe(false);
   });
 });

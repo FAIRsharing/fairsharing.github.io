@@ -37,6 +37,25 @@
             {{ error.general }}
           </v-alert>
         </v-card-text>
+        <v-alert
+          v-if="processingNoteError"
+          class="mb-4"
+          closable
+          title="Unable to update processing notes"
+          type="error"
+          variant="tonal"
+          @click:close="processingNoteError = null"
+        >
+          {{ processingNoteError }}
+          Please
+          <a
+            class="font-weight-bold text-decoration-underline"
+            href="mailto:contact@fairsharing.org"
+          >
+            email us
+          </a>
+          for assistance.
+        </v-alert>
         <v-data-table
           :headers="headerItems"
           :items="maintenanceRequestsProcessed"
@@ -75,19 +94,35 @@
                   min-width="400"
                 >
                   <template #activator="{ props: menuProps }">
-                    <span style="cursor: pointer" v-bind="menuProps">
+                    <span
+                      style="cursor: pointer"
+                      v-bind="menuProps"
+                      @click="processingNotesDraft = item.processingNotes || ''"
+                    >
                       {{ item.processingNotes || "Click to edit..." }}
                     </span>
                   </template>
                   <template #default="{ isActive }">
-                    <v-card class="pa-2">
-                      <v-card-title class="text-h6">
+                    <v-card class="pa-2 position-relative">
+                      <v-btn
+                        aria-label="Close processing notes editor"
+                        class="position-absolute"
+                        color="black"
+                        icon
+                        size="x-small"
+                        style="top: 4px; right: 4px; z-index: 2"
+                        variant="elevated"
+                        @click="isActive.value = false"
+                      >
+                        <v-icon icon="fas fa-xmark" />
+                      </v-btn>
+                      <v-card-title class="mt-2 text-h6 pr-12">
                         Update Processing Notes
                       </v-card-title>
 
                       <v-card-text class="pt-2">
                         <v-textarea
-                          v-model="item.processingNotes"
+                          v-model="processingNotesDraft"
                           hide-details
                           label="Edit (not long words)"
                           variant="filled"
@@ -101,25 +136,17 @@
                           size="small"
                           slim
                           variant="elevated"
-                          @click="
-                            deleteProcessingNote(item);
-                            isActive.value = false;
-                          "
+                          @click="deleteProcessingNoteAndClose(item, isActive)"
                         >
                           Delete
                         </v-btn>
                         <v-spacer />
                         <v-btn
-                          color="primary"
-                          variant="text"
-                          @click="
-                            saveProcessingNotes(
-                              item.id,
-                              item.processingNotes,
-                              item,
-                            );
-                            isActive.value = false;
-                          "
+                          color="success"
+                          size="small"
+                          slim
+                          variant="elevated"
+                          @click="saveProcessingNotesAndClose(item, isActive)"
                         >
                           Save
                         </v-btn>
@@ -165,6 +192,7 @@
           </template>
         </v-data-table>
       </v-card-text>
+
       <v-dialog v-model="dialogs.confirmAssignment" max-width="900px">
         <v-card>
           <v-card-title class="text-h5">
@@ -266,6 +294,10 @@ import getPendingMaintenanceRequests from "@/lib/GraphClient/queries/curators/ge
 import formatDate from "@/utils/generalUtils";
 import navigateTo from "@/utils/generalUtils";
 import Loaders from "@/components/Navigation/Loaders.vue";
+import {
+  deleteProcessingNotes,
+  saveProcessingNotes,
+} from "@/utils/curatorUtils";
 
 const client = new GraphClient();
 const restClient = new RestClient();
@@ -304,6 +336,8 @@ export default {
       approvalRequired: [],
       recordType: {},
       loading: false,
+      processingNotesDraft: "",
+      processingNoteError: null,
     };
   },
   computed: {
@@ -369,72 +403,6 @@ export default {
       }
     },
 
-    /**
-     * Create processing notes for a record
-     * @param idRecord {Number} - FAIRshairing record id
-     * @param notesText {String} - Processing notes text
-     * @param item {Object} - Record object
-     * @return {Promise<void>}
-     */
-    async saveProcessingNotes(idRecord, notesText, item) {
-      const token = this.user().credentials.token;
-      try {
-        if (item.processingNoteId) {
-          this.loading = true;
-          // UPDATE EXISTING
-          await restClient.updateProcessingNotes(
-            item.processingNoteId,
-            notesText,
-            idRecord,
-            token,
-          );
-          this.loading = false;
-        } else {
-          // CREATE NEW
-          this.loading = true;
-          const response = await restClient.createProcessingNotes(
-            notesText,
-            idRecord,
-            token,
-          );
-          // Store the new ID so the next click becomes an "update"
-          const newId = response.data ? response.data.id : response.id;
-          item.processingNoteId = newId;
-          this.loading = false;
-        }
-      } catch (err) {
-        this.loading = false;
-        this.error.general = "Failed to save processing note.";
-        this.error.recordID = idRecord;
-      }
-    },
-    /**
-     * Delete a processing notes for a record
-     * @param item
-     * @return {Promise<void>}
-     */
-    async deleteProcessingNote(item) {
-      if (!item.processingNoteId) {
-        // If no ID exists, it's not in the database, just clear the text
-        item.processingNotes = "";
-        return;
-      }
-
-      try {
-        this.loading = true;
-        const token = this.user().credentials.token;
-        await restClient.deleteProcessingNote(item.processingNoteId, token);
-        // Clear local state
-        item.processingNotes = "";
-        item.processingNoteId = null;
-        this.loading = false;
-      } catch (err) {
-        this.loading = false;
-        this.error.general = "Failed to delete processing note.";
-        this.error.recordID = item.id;
-      }
-    },
-
     assignMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;
@@ -460,7 +428,7 @@ export default {
         newStatus,
         this.user().credentials.token,
       );
-      /* v8 ignore start */
+
       if (!data.error) {
         const index = _module.maintenanceRequestsProcessed.findIndex(
           (element) => element.requestID === _module.dialogs.requestId,
@@ -476,20 +444,35 @@ export default {
               (element) => element.id === _module.dialogs.recordID,
             ) < 0
           ) {
-            await _module.saveProcessingNotes(_module.dialogs.recordID, null);
+            const item = _module.maintenanceRequests.find(
+              (record) => record.id === _module.dialogs.recordID,
+            );
+
+            if (item) {
+              const result = await deleteProcessingNotes(
+                item,
+                _module.user().credentials.token,
+              );
+
+              if (!result.success) {
+                _module.processingNoteError = result.error;
+              }
+            }
           }
         }
-      } else {
+      }
+      else {
         _module.error.general = "error assigning " + newStatus;
         _module.error.recordID = _module.dialogs.recordID;
       }
       if (newStatus === "approved") {
         _module.dialogs.confirmAssignment = false;
-      } else {
+      }
+      else {
         _module.dialogs.rejectAssignment = false;
       }
     },
-    /* v8 ignore end */
+
     rejectMaintenanceOwner(recordName, recordID, userNameID, requestID) {
       const _module = this;
       _module.dialogs.disableDelButton = false;
@@ -506,8 +489,74 @@ export default {
     compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
-      } else {
+      }
+      else {
         return 1;
+      }
+    },
+
+    /**
+     * Save processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise<void>}
+     */
+    async saveProcessingNotesAndClose(item, isActive) {
+      this.loading = true;
+      this.processingNoteError = null;
+
+      try {
+        const result = await saveProcessingNotes(
+          item,
+          this.processingNotesDraft,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
+        isActive.value = false;
+      }
+      catch (error) {
+        console.error("Failed to save processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be saved.`;
+      }
+      finally {
+        this.loading = false;
+      }
+    },
+
+    /**
+     * Delete processing notes and close the menu
+     * @param item
+     * @param isActive
+     * @return {Promise<void>}
+     */
+    async deleteProcessingNoteAndClose(item, isActive) {
+      this.loading = true;
+      this.processingNoteError = null;
+
+      try {
+        const result = await deleteProcessingNotes(
+          item,
+          this.user().credentials.token,
+        );
+
+        if (!result.success) {
+          this.processingNoteError = result.error;
+          return;
+        }
+
+        isActive.value = false;
+      }
+      catch (error) {
+        console.error("Failed to delete processing notes:", error);
+        this.processingNoteError = `The processing notes for record ${item.recordName} could not be deleted.`;
+      }
+      finally {
+        this.loading = false;
       }
     },
   },

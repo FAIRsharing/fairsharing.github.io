@@ -35,7 +35,7 @@
     "graphology": "^0.26.0",
     "graphology-layout": "^0.6.1",
     "graphology-layout-forceatlas2": "^0.10.1",
-    "highcharts": "12.1.2",
+    "highcharts": "12.6.2",
     "highcharts-vue": "2.0.1",
     "immutable": "^5.1.9",
     "jquery": "^3.5.1",

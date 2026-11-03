@@ -26,14 +26,11 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .title-style {
   position: absolute;
   top: -10px;
   background: linear-gradient(#4f5f5d, #00aa8e);
-  background: -moz-linear-gradient(#4f5f5d, #00aa8e);
-  background: -webkit-linear-gradient(#4f5f5d, #00aa8e);
-  background: -o-linear-gradient(#4f5f5d, #00aa8e);
   padding: 1px 10px 1px 10px;
   border-radius: 0 0 10px 10px;
   -webkit-border-radius: 0 0 10px 10px;

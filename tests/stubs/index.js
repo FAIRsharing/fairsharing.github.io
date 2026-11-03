@@ -12,3 +12,4 @@ export { VFormStub } from "./VFormStub.js";
 export { VOverlayStub } from "./VOverlayStub.js";
 export { VCheckBoxStub } from "./VCheckBoxStub.js";
 export { VSelectStub } from "./VSelectStub.js";
+export { VVirtualScrollStub } from "./VVirtualScrollStub.js";

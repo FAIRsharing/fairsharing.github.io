@@ -2,6 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStore } from "vuex";
 import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue";
+import { VAutocompleteStub, VVirtualScrollStub } from "../../../stubs/index.js";
 
 describe("OntologyBrowser.vue", () => {
   let wrapper;
@@ -100,8 +101,8 @@ describe("OntologyBrowser.vue", () => {
           Loaders: true,
           OntologySunburst: true,
           TermDetails: true,
-          "v-autocomplete": true,
-          "v-virtual-scroll": true,
+          VAutocomplete: VAutocompleteStub,
+          VVirtualScroll: VVirtualScrollStub,
           ...customStubs,
         },
       },
@@ -370,5 +371,297 @@ describe("OntologyBrowser.vue", () => {
       // 4. Verify it never tried to open terms
       expect(openTermsSpy).not.toHaveBeenCalled();
     });
+  });
+
+  it.each([
+    ["normal search", { identifier: 3, name: "Target" }, ["1", "2"]],
+    [
+      "Sunburst search",
+      { identifier: 3, name: "Target", isSunburst: true },
+      ["1", "2", "3"],
+    ],
+  ])("opens correct nodes for %s", async (_, search, expected) => {
+    mountComponent();
+    const tree = [
+      {
+        identifier: 1,
+        name: "Root",
+        children: [
+          {
+            identifier: 2,
+            name: "Parent",
+            children: [
+              {
+                identifier: 3,
+                name: "Target",
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    wrapper.vm.$store.state.ontologyBrowser.tree = tree;
+    const openTermsSpy = vi.spyOn(wrapper.vm, "openTerms");
+    wrapper.vm.$options.watch.search.call(wrapper.vm, search);
+    expect(openTermsSpy).toHaveBeenCalledWith(expected);
+  });
+
+  it("scrolls to the selected search result", async () => {
+    vi.useFakeTimers();
+    try {
+      mountComponent();
+      const tree = [
+        {
+          identifier: 1,
+          name: "Root",
+          children: [
+            {
+              identifier: 2,
+              name: "Target",
+              children: [],
+            },
+          ],
+        },
+      ];
+      wrapper.vm.$store.state.ontologyBrowser.tree = tree;
+      wrapper.vm.$store.state.ontologyBrowser.openedTerms = [1];
+      await wrapper.vm.$nextTick();
+      const virtualScroll = wrapper.vm.$refs.virtualScroll;
+      expect(virtualScroll).toBeDefined();
+      const scrollSpy = vi.fn();
+      virtualScroll.scrollToIndex = scrollSpy;
+      wrapper.vm.$options.watch.search.call(wrapper.vm, {
+        identifier: 2,
+        name: "Target",
+      });
+      vi.advanceTimersByTime(300);
+      expect(scrollSpy).toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("uses scrollTop when scrollToIndex is unavailable", async () => {
+    vi.useFakeTimers();
+    try {
+      mountComponent();
+      wrapper.vm.$store.state.ontologyBrowser.tree = [
+        {
+          identifier: 1,
+          name: "Root",
+          children: [
+            {
+              identifier: 2,
+              name: "Target",
+              children: [],
+            },
+          ],
+        },
+      ];
+      wrapper.vm.$store.state.ontologyBrowser.openedTerms = [1];
+      await wrapper.vm.$nextTick();
+      const virtualScroll = wrapper.vm.$refs.virtualScroll;
+      expect(virtualScroll).toBeDefined();
+      virtualScroll.scrollToIndex = undefined;
+      wrapper.vm.$options.watch.search.call(wrapper.vm, {
+        identifier: 2,
+        name: "Target",
+      });
+      vi.advanceTimersByTime(300);
+      expect(virtualScroll.$el.scrollTop).toBe(50);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("covers tree expand and term selection clicks", async () => {
+    mountComponent();
+    wrapper.vm.$store.state.ontologyBrowser.tree = [
+      {
+        identifier: 1,
+        name: "Root",
+        children: [
+          {
+            identifier: 2,
+            name: "Child",
+            children: [],
+          },
+        ],
+      },
+    ];
+    await wrapper.vm.$nextTick();
+    const toggleSpy = vi.spyOn(wrapper.vm, "toggleNode");
+    const searchSpy = vi.spyOn(wrapper.vm, "searchTerm");
+    const caret = wrapper
+      .findAllComponents({ name: "VIcon" })
+      .find((icon) => String(icon.props("icon") || "").includes("fa-caret"));
+    expect(caret).toBeDefined();
+    await caret.trigger("click");
+    expect(toggleSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        identifier: 1,
+      }),
+    );
+    const rootLabel = wrapper
+      .findAll(".chip-mimic")
+      .find((element) => element.text().trim() === "Root");
+    expect(rootLabel).toBeDefined();
+    await rootLabel.trigger("click");
+    expect(searchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        identifier: 1,
+      }),
+    );
+  });
+
+  it("updates search through autocomplete v-model", async () => {
+    mountComponent();
+    wrapper.vm.$store.state.ontologyBrowser.tree = [
+      {
+        identifier: 1,
+        name: "Root",
+        children: [],
+      },
+    ];
+    await wrapper.vm.$nextTick();
+    const autocomplete = wrapper.findComponent({
+      name: "VAutocomplete",
+    });
+    expect(autocomplete.exists()).toBe(true);
+    const selected = {
+      identifier: 1,
+      name: "Root",
+    };
+    autocomplete.vm.$emit("update:modelValue", selected);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.search).toEqual(selected);
+  });
+
+  it("handles an empty tree during traversal", () => {
+    mountComponent();
+
+    wrapper.vm.$store.state.ontologyBrowser.tree = [];
+
+    expect(wrapper.vm.visibleNodes).toEqual([]);
+  });
+
+  it("handles a missing search target during pruning", () => {
+    mountComponent();
+
+    wrapper.vm.$store.state.ontologyBrowser.tree = [
+      {
+        identifier: 1,
+        name: "Root",
+        children: [],
+      },
+    ];
+
+    wrapper.vm.search = {
+      identifier: 999,
+      name: "Missing",
+    };
+
+    expect(wrapper.vm.visibleNodes).toHaveLength(1);
+  });
+
+  it("returns false when openedTerms is unavailable", () => {
+    mountComponent();
+
+    wrapper.vm.$store.state.ontologyBrowser.openedTerms = null;
+
+    expect(wrapper.vm.isOpen(1)).toBe(false);
+  });
+
+  it("handles a node without children when pruning", () => {
+    mountComponent();
+    const result = wrapper.vm.pruneTreeWithChildren(
+      [
+        {
+          identifier: 1,
+          name: "Root",
+        },
+      ],
+      1,
+    );
+    expect(result).toEqual([
+      {
+        identifier: 1,
+        name: "Root",
+        children: [],
+      },
+    ]);
+  });
+
+  it("finds the selected term from the route query", async () => {
+    mountComponent();
+    const flattenedTree = [
+      {
+        identifier: 1,
+        name: "Biology",
+      },
+      {
+        identifier: 2,
+        name: "Data Science",
+      },
+    ];
+    wrapper.vm.$store.state.ontologyBrowser.flattenedTree = flattenedTree;
+    await wrapper.vm.$nextTick();
+    const term = wrapper.vm.$options.computed.term.call({
+      $route: {
+        query: {
+          term: "data%20science",
+        },
+      },
+      flattenedTree,
+    });
+    expect(term).toEqual({
+      identifier: 2,
+      name: "Data Science",
+    });
+  });
+
+  it("returns false when openedTerms is unavailable", () => {
+    mountComponent();
+    const result = wrapper.vm.$options.methods.isOpen.call(
+      {
+        openedTerms: null,
+      },
+      123,
+    );
+    expect(result).toBe(false);
+  });
+
+  it("does not clear search when noSelection receives false", async () => {
+    mountComponent();
+
+    await wrapper.setData({
+      search: {
+        identifier: 1,
+        name: "Biology",
+      },
+    });
+
+    wrapper.vm.noSelection(false);
+
+    expect(wrapper.vm.search).toEqual({
+      identifier: 1,
+      name: "Biology",
+    });
+  });
+
+  it("converts opened term IDs from strings to numbers", async () => {
+    mountComponent();
+
+    wrapper.vm.$store.state.ontologyBrowser.openedTerms = ["1"];
+
+    const openTermsSpy = vi.spyOn(wrapper.vm, "openTerms");
+
+    wrapper.vm.toggleNode({
+      identifier: 2,
+      hasChildren: true,
+    });
+
+    expect(openTermsSpy).toHaveBeenCalledWith([1, 2]);
   });
 });

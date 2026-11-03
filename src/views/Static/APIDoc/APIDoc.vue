@@ -24,6 +24,30 @@
       to discuss your requirements.
     </p>
 
+    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Rate Limits</h2>
+    <p
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
+    >
+      We would appreciate limiting queries to approx. every 8-12 seconds to
+      avoid hitting rate limits. Please also cache responses where possible
+      rather than accessing the same record multiple times per day (multiple
+      edits in a day are unlikely in any case).
+    </p>
+    <p
+      :class="[
+        'mb-4 lato-font-medium lato-text-sm',
+        { 'lato-text-md': $vuetify.display.xlOnly },
+      ]"
+    >
+      In cases where we deem clients to be making excessive rapid or repeated
+      queries we reserve the right to disable the user account under which the
+      client is operating. We will make every reasonable effort to contact users before doing this.
+    </p>
+
+
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">Creating an account</h2>
     <p
       :class="[

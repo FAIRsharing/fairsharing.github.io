@@ -227,6 +227,136 @@ describe("MaintenanceRequests.vue", () => {
   });
 
   describe("assignMaintenanceOwnConfirm (Complex Logic)", () => {
+    it("does not delete processing notes when record exists in approvalRequired", async () => {
+      const item = {
+        id: "rec-1",
+        requestID: "req-1",
+        processingNoteId: 10,
+      };
+      await wrapper.setData({
+        maintenanceRequestsProcessed: [item],
+        maintenanceRequests: [item],
+        approvalRequired: [{ id: "rec-1" }],
+        dialogs: {
+          ...wrapper.vm.dialogs,
+          requestId: "req-1",
+          recordID: "rec-1",
+          confirmAssignment: true,
+        },
+      });
+      restUpdateSpy.mockResolvedValueOnce({
+        error: false,
+      });
+      vi.mocked(deleteProcessingNotes).mockClear();
+      await wrapper.vm.assignMaintenanceOwnConfirm("approved");
+      expect(wrapper.vm.maintenanceRequestsProcessed).toHaveLength(0);
+      expect(deleteProcessingNotes).not.toHaveBeenCalled();
+      expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
+    });
+
+    it("does not delete processing notes when another request exists", async () => {
+      const firstRequest = {
+        id: "rec-1",
+        requestID: "req-1",
+        processingNoteId: 10,
+      };
+      const secondRequest = {
+        id: "rec-1",
+        requestID: "req-2",
+        processingNoteId: 10,
+      };
+      await wrapper.setData({
+        maintenanceRequestsProcessed: [firstRequest, secondRequest],
+        maintenanceRequests: [firstRequest, secondRequest],
+        approvalRequired: [],
+        dialogs: {
+          ...wrapper.vm.dialogs,
+          requestId: "req-1",
+          recordID: "rec-1",
+          confirmAssignment: true,
+        },
+      });
+      restUpdateSpy.mockResolvedValueOnce({
+        error: false,
+      });
+      vi.mocked(deleteProcessingNotes).mockClear();
+      await wrapper.vm.assignMaintenanceOwnConfirm("approved");
+      expect(wrapper.vm.maintenanceRequestsProcessed).toHaveLength(1);
+      expect(wrapper.vm.maintenanceRequestsProcessed[0].requestID).toBe(
+        "req-2",
+      );
+      expect(deleteProcessingNotes).not.toHaveBeenCalled();
+      expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
+    });
+
+    it("handles processing notes deletion failure after rejecting final request", async () => {
+      const item = {
+        id: "rec-1",
+        requestID: "req-1",
+        recordName: "Record A",
+        processingNoteId: 10,
+        processingNotes: "Existing notes",
+      };
+      await wrapper.setData({
+        maintenanceRequestsProcessed: [item],
+        maintenanceRequests: [item],
+        approvalRequired: [],
+        processingNoteError: null,
+        dialogs: {
+          ...wrapper.vm.dialogs,
+          requestId: "req-1",
+          recordID: "rec-1",
+          rejectAssignment: true,
+        },
+      });
+      restUpdateSpy.mockResolvedValueOnce({
+        error: false,
+      });
+      vi.mocked(deleteProcessingNotes).mockResolvedValueOnce({
+        success: false,
+        error: "Unable to delete processing notes",
+      });
+      await wrapper.vm.assignMaintenanceOwnConfirm("rejected");
+      expect(deleteProcessingNotes).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: "rec-1",
+          processingNoteId: 10,
+        }),
+        "test-token",
+      );
+      expect(wrapper.vm.processingNoteError).toBe(
+        "Unable to delete processing notes",
+      );
+      expect(wrapper.vm.maintenanceRequestsProcessed).toHaveLength(0);
+      expect(wrapper.vm.dialogs.rejectAssignment).toBe(false);
+    });
+
+    it("handles final request when original record is not found", async () => {
+      const item = {
+        id: "rec-1",
+        requestID: "req-1",
+      };
+      await wrapper.setData({
+        maintenanceRequestsProcessed: [item],
+        maintenanceRequests: [],
+        approvalRequired: [],
+        dialogs: {
+          ...wrapper.vm.dialogs,
+          requestId: "req-1",
+          recordID: "rec-1",
+          confirmAssignment: true,
+        },
+      });
+      restUpdateSpy.mockResolvedValueOnce({
+        error: false,
+      });
+      vi.mocked(deleteProcessingNotes).mockClear();
+      await wrapper.vm.assignMaintenanceOwnConfirm("approved");
+      expect(wrapper.vm.maintenanceRequestsProcessed).toHaveLength(0);
+      expect(deleteProcessingNotes).not.toHaveBeenCalled();
+      expect(wrapper.vm.dialogs.confirmAssignment).toBe(false);
+    });
+
     it("rejects request correctly", async () => {
       await wrapper.setData({
         dialogs: {
@@ -265,7 +395,7 @@ describe("MaintenanceRequests.vue", () => {
       expect(wrapper.vm.dialogs.rejectAssignment).toBe(false);
     });
 
-    // Scenario 4: API Error
+    // API Error
     it("handles API error during assignment", async () => {
       restUpdateSpy.mockResolvedValue({ error: true });
 

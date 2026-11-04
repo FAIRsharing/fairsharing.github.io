@@ -17,3 +17,4 @@ export { VTabsStub } from "./VTabsStub.js";
 export { VTabsWindowStub } from "./VTabsWindowStub.js";
 export { VTabsWindowItemStub } from "./VTabsWindowItemStub.js";
 export { VRouterLinkStub } from "./VRouterLinkStub.js";
+export { VFileInputStub } from "./VFileInputStub.js";

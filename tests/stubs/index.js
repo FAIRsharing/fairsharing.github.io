@@ -13,3 +13,7 @@ export { VOverlayStub } from "./VOverlayStub.js";
 export { VCheckBoxStub } from "./VCheckBoxStub.js";
 export { VSelectStub } from "./VSelectStub.js";
 export { VVirtualScrollStub } from "./VVirtualScrollStub.js";
+export { VTabsStub } from "./VTabsStub.js";
+export { VTabsWindowStub } from "./VTabsWindowStub.js";
+export { VTabsWindowItemStub } from "./VTabsWindowItemStub.js";
+export { VRouterLinkStub } from "./VRouterLinkStub.js";

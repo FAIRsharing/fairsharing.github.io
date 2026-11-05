@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { config, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-
 import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
@@ -11,6 +10,7 @@ import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+import { VFormStub } from "../../../../stubs/index.js";
 
 const sinon = require("sinon");
 
@@ -95,9 +95,6 @@ describe("Edit -> GeneralInformation.vue", function () {
       result: fileContents,
     };
     window.FileReader = vi.fn(() => dummyFileReader);
-
-    // vi.mock('toBase64', () => Promise.resolve('value'))
-
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     graphStub.withArgs(countriesQuery).returns({
       searchCountries: [{ label: "france", id: 33 }],
@@ -142,6 +139,9 @@ describe("Edit -> GeneralInformation.vue", function () {
           $router,
           $scrollTo: scrollToMock,
         },
+        stubs: {
+          VForm: VFormStub,
+        },
       },
     });
   });
@@ -154,13 +154,10 @@ describe("Edit -> GeneralInformation.vue", function () {
 
   it("can be mounted", async () => {
     expect(wrapper.vm.$options.name).toMatch("GeneralInformation");
-    // expect(wrapper.vm.currentFields).toStrictEqual(wrapper.vm.initialFields);
+
     await wrapper.vm.getData();
     expect(wrapper.vm.currentFields.type).toBe("abc");
-    // expect(wrapper.vm.message.type()).toBe("success");
-    // recordStore.state.sections.generalInformation.error = true;
-    // expect(wrapper.vm.message.type()).toBe("error");
-    // recordStore.state.sections.generalInformation.error = false;
+
     expect(wrapper.vm.section).toStrictEqual(
       recordStore.state.sections.generalInformation,
     );
@@ -245,7 +242,7 @@ describe("Edit -> GeneralInformation.vue", function () {
     expect(wrapper.vm.currentFields.metadata.deprecation_reason).toEqual(
       "should not be deleted",
     );
-    wrapper.vm.currentFields.type = { id: 789 };
+    wrapper.vm.currentFields.type = { id: 789, name: "abc" };
     await wrapper.vm.saveRecord(false, false, btn);
     expect($router.push).toHaveBeenCalledTimes(2);
     tagStub.restore();
@@ -286,14 +283,6 @@ describe("Edit -> GeneralInformation.vue", function () {
     expect(wrapper.vm.showTypeChanged).toBe(false);
   });
 
-  it("handles formValid form v-model updates", async () => {
-    await wrapper.setData({ formValid: false });
-    const form = wrapper.findComponent({ name: "v-form" });
-    expect(form.props("modelValue")).toBe(false);
-    await form.vm.$emit("update:modelValue", true);
-    expect(wrapper.vm.formValid).toBe(true);
-  });
-
   it("can check submitWithChangedType method", async () => {
     const btn = { textContent: "Save and continue" };
     wrapper.vm.redirect = true;
@@ -301,5 +290,200 @@ describe("Edit -> GeneralInformation.vue", function () {
     await wrapper.vm.submitWithChangedType();
     expect(wrapper.vm.showTypeChanged).toBe(false);
     expect(wrapper.vm.saveRecord).toHaveBeenCalledWith(true, true, btn);
+  });
+
+  it("saves directly when the record type has not changed", async () => {
+    const saveSpy = vi
+      .spyOn(wrapper.vm, "saveRecord")
+      .mockResolvedValue(undefined);
+
+    wrapper.vm.initialFields.type = "abc";
+    wrapper.vm.currentFields.type = { name: "abc" };
+
+    const button = { textContent: "Save and continue" };
+
+    await wrapper.vm.checkTypeChange(false, button);
+
+    expect(saveSpy).toHaveBeenCalledWith(false, false, button);
+    expect(wrapper.vm.showTypeChanged).toBe(false);
+
+    saveSpy.mockRestore();
+  });
+
+  it("opens confirmation when the record type changes", async () => {
+    wrapper.vm.initialFields.type = "abc";
+    wrapper.vm.currentFields.type = { name: "collection" };
+    await wrapper.vm.checkTypeChange(true, {
+      textContent: "Save and exit",
+    });
+    expect(wrapper.vm.showTypeChanged).toBe(true);
+    expect(wrapper.vm.redirect).toBe(true);
+    wrapper.vm.closeTypeChanged();
+    expect(wrapper.vm.showTypeChanged).toBe(false);
+  });
+
+  it("does not redirect when saving fails", async () => {
+    const updateSpy = vi
+      .spyOn(wrapper.vm, "updateGeneralInformation")
+      .mockResolvedValue(undefined);
+    wrapper.vm.getSection("generalInformation").error = true;
+    $router.push.mockClear();
+    await wrapper.vm.saveRecord(true, false, {
+      textContent: "Save and exit",
+    });
+    expect($router.push).not.toHaveBeenCalled();
+    expect(wrapper.vm.exitLoader).toBe(false);
+    updateSpy.mockRestore();
+  });
+
+  it("returns success message when there is no error", () => {
+    const section = wrapper.vm.getSection("generalInformation");
+
+    section.error = false;
+    section.message = "Saved successfully";
+
+    expect(wrapper.vm.message.error).toBe(false);
+    expect(wrapper.vm.message.value).toBe("Saved successfully");
+    expect(wrapper.vm.message.type()).toBe("success");
+  });
+
+  it("returns error message when saving fails", () => {
+    const section = wrapper.vm.getSection("generalInformation");
+
+    section.error = true;
+    section.message = "Unable to save";
+
+    expect(wrapper.vm.message.error).toBe(true);
+    expect(wrapper.vm.message.value).toBe("Unable to save");
+    expect(wrapper.vm.message.type()).toBe("error");
+  });
+
+  it("counts changes in metadata, ordinary fields and tag arrays through the watcher", () => {
+    const initialFields = {
+      type: "abc",
+      status: "ready",
+      name: "Original",
+      metadata: { contacts: [] },
+      domains: [{ id: 1 }],
+      subjects: [{ id: 2 }],
+      taxonomies: [],
+      userDefinedTags: [],
+    };
+
+    const currentFields = {
+      ...structuredClone(initialFields),
+      name: "Updated",
+      metadata: { contacts: [{ name: "Contact" }] },
+      domains: [{ id: 1 }, { id: 3 }],
+    };
+
+    const commit = vi.fn();
+
+    const context = {
+      initialized: true,
+      initialFields,
+      currentFields,
+      $store: { commit },
+    };
+
+    GeneralInfo.watch.currentFields.handler.call(context, currentFields);
+
+    expect(commit).toHaveBeenCalledWith("record/setChanges", {
+      section: "generalInformation",
+      value: 3,
+    });
+  });
+
+  it("covers Save and continue button click", async () => {
+    const saveSpy = vi
+      .spyOn(wrapper.vm, "checkTypeChange")
+      .mockResolvedValue(undefined);
+    wrapper.vm.initialized = true;
+    wrapper.vm.formValid = true;
+    wrapper.vm.imageTooBig = false;
+    await wrapper.vm.$nextTick();
+    const button = wrapper
+      .findAllComponents({ name: "VBtn" })
+      .find((btn) => btn.text().includes("Save and continue"));
+    expect(button).toBeDefined();
+    await button.trigger("click");
+    expect(saveSpy).toHaveBeenCalledWith(false, expect.anything());
+    saveSpy.mockRestore();
+  });
+
+  it("covers Save and exit button click", async () => {
+    const saveSpy = vi
+      .spyOn(wrapper.vm, "checkTypeChange")
+      .mockResolvedValue(undefined);
+    wrapper.vm.initialized = true;
+    wrapper.vm.formValid = true;
+    wrapper.vm.imageTooBig = false;
+    await wrapper.vm.$nextTick();
+    const button = wrapper
+      .findAllComponents({ name: "VBtn" })
+      .find((btn) => btn.text().includes("Save and exit"));
+    expect(button).toBeDefined();
+    await button.trigger("click");
+    expect(saveSpy).toHaveBeenCalledWith(true, expect.anything());
+    saveSpy.mockRestore();
+  });
+
+  it("covers Cancel button click in the type-change dialog", async () => {
+    wrapper.vm.initialFields.type = "abc";
+    wrapper.vm.currentFields.type = { name: "collection" };
+    wrapper.vm.showTypeChanged = true;
+    await wrapper.vm.$nextTick();
+    const cancelButton = wrapper
+      .findAllComponents({ name: "VBtn" })
+      .find((btn) => btn.text().trim() === "Cancel");
+    expect(cancelButton).toBeDefined();
+    await cancelButton.trigger("click");
+    expect(wrapper.vm.showTypeChanged).toBe(false);
+  });
+
+  it("covers Confirm Change button click in the type-change dialog", async () => {
+    wrapper.vm.initialFields.type = "abc";
+    wrapper.vm.currentFields.type = { name: "collection" };
+    wrapper.vm.showTypeChanged = true;
+    const submitSpy = vi
+      .spyOn(wrapper.vm, "submitWithChangedType")
+      .mockResolvedValue(undefined);
+    await wrapper.vm.$nextTick();
+    const confirmButton = wrapper
+      .findAllComponents({ name: "VBtn" })
+      .find((btn) => btn.text().trim() === "Confirm Change");
+    expect(confirmButton).toBeDefined();
+    await confirmButton.trigger("click");
+    expect(submitSpy).toHaveBeenCalledOnce();
+    submitSpy.mockRestore();
+    wrapper.vm.showTypeChanged = false;
+    await wrapper.vm.$nextTick();
+  });
+
+  it("covers formValid v-model through a VForm update event", async () => {
+    wrapper.vm.initialFields.type = "abc";
+    wrapper.vm.currentFields.type = { name: "abc" };
+    wrapper.vm.showTypeChanged = false;
+    await wrapper.vm.$nextTick();
+    const form = wrapper.findComponent({ name: "VForm" });
+    expect(form.exists()).toBe(true);
+    form.vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.formValid).toBe(false);
+    form.vm.$emit("update:modelValue", true);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.formValid).toBe(true);
+  });
+
+  it("covers the type-change dialog v-model update", async () => {
+    wrapper.vm.initialFields.type = "abc";
+    wrapper.vm.currentFields.type = { name: "collection" };
+    wrapper.vm.showTypeChanged = true;
+    await wrapper.vm.$nextTick();
+    const dialog = wrapper.findComponent({ name: "VDialog" });
+    expect(dialog.exists()).toBe(true);
+    dialog.vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.showTypeChanged).toBe(false);
   });
 });

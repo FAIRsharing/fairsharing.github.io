@@ -4,6 +4,7 @@ import Vuex from "vuex";
 
 import Collections from "@/components/Records/Record/Collections.vue";
 import Record from "@/store/recordData.js";
+import { VVirtualScrollStub } from "../../../../stubs/index.js";
 
 const vuetify = createVuetify();
 
@@ -120,15 +121,22 @@ const $store = new Vuex.Store({
     record: Record,
   },
 });
+const initialRecord = structuredClone(Record.state.currentRecord.fairsharingRecord);
 
 describe("Collections.vue", function () {
   let wrapper;
 
   beforeEach(() => {
+    Record.state.currentRecord.fairsharingRecord = structuredClone(initialRecord);
     wrapper = shallowMount(Collections, {
       vuetify,
       mocks: { $store },
+      stubs: { VVirtualScroll: VVirtualScrollStub },
     });
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
   });
 
   it("can be instantiated", () => {
@@ -178,7 +186,6 @@ describe("Collections.vue", function () {
     expect(wrapper.vm.tabsData.tabs.related_policies.count).toBe(0); // still hanging around from last run
   });
 
-  // This deletion has been saved for last so the previous test functions when all are run.
   it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {
     delete Record.state.currentRecord.fairsharingRecord.recordAssociations;
     delete Record.state.currentRecord.fairsharingRecord

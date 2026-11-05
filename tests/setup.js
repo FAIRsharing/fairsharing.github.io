@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { defineComponent, h } from "vue";
+import { globalFilters } from "../src/utils/setupUtils.js";
 // ============================================================
 // 1. Vue Test Utils compatibility
 // ============================================================
@@ -104,6 +105,7 @@ vi.mock("@vue/test-utils", async () => {
       $sanitize: (value) => value,
 
       $filters: {
+        cleanString: globalFilters.cleanString,
         capitalize: (value) => {
           if (typeof value !== "string" || !value.length) {
             return value;

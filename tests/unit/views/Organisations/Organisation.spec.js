@@ -1167,15 +1167,15 @@ describe("Organisation.vue", () => {
 
   it("renders the selected organisation type chip", async () => {
     await mountComponent();
-    await wrapper.setData({
-      showEditDialog: true,
-    });
+    await wrapper.vm.startEditing();
+    await wrapper.vm.$nextTick();
     const autocompletes = wrapper.findAllComponents({
       name: "VAutocomplete",
     });
     expect(autocompletes.length).toBeGreaterThanOrEqual(2);
     const typeAutocomplete = autocompletes[0];
-    expect(typeAutocomplete.text()).toContain("Germany");
+    const typeChip = typeAutocomplete.findComponent({ name: "VChip" });
+    expect(typeChip.props("text")).toBe("Institute");
   });
 
   it("removes a country when its chip close event is emitted", async () => {

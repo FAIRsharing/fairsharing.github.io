@@ -8,15 +8,15 @@ import {
   it,
   vi,
 } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-
 import DataAccess from "@/components/Editor/DataAccess/EditDataAccess.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+import { VBtnStub } from "../../../../stubs/index.js";
 
 const sinon = require("sinon");
 
@@ -74,6 +74,16 @@ describe("Edit -> DataAccess.vue", function () {
       global: {
         plugins: [$store],
         mocks: { $route, $router },
+        stubs: {
+          VCard: {
+            template: "<div><slot /></div>",
+          },
+
+          VCardActions: {
+            template: "<div><slot /></div>",
+          },
+          VBtn: VBtnStub,
+        },
       },
     });
   });
@@ -169,5 +179,43 @@ describe("Edit -> DataAccess.vue", function () {
     restStub.returns({ data: "GG!" });
     await wrapper.vm.saveRecord(true, btn);
     expect($router.push).toHaveBeenCalledTimes(pushCalls + 1);
+  });
+
+  it("handles Save and continue and Save and exit button clicks", async () => {
+    restStub = sinon.stub(RestClient.prototype, "executeQuery");
+    restStub.returns({
+      data: "GG!",
+    });
+
+    const saveSpy = vi.spyOn(wrapper.vm, "saveRecord");
+    const buttons = wrapper.findAll("button.bg-primary");
+    expect(buttons).toHaveLength(2);
+
+    const continueButton = buttons.find(
+      (button) => button.text().trim() === "Save and continue",
+    );
+
+    const exitButton = buttons.find(
+      (button) => button.text().trim() === "Save and exit",
+    );
+
+    expect(continueButton).toBeDefined();
+    expect(exitButton).toBeDefined();
+
+    // Save and continue
+    await continueButton.trigger("click");
+    await flushPromises();
+    expect(saveSpy).toHaveBeenCalledWith(false, expect.any(HTMLButtonElement));
+    expect(wrapper.vm.continueLoader).toBe(false);
+
+    // Save and exit
+    await exitButton.trigger("click");
+    await flushPromises();
+    expect(saveSpy).toHaveBeenCalledWith(true, expect.any(HTMLButtonElement));
+    expect(wrapper.vm.exitLoader).toBe(false);
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/123",
+    });
+    expect(saveSpy).toHaveBeenCalledTimes(2);
   });
 });

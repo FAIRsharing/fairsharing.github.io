@@ -38,12 +38,16 @@ describe("Edit -> Alerts.vue", function () {
 
   it("can check computed message() when error is true", () => {
     recordStore.state.sections.organisations.error = true;
+    recordStore.state.sections.organisations.message = {
+      response: { data: { error: "Operation failed" } },
+    };
     wrapper = createWrapper();
     expect(wrapper.vm.message.type()).toBe("error");
   });
 
   it("can check computed message() when error is false", () => {
     recordStore.state.sections.organisations.error = false;
+    recordStore.state.sections.organisations.message = "Operation successful";
     wrapper = createWrapper();
     expect(wrapper.vm.message.type()).toBe("success");
   });

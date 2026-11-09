@@ -7,6 +7,7 @@ import { reactive } from "vue";
 import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import light from "@/plugins/theme";
+import introspection from "@/store/introspector.js";
 import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
@@ -40,6 +41,7 @@ let $store = new Vuex.Store({
     modules: {
       record: record,
       users: users,
+      introspection: introspection,
     },
   }),
   $route = {
@@ -724,6 +726,20 @@ describe("Record.vue", function () {
     expect(wrapper.vm.loading).toBe(false);
     expect(wrapper.vm.recordID).toBe(42);
     expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(true);
+  });
+
+  it("passes the introspection read-only state to the record menu", async () => {
+    await prepareRecord();
+    const menu = wrapper.findComponent({ name: "RecordMenu" });
+    expect(menu.props("readOnlyMode")).toBe(false);
+    try {
+      $store.commit("introspection/setReadOnlyMode");
+      await wrapper.vm.$nextTick();
+      expect(menu.props("readOnlyMode")).toBe(true);
+    }
+    finally {
+      $store.state.introspection.readOnlyMode = false;
+    }
   });
 
   it.each([

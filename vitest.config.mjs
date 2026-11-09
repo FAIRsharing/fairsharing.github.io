@@ -75,7 +75,7 @@ export default defineConfig(async (env) => {
           "tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
         coverage: {
           provider: "v8", // or 'istanbul'
-          include: ["src/**/*.vue"],
+          include: ["src/**/*.{js,vue}"],
           // In v3, 'all' is true by default, which might "drop" your %
           // because it now counts untested files.
           all: true,

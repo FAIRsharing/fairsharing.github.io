@@ -1,5 +1,5 @@
-import { afterAll, beforeEach, describe, expect, it } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
 
@@ -50,6 +50,11 @@ describe("Editor -> Maintainers.vue", () => {
 
   afterAll(() => {
     graphStub.restore();
+  });
+
+  afterEach(async () => {
+    await flushPromises();
+    wrapper.unmount();
   });
 
   beforeEach(() => {
@@ -140,5 +145,18 @@ describe("Editor -> Maintainers.vue", () => {
     expect(form.props("modelValue")).toBe(false);
     await form.vm.$emit("update:modelValue", true);
     expect(wrapper.vm.formValid).toBe(true);
+  });
+
+  it("passes maintainer search text to the table and clears it", async () => {
+    await wrapper.setData({ searchString: "jean" });
+    await flushPromises();
+    const table = wrapper.findComponent({ name: "VDataTable" });
+    expect(table.props("search")).toBe("jean");
+    expect(wrapper.vm.loading).toBe(false);
+    const requestCount = graphStub.callCount;
+    await wrapper.setData({ searchString: "" });
+    await flushPromises();
+    expect(table.props("search")).toBe("");
+    expect(graphStub.callCount).toBe(requestCount);
   });
 });

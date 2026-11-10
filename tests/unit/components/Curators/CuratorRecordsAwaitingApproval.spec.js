@@ -292,10 +292,17 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
         processingNotes: "",
       };
 
-      const isActive = { value: true };
+      const saveSpy = vi.spyOn(wrapper.vm, "saveProcessingNotesAndClose");
+      const consoleSpy = vi.spyOn(console, "error");
 
       await wrapper.setData({
+        approvalRequiredProcessed: [item],
         processingNotesDraft: "notes of text",
+      });
+
+      // Configure the response before the button invokes the save method.
+      vi.mocked(saveProcessingNotes).mockResolvedValueOnce({
+        success: true,
       });
 
       const saveButton = wrapper
@@ -303,13 +310,9 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
         .find((button) => button.text().trim() === "Save");
       expect(saveButton).toBeDefined();
       await saveButton.trigger("click");
-
-      // Success scenario
-      vi.mocked(saveProcessingNotes).mockResolvedValueOnce({
-        success: true,
-      });
-
-      await wrapper.vm.saveProcessingNotesAndClose(item, isActive);
+      expect(saveSpy).toHaveBeenCalledOnce();
+      await saveSpy.mock.results[0].value;
+      const isActive = saveSpy.mock.calls[0][1];
 
       expect(saveProcessingNotes).toHaveBeenCalledWith(
         item,
@@ -333,6 +336,8 @@ describe("CuratorRecordsAwaitingApproval.vue", () => {
       expect(wrapper.vm.processingNoteError).toBe("Unable to save notes");
       expect(isActive.value).toBe(true);
       expect(wrapper.vm.loading).toBe(false);
+      expect(saveProcessingNotes).toHaveBeenCalledTimes(2);
+      expect(consoleSpy).not.toHaveBeenCalled();
     });
 
     it("handles an exception when saving processing notes", async () => {

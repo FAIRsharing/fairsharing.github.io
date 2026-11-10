@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 
 import EditTags from "@/components/Editor/GeneralInformation/EditTags.vue";
@@ -49,7 +49,7 @@ const $store = new Vuex.Store({
 let wrapper;
 
 describe("Editor -> EditTags.vue", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = shallowMount(EditTags, {
       global: {
         plugins: [$store],
@@ -58,6 +58,14 @@ describe("Editor -> EditTags.vue", () => {
         },
       },
     });
+    await flushPromises();
+  });
+
+  afterEach(async () => {
+    await flushPromises();
+    wrapper.unmount();
+    vi.restoreAllMocks();
+    scrollToMock.mockClear();
   });
 
   it("can be mounted", () => {
@@ -123,13 +131,26 @@ describe("Editor -> EditTags.vue", () => {
   it("can search the endpoint based on user input", async () => {
     let graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     const newTag = { id: 1, label: "test124", model: "subject" };
-    graphStub.returns({ searchTags: [newTag] });
-    // wrapper.vm.searchString = "test";
-    wrapper.vm.$options.watch.searchString.call(wrapper.vm, "test");
-    expect(wrapper.vm.tags).toStrictEqual([]);
-    await wrapper.vm.getTags("test");
-    expect(wrapper.vm.tags).toStrictEqual([newTag]);
-    graphStub.restore();
+    let resolveSearch;
+    graphStub.callsFake(() => new Promise((resolve) => {
+      resolveSearch = resolve;
+    }));
+    try {
+      wrapper.vm.searchString = "  test  ";
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.tags).toStrictEqual([]);
+      expect(wrapper.vm.loading).toBe(true);
+      expect(graphStub.calledOnce).toBe(true);
+      expect(graphStub.firstCall.args[0].queryParam).toEqual({ q: "test" });
+      resolveSearch({ searchTags: [newTag] });
+      await flushPromises();
+      expect(wrapper.vm.tags).toStrictEqual([newTag]);
+      expect(wrapper.vm.loading).toBe(false);
+      expect(scrollToMock).toHaveBeenLastCalledWith("#editTags");
+    }
+    finally {
+      graphStub.restore();
+    }
   });
 
   it("handles formValid form v-model updates", async () => {

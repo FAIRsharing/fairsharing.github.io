@@ -6,12 +6,18 @@ import FionaChat from "@/components/ChatBot/FionaChat.vue";
 
 describe("FionaChat", () => {
   let wrapper;
-  let disableIframePageLoading;
+  let createElementSpy;
 
   beforeEach(() => {
-    disableIframePageLoading = window.happyDOM.settings.disableIframePageLoading;
-    // The test uses only about:blank; allow its iframe in Happy DOM 21 as well.
-    window.happyDOM.settings.disableIframePageLoading = false;
+    const createElement = document.createElement.bind(document);
+    createElementSpy = vi.spyOn(document, "createElement").mockImplementation((tagName, options) => {
+      const element = createElement(tagName, options);
+      if (tagName.toLowerCase() === "iframe") {
+        // Inline content takes precedence over src and avoids iframe navigation.
+        element.setAttribute("srcdoc", "<!doctype html><html><body></body></html>");
+      }
+      return element;
+    });
     vi.stubEnv("VITE_FIONA_CHAT_ID", "test-chat-id");
     document.body.innerHTML = '<div id="app"></div>';
     wrapper = mount(FionaChat, {
@@ -36,7 +42,7 @@ describe("FionaChat", () => {
     wrapper.unmount();
     document.body.innerHTML = "";
     await window.happyDOM.abort();
-    window.happyDOM.settings.disableIframePageLoading = disableIframePageLoading;
+    createElementSpy.mockRestore();
     vi.unstubAllEnvs();
   });
 
@@ -61,6 +67,7 @@ describe("FionaChat", () => {
     expect(iframe.getAttribute("src")).toBe("about:blank#test-chat-id");
     expect(iframe.getAttribute("title")).toBe("FAIRsharing Assistant");
     expect(iframe.getAttribute("allow")).toBe("clipboard-read; clipboard-write");
+    expect(iframe.hasAttribute("srcdoc")).toBe(true);
   });
 
   it("closes the chat window when the close button is clicked", async () => {

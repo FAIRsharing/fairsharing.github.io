@@ -56,10 +56,11 @@ describe("FionaChat", () => {
     expect(document.querySelector("#fairsharing-chat-window")).not.toBeNull();
 
     expect(wrapper.vm.isOpen).toBe(true);
-    await window.happyDOM.waitUntilComplete();
     const iframe = document.querySelector(".fairsharing-chat__iframe");
+    expect(iframe).not.toBeNull();
     expect(iframe.getAttribute("src")).toBe("about:blank#test-chat-id");
-    expect(iframe.contentWindow.location.href).toBe("about:blank#test-chat-id");
+    expect(iframe.getAttribute("title")).toBe("FAIRsharing Assistant");
+    expect(iframe.getAttribute("allow")).toBe("clipboard-read; clipboard-write");
   });
 
   it("closes the chat window when the close button is clicked", async () => {

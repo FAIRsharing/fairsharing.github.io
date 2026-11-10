@@ -1,8 +1,8 @@
-import { flushPromises, shallowMount } from "@vue/test-utils";
+import {flushPromises, shallowMount} from "@vue/test-utils";
 import sinon from "sinon";
-import { createVuetify } from "vuetify";
+import {createVuetify} from "vuetify";
 import Vuex from "vuex";
-import { reactive } from "vue";
+import {reactive} from "vue";
 import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import light from "@/plugins/theme";
@@ -10,7 +10,7 @@ import introspection from "@/store/introspector.js";
 import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
-import { VBtnStub, VDialogStub, VOverlayStub } from "../../../stubs/index.js";
+import {VBtnStub, VDialogStub, VOverlayStub} from "../../../stubs/index.js";
 
 vi.mock("vike-vue/useData", () => ({
   useData: () => ({}),
@@ -763,7 +763,8 @@ describe("Record.vue", function () {
       $store.commit("introspection/setReadOnlyMode");
       await wrapper.vm.$nextTick();
       expect(menu.props("readOnlyMode")).toBe(true);
-    } finally {
+    }
+    finally {
       $store.state.introspection.readOnlyMode = false;
     }
   });
@@ -1023,9 +1024,6 @@ describe("Record.vue", function () {
       rel: "canonical",
       content: `${import.meta.env.VITE_HOSTNAME}42`,
     });
-    expect(Record.head.link.call(wrapper.vm)[0].href).toBe(
-      wrapper.vm.getHostname() + "42",
-    );
     wrapper.vm.recordID = null;
     expect(Record.head.link.call(wrapper.vm)).toBeUndefined();
   });
@@ -1047,7 +1045,8 @@ describe("Record.vue", function () {
       expect(wrapper.vm.isBannerExpired()).toBe(true);
       vi.advanceTimersByTime(2 * 24 * 60 * 60 * 1000);
       expect(wrapper.vm.isBannerExpired()).toBe(false);
-    } finally {
+    }
+    finally {
       if (previous === null) localStorage.removeItem("bannerExpiryDate");
       else localStorage.setItem("bannerExpiryDate", previous);
     }

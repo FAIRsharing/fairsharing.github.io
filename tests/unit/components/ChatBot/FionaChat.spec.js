@@ -6,8 +6,12 @@ import FionaChat from "@/components/ChatBot/FionaChat.vue";
 
 describe("FionaChat", () => {
   let wrapper;
+  let disableIframePageLoading;
 
   beforeEach(() => {
+    disableIframePageLoading = window.happyDOM.settings.disableIframePageLoading;
+    // The test uses only about:blank; allow its iframe in Happy DOM 21 as well.
+    window.happyDOM.settings.disableIframePageLoading = false;
     vi.stubEnv("VITE_FIONA_CHAT_ID", "test-chat-id");
     document.body.innerHTML = '<div id="app"></div>';
     wrapper = mount(FionaChat, {
@@ -28,9 +32,11 @@ describe("FionaChat", () => {
     });
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     wrapper.unmount();
     document.body.innerHTML = "";
+    await window.happyDOM.abort();
+    window.happyDOM.settings.disableIframePageLoading = disableIframePageLoading;
     vi.unstubAllEnvs();
   });
 
@@ -50,6 +56,10 @@ describe("FionaChat", () => {
     expect(document.querySelector("#fairsharing-chat-window")).not.toBeNull();
 
     expect(wrapper.vm.isOpen).toBe(true);
+    await window.happyDOM.waitUntilComplete();
+    const iframe = document.querySelector(".fairsharing-chat__iframe");
+    expect(iframe.getAttribute("src")).toBe("about:blank#test-chat-id");
+    expect(iframe.contentWindow.location.href).toBe("about:blank#test-chat-id");
   });
 
   it("closes the chat window when the close button is clicked", async () => {

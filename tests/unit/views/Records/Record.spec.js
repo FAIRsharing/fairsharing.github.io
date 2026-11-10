@@ -1,9 +1,8 @@
-import {flushPromises, shallowMount} from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import {createVuetify} from "vuetify";
+import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 import { reactive } from "vue";
-
 import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import light from "@/plugins/theme";
@@ -677,26 +676,45 @@ describe("Record.vue", function () {
     wrapper.unmount();
     $route = reactive({ params: { id: "42" }, query: {}, hash: "" });
     const currentUser = {
-      id: 123, isLoggedIn: true, is_curator: false, is_super_curator: false,
-      credentials: { token: 123, username: 123 }, watchedRecords: [], ...account,
+      id: 123,
+      isLoggedIn: true,
+      is_curator: false,
+      is_super_curator: false,
+      credentials: { token: 123, username: 123 },
+      watchedRecords: [],
+      ...account,
     };
     $store.state.users.user = () => currentUser;
     const currentRecord = {
       ...structuredClone(graphMockValue.fairsharingRecord),
-      id: 42, name: "Test resource", abbreviation: "TR",
-      doi: "10.25504/FAIRsharing.test", isHidden: false,
-      type: "terminology_artifact", objectTypes: [],
-      isApproved: true, maintainers: [], hasGraph: true, ...fields,
+      id: 42,
+      name: "Test resource",
+      abbreviation: "TR",
+      doi: "10.25504/FAIRsharing.test",
+      isHidden: false,
+      type: "terminology_artifact",
+      objectTypes: [],
+      isApproved: true,
+      maintainers: [],
+      hasGraph: true,
+      ...fields,
     };
     record.state.currentRecord.fairsharingRecord = currentRecord;
     mocks.setMock("graphMock", GraphClient.prototype, "executeQuery", {
       fairsharingRecord: currentRecord,
     });
     mocks.setMock("canEditStub", RESTClient.prototype, "canEdit", {});
-    mocks.setMock("canClaimStub", RESTClient.prototype, "canClaim", { existing: false });
+    mocks.setMock("canClaimStub", RESTClient.prototype, "canClaim", {
+      existing: false,
+    });
     mocks.setMock("deleteMock", RESTClient.prototype, "deleteRecord", {});
     mocks.setMock("claimRecord", RESTClient.prototype, "claimRecord", {});
-    mocks.setMock("removeMaintainer", RESTClient.prototype, "removeMaintainer", {});
+    mocks.setMock(
+      "removeMaintainer",
+      RESTClient.prototype,
+      "removeMaintainer",
+      {},
+    );
     $router.push.mockClear();
     $router.replace.mockClear();
     $router.go.mockClear();
@@ -711,13 +729,22 @@ describe("Record.vue", function () {
     );
   };
 
-  const findDialog = (text) => wrapper.findAllComponents({ name: "VDialog" })
-    .find((item) => item.text().includes(text));
-  const findButton = (container, text) => container.findAll("button")
-    .find((item) => item.text().trim() === text);
-  const useCountdownTimers = () => vi.useFakeTimers({
-    toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval", "Date"],
-  });
+  const findDialog = (text) =>
+    wrapper
+      .findAllComponents({ name: "VDialog" })
+      .find((item) => item.text().includes(text));
+  const findButton = (container, text) =>
+    container.findAll("button").find((item) => item.text().trim() === text);
+  const useCountdownTimers = () =>
+    vi.useFakeTimers({
+      toFake: [
+        "setTimeout",
+        "clearTimeout",
+        "setInterval",
+        "clearInterval",
+        "Date",
+      ],
+    });
 
   it("emits page-ready events and renders the loaded record", async () => {
     await prepareRecord();
@@ -736,23 +763,29 @@ describe("Record.vue", function () {
       $store.commit("introspection/setReadOnlyMode");
       await wrapper.vm.$nextTick();
       expect(menu.props("readOnlyMode")).toBe(true);
-    }
-    finally {
+    } finally {
       $store.state.introspection.readOnlyMode = false;
     }
   });
 
   it.each([
-    [false, false, true], [true, false, true], [true, true, false],
-  ])("restricts hidden content for loggedIn=%s and canEdit=%s", async (loggedIn, canEdit, hidden) => {
-    await prepareRecord({ isHidden: true }, { isLoggedIn: loggedIn });
-    mocks.canEditStub.returns(canEdit ? {} : { error: "forbidden" });
-    await wrapper.vm.canEditRecord();
-    await wrapper.vm.$nextTick();
-    expect(wrapper.vm.recordHidden).toBe(hidden);
-    expect(wrapper.findComponent({ name: "Hidden" }).exists()).toBe(hidden);
-    expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(!hidden);
-  });
+    [false, false, true],
+    [true, false, true],
+    [true, true, false],
+  ])(
+    "restricts hidden content for loggedIn=%s and canEdit=%s",
+    async (loggedIn, canEdit, hidden) => {
+      await prepareRecord({ isHidden: true }, { isLoggedIn: loggedIn });
+      mocks.canEditStub.returns(canEdit ? {} : { error: "forbidden" });
+      await wrapper.vm.canEditRecord();
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.recordHidden).toBe(hidden);
+      expect(wrapper.findComponent({ name: "Hidden" }).exists()).toBe(hidden);
+      expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(
+        !hidden,
+      );
+    },
+  );
 
   it("renders tombstones instead of resource content", async () => {
     await prepareRecord({ metadata: { tombstone: true } });
@@ -762,8 +795,12 @@ describe("Record.vue", function () {
 
   it("renders collection search instead of resource-only sections", async () => {
     await prepareRecord({ registry: "Collection" });
-    expect(wrapper.findComponent({ name: "SearchCollection" }).exists()).toBe(true);
-    expect(wrapper.findComponent({ name: "AdditionalInfo" }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: "SearchCollection" }).exists()).toBe(
+      true,
+    );
+    expect(wrapper.findComponent({ name: "AdditionalInfo" }).exists()).toBe(
+      false,
+    );
     expect(wrapper.findComponent({ name: "Collections" }).exists()).toBe(false);
     expect(wrapper.findComponent({ name: "Publications" }).exists()).toBe(true);
   });
@@ -800,17 +837,26 @@ describe("Record.vue", function () {
   it("shows a history loader until the request completes and closes through its button", async () => {
     await prepareRecord();
     let resolveHistory;
-    vi.spyOn(wrapper.vm, "getHistory").mockImplementation(() => new Promise((resolve) => {
-      resolveHistory = resolve;
-    }));
-    const pending = wrapper.vm.buttons.find((item) => item.name() === "View record history").method();
+    vi.spyOn(wrapper.vm, "getHistory").mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveHistory = resolve;
+        }),
+    );
+    const pending = wrapper.vm.buttons
+      .find((item) => item.name() === "View record history")
+      .method();
     await wrapper.vm.$nextTick();
-    expect(findDialog("history logs").findComponent({ name: "Loaders" }).exists()).toBe(true);
+    expect(
+      findDialog("history logs").findComponent({ name: "Loaders" }).exists(),
+    ).toBe(true);
     resolveHistory();
     await pending;
     await wrapper.vm.$nextTick();
     const history = findDialog("history logs");
-    expect(history.findComponent({ name: "RecordHistory" }).exists()).toBe(true);
+    expect(history.findComponent({ name: "RecordHistory" }).exists()).toBe(
+      true,
+    );
     await history.find("button").trigger("click");
     expect(wrapper.vm.history.show).toBe(false);
     expect($router.replace).toHaveBeenCalledWith({ query: {} });
@@ -819,9 +865,15 @@ describe("Record.vue", function () {
   it("enables deletion only after the countdown and reloads after success", async () => {
     await prepareRecord({}, { is_super_curator: true });
     useCountdownTimers();
-    await wrapper.vm.buttons.find((item) => item.name() === "Delete this record").method();
+    await wrapper.vm.buttons
+      .find((item) => item.name() === "Delete this record")
+      .method();
     await wrapper.vm.$nextTick();
-    expect(findButton(findDialog("Delete record"), "DELETE (5)").attributes("disabled")).toBeDefined();
+    expect(
+      findButton(findDialog("Delete record"), "DELETE (5)").attributes(
+        "disabled",
+      ),
+    ).toBeDefined();
     await vi.advanceTimersByTimeAsync(4000);
     expect(wrapper.vm.deleteCountdown).toBe(1);
     expect(mocks.deleteMock.called).toBe(false);
@@ -873,7 +925,9 @@ describe("Record.vue", function () {
   it("requests ownership through its confirmation button", async () => {
     await prepareRecord();
     useCountdownTimers();
-    await wrapper.vm.buttons.find((item) => item.name() === "Request ownership").method();
+    await wrapper.vm.buttons
+      .find((item) => item.name() === "Request ownership")
+      .method();
     await wrapper.vm.$nextTick();
     const claim = findDialog("request ownership of this record");
     expect(findButton(claim, "OK").attributes("disabled")).toBeDefined();
@@ -889,7 +943,9 @@ describe("Record.vue", function () {
   it("removes only the current maintainer through its confirmation button", async () => {
     await prepareRecord({ maintainers: [{ id: 123 }, { id: 456 }] });
     useCountdownTimers();
-    const stop = wrapper.vm.buttons.find((item) => item.name() === "Stop maintaining");
+    const stop = wrapper.vm.buttons.find(
+      (item) => item.name() === "Stop maintaining",
+    );
     expect(stop.isDisabled()).toBe(false);
     await stop.method();
     await wrapper.vm.$nextTick();
@@ -898,41 +954,78 @@ describe("Record.vue", function () {
     await findButton(maintain, "OK").trigger("click");
     await flushPromises();
     expect(mocks.removeMaintainer.calledOnceWithExactly(42, 123)).toBe(true);
-    expect(wrapper.vm.currentRecord.fairsharingRecord.maintainers).toEqual([{ id: 456 }]);
+    expect(wrapper.vm.currentRecord.fairsharingRecord.maintainers).toEqual([
+      { id: 456 },
+    ]);
     expect(wrapper.vm.stopMaintainSuccess).toBe(true);
     expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(false);
   });
 
-  it.each(["claim", "maintain"])("cancels the %s dialog without an API request", async (kind) => {
-    await prepareRecord();
-    useCountdownTimers();
-    if (kind === "claim") wrapper.vm.claimRecordMenu("Test resource", 42);
-    else wrapper.vm.stopMaintainRecordMenu("Test resource", 42);
-    await wrapper.vm.$nextTick();
-    await findButton(findDialog(kind === "claim" ? "request ownership of this record" : "stop maintaining this record"), "Cancel").trigger("click");
-    expect(wrapper.vm.dialogs.claimRecord).toBe(false);
-    expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(false);
-    expect(mocks.claimRecord.called).toBe(false);
-    expect(mocks.removeMaintainer.called).toBe(false);
-  });
+  it.each(["claim", "maintain"])(
+    "cancels the %s dialog without an API request",
+    async (kind) => {
+      await prepareRecord();
+      useCountdownTimers();
+      if (kind === "claim") wrapper.vm.claimRecordMenu("Test resource", 42);
+      else wrapper.vm.stopMaintainRecordMenu("Test resource", 42);
+      await wrapper.vm.$nextTick();
+      await findButton(
+        findDialog(
+          kind === "claim"
+            ? "request ownership of this record"
+            : "stop maintaining this record",
+        ),
+        "Cancel",
+      ).trigger("click");
+      expect(wrapper.vm.dialogs.claimRecord).toBe(false);
+      expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(false);
+      expect(mocks.claimRecord.called).toBe(false);
+      expect(mocks.removeMaintainer.called).toBe(false);
+    },
+  );
 
   it("builds citation links and metadata with and without a DOI", async () => {
     await prepareRecord();
     expect(Record.head.link.call(wrapper.vm)).toEqual([
-      { rel: "cite-as", type: "application/html", href: "https://doi.org/10.25504/FAIRsharing.test" },
-      { rel: "describedby", type: "application/json", href: wrapper.vm.getHostname() + "FAIRsharing.test" },
-      { rel: "describedby", type: "application/ld+json", href: wrapper.vm.getHostname() + "FAIRsharing.test" },
+      {
+        rel: "cite-as",
+        type: "application/html",
+        href: "https://doi.org/10.25504/FAIRsharing.test",
+      },
+      {
+        rel: "describedby",
+        type: "application/json",
+        href: wrapper.vm.getHostname() + "FAIRsharing.test",
+      },
+      {
+        rel: "describedby",
+        type: "application/ld+json",
+        href: wrapper.vm.getHostname() + "FAIRsharing.test",
+      },
     ]);
     const metadata = Record.metaInfo.call(wrapper.vm);
     expect(metadata.title).toBe("FAIRsharing | TR");
-    expect(metadata.meta).toContainEqual({ name: "description", content: "FAIRsharing record for Test resource (TR)" });
-    expect(metadata.meta).toContainEqual({ name: "link", rel: "canonical", content: `${import.meta.env.VITE_HOSTNAME}FAIRsharing.test` });
+    expect(metadata.meta).toContainEqual({
+      name: "description",
+      content: "FAIRsharing record for Test resource (TR)",
+    });
+    expect(metadata.meta).toContainEqual({
+      name: "link",
+      rel: "canonical",
+      content: `${import.meta.env.VITE_HOSTNAME}FAIRsharing.test`,
+    });
     delete wrapper.vm.currentRecord.fairsharingRecord.doi;
     delete wrapper.vm.currentRecord.fairsharingRecord.abbreviation;
     const withoutDoi = Record.metaInfo.call(wrapper.vm);
     expect(withoutDoi.title).toBe("FAIRsharing | Test resource");
-    expect(withoutDoi.meta).toContainEqual({ name: "link", rel: "canonical", content: `${import.meta.env.VITE_HOSTNAME}42` });
-    expect(Record.head.link.call(wrapper.vm)[0].href).toBe(wrapper.vm.getHostname() + "42");
+    expect(withoutDoi.meta).toContainEqual({
+      name: "link",
+      rel: "canonical",
+      content: `${import.meta.env.VITE_HOSTNAME}42`,
+    });
+    expect(Record.head.link.call(wrapper.vm)[0].href).toBe(
+      wrapper.vm.getHostname() + "42",
+    );
     wrapper.vm.recordID = null;
     expect(Record.head.link.call(wrapper.vm)).toBeUndefined();
   });
@@ -954,8 +1047,7 @@ describe("Record.vue", function () {
       expect(wrapper.vm.isBannerExpired()).toBe(true);
       vi.advanceTimersByTime(2 * 24 * 60 * 60 * 1000);
       expect(wrapper.vm.isBannerExpired()).toBe(false);
-    }
-    finally {
+    } finally {
       if (previous === null) localStorage.removeItem("bannerExpiryDate");
       else localStorage.setItem("bannerExpiryDate", previous);
     }

@@ -12,7 +12,7 @@ export const VTextFieldStub = {
     },
   },
 
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "click:append-inner"],
 
   template: `
     <input

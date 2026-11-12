@@ -2,6 +2,16 @@ import { shallowMount } from "@vue/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
 import { createStore } from "vuex";
+import {
+  VDataIteratorStub,
+  VBtnToggleStub,
+  VDataTableFooterStub,
+  VSlotStub,
+  VBtnStub,
+  VIconStub,
+  VTextFieldStub,
+  VSelectStub,
+} from "../../../stubs/index.js";
 import AdvancedSearchResultTable from "@/views/AdvancedSearch/AdvancedSearchResultTable.vue";
 
 vi.mock("@/utils/recordsCardUtils", () => ({
@@ -12,13 +22,14 @@ vi.mock("@/utils/recordsCardUtils", () => ({
   },
 }));
 
-vi.stubEnv("VITE_FAIRSHARING_URL", "https://mock.fairsharing.org");
+const updateOptions = VDataIteratorStub.methods.updateOptions;
 
 describe("AdvancedSearchResultTable.vue", () => {
   let wrapper;
   let store;
   let vuetify;
   let mockFetchAction;
+  let wrappers;
 
   const mockRoute = { query: {} };
 
@@ -52,21 +63,43 @@ describe("AdvancedSearchResultTable.vue", () => {
     vuetify = createVuetify();
     mockRoute.query = routeQuery;
 
-    return shallowMount(AdvancedSearchResultTable, {
+    const mountedWrapper = shallowMount(AdvancedSearchResultTable, {
       global: {
         plugins: [store, vuetify],
         mocks: {
           $route: mockRoute,
-          $vuetify: { display: { mdAndUp: true } },
         },
-        stubs: ["ErrorPage", "SaveSearchButton", "RecordStatus", "TagChips"],
+        stubs: {
+          ErrorPage: true,
+          SaveSearchButton: true,
+          RecordStatus: true,
+          TagChips: true,
+          VDataIterator: VDataIteratorStub,
+          VDataTableFooter: VDataTableFooterStub,
+          VToolbar: VSlotStub,
+          VTextField: VTextFieldStub,
+          VSelect: VSelectStub,
+          VBtnToggle: VBtnToggleStub,
+          VBtn: VBtnStub,
+          VIcon: VIconStub,
+          VSpacer: true,
+          VRow: VSlotStub,
+          VCol: VSlotStub,
+          VCard: VSlotStub,
+          VCardTitle: VSlotStub,
+        },
       },
     });
+    wrappers.push(mountedWrapper);
+    return mountedWrapper;
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    global.URL.createObjectURL = vi.fn(() => "blob:mock-url");
+    wrappers = [];
+    vi.stubEnv("VITE_FAIRSHARING_URL", "https://mock.fairsharing.org");
+    vi.stubGlobal("innerWidth", 1280);
+    vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:mock-url");
 
     vi.stubGlobal("location", {
       href: "",
@@ -74,20 +107,22 @@ describe("AdvancedSearchResultTable.vue", () => {
   });
 
   afterEach(() => {
-    if (wrapper) wrapper.unmount();
+    wrappers.forEach((w) => w.unmount());
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
   });
 
   it("renders ErrorPage when getErrorStatus is true", () => {
     wrapper = mountComponent({ error: true });
     expect(wrapper.find("error-page-stub").exists()).toBe(true);
-    expect(wrapper.find("v-data-iterator-stub").exists()).toBe(false);
+    expect(wrapper.find('[data-test="iterator"]').exists()).toBe(false);
   });
 
   it("renders table content when getErrorStatus is false", () => {
     wrapper = mountComponent({ error: false });
     expect(wrapper.find("error-page-stub").exists()).toBe(false);
-    expect(wrapper.find("v-data-iterator-stub").exists()).toBe(true);
+    expect(wrapper.find('[data-test="iterator"]').exists()).toBe(true);
   });
 
   // --- COMPUTED PROPERTY TESTS ---
@@ -223,4 +258,159 @@ describe("AdvancedSearchResultTable.vue", () => {
       "searchterm",
     );
   });
+
+  it("renders record cards, descriptions and links alongside save and download controls", () => {
+    const record = {
+      id: 42,
+      name: "Example resource",
+      description: "Example description",
+    };
+    wrapper = mountComponent({ response: [record] });
+    expect(
+      wrapper
+        .find('a[href="https://mock.fairsharing.org/mock-link/42"]')
+        .text(),
+    ).toBe("Example resource");
+    expect(wrapper.text()).toContain("Example description");
+    expect(
+      wrapper.findComponent({ name: "RecordStatus" }).props("record"),
+    ).toEqual(record);
+    expect(wrapper.findComponent({ name: "TagChips" }).props("record")).toEqual(
+      record,
+    );
+    expect(wrapper.find("save-search-button-stub").exists()).toBe(true);
+    expect(wrapper.find('a[href*="gitbook"]').attributes("target")).toBe(
+      "_blank",
+    );
+  });
+
+  it("updates search and sorting through controls and forwards footer options", async () => {
+    wrapper = mountComponent({
+      response: [{ id: 42, name: "Example" }],
+      loading: true,
+    });
+    await wrapper
+      .find('[aria-label="Filter these results"]')
+      .setValue("Example");
+    await wrapper.find('[aria-label="Sort by"]').setValue("Status");
+    wrapper.findComponent(VBtnToggleStub).vm.$emit("update:modelValue", true);
+    await wrapper.setData({ page: 2, itemsPerPage: 20 });
+    expect(wrapper.findComponent(VDataIteratorStub).props()).toMatchObject({
+      loading: true,
+      search: "Example",
+      sortBy: [{ key: "status", order: "desc" }],
+      page: 2,
+      itemsPerPage: 20,
+    });
+    const footers = wrapper.findAllComponents(VDataTableFooterStub);
+    expect(footers).toHaveLength(2);
+    footers[0].vm.$emit("update:options", { page: 2 });
+    footers[1].vm.$emit("update:options", { itemsPerPage: 20 });
+    expect(updateOptions.mock.calls).toEqual([
+      [{ page: 2 }],
+      [{ itemsPerPage: 20 }],
+    ]);
+  });
+
+  it("renders an empty state without pagination", () => {
+    wrapper = mountComponent();
+    expect(wrapper.text()).toContain("No results found.");
+    expect(wrapper.findAllComponents(VDataTableFooterStub)).toHaveLength(0);
+    expect(mockFetchAction).not.toHaveBeenCalled();
+    expect(store.commit).not.toHaveBeenCalled();
+  });
+
+  it("uses the mobile layout without desktop sorting controls", async () => {
+    vi.stubGlobal("innerWidth", 500);
+    wrapper = mountComponent();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('[data-test="action-wrapper"]').classes()).toContain(
+      "flex-column",
+    );
+    expect(wrapper.find('[aria-label="Sort by"]').exists()).toBe(false);
+    expect(wrapper.find('[data-test="sort-toggle"]').exists()).toBe(false);
+    expect(wrapper.find('[aria-label="Filter these results"]').exists()).toBe(
+      true,
+    );
+  });
+
+  it("downloads complete CSV fields and fallback values through the download button", async () => {
+    wrapper = mountComponent({
+      response: [
+        {
+          id: 1,
+          name: "First, resource",
+          abbreviation: "FR",
+          doi: "10.1000/first",
+          homepage: "https://example.org",
+          publications: [1, 2],
+        },
+        { id: 2, name: "Second", publications: [] },
+      ],
+    });
+    await wrapper
+      .findAll("button")
+      .find((b) => b.text() === "Download Results")
+      .trigger("click");
+    const blob = URL.createObjectURL.mock.calls[0][0];
+    expect(blob.type).toBe("text/csv");
+    expect(await blob.text()).toBe(
+      "Name 5,Abbreviation,FAIRsharingURL,FAIRsharing DOI,Homepage,Number of Publications \nFirst resource,FR,https://fairsharing.org/1,10.1000/first,https://example.org,2\nSecond,n/a,https://fairsharing.org/2,n/a,n/a,0\n",
+    );
+    expect(window.location.href).toBe("blob:mock-url");
+  });
+
+  it.each(["term", undefined])(
+    "parses boolean and list fields and fetches results with q=%s",
+    (q) => {
+      wrapper = mountComponent(
+        {},
+        {
+          operator: "OR",
+          fields:
+            "(operator=AND&isRecommended=true&isFairAssist=false&registry=database+standard)",
+          ...(q ? { q } : {}),
+        },
+      );
+      const expected = {
+        operatorIdentifier: "OR",
+        children: [
+          {
+            operatorIdentifier: "AND",
+            children: [
+              { identifier: "isRecommended", value: "true" },
+              { identifier: "isFairAssist", value: "false" },
+              { identifier: "registry", value: ["database", "standard"] },
+            ],
+          },
+        ],
+      };
+      expect(store.commit).toHaveBeenCalledWith(
+        "advancedSearch/setAdvancedSearch",
+        expected,
+      );
+      expect(store.commit).toHaveBeenCalledWith(
+        "advancedSearch/setEditAdvancedSearch",
+        expected,
+      );
+      expect(mockFetchAction).toHaveBeenCalledWith(expect.any(Object), q);
+    },
+  );
+
+  it.each([
+    { response: [{ id: 1, name: "Cached result" }] },
+    { response: {} },
+    { query: { fields: [{ identifier: "registry" }] } },
+    { query: { fields: {} } },
+  ])(
+    "preserves existing results or query instead of parsing URL fields: %j",
+    (getters) => {
+      wrapper = mountComponent(getters, {
+        operator: "AND",
+        fields: "(registry=standard)",
+      });
+      expect(store.commit).not.toHaveBeenCalled();
+      expect(mockFetchAction).not.toHaveBeenCalled();
+    },
+  );
 });

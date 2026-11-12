@@ -18,3 +18,4 @@ export { VTabsWindowStub } from "./VTabsWindowStub.js";
 export { VTabsWindowItemStub } from "./VTabsWindowItemStub.js";
 export { VRouterLinkStub } from "./VRouterLinkStub.js";
 export { VFileInputStub } from "./VFileInputStub.js";
+export { VIconStub } from "./VIconStub.js";

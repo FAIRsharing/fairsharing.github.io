@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 export const VTextFieldStub = {
   name: "VTextField",
 
@@ -14,6 +16,11 @@ export const VTextFieldStub = {
 
   emits: ["update:modelValue", "click:append-inner"],
 
+  methods: {
+    reset: vi.fn(function () {
+      this.$emit("update:modelValue", "");
+    }),
+  },
   template: `
     <input
       data-test="v-text-field"

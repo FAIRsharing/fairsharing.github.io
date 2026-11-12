@@ -1,4 +1,12 @@
-import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+} from "vitest";
 import { flushPromises, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
@@ -8,6 +16,18 @@ import GraphClient from "@/lib/GraphClient/GraphClient";
 import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
+import {
+  VSlotStub,
+  VFormStub,
+  VOverlayStub,
+  VDialogStub,
+  VTextFieldStub,
+  VTooltipStub,
+  VIconStub,
+  VBtnStub,
+  VRouterLinkStub,
+  VDataTableSlotsStub,
+} from "../../../../stubs/index.js";
 
 let maintainer = {
   username: "jean",
@@ -31,6 +51,7 @@ recordStore.state.sections = {
     },
   },
 };
+const initialSections = structuredClone(recordStore.state.sections);
 const $store = new Vuex.Store({
   modules: {
     record: recordStore,
@@ -43,9 +64,8 @@ let wrapper;
 describe("Editor -> Maintainers.vue", () => {
   let graphStub;
 
-  graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
-  graphStub.withArgs(allUsersQuery).returns({
-    allUsers: [{ id: 1, username: "one", email: "one@one.com" }],
+  beforeAll(() => {
+    graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
   });
 
   afterAll(() => {
@@ -58,12 +78,35 @@ describe("Editor -> Maintainers.vue", () => {
   });
 
   beforeEach(() => {
+    $store.state.record.sections = structuredClone(initialSections);
+    $store.state.users.usersList = [];
+    $store.state.users.user = () => ({ credentials: { token: "test-token" } });
+    $store.commit("users/clearMessages");
+    graphStub.reset();
+    graphStub.withArgs(allUsersQuery).returns({
+      allUsers: [{ id: 1, username: "one", email: "one@one.com", orcid: null }],
+    });
     wrapper = shallowMount(Maintainers, {
       global: {
         plugins: [$store],
         stubs: {
-          "router-link": true,
-          RouterLink: true,
+          "router-link": VRouterLinkStub,
+          VForm: VFormStub,
+          VOverlay: VOverlayStub,
+          VDialog: VDialogStub,
+          VChipGroup: VSlotStub,
+          VChip: VSlotStub,
+          VTooltip: VTooltipStub,
+          VIcon: VIconStub,
+          VTextField: VTextFieldStub,
+          VDataTable: VDataTableSlotsStub,
+          VCard: VSlotStub,
+          VCardTitle: VSlotStub,
+          VCardText: VSlotStub,
+          VCardActions: VSlotStub,
+          VLayout: VSlotStub,
+          VBtn: VBtnStub,
+          VSpacer: true,
         },
       },
     });
@@ -109,6 +152,10 @@ describe("Editor -> Maintainers.vue", () => {
   });
 
   it("can remove maintainers", () => {
+    wrapper.vm.maintainers = [
+      structuredClone(maintainer),
+      { username: "another", id: 2222, orcid: null },
+    ];
     expect(wrapper.vm.maintainers.length).toEqual(2);
     expect(wrapper.vm.watchers.length).toEqual(2);
     wrapper.vm.removeMaintainer(0);
@@ -150,6 +197,8 @@ describe("Editor -> Maintainers.vue", () => {
   it("passes maintainer search text to the table and clears it", async () => {
     await wrapper.setData({ searchString: "jean" });
     await flushPromises();
+    wrapper.vm.selectMaintainers();
+    await wrapper.vm.$nextTick();
     const table = wrapper.findComponent({ name: "VDataTable" });
     expect(table.props("search")).toBe("jean");
     expect(wrapper.vm.loading).toBe(false);
@@ -158,5 +207,113 @@ describe("Editor -> Maintainers.vue", () => {
     await flushPromises();
     expect(table.props("search")).toBe("");
     expect(graphStub.callCount).toBe(requestCount);
+  });
+
+  it("renders saved and newly added maintainer chips", async () => {
+    wrapper.vm.addItem(extra);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findAll(".bg-blue")).toHaveLength(1);
+    expect(wrapper.findAll(".borderBlue")).toHaveLength(1);
+    expect(wrapper.text()).toContain("jean (100)");
+    expect(wrapper.text()).toContain("de fleur (101)");
+  });
+
+  it("opens the selector, searches users and adds a result through the table", async () => {
+    await wrapper.find(".shadowChip").trigger("click");
+    await wrapper.find('[aria-label="Search"]').setValue("  one  ");
+    await flushPromises();
+    expect(allUsersQuery.queryParam.q).toBe("one");
+    expect(wrapper.find('a[href="/users/1"]').text()).toBe(
+      "https://fairsharing.org/users/1",
+    );
+    const add = wrapper
+      .findAllComponents(VIconStub)
+      .find(
+        (i) =>
+          i.text() === "fas fa-plus-circle" && !i.classes().includes("mr-3"),
+      );
+    await add.trigger("click");
+    expect(wrapper.vm.maintainers).toContainEqual({
+      id: 1,
+      username: "one",
+      orcid: null,
+    });
+    expect(add.attributes("disabled")).toBeDefined();
+    await wrapper.find("button.bg-warning").trigger("click");
+    expect(wrapper.vm.menu.show).toBe(false);
+  });
+
+  it.each([true, false])(
+    "removes a maintainer and optionally its watcher entry: %s",
+    async (removeWatcher) => {
+      await wrapper
+        .findAllComponents(VIconStub)
+        .find((i) => i.text() === "fas fa-times-circle")
+        .trigger("click");
+      expect(wrapper.vm.maintainers).toEqual([]);
+      expect(wrapper.vm.showRemoveWatcher).toBe(true);
+      await wrapper
+        .findAll("button")
+        .find((b) => b.text() === (removeWatcher ? "Yes" : "No"))
+        .trigger("click");
+      expect(wrapper.vm.watchers.map((w) => w.id)).toEqual(
+        removeWatcher ? [101] : [100, 101],
+      );
+      expect(wrapper.vm.showRemoveWatcher).toBe(false);
+    },
+  );
+
+  it("does not request watcher removal for an unwatched maintainer", () => {
+    wrapper.vm.addItem({ username: "Unwatched", id: 200, orcid: null });
+    wrapper.vm.removeMaintainer(1);
+    expect(wrapper.vm.maintainers).toEqual([maintainer]);
+    expect(wrapper.vm.showRemoveWatcher).toBe(false);
+    expect(wrapper.vm.watchers).toEqual([maintainer, extra]);
+  });
+
+  it("closes both overlays through their model events", async () => {
+    wrapper.vm.selectMaintainers();
+    await wrapper.vm.$nextTick();
+    wrapper.findComponent(VOverlayStub).vm.$emit("update:modelValue", false);
+    wrapper.vm.removeMaintainer(0);
+    await wrapper.vm.$nextTick();
+    wrapper.findComponent(VDialogStub).vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.menu.show).toBe(false);
+    expect(wrapper.vm.showRemoveWatcher).toBe(false);
+    expect(wrapper.vm.watchers).toHaveLength(2);
+  });
+
+  it.each(["", "ab", null])(
+    "does not search for empty or short text: %j",
+    async (searchString) => {
+      await wrapper.setData({ searchString });
+      await flushPromises();
+      expect(graphStub.called).toBe(false);
+      expect(wrapper.vm.loading).toBe(false);
+    },
+  );
+
+  it("shows loading until user search completes and handles API failures", async () => {
+    let resolve;
+    graphStub.returns(
+      new Promise((done) => {
+        resolve = done;
+      }),
+    );
+    await wrapper.setData({ searchString: "pending" });
+    expect(wrapper.vm.loading).toBe(true);
+    resolve({ allUsers: [] });
+    await flushPromises();
+    expect(wrapper.vm.loading).toBe(false);
+    graphStub.resetBehavior();
+    graphStub.rejects(new Error("Search unavailable"));
+    await wrapper.setData({ searchString: "failure" });
+    await flushPromises();
+    expect(wrapper.vm.loading).toBe(false);
+    expect($store.state.users.messages().getUsersList).toEqual({
+      error: true,
+      message: "Search unavailable",
+    });
   });
 });

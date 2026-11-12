@@ -24,3 +24,5 @@ export { VDataIteratorStub } from "./VDataIteratorStub.js";
 export { VBtnToggleStub } from "./VBtnToggleStub.js";
 export { VDataTableFooterStub } from "./VDataTableFooterStub.js";
 export { VSkeletonLoaderStub } from "./VSkeletonLoaderStub.js";
+export { VDataTableSlotsStub } from "./VDataTableSlotsStub.js";
+export { VTabStub } from "./VTabStub.js";

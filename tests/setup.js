@@ -1,77 +1,158 @@
 import { vi } from "vitest";
-import GraphQLClient from "@/lib/GraphClient/GraphClient.js";
-import RESTClient from "@/lib/Client/RESTClient.js";
+import { defineComponent, h } from "vue";
+import { globalFilters } from "../src/utils/setupUtils.js";
+// ============================================================
+// 1. Vue Test Utils compatibility
+// ============================================================
 
-// Vue 2 -> Vue 3 test compatibility for legacy specs.
 vi.mock("@vue/test-utils", async () => {
   const actual = await vi.importActual("@vue/test-utils");
 
+  actual.config.global.renderStubDefaultSlot = true;
+
+  // Generic Vuetify stub.
+  // Prevents read-only DOM property errors such as `prefix`.
+  const makeInertStub = (name) =>
+    defineComponent({
+      name,
+      inheritAttrs: false,
+
+      setup(_, { slots }) {
+        return () =>
+          h(
+            "div",
+            {
+              "data-test": name.toLowerCase(),
+            },
+            slots.default?.() || [],
+          );
+      },
+    });
+
+  // Text input stub supporting v-model.
+  const makeTextInputStub = (name, tag = "input") =>
+    defineComponent({
+      name,
+
+      props: {
+        modelValue: {
+          default: null,
+        },
+      },
+
+      emits: ["update:modelValue"],
+
+      setup(props, { emit, attrs }) {
+        return () =>
+          h(tag, {
+            ...attrs,
+
+            "data-test": name.toLowerCase(),
+
+            value: props.modelValue ?? "",
+
+            onInput: (event) => {
+              emit("update:modelValue", event.target.value);
+            },
+          });
+      },
+    });
+
   const normalizeOptions = (options = {}) => {
     const normalized = { ...options };
-    const globalConfig = { ...(normalized.global || {}) };
+
+    const globalConfig = {
+      ...(normalized.global || {}),
+    };
+
+    // --------------------------------------------------------
+    // Directives
+    // --------------------------------------------------------
 
     globalConfig.directives = {
-      "safe-html": {}, // Stub the directive so Vue ignores it
+      "safe-html": {},
       ...(globalConfig.directives || {}),
       ...(normalized.directives || {}),
     };
 
+    // --------------------------------------------------------
+    // Vue 2 propsData compatibility
+    // --------------------------------------------------------
+
     if (normalized.propsData && !normalized.props) {
       normalized.props = normalized.propsData;
     }
+
+    // --------------------------------------------------------
+    // Vue 2 plugin compatibility
+    // --------------------------------------------------------
 
     const legacyPlugins = [
       normalized.store,
       normalized.router,
       normalized.vuetify,
     ].filter(Boolean);
-    if (legacyPlugins.length > 0) {
-      globalConfig.plugins = [
-        ...(globalConfig.plugins || []),
-        ...legacyPlugins,
-      ];
-    }
 
-    if (normalized.mocks) {
-      globalConfig.mocks = {
-        ...(globalConfig.mocks || {}),
-        ...normalized.mocks,
-      };
-    }
+    globalConfig.plugins = [...(globalConfig.plugins || []), ...legacyPlugins];
+
+    // --------------------------------------------------------
+    // Global mocks
+    // --------------------------------------------------------
+
     globalConfig.mocks = {
       $scrollTo: vi.fn(),
+
       $sanitize: (value) => value,
+
       $filters: {
+        cleanString: globalFilters.cleanString,
         capitalize: (value) => {
-          if (typeof value !== "string" || !value.length) return value;
+          if (typeof value !== "string" || !value.length) {
+            return value;
+          }
+
           return value.charAt(0).toUpperCase() + value.slice(1);
         },
       },
+
       ...(globalConfig.mocks || {}),
+      ...(normalized.mocks || {}),
     };
+
+    // --------------------------------------------------------
+    // Vuetify stubs
+    // --------------------------------------------------------
 
     globalConfig.stubs = {
       "router-link": true,
       "router-view": true,
+
+      VSelect: makeInertStub("VSelect"),
+
+      VAutocomplete: makeInertStub("VAutocomplete"),
+
+      VCombobox: makeInertStub("VCombobox"),
+
+      VTextField: makeTextInputStub("VTextField"),
+
+      VTextarea: makeTextInputStub("VTextarea", "textarea"),
+
       ...(globalConfig.stubs || {}),
+      ...(normalized.stubs || {}),
     };
 
-    if (normalized.stubs) {
-      globalConfig.stubs = {
-        ...(globalConfig.stubs || {}),
-        ...normalized.stubs,
-      };
-    }
+    // --------------------------------------------------------
+    // Mixins
+    // --------------------------------------------------------
 
-    if (normalized.mixins) {
-      globalConfig.mixins = [
-        ...(globalConfig.mixins || []),
-        ...normalized.mixins,
-      ];
-    }
+    globalConfig.mixins = [
+      ...(globalConfig.mixins || []),
+      ...(normalized.mixins || []),
+    ];
 
     normalized.global = globalConfig;
 
+    // Remove Vue 2-specific options
     delete normalized.localVue;
     delete normalized.store;
     delete normalized.router;
@@ -84,13 +165,16 @@ vi.mock("@vue/test-utils", async () => {
     return normalized;
   };
 
+  // Vue 2 destroy() compatibility
   const withDestroyAlias = (wrapper) => {
     if (wrapper && typeof wrapper.unmount === "function" && !wrapper.destroy) {
       wrapper.destroy = () => wrapper.unmount();
     }
+
     return wrapper;
   };
 
+  // Vue 2 createLocalVue compatibility
   const createLocalVue = () => ({
     use() {},
     mixin() {},
@@ -98,15 +182,22 @@ vi.mock("@vue/test-utils", async () => {
 
   return {
     ...actual,
+
     createLocalVue,
+
     mount: (component, options) =>
       withDestroyAlias(actual.mount(component, normalizeOptions(options))),
+
     shallowMount: (component, options) =>
       withDestroyAlias(
         actual.shallowMount(component, normalizeOptions(options)),
       ),
   };
 });
+
+// ============================================================
+// 2. Vuetify compatibility
+// ============================================================
 
 vi.mock("vuetify", async () => {
   const actual = await vi.importActual("vuetify");
@@ -127,6 +218,10 @@ vi.mock("vuetify", async () => {
   };
 });
 
+// ============================================================
+// 3. Vue Router compatibility
+// ============================================================
+
 vi.mock("vue-router", async () => {
   const actual = await vi.importActual("vue-router");
 
@@ -145,156 +240,161 @@ vi.mock("vue-router", async () => {
   };
 });
 
-// Jest compatibility shim for legacy specs still using `jest.*`.
+// ============================================================
+// 4. Jest compatibility
+// ============================================================
+
 if (!globalThis.jest) {
   globalThis.jest = {
     fn: vi.fn,
     spyOn: vi.spyOn,
     mock: vi.mock,
+
     clearAllMocks: vi.clearAllMocks,
     resetAllMocks: vi.resetAllMocks,
     restoreAllMocks: vi.restoreAllMocks,
+
     useFakeTimers: vi.useFakeTimers,
     useRealTimers: vi.useRealTimers,
+
     advanceTimersByTime: vi.advanceTimersByTime,
     runAllTimers: vi.runAllTimers,
     runOnlyPendingTimers: vi.runOnlyPendingTimers,
+
     setSystemTime: vi.setSystemTime,
+
     setTimeout: () => {},
   };
 }
 
-// --- 1. ResizeObserver Polyfill ---
-// Vuetify uses this to detect when elements (like drawers or cards) change size.
-// JSDOM doesn't support it, so we mock it to prevent crashes.
-global.ResizeObserver = class ResizeObserver {
-  constructor(callback) {
-    this.callback = callback;
-  }
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-};
+// ============================================================
+// 5. ResizeObserver polyfill
+// ============================================================
 
-// --- 2. IntersectionObserver Polyfill ---
-// Used by Vuetify for lazy-loading images or infinite scrolling.
-global.IntersectionObserver = class IntersectionObserver {
-  constructor(callback) {
-    this.callback = callback;
-  }
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-};
+if (!globalThis.ResizeObserver) {
+  globalThis.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
 
-// --- 3. window.matchMedia Polyfill ---
-// CRITICAL for $vuetify.display (mdAndDown, lgAndUp, etc.)
-// We default 'matches' to false, meaning the test assumes "Desktop" view by default.
-if (typeof window !== "undefined") {
+// ============================================================
+// 6. IntersectionObserver polyfill
+// ============================================================
+
+if (!globalThis.IntersectionObserver) {
+  globalThis.IntersectionObserver = class IntersectionObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
+
+// ============================================================
+// 7. matchMedia polyfill
+// ============================================================
+
+if (typeof window !== "undefined" && !window.matchMedia) {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
+
     value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
+
       onchange: null,
-      addListener: vi.fn(), // deprecated
-      removeListener: vi.fn(), // deprecated
+
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
+
       dispatchEvent: vi.fn(),
     })),
   });
 }
 
-// --- 4. Mock global CSS support ---
-// Prevents errors in some Vuetify computed properties
-global.CSS = {
-  supports: () => false,
-  escape: (str) => str,
-};
+// ============================================================
+// 8. CSS support
+// ============================================================
+
+if (!globalThis.CSS) {
+  globalThis.CSS = {};
+}
+
+if (!globalThis.CSS.supports) {
+  globalThis.CSS.supports = () => false;
+}
+
+if (!globalThis.CSS.escape) {
+  globalThis.CSS.escape = (value) => String(value);
+}
+
+// ============================================================
+// 9. Object.groupBy polyfill
+// ============================================================
 
 if (!Object.groupBy) {
   Object.groupBy = (items, callback) => {
-    return items.reduce((acc, item) => {
-      const key = callback(item);
-      if (!acc[key]) {
-        acc[key] = [];
+    const result = Object.create(null);
+
+    Array.from(items).forEach((item, index) => {
+      const key = callback(item, index);
+
+      if (!Object.hasOwn(result, key)) {
+        result[key] = [];
       }
-      acc[key].push(item);
-      return acc;
-    }, {});
+
+      result[key].push(item);
+    });
+
+    return result;
   };
 }
 
-// Prevent unit tests from reaching API and embedded-service endpoints.
-const nativeFetch = globalThis.fetch ? globalThis.fetch.bind(globalThis) : null;
-const mockedFetch = async (input, init) => {
-  const url = typeof input === "string" ? input : (input && input.url) || "";
-  if (
-    url.includes("localhost:3000") ||
-    url.includes("127.0.0.1:3000") ||
-    url.includes("undefined/graphql") ||
-    url.includes("dev-api.fairsharing.org") ||
-    url.includes("aicc.uksouth.cloudapp.azure.com")
-  ) {
-    return new Response(JSON.stringify({}), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-  if (nativeFetch) return nativeFetch(input, init);
-  throw new Error(`Unexpected fetch in tests: ${url}`);
-};
-globalThis.fetch = vi.fn(mockedFetch);
-if (typeof window !== "undefined") {
-  window.fetch = globalThis.fetch;
+// ============================================================
+// 10. FileReader polyfill
+// ============================================================
+
+if (!globalThis.FileReader) {
+  globalThis.FileReader = class FileReader {
+    constructor() {
+      this.onload = null;
+      this.onerror = null;
+      this.result = null;
+    }
+
+    readAsDataURL() {
+      this.result = null;
+
+      if (typeof this.onload === "function") {
+        this.onload({
+          target: this,
+        });
+      }
+    }
+
+    abort() {}
+  };
 }
 
-// Short-circuit GraphQL requests to configured development endpoints in tests.
-const originalGetData = GraphQLClient.prototype.getData;
-GraphQLClient.prototype.getData = async function (queryString) {
-  const url = this.url || "";
-  if (
-    url.includes("localhost:3000") ||
-    url.includes("127.0.0.1:3000") ||
-    url.includes("undefined/graphql") ||
-    url.includes("dev-api.fairsharing.org")
-  ) {
-    return { data: { data: {} } };
-  }
-  return originalGetData.call(this, queryString);
-};
+// ============================================================
+// 11. Network safety
+// ============================================================
 
-const originalExecuteQuery = RESTClient.prototype.executeQuery;
-RESTClient.prototype.executeQuery = async function (query) {
-  const url = query?.baseURL || "";
-  if (
-    url.includes("localhost:3000") ||
-    url.includes("127.0.0.1:3000") ||
-    url.includes("dev-api.fairsharing.org") ||
-    url.startsWith("undefined") ||
-    url.includes("/undefined/")
-  ) {
-    return { data: {} };
-  }
-  return originalExecuteQuery.call(this, query);
-};
+// Do not globally override GraphQLClient or RESTClient prototypes.
+// Mock their methods in individual spec files instead.
+//
+// Example:
+//
+// vi.spyOn(GraphQLClient.prototype, "executeQuery")
+//   .mockResolvedValue(mockData);
+//
+// This keeps API behavior explicit and prevents tests from
+// silently receiving empty API responses.
 
-// We define a constructible mock using a regular function
-vi.stubGlobal(
-  "FileReader",
-  vi.fn().mockImplementation(function () {
-    this.readAsDataURL = vi.fn();
-    this.onload = null;
-    this.onerror = null;
-    this.result = null;
-  }),
-);
-
-// --- 5. Silence Vue warnings (Optional) ---
-// If you want to suppress specific warnings (like "Vuetify is not installed"), you can do it here.
-// const originalConsoleWarn = console.warn;
-// console.warn = (...args) => {
-//   if (args[0].includes('Vuetify')) return;
-//   originalConsoleWarn(...args);
-// };
+// ============================================================
+// End of setup.js
+// ============================================================

@@ -1,14 +1,16 @@
-import {shallowMount} from "@vue/test-utils";
+import {flushPromises, shallowMount} from "@vue/test-utils";
 import sinon from "sinon";
 import {createVuetify} from "vuetify";
 import Vuex from "vuex";
-
+import {reactive} from "vue";
 import RESTClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import light from "@/plugins/theme";
+import introspection from "@/store/introspector.js";
 import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
+import {VBtnStub, VDialogStub, VOverlayStub} from "../../../stubs/index.js";
 
 vi.mock("vike-vue/useData", () => ({
   useData: () => ({}),
@@ -38,6 +40,7 @@ let $store = new Vuex.Store({
     modules: {
       record: record,
       users: users,
+      introspection: introspection,
     },
   }),
   $route = {
@@ -171,8 +174,20 @@ describe("Record.vue", function () {
   });
   afterEach(() => {
     wrapper?.unmount();
+    anotherWrapper?.unmount();
+    anotherWrapper = null;
+    vi.restoreAllMocks();
+    if (vi.isFakeTimers()) {
+      vi.clearAllTimers();
+      vi.useRealTimers();
+    }
   });
   beforeEach(async () => {
+    if (!mocks.graphMock) {
+      mocks.setMock("graphMock", GraphClient.prototype, "executeQuery", {
+        fairsharingRecord: record.state.currentRecord.fairsharingRecord,
+      });
+    }
     wrapper = await shallowMount(Record, {
       mocks: { $route, $store, $router },
       vuetify,
@@ -654,5 +669,386 @@ describe("Record.vue", function () {
     wrapper.vm.closeHistory();
     expect(wrapper.vm.history.show).toBe(false);
     wrapper.unmount();
+  });
+
+  const prepareRecord = async (fields = {}, account = {}) => {
+    await flushPromises();
+    wrapper.unmount();
+    $route = reactive({ params: { id: "42" }, query: {}, hash: "" });
+    const currentUser = {
+      id: 123,
+      isLoggedIn: true,
+      is_curator: false,
+      is_super_curator: false,
+      credentials: { token: 123, username: 123 },
+      watchedRecords: [],
+      ...account,
+    };
+    $store.state.users.user = () => currentUser;
+    const currentRecord = {
+      ...structuredClone(graphMockValue.fairsharingRecord),
+      id: 42,
+      name: "Test resource",
+      abbreviation: "TR",
+      doi: "10.25504/FAIRsharing.test",
+      isHidden: false,
+      type: "terminology_artifact",
+      objectTypes: [],
+      isApproved: true,
+      maintainers: [],
+      hasGraph: true,
+      ...fields,
+    };
+    record.state.currentRecord.fairsharingRecord = currentRecord;
+    mocks.setMock("graphMock", GraphClient.prototype, "executeQuery", {
+      fairsharingRecord: currentRecord,
+    });
+    mocks.setMock("canEditStub", RESTClient.prototype, "canEdit", {});
+    mocks.setMock("canClaimStub", RESTClient.prototype, "canClaim", {
+      existing: false,
+    });
+    mocks.setMock("deleteMock", RESTClient.prototype, "deleteRecord", {});
+    mocks.setMock("claimRecord", RESTClient.prototype, "claimRecord", {});
+    mocks.setMock(
+      "removeMaintainer",
+      RESTClient.prototype,
+      "removeMaintainer",
+      {},
+    );
+    $router.push.mockClear();
+    $router.replace.mockClear();
+    $router.go.mockClear();
+    wrapper = shallowMount(Record, {
+      mocks: { $route, $store, $router, $scrollTo: vi.fn() },
+      vuetify,
+      stubs: { VBtn: VBtnStub, VDialog: VDialogStub, VOverlay: VOverlayStub },
+    });
+    await flushPromises();
+    vi.spyOn(wrapper.vm, "getField").mockImplementation(
+      (field) => wrapper.vm.currentRecord.fairsharingRecord[field],
+    );
+  };
+
+  const findDialog = (text) =>
+    wrapper
+      .findAllComponents({ name: "VDialog" })
+      .find((item) => item.text().includes(text));
+  const findButton = (container, text) =>
+    container.findAll("button").find((item) => item.text().trim() === text);
+  const useCountdownTimers = () =>
+    vi.useFakeTimers({
+      toFake: [
+        "setTimeout",
+        "clearTimeout",
+        "setInterval",
+        "clearInterval",
+        "Date",
+      ],
+    });
+
+  it("emits page-ready events and renders the loaded record", async () => {
+    await prepareRecord();
+    expect(wrapper.emitted("updateHead")).toHaveLength(1);
+    expect(wrapper.emitted("showDialog")).toEqual([[true]]);
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.recordID).toBe(42);
+    expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(true);
+  });
+
+  it("passes the introspection read-only state to the record menu", async () => {
+    await prepareRecord();
+    const menu = wrapper.findComponent({ name: "RecordMenu" });
+    expect(menu.props("readOnlyMode")).toBe(false);
+    try {
+      $store.commit("introspection/setReadOnlyMode");
+      await wrapper.vm.$nextTick();
+      expect(menu.props("readOnlyMode")).toBe(true);
+    }
+    finally {
+      $store.state.introspection.readOnlyMode = false;
+    }
+  });
+
+  it.each([
+    [false, false, true],
+    [true, false, true],
+    [true, true, false],
+  ])(
+    "restricts hidden content for loggedIn=%s and canEdit=%s",
+    async (loggedIn, canEdit, hidden) => {
+      await prepareRecord({ isHidden: true }, { isLoggedIn: loggedIn });
+      mocks.canEditStub.returns(canEdit ? {} : { error: "forbidden" });
+      await wrapper.vm.canEditRecord();
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.recordHidden).toBe(hidden);
+      expect(wrapper.findComponent({ name: "Hidden" }).exists()).toBe(hidden);
+      expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(
+        !hidden,
+      );
+    },
+  );
+
+  it("renders tombstones instead of resource content", async () => {
+    await prepareRecord({ metadata: { tombstone: true } });
+    expect(wrapper.findComponent({ name: "Tombstone" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(false);
+  });
+
+  it("renders collection search instead of resource-only sections", async () => {
+    await prepareRecord({ registry: "Collection" });
+    expect(wrapper.findComponent({ name: "SearchCollection" }).exists()).toBe(
+      true,
+    );
+    expect(wrapper.findComponent({ name: "AdditionalInfo" }).exists()).toBe(
+      false,
+    );
+    expect(wrapper.findComponent({ name: "Collections" }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: "Publications" }).exists()).toBe(true);
+  });
+
+  it("refreshes on route changes and displays fetch errors", async () => {
+    await prepareRecord();
+    const fetch = vi.spyOn(wrapper.vm, "fetchRecord");
+    $route.params.id = "43";
+    await flushPromises();
+    expect(fetch).toHaveBeenLastCalledWith({ id: "43", token: 123 });
+    fetch.mockRejectedValueOnce(new Error("Record unavailable"));
+    $route.params.id = "44";
+    await flushPromises();
+    expect(wrapper.vm.error).toBe("Record unavailable");
+    expect(wrapper.findComponent({ name: "NotFound" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "GeneralInfo" }).exists()).toBe(false);
+  });
+
+  it("refreshes preview targets and handles failure without showing the menu", async () => {
+    await prepareRecord();
+    const fetch = vi.spyOn(wrapper.vm, "fetchPreviewRecord");
+    $route.hash = "#publications";
+    await wrapper.setProps({ target: 50 });
+    await flushPromises();
+    expect(fetch).toHaveBeenLastCalledWith(50);
+    expect(wrapper.findComponent({ name: "RecordMenu" }).exists()).toBe(false);
+    expect(wrapper.vm.$scrollTo).toHaveBeenLastCalledWith("#publications");
+    fetch.mockRejectedValueOnce(new Error("Preview unavailable"));
+    await wrapper.setProps({ target: 51 });
+    await flushPromises();
+    expect(wrapper.vm.error).toBe("Preview unavailable");
+  });
+
+  it("shows a history loader until the request completes and closes through its button", async () => {
+    await prepareRecord();
+    let resolveHistory;
+    vi.spyOn(wrapper.vm, "getHistory").mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          resolveHistory = resolve;
+        }),
+    );
+    const pending = wrapper.vm.buttons
+      .find((item) => item.name() === "View record history")
+      .method();
+    await wrapper.vm.$nextTick();
+    expect(
+      findDialog("history logs").findComponent({ name: "Loaders" }).exists(),
+    ).toBe(true);
+    resolveHistory();
+    await pending;
+    await wrapper.vm.$nextTick();
+    const history = findDialog("history logs");
+    expect(history.findComponent({ name: "RecordHistory" }).exists()).toBe(
+      true,
+    );
+    await history.find("button").trigger("click");
+    expect(wrapper.vm.history.show).toBe(false);
+    expect($router.replace).toHaveBeenCalledWith({ query: {} });
+  });
+
+  it("enables deletion only after the countdown and reloads after success", async () => {
+    await prepareRecord({}, { is_super_curator: true });
+    useCountdownTimers();
+    await wrapper.vm.buttons
+      .find((item) => item.name() === "Delete this record")
+      .method();
+    await wrapper.vm.$nextTick();
+    expect(
+      findButton(findDialog("Delete record"), "DELETE (5)").attributes(
+        "disabled",
+      ),
+    ).toBeDefined();
+    await vi.advanceTimersByTimeAsync(4000);
+    expect(wrapper.vm.deleteCountdown).toBe(1);
+    expect(mocks.deleteMock.called).toBe(false);
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(wrapper.vm.deleteTimer).toBe(null);
+    await findButton(findDialog("Delete record"), "DELETE").trigger("click");
+    await flushPromises();
+    expect(mocks.deleteMock.calledOnceWithExactly(42, 123)).toBe(true);
+    expect($router.go).toHaveBeenCalledWith(0);
+  });
+
+  it("renders and dismisses deletion errors without reloading", async () => {
+    await prepareRecord();
+    useCountdownTimers();
+    mocks.deleteMock.returns({ error: "Deletion failed" });
+    wrapper.vm.deleteRecordMenu("Test resource", 42);
+    await vi.advanceTimersByTimeAsync(5000);
+    await findButton(findDialog("Delete record"), "DELETE").trigger("click");
+    await flushPromises();
+    expect(wrapper.vm.loading).toBe(false);
+    expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
+    const alert = wrapper.findComponent({ name: "VAlert" });
+    expect(alert.text()).toContain("This record could not be deleted");
+    expect(alert.find("a").attributes("href")).toContain("recordID%3A%2042");
+    alert.vm.$emit("click:close");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findComponent({ name: "VAlert" }).exists()).toBe(false);
+    expect($router.go).not.toHaveBeenCalled();
+  });
+
+  it("cleans up deletion timers on cancel, restart and unmount", async () => {
+    await prepareRecord();
+    useCountdownTimers();
+    wrapper.vm.deleteRecordMenu("Test resource", 42);
+    await wrapper.vm.$nextTick();
+    await findButton(findDialog("Delete record"), "Cancel").trigger("click");
+    expect(wrapper.vm.deleteTimer).toBe(null);
+    expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
+    wrapper.vm.deleteRecordMenu("Test resource", 42);
+    await vi.advanceTimersByTimeAsync(2000);
+    wrapper.vm.startDeleteCountdown();
+    expect(wrapper.vm.deleteCountdown).toBe(5);
+    expect(vi.getTimerCount()).toBe(1);
+    wrapper.unmount();
+    expect(vi.getTimerCount()).toBe(0);
+    expect(mocks.deleteMock.called).toBe(false);
+  });
+
+  it("requests ownership through its confirmation button", async () => {
+    await prepareRecord();
+    useCountdownTimers();
+    await wrapper.vm.buttons
+      .find((item) => item.name() === "Request ownership")
+      .method();
+    await wrapper.vm.$nextTick();
+    const claim = findDialog("request ownership of this record");
+    expect(findButton(claim, "OK").attributes("disabled")).toBeDefined();
+    await vi.advanceTimersByTimeAsync(5000);
+    await findButton(claim, "OK").trigger("click");
+    await flushPromises();
+    expect(mocks.claimRecord.calledOnceWithExactly(42, 123)).toBe(true);
+    expect(wrapper.vm.claimedTriggered).toBe(true);
+    expect(wrapper.vm.dialogs.claimRecord).toBe(false);
+    expect(wrapper.vm.alerts.isAlreadyClaimed).toBeDefined();
+  });
+
+  it("removes only the current maintainer through its confirmation button", async () => {
+    await prepareRecord({ maintainers: [{ id: 123 }, { id: 456 }] });
+    useCountdownTimers();
+    const stop = wrapper.vm.buttons.find(
+      (item) => item.name() === "Stop maintaining",
+    );
+    expect(stop.isDisabled()).toBe(false);
+    await stop.method();
+    await wrapper.vm.$nextTick();
+    const maintain = findDialog("stop maintaining this record");
+    await vi.advanceTimersByTimeAsync(5000);
+    await findButton(maintain, "OK").trigger("click");
+    await flushPromises();
+    expect(mocks.removeMaintainer.calledOnceWithExactly(42, 123)).toBe(true);
+    expect(wrapper.vm.currentRecord.fairsharingRecord.maintainers).toEqual([
+      { id: 456 },
+    ]);
+    expect(wrapper.vm.stopMaintainSuccess).toBe(true);
+    expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(false);
+  });
+
+  it.each(["claim", "maintain"])(
+    "cancels the %s dialog without an API request",
+    async (kind) => {
+      await prepareRecord();
+      useCountdownTimers();
+      if (kind === "claim") wrapper.vm.claimRecordMenu("Test resource", 42);
+      else wrapper.vm.stopMaintainRecordMenu("Test resource", 42);
+      await wrapper.vm.$nextTick();
+      await findButton(
+        findDialog(
+          kind === "claim"
+            ? "request ownership of this record"
+            : "stop maintaining this record",
+        ),
+        "Cancel",
+      ).trigger("click");
+      expect(wrapper.vm.dialogs.claimRecord).toBe(false);
+      expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(false);
+      expect(mocks.claimRecord.called).toBe(false);
+      expect(mocks.removeMaintainer.called).toBe(false);
+    },
+  );
+
+  it("builds citation links and metadata with and without a DOI", async () => {
+    await prepareRecord();
+    expect(Record.head.link.call(wrapper.vm)).toEqual([
+      {
+        rel: "cite-as",
+        type: "application/html",
+        href: "https://doi.org/10.25504/FAIRsharing.test",
+      },
+      {
+        rel: "describedby",
+        type: "application/json",
+        href: wrapper.vm.getHostname() + "FAIRsharing.test",
+      },
+      {
+        rel: "describedby",
+        type: "application/ld+json",
+        href: wrapper.vm.getHostname() + "FAIRsharing.test",
+      },
+    ]);
+    const metadata = Record.metaInfo.call(wrapper.vm);
+    expect(metadata.title).toBe("FAIRsharing | TR");
+    expect(metadata.meta).toContainEqual({
+      name: "description",
+      content: "FAIRsharing record for Test resource (TR)",
+    });
+    expect(metadata.meta).toContainEqual({
+      name: "link",
+      rel: "canonical",
+      content: `${import.meta.env.VITE_HOSTNAME}FAIRsharing.test`,
+    });
+    delete wrapper.vm.currentRecord.fairsharingRecord.doi;
+    delete wrapper.vm.currentRecord.fairsharingRecord.abbreviation;
+    const withoutDoi = Record.metaInfo.call(wrapper.vm);
+    expect(withoutDoi.title).toBe("FAIRsharing | Test resource");
+    expect(withoutDoi.meta).toContainEqual({
+      name: "link",
+      rel: "canonical",
+      content: `${import.meta.env.VITE_HOSTNAME}42`,
+    });
+    wrapper.vm.recordID = null;
+    expect(Record.head.link.call(wrapper.vm)).toBeUndefined();
+  });
+
+  it("preserves banner creation dates and detects expired banners", async () => {
+    await prepareRecord();
+    useCountdownTimers();
+    vi.setSystemTime(new Date("2026-11-09T12:00:00Z"));
+    const previous = localStorage.getItem("bannerExpiryDate");
+    try {
+      localStorage.removeItem("bannerExpiryDate");
+      expect(wrapper.vm.isBannerExpired()).toBe(true);
+      wrapper.vm.setBannerExpiry();
+      const saved = localStorage.getItem("bannerExpiryDate");
+      expect(JSON.parse(saved)[42]).toBe("2026-11-09T12:00:00.000Z");
+      vi.advanceTimersByTime(24 * 60 * 60 * 1000);
+      wrapper.vm.setBannerExpiry();
+      expect(localStorage.getItem("bannerExpiryDate")).toBe(saved);
+      expect(wrapper.vm.isBannerExpired()).toBe(true);
+      vi.advanceTimersByTime(2 * 24 * 60 * 60 * 1000);
+      expect(wrapper.vm.isBannerExpired()).toBe(false);
+    }
+    finally {
+      if (previous === null) localStorage.removeItem("bannerExpiryDate");
+      else localStorage.setItem("bannerExpiryDate", previous);
+    }
   });
 });

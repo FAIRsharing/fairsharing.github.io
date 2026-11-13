@@ -1,4 +1,7 @@
 import Client from "@/lib/Client/RESTClient.js";
+import axios from "axios";
+
+vi.mock("axios", () => ({ default: vi.fn() }));
 
 const sinon = require("sinon");
 describe("RESTClient", () => {
@@ -7,6 +10,7 @@ describe("RESTClient", () => {
   let stub;
 
   beforeEach(() => {
+    vi.mocked(axios).mockReset();
     stub = sinon.stub(Client.prototype, "executeQuery");
     stub.withArgs(sinon.match.any).returns(dataStub);
     client = new Client();
@@ -128,14 +132,16 @@ describe("RESTClient", () => {
 
   it("can process network errors", async () => {
     stub.restore();
-    vi.spyOn(console, "error");
-    console.error.mockImplementation(() => {});
-    let resp = await client.executeQuery({
+    const failure = new Error("Network unavailable");
+    vi.mocked(axios).mockRejectedValueOnce(failure);
+    const request = {
       url: "http://test.com",
-    });
+    };
+    let resp = await client.executeQuery(request);
+    expect(axios).toHaveBeenCalledExactlyOnceWith(request);
     expect(resp.data.error).toBeTruthy();
     expect(typeof resp.data.error.message).toBe("string");
-    console.error.mockRestore();
+    expect(resp.data.error).toBe(failure);
   });
 
   it("can changeWatcher method for a record", async () => {

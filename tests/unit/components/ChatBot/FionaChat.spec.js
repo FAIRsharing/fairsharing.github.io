@@ -6,8 +6,18 @@ import FionaChat from "@/components/ChatBot/FionaChat.vue";
 
 describe("FionaChat", () => {
   let wrapper;
+  let createElementSpy;
 
   beforeEach(() => {
+    const createElement = document.createElement.bind(document);
+    createElementSpy = vi.spyOn(document, "createElement").mockImplementation((tagName, options) => {
+      const element = createElement(tagName, options);
+      if (tagName.toLowerCase() === "iframe") {
+        // Inline content takes precedence over src and avoids iframe navigation.
+        element.setAttribute("srcdoc", "<!doctype html><html><body></body></html>");
+      }
+      return element;
+    });
     vi.stubEnv("VITE_FIONA_CHAT_ID", "test-chat-id");
     document.body.innerHTML = '<div id="app"></div>';
     wrapper = mount(FionaChat, {
@@ -28,9 +38,11 @@ describe("FionaChat", () => {
     });
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     wrapper.unmount();
     document.body.innerHTML = "";
+    await window.happyDOM.abort();
+    createElementSpy.mockRestore();
     vi.unstubAllEnvs();
   });
 
@@ -50,6 +62,12 @@ describe("FionaChat", () => {
     expect(document.querySelector("#fairsharing-chat-window")).not.toBeNull();
 
     expect(wrapper.vm.isOpen).toBe(true);
+    const iframe = document.querySelector(".fairsharing-chat__iframe");
+    expect(iframe).not.toBeNull();
+    expect(iframe.getAttribute("src")).toBe("about:blank#test-chat-id");
+    expect(iframe.getAttribute("title")).toBe("FAIRsharing Assistant");
+    expect(iframe.getAttribute("allow")).toBe("clipboard-read; clipboard-write");
+    expect(iframe.hasAttribute("srcdoc")).toBe(true);
   });
 
   it("closes the chat window when the close button is clicked", async () => {
@@ -77,5 +95,83 @@ describe("FionaChat", () => {
     await nextTick();
 
     expect(wrapper.vm.isOpen).toBe(false);
+  });
+
+  it("can check toggleChat method", async () => {
+    wrapper.vm.isOpen = true;
+
+    wrapper.vm.toggleChat();
+    wrapper.vm.isOpen = false;
+
+    expect(wrapper.vm.isMaximized).toBe(false);
+  });
+
+  describe("toggleMaximize", () => {
+    it("can check toggleMaximize method", async () => {
+      wrapper.vm.isMaximized = true;
+      wrapper.vm.toggleMaximize();
+      expect(wrapper.vm.isMaximized).toBe(false);
+    });
+
+    it("toggles maximize button when clicked", async () => {
+      // Open chat window
+      document.querySelector(".fairsharing-chat__button").click();
+      await nextTick();
+
+      // Maximize chat window
+      document.querySelector('[aria-label="Maximize chat window"]').click();
+      await nextTick();
+
+      expect(wrapper.vm.isMaximized).toBe(true);
+      expect(
+        document.querySelector(".fairsharing-chat__window--maximized"),
+      ).not.toBeNull();
+    });
+  });
+
+  describe("handleKeydown", () => {
+    it("does nothing when a key other than Escape is pressed", () => {
+      wrapper.vm.isOpen = true;
+      wrapper.vm.isMaximized = true;
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Enter",
+      });
+
+      const result = wrapper.vm.handleKeydown(event);
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.isOpen).toBe(true);
+      expect(wrapper.vm.isMaximized).toBe(true);
+    });
+
+    it("restores the chat when Escape is pressed while maximized", () => {
+      wrapper.vm.isOpen = true;
+      wrapper.vm.isMaximized = true;
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Escape",
+      });
+
+      const result = wrapper.vm.handleKeydown(event);
+
+      expect(result).toBe(true);
+      expect(wrapper.vm.isMaximized).toBe(false);
+      expect(wrapper.vm.isOpen).toBe(true);
+    });
+
+    it("closes the chat when Escape is pressed while not maximized", () => {
+      wrapper.vm.isOpen = true;
+      wrapper.vm.isMaximized = false;
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Escape",
+      });
+
+      const result = wrapper.vm.handleKeydown(event);
+      expect(result).toBe(true);
+      expect(wrapper.vm.isOpen).toBe(false);
+      expect(wrapper.vm.isMaximized).toBe(false);
+    });
   });
 });

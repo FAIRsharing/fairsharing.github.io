@@ -1,16 +1,18 @@
 <template>
-  <v-col cols12>
-    <!-- Records Without DOIs -->
-    <RecordsWithoutDois />
-    <!-- Records Needing Review -->
-    <RecordsNeedingReview />
-    <!-- Curator Summary Statistics -->
-    <CuratorSummaryStatistics />
-    <!-- Records Created By Month -->
-    <RecordsCreatedByMonth />
-    <!-- Record Edit By Month -->
-    <RecordEditsByMonth />
-  </v-col>
+  <v-row>
+    <v-col cols="12">
+      <!-- Records Without DOIs -->
+      <RecordsWithoutDois />
+      <!-- Records Needing Review -->
+      <RecordsNeedingReview />
+      <!-- Curator Summary Statistics -->
+      <CuratorSummaryStatistics />
+      <!-- Records Created By Month -->
+      <RecordsCreatedByMonth />
+      <!-- Record Edit By Month -->
+      <RecordEditsByMonth />
+    </v-col>
+  </v-row>
 </template>
 
 <script>

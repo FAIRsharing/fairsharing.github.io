@@ -5,6 +5,16 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import EditRelationships from "@/components/Editor/EditRelationships.vue";
+import {
+  VAutocompleteStub,
+  VBtnStub,
+  VDialogStub,
+  VFormStub,
+  VLazyStub,
+  VSwitchStub,
+  VTextFieldStub,
+  VTooltipStub,
+} from "../../../stubs/index.js";
 
 const vuetify = createVuetify({ components, directives });
 
@@ -98,12 +108,18 @@ describe("EditRelationships.vue", () => {
       global: {
         plugins: [store, vuetify],
         stubs: {
-          VDialog: { template: '<div class="v-dialog-stub"><slot /></div>' },
           VCard: { template: '<div class="v-card-stub"><slot /></div>' },
           VCardActions: {
             template: '<div class="v-card-actions-stub"><slot /></div>',
           },
-          VForm: { template: '<div class="v-form-stub"><slot /></div>' },
+          VDialog: VDialogStub,
+          VTextField: VTextFieldStub,
+          VAutocomplete: VAutocompleteStub,
+          VBtn: VBtnStub,
+          VLazy: VLazyStub,
+          VSwitch: VSwitchStub,
+          VTooltip: VTooltipStub,
+          VForm: VFormStub,
           // Stub children components to isolate the test
           Alerts: true,
           Icon: true,
@@ -145,31 +161,79 @@ describe("EditRelationships.vue", () => {
   it("closes the relations panel when Cancel button is clicked", async () => {
     await wrapper.setData({
       showRelationsPanel: true,
-      addingRelation: { id: 1, name: "Test" },
+      addingRelation: {
+        id: 1,
+        linkedRecord: {
+          id: 1,
+          name: "Test",
+          registry: "database",
+          type: "database",
+        },
+        recordAssocLabel: null,
+      },
     });
-    wrapper.vm.showRelationsPanel = false;
+
+    expect(wrapper.vm.showRelationsPanel).toBe(true);
+    const dialog = wrapper.find('[data-test="v-dialog"]');
+
+    expect(dialog.exists()).toBe(true);
+
+    const cancelButton = dialog.find("button.bg-error");
+
+    expect(cancelButton.exists()).toBe(true);
+    await cancelButton.trigger("click");
     expect(wrapper.vm.showRelationsPanel).toBe(false);
   });
 
   it("prevents duplicate relationships in addItem method", async () => {
     const existing = {
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: { relation: "part_of" },
     };
     wrapper.vm.sections.relations.data.recordAssociations = [existing];
     wrapper.vm.addingRelation = {
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: { relation: "part_of" },
+    };
+    wrapper.vm.labelsFilter = {
+      database: true,
     };
 
     wrapper.vm.addItem();
     expect(wrapper.vm.duplicateRelationship).toBe(true);
+    // Verify that the duplicate was not added.
+
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
+      1,
+    );
+
+    expect(wrapper.vm.sections.relations.data.recordAssociations[0]).toEqual(
+      existing,
+    );
   });
 
   it("can check for label filter in addItem method", async () => {
     wrapper.vm.addingRelation = {
       id: 1,
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: { relation: "part_of" },
     };
     wrapper.vm.labelsFilter = {
@@ -236,11 +300,34 @@ describe("EditRelationships.vue", () => {
   });
 
   it("watches associations and commits 0 changes when equal to initialData", async () => {
-    wrapper.vm.sections.relations.initialData.recordAssociations = [{ id: 1 }];
-    wrapper.vm.sections.relations.data.recordAssociations = [{ id: 1 }];
+    const association = {
+      id: 1,
+      linkedRecord: {
+        id: 1,
+        name: "Test Record",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
 
-    await wrapper.vm.$options.watch.associations.handler.call(wrapper.vm);
+      recordAssocLabel: {
+        relation: "part_of",
+      },
+    };
 
+    wrapper.vm.labelsFilter = {
+      database: true,
+    };
+
+    wrapper.vm.sections.relations.initialData.recordAssociations = [
+      structuredClone(association),
+    ];
+
+    wrapper.vm.sections.relations.data.recordAssociations = [
+      structuredClone(association),
+    ];
+
+    await wrapper.vm.$nextTick();
     expect(mutations.setChanges).toHaveBeenCalledWith(expect.anything(), {
       section: "relations",
       value: 0,
@@ -251,28 +338,52 @@ describe("EditRelationships.vue", () => {
     wrapper.vm.$scrollTo = vi.fn();
 
     const existing = {
-      linkedRecord: { name: "Test" },
+      linkedRecord: {
+        id: 1,
+        name: "Test",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
       recordAssocLabel: "part_of",
     };
+
+    wrapper.vm.labelsFilter = {
+      database: true,
+    };
+
     wrapper.vm.sections.relations.data.recordAssociations = [existing];
 
-    // addingRelation with a string label instead of an object
+    // New relationship with a different record
     wrapper.vm.addingRelation = {
       id: 99,
-      linkedRecord: { name: "New Record" },
-      recordAssocLabel: "is_related_to",
+      linkedRecord: {
+        id: 99,
+        name: "New Record",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+
+      recordAssocLabel: {
+        relation: "is_related_to",
+      },
     };
 
     wrapper.vm.addItem();
-
     expect(wrapper.vm.duplicateRelationship).toBe(false);
     expect(wrapper.vm.sections.relations.data.recordAssociations[0].new).toBe(
       true,
     );
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
+      2,
+    );
 
-    // Wait for nextTick to cover the $scrollTo call
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.$scrollTo).toHaveBeenCalled();
+    expect(wrapper.vm.$scrollTo).toHaveBeenCalledWith("#association_99", 450, {
+      container: "#associatedRecords",
+      easing: "ease-in",
+    });
   });
 
   it("getRelations handles targets that are not in the default registries array", () => {
@@ -313,22 +424,55 @@ describe("EditRelationships.vue", () => {
     expect(store.state.editor.availableRecords[19].isActive).toBe(false); // i < 15 logic
   });
 
-  it("removeItem correctly filters out the selected association", () => {
-    const itemToKeep = { linkedRecord: { id: 1 }, recordAssocLabelId: 10 };
-    const itemToRemove = { linkedRecord: { id: 2 }, recordAssocLabelId: 20 };
+  it("removeItem correctly filters out the selected association", async () => {
+    const itemToKeep = {
+      linkedRecord: {
+        id: 1,
+        name: "Record A",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+
+      recordAssocLabelId: 10,
+      recordAssocLabel: "part_of",
+    };
+
+    const itemToRemove = {
+      linkedRecord: {
+        id: 2,
+        name: "Record B",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+      recordAssocLabelId: 20,
+      recordAssocLabel: "is_related_to",
+    };
+
+    wrapper.vm.labelsFilter = {
+      database: true,
+    };
 
     wrapper.vm.sections.relations.data.recordAssociations = [
       itemToKeep,
       itemToRemove,
     ];
-    wrapper.vm.removeItem(itemToRemove);
 
-    expect(wrapper.vm.sections.relations.data.recordAssociations.length).toBe(
+    await wrapper.vm.$nextTick();
+    wrapper.vm.removeItem(itemToRemove);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
       1,
     );
+
     expect(
       wrapper.vm.sections.relations.data.recordAssociations[0].linkedRecord.id,
     ).toBe(1);
+
+    expect(wrapper.vm.sections.relations.data.recordAssociations[0]).toEqual(
+      itemToKeep,
+    );
   });
 
   it("can toggle relations panel state", async () => {
@@ -338,15 +482,42 @@ describe("EditRelationships.vue", () => {
   });
 
   describe("getAssociations", () => {
-    it("returns all associations if labelsFilter is null", () => {
+    it("returns all associations if labelsFilter is null", async () => {
+      const assoc = [
+        {
+          id: 1,
+          linkedRecord: {
+            id: 1,
+            name: "Record A",
+            abbreviation: null,
+            registry: "database",
+            type: "database",
+          },
+          recordAssocLabel: "part_of",
+        },
+
+        {
+          id: 2,
+          linkedRecord: {
+            id: 2,
+            name: "Record B",
+            abbreviation: null,
+            registry: "database",
+            type: "database",
+          },
+          recordAssocLabel: "is_related_to",
+        },
+      ];
+
       wrapper.vm.labelsFilter = null;
       wrapper.vm.searchAssociations = "ignored";
-      const assoc = [{ id: 1 }, { id: 2 }];
-      vi.spyOn(wrapper.vm, "associations", "get").mockReturnValue(assoc);
+      wrapper.vm.sections.relations.data.recordAssociations = assoc;
+      await wrapper.vm.$nextTick();
       expect(wrapper.vm.getAssociations).toEqual(assoc);
+      expect(wrapper.vm.getAssociations).toHaveLength(2);
     });
 
-    it("filters by NAME only when abbreviation is null", () => {
+    it("filters by NAME only when abbreviation is null", async () => {
       wrapper.vm.labelsFilter = { database: true };
       wrapper.vm.searchAssociations = "Test";
 
@@ -357,6 +528,9 @@ describe("EditRelationships.vue", () => {
           registry: "database",
           type: "database",
         },
+        recordAssocLabel: {
+          relation: "part_of",
+        },
       };
       const noMatch = {
         linkedRecord: {
@@ -365,6 +539,9 @@ describe("EditRelationships.vue", () => {
           registry: "database",
           type: "database",
         },
+        recordAssocLabel: {
+          relation: "is_related_to",
+        },
       };
 
       vi.spyOn(wrapper.vm, "associations", "get").mockReturnValue([
@@ -372,9 +549,11 @@ describe("EditRelationships.vue", () => {
         noMatch,
       ]);
 
+      await wrapper.vm.$nextTick();
       const result = wrapper.vm.getAssociations;
       expect(result).toHaveLength(1);
       expect(result[0].linkedRecord.name).toBe("My Test Record");
+      expect(result[0].recordAssocLabel.relation).toBe("part_of");
     });
 
     it("filters associations correctly when abbreviation is NOT null", async () => {
@@ -419,10 +598,253 @@ describe("EditRelationships.vue", () => {
       expect(result[0].linkedRecord.name).toBe("Full Name");
     });
 
-    it("returns unfiltered associations if labelsFilter is null", () => {
+    it("returns unfiltered associations if labelsFilter is null", async () => {
+      const association = {
+        linkedRecord: {
+          id: 1,
+          name: "Test Record",
+          abbreviation: null,
+          registry: "database",
+          type: "database",
+        },
+
+        recordAssocLabel: {
+          relation: "part_of",
+        },
+      };
+
       wrapper.vm.labelsFilter = null;
-      wrapper.vm.sections.relations.data.recordAssociations = [{ id: 1 }];
-      expect(wrapper.vm.getAssociations.length).toBe(1);
+      wrapper.vm.sections.relations.data.recordAssociations = [association];
+      await wrapper.vm.$nextTick();
+      expect(wrapper.vm.getAssociations).toHaveLength(1);
+      expect(wrapper.vm.getAssociations[0]).toEqual(association);
     });
+  });
+
+  it("updates the search field using v-model", async () => {
+    const searchFields = wrapper.findAll('[data-test="v-text-field"]');
+    expect(searchFields).toHaveLength(2);
+
+    // Available records search
+    await searchFields[0].setValue("ShareSfhare");
+    expect(wrapper.vm.search).toBe("ShareSfhare");
+
+    // Associated records search
+    await searchFields[1].setValue("GenBank");
+    expect(wrapper.vm.searchAssociations).toBe("GenBank");
+  });
+
+  it("updates searchFilters through the search switch v-model", async () => {
+    await wrapper.setData({
+      searchFilters: {
+        database: true,
+        standard: false,
+      },
+    });
+
+    await wrapper.vm.$nextTick();
+    const switches = wrapper.findAll('[data-test="v-switch"]');
+    expect(switches.length).toBeGreaterThanOrEqual(2);
+    const standardSwitch = switches.find((element) =>
+      element.element.closest("label")?.textContent.includes("Standard(s)"),
+    );
+    expect(standardSwitch).toBeDefined();
+    await standardSwitch.setValue(true);
+    expect(wrapper.vm.searchFilters.standard).toBe(true);
+    await wrapper.vm.$nextTick();
+    expect(actions.getAvailableRecords).toHaveBeenCalled();
+  });
+
+  it("updates record.isActive through the lazy v-model", async () => {
+    const record = {
+      id: 77,
+      name: "Test Record",
+      registry: "database",
+      type: "database",
+      isActive: false,
+    };
+
+    store.state.editor.availableRecords = [record];
+    await wrapper.setData({
+      loading: false,
+      recordsList: [record],
+    });
+
+    const lazy = wrapper.find('[data-test="v-lazy"]');
+    expect(lazy.exists()).toBe(true);
+    expect(wrapper.vm.recordsList[0].isActive).toBe(false);
+    await lazy.find('[data-test="activate-lazy"]').trigger("click");
+    expect(wrapper.vm.recordsList[0].isActive).toBe(true);
+  });
+
+  it("opens available record when View Record button is clicked", async () => {
+    const record = {
+      id: 123,
+      name: "Test Record",
+      registry: "database",
+      type: "database",
+      isActive: true,
+    };
+
+    await wrapper.setData({
+      loading: false,
+      recordsList: [record],
+    });
+
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => {});
+
+    const viewButton = wrapper.find('[data-test="v-lazy"] button.bg-blue');
+    expect(viewButton.exists()).toBe(true);
+    await viewButton.trigger("click");
+    expect(openSpy).toHaveBeenCalledWith("/123", "_blank");
+  });
+
+  it("handles View Record and Remove Relation button clicks", async () => {
+    const association = {
+      linkedRecord: {
+        id: 123,
+        name: "Associated Record",
+        abbreviation: null,
+        registry: "database",
+        type: "database",
+      },
+      recordAssocLabel: {
+        relation: "part_of",
+      },
+      recordAssocLabelId: 10,
+    };
+
+    await wrapper.setData({
+      labelsFilter: { database: true },
+    });
+
+    wrapper.vm.sections.relations.data.recordAssociations = [association];
+    await wrapper.vm.$nextTick();
+    const associatedRecord = wrapper.find("#association_123");
+    expect(associatedRecord.exists()).toBe(true);
+
+    // Cover View Record click
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => {});
+    const viewButton = associatedRecord.find("button.bg-blue");
+    expect(viewButton.exists()).toBe(true);
+    await viewButton.trigger("click");
+    expect(openSpy).toHaveBeenCalledWith("/123", "_blank");
+
+    // Cover Remove Relation click
+    const removeButton = associatedRecord.find("button.bg-red");
+    expect(removeButton.exists()).toBe(true);
+    await removeButton.trigger("click");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.sections.relations.data.recordAssociations).toHaveLength(
+      0,
+    );
+    expect(wrapper.vm.getAssociations).toHaveLength(0);
+  });
+
+  it("updates showRelationsPanel through dialog v-model", async () => {
+    await wrapper.setData({
+      showRelationsPanel: true,
+    });
+
+    const dialog = wrapper.findComponent({ name: "VDialog" });
+
+    expect(dialog.exists()).toBe(true);
+    expect(dialog.props("modelValue")).toBe(true);
+
+    dialog.vm.$emit("update:modelValue", false);
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.showRelationsPanel).toBe(false);
+  });
+
+  it("updates labelsFilter when an associated records switch is clicked", async () => {
+    await wrapper.setData({
+      labelsFilter: {
+        database: true,
+        standard: false,
+      },
+    });
+
+    await wrapper.vm.$nextTick();
+
+    const switches = wrapper.findAll('[data-test="v-switch"]');
+
+    const standardSwitch = switches.find((element) =>
+      element.element.closest("label")?.textContent.includes("Standard(s)"),
+    );
+
+    expect(standardSwitch).toBeDefined();
+
+    await standardSwitch.setValue(true);
+
+    expect(wrapper.vm.labelsFilter.standard).toBe(true);
+
+    await standardSwitch.setValue(false);
+
+    expect(wrapper.vm.labelsFilter.standard).toBe(false);
+  });
+
+  it("updates recordAssocLabel when a relationship is selected", async () => {
+    const relation = {
+      relation: "part_of",
+      target: "database",
+    };
+
+    await wrapper.setData({
+      showRelationsPanel: true,
+      addingRelation: {
+        id: 123,
+        linkedRecord: {
+          id: 123,
+          name: "Test Record",
+          registry: "database",
+          type: "database",
+        },
+        recordAssocLabel: null,
+      },
+      panelContent: [relation],
+    });
+
+    await wrapper.vm.$nextTick();
+
+    const autocomplete = wrapper.findComponent({
+      name: "VAutocomplete",
+    });
+
+    expect(autocomplete.exists()).toBe(true);
+    expect(autocomplete.props("modelValue")).toBeNull();
+
+    autocomplete.vm.$emit("update:modelValue", relation);
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.addingRelation.recordAssocLabel).toEqual(relation);
+  });
+
+  it("updates formValid when form validation changes", async () => {
+    await wrapper.setData({
+      showRelationsPanel: true,
+      formValid: false,
+    });
+
+    const form = wrapper.findComponent({
+      name: "VForm",
+    });
+
+    expect(form.exists()).toBe(true);
+    expect(form.props("modelValue")).toBe(false);
+
+    form.vm.$emit("update:modelValue", true);
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.formValid).toBe(true);
+
+    form.vm.$emit("update:modelValue", false);
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.formValid).toBe(false);
   });
 });

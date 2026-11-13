@@ -74,7 +74,7 @@
             :headers="headers"
             :items="usersList"
             :loading="loading"
-            :search="search"
+            :search="searchString"
             loading-text="Loading... Please wait"
           >
             <template #[`item.username`]="{ item }">

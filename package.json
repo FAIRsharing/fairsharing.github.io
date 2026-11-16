@@ -75,7 +75,7 @@
     "@babel/plugin-transform-json-strings": "^7.24.7",
     "@babel/plugin-transform-object-rest-spread": "^7.24.7",
     "@babel/plugin-transform-optional-catch-binding": "^7.24.7",
-    "@babel/plugin-transform-private-methods": "^7.24.7",
+    "@babel/plugin-transform-private-methods": "^8.0.1",
     "@babel/plugin-transform-unicode-property-regex": "^7.24.7",
     "@babel/preset-env": "^7.25.8",
     "@blocksquaredev/vite-plugin-node-polyfills": "^0.25.4",

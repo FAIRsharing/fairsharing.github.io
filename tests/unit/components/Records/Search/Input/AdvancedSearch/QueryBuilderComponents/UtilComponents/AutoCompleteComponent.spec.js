@@ -10,7 +10,7 @@ describe("AutoCompleteComponent.vue", () => {
       },
       global: {
         stubs: {
-          "v-autocomplete": {
+          VAutocomplete: {
             name: "v-autocomplete",
             template: `
               <div class="v-autocomplete-stub">

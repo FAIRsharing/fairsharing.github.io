@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -84,12 +84,21 @@ describe("CreateRecord.vue", function () {
     graphStub.restore();
   });
 
+  afterEach(async () => {
+    await flushPromises();
+    wrapper.unmount();
+    restStub?.restore();
+    restStub = null;
+    vi.restoreAllMocks();
+  });
+
   beforeEach(async () => {
     vuetify = createVuetify();
     wrapper = await shallowMount(CreateRecord, {
       vuetify,
       mocks: { $store, $route, $router },
     });
+    await flushPromises();
   });
 
   it("can be instantiated", async () => {
@@ -189,7 +198,6 @@ describe("CreateRecord.vue", function () {
     await wrapper.vm.checkForDups(fake_record);
     expect(wrapper.vm.message.error).toBe(false);
 
-    graphStub.restore();
   });
 
   it("runs the setSubmitAnyway method", () => {

@@ -1,7 +1,16 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import AdvancedSearchDialogBox from "@/components/Records/Search/Input/AdvancedSearch/AdvancedSearchDialogBox.vue";
 import { createStore } from "vuex";
+import { reactive } from "vue";
+import {
+  VSlotStub,
+  VDialogStub,
+  VBtnStub,
+  VIconStub,
+  VTextFieldStub,
+  VRouterLinkStub,
+} from "../../../../../../stubs/index.js";
 
 // 1. Hoist our spies so they safely bypass the ES module rules
 const { mockCommit, mockUniqueValues, mockRouterPush, mockFetchSearchResults } =
@@ -32,6 +41,7 @@ vi.mock("@/utils/advancedSearchUtils", async (importOriginal) => {
 
 describe("AdvancedSearchDialogBox.vue", () => {
   let wrapper;
+  let wrappers;
 
   // 4. Helper function to mount with custom props, getters, and route state
   const createWrapper = (
@@ -44,28 +54,33 @@ describe("AdvancedSearchDialogBox.vue", () => {
       modules: {
         advancedSearch: {
           namespaced: true,
-          getters: {
-            getAdvancedSearch: () =>
-              getters["advancedSearch/getAdvancedSearch"] ?? {
-                operatorIdentifier: "_and",
-                children: [],
-              },
-            getAdvancedSearchText: () =>
-              getters["advancedSearch/getAdvancedSearchText"] ?? "",
-            getEditDialogStatus: () =>
-              getters["advancedSearch/getEditDialogStatus"] ?? false,
-            getAdvancedSearchDialogStatus: () =>
+          state: () => ({
+            query: getters["advancedSearch/getAdvancedSearch"] ?? {
+              operatorIdentifier: "_and",
+              children: [],
+            },
+            text: getters["advancedSearch/getAdvancedSearchText"] ?? "",
+            editStatus: getters["advancedSearch/getEditDialogStatus"] ?? false,
+            dialogStatus:
               getters["advancedSearch/getAdvancedSearchDialogStatus"] ?? false,
+          }),
+          getters: {
+            getAdvancedSearch: (state) => state.query,
+            getAdvancedSearchText: (state) => state.text,
+            getEditDialogStatus: (state) => state.editStatus,
+            getAdvancedSearchDialogStatus: (state) => state.dialogStatus,
           },
           // Add spy routing directly to mutations so this.$store.commit captures calls cleanly
           mutations: {
             setAdvancedSearchDialogStatus(state, payload) {
+              state.dialogStatus = payload;
               mockCommit(
                 "advancedSearch/setAdvancedSearchDialogStatus",
                 payload,
               );
             },
             setEditDialogStatus(state, payload) {
+              state.editStatus = payload;
               mockCommit("advancedSearch/setEditDialogStatus", payload);
             },
           },
@@ -76,7 +91,7 @@ describe("AdvancedSearchDialogBox.vue", () => {
       },
     });
 
-    return shallowMount(AdvancedSearchDialogBox, {
+    const mountedWrapper = shallowMount(AdvancedSearchDialogBox, {
       props: {
         advancedSearchTerm: "default-term",
         ...props,
@@ -89,31 +104,38 @@ describe("AdvancedSearchDialogBox.vue", () => {
             push: mockRouterPush,
           },
           $vuetify: {
-            display: {
-              smAndDown: false,
-            },
+            display: reactive({ smAndDown: false }),
           },
         },
         stubs: {
           QueryBuilderView: true,
           TooltipComponent: true,
-          "router-link": true,
-          "v-row": true,
-          "v-dialog": true,
-          "v-card": true,
-          "v-btn": true,
-          "v-icon": true,
-          "v-text-field": true,
-          "v-card-title": true,
-          "v-card-text": true,
-          "v-card-actions": true,
+          "router-link": VRouterLinkStub,
+          VRow: VSlotStub,
+          VDialog: VDialogStub,
+          VCard: VSlotStub,
+          VBtn: VBtnStub,
+          VIcon: VIconStub,
+          VTextField: VTextFieldStub,
+          VCardTitle: VSlotStub,
+          VCardText: VSlotStub,
+          VCardActions: VSlotStub,
         },
       },
     });
+    wrappers.push(mountedWrapper);
+    return mountedWrapper;
   };
+
+  afterEach(async () => {
+    await flushPromises();
+    wrappers.forEach((w) => w.unmount());
+  });
 
   beforeEach(() => {
     vi.clearAllMocks();
+    wrappers = [];
+    mockUniqueValues.mockReset().mockImplementation((arr) => arr);
   });
 
   describe("Lifecycle Hooks (mounted)", () => {
@@ -343,5 +365,207 @@ describe("AdvancedSearchDialogBox.vue", () => {
         expect(fakeContext.dialog).toBe(true);
       });
     });
+  });
+
+  it.each([
+    [{}, true],
+    [{ children: [{}] }, true],
+    [{ children: [{ children: [] }] }, true],
+    [{ children: [{ children: [{ value: "" }] }] }, true],
+    [{ children: [{ children: [{ value: [] }] }] }, true],
+    [{ children: [{ children: [{ value: false }] }] }, false],
+    [
+      { children: [{ children: [{ value: ["science"] }, { value: true }] }] },
+      false,
+    ],
+    [
+      {
+        children: [
+          { children: [{ value: "valid" }] },
+          { children: [{ value: "" }] },
+        ],
+      },
+      true,
+    ],
+  ])(
+    "validates all query groups before enabling Proceed: %j",
+    (query, disabled) => {
+      wrapper = createWrapper({ "advancedSearch/getAdvancedSearch": query });
+      expect(wrapper.vm.isContinue).toBe(disabled);
+    },
+  );
+
+  it("reacts to Vuex edit status and binds the existing search text", async () => {
+    wrapper = createWrapper({
+      "advancedSearch/getAdvancedSearchText": "Existing text",
+    });
+    wrapper.vm.$store.commit("advancedSearch/setEditDialogStatus", true);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.dialog).toBe(true);
+    expect(wrapper.findComponent(VTextFieldStub).props("modelValue")).toBe(
+      "Existing text",
+    );
+    await wrapper
+      .find('[aria-label="Add Search text"]')
+      .setValue("Revised text");
+    expect(wrapper.vm.updatedAdvancedSearchText).toBe("Revised text");
+    wrapper.vm.$store.commit("advancedSearch/setEditDialogStatus", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.dialog).toBe(false);
+  });
+
+  it("resets an existing input when the Vuex dialog status opens", async () => {
+    wrapper = createWrapper();
+    await wrapper.setData({ dialog: true });
+    await wrapper.find('[aria-label="Add Search text"]').setValue("Draft");
+    wrapper.vm.$store.commit(
+      "advancedSearch/setAdvancedSearchDialogStatus",
+      true,
+    );
+    await wrapper.vm.$nextTick();
+    expect(VTextFieldStub.methods.reset).toHaveBeenCalledTimes(1);
+    expect(wrapper.vm.updatedAdvancedSearchText).toBe("");
+    wrapper.vm.$store.commit(
+      "advancedSearch/setAdvancedSearchDialogStatus",
+      false,
+    );
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.dialog).toBe(false);
+  });
+
+  it.each(["Close", "escape", "logo"])(
+    "closes the rendered dialog through %s",
+    async (action) => {
+      wrapper = createWrapper();
+      wrapper.vm.$store.commit(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        true,
+      );
+      await wrapper.vm.$nextTick();
+      if (action === "Close")
+        await wrapper
+          .findAll("button")
+          .find((b) => b.text() === "Close")
+          .trigger("click");
+      else if (action === "escape")
+        await wrapper
+          .find('[data-test="v-dialog"]')
+          .trigger("keydown", { key: "Escape" });
+      else await wrapper.find('img[alt="FAIRsharing logo"]').trigger("click");
+      expect(wrapper.vm.dialog).toBe(false);
+      expect(mockCommit).toHaveBeenCalledWith(
+        "advancedSearch/setEditDialogStatus",
+        false,
+      );
+      expect(mockCommit).toHaveBeenCalledWith(
+        "advancedSearch/setAdvancedSearchDialogStatus",
+        false,
+      );
+      expect(mockRouterPush).not.toHaveBeenCalled();
+    },
+  );
+
+  it("submits a valid query from Proceed using the fallback search term", async () => {
+    const query = {
+      operatorIdentifier: "AND",
+      children: [
+        {
+          operatorIdentifier: "OR",
+          children: [
+            { identifier: "registry", value: ["database", "standard"] },
+          ],
+        },
+      ],
+    };
+    wrapper = createWrapper(
+      { "advancedSearch/getAdvancedSearch": query },
+      { path: "/search", fullPath: "/search" },
+      { advancedSearchTerm: "Fallback term" },
+    );
+    await wrapper.setData({ dialog: true });
+    expect(
+      wrapper
+        .findAll("button")
+        .find((b) => b.text() === "Proceed")
+        .attributes("disabled"),
+    ).toBeUndefined();
+    await wrapper
+      .findAll("button")
+      .find((b) => b.text() === "Proceed")
+      .trigger("click");
+    expect(mockFetchSearchResults).toHaveBeenCalledWith(
+      expect.anything(),
+      "Fallback term",
+    );
+    expect(mockRouterPush).toHaveBeenCalledWith({
+      name: "AdvancedSearchResult",
+      query: {
+        operator: "AND",
+        fields: "(operator=OR&registry=database+standard)",
+      },
+    });
+    expect(wrapper.emitted("clearSearchField")).toEqual([[true]]);
+    expect(wrapper.vm.dialog).toBe(false);
+  });
+
+  it("serializes array objects, primitive arrays and scalar query values", () => {
+    wrapper = createWrapper({
+      "advancedSearch/getAdvancedSearch": {
+        operatorIdentifier: "AND",
+        children: [
+          {
+            operatorIdentifier: "OR",
+            children: [
+              {
+                identifier: "domain",
+                value: [{ value: "Biology" }, "Chemistry"],
+              },
+              { identifier: "status", value: "ready" },
+              { identifier: "enabled", value: true },
+              { identifier: "empty", value: false },
+            ],
+          },
+        ],
+      },
+    });
+    wrapper.vm.advancedSearchQueryString();
+    expect(wrapper.vm.queryString).toBe(
+      "(operator=OR&domain=Biology+Chemistry&status=ready&enabled=true&empty=)",
+    );
+    expect(mockUniqueValues).toHaveBeenCalledWith(
+      wrapper.vm.getAdvancedSearch.children[0].children,
+    );
+  });
+
+  it.each(["term", ""])(
+    "updates the current advanced-search URL with text=%s",
+    (text) => {
+      wrapper = createWrapper(
+        { "advancedSearch/getAdvancedSearchText": text },
+        { path: "/advancedsearch", fullPath: "/advancedsearch" },
+      );
+      mockRouterPush.mockClear();
+      wrapper.vm.advancedSearchNavigation("(registry=database)");
+      expect(mockRouterPush).toHaveBeenCalledWith({
+        query: {
+          ...(text ? { q: text } : {}),
+          operator: "_and",
+          fields: "(registry=database)",
+        },
+      });
+    },
+  );
+
+  it("uses the mobile dialog layout and disables Proceed for an empty query", async () => {
+    wrapper = createWrapper();
+    wrapper.vm.$vuetify.display.smAndDown = true;
+    await wrapper.setData({ dialog: true });
+    const proceed = wrapper
+      .findAll("button")
+      .find((b) => b.text() === "Proceed");
+    expect(proceed.attributes("disabled")).toBeDefined();
+    expect(proceed.attributes("width")).toBe("100%");
+    expect(proceed.classes()).toContain("mb-3");
+    expect(wrapper.find('a[href="/"]').classes()).toContain("mx-auto");
   });
 });

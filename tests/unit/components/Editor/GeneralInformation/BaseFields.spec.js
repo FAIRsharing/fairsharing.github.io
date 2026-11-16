@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import sinon from "sinon";
@@ -61,6 +61,7 @@ let wrapper;
 
 describe("Editor -> BaseFields.vue", () => {
   beforeEach(() => {
+    vi.stubEnv("VITE_API_ENDPOINT", "https://api.example.test");
     $store.state.record.newRecord = false;
     $store.state.users.user = function () {
       return { is_curator: false, credentials: { token: "a token" } };
@@ -80,6 +81,11 @@ describe("Editor -> BaseFields.vue", () => {
         loading: false,
       },
     });
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+    vi.unstubAllEnvs();
   });
 
   it("can be mounted", () => {
@@ -137,14 +143,35 @@ describe("Editor -> BaseFields.vue", () => {
   });
 
   it("can delete the logo", async () => {
-    let logoStub = sinon.stub(RestClient.prototype, "clearLogo");
-    logoStub.returns({ error: "error" });
-    wrapper.vm.currentLogo = "placeholder";
-    await wrapper.vm.deleteLogo();
-    expect(wrapper.vm.currentLogo).toEqual("placeholder");
-    logoStub.returns({});
-    await wrapper.vm.deleteLogo();
-    expect(wrapper.vm.currentLogo).toBeNull();
+    const originalRecord = $store.state.record.currentRecord.fairsharingRecord;
+    $store.state.record.currentRecord.fairsharingRecord = {
+      ...originalRecord,
+      id: 123,
+      urlForLogo: "/logos/test.png",
+    };
+    const logoStub = sinon.stub(RestClient.prototype, "clearLogo");
+    try {
+      logoStub.resolves({ error: "error" });
+      await wrapper.setData({ currentLogo: "placeholder" });
+      expect(wrapper.findComponent({ name: "VImg" }).props("src")).toBe(
+        "https://api.example.test/logos/test.png",
+      );
+      await wrapper.vm.deleteLogo();
+      expect(wrapper.vm.currentLogo).toEqual("placeholder");
+      expect(logoStub.calledOnceWithExactly(123, "a token")).toBe(true);
+      expect(wrapper.vm.logoLoading).toBe(false);
+
+      logoStub.resolves({});
+      await wrapper.vm.deleteLogo();
+      expect(wrapper.vm.currentLogo).toBeNull();
+      expect(wrapper.findComponent({ name: "VImg" }).exists()).toBe(false);
+      expect(logoStub.calledTwice).toBe(true);
+      expect(wrapper.vm.logoLoading).toBe(false);
+    }
+    finally {
+      logoStub.restore();
+      $store.state.record.currentRecord.fairsharingRecord = originalRecord;
+    }
   });
 
   it("can check isDatabase method", async () => {

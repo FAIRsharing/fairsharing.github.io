@@ -1,15 +1,15 @@
 <template>
   <v-container>
     <v-row class="block-category">
-      <v-col cols="12" sm="12" md="4" lg="4">
+      <v-col cols="12" lg="4" md="4" sm="12">
         <v-card
           class="mx-auto block-category__card d-flex flex-column"
-          max-width="350"
           height="100%"
+          max-width="350"
         >
           <v-card-title
-            class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.resources"
+            class="d-inline counter text-h2 font-weight-bold"
           />
           <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.firstColumn.title }}
@@ -19,15 +19,15 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="4" lg="4">
+      <v-col cols="12" lg="4" md="4" sm="12">
         <v-card
           class="mx-auto block-category__card d-flex flex-column"
-          max-width="350"
           height="100%"
+          max-width="350"
         >
           <v-card-title
-            class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.contributors"
+            class="d-inline counter text-h2 font-weight-bold"
           />
           <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.secondColumn.title }}
@@ -37,15 +37,15 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="4" lg="4">
+      <v-col cols="12" lg="4" md="4" sm="12">
         <v-card
           class="mx-auto block-category__card d-flex flex-column"
-          max-width="350"
           height="100%"
+          max-width="350"
         >
           <v-card-title
-            class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.views"
+            class="d-inline counter text-h2 font-weight-bold"
           />
           <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.thirdColumn.title }}
@@ -94,16 +94,16 @@ export default {
       const speed = 200;
 
       counters.forEach((counter) => {
-        counter.innerText = 0;
+        counter.innerText = "0";
         const updateCounter = () => {
           const target = +counter.getAttribute("data-target");
           const count = +counter.innerText;
           const increment = target / speed;
           if (count < target) {
-            counter.innerText = Math.ceil(count + increment);
+            counter.innerText = String(Math.ceil(count + increment));
             setTimeout(updateCounter, 1);
           } else {
-            counter.innerText = this.updateNumbers(target);
+            counter.innerText = String(this.updateNumbers(target));
           }
         };
         updateCounter();

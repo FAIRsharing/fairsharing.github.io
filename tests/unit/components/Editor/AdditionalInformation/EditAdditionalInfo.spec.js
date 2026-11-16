@@ -1,13 +1,21 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-
 import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json";
 import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo.vue";
 import RestClient from "@/lib/Client/RESTClient.js";
 import editorStore from "@/store/editor.js";
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
+import {
+  VAutocompleteStub,
+  VBtnStub,
+  VCheckBoxStub,
+  VOverlayStub,
+  VTextFieldStub,
+  VTooltipStub,
+} from "../../../../stubs/index.js";
+import { VIconStub } from "../../../../stubs/VIconStub.js";
 
 const sinon = require("sinon");
 
@@ -70,7 +78,29 @@ describe("EditAdditionalInfo.vue", function () {
       global: {
         plugins: [$store],
         mocks: { $route, $router, $scrollTo, sortObj: mockSortObj },
-        stubs: { "router-link": true, "v-form": editAdditionalInfo },
+        stubs: {
+          VCard: {
+            template: "<div><slot /></div>",
+          },
+
+          VCardText: {
+            template: "<div><slot /></div>",
+          },
+
+          VCardActions: {
+            template: "<div><slot /></div>",
+          },
+          "router-link": true,
+          "v-form": editAdditionalInfo,
+          VTextField: VTextFieldStub,
+          "v-text-field": VTextFieldStub,
+          VTooltip: VTooltipStub,
+          VIcon: VIconStub,
+          VBtn: VBtnStub,
+          VOverlay: VOverlayStub,
+          VCheckBox: VCheckBoxStub,
+          VAutocomplete: VAutocompleteStub,
+        },
       },
     });
     $router.push.mockClear();
@@ -120,14 +150,6 @@ describe("EditAdditionalInfo.vue", function () {
       fields: null,
       template: null,
     });
-  });
-
-  it("can create a new item", () => {
-    wrapper.vm.createItem("fieldName", template);
-    expect(wrapper.vm.overlay.template).toStrictEqual(template);
-    expect(JSON.stringify(wrapper.vm.overlay.fields)).toStrictEqual(
-      JSON.stringify({ url: "", anotherField: "" }),
-    );
   });
 
   it("can add and remove an item", () => {
@@ -195,6 +217,14 @@ describe("EditAdditionalInfo.vue", function () {
   it("can check rules() method", async () => {
     await wrapper.setData({
       overlay: {
+        show: true,
+        id: null,
+        fieldName: "test",
+        fields: {
+          website: "",
+          name: "",
+        },
+        required: ["website", "name"],
         template: {
           website: { format: "uri" },
           name: { format: "string" },
@@ -300,5 +330,426 @@ describe("EditAdditionalInfo.vue", function () {
       const result = wrapper.vm.getFields("integer");
       expect(result).toEqual({});
     });
+  });
+
+  it("renders array subfields including champion registry Yes and No values", async () => {
+    //Test case for line 97 <span v-if="subfieldName === 'in_champion_registry'">
+    // Define an array field with a valid schema.
+
+    $store.state.editor.allowedFields = {
+      id: "test",
+      properties: {
+        contacts: {
+          type: "array",
+          description: "Contact information",
+          items: {
+            $ref: "#/definitions/contact",
+          },
+        },
+      },
+      definitions: {
+        contact: {
+          properties: {
+            name: {
+              type: "string",
+            },
+            in_champion_registry: {
+              type: "boolean",
+            },
+          },
+          required: [],
+        },
+      },
+    };
+
+    // Populate the array with records covering both boolean outcomes.
+    $store.state.record.sections.additionalInformation.data.contacts = [
+      {
+        name: "Contact A",
+        in_champion_registry: true,
+      },
+      {
+        name: "Contact B",
+        in_champion_registry: false,
+      },
+    ];
+
+    await wrapper.vm.$nextTick();
+
+    const text = wrapper.text();
+
+    // True branch: champion registry is true.
+    expect(text).toContain("Yes");
+
+    // False branch: champion registry is false.
+    expect(text).toContain("No");
+
+    // Non-boolean subfield branch.
+    expect(text).toContain("Contact A");
+    expect(text).toContain("Contact B");
+  });
+
+  it("covers createItem click with required and optional fields", async () => {
+    const properties = {
+      name: {
+        type: "string",
+      },
+      in_champion_registry: {
+        type: "boolean",
+      },
+    };
+
+    $store.state.editor.allowedFields = {
+      id: "test",
+      properties: {
+        contacts: {
+          type: "array",
+          description: "Contact information",
+          items: {
+            $ref: "#/definitions/contact",
+          },
+        },
+      },
+      definitions: {
+        contact: {
+          properties,
+          required: ["name"],
+        },
+      },
+    };
+
+    await wrapper.vm.$nextTick();
+
+    const createIcon = wrapper
+      .findAll('[data-test="v-icon"]')
+      .find((icon) => icon.text().includes("fa-plus-circle"));
+
+    expect(createIcon).toBeDefined();
+
+    await createIcon.trigger("click");
+
+    expect(wrapper.vm.overlay.show).toBe(true);
+    expect(wrapper.vm.overlay.fieldName).toBe("contacts");
+    expect(wrapper.vm.overlay.id).toBeNull();
+
+    expect(wrapper.vm.overlay.template).toEqual(properties);
+    expect(wrapper.vm.overlay.required).toEqual(["name"]);
+
+    expect(wrapper.vm.overlay.fields).toEqual({
+      name: "",
+      in_champion_registry: false,
+    });
+  });
+
+  it("removes an array item when the Delete button is clicked", async () => {
+    $store.state.editor.allowedFields = {
+      id: "test",
+      properties: {
+        contacts: {
+          type: "array",
+          description: "Contact information",
+          items: {
+            $ref: "#/definitions/contact",
+          },
+        },
+      },
+      definitions: {
+        contact: {
+          properties: {
+            name: {
+              type: "string",
+            },
+          },
+          required: [],
+        },
+      },
+    };
+
+    $store.state.record.sections.additionalInformation.data.contacts = [
+      { name: "Contact A" },
+      { name: "Contact B" },
+    ];
+
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.fields.contacts).toHaveLength(2);
+    const deleteButtons = wrapper
+      .findAll("button.bg-error")
+      .filter((button) => button.text().includes("fa-trash"));
+    expect(deleteButtons).toHaveLength(2);
+    await deleteButtons[0].trigger("click");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.fields.contacts).toHaveLength(1);
+    expect(wrapper.vm.fields.contacts[0]).toEqual({
+      name: "Contact B",
+    });
+  });
+
+  it("renders enum fields when the schema contains enum type fields", async () => {
+    const enumField = {
+      type: "enum",
+      description: "Test enum field",
+    };
+
+    $store.state.editor.allowedFields = {
+      id: "test",
+      properties: {
+        test_status: enumField,
+      },
+    };
+
+    await wrapper.vm.$nextTick();
+
+    expect(Object.keys(wrapper.vm.getFields("enum"))).toHaveLength(1);
+
+    expect(wrapper.text()).toContain("BASE FIELDS:");
+
+    const fieldInputs = wrapper.findAllComponents({
+      name: "FieldInput",
+    });
+
+    const enumInput = fieldInputs.find(
+      (field) => field.props("fieldName") === "test_status",
+    );
+
+    expect(enumInput).toBeDefined();
+
+    expect(enumInput.props("fieldProps")).toEqual(enumField);
+  });
+
+  it("saves the record when Save and continue button is clicked", async () => {
+    const restStub = sinon.stub(RestClient.prototype, "executeQuery");
+
+    restStub.resolves({
+      data: "Hello !",
+    });
+
+    try {
+      const saveButton = wrapper
+        .findAll("button.bg-primary")
+        .find((button) => button.text().trim() === "Save and continue");
+
+      expect(saveButton).toBeDefined();
+
+      await saveButton.trigger("click");
+
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.vm.continueLoader).toBe(false);
+      expect(wrapper.vm.exitLoader).toBe(false);
+
+      expect($scrollTo).toHaveBeenCalledWith("#mainHeader");
+
+      expect($router.push).not.toHaveBeenCalled();
+    } finally {
+      restStub.restore();
+    }
+  });
+
+  it("saves the record when Save and exit button is clicked", async () => {
+    const restStub = sinon.stub(RestClient.prototype, "executeQuery");
+
+    restStub.resolves({
+      data: "Hello !",
+    });
+
+    try {
+      const exitButton = wrapper
+        .findAll("button.bg-primary")
+        .find((button) => button.text().trim() === "Save and exit");
+      expect(exitButton).toBeDefined();
+
+      await exitButton.trigger("click");
+      await flushPromises();
+      expect(wrapper.vm.continueLoader).toBe(false);
+      expect(wrapper.vm.exitLoader).toBe(false);
+      expect($router.push).toHaveBeenCalledWith({
+        path: "/123",
+      });
+    } finally {
+      restStub.restore();
+    }
+  });
+
+  it("updates overlay.show through v-overlay v-model", async () => {
+    wrapper.vm.createItem(
+      "contacts",
+      {
+        name: {
+          type: "string",
+        },
+      },
+      [],
+    );
+
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.overlay.show).toBe(true);
+
+    const overlay = wrapper.findComponent({
+      name: "VOverlay",
+    });
+
+    expect(overlay.exists()).toBe(true);
+    expect(overlay.props("modelValue")).toBe(true);
+
+    overlay.vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.overlay.show).toBe(false);
+  });
+
+  it("updates subFormValid through overlay form v-model", async () => {
+    wrapper.vm.createItem(
+      "contacts",
+      {
+        name: {
+          type: "string",
+        },
+      },
+      [],
+    );
+
+    await wrapper.vm.$nextTick();
+    const form = wrapper.findComponent("#editAdditionalInformationOverlay");
+
+    expect(form.exists()).toBe(true);
+    expect(form.props("modelValue")).toBe(false);
+
+    form.vm.$emit("update:modelValue", true);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.subFormValid).toBe(true);
+
+    form.vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.subFormValid).toBe(false);
+  });
+
+  it("updates checkbox, text field and autocomplete values in overlay", async () => {
+    await wrapper.setData({
+      overlay: {
+        show: true,
+        id: 0,
+        fieldName: "contacts",
+        fields: {
+          in_champion_registry: false,
+          name: "",
+          status: "active",
+        },
+        required: ["name"],
+        template: {
+          in_champion_registry: {
+            type: "boolean",
+            description: "Champion registry status",
+          },
+          name: {
+            type: "string",
+            description: "Contact name",
+          },
+          status: {
+            type: "string",
+            enum: ["active", "inactive"],
+            description: "Contact status",
+          },
+        },
+      },
+    });
+    await wrapper.vm.$nextTick();
+
+    // Checkbox v-model
+    const checkbox = wrapper.findComponent({
+      name: "VCheckbox",
+    });
+
+    expect(checkbox.exists()).toBe(true);
+    checkbox.vm.$emit("update:modelValue", true);
+
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.overlay.fields.in_champion_registry).toBe(true);
+
+    // Text field v-model
+    const textField = wrapper
+      .findAllComponents({ name: "VTextField" })
+      .find((field) => field.props("label") === "name");
+    expect(textField).toBeDefined();
+
+    textField.vm.$emit("update:modelValue", "Test Contact");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.overlay.fields.name).toBe("Test Contact");
+
+    // Autocomplete v-model
+    const autocomplete = wrapper.findComponent({
+      name: "VAutocomplete",
+    });
+    expect(autocomplete.exists()).toBe(true);
+
+    autocomplete.vm.$emit("update:modelValue", "inactive");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.overlay.fields.status).toBe("inactive");
+  });
+
+  it("handles Submit item and Cancel button clicks in overlay", async () => {
+    const overlayData = {
+      show: true,
+      id: null,
+      fieldName: "contacts",
+      fields: {
+        name: "Test Contact",
+      },
+      required: ["name"],
+      template: {
+        name: {
+          type: "string",
+        },
+      },
+    };
+
+    // Open overlay and enable Submit button
+    await wrapper.setData({
+      overlay: structuredClone(overlayData),
+      subFormValid: true,
+    });
+
+    await wrapper.vm.$nextTick();
+
+    const overlay = wrapper.find('[data-test="v-overlay"]');
+
+    expect(overlay.exists()).toBe(true);
+
+    // Cover @click="addItem()"
+    const submitButton = overlay.find("button.bg-success");
+
+    expect(submitButton.exists()).toBe(true);
+    expect(submitButton.attributes("disabled")).toBeUndefined();
+
+    await submitButton.trigger("click");
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.overlay.show).toBe(false);
+
+    expect(wrapper.vm.fields.contacts).toContainEqual({
+      name: "Test Contact",
+    });
+
+    // Reopen overlay to test Cancel
+    await wrapper.setData({
+      overlay: structuredClone(overlayData),
+      subFormValid: true,
+    });
+
+    await wrapper.vm.$nextTick();
+
+    // Cover @click="hideOverlay()"
+    const cancelButton = wrapper.find(
+      '[data-test="v-overlay"] button.bg-error',
+    );
+
+    expect(cancelButton.exists()).toBe(true);
+
+    await cancelButton.trigger("click");
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.overlay.show).toBe(false);
+    expect(wrapper.vm.overlay.fieldName).toBeNull();
+    expect(wrapper.vm.overlay.fields).toBeNull();
   });
 });

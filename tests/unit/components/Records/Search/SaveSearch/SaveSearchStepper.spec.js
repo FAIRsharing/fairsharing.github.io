@@ -1,8 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import { createStore } from "vuex";
 
 import SaveSearchStepper from "@/components/Records/Search/SaveSearch/SaveSearchStepper.vue";
+
+import {
+  VBtnStub,
+  VFormStub,
+  VSlotStub,
+  VTextFieldStub,
+} from "../../../../../stubs/index.js";
 
 // 1. Mock the RESTClient Class
 const { mockSaveSearchAPI } = vi.hoisted(() => ({
@@ -25,6 +32,7 @@ vi.mock("@/utils/rules.js", () => ({
 }));
 
 describe("SaveSearchStepper.vue", () => {
+  const wrappers = [];
   let actions;
   let saveSearchGetters;
   let advancedSearchGetters;
@@ -65,6 +73,7 @@ describe("SaveSearchStepper.vue", () => {
         },
         saveSearch: {
           namespaced: true,
+          state: () => ({ open: false }),
           getters: saveSearchGetters,
           // Placeholder mutations to prevent Vuex "unknown mutation" warnings
           mutations: {
@@ -84,7 +93,7 @@ describe("SaveSearchStepper.vue", () => {
     // Directly spy on the commit method of the generated store instance
     vi.spyOn(store, "commit");
 
-    return shallowMount(SaveSearchStepper, {
+    const wrapper = shallowMount(SaveSearchStepper, {
       global: {
         plugins: [store],
         mocks: {
@@ -95,13 +104,13 @@ describe("SaveSearchStepper.vue", () => {
           "v-dialog": true,
           "v-stepper": true,
           "v-stepper-header": true,
-          "v-stepper-item": true,
+          "v-stepper-item": VSlotStub,
           "v-divider": true,
           "v-window": true,
           "v-window-item": true,
-          "v-form": true,
-          "v-text-field": true,
-          "v-btn": true,
+          "v-form": VFormStub,
+          VTextField: VTextFieldStub,
+          "v-btn": VBtnStub,
           StepperDialogHeader: true,
           PolicyStepper: true,
           OrganisationStepper: true,
@@ -110,10 +119,13 @@ describe("SaveSearchStepper.vue", () => {
         },
       },
     });
+    wrappers.push(wrapper);
+    return wrapper;
   };
 
   afterEach(() => {
-    vi.clearAllMocks();
+    wrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+    vi.resetAllMocks();
   });
 
   describe("Watchers: getSaveSearchStepperDialog", () => {
@@ -237,5 +249,123 @@ describe("SaveSearchStepper.vue", () => {
         "fake-token",
       );
     });
+  });
+
+  it.each([false, true])(
+    "navigates the available step headers and buttons for super curator=%s",
+    async (isSuperCurator) => {
+      const wrapper = createWrapper(isSuperCurator);
+      const headers = wrapper.findAll("v-stepper-header-stub > div");
+      expect(headers).toHaveLength(isSuperCurator ? 4 : 2);
+      for (let index = 0; index < headers.length; index++) {
+        await headers[index].trigger("click");
+        expect(wrapper.vm.steps).toBe(index + 1);
+      }
+      const continues = wrapper
+        .findAll("button")
+        .filter((button) => button.text() === "Continue");
+      expect(continues).toHaveLength(isSuperCurator ? 3 : 1);
+      for (let index = 0; index < continues.length; index++) {
+        await continues[index].trigger("click");
+        expect(wrapper.vm.steps).toBe(index + 2);
+      }
+      const backs = wrapper
+        .findAll("button")
+        .filter((button) => button.text() === "Back");
+      for (let index = 0; index < backs.length; index++) {
+        await backs[index].trigger("click");
+        expect(wrapper.vm.steps).toBe(index + 1);
+      }
+    },
+  );
+
+  it("updates form models and saves through the enabled Save button", async () => {
+    const wrapper = createWrapper();
+    const save = wrapper
+      .findAll("button")
+      .find((button) => button.text() === "Save");
+    expect(save.attributes("disabled")).toBeDefined();
+    await wrapper
+      .get('input[aria-label="Search Name"]')
+      .setValue("A saved search");
+    await wrapper
+      .get('input[aria-label="Comments"]')
+      .setValue("Search comment");
+    wrapper.findComponent(VFormStub).vm.$emit("update:modelValue", true);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.searchName).toBe("A saved search");
+    expect(wrapper.vm.searchComment).toBe("Search comment");
+    expect(save.attributes("disabled")).toBeUndefined();
+    mockSaveSearchAPI.mockResolvedValueOnce({ id: 72 });
+    await save.trigger("click");
+    await flushPromises();
+    expect(mockSaveSearchAPI).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "A saved search",
+        comments: "Search comment",
+      }),
+      "fake-token",
+    );
+    expect(wrapper.vm.searchName).toBe("");
+    expect(wrapper.vm.searchComment).toBe("");
+  });
+
+  it("handles Escape and restart events from the header and result card", async () => {
+    const wrapper = createWrapper(false, false);
+    expect(wrapper.findComponent({ name: "PolicyStepper" }).exists()).toBe(
+      false,
+    );
+    wrapper
+      .findComponent({ name: "ResultCard" })
+      .vm.$emit("restart-stepper", 2);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.steps).toBe(2);
+    wrapper
+      .findComponent({ name: "StepperDialogHeader" })
+      .vm.$emit("restart-stepper", 1);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.steps).toBe(1);
+    await wrapper.get("v-dialog-stub").trigger("keydown", { key: "Escape" });
+    expect(store.commit).toHaveBeenCalledWith(
+      "saveSearch/setSaveSearchStepperDialog",
+      false,
+    );
+  });
+
+  it("reacts to the dialog getter opening and closing without fetching on close", async () => {
+    const wrapper = createWrapper(true, true, {
+      getSaveSearchStepperDialog: (state) => state.open,
+    });
+    const state = store.state.saveSearch;
+    state.open = true;
+    await flushPromises();
+    state.open = false;
+    await flushPromises();
+    expect(wrapper.vm.stepperDialog).toBe(false);
+    actions.getUser.mockClear();
+    state.open = true;
+    await flushPromises();
+    expect(wrapper.vm.stepperDialog).toBe(true);
+    expect(wrapper.vm.isSuperCurator).toBe(true);
+    expect(actions.getUser).toHaveBeenCalledTimes(1);
+    state.open = false;
+    await flushPromises();
+    expect(wrapper.vm.stepperDialog).toBe(false);
+    expect(actions.getUser).toHaveBeenCalledTimes(1);
+  });
+
+  it("falls back to the current user when no user selection exists", async () => {
+    const wrapper = createWrapper(false, true, { getUserSelected: () => null });
+    mockSaveSearchAPI.mockResolvedValueOnce(undefined);
+    await wrapper.vm.saveSearch();
+    expect(mockSaveSearchAPI).toHaveBeenCalledWith(
+      expect.objectContaining({ user_ids: [1] }),
+      "fake-token",
+    );
+    expect(store.commit).toHaveBeenCalledWith(
+      "saveSearch/setSaveSearchStatus",
+      true,
+    );
+    expect(wrapper.vm.loading).toBe(false);
   });
 });

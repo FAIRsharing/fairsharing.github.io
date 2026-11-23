@@ -1,5 +1,4 @@
 import { vi } from "vitest";
-import { defineComponent, h } from "vue";
 import { globalFilters } from "../src/utils/setupUtils.js";
 // ============================================================
 // 1. Vue Test Utils compatibility
@@ -10,53 +9,7 @@ vi.mock("@vue/test-utils", async () => {
 
   actual.config.global.renderStubDefaultSlot = true;
 
-  // Generic Vuetify stub.
-  // Prevents read-only DOM property errors such as `prefix`.
-  const makeInertStub = (name) =>
-    defineComponent({
-      name,
-      inheritAttrs: false,
-
-      setup(_, { slots }) {
-        return () =>
-          h(
-            "div",
-            {
-              "data-test": name.toLowerCase(),
-            },
-            slots.default?.() || [],
-          );
-      },
-    });
-
-  // Text input stub supporting v-model.
-  const makeTextInputStub = (name, tag = "input") =>
-    defineComponent({
-      name,
-
-      props: {
-        modelValue: {
-          default: null,
-        },
-      },
-
-      emits: ["update:modelValue"],
-
-      setup(props, { emit, attrs }) {
-        return () =>
-          h(tag, {
-            ...attrs,
-
-            "data-test": name.toLowerCase(),
-
-            value: props.modelValue ?? "",
-
-            onInput: (event) => {
-              emit("update:modelValue", event.target.value);
-            },
-          });
-      },
-    });
+  const { makeInertStub, makeTextInputStub } = await import("./stubs/index.js");
 
   const normalizeOptions = (options = {}) => {
     const normalized = { ...options };

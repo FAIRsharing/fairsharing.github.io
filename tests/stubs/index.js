@@ -26,3 +26,5 @@ export { VDataTableFooterStub } from "./VDataTableFooterStub.js";
 export { VSkeletonLoaderStub } from "./VSkeletonLoaderStub.js";
 export { VDataTableSlotsStub } from "./VDataTableSlotsStub.js";
 export { VTabStub } from "./VTabStub.js";
+export { makeInertStub } from "./makeInertStub.js";
+export { makeTextInputStub } from "./makeTextInputStub.js";

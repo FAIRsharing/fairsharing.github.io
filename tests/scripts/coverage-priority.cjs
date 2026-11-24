@@ -78,22 +78,53 @@ function getMetrics({ total, covered, pct }) {
   };
 }
 
-function findSpecs(directory, componentName, specFiles) {
-  if (!fs.existsSync(directory)) return;
+function findSpecs(directory, specFiles = []) {
+  if (!fs.existsSync(directory)) return specFiles;
 
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const fullPath = path.join(directory, entry.name);
 
     if (entry.isDirectory()) {
-      findSpecs(fullPath, componentName, specFiles);
+      findSpecs(fullPath, specFiles);
     }
     else if (
-      entry.name === `${componentName}.spec.js` ||
-      entry.name === `${componentName}.test.js`
+      /\.(spec|test)\.[cm]?[jt]sx?$/.test(entry.name)
     ) {
       specFiles.push(path.relative(root, fullPath));
     }
   }
+  return specFiles;
+}
+
+const specFiles = findSpecs(path.join(root, "tests/unit"));
+const specContents = new Map(specFiles.map((spec) => [
+  spec, fs.readFileSync(path.join(root, spec), "utf8"),
+]));
+
+function matchingSpecs(file) {
+  const sourcePath = path.resolve(root, file);
+  const sourceStem = sourcePath.slice(0, -path.extname(sourcePath).length);
+  const mirroredStem = path.join("tests/unit", path.relative("src", file))
+    .replace(/\.[^.]+$/, "");
+  const mirrored = specFiles.filter((spec) =>
+    spec.replace(/\.(spec|test)\.[cm]?[jt]sx?$/, "").toLowerCase() === mirroredStem.toLowerCase(),
+  );
+  if (mirrored.length) return mirrored;
+
+  // Non-mirrored specs may have the same name as unrelated components.
+  // Match their imports to the source path rather than guessing by basename.
+  return specFiles.filter((spec) => {
+    const contents = specContents.get(spec);
+    const imports = contents.matchAll(/(?:from\s*|import\s*\(?\s*|require\s*\(\s*)["']([^"']+)["']/g);
+    return [...imports].some(([, imported]) => {
+      const target = imported.startsWith("@/")
+        ? path.resolve(root, "src", imported.slice(2))
+        : imported.startsWith(".")
+          ? path.resolve(root, path.dirname(spec), imported)
+          : null;
+      return target === sourcePath || target === sourceStem;
+    });
+  });
 }
 
 const results = Object.entries(coverage)
@@ -111,6 +142,7 @@ const results = Object.entries(coverage)
 
     return {
       file: relativeFile,
+      specFiles: matchingSpecs(relativeFile),
       statements,
       functions,
       branches,
@@ -123,14 +155,14 @@ const results = Object.entries(coverage)
 
 console.log(`Files below ${threshold}% in at least one metric: ${results.length}`);
 console.table(
-  results.map((item) => ({
-    file: item.file,
+  results.flatMap((item) => (item.specFiles.length ? item.specFiles : ["No matching spec found"]).map((spec) => ({
+    spec,
     statements: `${item.statements.percentage}%`,
     branches: `${item.branches.percentage}%`,
     functions: `${item.functions.percentage}%`,
     lines: `${item.lines.percentage}%`,
     priority: item.priority,
-  })),
+  }))),
 );
 
 const markdown = [
@@ -148,11 +180,7 @@ if (!results.length) {
 }
 
 for (const [index, item] of results.entries()) {
-  const componentName = path.basename(item.file, path.extname(item.file));
-
-  const specFiles = [];
-
-  findSpecs(path.join(root, "tests/unit"), componentName, specFiles);
+  const specFiles = item.specFiles;
 
   markdown.push(
     `## ${index + 1}. ${item.file}`,

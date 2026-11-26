@@ -10,6 +10,14 @@ export const VAutocompleteStub = {
       type: String,
       default: null,
     },
+    search: {
+      type: String,
+      default: null,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     items: {
       type: Array,
       default: () => [],
@@ -43,7 +51,7 @@ export const VAutocompleteStub = {
       default: false,
     },
   },
-  emits: ["update:modelValue", "update:searchInput"],
+  emits: ["update:modelValue", "update:searchInput", "update:search"],
   computed: {
     safeItems() {
       return Array.isArray(this.items) ? this.items : [];

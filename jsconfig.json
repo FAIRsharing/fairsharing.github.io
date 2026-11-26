@@ -1,4 +1,4 @@
 {
   "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["src/*"] } },
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "dist_*", "coverage", "documentation"]
 }

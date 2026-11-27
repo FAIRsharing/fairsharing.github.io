@@ -1,7 +1,13 @@
 import { shallowMount } from "@vue/test-utils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createVuetify } from "vuetify";
-import { defineComponent, h } from "vue";
+import {
+  VBtnStub,
+  VCheckboxArrayStub,
+  VFormStub,
+  VIconStub,
+  VTextFieldStub,
+} from "../../../../../stubs/index.js";
 
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
@@ -12,65 +18,36 @@ const $route = { path: "/search", query: {} };
 
 const vuetify = createVuetify();
 
-const textFieldStub = defineComponent({
-  name: "VTextField",
-  props: {
-    modelValue: {
-      type: [String, Number, Object],
-      default: "",
-    },
-    prefix: {
-      type: String,
-      default: "",
-    },
-    label: {
-      type: String,
-      default: "",
-    },
-    rules: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  emits: ["update:modelValue"],
-  setup(_, { slots }) {
-    return () => h("div", slots.default?.());
-  },
-});
-
 describe("StringSearch.vue", () => {
-  const getWrapper = (props = {}) =>
-    shallowMount(StringSearch, {
+  const wrappers = [];
+  const stubs = {
+    VForm: VFormStub,
+    VTextField: VTextFieldStub,
+    VBtn: VBtnStub,
+    VIcon: VIconStub,
+    VCheckbox: VCheckboxArrayStub,
+    AdvancedSearch: true,
+  };
+  const getWrapper = (props = {}) => {
+    const instance = shallowMount(StringSearch, {
       props,
-      global: {
-        plugins: [vuetify],
-        mocks: { $router, $route },
-        stubs: {
-          "v-form": {
-            template: "<form><slot /></form>",
-            methods: {
-              resetValidation: vi.fn(),
-              validate: vi.fn().mockReturnValue(true),
-            },
-          },
-          "v-text-field": textFieldStub,
-          VTextField: textFieldStub,
-          AdvancedSearch: true,
-          "v-btn": true,
-          "v-icon": true,
-          "v-checkbox": true,
-        },
-      },
+      global: { plugins: [vuetify], mocks: { $router, $route }, stubs },
     });
+    wrappers.push(instance);
+    return instance;
+  };
 
-  let wrapper = getWrapper();
-  let wrapper2 = getWrapper();
+  let wrapper;
+  let wrapper2;
 
   beforeEach(() => {
-    $router.push.mockClear();
+    vi.clearAllMocks();
+    $route.query = {};
     wrapper = getWrapper();
     wrapper2 = getWrapper();
   });
+
+  afterEach(() => wrappers.splice(0).forEach((instance) => instance.unmount()));
 
   it("can mount", () => {
     expect(wrapper.vm.$options.name).toBe("StringSearch");
@@ -194,24 +171,11 @@ describe("StringSearch.vue", () => {
             query: { page: 2, fairsharingRegistry: "standard" },
           },
         },
-        stubs: {
-          "v-form": {
-            template: "<form><slot /></form>",
-            methods: {
-              resetValidation: vi.fn(),
-              validate: vi.fn().mockReturnValue(true),
-            },
-          },
-          "v-text-field": textFieldStub,
-          VTextField: textFieldStub,
-          AdvancedSearch: true,
-          "v-btn": true,
-          "v-icon": true,
-          "v-checkbox": true,
-        },
+        stubs,
       },
     });
 
+    wrappers.push(wrapperWithQuery);
     wrapperWithQuery.vm.searchTerm = "testString";
     wrapperWithQuery.vm.$refs.form.resetValidation = vi.fn();
 
@@ -223,6 +187,86 @@ describe("StringSearch.vue", () => {
         page: 2,
         fairsharingRegistry: "standard",
         q: "testString",
+      },
+    });
+  });
+
+  it("updates the search field and form model, then searches on submit", async () => {
+    const field = wrapper.get('input[data-test="v-text-field"]');
+    await field.setValue("genomics!");
+    wrapper.findComponent(VFormStub).vm.$emit("update:modelValue", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.searchTerm).toBe("genomics!");
+    expect(wrapper.vm.formValid).toBe(false);
+    await wrapper.get("form").trigger("submit");
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/search",
+      query: { q: "genomics " },
+    });
+    expect(VFormStub.methods.resetValidation).toHaveBeenCalled();
+  });
+
+  it("searches through the normal Search button and forwards the term to advanced search", async () => {
+    await wrapper.get('input[data-test="v-text-field"]').setValue("genomics");
+    expect(
+      wrapper
+        .findComponent({ name: "AdvancedSearch" })
+        .attributes("advanced-search-term"),
+    ).toBe("genomics");
+    await wrapper.get("button.search-btn").trigger("click");
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/search",
+      query: { q: "genomics" },
+    });
+  });
+
+  it("only clears the search when AdvancedSearch requests it", async () => {
+    await wrapper.setData({ searchTerm: "Keep me" });
+    const advanced = wrapper.findComponent({ name: "AdvancedSearch" });
+    advanced.vm.$emit("clear-search-field", false);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.searchTerm).toBe("Keep me");
+    advanced.vm.$emit("clear-search-field", true);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.searchTerm).toBeNull();
+  });
+
+  it("uses a custom search path and placeholder", async () => {
+    wrapper = getWrapper({
+      searchPath: "/custom-search",
+      placeholder: "Search resources",
+    });
+    expect(wrapper.get("input").attributes("placeholder")).toBe(
+      "Search resources",
+    );
+    await wrapper.get("input").setValue("biology");
+    await wrapper.get("button").trigger("click");
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/custom-search",
+      query: { q: "biology" },
+    });
+  });
+
+  it("updates home registry choices through checkboxes and searches the selected registries", async () => {
+    wrapper = getWrapper({ showHomeSearch: true });
+    expect(wrapper.findComponent({ name: "AdvancedSearch" }).exists()).toBe(
+      false,
+    );
+    expect(wrapper.findAll('input[type="checkbox"]')).toHaveLength(4);
+    await wrapper.get('input[aria-label="standards"]').setValue(false);
+    expect(wrapper.vm.selectedRegistries.map((item) => item.value)).toEqual([
+      "database",
+      "policy",
+      "collection",
+    ]);
+    await wrapper.get('input[data-test="v-text-field"]').setValue("biology");
+    await wrapper.get("button.home-page-search-btn").trigger("click");
+    expect($router.push).toHaveBeenCalledWith({
+      path: "/search",
+      query: {
+        q: "biology",
+        fairsharingRegistry: "database,policy,collection",
+        searchAnd: false,
       },
     });
   });

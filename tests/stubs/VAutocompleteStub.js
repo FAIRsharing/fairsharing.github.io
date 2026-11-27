@@ -102,8 +102,7 @@ export const VAutocompleteStub = {
         const selectedItem =
           value === "" ? null : this.safeItems[Number(value)];
         this.$emit("update:modelValue", selectedItem ?? null);
-      }
-      else {
+      } else {
         this.$emit("update:modelValue", value);
       }
     },
@@ -149,6 +148,9 @@ export const VAutocompleteStub = {
                 :item="{ raw: selected }"
             />
           </template>
+        </div>
+        <div v-if="$slots.selection && modelValue != null" data-test="v-autocomplete-selection">
+          <slot name="selection" :item="{ raw: modelValue, title: modelValue[itemTitle] || '' }" />
         </div>
         <!-- Select input -->
         <select

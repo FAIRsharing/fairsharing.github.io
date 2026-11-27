@@ -5,6 +5,7 @@ export const VFormStub = {
   emits: ["update:modelValue"],
   methods: {
     validate: vi.fn(),
+    resetValidation: vi.fn(),
   },
   template: `
     <form class="v-form-stub">

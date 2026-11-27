@@ -1,4 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { reactive } from "vue";
+import { QueryBuilderStub, VIconStub } from "../../../../../../stubs/index.js";
 import { shallowMount } from "@vue/test-utils";
 import QueryBuilderView from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderView.vue";
 
@@ -27,15 +29,9 @@ vi.mock("@/utils/advancedSearchUtils", async (importOriginal) => {
 });
 
 // 4. Completely intercept the third-party library
-vi.mock("query-builder-vue-3", () => {
-  return {
-    default: {
-      name: "QueryBuilder",
-      props: ["modelValue", "config"],
-      template:
-        "<div><slot name='groupOperator'></slot><slot name='groupControl'></slot></div>",
-    },
-  };
+vi.mock("query-builder-vue-3", async () => {
+  const { QueryBuilderStub } = await import("../../../../../../stubs/index.js");
+  return { default: QueryBuilderStub };
 });
 
 // 5. Proxy-mock the component file to bypass massive multi-import loads
@@ -45,42 +41,47 @@ vi.mock("./QueryBuilderComponents", () => {
 
 describe("QueryBuilderView.vue", () => {
   let wrapper;
+  const wrappers = [];
 
   // Helper function to mount with custom props and Vuex getters
   const createWrapper = (props = {}, getters = {}) => {
-    return shallowMount(QueryBuilderView, {
+    const instance = shallowMount(QueryBuilderView, {
       props,
       global: {
         mocks: {
           // FIX: Pass the hoisted mockCommit spy straight into the global mock config block
           $store: {
             commit: mockCommit,
-            getters: {
+            getters: reactive({
               "advancedSearch/getEditDialogStatus": false,
               "advancedSearch/getEditAdvancedSearch": {
                 operatorIdentifier: "_and",
                 children: [],
               },
               ...getters,
-            },
+            }),
             _modulesNamespaceMap: {
               "advancedSearch/": true,
             },
           },
         },
         stubs: {
-          "query-builder": true,
+          QueryBuilder: QueryBuilderStub,
           GroupCtrlSlot: true,
-          "v-icon": true,
+          VIcon: VIconStub,
         },
       },
     });
+    wrappers.push(instance);
+    return instance;
   };
 
   beforeEach(() => {
     mockCommit.mockClear();
-    mockUniqueValues.mockClear();
+    mockUniqueValues.mockReset().mockImplementation((children) => children);
   });
+
+  afterEach(() => wrappers.splice(0).forEach((instance) => instance.unmount()));
 
   it("evaluates rule initialValues correctly (functions return fresh arrays, strings return empty strings)", () => {
     wrapper = createWrapper();
@@ -268,5 +269,120 @@ describe("QueryBuilderView.vue", () => {
         complexQuery,
       );
     });
+  });
+
+  it("renders operator choices and updates the query through the operator select", async () => {
+    wrapper = createWrapper();
+    const select = wrapper.get("select.operatorSelect");
+    expect(
+      select
+        .findAll("option")
+        .slice(1)
+        .map((option) => option.attributes("value")),
+    ).toEqual(["_and", "_or"]);
+    expect(wrapper.text()).toContain(
+      "Select an Operator to apply across all groups",
+    );
+    await select.setValue("_or");
+    expect(wrapper.vm.query.operatorIdentifier).toBe("_or");
+    expect(mockCommit).toHaveBeenCalledWith(
+      "advancedSearch/setAdvancedSearch",
+      { operatorIdentifier: "_or", children: [] },
+    );
+    expect(
+      wrapper.findComponent({ name: "GroupCtrlSlot" }).props("groupCtrl").group,
+    ).toEqual(wrapper.vm.query);
+  });
+
+  it("filters empty edit groups and leaves the original query unchanged", () => {
+    const query = {
+      operatorIdentifier: "_or",
+      children: [
+        { operatorIdentifier: "_and" },
+        { operatorIdentifier: "_and", children: [] },
+        {
+          operatorIdentifier: "_or",
+          children: [{ identifier: "registry", value: ["Database"] }],
+        },
+      ],
+    };
+    const original = structuredClone(query);
+    wrapper = createWrapper(
+      {},
+      { "advancedSearch/getEditAdvancedSearch": query },
+    );
+    expect(wrapper.vm.uniqueGetEditAdvancedSearch).toEqual({
+      operatorIdentifier: "_or",
+      children: [query.children[2]],
+    });
+    expect(mockUniqueValues).toHaveBeenCalledExactlyOnceWith(
+      query.children[2].children,
+    );
+    expect(query).toEqual(original);
+  });
+
+  it("handles an edit query with no children", () => {
+    wrapper = createWrapper(
+      {},
+      { "advancedSearch/getEditAdvancedSearch": { operatorIdentifier: "_or" } },
+    );
+    expect(wrapper.vm.uniqueGetEditAdvancedSearch).toEqual({
+      operatorIdentifier: "_or",
+      children: [],
+    });
+    expect(mockUniqueValues).not.toHaveBeenCalled();
+  });
+
+  it("responds to edit status changes and preserves edits while reopening the dialog", async () => {
+    const query = {
+      operatorIdentifier: "_or",
+      children: [
+        {
+          operatorIdentifier: "_and",
+          children: [{ identifier: "registry", value: ["Database"] }],
+        },
+      ],
+    };
+    wrapper = createWrapper(
+      {},
+      { "advancedSearch/getEditAdvancedSearch": query },
+    );
+    wrapper.vm.$store.getters["advancedSearch/getEditDialogStatus"] = true;
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.query).toEqual(query);
+    await wrapper.setProps({ isDialog: true });
+    expect(wrapper.vm.query).toEqual(query);
+    await wrapper.setProps({ isDialog: false });
+    expect(wrapper.vm.query).toEqual(query);
+    wrapper.vm.$store.getters["advancedSearch/getEditDialogStatus"] = false;
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.query).toEqual(query);
+    await wrapper.setProps({ isDialog: true });
+    expect(wrapper.vm.query).toEqual({
+      operatorIdentifier: "_and",
+      children: [{ operatorIdentifier: "_and", children: [] }],
+    });
+  });
+
+  it("does not save empty groups as edit selections", async () => {
+    wrapper = createWrapper();
+    await wrapper.setData({
+      query: {
+        operatorIdentifier: "_or",
+        children: [
+          { operatorIdentifier: "_and" },
+          { operatorIdentifier: "_or", children: [] },
+        ],
+      },
+    });
+    expect(mockCommit).toHaveBeenCalledWith(
+      "advancedSearch/setAdvancedSearch",
+      wrapper.vm.query,
+    );
+    expect(
+      mockCommit.mock.calls.some(
+        ([mutation]) => mutation === "advancedSearch/setEditAdvancedSearch",
+      ),
+    ).toBe(false);
   });
 });

@@ -38,7 +38,7 @@ describe("+Layout.vue", () => {
   it("keeps the application shell hidden during server rendering", async () => {
     const app = createSSRApp(Layout);
     app.use(store);
-    app.component("router-view", VSlotStub);
+    app.component("RouterView", VSlotStub);
     const container = document.createElement("div");
     container.innerHTML = await renderToString(app);
     expect(container.childElementCount).toBe(0);

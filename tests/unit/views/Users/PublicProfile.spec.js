@@ -1,4 +1,4 @@
-import { RouterLinkStub, shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
 import Vuex from "vuex";
 
@@ -9,7 +9,12 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import editorStore from "@/store/editor";
 import usersStore from "@/store/users";
 import PublicProfile from "@/views/Users/PublicProfile";
-import User from "@/views/Users/User";
+import {
+  VBtnStub,
+  VDialogStub,
+  VOverlayStub,
+  VSlotStub,
+} from "../../../stubs/index.js";
 
 const $store = new Vuex.Store({
   modules: {
@@ -22,6 +27,7 @@ let $route = {
   params: { id: 12345 },
 };
 
+const initialUser = usersStore.state.user;
 const $router = { push: vi.fn() };
 
 describe("PublicProfile.vue", () => {
@@ -31,7 +37,24 @@ describe("PublicProfile.vue", () => {
   let externalClientStub;
   let getpubs;
 
-  beforeAll(() => {
+  const wrappers = [];
+  const mountProfile = () => {
+    const instance = shallowMount(PublicProfile, {
+      mocks: { $store, $router, $route },
+      stubs: {
+        VBtn: VBtnStub,
+        VDialog: VDialogStub,
+        VOverlay: VOverlayStub,
+        VListItem: VSlotStub,
+      },
+    });
+    wrappers.push(instance);
+    return instance;
+  };
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    $store.state.users.user = initialUser;
     restStub = sinon.stub(Client.prototype, "executeQuery").returns({
       data: { id: "12345", name: "mrgoatse", orcid: "123" },
     });
@@ -49,16 +72,15 @@ describe("PublicProfile.vue", () => {
     externalClientStub = sinon
       .stub(ExternalClient.prototype, "executeQuery")
       .returns({ data: ORCIDfixture });
-    wrapper = shallowMount(PublicProfile, {
-      mocks: { $store, $router, $route },
-    });
+    wrapper = mountProfile();
     getpubs = vi.spyOn(wrapper.vm, "getPublications");
+    await flushPromises();
   });
 
-  afterAll(() => {
-    restStub.restore();
-    graphStub.restore();
-    externalClientStub.restore();
+  afterEach(() => {
+    wrappers.splice(0).forEach((instance) => instance.unmount());
+    sinon.restore();
+    vi.restoreAllMocks();
   });
 
   it("can be instantiated", () => {
@@ -83,39 +105,166 @@ describe("PublicProfile.vue", () => {
   });
 
   it("doesn't look for publications if the user doesn't load", async () => {
-    graphStub.restore();
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      user: { orcid: "123456" },
-    });
-    wrapper = shallowMount(PublicProfile, {
-      mocks: { $store, $router, $route },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    expect(getpubs).toHaveBeenCalledTimes(3);
-    graphStub.restore();
-    graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-      error: "error",
-    });
-    wrapper = shallowMount(PublicProfile, {
-      mocks: { $store, $router, $route },
-      stubs: { RouterLink: RouterLinkStub },
-    });
-    //expect(wrapper.vm.publications).toStrictEqual([]);
-    // This has already been called thrice; it shouldn't have been called again here.
-    expect(getpubs).toHaveBeenCalledTimes(3);
+    graphStub.returns({ error: "User not found" });
+    wrapper = mountProfile();
+    const publications = vi.spyOn(wrapper.vm, "getPublications");
+    await flushPromises();
+    expect(publications).not.toHaveBeenCalled();
+    expect(wrapper.vm.publications).toStrictEqual([]);
+    expect(wrapper.vm.error).toBe(true);
+    expect(wrapper.findComponent({ name: "NotFound" }).exists()).toBe(true);
+    expect(wrapper.vm.loading).toBe(false);
   });
 
   it("handles publications errors", async () => {
-    /*
-     * TODO: This test does not address normal conditions, i.e. no error returned by the
-     * TODO: external query. For unknown reasons publications are always [] even though
-     * TODO: the Vue methods are getting data from the stub correctly.
-     */
-    externalClientStub.returns({ data: { error: "error" } });
-    let wrapper = await shallowMount(User, {
-      mocks: { $store, $router, $route },
-      stubs: { RouterLink: RouterLinkStub },
+    externalClientStub.returns({ data: { error: "Unavailable" } });
+    expect(await wrapper.vm.getPublications()).toStrictEqual([]);
+  });
+
+  it("builds publication URLs from DOI URLs and values, keeping unlinked works", async () => {
+    const work = (title, externalIds) => ({
+      "work-summary": [
+        {
+          title: { title: { value: title } },
+          ...(externalIds === undefined ? {} : { "external-ids": externalIds }),
+        },
+      ],
     });
-    expect(wrapper.vm.publications).toStrictEqual([]);
+    externalClientStub.returns({
+      data: {
+        "activities-summary": {
+          works: {
+            group: [
+              work("URL", {
+                "external-id": [
+                  {
+                    "external-id-type": "doi",
+                    "external-id-url": { value: "https://doi.org/10.1/url" },
+                  },
+                ],
+              }),
+              work("Value", {
+                "external-id": [
+                  {
+                    "external-id-type": "doi",
+                    "external-id-value": "10.1/value",
+                  },
+                ],
+              }),
+              work("Other", {
+                "external-id": [{ "external-id-type": "isbn" }],
+              }),
+              work("Empty DOI", {
+                "external-id": [{ "external-id-type": "doi" }],
+              }),
+              work("No ids"),
+              work("Empty ids", {}),
+              work("Seventh"),
+              work("Eighth"),
+            ],
+          },
+        },
+      },
+    });
+    const result = await wrapper.vm.getPublications();
+    expect(result).toEqual([
+      { title: "URL", url: "https://doi.org/10.1/url" },
+      { title: "Value", url: "https://doi.org/10.1/value" },
+      ...["Other", "Empty DOI", "No ids", "Empty ids", "Seventh"].map(
+        (title) => ({ title, url: null }),
+      ),
+    ]);
+    await wrapper.setData({ publications: result });
+    expect(wrapper.find('a[href="https://doi.org/10.1/url"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.text()).toContain("Other (No available link)");
+  });
+
+  it("renders missing personal details, preferences and an empty publication list", async () => {
+    await wrapper.setData({
+      publications: [],
+      userData: {
+        user: {
+          username: "reader",
+          homepage: null,
+          orcid: null,
+          preferences: {},
+          maintainedRecords: [],
+          organisations: [],
+          editEvents: [],
+          role: "user",
+          awards: [],
+          thirdParty: false,
+          createdSearches: [],
+          savedSearches: [],
+        },
+      },
+    });
+    expect(wrapper.vm.getPublicUserMeta).toEqual({
+      email: "mrg@goatse.cx",
+      firstName: "Mr.",
+      lastName: "Goatse",
+      username: "reader",
+      homepage: null,
+      orcid: null,
+      preferences: {},
+    });
+    expect(wrapper.vm.userData.user).toHaveProperty("maintainedRecords");
+    expect(wrapper.text()).toContain("None");
+    expect(wrapper.text()).toContain("does not have any publications");
+    expect(wrapper.find('a[href^="https://orcid.org/"]').exists()).toBe(false);
+  });
+
+  it("only allows super curators to open the deletion dialog and delete accounts", async () => {
+    const account = {
+      is_super_curator: false,
+      credentials: { token: "admin-token" },
+    };
+    $store.state.users.user = () => account;
+    restStub.resetHistory();
+    wrapper.vm.showDeleteDialog();
+    await wrapper.vm.deleteAccount();
+    expect(wrapper.vm.confirmDelete).toBe(false);
+    expect(restStub.called).toBe(false);
+    expect($router.push).not.toHaveBeenCalled();
+
+    account.is_super_curator = true;
+    wrapper
+      .findComponent({ name: "UserProfileMenu" })
+      .vm.$emit("show-confirm-delete");
+    await wrapper.vm.$nextTick();
+    expect(wrapper.get('[data-test="v-dialog"]').text()).toContain(
+      "Deleting User Account!",
+    );
+    await wrapper
+      .findAll("button")
+      .find((button) => button.text() === "Cancel")
+      .trigger("click");
+    expect(wrapper.vm.confirmDelete).toBe(false);
+    wrapper.vm.showDeleteDialog();
+    await wrapper.vm.$nextTick();
+    await wrapper
+      .findAll("button")
+      .find((button) => button.text() === "Delete")
+      .trigger("click");
+    await flushPromises();
+    expect(restStub.firstCall.args[0]).toMatchObject({
+      method: "delete",
+      baseURL: expect.stringContaining("/user_admin/12345"),
+      headers: { Authorization: expect.stringContaining("admin-token") },
+    });
+    expect($router.push).toHaveBeenCalledWith({ path: "/" });
+  });
+
+  it("updates the dialog and loading overlay models", async () => {
+    wrapper.findComponent(VDialogStub).vm.$emit("update:modelValue", true);
+    wrapper.findComponent(VOverlayStub).vm.$emit("update:modelValue", true);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.confirmDelete).toBe(true);
+    expect(wrapper.vm.loading).toBe(true);
+    expect(wrapper.findComponent({ name: "RecordsTable" }).exists()).toBe(
+      false,
+    );
   });
 });

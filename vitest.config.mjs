@@ -75,7 +75,7 @@ export default defineConfig(async (env) => {
           "tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
         coverage: {
           provider: "v8", // or 'istanbul'
-          include: ["src/**/*.js"],
+          include: ["src/**/*.{js,vue}"],
           // In v3, 'all' is true by default, which might "drop" your %
           // because it now counts untested files.
           all: true,
@@ -99,13 +99,9 @@ export default defineConfig(async (env) => {
             ".eslintrc.cjs",
             "vite.config.mjs",
             "vitest.config.mjs",
-            "vue.config.js",
-            "webpack.config.js",
-            "views/Records/NetworkGraph.vue",
             "src/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/index.js",
             "src/components/Records/Search/SaveSearch/StepperComponents/index.js",
             "src/components/Curators/index.js",
-            "src/components/Editor/GeneralInformation/BaseFields.vue",
             "src/utils/query-builder-vue-3/**"
           ],
           reportOnFailure: true,

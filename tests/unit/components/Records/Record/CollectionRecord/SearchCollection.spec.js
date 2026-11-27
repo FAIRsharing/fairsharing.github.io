@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { shallowMount } from "@vue/test-utils";
+import { flushPromises, shallowMount } from "@vue/test-utils";
 import { createVuetify } from "vuetify";
 import Vuex from "vuex";
 
@@ -16,7 +16,6 @@ import userStore from "@/store/users";
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 
 const sinon = require("sinon");
-const axios = require("axios");
 
 const vuetify = createVuetify();
 
@@ -87,23 +86,22 @@ Record.state.currentRecord["fairsharingRecord"] = {
 
 describe("SearchCollection.vue", function () {
   let wrapper;
-  let stub = sinon.stub(Client.prototype, "executeQuery");
+  let stub;
 
-  beforeAll(() => {
-    stub
-      .withArgs(sinon.match.object)
-      .returns({ searchFairsharingRecords: { records: [{ name: "name A" }] } });
-  });
-
-  afterAll(() => {
-    try {
-      Client.prototype.executeQuery.restore();
-    } catch {
-      // eslint-disable-next-line no-empty
-    }
+  afterEach(async () => {
+    await flushPromises();
+    wrapper.unmount();
+    stub.restore();
+    document.getElementById("topElement")?.remove();
   });
 
   beforeEach(async () => {
+    stub = sinon.stub(Client.prototype, "executeQuery").resolves({
+      searchFairsharingRecords: {
+        records: [{ name: "name A" }],
+        aggregations: {},
+      },
+    });
     $route.query = {};
     //-- making a mock div element
     const element = document.createElement("div");
@@ -116,6 +114,7 @@ describe("SearchCollection.vue", function () {
       vuetify,
       attachTo: element,
     });
+    await flushPromises();
   });
 
   it("can be instantiated", () => {
@@ -133,17 +132,13 @@ describe("SearchCollection.vue", function () {
   });
 
   it("can correctly raise an error", async () => {
-    Client.prototype.executeQuery.restore();
-    sinon
-      .stub(axios, "post")
-      .withArgs(sinon.match.any)
-      .returns({
-        data: {
-          errors: [{ message: "Error" }],
-        },
-      });
-    await expect(wrapper.vm.prepareCollectionData()).rejects;
-    axios.post.restore();
+    const fetchRecords = vi
+      .spyOn(wrapper.vm, "fetchCollectionRecords")
+      .mockRejectedValue(new Error("Collection query failed"));
+    await wrapper.vm.prepareCollectionData();
+    expect(wrapper.vm.errors).toBe("Collection query failed");
+    expect(fetchRecords).toHaveBeenCalled();
+    fetchRecords.mockRestore();
   });
 
   it("can react to router changes", async () => {
@@ -152,6 +147,7 @@ describe("SearchCollection.vue", function () {
       mocks: { $route, $store },
       vuetify,
     });
+    await flushPromises();
     expect(wrapper2.vm.currentPath).toStrictEqual([
       "Collection",
       { fairsharingRegistry: "Collection", page: "2" },
@@ -159,6 +155,7 @@ describe("SearchCollection.vue", function () {
     $route.query = { fairsharingRegistry: "" };
     expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
     wrapper.vm.testEnvironment = true;
+    wrapper2.unmount();
   });
 
   it("can check mounted life cycle properly loads data", async () => {
@@ -190,6 +187,8 @@ describe("SearchCollection.vue", function () {
     expect(queryParameters).toStrictEqual({
       page: "2",
     });
+    await flushPromises();
+    wrapperWithQuery.unmount();
   });
 
   it("can react when no recordAssociation available", async () => {

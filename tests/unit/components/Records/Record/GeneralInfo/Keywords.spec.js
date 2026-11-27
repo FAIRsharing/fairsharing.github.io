@@ -6,6 +6,7 @@ import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 
 import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue";
+import { VIconStub, VTooltipStub } from "../../../../../stubs/index.js";
 
 vi.mock("@/utils/recordsCardUtils", () => ({
   default: {
@@ -70,12 +71,15 @@ describe("Keywords.vue", () => {
         stubs: {
           // Stub the custom tooltip to keep the DOM light
           KeywordTooltip: true,
+          VTooltip: VTooltipStub,
+          VIcon: VIconStub,
         },
       },
     });
   });
 
   afterEach(() => {
+    wrapper.unmount();
     vi.clearAllMocks();
   });
 
@@ -97,11 +101,16 @@ describe("Keywords.vue", () => {
         return [];
       });
 
+      wrapper.unmount();
       wrapper = mount(Keywords, {
         global: {
           plugins: [vuetify, store],
           mocks: { $router: mockRouter },
-          stubs: { KeywordTooltip: true },
+          stubs: {
+            KeywordTooltip: true,
+            VTooltip: VTooltipStub,
+            VIcon: VIconStub,
+          },
         },
       });
 
@@ -115,5 +124,68 @@ describe("Keywords.vue", () => {
         },
       });
     });
+  });
+
+  it("shows an empty state and tooltip for every keyword category", () => {
+    expect(wrapper.findAllComponents({ name: "VChip" })).toHaveLength(0);
+    expect(
+      wrapper.findAll("span").filter((span) => span.text() === "N/A"),
+    ).toHaveLength(5);
+    for (const tooltip of Object.values(store.state.editor.recordTooltips)) {
+      expect(wrapper.text()).toContain(tooltip);
+    }
+    expect(wrapper.findAll('[data-test="v-icon"]')).toHaveLength(5);
+  });
+
+  it.each([
+    "objectTypes",
+    "subjects",
+    "domains",
+    "taxonomies",
+    "userDefinedTags",
+  ])(
+    "renders %s chips and searches with the encoded label when clicked",
+    async (field) => {
+      const item = { label: "Genetics & Health/é", type: field };
+      mockGetField.mockImplementation((key) => (key === field ? [item] : []));
+      wrapper.vm.$forceUpdate();
+      await wrapper.vm.$nextTick();
+      const chips = wrapper.findAllComponents({ name: "VChip" });
+      expect(chips).toHaveLength(1);
+      expect(chips[0].props("color")).toBe("primary-color");
+      const tooltip = chips[0].findComponent({ name: "KeywordTooltip" });
+      expect(tooltip.props("keyword")).toEqual(item);
+      expect(tooltip.props("fullWidth")).toBe(true);
+      await chips[0].trigger("click");
+      expect(mockRouter.push).toHaveBeenCalledExactlyOnceWith({
+        name: "search",
+        query: { [field]: encodeURIComponent(item.label) },
+      });
+    },
+  );
+
+  it("renders multiple keywords and returns to the empty state when they are removed", async () => {
+    const subjects = [{ label: "Genomics" }, { label: "Biology" }];
+    mockGetField.mockImplementation((field) =>
+      field === "subjects" ? subjects : [],
+    );
+    wrapper.vm.$forceUpdate();
+    await wrapper.vm.$nextTick();
+    expect(
+      wrapper
+        .findAllComponents({ name: "KeywordTooltip" })
+        .map((tooltip) => tooltip.props("keyword")),
+    ).toEqual(subjects);
+    expect(
+      wrapper.findAll("span").filter((span) => span.text() === "N/A"),
+    ).toHaveLength(4);
+    mockGetField.mockReturnValue([]);
+    wrapper.vm.$forceUpdate();
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findAllComponents({ name: "VChip" })).toHaveLength(0);
+    expect(
+      wrapper.findAll("span").filter((span) => span.text() === "N/A"),
+    ).toHaveLength(5);
+    expect(mockRouter.push).not.toHaveBeenCalled();
   });
 });

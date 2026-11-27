@@ -1,6 +1,11 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import SelectComponent from "@/components/Records/Search/Input/AdvancedSearch/QueryBuilderComponents/UtilComponents/SelectComponent.vue";
+import {
+  VAutocompleteStub,
+  VIconStub,
+  VTooltipStub,
+} from "../../../../../../../../stubs/index.js";
 
 // Intercept the mixin import to provide a safe, predictable mock
 vi.mock("@/utils/stringUtils", () => ({
@@ -13,40 +18,27 @@ vi.mock("@/utils/stringUtils", () => ({
 }));
 
 describe("SelectComponent.vue", () => {
+  const wrappers = [];
   const createWrapper = (props = {}) => {
-    return shallowMount(SelectComponent, {
+    const wrapper = shallowMount(SelectComponent, {
       props: {
         ...props,
       },
       global: {
         stubs: {
-          "v-combobox": {
-            name: "v-combobox",
-            template: `
-              <div class="v-combobox-stub">
-                <slot name="prepend"></slot>
-                <slot name="chip" :props="{}" :item="{ raw: { title: 'Mock Chip' } }"></slot>
-              </div>
-            `,
-            props: ["modelValue", "items", "multiple", "chips"],
-          },
-          "v-tooltip": {
-            name: "v-tooltip",
-            template: `
-              <div class="v-tooltip-stub">
-                <slot name="activator" :props="{}"></slot>
-                <slot></slot>
-              </div>
-            `,
-          },
-          "v-chip": true,
-          "v-icon": true,
+          VCombobox: VAutocompleteStub,
+          VTooltip: VTooltipStub,
+          VIcon: VIconStub,
         },
       },
     });
+    wrappers.push(wrapper);
+    return wrapper;
   };
 
   afterEach(() => {
+    wrappers.splice(0).forEach((wrapper) => wrapper.unmount());
+    vi.restoreAllMocks();
     vi.clearAllMocks();
   });
 
@@ -98,10 +90,59 @@ describe("SelectComponent.vue", () => {
   describe("Template Bindings & Two-Way Data Flow", () => {
     it("emits 'input' up to the parent when v-combobox updates", async () => {
       const wrapper = createWrapper();
-      const combobox = wrapper.findComponent({ name: "v-combobox" });
+      const combobox = wrapper.findComponent(VAutocompleteStub);
       await combobox.vm.$emit("update:modelValue", ["Grapes"]);
       expect(wrapper.emitted().input).toBeTruthy();
       expect(wrapper.emitted().input[0]).toStrictEqual([["Grapes"]]);
     });
+  });
+
+  it("renders selected chips, formatted options and tooltip content", () => {
+    const selected = { title: "Apples", value: "APPLES" };
+    const wrapper = createWrapper({
+      itemList: ["APPLES", "bananas"],
+      itemValue: [selected],
+      toolTipText: "Select fruit",
+    });
+    const input = wrapper.findComponent(VAutocompleteStub);
+    expect(input.props("items")).toEqual([
+      { title: "Apples", value: "APPLES" },
+      { title: "Bananas", value: "bananas" },
+    ]);
+    expect(wrapper.findComponent({ name: "VChip" }).props("text")).toBe(
+      "Apples",
+    );
+    expect(wrapper.text()).toContain("Select fruit");
+    expect(wrapper.get('[data-test="v-icon"]').text()).toContain(
+      "fas fa-question-circle",
+    );
+  });
+
+  it("reflects parent updates to options and selected values without emitting input", async () => {
+    const wrapper = createWrapper();
+    await wrapper.setProps({ itemList: ["PEARS"], itemValue: ["PEARS"] });
+    const input = wrapper.findComponent(VAutocompleteStub);
+    expect(input.props("items")).toEqual([{ title: "Pears", value: "PEARS" }]);
+    expect(input.props("modelValue")).toEqual(["PEARS"]);
+    expect(wrapper.emitted("input")).toBeUndefined();
+    input.vm.$emit("update:modelValue", []);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.emitted("input")).toEqual([[[]]]);
+    expect(wrapper.props("itemValue")).toEqual(["PEARS"]);
+  });
+
+  it("uses the real string utility to format underscore-separated options", async () => {
+    const { default: stringUtils } = await vi.importActual(
+      "@/utils/stringUtils",
+    );
+    const wrapper = createWrapper({ itemList: ["read_and_write"] });
+    vi.spyOn(wrapper.vm, "cleanString").mockImplementation(
+      stringUtils.methods.cleanString,
+    );
+    await wrapper.setProps({ itemList: ["read_and_write", "READ_ONLY"] });
+    expect(wrapper.vm.formattedItems).toEqual([
+      { title: "Read and write", value: "read_and_write" },
+      { title: "Read only", value: "READ_ONLY" },
+    ]);
   });
 });
